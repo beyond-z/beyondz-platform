@@ -10,6 +10,12 @@ group :production do
   gem 'pg'
 end
 
+# Let's use Twitter Boostrap.
+gem 'bootstrap-sass'
+group :development do
+  gem 'rails_layout'
+end
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
 
