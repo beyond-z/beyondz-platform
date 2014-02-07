@@ -1,0 +1,11 @@
+// Place all the styles related to the programs controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+// import the CSS framework
+@import "bootstrap";
+
+// The summary panel for assignments.
+.assign-summary{
+  @extend .well
+}

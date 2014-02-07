@@ -2,6 +2,10 @@ BeyondzPlatform::Application.routes.draw do
   get "programs/college"
   root 'programs#college'
 
+  # These are static routes for the college assignments for Phase 1.  In Phase 2, remove this and use
+  # dynamic routes, database modles, views, etc to add new assignments.
+  get "assignments/linkedin", to: "assignments#linkedin", as: :linkedin_page
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
