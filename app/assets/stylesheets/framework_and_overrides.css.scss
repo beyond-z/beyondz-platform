@@ -1,3 +1,5 @@
+// Override bootstrap LESS/SASS variables up here, before importing it.
+
 // import the CSS framework
 @import "bootstrap";
 
@@ -5,29 +7,34 @@
 // own styles so that the HTML is framework neutral (e.g. we can move
 // away from Bootstrap without changing all the HTML)
 
-//////////////////////////////
+//#############
+// BTODO: for now, all styles will go in this file.  As we get past the rough, initial site
+// then organize the CSS into separate files for maintaince while still following DRY principles.
+// Here is an intro for how to organize the SASS files: http://thesassway.com/beginner/how-to-structure-a-sass-project/
+// But really, this post seems to really think everything through in better detail: http://gist.io/4436524
+//#############
+
 //////////////////////////////
 //PRIMARY PALETTE
-//orange: f7a333
-//blue: 43b5e9
+$bzorange: #f7a333;
+$bzblue:   #43b5e9;
 
 //SECONDARY PALETTE
-//green: abd044
-//red: f37344
+$bzgreen:  #abd044;
+$bzred:    #f37344;
 
 //NEUTRAL PALETTE
-//cool grey 1: e2e1dd
-//cool grey 2: d6d6d4
-//cool grey 3: cacac8
-//cool grey 4: bdbdbd
-//cool grey 5: b3b3b3
-//cool grey 6: afafaf
-//cool grey 7: 9a9b9d
-//cool grey 8: 8c8d8e
-//cool grey 9: 747679
-//cool grey 10: 616265
-//cool grey 11: 4d4e53
-//////////////////////////////
+$bzgrey1:  #e2e1dd;
+$bzgrey2:  #d6d6d4;
+$bzgrey3:  #cacac8;
+$bzgrey4:  #bdbdbd;
+$bzgrey5:  #b3b3b3;
+$bzgrey6:  #afafaf;
+$bzgrey7:  #9a9b9d;
+$bzgrey8:  #8c8d8e;
+$bzgrey9:  #747679;
+$bzgrey10: #616265;
+$bzgrey11: #4d4e53;
 /////////////////////////////
 
 // make all images responsive by default
@@ -38,8 +45,7 @@ img {
 
 main {
   @extend .container;
-  //background-color: #eee;
-  background-color: #e2e1dd; // cool grey
+  background-color: $bzgrey1;
   width: 100%;
   margin-top: 51px; // accommodate the navbar
   }
@@ -55,8 +61,7 @@ section {
   }
 
 .navbar-inverse {
-//  background-color: #f7a333; // Orange
-    border-color: #f7a333; // Orange - BTODO: define variables for the color palette.
+    border-color: $bzorange; 
   }
 
 .navbar-fixed-top {
@@ -65,7 +70,7 @@ section {
 
 // Change the navbar link text color
 //.navbar-inverse .navbar-brand {
-//  color: #43b5e9; // Blue
+//  color: $bzblue;
 //  } 
 
 
@@ -76,4 +81,20 @@ section {
   @extend .btn-lg;
   }
 
-
+// The general panel for assignments.
+.assign-panel {
+  @extend .col-sm-12;
+  @extend .well;
+  background-color: $bzgrey2;
+  }
+  
+// The intro section for assignments.
+.assign-intro {
+  @extend .jumbotron;
+  @extend .assign-panel; 
+  }
+  
+// The summary panel for assignments.
+.assign-summary {
+  @extend .assign-panel; 
+  }
