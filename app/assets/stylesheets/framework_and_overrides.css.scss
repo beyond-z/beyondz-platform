@@ -73,6 +73,9 @@ section {
 //  color: $bzblue;
 //  } 
 
+.list-group-item {
+  background-color: transparent;
+  }
 
 // Make all form submit buttons based off the following Bootstrap styles
 .submit {
@@ -80,6 +83,9 @@ section {
   @extend .btn-primary;
   @extend .btn-lg;
   }
+
+//------------------------------------------
+// Styles for the list of all assignments page.
 
 // The general panel for assignments.
 .assign-panel {
@@ -96,5 +102,20 @@ section {
   
 // The summary panel for assignments.
 .assign-summary {
-  @extend .assign-panel; 
+  @extend .assign-panel;
+  h3 {
+    color: $bzorange;
+    } 
+  }
+
+//------------------------------------------
+// Styles for the assignment details pages.
+
+// Container for the whole details page.
+.assign-details-container {
+  @extned .col-sm-12;
+}
+
+.assign-details-container h3 {
+  color: $bzorange;
   }
