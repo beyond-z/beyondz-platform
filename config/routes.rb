@@ -6,6 +6,7 @@ BeyondzPlatform::Application.routes.draw do
   # dynamic routes, database modles, views, etc to add new assignments.
   get "assignments/template", to: "assignments#template", as: :template_page
   get "assignments/coverletter", to: "assignments#coverletter", as: :coverletter_page
+  get "assignments/submit", to: "assignments#submit", as: :submit_page
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
