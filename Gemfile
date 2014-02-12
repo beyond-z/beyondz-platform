@@ -45,6 +45,10 @@ end
 # Heroku needs this since the Rails plugin system was removed in Ruby 4.
 gem 'rails_12factor', group: :production
 
+# We are submitting assignments by inserting them into a Google Spreadsheet.
+# This gem makes it easy to read/write these sheets.
+gem 'google_drive'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
 

@@ -1,8 +1,5 @@
 class AssignmentsController < ApplicationController
   
-  # Defining static routes to each static assignment for now.  In Phase 2, we'll use dynamic routes, db models, views, etc to create assignments.
-  def linkedin
-    render
-  end
+  # All of the assignments details are static routes defined in routes.rb for now. assignment for now.  In Phase 2, we'll fix this up.
 
 end
