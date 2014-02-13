@@ -49,6 +49,9 @@ gem 'rails_12factor', group: :production
 # This gem makes it easy to read/write these sheets.
 gem 'google_drive'
 
+# JSON parsing
+gem 'json'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
 
