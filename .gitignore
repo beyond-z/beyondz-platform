@@ -14,3 +14,8 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+
+# This is the local environment variables used by Foreman to run the app.  These values vary per
+# environment and may contain sensitive information, like passwords and keys, so they shouldn't be
+# checked into source control.
+.env

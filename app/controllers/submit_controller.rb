@@ -12,7 +12,7 @@ class SubmitController < ApplicationController
 
     # You can also use OAuth. See document of
     # GoogleDrive.login_with_oauth for details.
-    session = GoogleDrive.login("myemail@gmail.com", "myPassword")
+    session = GoogleDrive.login(ENV['GOOGLE_DRIVE_EMAIL'], ENV['GOOGLE_DRIVE_PASSWORD'])
 
     ws = session.spreadsheet_by_title('TestAssignmentSubmit').worksheets[0]
 
