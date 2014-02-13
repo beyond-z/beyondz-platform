@@ -19,3 +19,6 @@
 # environment and may contain sensitive information, like passwords and keys, so they shouldn't be
 # checked into source control.
 .env
+.env-prod
+.env-test
+.env-dev
