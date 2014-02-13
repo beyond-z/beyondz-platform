@@ -13,22 +13,13 @@ We use Ruby: ruby 2.1.0p0 (2013-12-25 revision 44422) [x86_64-darwin12.0]
 * System dependencies
 
 * Configuration
-For your local dev env, run the following from the app root:
-$ echo "RACK_ENV=development" >>.env
-$ echo "PORT=3000" >> .env
-$ echo "GOOGLE_DRIVE_EMAIL=<talk to team members to get this value>" >> .env
-$ echo "GOOGLE_DRVIE_PASSWORD=<talk to team members to get this value" >> .env
+Customize the .env-sample for your environment and rename it to .env.  Then use foreman start to run the rails server.
 
-To change the production configuration, you can use heroku-config.  Be careful when pushing the local
-changes to production!
-$ heroku plugins:install git://github.com/ddollar/heroku-config.git
-
-To pull production to local:
+To pull production values to local env:
 $ heroku config:pull --overwrite --interactive
 
-To push local to production:
+To push local to production, setup your local .env how you want prod to look and run the following  (be VERY carefule when doing this!):
 $ heroku config:push
-
 
 
 * Database creation
