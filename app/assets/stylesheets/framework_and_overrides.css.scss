@@ -23,7 +23,7 @@ $bzblue:   #43b5e9;
 $bzgreen:  #abd044;
 $bzred:    #f37344;
 
-//NEUTRAL PALETTE
+//NEUTRAL PALETTE (light to dark)
 $bzgrey1:  #e2e1dd;
 $bzgrey2:  #d6d6d4;
 $bzgrey3:  #cacac8;
@@ -35,7 +35,14 @@ $bzgrey8:  #8c8d8e;
 $bzgrey9:  #747679;
 $bzgrey10: #616265;
 $bzgrey11: #4d4e53;
+
+// list:f7a333, 43b5e9, abd044, f37344, e2e1dd, d6d6d4, cacac8, bdbdbd, b3b3b3, afafaf, 9a9b9d, 8c8d8e,747679,616265,4d4e53 
 /////////////////////////////
+
+
+//-----------------------------------------
+// base styles
+//-----------------------------------------
 
 // make all images responsive by default
 img {
@@ -44,37 +51,14 @@ img {
   }
 
 main {
-  @extend .container;
-  background-color: $bzgrey1;
+  @extend .container-fluid;
+  background-color: white;
   width: 100%;
-  margin-top: 51px; // accommodate the navbar
   }
 
 section {
-  @extend .row;
+  @extend .row-fluid;
   margin-top: 20px;
-  }
-  
-// override for the 'Beyond Z' navigation link
-.navbar-brand {
-  font-size: inherit;
-  }
-
-.navbar-inverse {
-    border-color: $bzorange; 
-  }
-
-.navbar-fixed-top {
-  border-width: 0 0 2px; 
-  }
-
-// Change the navbar link text color
-//.navbar-inverse .navbar-brand {
-//  color: $bzblue;
-//  } 
-
-.list-group-item {
-  background-color: transparent;
   }
 
 // Make all form submit buttons based off the following Bootstrap styles
@@ -83,33 +67,89 @@ section {
   @extend .btn-primary;
   @extend .btn-lg;
   }
+ 
+//-----------------------------------------
+// Bootstrap overrides
+//-----------------------------------------
+ 
+.list-group-item {
+  background-color: transparent;
+  }
 
-//------------------------------------------
-// Styles for the list of all assignments page.
+//-----------------------------------------
+// Styles for the college program main page
+//-----------------------------------------
+
+// The header showing the logo
+.program-header {
+  border-bottom: 10px solid $bzgrey11;
+  img {
+    width: 200px;
+    }
+  }
 
 // The general panel for assignments.
-.assign-panel {
+.program-panel {
   @extend .col-sm-12;
-  @extend .well;
-  background-color: $bzgrey2;
   }
   
-// The intro section for assignments.
-.assign-intro {
+// The intro section for the program page.
+.program-intro {
+  @extend .col-sm-10;
+  @extend .col-sm-offset-1;
   @extend .jumbotron;
-  @extend .assign-panel; 
+  text-align: center;
+  background-color: $bzblue;
+  color: white;
+  margin-top: 20px;
+  margin-bottom: 0px;
   }
-  
+
+// Call to action to post to the group forum
+.program-forum {
+  @extend .col-sm-12;
+  text-align: center;
+  }
+
 // The summary panel for assignments.
 .assign-summary {
-  @extend .assign-panel;
-  h3 {
-    color: $bzorange;
+  @extend .program-panel;
+  h2 {
+    @extend .col-sm-12;
+    background-color: $bzgrey11;
+    color: white;
+    margin-bottom: 0px;
     } 
+  }
+
+.assign-summary-practice {
+  @extend .col-sm-8;
+  background-color: $bzgrey4;
+  h3 {
+     color: white;
+     }
+  }
+
+.assign-summary-checklist {
+  @extend .col-sm-4;
+  color: $bzorange;
+  }
+
+.assign-summary-buttons {
+  @extend .col-sm-12;
+  }
+
+.btn-assign-details {
+  @extend .col-sm-4;
+}
+
+.btn-assign-submit {
+  @extend .col-sm-4;
   }
 
 //------------------------------------------
 // Styles for the assignment details pages.
+//-----------------------------------------
 
 // Container for the whole details page.
 .assign-details-container {
@@ -119,3 +159,10 @@ section {
 .assign-details-container h3 {
   color: $bzorange;
   }
+ 
+//------------------------------------------
+// Styles for the footer
+//-----------------------------------------
+.footer {
+  text-align: center;
+  } 
