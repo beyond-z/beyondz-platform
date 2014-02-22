@@ -4,7 +4,7 @@ BeyondzPlatform::Application.routes.draw do
 
   # These are static routes for the college assignments for Phase 1.  In Phase 2, remove this and use
   # resourceful dynamic routes, database modles, views, etc to add new assignments.
-  get "assignments/template", to: "assignments#template", as: :template_page
+  get "assignments/passions-professions", to: "assignments#passions-professions", as: :passions_professions_page
   get "assignments/coverletter", to: "assignments#coverletter", as: :coverletter_page
 
   # Handle assignment submissions, such as GET <root>/assignments/submit/new  

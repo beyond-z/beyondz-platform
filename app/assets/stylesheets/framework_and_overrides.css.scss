@@ -77,6 +77,31 @@ section {
   }
 
 //-----------------------------------------
+// Beyond Z styles
+//-----------------------------------------
+
+// The general panel for assignments.
+.assign-col {
+  @extend .col-sm-12;
+  }
+  
+// The header row for assignments
+.assign-header {
+  @extend .assign-col;
+  background-color: $bzgrey11;
+  color: white;
+  }
+
+// An emphasized section for assignments
+.assign-jumbotron {
+  @extend .col-sm-10;
+  @extend .col-sm-offset-1;
+  @extend .jumbotron;
+  background-color: $bzblue;
+  color: white;
+  } 
+
+//-----------------------------------------
 // Styles for the college program main page
 //-----------------------------------------
 
@@ -88,36 +113,25 @@ section {
     }
   }
 
-// The general panel for assignments.
-.program-panel {
-  @extend .col-sm-12;
-  }
-  
 // The intro section for the program page.
 .program-intro {
-  @extend .col-sm-10;
-  @extend .col-sm-offset-1;
-  @extend .jumbotron;
+  @extend .assign-jumbotron;
   text-align: center;
-  background-color: $bzblue;
-  color: white;
   margin-top: 20px;
   margin-bottom: 0px;
   }
 
 // Call to action to post to the group forum
 .program-forum {
-  @extend .col-sm-12;
+  @extend .assign-col;
   text-align: center;
   }
 
 // The summary panel for assignments.
 .assign-summary {
-  @extend .program-panel;
+  @extend .assign-col;
   h2 {
-    @extend .col-sm-12;
-    background-color: $bzgrey11;
-    color: white;
+    @extend .assign-header; 
     margin-bottom: 0px;
     } 
   }
@@ -136,7 +150,7 @@ section {
   }
 
 .assign-summary-buttons {
-  @extend .col-sm-12;
+  @extend .assign-col;
   }
 
 .btn-assign-details {
@@ -153,13 +167,44 @@ section {
 
 // Container for the whole details page.
 .assign-details-container {
-  @extned .col-sm-12;
-}
-
-.assign-details-container h3 {
-  color: $bzorange;
+  @extend .assign-col;
+  h2 {
+    @extend .assign-header; 
+    }
   }
- 
+
+.assign-lead {
+  color: $bzorange;
+  font-size: 120%;
+  } 
+
+.assign-details-summary {
+  @extend .assign-col;
+  }
+
+.assign-details-resources {
+  @extend .assign-jumbotron;
+  padding: 0px;
+  h3 {
+    text-align: center;
+    border-bottom: 4px solid white;
+    padding-bottom: 5px;
+    margin: 5px 0px;
+    }
+  a {
+    color: $bzgrey1;
+    text-decoration: none;
+    }
+  a:hover, a:focus {
+    color: $bzgrey3;
+    text-decoration: underline;
+    }
+  }
+
+.assign-details-body {
+  @extend .assign-col;
+} 
+
 //------------------------------------------
 // Styles for the footer
 //-----------------------------------------
