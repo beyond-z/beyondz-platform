@@ -39,10 +39,15 @@ $bzgrey11: #4d4e53;
 // list:f7a333, 43b5e9, abd044, f37344, e2e1dd, d6d6d4, cacac8, bdbdbd, b3b3b3, afafaf, 9a9b9d, 8c8d8e,747679,616265,4d4e53 
 /////////////////////////////
 
+$greyBackground: $bzgrey11;
 
 //-----------------------------------------
 // base styles
 //-----------------------------------------
+
+html, body {
+  height: 100%;
+}
 
 // make all images responsive by default
 img {
@@ -71,7 +76,7 @@ section {
 //-----------------------------------------
 // Bootstrap overrides
 //-----------------------------------------
- 
+
 .list-group-item {
   background-color: transparent;
   }
@@ -92,9 +97,16 @@ section {
 // The header row for assignments
 .assign-header {
   @extend .assign-col;
-  background-color: $bzgrey11;
+  background-color: $greyBackground;
   color: white;
   }
+
+// Lead text for assignments
+.assign-text-lead {
+  color: $bzorange;
+  font-size: 120%;
+  } 
+
 
 // An emphasized section for assignments
 .assign-jumbotron {
@@ -111,7 +123,7 @@ section {
 
 // The header showing the logo
 .program-header {
-  border-bottom: 10px solid $bzgrey11;
+  border-bottom: 10px solid $greyBackground;
   img {
     width: 200px;
     }
@@ -184,20 +196,29 @@ section {
   @extend .assign-col;
   h2 {
     @extend .assign-header; 
+    margin-bottom: 0px;
     }
   }
 
-.assign-lead {
-  color: $bzorange;
-  font-size: 120%;
-  } 
+// The main section for assignment details.
+.assign-details-main {
+  @extend .col-sm-10;
+}
+
+// The sidebar containing assignment resources.
+.assign-details-sidebar {
+  @extend .col-sm-2;
+  // BTODO: not able to get the column to stretch and match the height of the main div.
+  //background-color: $greyBackground;
+  //min-height: 100%;
+}
 
 .assign-details-summary {
   @extend .assign-col;
   @extend .lead;
   }
 
-.assign-details-resources {
+.assign-details-articles {
   @extend .assign-jumbotron;
   padding: 0px;
   h3 {
