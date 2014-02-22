@@ -76,6 +76,10 @@ section {
   background-color: transparent;
   }
 
+.btn-warning {
+  @include button-variant(white, $bzorange, $bzgrey6);
+  }
+
 //-----------------------------------------
 // Beyond Z styles
 //-----------------------------------------
@@ -153,13 +157,23 @@ section {
   @extend .assign-col;
   }
 
-.btn-assign-details {
-  @extend .col-sm-4;
-}
-
-.btn-assign-submit {
-  @extend .col-sm-4;
+.btn-assign {
+  @extend .col-sm-2;
+  @extend .btn;
+  @extend .btn-warning;
   }
+
+.btn-assign-left {
+  @extend .btn-assign;
+  @extend .col-sm-offset-2;
+  margin-right: 2px;
+  }
+
+.btn-assign-right {
+  @extend .btn-assign;
+  margin-left: 2px;
+  }
+
 
 //------------------------------------------
 // Styles for the assignment details pages.
