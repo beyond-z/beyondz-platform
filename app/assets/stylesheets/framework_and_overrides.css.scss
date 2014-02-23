@@ -107,7 +107,6 @@ section {
   font-size: 120%;
   } 
 
-
 // An emphasized section for assignments
 .assign-jumbotron {
   @extend .col-sm-10;
@@ -222,7 +221,7 @@ section {
   @extend .lead;
   }
 
-.assign-details-articles {
+.assign-details-jumbotron {
   @extend .assign-jumbotron;
   padding: 0px;
   h3 {
@@ -238,6 +237,17 @@ section {
   a:hover, a:focus {
     color: $bzgrey3;
     text-decoration: underline;
+    }
+ }
+
+.assign-details-articles {
+  @extend .assign-details-jumbotron;
+  }
+
+.assign-details-homework {
+  @extend .assign-details-jumbotron;
+  p {
+    padding: 0px 15px 0px;
     }
   }
 
