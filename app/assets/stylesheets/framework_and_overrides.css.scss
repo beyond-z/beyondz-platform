@@ -189,6 +189,14 @@ section {
   margin-left: 2px;
   }
 
+//------------------------------------------
+// Styles for the assignment submission pages.
+//-----------------------------------------
+.btn-assign-submit {
+   @extend .btn-assign;
+   margin: 10px 0px;
+   }
+
 
 //------------------------------------------
 // Styles for the assignment details pages.

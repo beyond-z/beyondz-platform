@@ -2,7 +2,10 @@
 
   <!-- BTODO: add validation for form input -->
 
-  <%= form_tag(controller: "submit", action: "create") do %>
+  <div class="row-fluid">
+    <div class="col-sm-8">
+
+    <%= form_tag(controller: "submit", action: "create") do %>
     
     <div class="form-group>
       <%= label_tag(:userEmail, "Your email address:") %>
@@ -14,8 +17,10 @@
       <%= text_field_tag(:submissionUrl, nil, class: "form-control", placeholder: "e.g. http://link.com/to/my/submission.html") %>
     </div>
  
-    <%= submit_tag("Submit", class: "btn, btn-default") %> <!-- BTODO: style all buttons app wide instead of per button --> 
+    <%= submit_tag("Submit", class: "btn-assign-submit") %> 
   
-  <% end %>
-
+    <% end %>
+    
+    </div>
+  </div>
 </div>
