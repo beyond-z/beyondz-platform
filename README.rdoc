@@ -19,7 +19,7 @@ To pull production values to local env:
 $ heroku config:pull --overwrite --interactive
 
 To push local to production, setup your local .env how you want prod to look and run the following  (be VERY carefule when doing this!):
-$ heroku config:push
+$ heroku config:push --overwrite
 
 
 * Database creation
