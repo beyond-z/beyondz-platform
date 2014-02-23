@@ -89,6 +89,10 @@ section {
 // Beyond Z styles
 //-----------------------------------------
 
+.bzred {
+  color: $bzred;
+  }
+
 // The general panel for assignments.
 .assign-col {
   @extend .col-sm-12;
