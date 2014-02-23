@@ -9,7 +9,7 @@ class SubmitController < ApplicationController
   def create 
     
     # An array of userInfo objects are stored in the USER_INFOS env var as a JSON string in this format:
-    # '{ "brian.sadler@beyondz.org" : {"name" : "Brian Sadler", "school" : "School 1" }, ... }'
+    # '{ "brian.sadler@beyondz.org" : {"name" : "Brian Sadler", "coach" : "John Doe", "documentKey" : "0AhkyYmQz77njdHpMeXRpNFUtZHViaWxQMWpfVkpuZmc" }, ... }'
 
     # This gets the info for the user using their email address as the key
     # IMPORTANT: if this isn't working, check that the ".env" file has the correct info and 
@@ -22,23 +22,24 @@ class SubmitController < ApplicationController
     # { "assignmentId" : "Assignment Display Name", ... }
     assignmentIdToName = JSON.parse(ENV['ASSIGNMENT_INFO'])
 
-    # You can also use OAuth. See document of
-    # GoogleDrive.login_with_oauth for details.
-    session = GoogleDrive.login(ENV['GOOGLE_DRIVE_EMAIL'], ENV['GOOGLE_DRIVE_PASSWORD'])
-
-    # Initially set to key = 0AhkyYmQz77njdHpMeXRpNFUtZHViaWxQMWpfVkpuZmc which corresponds to the 
-    # "Assignment Submissions - Career Prep and Leadership Academy.gdoc"
-    doc = session.spreadsheet_by_key(ENV['GOOGLE_SUBMISSION_DOC_KEY'])
+    ######### 
+    # We're using the google_drive gem.  The API is here: http://gimite.net/doc/google-drive-ruby/
+    ########
     
-    ws = doc.worksheet_by_title(userInfo["school"])
+    # You can also use OAuth. See document of GoogleDrive.login_with_oauth for details.
+    session = GoogleDrive.login(ENV['GOOGLE_DRIVE_EMAIL'], ENV['GOOGLE_DRIVE_PASSWORD'])
+    doc = session.spreadsheet_by_key(userInfo["documentKey"])
+    ws = doc.worksheets[0]
    
     # Assuming the worksheet has the following columns, populate it.
-    # Student Name  | Student Email  |  Assignment  |   Submission URL 
+    # Student Name  | Student Email  |  Coach  |  Assignment  |   Submission URL  |  Date Submitted  |  Feedback 
     firstEmptyRow = ws.num_rows() + 1
     ws[firstEmptyRow, 1] = userInfo["name"] 
     ws[firstEmptyRow, 2] = params[:userEmail] 
-    ws[firstEmptyRow, 3] = assignmentIdToName[params[:assignment_id]]
-    ws[firstEmptyRow, 4] = params[:submissionUrl]
+    ws[firstEmptyRow, 3] = userInfo["coach"]  
+    ws[firstEmptyRow, 4] = assignmentIdToName[params[:assignment_id]]
+    ws[firstEmptyRow, 5] = params[:submissionUrl]
+    ws[firstEmptyRow, 6] = Time.now
     ws.save()    
 
   end
