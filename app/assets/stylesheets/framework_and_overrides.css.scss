@@ -208,6 +208,10 @@ section {
 // The sidebar containing assignment resources.
 .assign-details-sidebar {
   @extend .col-sm-2;
+  padding-left: 0px;
+  padding-right: 0px;
+  margin-top: 10px;
+  
   // BTODO: not able to get the column to stretch and match the height of the main div.
   //background-color: $greyBackground;
   //min-height: 100%;
@@ -240,6 +244,21 @@ section {
 .assign-details-body {
   @extend .assign-col;
 } 
+
+.assign-details-buttons {
+  @extend .col-sm-12;
+  padding-left: 0px;
+  padding-right: 0px;
+  }
+
+.btn-assign-details {
+  @extend .col-sm-12;
+  @extend .btn;
+  @extend .btn-warning;
+  @extend .pull-right;
+  margin-bottom: 10px;
+  }
+
 
 //------------------------------------------
 // Styles for the footer
