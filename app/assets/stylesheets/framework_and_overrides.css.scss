@@ -117,7 +117,10 @@ section {
   @extend .col-sm-offset-1;
   @extend .jumbotron;
   background-color: $bzblue;
-  color: white;
+  color: $bzgrey11;
+  h1, h2, h3 {
+     color: white;
+    }
   } 
 
 //-----------------------------------------
