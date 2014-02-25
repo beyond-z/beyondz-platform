@@ -100,7 +100,7 @@ section {
   }
 
 .btn-primary {
-  @include button-variant(white, $greyBackground, $bzgrey10);
+  @include button-variant($bzblue, $greyBackground, $bzgrey10);
   }
 
 .btn-warning {
@@ -128,6 +128,12 @@ section {
 
 .bzred {
   color: $bzred;
+  }
+
+// Text indicating the type of session for the week, peer led vs coach led.
+.session-type {
+  font-style: italic;
+  color: $bzblue;
   }
 
 // The general panel for assignments.
