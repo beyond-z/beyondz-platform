@@ -12,15 +12,14 @@ class SubmitController < ApplicationController
     # '{ "brian.sadler@beyondz.org" : {"name" : "Brian Sadler", "coach" : "John Doe", "documentKey" : "0AhkyYmQz77njdHpMeXRpNFUtZHViaWxQMWpfVkpuZmc" }, ... }'
 
     # This gets the info for the user using their email address as the key
-    # IMPORTANT: if this isn't working, check that the ".env" file has the correct info and 
-    # is pushed to your environment
-    userInfo = JSON.parse(ENV['USER_INFOS'])[params[:userEmail]]
+    userInfos = JSON.parse(File.read(::Rails.root.join("config", "userInfo.json")))
+    userInfo = userInfos[params[:userEmail]]
 
     #BTODO: validate that an object for this email address was found
 
-    # Info on assignment is stored in teh ASSIGNMENT_INFO env var as a JSON string in the following format:
+    # Info on assignment is stored in the following format:
     # { "assignmentId" : "Assignment Display Name", ... }
-    assignmentIdToName = JSON.parse(ENV['ASSIGNMENT_INFO'])
+    assignmentIdToName = JSON.parse(File.read(::Rails.root.join("config", "assignmentInfo.json")))
 
     ######### 
     # We're using the google_drive gem.  The API is here: http://gimite.net/doc/google-drive-ruby/
