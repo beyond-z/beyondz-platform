@@ -1,19 +1,13 @@
-<%# navigation styled for Bootstrap 3.0 %>
-<nav class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <%= link_to 'Beyond Z', root_path, class: 'navbar-brand' %>
-    </div>
-    <div class="collapse navbar-collapse">
-      <ul class="nav navbar-nav">
-        <%= render 'layouts/navigation_links' %>
-      </ul>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="program-resources-container">
+      <div class="row-fluid">
+        <div class="program-resources">
+          <%= link_to 'Assignment Portal', root_path, class: 'btn-resources', role: 'button' %>
+          <a class="btn-resources" href="https://www.dropbox.com/s/t5pnynb84ufm3ji/SummerOpportunities.docx?dl=1" role="button">Summer Opportunities</a>
+          <a class="btn-resources" href="https://www.dropbox.com/s/i6tsrrmtr3kfhon/OnlinePortalInstructions.pdf?dl=1" role="button">Submission Instructions</a>
+        </div>
+      </div>
     </div>
   </div>
-</nav>
+</div>
