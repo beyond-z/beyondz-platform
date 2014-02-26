@@ -126,9 +126,6 @@ section {
 // Beyond Z styles
 //-----------------------------------------
 
-.bzred {
-  color: $bzred;
-  }
 
 // Text indicating the type of session for the week, peer led vs coach led.
 .session-type {
@@ -227,7 +224,15 @@ section {
   @extend .col-sm-4;
   color: $bzorange;
   margin: 20px 0px 0px;
-  }
+  a {
+    color: $bzorange;
+    text-decoration: underline;
+    }
+  a:hover, a:focus {
+    color: darken($bzorange, 15%);
+    text-decoration: underline;
+    }
+}
 
 .assign-summary-buttons {
   @extend .assign-col;
