@@ -312,7 +312,7 @@ section {
     color: $bzgrey1;
     text-decoration: underline;
     }
- }
+  }
 
 .assign-details-articles {
   @extend .assign-details-jumbotron;
@@ -327,7 +327,7 @@ section {
 
 .assign-details-body {
   @extend .assign-col;
-} 
+  } 
 
 .assign-details-buttons {
   @extend .col-sm-12;
@@ -343,6 +343,9 @@ section {
   margin-bottom: 10px;
   }
 
+.assign-details-half-screen {
+  @extend .col-sm-6;
+  }
 
 //------------------------------------------
 // Styles for the footer
