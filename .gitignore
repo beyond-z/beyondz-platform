@@ -25,3 +25,5 @@
 .env-prod
 .env-test
 .env-dev
+
+/vender/bundle/*
