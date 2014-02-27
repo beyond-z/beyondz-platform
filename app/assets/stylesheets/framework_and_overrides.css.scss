@@ -76,7 +76,7 @@ main {
   }
 
 section {
-  @extend .row-fluid;
+  @extend .row;
   margin-top: 20px;
   }
 
@@ -111,9 +111,6 @@ section {
 // Bootstrap overrides
 //-----------------------------------------
 
-.container-fluid {
-  padding: 0px;
-  }
 
 .list-group-item {
   background-color: transparent;
@@ -322,8 +319,6 @@ section {
 // The sidebar containing assignment resources.
 .assign-details-sidebar {
   @extend .col-sm-2;
-  padding-left: 0px;
-  padding-right: 0px;
   margin-top: 10px;
   
   // BTODO: not able to get the column to stretch and match the height of the main div.
@@ -373,8 +368,6 @@ section {
 
 .assign-details-buttons {
   @extend .col-sm-12;
-  padding-left: 0px;
-  padding-right: 0px;
   }
 
 .btn-assign-details {
