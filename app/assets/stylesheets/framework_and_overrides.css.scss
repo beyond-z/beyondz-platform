@@ -235,9 +235,11 @@ section {
 .assign-date {
   @extend .assign-col;
   color: $bzorange;
-  font-size: 115%;
+  font-size: $font-size-large;
   font-weight: bold;
-  margin-top: 3px;
+  p {
+    margin: 3px 0px 0px;
+    }
   }
 
 .assign-summary-practice {
