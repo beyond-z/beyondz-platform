@@ -100,7 +100,7 @@ section {
   }
 
 .btn-primary {
-  @include button-variant($bzblue, $greyBackground, $bzgrey10);
+  @include button-variant(white, $greyBackground, $bzgrey10);
   }
 
 .btn-warning {
@@ -214,15 +214,15 @@ section {
 
 .assign-summary-practice {
   @extend .col-sm-8;
-  background-color: $bzgrey4;
   h3 {
      color: black;
-     }
+    }
   }
 
 .assign-summary-checklist {
   @extend .col-sm-4;
   color: $bzorange;
+  border: 5px solid $bzgrey4;
   h3 {
     color: black;
     }
