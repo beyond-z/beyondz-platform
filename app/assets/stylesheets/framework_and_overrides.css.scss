@@ -86,6 +86,26 @@ section {
   @extend .btn-primary;
   @extend .btn-lg;
   }
+
+// This class can be used to add Glyphicon images as the bullet points for a list
+// like this: <ul class="list-unstyled icon-list checkmark">
+// See: http://www.bootply.com/116739
+.icon-list li {
+  padding: 0 0 5px 20px;
+  display: block;
+  position: relative;
+}
+.icon-list li:before {
+  font-family: 'Glyphicons Halflings';
+  position: absolute;
+  left: 0px;
+  top:3px;
+  font-size:80%
+}
+
+.checkmark li:before {
+  content: '\e067';
+ }
  
 //-----------------------------------------
 // Bootstrap overrides
@@ -223,6 +243,11 @@ section {
   @extend .col-sm-4;
   color: $bzorange;
   border: 5px solid $bzgrey4;
+  ul {
+    @extend .list-unstyled;
+    @extend .icon-list;
+    @extend .checkmark;
+    }
   h3 {
     color: black;
     }
