@@ -232,6 +232,14 @@ section {
     } 
   }
 
+.assign-date {
+  @extend .assign-col;
+  color: $bzorange;
+  font-size: 115%;
+  font-weight: bold;
+  margin-top: 3px;
+  }
+
 .assign-summary-practice {
   @extend .col-sm-8;
   h3 {
