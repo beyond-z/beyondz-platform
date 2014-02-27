@@ -6,6 +6,7 @@ BeyondzPlatform::Application.routes.draw do
   # resourceful dynamic routes, database modles, views, etc to add new assignments.
   get "assignments/passions-professions", to: "assignments#passions-professions", as: :passions_professions_page
   get "assignments/coverletter", to: "assignments#coverletter", as: :coverletter_page
+  get "assignments/story-of-self", to: "assignments#story-of-self", as: :story_of_self_page
 
   # Handle assignment submissions, such as GET <root>/assignments/submit/new  
   resources :assignments, only: [:index] do
