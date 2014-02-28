@@ -280,12 +280,12 @@ section {
 .btn-assign-left {
   @extend .btn-assign;
   @extend .col-sm-offset-2;
-  margin-right: 2px;
+  margin-right: 10px;
   }
 
 .btn-assign-right {
   @extend .btn-assign;
-  margin-left: 2px;
+  margin-left: 10px;
   }
 
 //------------------------------------------
