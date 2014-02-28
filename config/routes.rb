@@ -4,9 +4,16 @@ BeyondzPlatform::Application.routes.draw do
 
   # These are static routes for the college assignments for Phase 1.  In Phase 2, remove this and use
   # resourceful dynamic routes, database modles, views, etc to add new assignments.
-  get "assignments/passions-professions", to: "assignments#passions-professions", as: :passions_professions_page
-  get "assignments/coverletter", to: "assignments#coverletter", as: :coverletter_page
   get "assignments/story-of-self", to: "assignments#story-of-self", as: :story_of_self_page
+  get "assignments/passions-professions", to: "assignments#passions-professions", as: :passions_professions_page
+  get "assignments/cover-letter-and-resume", to: "assignments#cover-letter-and-resume", as: :cover_letter_and_resume_page
+  get "assignments/networks", to: "assignments#networks", as: :networks_page
+  get "assignments/spring-break", to: "assignments#spring-break", as: :spring_break_page
+  get "assignments/asking-for-help", to: "assignments#asking-for-help", as: :asking_for_help_page
+  get "assignments/interview-simulations", to: "assignments#interview-simulations", as: :interview_simulations_page
+  get "assignments/work-ethic", to: "assignments#work-ethic", as: :work_ethic_page
+  get "assignments/organization-self-mgmt", to: "assignments#organization-self-mgmt", as: :organization_self_mgmt_page
+#  get "assignments/insertpath", to: "assignments#insertpath", as: :insertPath_page
 
   # Handle assignment submissions, such as GET <root>/assignments/submit/new  
   resources :assignments, only: [:index] do
