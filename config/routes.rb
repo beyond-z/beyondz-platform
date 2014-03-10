@@ -6,7 +6,8 @@ BeyondzPlatform::Application.routes.draw do
   # resourceful dynamic routes, database modles, views, etc to add new assignments.
   get "assignments/story-of-self", to: "assignments#story-of-self", as: :story_of_self_page
   get "assignments/passions-professions", to: "assignments#passions-professions", as: :passions_professions_page
-  get "assignments/cover-letter-and-resume", to: "assignments#cover-letter-and-resume", as: :cover_letter_and_resume_page
+  get "assignments/cover-letter", to: "assignments#cover-letter", as: :cover_letter_page
+  get "assignments/resume", to: "assignments#resume", as: :resume_page
   get "assignments/networks", to: "assignments#networks", as: :networks_page
   get "assignments/spring-break", to: "assignments#spring-break", as: :spring_break_page
   get "assignments/asking-for-help", to: "assignments#asking-for-help", as: :asking_for_help_page
