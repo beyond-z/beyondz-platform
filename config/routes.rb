@@ -9,7 +9,7 @@ BeyondzPlatform::Application.routes.draw do
   get "assignments/cover-letter", to: "assignments#cover-letter", as: :cover_letter_page
   get "assignments/resume", to: "assignments#resume", as: :resume_page
   get "assignments/networks", to: "assignments#networks", as: :networks_page
-  get "assignments/spring-break", to: "assignments#spring-break", as: :spring_break_page
+  get "assignments/best-self", to: "assignments#best-self", as: :best_self_page
   get "assignments/asking-for-help", to: "assignments#asking-for-help", as: :asking_for_help_page
   get "assignments/interview-simulations", to: "assignments#interview-simulations", as: :interview_simulations_page
   get "assignments/work-ethic", to: "assignments#work-ethic", as: :work_ethic_page
