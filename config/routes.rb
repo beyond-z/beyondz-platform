@@ -16,9 +16,9 @@ BeyondzPlatform::Application.routes.draw do
   get "assignments/organization-self-mgmt", to: "assignments#organization-self-mgmt", as: :organization_self_mgmt_page
 #  get "assignments/insertpath", to: "assignments#insertpath", as: :insertPath_page
 
-  # Handle assignment submissions, such as GET <root>/assignments/submit/new  
+  # Handle assignment submissions, such as GET <root>/assignments/submissions/new  
   resources :assignments, only: [:index] do
-    resources :submit, only: [:new, :create]
+    resources :submissions, only: [:new, :create]
   end
 
 

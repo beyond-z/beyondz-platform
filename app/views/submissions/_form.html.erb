@@ -1,0 +1,33 @@
+<div class="container-fluid">
+  <section>
+    <div class="assign-form-submit">
+
+<%= form_for @submission, url: assignment_submissions_path do |f| %>
+
+  <% if @submission.errors.any? %>
+    <div id="error_explanation">
+      <h2>Please fix the following errors before clicking 'Submit':</h2>
+      <ul>
+      <% @submission.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :email, 'Your email address:' %>
+    <%= f.text_field :email, class: 'form-control', placeholder: 'emailAddress@someDomain.com' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :url, 'Submission URL:' %>
+    <%= f.text_field :url, class: 'form-control', placeholder: 'https://docs.google.com/a/username/document/d/example/edit?usp=sharing' %>
+  </div>
+  <%= f.submit "Submit", class: 'btn-assign-submit' %>
+
+<% end %>
+
+    </div>
+  </section>
+</div>
