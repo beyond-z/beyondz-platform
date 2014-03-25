@@ -26,22 +26,15 @@ class SubmissionsController < ApplicationController
   def create
     @submission = Submission.new(submission_params)
 
-    #respond_to do |format|
-      
-    # An array of userInfo objects are stored in the USER_INFOS env var as a JSON string in this format:
-    # '{ "brian.sadler@beyondz.org" : {"name" : "Brian Sadler", "coach" : "John Doe", "documentKey" : "0AhkyYmQz77njdHpMeXRpNFUtZHViaWxQMWpfVkpuZmc" }, ... }'
-
-    # This gets the info for the user using their email address as the key
-    userInfos = JSON.parse(File.read(::Rails.root.join("config", "userInfo.json")))
-    userInfo = userInfos[@submission.email]
-
-    #BTODO: validate that an object for this email address was found
-    #
     if @submission.valid?
 
+       # Get the info for this specific user using the email as the hash key
+       userInfo = $userInfos[@submission.email]
+       
        # Info on assignment is stored in the following format:
        # { "assignmentId" : "Assignment Display Name", ... }
        assignmentIdToName = JSON.parse(File.read(::Rails.root.join("config", "assignmentInfo.json")))
+
 
        ######### 
        # We're using the google_drive gem.  The API is here: http://gimite.net/doc/google-drive-ruby/
@@ -49,7 +42,6 @@ class SubmissionsController < ApplicationController
     
        # You can also use OAuth. See document of GoogleDrive.login_with_oauth for details.
        session = GoogleDrive.login(ENV['GOOGLE_DRIVE_EMAIL'], ENV['GOOGLE_DRIVE_PASSWORD'])
-       
        doc = session.spreadsheet_by_key(userInfo["documentKey"])
        ws = doc.worksheets[0]
    

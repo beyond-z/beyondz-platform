@@ -9,7 +9,7 @@
       <h2>Please fix the following errors before clicking 'Submit':</h2>
       <ul>
       <% @submission.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+        <li><%= msg.html_safe %></li>
       <% end %>
       </ul>
     </div>
