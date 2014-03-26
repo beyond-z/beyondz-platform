@@ -200,7 +200,8 @@ section {
 }
 
 .btn-resources {
-  @extend .col-sm-4;
+//  @extend .col-sm-4;
+  @extend .col-sm-3;
   @extend .btn;
   @extend .btn-primary;
   }

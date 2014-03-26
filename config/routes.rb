@@ -14,6 +14,7 @@ BeyondzPlatform::Application.routes.draw do
   get "assignments/interview-simulations", to: "assignments#interview-simulations", as: :interview_simulations_page
   get "assignments/work-ethic", to: "assignments#work-ethic", as: :work_ethic_page
   get "assignments/organization-self-mgmt", to: "assignments#organization-self-mgmt", as: :organization_self_mgmt_page
+  get "assignments/calendar", to: "assignments#calendar", as: :calendar
 #  get "assignments/insertpath", to: "assignments#insertpath", as: :insertPath_page
 
   # Handle assignment submissions, such as GET <root>/assignments/submit/new  
