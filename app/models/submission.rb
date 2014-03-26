@@ -2,7 +2,7 @@ class SubmissionValidator < ActiveModel::Validator
   
   def validate(record)
     if $userInfos[record.email] == nil
-      record.errors[:base] << "That email address is not recognized.  Please use the email address that you used to sign up for Beyond Z or email our <a href=\"mailto:tech@beyondz.org\">tech support</a> if you don't know it."
+      record.errors[:base] << "Email address is not recognized.  Please use the email address that you used to sign up for Beyond Z or email our <a href=\"mailto:tech@beyondz.org\">tech support team</a> if you don't know it."
     end
   end
 end
