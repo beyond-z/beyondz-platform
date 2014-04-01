@@ -41,6 +41,7 @@ GEM
     execjs (2.0.2)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
+    fullcalendar-rails (1.6.4.0)
     google_drive (0.3.7)
       nokogiri (>= 1.4.4, != 1.5.2, != 1.5.1)
       oauth (>= 0.3.6)
@@ -143,6 +144,7 @@ PLATFORMS
 DEPENDENCIES
   bootstrap-sass
   coffee-rails (~> 4.0.0)
+  fullcalendar-rails
   google_drive
   jbuilder (~> 1.2)
   jquery-rails
