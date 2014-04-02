@@ -213,6 +213,28 @@ section {
     }
   }
 
+.student-login {
+    float: right;
+    margin-right: 2em;
+    padding-bottom: 3px;
+    font-size: 75%;
+    legend {
+      font-size: 125%;
+      margin-bottom: 3px;
+      }
+    label {
+      display: block;
+      > span {
+        display: inline-block;
+	width: 10em;
+	text-align: right;
+        }
+      }
+    .submit-holder {
+      padding-left: 10em;
+    }
+  }
+
 // Top bar of links to resources like the submission instructions, summer internships opps, etc.
 .program-resources-container {
   @extend .assign-header; 
