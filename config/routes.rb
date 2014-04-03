@@ -3,6 +3,7 @@ BeyondzPlatform::Application.routes.draw do
   root 'programs#college'
 
   post "users/login", to: "users#login"
+  get "users/login", to: "users#login_page"
 
   # These are static routes for the college assignments for Phase 1.  In Phase 2, remove this and use
   # resourceful dynamic routes, database modles, views, etc to add new assignments.
