@@ -30,15 +30,17 @@ class User < ActiveRecord::Base
         end
     end
 
-    def self.forgotPassword(email)
+    def self.forgotPassword(email, reset_link)
         user = User.find_by email: email
         if user == nil
             raise LoginException.new("Incorrect email address")
         else
-            newpw = (0...8).map { (65 + rand(26)).chr }.join
-            user.changePassword(newpw, newpw)
+            user.reset_token = (0...8).map { (65 + rand(26)).chr }.join
+            user.reset_expiration = Time.now + 15.minutes
             user.save();
-            Notifications.forgot_password(email, user.name, newpw).deliver
+
+            reset_link += "?token=#{user.reset_token}&id=#{user.id}"
+            Notifications.forgot_password(email, user.name, reset_link).deliver
         end
     end
 

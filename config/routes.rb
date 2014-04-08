@@ -10,6 +10,12 @@ BeyondzPlatform::Application.routes.draw do
   get "users/password-email-sent", to: "users#passwordEmailSent"
   post "users/forgot-password", to: "users#doForgotPassword"
 
+  get "users/reset-password", to: "users#resetPassword"
+
+  get "users/change-password", to: "users#changePassword"
+  post "users/change-password", to: "users#doChangePassword"
+  get "users/password-changed", to: "users#passwordChanged"
+
   # These are static routes for the college assignments for Phase 1.  In Phase 2, remove this and use
   # resourceful dynamic routes, database modles, views, etc to add new assignments.
   get "assignments/story-of-self", to: "assignments#story-of-self", as: :story_of_self_page

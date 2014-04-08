@@ -6,10 +6,9 @@ class Notifications < ActionMailer::Base
   #
   #   en.notifications.forgot_password.subject
   #
-  def forgot_password(to, name, newpw)
+  def forgot_password(to, name, link)
     @name = name
-    @link = "http://platform.beyondz.org/users/login"
-    @newpw = newpw
+    @link = link
 
     mail to: to
   end
