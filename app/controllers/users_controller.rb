@@ -1,37 +1,50 @@
 require 'digest/sha1';
 
 class UsersController < ApplicationController
-  def login_page
-    @user = User.new
-    @message = nil
-    if params[:message] == "bad_email"
-        @message = "Your email address was incorrect."
+    def login_page
+        login_form(params[:email], nil)
     end
-    if params[:message] == "bad_password"
-        @message = "Your password was incorrect."
-    end
-    render action: 'form'
-  end
 
-  def login
-     email = params[:email]
-     passw = params[:password]
-     user = User.find_by email: email
-     if user == nil
-        # bad email
-        redirect_to "/users/login?message=bad_email"
-        return
-     else
-        parts = user.password.split("-")
-        salt = parts[0]
-        if parts[1] == Digest::SHA1.hexdigest("#{salt}#{passw}")
-            session[:user_id] = user.id
-        else
-            # bad password
-            redirect_to "/users/login?message=bad_password&email=" + email
-            return
+    def login_form(email, message)
+        @user = User.new
+        @email = email
+        @message = message
+        render action: 'form'
+    end
+
+    def forgotPassword
+        # returns the form
+    end
+
+    def passwordEmailSent
+        # view only
+    end
+
+    def doForgotPassword
+        email = params[:email]
+
+        begin
+            User.forgotPassword(email)
+            redirect_to "/users/password-email-sent"
+            rescue LoginException => e
+                @message = "That email address isn't on file. If you can't remember the email address you use to log in, please contact support."
+                render :forgotPassword
         end
-     end
-     redirect_to "/"
-  end
+    end
+
+    def logout
+        session[:user_id] = nil
+        render :logged_out
+    end
+
+    def login
+        userInfo = params[:user]
+        begin
+            user = User.new
+            session[:user_id] = user.login(userInfo[:email], userInfo[:password])
+            redirect_to "/"
+            rescue LoginException => e
+                login_form(userInfo[:email], e.type)
+        end
+    end
 end
