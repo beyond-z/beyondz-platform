@@ -1,7 +1,6 @@
 <h1>Student Log-in</h1>
 
 <%= form_for @user, url: users_login_path do |f| %>
-
   <% if @message != nil %>
     <div id="error_explanation">
       <h2>Please fix the following errors before clicking 'Submit':</h2>
@@ -24,5 +23,4 @@
   <br style="clear: both;" />
   <br />
   <%= link_to "Forgot password?", "forgot-password" %>
-
 <% end %>
