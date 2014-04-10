@@ -10,15 +10,15 @@ class UsersController < ApplicationController
     render action: 'form'
   end
 
-  def forgotPassword
+  def forgot_password
       # returns the form
   end
 
-  def passwordEmailSent
+  def password_email_sent
       # view only
   end
 
-  def resetPassword
+  def reset_password
     begin
       user = User.find(params[:id])
 
@@ -28,11 +28,11 @@ class UsersController < ApplicationController
 
       rescue LoginException => e
         @message = e.message
-        render action: :forgotPassword
+        render action: :forgot_password
         return
       rescue ActiveRecord::RecordNotFound => e
         @message = "Your user account could not be found, be sure you copied the link correctly out of the email."
-        render action: :forgotPassword
+        render action: :forgot_password
         return
     end
 
@@ -47,35 +47,34 @@ class UsersController < ApplicationController
   end
 
   def change_password
-      # view
+      if request.post?
+        begin
+          user = User.find(session[:user_id])
+          user.change_password(params[:password], params[:confirm_password]);
+          user.save;
+
+          redirect_to("/users/password-changed")
+        rescue LoginException => e
+          @message = e.message
+          render :change_password
+        end
+      end
+      # otherwise, it will display the view automatically
   end
 
-  def doChangePassword
-    begin
-      user = User.find(session[:user_id])
-      user.change_password(params[:password], params[:confirm_password]);
-      user.save;
-
-      redirect_to("/users/password-changed")
-    rescue LoginException => e
-      @message = e.message
-      render :change_password
-    end
-  end
-
-  def passwordChanged
+  def password_changed
     #view
   end
 
-  def doForgotPassword
+  def do_forgot_password
     email = params[:email]
 
     begin
-      User.forgotPassword(email, "http://#{request.host}/users/reset-password")
+      User.forgot_password(email, "http://#{request.host}/users/reset-password")
       redirect_to "/users/password-email-sent"
       rescue LoginException => e
         @message = "That email address isn't on file. If you can't remember the email address you use to log in, please contact tech@beyondz.org."
-        render :forgotPassword
+        render :forgot_password
     end
   end
 

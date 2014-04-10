@@ -5,19 +5,19 @@ BeyondzPlatform::Application.routes.draw do
   post "users/login", to: "users#login"
   post "users/logout", to: "users#logout"
   get "users/login", to: "users#login_page"
-  get "users/forgot-password", to: "users#forgotPassword"
-  get "users/forgot-password", to: "users#forgotPassword"
-  get "users/password-email-sent", to: "users#passwordEmailSent"
-  post "users/forgot-password", to: "users#doForgotPassword"
+  get "users/forgot-password", to: "users#forgot_password"
+  get "users/forgot-password", to: "users#forgot_password"
+  get "users/password-email-sent", to: "users#password_email_sent"
+  post "users/forgot-password", to: "users#do_forgot_password"
 
-  get "users/reset-password", to: "users#resetPassword"
+  get "users/reset-password", to: "users#reset_password"
 
   # TODO Do you prefer: change_password or changePassword # Look it up
   # TODO figure out how to automate this routes stuff
 
   get "users/change-password", to: "users#change_password"
-  post "users/change-password", to: "users#doChangePassword"
-  get "users/password-changed", to: "users#passwordChanged"
+  post "users/change-password", to: "users#change_password"
+  get "users/password-changed", to: "users#password_changed"
 
   # These are static routes for the college assignments for Phase 1.  In Phase 2, remove this and use
   # resourceful dynamic routes, database modles, views, etc to add new assignments.

@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
     else
       parts = user.password.split("-")
       salt = parts[0]
-      if parts[1] == User.hashPassword(salt, passw)
+      if parts[1] == User.hash_password(salt, passw)
         return user.id
       else
         raise LoginException.new("Incorrect password")
@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
 
   # Prepares a reset token for the account with the given
   # email address and sends an email with the given link.
-  def self.forgotPassword(email, reset_link)
+  def self.forgot_password(email, reset_link)
     user = User.find_by email: email
     if user == nil
       raise LoginException.new("Incorrect email address")
@@ -54,10 +54,10 @@ class User < ActiveRecord::Base
 
     # Randomization for password hash
     salt = User.random_string()
-    self.password = salt + "-" + User.hashPassword(salt, newPassword)
+    self.password = salt + "-" + User.hash_password(salt, newPassword)
   end
 
-  def self.hashPassword(salt, passw)
+  def self.hash_password(salt, passw)
     return Digest::SHA1.hexdigest("#{salt}#{passw}")
   end
 end
