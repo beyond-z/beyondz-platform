@@ -85,8 +85,8 @@ class UsersController < ApplicationController
 
   def logout
     session[:user_id] = nil
-    @user_logged_in = false
-    render :logged_out
+    flash[:message] = "You have been successfully logged out."
+    redirect_to "/"
   end
 
   def login
