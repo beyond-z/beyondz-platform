@@ -12,7 +12,10 @@ BeyondzPlatform::Application.routes.draw do
 
   get "users/reset-password", to: "users#resetPassword"
 
-  get "users/change-password", to: "users#changePassword"
+  # TODO Do you prefer: change_password or changePassword # Look it up
+  # TODO figure out how to automate this routes stuff
+
+  get "users/change-password", to: "users#change_password"
   post "users/change-password", to: "users#doChangePassword"
   get "users/password-changed", to: "users#passwordChanged"
 

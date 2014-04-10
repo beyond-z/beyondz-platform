@@ -1,4 +1,4 @@
-# The purpose of this is to handle user data.
+require 'digest/sha1';
 
 class User < ActiveRecord::Base
   def new
@@ -32,7 +32,7 @@ class User < ActiveRecord::Base
       raise LoginException.new("Incorrect email address")
     else
       # create a random string of characters to use as the token
-      user.reset_token = randomString()
+      user.reset_token = User.random_string()
       user.reset_expiration = Time.now + 15.minutes
       user.save();
 
@@ -41,18 +41,19 @@ class User < ActiveRecord::Base
     end
   end
 
-  def randomString
+  # Returns a random string of 8 upper-case letters
+  def self.random_string
     return (0...8).map { (65 + rand(26)).chr }.join
   end
 
   # Changes the user's password. Don't forget to call save afterward
-  def changePassword(newPassword, confirmPassword)
+  def change_password(newPassword, confirmPassword)
     if(newPassword != confirmPassword)
-      raise "passwords don't match"
+      raise LoginException.new("Your passwords don't match, please try again.")
     end
 
     # Randomization for password hash
-    salt = randomString()
+    salt = User.random_string()
     self.password = salt + "-" + User.hashPassword(salt, newPassword)
   end
 
@@ -62,11 +63,11 @@ class User < ActiveRecord::Base
 end
 
 class LoginException < Exception
-  def initialize(type)
-    @type = type
+  def initialize(message)
+    @message = message
   end
 
-  def type
-    @type
+  def message
+    @message
   end
 end

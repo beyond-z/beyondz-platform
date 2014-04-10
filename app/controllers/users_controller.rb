@@ -1,5 +1,3 @@
-require 'digest/sha1';
-
 class UsersController < ApplicationController
   def login_page
     login_form(params[:email], nil)
@@ -21,23 +19,21 @@ class UsersController < ApplicationController
   end
 
   def resetPassword
-    user = User.find(params[:id])
-    if user == nil
-      @message = "Your user is wrong"
-      render action: :forgotPassword
-      return
-    end
+    begin
+      user = User.find(params[:id])
 
-    if user.reset_token != params[:token]
-      @message = "Your link has expired, please try again."
-      render action: :forgotPassword
-      return
-    end
+      if user.reset_token != params[:token] || user.reset_expiration < Time.now
+        raise LoginException.new("Your link has expired, please try again.")
+      end
 
-    if user.reset_expiration < Time.now
-      @message = "Your link has expired, please try again."
-      render action: :forgotPassword
-      return
+      rescue LoginException => e
+        @message = e.message
+        render action: :forgotPassword
+        return
+      rescue ActiveRecord::RecordNotFound => e
+        @message = "Your user account could not be found, be sure you copied the link correctly out of the email."
+        render action: :forgotPassword
+        return
     end
 
     user.reset_token = ""
@@ -50,20 +46,20 @@ class UsersController < ApplicationController
     redirect_to "/users/change-password"
   end
 
-  def changePassword
+  def change_password
       # view
   end
 
   def doChangePassword
     begin
       user = User.find(session[:user_id])
-      user.changePassword(params[:password], params[:confirm_password]);
+      user.change_password(params[:password], params[:confirm_password]);
       user.save;
 
       redirect_to("/users/password-changed")
     rescue LoginException => e
-      @message = e.type # "Your passwords didn't match, please try again."
-      render :changePassword
+      @message = e.message
+      render :change_password
     end
   end
 
@@ -96,7 +92,7 @@ class UsersController < ApplicationController
       session[:user_id] = user.login(userInfo[:email], userInfo[:password])
       redirect_to "/"
       rescue LoginException => e
-        login_form(userInfo[:email], e.type)
+        login_form(userInfo[:email], e.message)
     end
   end
 end
