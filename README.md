@@ -1,10 +1,31 @@
 This is where Beyond Z participants login and access their leadership development portal.
 
+
 == Getting Started ==
 
-To get started, fork this repository on Github. Then, use "git clone your_forked_url" to create a local copy.
 
-Run "git remote add upstream https://github.com/beyond-z/beyondz-platform.git" to make the upstream code available.
+Follow this tutorial to get Rails setup for Heroku:
+https://devcenter.heroku.com/articles/getting-started-with-rails4
+
+You must install Postgres:
+    http://postgresapp.com/
+and set your PATH in .bashrc:
+    export PATH="/Applications/Postgres93.app/Contents/MacOS/bin:$PATH"
+and make sure it runs on login:
+
+and also create a user for the BZ-platform:
+    createuser -s beyondz-platform
+
+
+After your environment is setup, fork this repository on Github. Then, use "git clone your_forked_url" to create a local copy.
+
+To run the program, create the database: 
+    rake db:create
+
+And to start website on local machine, run: $foreman start and the app will be available at http://localhost:3000
+
+
+To move on with development, run "git remote add upstream https://github.com/beyond-z/beyondz-platform.git" to make the upstream code available.
 
 
 Always branch when working on a new feature:
