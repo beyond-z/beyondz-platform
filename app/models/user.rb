@@ -1,12 +1,4 @@
-class LoginException < Exception
-  def initialize(type)
-    @type = type
-  end
-
-  def type
-    @type
-  end
-end
+# The purpose of this is to handle user data.
 
 class User < ActiveRecord::Base
   def new
@@ -39,7 +31,8 @@ class User < ActiveRecord::Base
     if user == nil
       raise LoginException.new("Incorrect email address")
     else
-      user.reset_token = (0...8).map { (65 + rand(26)).chr }.join
+      # create a random string of characters to use as the token
+      user.reset_token = randomString()
       user.reset_expiration = Time.now + 15.minutes
       user.save();
 
@@ -48,17 +41,32 @@ class User < ActiveRecord::Base
     end
   end
 
+  def randomString
+    return (0...8).map { (65 + rand(26)).chr }.join
+  end
+
   # Changes the user's password. Don't forget to call save afterward
   def changePassword(newPassword, confirmPassword)
     if(newPassword != confirmPassword)
       raise "passwords don't match"
     end
 
-    salt = (0...8).map { (65 + rand(26)).chr }.join
+    # Randomization for password hash
+    salt = randomString()
     self.password = salt + "-" + User.hashPassword(salt, newPassword)
   end
 
   def self.hashPassword(salt, passw)
     return Digest::SHA1.hexdigest("#{salt}#{passw}")
+  end
+end
+
+class LoginException < Exception
+  def initialize(type)
+    @type = type
+  end
+
+  def type
+    @type
   end
 end

@@ -13,5 +13,4 @@ class ApplicationController < ActionController::Base
       @user_logged_in = false
     end
   end
-
 end
