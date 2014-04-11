@@ -2,22 +2,9 @@ BeyondzPlatform::Application.routes.draw do
   get "programs/college"
   root 'programs#college'
 
-  post "users/login", to: "users#login"
-  post "users/logout", to: "users#logout"
-  get "users/login", to: "users#login_page"
-  get "users/forgot-password", to: "users#forgot_password"
-  get "users/forgot-password", to: "users#forgot_password"
-  get "users/password-email-sent", to: "users#password_email_sent"
-  post "users/forgot-password", to: "users#do_forgot_password"
-
-  get "users/reset-password", to: "users#reset_password"
-
-  # TODO Do you prefer: change_password or changePassword # Look it up
-  # TODO figure out how to automate this routes stuff
-
-  get "users/change-password", to: "users#change_password"
-  post "users/change-password", to: "users#change_password"
-  get "users/password-changed", to: "users#password_changed"
+  get "users/login", to: "users#login" # defines users_login_path for use in the form
+  get ':controller/:action', controller: 'users'
+  post ':controller/:action', controller: 'users'
 
   # These are static routes for the college assignments for Phase 1.  In Phase 2, remove this and use
   # resourceful dynamic routes, database modles, views, etc to add new assignments.

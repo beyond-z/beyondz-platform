@@ -1,8 +1,4 @@
 class UsersController < ApplicationController
-  def login_page
-    login_form(params[:email], nil)
-  end
-
   def login_form(email, message)
     @user = User.new
     @email = email
@@ -11,7 +7,19 @@ class UsersController < ApplicationController
   end
 
   def forgot_password
-      # returns the form
+    if request.post?
+      email = params[:email]
+
+      begin
+        User.forgot_password(email, "http://#{request.host}/users/reset_password")
+        redirect_to "/users/password_email_sent"
+        rescue LoginException => e
+          @message = "That email address isn't on file. If you can't remember the email address you use to log in, please contact tech@beyondz.org."
+          render :forgot_password
+      end
+      return
+    end
+    # otherwise, it returns the form
   end
 
   def password_email_sent
@@ -43,7 +51,7 @@ class UsersController < ApplicationController
     # log in immediately with the reset token and send
     # them to change their password now
     session[:user_id] = user.id
-    redirect_to "/users/change-password"
+    redirect_to "/users/change_password"
   end
 
   def change_password
@@ -53,7 +61,8 @@ class UsersController < ApplicationController
           user.change_password(params[:password], params[:confirm_password]);
           user.save;
 
-          redirect_to("/users/password-changed")
+          flash[:message] = "Your password has been successfully changed.";
+          redirect_to("/")
         rescue LoginException => e
           @message = e.message
           render :change_password
@@ -62,36 +71,25 @@ class UsersController < ApplicationController
       # otherwise, it will display the view automatically
   end
 
-  def password_changed
-    #view
-  end
-
-  def do_forgot_password
-    email = params[:email]
-
-    begin
-      User.forgot_password(email, "http://#{request.host}/users/reset-password")
-      redirect_to "/users/password-email-sent"
-      rescue LoginException => e
-        @message = "That email address isn't on file. If you can't remember the email address you use to log in, please contact tech@beyondz.org."
-        render :forgot_password
-    end
-  end
-
   def logout
-    session[:user_id] = nil
-    flash[:message] = "You have been successfully logged out."
+    if request.post?
+      session[:user_id] = nil
+      flash[:message] = "You have been successfully logged out."
+    end
     redirect_to "/"
   end
 
   def login
-    userInfo = params[:user]
-    begin
-      user = User.new
-      session[:user_id] = user.login(userInfo[:email], userInfo[:password])
-      redirect_to "/"
-      rescue LoginException => e
-        login_form(userInfo[:email], e.message)
+    if request.post?
+      userInfo = params[:user]
+      begin
+        session[:user_id] = User.login(userInfo[:email], userInfo[:password])
+        redirect_to "/"
+        rescue LoginException => e
+          login_form(userInfo[:email], e.message)
+      end
+    else
+      login_form(params[:email], nil)
     end
   end
 end

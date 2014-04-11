@@ -1,13 +1,8 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  email: MyString
-  name: MyString
+  email: test@example.org
+  name: Test User
   coach: MyString
   documentKey: MyString
-
-two:
-  email: MyString
-  name: MyString
-  coach: MyString
-  documentKey: MyString
+  password: <%= User.get_salted_password("test") %>

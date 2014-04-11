@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
 
   # Returns the user ID of the matching user if the credentials
   # pass, otherwise, raises a LoginException
-  def login(email, passw)
+  def self.login(email, passw)
     user = User.find_by email: email
     if user == nil
       raise LoginException.new("Incorrect email address")
@@ -52,9 +52,13 @@ class User < ActiveRecord::Base
       raise LoginException.new("Your passwords don't match, please try again.")
     end
 
+    self.password = User.get_salted_password(newPassword)
+  end
+
+  def self.get_salted_password(passw)
     # Randomization for password hash
     salt = User.random_string()
-    self.password = salt + "-" + User.hash_password(salt, newPassword)
+    return salt + "-" + User.hash_password(salt, passw)
   end
 
   def self.hash_password(salt, passw)
