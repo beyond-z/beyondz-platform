@@ -46,6 +46,9 @@ Once you are ready for it to be tested, select the branch from your github page 
 
 On the next screen, click "Edit" near the right-hand side of the screen to choose the Staging branch on beyondz-platform.
 
+![Edit location](docs/edit-branch.png)
+
+
 Write a message telling what you did, then submit the pull request.
 
 
@@ -53,7 +56,7 @@ To get changes from staging into your local branch, run
 
 	git pull upstream staging
 
-This will keep you up to date.
+That will pull the current state of the staging repository to your local copy, bringing you up to date with all changes.
 
 == Code style ==
 
@@ -68,3 +71,5 @@ We use standard Rails code conventions with some additional rules:
   * Keep individual lines simple. If a new reader can't immediately tell what it is doing, either simplify the code or refactor it into a named method.
   * Use the flash hash to quick message workflows.
   * Never commit a FIXME: either fix it or make a task in Asana.
+
+See this for more information: http://www.caliban.org/ruby/rubyguide.shtml
