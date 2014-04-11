@@ -24,6 +24,9 @@ To run the program, create the database:
 
 And to start website on local machine, run: $foreman start and the app will be available at http://localhost:3000
 
+Here is a nice description of the workflow we follow, which is also
+detailed below:
+http://nathanhoad.net/git-workflow-forks-remotes-and-pull-requests 
 
 To move on with development, run "git remote add upstream https://github.com/beyond-z/beyondz-platform.git" to make the upstream code available.
 
