@@ -13,9 +13,9 @@ class UsersController < ApplicationController
       begin
         User.forgot_password(email, "http://#{request.host}/users/reset_password")
         redirect_to "/users/password_email_sent"
-        rescue LoginException => e
-          @message = "That email address isn't on file. If you can't remember the email address you use to log in, please contact tech@beyondz.org."
-          render :forgot_password
+      rescue LoginException => e
+        @message = "That email address isn't on file. If you can't remember the email address you use to log in, please contact tech@beyondz.org."
+        render :forgot_password
       end
       return
     end
@@ -34,14 +34,14 @@ class UsersController < ApplicationController
         raise LoginException.new("Your link has expired, please try again.")
       end
 
-      rescue LoginException => e
-        @message = e.message
-        render action: :forgot_password
-        return
-      rescue ActiveRecord::RecordNotFound => e
-        @message = "Your user account could not be found, be sure you copied the link correctly out of the email."
-        render action: :forgot_password
-        return
+    rescue LoginException => e
+      @message = e.message
+      render action: :forgot_password
+      return
+    rescue ActiveRecord::RecordNotFound => e
+      @message = "Your user account could not be found, be sure you copied the link correctly out of the email."
+      render action: :forgot_password
+      return
     end
 
     user.reset_token = ""
@@ -85,8 +85,8 @@ class UsersController < ApplicationController
       begin
         session[:user_id] = User.login(userInfo[:email], userInfo[:password])
         redirect_to "/"
-        rescue LoginException => e
-          login_form(userInfo[:email], e.message)
+      rescue LoginException => e
+        login_form(userInfo[:email], e.message)
       end
     else
       login_form(params[:email], nil)
