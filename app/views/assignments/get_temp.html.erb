@@ -1,0 +1,13 @@
+This is a temporary page
+
+<h1><%= @assignment.title %> <span>led by <%=@assignment.led_by%></span></h1>
+
+<%= @assignment.start_date %> to <%= @assignment.end_date %>
+
+<%= @assignment.front_page_info.html_safe %>
+
+<% @assignment.todos.each do |todo| %>
+  <li>
+    <input type="checkbox" name="<%=todo.id%>" />
+    <%= todo.content.html_safe %></li>
+<% end %>
