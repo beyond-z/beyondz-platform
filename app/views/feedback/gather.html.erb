@@ -1,0 +1,14 @@
+<h1>Send us feedback</h1>
+
+<%= form_tag do %>
+  <div class="form-group">
+    <%= label_tag :email, 'Your email address:' %>
+    <%= text_field_tag :email, nil, class: 'form-control', placeholder: 'emailAddress@someDomain.com', type: 'email', required: 'required' %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :message, 'Your message:' %>
+    <br />
+    <%= text_area_tag :message, nil, size: "80x12" %>
+  </div>
+  <%= submit_tag "Submit", class: 'btn-assign-submit' %>
+<% end %>

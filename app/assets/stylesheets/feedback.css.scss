@@ -1,0 +1,30 @@
+// Place all the styles related to the feedback controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.feedback-button {
+  position: fixed;
+  z-index: 99;
+  color: white;
+  background-color: #43b5e9;
+  border: solid 2px #999;
+  border-bottom: 0px;
+  border-radius: 6px 6px 0px 0px;
+  padding: 3px 8px;
+  font-weight: bold;
+  text-decoration: none;
+
+  /*
+  top: 50px;
+  left: -50px;
+  transform: rotate(90deg);
+  */
+
+  right: 40px;
+  bottom: 0px;
+}
+
+.feedback-button:hover {
+  text-decoration: none;
+  color: #eee;
+}
