@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140414143543) do
+ActiveRecord::Schema.define(version: 20140415134144) do
 
   create_table "assignments", force: true do |t|
     t.string   "title"
@@ -48,6 +48,18 @@ ActiveRecord::Schema.define(version: 20140414143543) do
   end
 
   add_index "todos", ["assignment_id"], name: "index_todos_on_assignment_id", using: :btree
+
+  create_table "user_todo_statuses", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "todo_id"
+    t.boolean  "is_checked"
+    t.datetime "when_checked"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "user_todo_statuses", ["todo_id"], name: "index_user_todo_statuses_on_todo_id", using: :btree
+  add_index "user_todo_statuses", ["user_id"], name: "index_user_todo_statuses_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email"
