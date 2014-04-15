@@ -1,13 +1,85 @@
-This is a temporary page
+<div class="container-fluid">
+  <section>
+    <div class="program-intro">
+      <h1>Leadership and Career Prep Academy<br/>Portal</h1>
+      <p>Beyond Z’s college program provides participants with opportunities to practice building up their leadership skills and to gain valuable exposure to exploring careers. The curriculum is action-oriented and organized around discussions and interactive applications of real-world, applied skills that can be used immediately in a professional setting.</p>
+    </div>
+  </section>
 
-<h1><%= @assignment.title %> <span>led by <%=@assignment.led_by%></span></h1>
+  <!-- BTODO: we are going to create a facebook group and have one of the participants own it.  We can post a link to that once it happens
+  <section>
+    <div class="program-forum">
+      <h3>If you have questions or discussions please post them to the <a href="http://groups.google.com/a/beyondz.org/d/forum/career-prep-and-leadership-academy">group</a>.</h3>
+    </div>
+  </section>  
+  -->
 
-<%= @assignment.start_date %> to <%= @assignment.end_date %>
+  <!-- BTODO: ToC?
+  <section>
+    <div class="program-panel">
+      <ul class="list-group">
+        <li class="list-group-item"><a href="#template-section">Sample Assignment Template</a></li>
+        <li class="list-group-item"><a href="#coverletter-section">How to Write a Cover Letter</a></li>
+      </ul>
+    </div>
+  </section>
+  -->
 
-<%= @assignment.front_page_info.html_safe %>
 
-<% @assignment.todos.each do |todo| %>
-  <li>
-    <input type="checkbox" name="<%=todo.id%>" />
-    <%= todo.content.html_safe %></li>
+
+
+<% @assignments.each do |assignment| %>
+  <section>
+    <div class="assign-summary <%= @assignments_completed[assignment.id] ? "completed" : "" %>">
+      <section>
+        <h2><%= assignment.title %>
+          <% if assignment.led_by != nil %>
+            <span class="session-type">(<%=assignment.led_by.capitalize%> Led)</span>
+          <% end %>
+        </h2>
+      </section>  
+      <section>
+        <div class="assign-date">
+          <p><%= assignment.start_date.strftime("%b %e") %>
+            <% if assignment.end_date != nil %>
+              -
+              <%= assignment.end_date.strftime("%b %e") %></p>
+            <% end %>
+        </div>
+      </section>
+      <section>
+        <div class="assign-summary-practice">
+          <%= assignment.front_page_info.html_safe %>
+        </div>
+        <div class="assign-summary-checklist">
+          <h3>Your To-Dos</h3>
+          <ul>
+            <% assignment.todos.each do |todo| %>
+                <li>
+                  <% if @user_logged_in %>
+                    <input
+                      class="todo-check"
+                      type="checkbox"
+                      <% if @user_todo_statuses[todo.id] %>
+                        checked="checked"
+                      <% end %>
+                      data-todo-id="<%=todo.id%>"
+                    />
+                  <% end %>
+                  <%= todo.content.html_safe %>
+                </li>
+              <% end %>
+          </ul>
+        </div>
+      </section>
+      <section>
+        <div class="assign-summary-buttons">
+          <a class="btn-assign-left" href="/assignments/<%= assignment.id %>">View Details</a>
+          <a class="btn-assign-right" href="<%= assignment.assignment_download_url %>">Upload Assignment</a>
+        </div>
+      </section>
+    </div>
+  </section>
 <% end %>
+
+</div>
