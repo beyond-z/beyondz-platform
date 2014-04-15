@@ -34,4 +34,4 @@
 .env-test
 .env-dev
 
-/vender/bundle/*
+/vendor/bundle/*
