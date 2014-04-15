@@ -1,20 +1,13 @@
+p
 BeyondzPlatform::Application.routes.draw do
   get "programs/college"
   root 'programs#college'
 
-  # These are static routes for the college assignments for Phase 1.  In Phase 2, remove this and use
-  # resourceful dynamic routes, database modles, views, etc to add new assignments.
-  get "assignments/story-of-self", to: "assignments#story-of-self", as: :story_of_self_page
-  get "assignments/passions-professions", to: "assignments#passions-professions", as: :passions_professions_page
-  get "assignments/cover-letter", to: "assignments#cover-letter", as: :cover_letter_page
-  get "assignments/resume", to: "assignments#resume", as: :resume_page
-  get "assignments/networks", to: "assignments#networks", as: :networks_page
-  get "assignments/best-self", to: "assignments#best-self", as: :best_self_page
-  get "assignments/asking-for-help", to: "assignments#asking-for-help", as: :asking_for_help_page
-  get "assignments/interview-simulations", to: "assignments#interview-simulations", as: :interview_simulations_page
-  get "assignments/capstone-launch", to: "assignments#capstone-launch", as: :capstone_launch_page
-  get "assignments/brainstorm-challenge-ideas", to: "assignments#brainstorm-challenge-ideas", as: :brainstorm_challenge_ideas_page
-#  get "assignments/insertpath", to: "assignments#insertpath", as: :insertPath_page
+  get "users/login", to: "users#login" # defines users_login_path for use in the form
+  get ':controller/:action', controller: 'users'
+  post ':controller/:action', controller: 'users'
+
+  get "assignments/:action", controller: "assignments"
 
   # Handle assignment submissions, such as GET <root>/assignments/submissions/new  
   resources :assignments, only: [:index] do
