@@ -19,8 +19,16 @@ and also create a user for the BZ-platform:
 
 After your environment is setup, fork this repository on Github. Then, use "git clone your_forked_url" to create a local copy.
 
-To run the program, create the database: 
-    rake db:create
+To get all your gems, run:
+
+  bundle install
+
+Setup your database connection by copying "config/database.sample.yml" to "config/database.yml" and updating the database connection credentials for your Dev and Test environments.
+
+Create the database: 
+
+  rake db:create
+  rake db:migrate
 
 And to start website on local machine, run: $foreman start and the app will be available at http://localhost:3000
 
