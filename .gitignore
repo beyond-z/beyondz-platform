@@ -7,6 +7,14 @@
 # Ignore bundler config.
 /.bundle
 
+# Ignore powder setup
+.powder
+.powenv
+
+# Ignore RVM/RBenv setup
+.ruby-gemset
+.ruby-version
+
 # Ignore the default SQLite database.
 /db/*.sqlite3
 /db/*.sqlite3-journal
