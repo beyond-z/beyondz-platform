@@ -13,7 +13,7 @@ BeyondzPlatform::Application.routes.draw do
   get "assignments/asking-for-help", to: "assignments#asking-for-help", as: :asking_for_help_page
   get "assignments/interview-simulations", to: "assignments#interview-simulations", as: :interview_simulations_page
   get "assignments/capstone-launch", to: "assignments#capstone-launch", as: :capstone_launch_page
-  get "assignments/organization-self-mgmt", to: "assignments#organization-self-mgmt", as: :organization_self_mgmt_page
+  get "assignments/brainstorm-challenge-ideas", to: "assignments#brainstorm-challenge-ideas", as: :brainstorm_challenge_ideas_page
 #  get "assignments/insertpath", to: "assignments#insertpath", as: :insertPath_page
 
   # Handle assignment submissions, such as GET <root>/assignments/submissions/new  
