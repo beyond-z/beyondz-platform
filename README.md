@@ -1,56 +1,70 @@
 This is where Beyond Z participants login and access their leadership development portal.
 
 
-== Getting Started ==
+# Getting Started
 
 
 Follow this tutorial to get Rails setup for Heroku:
 https://devcenter.heroku.com/articles/getting-started-with-rails4
 
-You must install Postgres:
-    http://postgresapp.com/
-and set your PATH in .bashrc:
-    export PATH="/Applications/Postgres93.app/Contents/MacOS/bin:$PATH"
-and make sure it runs on login:
+You must install Postgres (http://postgresapp.com/)
+and set your PATH in your ~/.bashrc:
 
-and also create a user for the BZ-platform:
-    createuser -s beyondz-platform
+	export PATH="/Applications/Postgres93.app/Contents/MacOS/bin:$PATH"
 
+After your environment is setup, fork this repository on Github. Then in the location you want the local copy, run:
 
-After your environment is setup, fork this repository on Github. Then, use "git clone your_forked_url" to create a local copy.
+	git clone \<your forked url>
 
 To get all your gems, run:
 
-  bundle install
+	bundle install
 
-Setup your database connection by copying "config/database.sample.yml" to "config/database.yml" and updating the database connection credentials for your Dev and Test environments.
+## DEV Config
 
-Create the database: 
+### Database
+Copy "config/database.sample.yml" to "config/database.yml" and update the database connection credentials (username and password) for your Dev and Test environments.
 
-  rake db:create
-  rake db:migrate
+### SMTP (for local email functionality)
+Setup your database connection by copying "config/initializers/mail\_developoment.sample.rb" to "config/initializers/mail\_developoment.rb" and update the SMTP details (address, user_name, password and to) for the personal SMTP account you wish to use.
+
+## Running the Application 
+From your repo directory:
+
+	rake db:create
+	rake db:migrate
 
 And to start website on local machine, run: $foreman start and the app will be available at http://localhost:3000
+
+## Code Management
 
 Here is a nice description of the workflow we follow, which is also
 detailed below:
 http://nathanhoad.net/git-workflow-forks-remotes-and-pull-requests 
 
-To move on with development, run "git remote add upstream https://github.com/beyond-z/beyondz-platform.git" to make the upstream code available.
+### Setup
+To move on with development, run:
 
+	git remote add upstream https://github.com/beyond-z/beyondz-platform.git
+	
+	
+This makes the upstream (original repo) code available for merging into your local fork.
 
-Always branch when working on a new feature:
+### Flow
 
-	git branch feature_name
-	git checkout feature_name
+Always create a new branch when working on a new feature. From your local master branch:
 
-When you are ready, commit with "git commit -a -m 'a brief message saying what you did'".
+	git checkout -b <feature name>
 
-Push your changes back to github with:
+When you are ready, commit with:
 
-	git push origin feature_name
+	git commit -a -m 'a brief message saying what you did'
 
-Once you are ready for it to be tested, select the branch from your github page using the drop down selector. Then click the green pull request button to the left hand side of the drop down.
+Push your changes back to your Github fork with:
+
+	git push origin <feature name>
+
+Once you are ready for it to be tested, select the branch from your Github page using the drop down selector. Then click the green pull request button to the left hand side of the drop down.
 
 On the next screen, click "Edit" near the right-hand side of the screen to choose the Staging branch on beyondz-platform.
 
@@ -66,7 +80,7 @@ To get changes from staging into your local branch, run
 
 That will pull the current state of the staging repository to your local copy, bringing you up to date with all changes.
 
-== Code style ==
+# Code style
 
 We use standard Rails code conventions with some additional rules:
 
