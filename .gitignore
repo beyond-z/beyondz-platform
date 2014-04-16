@@ -9,6 +9,7 @@
 
 # Ignore development specific files
 /config/database.yml
+/config/initializers/mail_development.rb
 
 # Ignore powder setup
 .powder
