@@ -1,6 +1,8 @@
 class AssignmentsController < ApplicationController
-  def get_temp
+  def index
     @assignments = Assignment.all
+
+    @assignments_completed = Hash.new
 
     if @user_logged_in
       # We want to get a hash of to-do check status for easy
@@ -14,18 +16,17 @@ class AssignmentsController < ApplicationController
       # We'll also use it to see if all to-dos are done
       # which the view can use to collapse an entry
 
-      @assignments_completed = Hash.new
-
       @assignments.each do |assignment|
         all_checked = true
         assignment.todos.each do |todo|
-          if @user_todo_statuses[todo.id] == nil
+          if !@user_todo_statuses[todo.id]
             all_checked = false
             break
           end
-          if all_checked
-            @assignments_completed[assignment.id] = true
-          end
+        end
+
+        if all_checked
+          @assignments_completed[assignment.id] = true
         end
       end # assignments.each
     end # if user logged in
@@ -71,6 +72,7 @@ item.led_by = "Staff"
 item.assignment_download_url = "https://docs.google.com/a/beyondz.org/forms/d/1cgwwrGn3ZMNkrKvL-Uj4FNz1Qf27xPc6usqse7fTWBg/viewform"
 item.start_date = Time.parse("Feb 28")
 item.end_date = Time.parse("Mar 1")
+item.seo_name = "story-of-self"
 item.save
 item.todos.push(Todo.create(:content => "Take Myers Briggs <a href=\"http://www.humanmetrics.com/cgi-win/JTypes1.htm\">Personality Test</a>"))
 item.todos.push(Todo.create(:content => "Go through the <a href=\"http://www.nsrfharmony.org/protocol/doc/north_south.pdf\">Compass Exercise</a> and pick a direction that represents you"))
@@ -93,6 +95,7 @@ item.led_by = "Coach"
 item.assignment_download_url = "assignments/passions-professions/submissions/new"
 item.start_date = Time.parse("Mar 3")
 item.end_date = Time.parse("Mar 9")
+item.seo_name = "passions-professions"
 item.save
 item.todos.push(Todo.create(:content => "Attend the group session."))
 item.todos.push(Todo.create(:content => "Request at least one informational interview to explore summer opportunities and/or career majors."))
@@ -112,6 +115,7 @@ item.led_by = "Peer"
 item.assignment_download_url = "assignments/cover-letter/submissions/new"
 item.start_date = Time.parse("Mar 10")
 item.end_date = Time.parse("Mar 16")
+item.seo_name = "cover-letter"
 item.save
 item.todos.push(Todo.create(:content => "Read the summary and 2 half-page articles, <a href=\"http://www.slate.com/articles/business/moneybox/2013/08/cover_letter_writing_advice_how_to_write_a_cover_letter_for_an_entry_level.html\">I&#8217;ve Read 500 Cover Letters for Entry Level Media Jobs</a> and <a href=\"http://www.fastcompany.com/3016727/leadership-now/dont-be-boring-how-to-write-a-cover-letter-that-can-get-you-the-job\">Don&#8217;t Be Boring: How to Write a Cover Letter That Can Get You the Job</a>"))
 item.todos.push(Todo.create(:content => "Draft Cover Letter"))
@@ -133,6 +137,7 @@ item.led_by = "Peer"
 item.assignment_download_url = "assignments/resume/submissions/new"
 item.start_date = Time.parse("Mar 10")
 item.end_date = Time.parse("Mar 16")
+item.seo_name = "resume"
 item.save
 item.todos.push(Todo.create(:content => "Read the summary - check out optional articles if you want"))
 item.todos.push(Todo.create(:content => "Compose your Resume"))
@@ -152,6 +157,7 @@ item.led_by = "Coach"
 item.assignment_download_url = "assignments/networks/submissions/new"
 item.start_date = Time.parse("Mar 17")
 item.end_date = Time.parse("Mar 23")
+item.seo_name = "networks"
 item.save
 item.todos.push(Todo.create(:content => "Read the articles."))
 item.todos.push(Todo.create(:content => "Set-up LinkedIn Account and send to 10 connections."))
@@ -172,6 +178,7 @@ item.led_by = "Peer"
 item.assignment_download_url = "assignments/best-self/submissions/new"
 item.start_date = Time.parse("Mar 24")
 item.end_date = Time.parse("Mar 30")
+item.seo_name = "best-self"
 item.save
 item.todos.push(Todo.create(:content => "Read the <a href=\"https://www.dropbox.com/s/9jb9zvt1lpdcovv/K%20%20Week%204_Spring%20Break%20-%20Best%20Self%20Exercise%20Request.docx?dl=1\">Best Self Exercise.</a>"))
 item.todos.push(Todo.create(:content => "<strong>Complete and upload <a href=\"https://www.dropbox.com/s/ucddx42at97b9iv/K%20%20Week%204_Spring%20Break%20-%20Best%20Self%20Exercise%20Request_EAL.docx?dl=1\">Evidence of Applied Learning (EAL)</a> by 9 PM, Friday, April 4.</strong>"))
@@ -193,6 +200,7 @@ item.led_by = "Coach"
 item.assignment_download_url = "assignments/asking-for-help/submissions/new"
 item.start_date = Time.parse("Mar 31")
 item.end_date = Time.parse("Apr 6")
+item.seo_name = "asking-for-help"
 item.save
 item.todos.push(Todo.create(:content => "Write Blog #1: Give guidance to younger BZ students about overcoming hardship."))
 item.todos.push(Todo.create(:content => "Give your coach 2 contacts for the <a href=\"https://www.dropbox.com/s/9jb9zvt1lpdcovv/K%20%20Week%204_Spring%20Break%20-%20Best%20Self%20Exercise%20Request.docx?dl=1\">Best Self Exercise</a> by Friday, April 4"))
@@ -217,6 +225,7 @@ item.led_by = "Peer"
 item.assignment_download_url = "assignments/interview-simulations/submissions/new"
 item.start_date = Time.parse("Apr 7")
 item.end_date = Time.parse("13")
+item.seo_name = "interview-simulations"
 item.save
 item.todos.push(Todo.create(:content => "Go through Steps 1-6. Optional Resources to check out: Interview Simulator and Online Flashcards."))
 item.todos.push(Todo.create(:content => "Sign-up for 1 phone interview and 1 in person mock interview by Sunday, April 6 here: <a href=\"https://docs.google.com/spreadsheet/ccc?key=0AqSVLa-AGkW_dEIzT2t0NG9iRWY5XzBqbWVqZ0tqb0E&amp;usp=sharing\">Mock Interview Sign-Up Form</a>:  (Sign up for a total of 2 mock interviews)
@@ -235,6 +244,7 @@ item.front_page_info = "
         "
 item.title = "BZ Academy Midpoint Summit:"
 item.start_date = Time.parse("Apr 12")
+item.seo_name = "dropbox.com/s/gaycnymb36ji6c9/BZ%20Academy%20Midpoint%20Summit%20Agenda.docx?dl=1"
 item.save
 item.todos.push(Todo.create(:content => "10 copies of your resume and cover letter"))
 item.todos.push(Todo.create(:content => "Your padfolio (from weekend 0) and pen"))
@@ -256,6 +266,7 @@ item.led_by = "Coach"
 item.assignment_download_url = "assignments/work-ethic/submissions/new"
 item.start_date = Time.parse("Apr 14")
 item.end_date = Time.parse("Apr 20")
+item.seo_name = "work-ethic"
 item.save
 item.todos.push(Todo.create(:content => "For inspiration read <a href=\"http://www.forbes.com/special-report/2014/30-under-30/finance.html\">30 Under 30 Leaders who are changing the world!</a>"))
 item.todos.push(Todo.create(:content => "Write a blog about what keep you driven to succeed and how you stay organized and on track to meet that goal."))
@@ -276,6 +287,7 @@ item.led_by = "Peer"
 item.assignment_download_url = "assignments/organization-self-mgmt/submissions/new"
 item.start_date = Time.parse("Apr 21")
 item.end_date = Time.parse("Apr 27")
+item.seo_name = "organization-self-mgmt"
 item.save
 item.todos.push(Todo.create(:content => "Write Blog #2"))
 item.todos.push(Todo.create(:content => "Write advice on staying organized and on top of your summer opportunity search."))
