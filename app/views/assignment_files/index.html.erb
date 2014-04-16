@@ -1,0 +1,11 @@
+<% 5.times do |file| %>
+
+	<div>
+		<% form_for @files do |f| %>
+			File <%= file %>:
+			<%#= f.file_field 'source' %>
+			<%= f.submit 'Upload' %>
+		<% end %>
+	</div>
+
+<% end %>

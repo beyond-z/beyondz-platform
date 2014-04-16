@@ -12,6 +12,7 @@ BeyondzPlatform::Application.routes.draw do
   # Handle assignment submissions, such as GET <root>/assignments/submissions/new  
   resources :assignments, only: [:index] do
     resources :submissions, only: [:new, :create]
+    resources :files, controller: 'assignment_files', only: [:index, :create]
   end
 
 

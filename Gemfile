@@ -52,6 +52,9 @@ gem 'google_drive'
 # JSON parsing
 gem 'json'
 
+# File attachements
+gem 'paperclip'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
 
