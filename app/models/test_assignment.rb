@@ -6,8 +6,9 @@ class TestAssignment < ActiveRecord::Base
 	# blank out uploaded file data and delete the file itself
 	def reset_files
 		files.each do |file|
-			type = file.file_type
-			file.update_attributes("#{type}_file_name" => nil, "#{type}_content_type" => nil, "#{type}_file_size" => nil, "#{type}_updated_at" => nil)
+			file_attribute = "file.#{file.file_type}"
+			eval "file_attribute = nil"
+			file.save
 		end
 
 		# also delete file
