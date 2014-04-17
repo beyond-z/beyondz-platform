@@ -26,7 +26,7 @@ To get all your gems, run:
 Copy "config/database.sample.yml" to "config/database.yml" and update the database connection credentials (username and password) for your Dev and Test environments.
 
 ### SMTP (for local email functionality)
-Setup your database connection by copying "config/initializers/mail\_developoment.sample.rb" to "config/initializers/mail\_developoment.rb" and update the SMTP details (address, user_name, password and to) for the personal SMTP account you wish to use.
+Copy "config/initializers/mail\_development.sample.rb" to "config/initializers/mail\_development.rb" and update the SMTP details (address, user_name, password and to) for the personal SMTP account you wish to use.
 
 ## Running the Application 
 From your repo directory:
