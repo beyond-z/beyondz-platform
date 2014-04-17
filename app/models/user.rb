@@ -43,6 +43,27 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.send_reminders
+    next_assignment = Assignment.where("assignments.end_date > ? AND assignments.end_date < ?", Time.now, Time.now + 3.days).
+      order("assignments.end_date ASC").first
+
+    User.all.each do |user|
+      total_count = 0;
+      total_done = 0;
+      next_assignment.todos.each do |todo|
+        total_count+=1
+        user.user_todo_statuses.each do |status|
+          if status.todo_id == todo.id && status.is_checked
+           total_done+=1
+          end
+        end
+      end
+      if total_count != total_done
+        Reminders.assignment_nearly_due(user.email, user.name, "http://platform.beyondz.org/").deliver
+      end
+    end
+  end
+
   # Returns a random string of 8 upper-case letters
   def self.random_string
     return (0...8).map { (65 + rand(26)).chr }.join
