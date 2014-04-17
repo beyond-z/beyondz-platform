@@ -1,10 +1,42 @@
-<% 5.times do |file| %>
+
+
+<br />
+<br />
+
+<h1>
+	<%= @assignment.name %>
+</h1>
+<h3>
+	Upload the document for your assignment.
+</h3>
+
+<% @files.each do |file| %>
 
 	<div>
-		<% form_for @files do |f| %>
-			File <%= file %>:
-			<%#= f.file_field 'source' %>
-			<%= f.submit 'Upload' %>
+		<%#= form_for file, :html => { :multipart => true } do |f| %>
+		<%= form_tag assignment_file_path(file.id, assignment_id: file.assignment_id), :method => :patch, :multipart => true do |f| %>
+			<table>
+				<tr>
+					<td>
+						<%= file.file_type.titleize %>: &nbsp;&nbsp;&nbsp;&nbsp;
+					</td>
+					<% if file["#{file.file_type}_file_name"].present? %>
+						<td>
+							<%= file["#{file.file_type}_file_name"] %>
+						</td>
+						<td>
+							&nbsp;&nbsp;&nbsp;&nbsp;Uploaded: &nbsp;<%= file["#{file.file_type}_updated_at"].strftime("%B %d, %Y") %>
+						</td>
+					<% else %>
+						<td>
+							<%= file_field_tag "assignment_file[#{file.file_type}]", value: file["#{file.file_type}_file_name"] %>
+						</td>
+						<td>
+							<%= submit_tag 'Upload' %>
+						</td>
+					<% end %>
+				</tr>
+			</table>
 		<% end %>
 	</div>
 
