@@ -60,7 +60,8 @@
       <section>
         <div class="assign-summary-buttons">
           <a class="btn-assign-left" href="assignments/story-of-self">View Details</a>
-          <a class="btn-assign-right" href="https://docs.google.com/a/beyondz.org/forms/d/1cgwwrGn3ZMNkrKvL-Uj4FNz1Qf27xPc6usqse7fTWBg/viewform">Upload Assignment</a>
+          <!-- <a class="btn-assign-right" href="https://docs.google.com/a/beyondz.org/forms/d/1cgwwrGn3ZMNkrKvL-Uj4FNz1Qf27xPc6usqse7fTWBg/viewform">Upload Assignment</a> -->
+          <%= link_to 'Upload Assignment', assignment_files_path(1), :class => 'btn-assign-right' %>
         </div>
       </section>
     </div>
@@ -97,7 +98,8 @@
       <section>
         <div class="assign-summary-buttons">
           <a class="btn-assign-left" href="assignments/passions-professions">View Details</a>
-          <a class="btn-assign-right" href="assignments/passions-professions/submissions/new">Upload Assignment</a>
+          <!-- <a class="btn-assign-right" href="assignments/passions-professions/submissions/new">Upload Assignment</a> -->
+          <%= link_to 'Upload Assignment', assignment_files_path(2), :class => 'btn-assign-right' %>
         </div>
       </section>
     </div>
@@ -133,7 +135,8 @@
       <section>
         <div class="assign-summary-buttons">
           <a class="btn-assign-left" href="assignments/cover-letter">View Details</a>
-          <a class="btn-assign-right" href="assignments/cover-letter/submissions/new">Upload Assignment</a>
+          <!-- <a class="btn-assign-right" href="assignments/cover-letter/submissions/new">Upload Assignment</a> -->
+          <%= link_to 'Upload Assignment', assignment_files_path(3), :class => 'btn-assign-right' %>
         </div>
       </section>
     </div>

@@ -13,7 +13,6 @@
 <% @files.each do |file| %>
 
 	<div>
-		<%#= form_for file, :html => { :multipart => true } do |f| %>
 		<%= form_tag assignment_file_path(file.id, assignment_id: file.assignment_id), :method => :patch, :multipart => true do |f| %>
 			<table>
 				<tr>
@@ -26,6 +25,7 @@
 						</td>
 						<td>
 							&nbsp;&nbsp;&nbsp;&nbsp;Uploaded: &nbsp;<%= file["#{file.file_type}_updated_at"].strftime("%B %d, %Y") %>
+							<%#= image_tag file.try(file.file_type.to_sym).url %>
 						</td>
 					<% else %>
 						<td>
@@ -41,3 +41,8 @@
 	</div>
 
 <% end %>
+<br />
+<br />
+<br />
+
+<%= link_to 'Return to Assignments', '/programs/college' %>
