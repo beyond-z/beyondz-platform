@@ -3,15 +3,14 @@ class TestAssignment < ActiveRecord::Base
 	has_many :files, class_name: 'AssignmentFile', :foreign_key => :assignment_id
 
 
-	# blank out uploaded file data and delete the file itself
+	# blank out uploaded file data
 	def reset_files
 		files.each do |file|
-			file_attribute = "file.#{file.file_type}"
-			eval "file_attribute = nil"
-			file.save
+			# if attachment type exists, delete it
+			if file["#{file.file_type}_file_name"].present?
+				file.update_attribute(file.file_type.to_sym, nil)
+			end
 		end
-
-		# also delete file
 	end
 
 end
