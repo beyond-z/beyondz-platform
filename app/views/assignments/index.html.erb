@@ -60,7 +60,7 @@
                     <input
                       class="todo-check"
                       type="checkbox"
-                      <% if @user_todo_statuses[todo.id] %>
+                      <% if @user_todos[todo.id] %>
                         checked="checked"
                       <% end %>
                       data-todo-id="<%=todo.id%>"

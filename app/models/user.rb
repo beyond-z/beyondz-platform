@@ -1,7 +1,7 @@
 require 'digest/sha1';
 
 class User < ActiveRecord::Base
-  has_many :user_todo_statuses
+  has_many :user_todos
 
   def new
   end
@@ -44,16 +44,15 @@ class User < ActiveRecord::Base
   end
 
   def self.send_reminders
-    next_assignment = Assignment.where("assignments.end_date > ? AND assignments.end_date < ?", Time.now, Time.now + 3.days).
-      order("assignments.end_date ASC").first
+    next_assignment = Assignment.next_due
 
     User.all.each do |user|
       total_count = 0;
       total_done = 0;
       next_assignment.todos.each do |todo|
         total_count+=1
-        user.user_todo_statuses.each do |status|
-          if status.todo_id == todo.id && status.is_checked
+        user.user_todos.each do |status|
+          if status.todo_id == todo.id && status.completed
            total_done+=1
           end
         end

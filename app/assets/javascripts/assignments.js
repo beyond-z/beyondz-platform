@@ -1,9 +1,9 @@
 $(document).ready(function() {
   $(".todo-check").change(function() {
-    $.post("/assignments/toggle_check",
+    $.post("/assignments/set_completed",
       {
         "id": $(this).data("todo-id"),
-        "is_checked": (this.checked ? "true" : "false"),
+        "completed": (this.checked ? "true" : "false"),
       });
   });
 
