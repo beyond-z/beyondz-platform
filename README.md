@@ -14,7 +14,7 @@ and set your PATH in your ~/.bashrc:
 
 After your environment is setup, fork this repository on Github. Then in the location you want the local copy, run:
 
-	git clone \<your forked url>
+	git clone <your_forked_url>
 
 To get all your gems, run:
 
@@ -57,7 +57,7 @@ This makes the upstream (original repo) code available for merging into your loc
 
 Always create a new branch when working on a new feature. From your local master branch:
 
-	git checkout -b <feature name>
+	git checkout -b <feature_name>
 
 When you are ready, commit with:
 
@@ -65,7 +65,7 @@ When you are ready, commit with:
 
 Push your changes back to your Github fork with:
 
-	git push origin <feature name>
+	git push origin <feature_name>
 
 Once you are ready for it to be tested, select the branch from your Github page using the drop down selector. Then click the green pull request button to the left hand side of the drop down.
 
