@@ -1,0 +1,20 @@
+.assign-summary.completed > section {
+  display: none;
+}
+
+.assign-summary.completed > section:first-child {
+  display: block;
+  cursor: pointer;
+  h2 {
+    font-size: 80%;
+  }
+
+  h2::before {
+    content: "Complete! ";
+    color: #44ff44;
+  }
+
+  h2::after {
+    content: "[expand]";
+  }
+}

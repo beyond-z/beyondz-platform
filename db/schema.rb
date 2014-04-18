@@ -11,7 +11,56 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140408142442) do
+ActiveRecord::Schema.define(version: 20140416015221) do
+
+  create_table "assignments", force: true do |t|
+    t.string   "title"
+    t.string   "led_by"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.text     "front_page_info"
+    t.text     "details_summary"
+    t.text     "details_content"
+    t.string   "complete_module_url"
+    t.string   "assignment_download_url"
+    t.datetime "eal_due_date"
+    t.text     "final_message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "seo_name"
+  end
+
+  create_table "resources", force: true do |t|
+    t.string   "url"
+    t.string   "title"
+    t.text     "note"
+    t.boolean  "optional"
+    t.integer  "resource_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "todos", force: true do |t|
+    t.integer  "assignment_id"
+    t.text     "content"
+    t.integer  "ordering"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "todos", ["assignment_id"], name: "index_todos_on_assignment_id", using: :btree
+
+  create_table "user_todo_statuses", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "todo_id"
+    t.boolean  "is_checked"
+    t.datetime "when_checked"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "user_todo_statuses", ["todo_id"], name: "index_user_todo_statuses_on_todo_id", using: :btree
+  add_index "user_todo_statuses", ["user_id"], name: "index_user_todo_statuses_on_user_id", using: :btree
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
