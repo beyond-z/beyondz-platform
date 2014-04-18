@@ -3,8 +3,7 @@ BeyondzPlatform::Application.routes.draw do
   root 'programs#college'
 
   get "assignments/:action", controller: "assignments"
-  get "feedback/:action", controller: "feedback"
-  post "feedback/:action", controller: "feedback"
+  resources :feedback
 
   # Handle assignment submissions, such as GET <root>/assignments/submissions/new  
   resources :assignments, only: [:index] do
