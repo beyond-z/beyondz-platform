@@ -248,5 +248,3 @@ item.todos.push(Todo.create(:content => "Write advice on staying organized and o
 item.todos.push(Todo.create(:content => "<strong>Complete and upload <a href=\"#?dl=1\">this document</a> by 9 PM Friday, May 2.</strong>"))
 item.save
 
-
->>>>>>> eb3c79d7d721a053a0e34335062f655fc5dbe5bf
