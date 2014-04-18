@@ -7,6 +7,18 @@
 # Ignore bundler config.
 /.bundle
 
+# Ignore development specific files
+/config/database.yml
+/config/initializers/mail_development.rb
+
+# Ignore powder setup
+.powder
+.powenv
+
+# Ignore RVM/RBenv setup
+.ruby-gemset
+.ruby-version
+
 # Ignore the default SQLite database.
 /db/*.sqlite3
 /db/*.sqlite3-journal
@@ -26,4 +38,4 @@
 .env-test
 .env-dev
 
-/vender/bundle/*
+/vendor/bundle/*
