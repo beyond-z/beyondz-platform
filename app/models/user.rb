@@ -58,7 +58,7 @@ class User < ActiveRecord::Base
         end
       end
       if total_count != total_done
-        Reminders.assignment_nearly_due(user.email, user.name, "http://platform.beyondz.org/").deliver
+        Reminders.assignment_nearly_due(user.email, user.name, next_assignment.title, "http://platform.beyondz.org/assignments/" + next_assignment.seo_name).deliver
       end
     end
   end
