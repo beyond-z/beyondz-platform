@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  led_by: MyString
+  start_date: 2014-04-14 10:07:50
+  end_date: 2014-04-14 10:07:50
+  front_page_info: MyText
+  details_summary: MyText
+  details_content: MyText
+  complete_module_url: MyString
+  assignment_download_url: MyString
+  eal_due_date: 2014-04-14 10:07:50
+  final_message: MyText
+
+two:
+  title: MyString
+  led_by: MyString
+  start_date: 2014-04-14 10:07:50
+  end_date: 2014-04-14 10:07:50
+  front_page_info: MyText
+  details_summary: MyText
+  details_content: MyText
+  complete_module_url: MyString
+  assignment_download_url: MyString
+  eal_due_date: 2014-04-14 10:07:50
+  final_message: MyText

@@ -1,7 +1,8 @@
 p
 BeyondzPlatform::Application.routes.draw do
   get "programs/college"
-  root 'programs#college'
+#  root 'programs#college'
+  root "assignments#index"
 
   get "users/login", to: "users#login" # defines users_login_path for use in the form
   get ':controller/:action', controller: 'users'

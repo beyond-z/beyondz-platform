@@ -1,6 +1,8 @@
 require 'digest/sha1';
 
 class User < ActiveRecord::Base
+  has_many :user_todos
+
   def new
   end
 
@@ -38,6 +40,26 @@ class User < ActiveRecord::Base
 
       reset_link += "?token=#{user.reset_token}&id=#{user.id}"
       Notifications.forgot_password(email, user.name, reset_link).deliver
+    end
+  end
+
+  def self.send_reminders
+    next_assignment = Assignment.next_due
+
+    User.all.each do |user|
+      total_count = 0;
+      total_done = 0;
+      next_assignment.todos.each do |todo|
+        total_count+=1
+        user.user_todos.each do |status|
+          if status.todo_id == todo.id && status.completed
+           total_done+=1
+          end
+        end
+      end
+      if total_count != total_done
+        Reminders.assignment_nearly_due(user.email, user.name, next_assignment.title, "http://platform.beyondz.org/assignments/" + next_assignment.seo_name).deliver
+      end
     end
   end
 
