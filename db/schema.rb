@@ -13,6 +13,32 @@
 
 ActiveRecord::Schema.define(version: 20140418210618) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "assignment_files", force: true do |t|
+    t.integer  "assignment_id"
+    t.string   "file_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.string   "document_file_name"
+    t.string   "document_content_type"
+    t.integer  "document_file_size"
+    t.datetime "document_updated_at"
+    t.string   "video_file_name"
+    t.string   "video_content_type"
+    t.integer  "video_file_size"
+    t.datetime "video_updated_at"
+    t.string   "audio_file_name"
+    t.string   "audio_content_type"
+    t.integer  "audio_file_size"
+    t.datetime "audio_updated_at"
+  end
+
   create_table "assignments", force: true do |t|
     t.string   "title"
     t.string   "led_by"
@@ -40,6 +66,12 @@ ActiveRecord::Schema.define(version: 20140418210618) do
     t.datetime "updated_at"
   end
 
+  create_table "test_assignments", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "todos", force: true do |t|
     t.integer  "assignment_id"
     t.text     "content"
@@ -49,6 +81,18 @@ ActiveRecord::Schema.define(version: 20140418210618) do
   end
 
   add_index "todos", ["assignment_id"], name: "index_todos_on_assignment_id", using: :btree
+
+  create_table "user_todo_statuses", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "todo_id"
+    t.boolean  "is_checked"
+    t.datetime "when_checked"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "user_todo_statuses", ["todo_id"], name: "index_user_todo_statuses_on_todo_id", using: :btree
+  add_index "user_todo_statuses", ["user_id"], name: "index_user_todo_statuses_on_user_id", using: :btree
 
   create_table "user_todos", force: true do |t|
     t.integer  "user_id"
@@ -61,9 +105,6 @@ ActiveRecord::Schema.define(version: 20140418210618) do
 
   add_index "user_todos", ["todo_id"], name: "index_user_todos_on_todo_id", using: :btree
   add_index "user_todos", ["user_id"], name: "index_user_todos_on_user_id", using: :btree
-
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
 
   create_table "users", force: true do |t|
     t.string   "email"
