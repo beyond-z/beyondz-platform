@@ -2,6 +2,8 @@ require 'digest/sha1';
 
 class User < ActiveRecord::Base
   has_many :user_todos
+  has_many :assignments, class_name: "UserAssignment"
+  has_many :submissions, class_name: "UserSubmission"
 
   def new
   end

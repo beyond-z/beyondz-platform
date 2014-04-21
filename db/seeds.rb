@@ -6,7 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-User.create(email: "test@beyondz.org", password: User.get_salted_password("test"), name: "BeyondZ Test")
+user = User.create(email: "test@beyondz.org", password: User.get_salted_password("test"), name: "BeyondZ Test")
 
 # Assignment imports from the existing HTML
 
@@ -248,3 +248,17 @@ item.todos.push(Todo.create(:content => "Write advice on staying organized and o
 item.todos.push(Todo.create(:content => "<strong>Complete and upload <a href=\"#?dl=1\">this document</a> by 9 PM Friday, May 2.</strong>"))
 item.save
 
+
+# create test submissions
+hw_num = 0
+Assignment.all.each do |a|
+  hw_num += 1
+  sub1 = Submission.create(assignment_id: a.id, name: "Homework document ##{hw_num}", kind: :file, file_type: :document)
+  sub2 = Submission.create(assignment_id: a.id, name: "Homework image ##{hw_num}", kind: :file, file_type: :image)
+
+  user_assignment = UserAssignment.create(assignment_id: a.id, user_id: user.id)
+
+  UserSubmission.create(user_assignment_id: user_assignment.id, submission_id: sub1.id, user_id: user.id, kind: :file, file_type: sub1.file_type)
+  UserSubmission.create(user_assignment_id: user_assignment.id, submission_id: sub2.id, user_id: user.id, kind: :file, file_type: sub2.file_type)
+
+end

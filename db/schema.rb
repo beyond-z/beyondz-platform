@@ -11,34 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140418210618) do
-
+ActiveRecord::Schema.define(version: 20140421195329) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "assignment_files", force: true do |t|
-    t.integer  "assignment_id"
-    t.string   "file_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "image_file_name"
-    t.string   "image_content_type"
-    t.integer  "image_file_size"
-    t.datetime "image_updated_at"
-    t.string   "document_file_name"
-    t.string   "document_content_type"
-    t.integer  "document_file_size"
-    t.datetime "document_updated_at"
-    t.string   "video_file_name"
-    t.string   "video_content_type"
-    t.integer  "video_file_size"
-    t.datetime "video_updated_at"
-    t.string   "audio_file_name"
-    t.string   "audio_content_type"
-    t.integer  "audio_file_size"
-    t.datetime "audio_updated_at"
-  end
 
   create_table "assignments", force: true do |t|
     t.string   "title"
@@ -67,15 +43,17 @@ ActiveRecord::Schema.define(version: 20140418210618) do
     t.datetime "updated_at"
   end
 
->>>>>>> master
-  create_table "test_assignments", force: true do |t|
+  create_table "submissions", force: true do |t|
+    t.integer  "assignment_id"
     t.string   "name"
+    t.string   "kind"
+    t.string   "file_type"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-<<<<<<< HEAD
-=======
+  add_index "submissions", ["assignment_id"], name: "index_submissions_on_assignment_id", using: :btree
+
   create_table "todos", force: true do |t|
     t.integer  "assignment_id"
     t.text     "content"
@@ -86,17 +64,55 @@ ActiveRecord::Schema.define(version: 20140418210618) do
 
   add_index "todos", ["assignment_id"], name: "index_todos_on_assignment_id", using: :btree
 
-  create_table "user_todo_statuses", force: true do |t|
+  create_table "user_assignments", force: true do |t|
+    t.integer  "assignment_id"
     t.integer  "user_id"
-    t.integer  "todo_id"
-    t.boolean  "is_checked"
-    t.datetime "when_checked"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "user_todo_statuses", ["todo_id"], name: "index_user_todo_statuses_on_todo_id", using: :btree
-  add_index "user_todo_statuses", ["user_id"], name: "index_user_todo_statuses_on_user_id", using: :btree
+  add_index "user_assignments", ["assignment_id"], name: "index_user_assignments_on_assignment_id", using: :btree
+  add_index "user_assignments", ["user_id"], name: "index_user_assignments_on_user_id", using: :btree
+
+  create_table "user_submission_files", force: true do |t|
+    t.integer  "submission_id"
+    t.integer  "user_submission_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.string   "document_file_name"
+    t.string   "document_content_type"
+    t.integer  "document_file_size"
+    t.datetime "document_updated_at"
+    t.string   "video_file_name"
+    t.string   "video_content_type"
+    t.integer  "video_file_size"
+    t.datetime "video_updated_at"
+    t.string   "audio_file_name"
+    t.string   "audio_content_type"
+    t.integer  "audio_file_size"
+    t.datetime "audio_updated_at"
+  end
+
+  add_index "user_submission_files", ["submission_id"], name: "index_user_submission_files_on_submission_id", using: :btree
+  add_index "user_submission_files", ["user_submission_id"], name: "index_user_submission_files_on_user_submission_id", using: :btree
+
+  create_table "user_submissions", force: true do |t|
+    t.integer  "user_assignment_id"
+    t.integer  "submission_id"
+    t.integer  "user_id"
+    t.string   "kind"
+    t.string   "file_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "user_submissions", ["submission_id"], name: "index_user_submissions_on_submission_id", using: :btree
+  add_index "user_submissions", ["user_assignment_id"], name: "index_user_submissions_on_user_assignment_id", using: :btree
+  add_index "user_submissions", ["user_id"], name: "index_user_submissions_on_user_id", using: :btree
 
   create_table "user_todos", force: true do |t|
     t.integer  "user_id"
@@ -110,7 +126,6 @@ ActiveRecord::Schema.define(version: 20140418210618) do
   add_index "user_todos", ["todo_id"], name: "index_user_todos_on_todo_id", using: :btree
   add_index "user_todos", ["user_id"], name: "index_user_todos_on_user_id", using: :btree
 
->>>>>>> master
   create_table "users", force: true do |t|
     t.string   "email"
     t.string   "name"

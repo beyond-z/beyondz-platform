@@ -4,8 +4,28 @@ class SubmissionsController < ApplicationController
   # GET /submissions
   # GET /submissions.json
   def index
-    @submissions = Submission.all
+
+    user_id = 1 # current_user
+
+    @user_submissions = UserSubmission.for_assignment(params[:user_assignment_id])
   end
+
+  # def index
+  #   @assignment = TestAssignment.find(params[:assignment_id])
+  #   @files = @assignment.files.where({file_type: 'document'})[0..0]
+  # end
+
+  # def update
+  #   @file = AssignmentFile.find(params[:id]).update_attributes(assignment_file_params)
+  
+  #   redirect_to assignment_files_path
+  # end
+
+  # private
+
+  # def assignment_file_params
+  #   params.require(:assignment_file).permit(:document, :image, :video, :audio)
+  # end
 
   # GET /submissions/1
   # GET /submissions/1.json

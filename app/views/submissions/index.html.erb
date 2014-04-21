@@ -1,4 +1,4 @@
-<h1>Listing submissions</h1>
+<h1>Assignment Submissions</h1>
 
 <table>
   <thead>
@@ -12,18 +12,23 @@
   </thead>
 
   <tbody>
-    <% @submissions.each do |submission| %>
-      <tr>
-        <td><%= submission.email %></td>
-        <td><%= submission.url %></td>
-        <td><%= link_to 'Show', submission %></td>
-        <td><%= link_to 'Edit', edit_submission_path(submission) %></td>
-        <td><%= link_to 'Destroy', submission, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+    <% @user_submissions.each do |submission| %>
+      <%# only take document uploads for now %>
+      <% if submission.kind == 'file' && submission.file_type == 'document' %>
+        <% if submission.files %>
+          <tr>
+            <td>Found file</td>
+          </tr>
+        <% else %>
+          <tr>
+            <td>Upload file</td>
+          </tr>
+        <% end %>
+      <% end %>
     <% end %>
   </tbody>
 </table>
 
 <br>
 
-<%= link_to 'New Submission', new_submission_path %>
+<%#= link_to 'New Submission', new_submission_path %>

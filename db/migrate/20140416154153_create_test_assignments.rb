@@ -1,4 +1,4 @@
-class CreateAssignments < ActiveRecord::Migration
+class CreateTestAssignments < ActiveRecord::Migration
   def up
     create_table :test_assignments do |t|
     	t.string :name

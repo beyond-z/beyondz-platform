@@ -75,7 +75,7 @@
       <section>
         <div class="assign-summary-buttons">
           <a class="btn-assign-left" href="/assignments/<%= assignment.seo_name %>">View Details</a>
-          <a class="btn-assign-right" href="<%= assignment.assignment_download_url %>">Upload Assignment</a>
+          <%= link_to 'Upload Assignment', assignment_submissions_path(assignment.id, user_assignment_id: User.find(1).assignments.find_by_assignment_id(assignment.id).id), :class => 'btn-assign-right' %>
         </div>
       </section>
     </div>
