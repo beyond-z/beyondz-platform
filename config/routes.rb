@@ -9,6 +9,7 @@ BeyondzPlatform::Application.routes.draw do
   post ':controller/:action', controller: 'users'
 
   get "assignments/:action", controller: "assignments"
+  resources :feedback
 
   # Handle assignment submissions, such as GET <root>/assignments/submissions/new  
   resources :assignments, only: [:index] do
