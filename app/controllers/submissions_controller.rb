@@ -8,6 +8,8 @@ class SubmissionsController < ApplicationController
     user_id = 1 # current_user
 
     @user_submissions = UserSubmission.for_assignment(params[:user_assignment_id])
+
+    @user_submission = UserSubmission.new
   end
 
   # def index
@@ -15,11 +17,11 @@ class SubmissionsController < ApplicationController
   #   @files = @assignment.files.where({file_type: 'document'})[0..0]
   # end
 
-  # def update
-  #   @file = AssignmentFile.find(params[:id]).update_attributes(assignment_file_params)
+  def update
+    # @file = AssignmentFile.find(params[:id]).update_attributes(assignment_file_params)
   
-  #   redirect_to assignment_files_path
-  # end
+    redirect_to assignment_submissions_path(params[:assignment_id])
+  end
 
   # private
 
@@ -33,9 +35,9 @@ class SubmissionsController < ApplicationController
   end
 
   # GET /submissions/new
-  def new
-    @submission = Submission.new
-  end
+  # def new
+  #   @user_submission = UserSubmission.new
+  # end
 
   # GET /submissions/1/edit
   def edit
@@ -85,17 +87,17 @@ class SubmissionsController < ApplicationController
 
   # PATCH/PUT /submissions/1
   # PATCH/PUT /submissions/1.json
-  def update
-    respond_to do |format|
-      if @submission.update(submission_params)
-        format.html { redirect_to @submission, notice: 'Submission was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @submission.errors, status: :unprocessable_entity }
-      end
-    end
-  end
+  # def update
+  #   respond_to do |format|
+  #     if @submission.update(submission_params)
+  #       format.html { redirect_to @submission, notice: 'Submission was successfully updated.' }
+  #       format.json { head :no_content }
+  #     else
+  #       format.html { render action: 'edit' }
+  #       format.json { render json: @submission.errors, status: :unprocessable_entity }
+  #     end
+  #   end
+  # end
 
   # DELETE /submissions/1
   # DELETE /submissions/1.json

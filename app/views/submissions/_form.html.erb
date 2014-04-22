@@ -1,47 +1,39 @@
 <div class="container-fluid">
   <section>
-    <div class="assign-form-submit">
+    <div>
 
-<%= form_for @submission, url: assignment_submissions_path do |f| %>
+      <%= form_for [:user_assignments, user_submission], url: assignment_submission_path(user_submission, assignment_id: user_submission.user_assignment.id) do |f| %>
 
-  <% if @submission.errors.any? %>
-    <div id="error_explanation">
-      <h2>Please fix the following errors before clicking 'Submit':</h2>
-      <ul>
-      <% @submission.errors.full_messages.each do |msg| %>
-        <li><%= msg.html_safe %></li>
+        <% if user_submission.errors.any? %>
+          <div id="error_explanation">
+            <h2>Please fix the following errors before clicking 'Submit':</h2>
+            <ul>
+            <% user_submission.errors.full_messages.each do |msg| %>
+              <li><%= msg.html_safe %></li>
+            <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <% if user_submission.kind == 'file' %>
+          <div>
+            <%= f.fields_for :files do |file| %>
+              <span style="float: left;"><%= "#{user_submission.submission.name} (#{user_submission.file_type})" %>:</span>
+              <span style="float: left; margin-left: 15px;"><%= file.file_field user_submission.file_type %></span>
+            <% end %>
+            <span><%= f.submit "Submit", class: 'btn-assign-submit' %></span>
+          </div>
+          <div style="clear: both;"></div>
+        <% end %>
+
       <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="form-group">
-    <%= f.label :email, 'Your email address:' %>
-    <%= f.text_field :email, class: 'form-control', placeholder: 'emailAddress@someDomain.com' %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :url, 'Submission URL:' %>
-    <%= f.text_field :url, class: 'form-control', placeholder: 'https://docs.google.com/a/username/document/d/example/edit?usp=sharing' %>
-  </div>
-  <%= f.submit "Submit", class: 'btn-assign-submit' %>
-
-<% end %>
 
     </div>
   </section>
 </div>
 
 
-<!-- <br />
-<br />
-
-<h1>
-  <%#= @assignment.name %>
-</h1>
-<h3>
-  Upload the document for your assignment.
-</h3>
+<!--
 
 <%# @files.each do |file| %>
 
@@ -50,7 +42,7 @@
       <table>
         <tr>
           <td>
-            <%= file.file_type.titleize %>: &nbsp;&nbsp;&nbsp;&nbsp;
+            <%#= file.file_type.titleize %>: &nbsp;&nbsp;&nbsp;&nbsp;
           </td>
           <%# if file["#{file.file_type}_file_name"].present? %>
             <td>

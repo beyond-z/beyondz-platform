@@ -7,4 +7,5 @@ class Assignment < ActiveRecord::Base
     return Assignment.where("assignments.end_date > ?", Time.now).
       order("assignments.end_date ASC").first
   end
+
 end

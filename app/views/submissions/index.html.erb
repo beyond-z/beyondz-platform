@@ -1,34 +1,24 @@
 <h1>Assignment Submissions</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Email</th>
-      <th>Url</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
+<div style="float: left; width: 50%;">
+Instructions: Please submit your assignment to the right.
+</div>
 
-  <tbody>
-    <% @user_submissions.each do |submission| %>
-      <%# only take document uploads for now %>
-      <% if submission.kind == 'file' && submission.file_type == 'document' %>
-        <% if submission.files %>
-          <tr>
-            <td>Found file</td>
-          </tr>
-        <% else %>
-          <tr>
-            <td>Upload file</td>
-          </tr>
-        <% end %>
+<div style="float: left; width: 50%;">
+
+  <% @user_submissions.each do |user_submission| %>
+    <%# only take document uploads for now %>
+    <% if user_submission.kind == 'file' && user_submission.file_type == 'document' %>   
+      <% if user_submission.files.count > 0 %>
+        <%= user_submission.submission.name %>
+        <%= file["#{user_submissions[0].submission.file_type}_file_name"] %> - <%= user_submission.updated_at.strftime("%B %d, %Y") %>
+      <% else %>
+        <%= render partial: 'form', locals: {user_submission: user_submission} %>
       <% end %>
     <% end %>
-  </tbody>
-</table>
+  <% end %>
 
-<br>
+</div>
+
 
 <%#= link_to 'New Submission', new_submission_path %>
