@@ -69,4 +69,4 @@ We use standard Rails code conventions with some additional rules:
   * Use the flash hash to quick message workflows.
   * Never commit a FIXME: either fix it or make a task in Asana.
 
-See this for more information: http://www.caliban.org/ruby/rubyguide.shtml
+See this for more information: https://github.com/bbatsov/ruby-style-guide
