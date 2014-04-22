@@ -26,60 +26,14 @@
   -->
 
 
-
+<% if @has_completed_assignments %>
+  <a href="/assignments/completed">View Completed Assignments</a>
+<% end %>
 
 <% @assignments.each do |assignment| %>
-  <section>
-    <div class="assign-summary <%= @assignments_completed[assignment.id] ? "completed" : "" %>">
-      <section>
-        <h2><%= assignment.title %>
-          <% if assignment.led_by != nil %>
-            <span class="session-type">(<%=assignment.led_by.capitalize%> Led)</span>
-          <% end %>
-        </h2>
-      </section>  
-      <section>
-        <div class="assign-date">
-          <p><%= assignment.start_date.strftime("%b %e") %>
-            <% if assignment.end_date != nil %>
-              -
-              <%= assignment.end_date.strftime("%b %e") %></p>
-            <% end %>
-        </div>
-      </section>
-      <section>
-        <div class="assign-summary-practice">
-          <%= assignment.front_page_info.html_safe %>
-        </div>
-        <div class="assign-summary-checklist">
-          <h3>Your To-Dos</h3>
-          <ul>
-            <% assignment.todos.each do |todo| %>
-                <li>
-                  <% if @user_logged_in %>
-                    <input
-                      class="todo-check"
-                      type="checkbox"
-                      <% if @user_todos[todo.id] %>
-                        checked="checked"
-                      <% end %>
-                      data-todo-id="<%=todo.id%>"
-                    />
-                  <% end %>
-                  <%= todo.content.html_safe %>
-                </li>
-              <% end %>
-          </ul>
-        </div>
-      </section>
-      <section>
-        <div class="assign-summary-buttons">
-          <a class="btn-assign-left" href="/assignments/<%= assignment.seo_name %>">View Details</a>
-          <a class="btn-assign-right" href="<%= assignment.assignment_download_url %>">Upload Assignment</a>
-        </div>
-      </section>
-    </div>
-  </section>
+<% if !@assignments_completed[assignment.id] %>
+  <%= render :partial => assignment %>
+<% end %>
 <% end %>
 
 </div>

@@ -16,6 +16,8 @@ class AssignmentsController < ApplicationController
       # We'll also use it to see if all to-dos are done
       # which the view can use to collapse an entry
 
+      @has_completed_assignments = false
+
       @assignments.each do |assignment|
         all_checked = true
         assignment.todos.each do |todo|
@@ -27,9 +29,14 @@ class AssignmentsController < ApplicationController
 
         if all_checked
           @assignments_completed[assignment.id] = true
+          @has_completed_assignments = true
         end
       end # assignments.each
     end # if user logged in
+  end
+
+  def completed
+    index()
   end
 
   def set_completed
