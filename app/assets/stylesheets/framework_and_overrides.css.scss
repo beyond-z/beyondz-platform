@@ -202,6 +202,12 @@ section {
     }
   } 
 
+// A table for meeting agendas
+.meeting-agenda-table {
+  @extend .table;
+  @extend .table-bordered;
+  }
+
 //-----------------------------------------
 // Styles for the college program main page
 //-----------------------------------------
