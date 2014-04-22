@@ -38,4 +38,6 @@
 .env-test
 .env-dev
 
-/vendor/bundle/*
+/vender/bundle/*
+
+start.sh
