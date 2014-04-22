@@ -9,6 +9,7 @@ BeyondzPlatform::Application.routes.draw do
   post ':controller/:action', controller: 'users'
 
   get "assignments/:action", controller: "assignments"
+  resources :feedback
 
 
   resources :assignments, :param => 'user_assignment_id', only: [:index] do

@@ -1,0 +1,17 @@
+<h1>Send us feedback</h1>
+
+<p>Let us know your thoughts. What parts of the site do you like? What problems have you had? Do you have any ideas you'd like to see added? What other sites would be useful?</p>
+
+<%= form_tag action:'create' do %>
+  <%= hidden_field_tag :back_to, @back_to %>
+  <div class="form-group">
+    <%= label_tag :email, 'Your email address:' %>
+    <%= text_field_tag :email, nil, class: 'form-control', placeholder: 'emailAddress@someDomain.com', type: 'email', required: 'required' %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :message, 'Your message:' %>
+    <br />
+    <%= text_area_tag :message, nil, size: "80x12" %>
+  </div>
+  <%= submit_tag "Submit", class: 'btn-assign-submit' %>
+<% end %>

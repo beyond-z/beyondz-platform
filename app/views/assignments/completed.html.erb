@@ -1,0 +1,12 @@
+<div class="container-fluid">
+<% if @has_completed_assignments %>
+  <a href="/assignments">View Upcoming Assignments</a>
+<% end %>
+
+<% @assignments.reverse.each do |assignment| %>
+<% if @assignments_completed[assignment.id] %>
+  <%= render :partial => assignment %>
+<% end %>
+<% end %>
+
+</div>
