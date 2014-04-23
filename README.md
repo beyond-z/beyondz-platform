@@ -64,6 +64,15 @@ Push your changes back to your Github fork with:
 
 	git push origin <feature name>
 
+Before pushing to git, run the lint and the tests. So, the checklist for a pull request are:
+
+	rubocop .
+	rake test
+	git push origin <name>
+
+	Also, don't forget to write a meaningful title and description in the pull request so it is well documented when looking back or at a glance.
+
+
 Once you are ready for it to be tested, select the branch from your Github page using the drop down selector. Then click the green pull request button to the left hand side of the drop down.
 
 On the next screen, click "Edit" near the right-hand side of the screen to choose the Staging branch on beyondz-platform.
