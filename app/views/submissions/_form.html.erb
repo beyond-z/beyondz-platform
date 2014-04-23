@@ -16,14 +16,14 @@
         <% end %>
 
         <% if submission.kind == 'file' %>
-          <div>
+          <div class="submission_file">
             <%= f.fields_for :files do |file| %>
-              <span style="float: left;"><%= "#{submission.submission_definition.name} (#{submission.file_type})" %>:</span>
-              <span style="float: left; margin-left: 15px;"><%= file.file_field submission.file_type %></span>
+              <span class="submission_name"><%= "#{submission.submission_definition.name} (#{submission.file_type})" %>:</span>
+              <span class="submission_file_field"><%= file.file_field submission.file_type %></span>
             <% end %>
             <span><%= f.submit "Submit", class: 'btn-assign-submit' %></span>
           </div>
-          <div style="clear: both;"></div>
+          <div class="clear"></div>
         <% end %>
 
       <% end %>
@@ -31,43 +31,3 @@
     </div>
   </section>
 </div>
-
-
-<!--
-
-<%# @files.each do |file| %>
-
-  <div>
-    <%#= form_tag assignment_file_path(file.id, assignment_id: file.assignment_id), :method => :patch, :multipart => true do |f| %>
-      <table>
-        <tr>
-          <td>
-            <%#= file.file_type.titleize %>: &nbsp;&nbsp;&nbsp;&nbsp;
-          </td>
-          <%# if file["#{file.file_type}_file_name"].present? %>
-            <td>
-              <%#= file["#{file.file_type}_file_name"] %>
-            </td>
-            <td>
-              &nbsp;&nbsp;&nbsp;&nbsp;Uploaded: &nbsp;<%#= file["#{file.file_type}_updated_at"].strftime("%B %d, %Y") %>
-              <%#= image_tag file.try(file.file_type.to_sym).url %>
-            </td>
-          <%# else %>
-            <td>
-              <%#= file_field_tag "assignment_file[#{file.file_type}]", value: file["#{file.file_type}_file_name"] %>
-            </td>
-            <td>
-              <%#= submit_tag 'Upload' %>
-            </td>
-          <%# end %>
-        </tr>
-      </table>
-    <%# end %>
-  </div>
-
-<%# end %>
-<br />
-<br />
-<br />
-
-<%#= link_to 'Return to Assignments', '/programs/college' %> -->

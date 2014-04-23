@@ -5,17 +5,22 @@ class Submission < ActiveRecord::Base
 	belongs_to :user
 	has_many :files, class_name: 'SubmissionFile'
 
-	#accepts_nested_attributes_for :files
-
 	scope :for_assignment, ->(assignment_id) { where(assignment_id: assignment_id)}
 
 	# blank out uploaded file data
 	def reset_files
 		files.each do |file|
 			# if attachment type exists, delete it
-			if file["#{file_type}_file_name"].present?
-				file.update_attribute(file_type.to_sym, nil)
+			if type_exists?(file_type)
+				file.reset(file_type)
 			end
+		end
+	end
+
+	def delete_files
+		files.each do |file|
+			file.reset(file_type)
+			file.destroy
 		end
 	end
 end
