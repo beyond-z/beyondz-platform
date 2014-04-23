@@ -7,6 +7,21 @@
 # Ignore bundler config.
 /.bundle
 
+# Ignore development specific files
+/config/database.yml
+/config/initializers/mail_development.rb
+/config/initializers/paperclip_development.rb
+# used with local paperlclip storage
+/public/system/*
+
+# Ignore powder setup
+.powder
+.powenv
+
+# Ignore RVM/RBenv setup
+.ruby-gemset
+.ruby-version
+
 # Ignore the default SQLite database.
 /db/*.sqlite3
 /db/*.sqlite3-journal
@@ -27,3 +42,5 @@
 .env-dev
 
 /vender/bundle/*
+
+start.sh

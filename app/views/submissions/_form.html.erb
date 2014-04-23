@@ -1,32 +1,32 @@
 <div class="container-fluid">
   <section>
-    <div class="assign-form-submit">
+    <div>
 
-<%= form_for @submission, url: assignment_submissions_path do |f| %>
+      <%= form_for [submission.assignment, submission] do |f| %>
 
-  <% if @submission.errors.any? %>
-    <div id="error_explanation">
-      <h2>Please fix the following errors before clicking 'Submit':</h2>
-      <ul>
-      <% @submission.errors.full_messages.each do |msg| %>
-        <li><%= msg.html_safe %></li>
+        <% if submission.errors.any? %>
+          <div id="error_explanation">
+            <h2>Please fix the following errors before clicking 'Submit':</h2>
+            <ul>
+            <% submission.errors.full_messages.each do |msg| %>
+              <li><%= msg.html_safe %></li>
+            <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <% if submission.kind == 'file' %>
+          <div class="submission_file">
+            <%= f.fields_for :files do |file| %>
+              <span class="submission_name"><%= "#{submission.submission_definition.name} (#{submission.file_type})" %>:</span>
+              <span class="submission_file_field"><%= file.file_field submission.file_type %></span>
+            <% end %>
+            <span><%= f.submit "Submit", class: 'btn-assign-submit' %></span>
+          </div>
+          <div class="clear"></div>
+        <% end %>
+
       <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="form-group">
-    <%= f.label :email, 'Your email address:' %>
-    <%= f.text_field :email, class: 'form-control', placeholder: 'emailAddress@someDomain.com' %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :url, 'Submission URL:' %>
-    <%= f.text_field :url, class: 'form-control', placeholder: 'https://docs.google.com/a/username/document/d/example/edit?usp=sharing' %>
-  </div>
-  <%= f.submit "Submit", class: 'btn-assign-submit' %>
-
-<% end %>
 
     </div>
   </section>

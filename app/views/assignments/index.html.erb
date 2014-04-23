@@ -26,14 +26,14 @@
   -->
 
 
-<% if @has_completed_assignments %>
+<% if @incomplete_assignments %>
   <a href="/assignments/completed">View Completed Assignments</a>
 <% end %>
 
-<% @assignments.each do |assignment| %>
-<% if !@assignments_completed[assignment.id] %>
-  <%= render :partial => assignment %>
-<% end %>
+<% @incomplete_assignments.each do |assignment| %>
+
+  <%= render :partial => 'assignment', locals: {assignment: assignment} %>
+
 <% end %>
 
 </div>

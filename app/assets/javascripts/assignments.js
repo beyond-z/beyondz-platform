@@ -2,7 +2,7 @@ $(document).ready(function() {
   $(".todo-check").change(function() {
     $.post("/assignments/set_completed",
       {
-        "id": $(this).data("todo-id"),
+        "id": $(this).val(),
         "completed": (this.checked ? "true" : "false"),
       });
   });

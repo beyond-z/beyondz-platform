@@ -1,0 +1,41 @@
+  <section>
+    <div class="assign-summary">
+      <section>
+        <h2><%= assignment_definition.title %>
+          <% if assignment_definition.led_by != nil %>
+            <span class="session-type">(<%=assignment_definition.led_by.capitalize%> Led)</span>
+          <% end %>
+        </h2>
+      </section>  
+      <section>
+        <div class="assign-date">
+          <p><%= assignment_definition.start_date.strftime("%b %e") %>
+            <% if assignment_definition.end_date != nil %>
+              -
+              <%= assignment_definition.end_date.strftime("%b %e") %></p>
+            <% end %>
+        </div>
+      </section>
+      <section>
+        <div class="assign-summary-practice">
+          <%= assignment_definition.front_page_info.html_safe %>
+        </div>
+        <div class="assign-summary-checklist">
+          <h3>Your To-Dos</h3>
+          <ul>
+            <% assignment_definition.todo_definitions.each do |todo_definition| %>
+                <li>
+                  <%= todo_definition.content.html_safe %>
+                </li>
+              <% end %>
+          </ul>
+        </div>
+      </section>
+      <section>
+        <div class="assign-summary-buttons">
+          <a class="btn-assign-left" href="/assignments/<%= assignment_definition.seo_name %>">View Details</a>
+        </div>
+      </section>
+    </div>
+  </section>
+
