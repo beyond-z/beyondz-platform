@@ -95,3 +95,10 @@ We use standard Rails code conventions with some additional rules:
   * Never commit a FIXME: either fix it or make a task in Asana.
 
 See this for more information: https://github.com/bbatsov/ruby-style-guide
+
+Also install and use Rubocop to help keep your code up to standards:
+	gem install rubocop
+	cd app
+	rubocop
+
+Will list the issues to address.
