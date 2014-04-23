@@ -84,7 +84,7 @@ class UsersController < ApplicationController
       userInfo = params[:user]
       begin
         session[:user_id] = User.login(userInfo[:email], userInfo[:password])
-        redirect_to "/"
+        redirect_to assignments_path
       rescue LoginException => e
         login_form(userInfo[:email], e.message)
       end

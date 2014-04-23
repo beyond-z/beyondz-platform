@@ -2,24 +2,24 @@
   <section>
     <div>
 
-      <%= form_for [:user_assignments, user_submission], url: assignment_submission_path(user_submission, assignment_id: user_submission.user_assignment.id) do |f| %>
+      <%= form_for [submission.assignment, submission] do |f| %>
 
-        <% if user_submission.errors.any? %>
+        <% if submission.errors.any? %>
           <div id="error_explanation">
             <h2>Please fix the following errors before clicking 'Submit':</h2>
             <ul>
-            <% user_submission.errors.full_messages.each do |msg| %>
+            <% submission.errors.full_messages.each do |msg| %>
               <li><%= msg.html_safe %></li>
             <% end %>
             </ul>
           </div>
         <% end %>
 
-        <% if user_submission.kind == 'file' %>
+        <% if submission.kind == 'file' %>
           <div>
             <%= f.fields_for :files do |file| %>
-              <span style="float: left;"><%= "#{user_submission.submission.name} (#{user_submission.file_type})" %>:</span>
-              <span style="float: left; margin-left: 15px;"><%= file.file_field user_submission.file_type %></span>
+              <span style="float: left;"><%= "#{submission.submission_definition.name} (#{submission.file_type})" %>:</span>
+              <span style="float: left; margin-left: 15px;"><%= file.file_field submission.file_type %></span>
             <% end %>
             <span><%= f.submit "Submit", class: 'btn-assign-submit' %></span>
           </div>

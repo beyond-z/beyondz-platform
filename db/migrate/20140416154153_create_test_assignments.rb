@@ -5,10 +5,6 @@ class CreateTestAssignments < ActiveRecord::Migration
     	t.timestamps
     end
 
-    5.times do |n|
-    	TestAssignment.create(name: "Assignment #{n}")
-    end
-
   end
 
   def down

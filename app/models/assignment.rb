@@ -1,11 +1,11 @@
 class Assignment < ActiveRecord::Base
-  has_many :resources
-  has_many :todos
-  has_many :submissions
 
-  def self.next_due
-    return Assignment.where("assignments.end_date > ?", Time.now).
-      order("assignments.end_date ASC").first
-  end
+	belongs_to :assignment_definition
+	belongs_to :user
+	has_many :submissions
+	has_many :todos
+
+	scope :complete, -> { all.reject{|a| a.todos.incomplete.count > 0 } }
+	scope :incomplete, -> { all.reject{|a| a.todos.incomplete.count == 0 } }
 
 end

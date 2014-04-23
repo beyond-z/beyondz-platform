@@ -10,23 +10,7 @@ class CreateAssignmentFiles < ActiveRecord::Migration
    	add_attachment :assignment_files, :document
    	add_attachment :assignment_files, :video
    	add_attachment :assignment_files, :audio
-
-   	AssignmentFile.create(assignment_id: 1, file_type: :document)
-   	AssignmentFile.create(assignment_id: 1, file_type: :document)
-   	AssignmentFile.create(assignment_id: 1, file_type: :image)
-   	AssignmentFile.create(assignment_id: 1, file_type: :document)
-   	AssignmentFile.create(assignment_id: 1, file_type: :document)
-
-   	AssignmentFile.create(assignment_id: 2, file_type: :image)
-   	AssignmentFile.create(assignment_id: 2, file_type: :document)
-   	AssignmentFile.create(assignment_id: 2, file_type: :image)
-
-   	AssignmentFile.create(assignment_id: 3, file_type: :document)
-   	AssignmentFile.create(assignment_id: 3, file_type: :video)
-   	AssignmentFile.create(assignment_id: 3, file_type: :video)
-   	AssignmentFile.create(assignment_id: 3, file_type: :image)
-   	AssignmentFile.create(assignment_id: 3, file_type: :audio)
-
+    
   end
 
   def down

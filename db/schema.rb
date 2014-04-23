@@ -11,12 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140421195329) do
+ActiveRecord::Schema.define(version: 20140423163236) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "assignments", force: true do |t|
+  create_table "assignment_definitions", force: true do |t|
     t.string   "title"
     t.string   "led_by"
     t.datetime "start_date"
@@ -33,6 +33,16 @@ ActiveRecord::Schema.define(version: 20140421195329) do
     t.string   "seo_name"
   end
 
+  create_table "assignments", force: true do |t|
+    t.integer  "assignment_definition_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "assignments", ["assignment_definition_id"], name: "index_assignments_on_assignment_definition_id", using: :btree
+  add_index "assignments", ["user_id"], name: "index_assignments_on_user_id", using: :btree
+
   create_table "resources", force: true do |t|
     t.string   "url"
     t.string   "title"
@@ -43,8 +53,8 @@ ActiveRecord::Schema.define(version: 20140421195329) do
     t.datetime "updated_at"
   end
 
-  create_table "submissions", force: true do |t|
-    t.integer  "assignment_id"
+  create_table "submission_definitions", force: true do |t|
+    t.integer  "assignment_definition_id"
     t.string   "name"
     t.string   "kind"
     t.string   "file_type"
@@ -52,31 +62,11 @@ ActiveRecord::Schema.define(version: 20140421195329) do
     t.datetime "updated_at"
   end
 
-  add_index "submissions", ["assignment_id"], name: "index_submissions_on_assignment_id", using: :btree
+  add_index "submission_definitions", ["assignment_definition_id"], name: "index_submission_definitions_on_assignment_definition_id", using: :btree
 
-  create_table "todos", force: true do |t|
-    t.integer  "assignment_id"
-    t.text     "content"
-    t.integer  "ordering"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "todos", ["assignment_id"], name: "index_todos_on_assignment_id", using: :btree
-
-  create_table "user_assignments", force: true do |t|
-    t.integer  "assignment_id"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "user_assignments", ["assignment_id"], name: "index_user_assignments_on_assignment_id", using: :btree
-  add_index "user_assignments", ["user_id"], name: "index_user_assignments_on_user_id", using: :btree
-
-  create_table "user_submission_files", force: true do |t|
+  create_table "submission_files", force: true do |t|
+    t.integer  "submission_definition_id"
     t.integer  "submission_id"
-    t.integer  "user_submission_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "image_file_name"
@@ -97,12 +87,12 @@ ActiveRecord::Schema.define(version: 20140421195329) do
     t.datetime "audio_updated_at"
   end
 
-  add_index "user_submission_files", ["submission_id"], name: "index_user_submission_files_on_submission_id", using: :btree
-  add_index "user_submission_files", ["user_submission_id"], name: "index_user_submission_files_on_user_submission_id", using: :btree
+  add_index "submission_files", ["submission_definition_id"], name: "index_submission_files_on_submission_definition_id", using: :btree
+  add_index "submission_files", ["submission_id"], name: "index_submission_files_on_submission_id", using: :btree
 
-  create_table "user_submissions", force: true do |t|
-    t.integer  "user_assignment_id"
-    t.integer  "submission_id"
+  create_table "submissions", force: true do |t|
+    t.integer  "assignment_id"
+    t.integer  "submission_definition_id"
     t.integer  "user_id"
     t.string   "kind"
     t.string   "file_type"
@@ -110,21 +100,32 @@ ActiveRecord::Schema.define(version: 20140421195329) do
     t.datetime "updated_at"
   end
 
-  add_index "user_submissions", ["submission_id"], name: "index_user_submissions_on_submission_id", using: :btree
-  add_index "user_submissions", ["user_assignment_id"], name: "index_user_submissions_on_user_assignment_id", using: :btree
-  add_index "user_submissions", ["user_id"], name: "index_user_submissions_on_user_id", using: :btree
+  add_index "submissions", ["assignment_id"], name: "index_submissions_on_assignment_id", using: :btree
+  add_index "submissions", ["submission_definition_id"], name: "index_submissions_on_submission_definition_id", using: :btree
+  add_index "submissions", ["user_id"], name: "index_submissions_on_user_id", using: :btree
 
-  create_table "user_todos", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "todo_id"
-    t.boolean  "completed"
-    t.datetime "completed_at"
+  create_table "todo_definitions", force: true do |t|
+    t.integer  "assignment_definition_id"
+    t.text     "content"
+    t.integer  "ordering"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "user_todos", ["todo_id"], name: "index_user_todos_on_todo_id", using: :btree
-  add_index "user_todos", ["user_id"], name: "index_user_todos_on_user_id", using: :btree
+  add_index "todo_definitions", ["assignment_definition_id"], name: "index_todo_definitions_on_assignment_definition_id", using: :btree
+
+  create_table "todos", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "todo_definition_id"
+    t.boolean  "completed",          default: false
+    t.datetime "completed_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "assignment_id"
+  end
+
+  add_index "todos", ["todo_definition_id"], name: "index_todos_on_todo_definition_id", using: :btree
+  add_index "todos", ["user_id"], name: "index_todos_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email"

@@ -1,7 +1,7 @@
-class UserSubmissionFile < ActiveRecord::Base
+class SubmissionFile < ActiveRecord::Base
 
+	belongs_to :submission_definition
 	belongs_to :submission
-	belongs_to :user_submission
 
 	has_attached_file :document
 	do_not_validate_attachment_file_type :document

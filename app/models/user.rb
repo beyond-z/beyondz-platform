@@ -1,15 +1,9 @@
 require 'digest/sha1';
 
 class User < ActiveRecord::Base
-  has_many :user_todos
-  has_many :assignments, class_name: "UserAssignment"
-  has_many :submissions, class_name: "UserSubmission"
-
-  def new
-  end
-
-  def create
-  end
+  has_many :todos
+  has_many :assignments
+  has_many :submissions
 
   # Returns the user ID of the matching user if the credentials
   # pass, otherwise, raises a LoginException

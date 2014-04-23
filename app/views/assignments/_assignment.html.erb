@@ -1,41 +1,32 @@
   <section>
     <div class="assign-summary">
       <section>
-        <h2><%= assignment.title %>
-          <% if assignment.led_by != nil %>
-            <span class="session-type">(<%=assignment.led_by.capitalize%> Led)</span>
+        <h2><%= assignment.assignment_definition.title %>
+          <% if assignment.assignment_definition.led_by != nil %>
+            <span class="session-type">(<%=assignment.assignment_definition.led_by.capitalize%> Led)</span>
           <% end %>
         </h2>
       </section>  
       <section>
         <div class="assign-date">
-          <p><%= assignment.start_date.strftime("%b %e") %>
-            <% if assignment.end_date != nil %>
+          <p><%= assignment.assignment_definition.start_date.strftime("%b %e") %>
+            <% if assignment.assignment_definition.end_date != nil %>
               -
-              <%= assignment.end_date.strftime("%b %e") %></p>
+              <%= assignment.assignment_definition.end_date.strftime("%b %e") %></p>
             <% end %>
         </div>
       </section>
       <section>
         <div class="assign-summary-practice">
-          <%= assignment.front_page_info.html_safe %>
+          <%= assignment.assignment_definition.front_page_info.html_safe %>
         </div>
         <div class="assign-summary-checklist">
           <h3>Your To-Dos</h3>
           <ul>
             <% assignment.todos.each do |todo| %>
                 <li>
-                  <% if @user_logged_in %>
-                    <input
-                      class="todo-check"
-                      type="checkbox"
-                      <% if @user_todos[todo.id] %>
-                        checked="checked"
-                      <% end %>
-                      data-todo-id="<%=todo.id%>"
-                    />
-                  <% end %>
-                  <%= todo.content.html_safe %>
+                  <%= check_box_tag "todo", todo.id, todo.completed, :class => 'todo-check', 'data-todo-id' => todo.id %>
+                  <%= todo.todo_definition.content.html_safe %>
                 </li>
               <% end %>
           </ul>
@@ -43,8 +34,8 @@
       </section>
       <section>
         <div class="assign-summary-buttons">
-          <a class="btn-assign-left" href="/assignments/<%= assignment.seo_name %>">View Details</a>
-          <a class="btn-assign-right" href="<%= assignment.assignment_download_url %>">Upload Assignment</a>
+          <a class="btn-assign-left" href="/assignments/<%= assignment.assignment_definition.seo_name %>">View Details</a>
+          <%= link_to 'Upload Assignment', assignment_submissions_path(assignment.id), :class => 'btn-assign-right' %>
         </div>
       </section>
     </div>
