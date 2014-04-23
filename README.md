@@ -24,6 +24,15 @@ To run the program, create the database:
 
 And to start website on local machine, run: $foreman start and the app will be available at http://localhost:3000
 
+
+The application stores some data in environment variables (or Heroku configuration variables on staging/live). These are:
+
+GMAIL_USERNAME=username@gmail.com # for sending email
+GMAIL_PASSWORD=password_for_gmail # for sending email
+
+They all should be set when you start the server.
+
+
 Here is a nice description of the workflow we follow, which is also
 detailed below:
 http://nathanhoad.net/git-workflow-forks-remotes-and-pull-requests 
