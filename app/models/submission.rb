@@ -1,32 +1,26 @@
-class SubmissionValidator < ActiveModel::Validator
-  
-  def validate(record)
-    if $userInfos[record.email] == nil
-      record.errors[:base] << "Email address is not recognized.  Please use the email address that you used to sign up for Beyond Z or email our <a href=\"mailto:tech@beyondz.org\">tech support team</a> if you don't know it."
-    end
-  end
-end
+class Submission < ActiveRecord::Base
 
-class Submission
-  include ActiveModel::Validations
-  include ActiveModel::Conversion
-  extend ActiveModel::Naming
-  
-  attr_accessor :email, :url
-  
-  validates :email, :url, :presence => true 
-  validates_with SubmissionValidator
+	belongs_to :assignment
+	belongs_to :submission_definition
+	belongs_to :user
+	has_many :files, class_name: 'SubmissionFile'
 
-  def initialize(attributes = {})
-    attributes.each do |name, value|
-      send("#{name}=", value)
-    end
-  end
+	scope :for_assignment, ->(assignment_id) { where(assignment_id: assignment_id)}
 
-  # This model is not persisted to the database.  Once we move from a hardcoded website to one that is
-  # backed by a database with a login then we can change this model to an ActiveRecord
-  def persisted?
-    false
-  end
+	# blank out uploaded file data
+	def reset_files
+		files.each do |file|
+			# if attachment type exists, delete it
+			if type_exists?(file_type)
+				file.reset(file_type)
+			end
+		end
+	end
 
+	def delete_files
+		files.each do |file|
+			file.reset(file_type)
+			file.destroy
+		end
+	end
 end

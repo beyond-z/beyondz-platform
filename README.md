@@ -14,7 +14,7 @@ and set your PATH in your ~/.bashrc:
 
 After your environment is setup, fork this repository on Github. Then in the location you want the local copy, run:
 
-	git clone \<your forked url>
+	git clone <your_forked_url>
 
 To get all your gems, run:
 
@@ -27,6 +27,9 @@ Copy "config/database.sample.yml" to "config/database.yml" and update the databa
 
 ### SMTP (for local email functionality)
 Copy "config/initializers/mail\_development.sample.rb" to "config/initializers/mail\_development.rb" and update the SMTP details (address, user_name, password and to) for the personal SMTP account you wish to use.
+
+### File Attachment Storage (paperclip)
+Copy "config/initializers/paperclip\_development.sample.rb" to "config/initializers/paperclip\_development.rb" and update the S3 details (bucket, access_key_id and secret_access_key) for the DEV S3 storage, or leave this file out altogether to use local storage.
 
 ## Running the Application 
 From your repo directory:
@@ -54,7 +57,7 @@ This makes the upstream (original repo) code available for merging into your loc
 
 Always create a new branch when working on a new feature. From your local master branch:
 
-	git checkout -b <feature name>
+	git checkout -b <feature_name>
 
 When you are ready, commit with:
 
@@ -62,7 +65,7 @@ When you are ready, commit with:
 
 Push your changes back to your Github fork with:
 
-	git push origin <feature name>
+	git push origin <feature_name>
 
 Once you are ready for it to be tested, select the branch from your Github page using the drop down selector. Then click the green pull request button to the left hand side of the drop down.
 
