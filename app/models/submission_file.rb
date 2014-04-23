@@ -32,7 +32,7 @@ class SubmissionFile < ActiveRecord::Base
 
 
 	def url
-		# dynamically determin the file url for the given type
+		# dynamically determine the file url for the given type
 		eval "self.#{self.submission.file_type}.url"
 	end
 

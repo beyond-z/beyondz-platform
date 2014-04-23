@@ -25,16 +25,6 @@
           <ul>
             <% assignment_definition.todo_definitions.each do |todo_definition| %>
                 <li>
-                  <!--<%# if @user_logged_in %>
-                    <input
-                      class="todo-check"
-                      type="checkbox"
-                      <%# if @user_todos[todo.id] %>
-                        checked="checked"
-                      <%# end %>
-                      data-todo-id="<%#=todo.id%>"
-                    />
-                  <%# end %> -->
                   <%= todo_definition.content.html_safe %>
                 </li>
               <% end %>
@@ -44,7 +34,6 @@
       <section>
         <div class="assign-summary-buttons">
           <a class="btn-assign-left" href="/assignments/<%= assignment_definition.seo_name %>">View Details</a>
-         <!--  <a class="btn-assign-right" href="<%#= assignment_definition.assignment_download_url %>">Upload Assignment</a> -->
         </div>
       </section>
     </div>
