@@ -16,8 +16,8 @@ class SubmissionFile < ActiveRecord::Base
   }
 
   has_attached_file :video
-	do_not_validate_attachment_file_type :video
 	validates_attachment :video,
+		:content_type => { :content_type => ["video/quicktime", "video/mpeg", "video/avi"] },
   	:size => { :in => 0..2.megabytes
   }
 
