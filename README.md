@@ -29,8 +29,13 @@ The application stores some data in environment variables (or Heroku configurati
 
 GMAIL_USERNAME=username@gmail.com # for sending email
 GMAIL_PASSWORD=password_for_gmail # for sending email
+GOOGLE_DRIVE_EMAIL=<email>
+GOOGLE_DRIVE_PASSWORD=<password>
+AWS_BUCKET=TODO
+AWS_ACCESS_KEY_ID=TODO
+AWS_SECRET_ACCESS_KEY=TODO
 
-They all should be set when you start the server.
+They all should be set when you start the server. For foreman, we have a file called env.sample. Edit that to add the appropriate value, then rename it to ".env" (no quotes) and you can use it directly.
 
 
 Here is a nice description of the workflow we follow, which is also

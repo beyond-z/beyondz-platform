@@ -28,4 +28,4 @@
 
 /vender/bundle/*
 
-start.sh
+start.sh # this is my server starting shell script that loads the environment vars, nothing anyone else needs to care about
