@@ -256,14 +256,7 @@ AssignmentDefinition.all.each do |a|
   sub1 = SubmissionDefinition.create(assignment_definition_id: a.id, name: "Homework document ##{hw_num}", kind: :file, file_type: :document)
   sub2 = SubmissionDefinition.create(assignment_definition_id: a.id, name: "Homework image ##{hw_num}", kind: :file, file_type: :image)
 
-  # create user assignment skeleton
-  assignment = Assignment.create(assignment_definition_id: a.id, user_id: user.id)
-
-  Submission.create(assignment_id: assignment.id, submission_definition_id: sub1.id, user_id: user.id, kind: :file, file_type: sub1.file_type)
-  Submission.create(assignment_id: assignment.id, submission_definition_id: sub2.id, user_id: user.id, kind: :file, file_type: sub2.file_type)
-
-  a.todo_definitions.each do |tdef|
-    Todo.create(assignment_id: assignment.id, user_id: user.id, todo_definition_id: tdef.id,)
-  end
-
 end
+
+# create user assignment skeleton
+user.create_child_skeleton_rows

@@ -27,7 +27,11 @@ class User < ActiveRecord::Base
       
       a.submission_definitions.each do |sd|
         if nil == (submissions.find_by submission_definition_id: sd.id)
-          submissions << Submission.create(:submission_definition_id => sd.id, :assignment_id => assignment.id)
+          submissions << Submission.create(
+            :submission_definition_id => sd.id,
+            :assignment_id => assignment.id,
+            :kind => sd.kind,
+            :file_type => sd.file_type)
         end
       end
     end                                                                                                   
