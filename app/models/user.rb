@@ -5,6 +5,36 @@ class User < ActiveRecord::Base
   has_many :assignments
   has_many :submissions
 
+  # This will create the skeletons for assignments, todos,
+  # and submissions based on the definitions. We should run
+  # this whenever a user is created or a definition is added.
+  #
+  # Don't forget to update this code if we add any more has_many
+  # relationships with the same skeleton row pattern.
+  def create_child_skeleton_rows
+    AssignmentDefinition.all.each do |a|
+      assignment = assignments.find_by assignment_definition_id: a.id
+      if assignment == nil
+        assignment = Assignment.create(:assignment_definition_id => a.id)
+        assignments << assignment
+      end
+      
+      a.todo_definitions.each do |td|
+        if nil == (todos.find_by todo_definition_id: td.id)
+          todos << Todo.create(:todo_definition_id => td.id, :assignment_id => assignment.id)
+        end
+      end
+      
+      a.submission_definitions.each do |sd|
+        if nil == (submissions.find_by submission_definition_id: sd.id)
+          submissions << Submission.create(:submission_definition_id => sd.id, :assignment_id => assignment.id)
+        end
+      end
+    end                                                                                                   
+                                                                                                          
+    save!
+  end
+
   # Returns the user ID of the matching user if the credentials
   # pass, otherwise, raises a LoginException
   def self.login(email, passw)
