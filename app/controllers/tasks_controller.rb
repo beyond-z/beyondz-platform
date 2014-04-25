@@ -13,7 +13,7 @@ class TasksController < ApplicationController
       task = Task.find(params[:id])
       task.updated_at = Time.now
 
-      # handle different submission types
+      # handle different task types
       if params[:task].has_key?(:user_confirm)
         task.state = (params[:task][:user_confirm] == 'true') ? "complete" : "new"
         
