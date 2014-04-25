@@ -15,7 +15,6 @@ class AssignmentsController < ApplicationController
       todo = Todo.find(params[:id])
       todo.update_attribute(:completed, params[:completed])
     end
-    render :nothing => true, :status => 200, :content_type => 'text/html'
+    render nothing: true, status: 200, content_type: 'text/html'
   end
-
 end
