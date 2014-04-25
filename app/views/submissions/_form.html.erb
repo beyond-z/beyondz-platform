@@ -4,16 +4,7 @@
 
       <%= form_for [submission.assignment, submission] do |f| %>
 
-        <% if submission.errors.any? %>
-          <div id="error_explanation">
-            <h2>Please fix the following errors before clicking 'Submit':</h2>
-            <ul>
-            <% submission.errors.full_messages.each do |msg| %>
-              <li><%= msg.html_safe %></li>
-            <% end %>
-            </ul>
-          </div>
-        <% end %>
+        <%= render "shared/form_errors", locals: {object: submission} %>
 
         <% if submission.kind == 'file' %>
           <div class="submission_file">
