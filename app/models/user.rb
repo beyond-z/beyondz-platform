@@ -1,10 +1,37 @@
 require 'digest/sha1';
 
 class User < ActiveRecord::Base
-  has_many :todos
   has_many :assignments
-  has_many :submissions
+  has_many :tasks
 
+  # This will create the skeletons for assignments, todos,
+  # and submissions based on the definitions. We should run
+  # this whenever a user is created or a definition is added.
+  #
+  # Don't forget to update this code if we add any more has_many
+  # relationships with the same skeleton row pattern.
+  def create_child_skeleton_rows
+    ActiveRecord::Base.transaction do
+
+      AssignmentDefinition.all.each do |a|
+        assignment = assignments.find_by_assignment_definition_id(a.id)
+        if assignment == nil
+          assignment = Assignment.create(assignment_definition_id: a.id, state: 'new')
+          assignments << assignment
+        end
+        
+        a.task_definitions.each do |td|
+          if nil == (tasks.find_by_task_definition_id(td.id))
+            tasks << Task.create(task_definition_id: td.id, assignment_id: assignment.id, kind: td.kind, file_type: td.file_type, state: 'new')
+          end
+        end
+      end
+
+    end                                                                                                  
+                                                                                                          
+    save!
+  end
+ 
   # Returns the user ID of the matching user if the credentials
   # pass, otherwise, raises a LoginException
   def self.login(email, passw)

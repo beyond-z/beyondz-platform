@@ -23,9 +23,9 @@
         <div class="assign-summary-checklist">
           <h3>Your To-Dos</h3>
           <ul>
-            <% assignment_definition.todo_definitions.each do |todo_definition| %>
+            <% assignment_definition.task_definitions.each do |task_definition| %>
                 <li>
-                  <%= todo_definition.content.html_safe %>
+                  <%= task_definition.name.html_safe %>
                 </li>
               <% end %>
           </ul>

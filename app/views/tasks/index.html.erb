@@ -1,4 +1,4 @@
-<h1>Assignment Submissions</h1>
+<h1>Assignment Tasks</h1>
 
 <div id="submissions_instructions">
   Instructions: Please submit your assignment to the right.
@@ -6,12 +6,12 @@
 
 <div id="submissions_list">
 
-  <% @submissions.each do |submission| %>
+  <% @tasks.each do |task| %>
     <%# only take document uploads for now %>
-    <% if submission.kind == 'file' && submission.file_type == 'document' %>   
-      <% if submission.files.present? %>
+    <% if task.kind == 'file' && task.file_type == 'document' %>   
+      <% if task.files.present? %>
       
-        <table id="submissions_table">
+        <table id="task_table">
           <thead>
             <th>Name</th>
             <th>File</th>
@@ -19,19 +19,19 @@
           <thead>
           <tr>
             <td>
-              <%= submission.submission_definition.name %>:
+              <%= task.task_definition.name %>:
             </td>
             <td>
-              <%= submission.files.first["#{submission.file_type}_file_name"] %>
+              <%= task.files.first["#{task.file_type}_file_name"] %>
             </td>
             <td>
-              <%= submission.updated_at.strftime("%B %d, %Y") %>
+              <%= task.updated_at.strftime("%B %d, %Y") %>
             </td>
           </tr>
         </table>
 
       <% else %>
-        <%= render partial: 'form', locals: {submission: submission} %>
+        <%= render partial: 'form', locals: {task: task} %>
       <% end %>
     <% end %>
   <% end %>

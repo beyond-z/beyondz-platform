@@ -12,7 +12,7 @@ BeyondzPlatform::Application.routes.draw do
 
 
   resources :assignments, only: [:index] do
-    resources :submissions, only: [:index, :update]
+    resources :tasks, only: [:index, :update]
   end
 
 

@@ -1,7 +1,7 @@
-class SubmissionFile < ActiveRecord::Base
+class TaskFile < ActiveRecord::Base
 
-	belongs_to :submission_definition
-	belongs_to :submission
+	belongs_to :task_definition
+	belongs_to :task
 
 	has_attached_file :document
 	validates_attachment :document,
@@ -33,7 +33,7 @@ class SubmissionFile < ActiveRecord::Base
 
 	def url
 		# dynamically determine the file url for the given type
-		eval "self.#{self.submission.file_type}.url"
+		eval "self.#{self.task.file_type}.url"
 	end
 
 	def type_exists?(file_type)
