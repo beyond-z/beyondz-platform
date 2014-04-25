@@ -1,0 +1,33 @@
+# I think these should be fixed
+
+Documentation:
+  Enabled: false # disabled until we do this
+
+Eval:
+  Enabled: false # Disabled because of the dynamic url in submission file
+
+# Configuration parameters: AllowedVariables.
+GlobalVars:
+  Enabled: false # Disabled because of $userInfos
+
+# These I think don't really matter...
+
+# Configuration parameters: MaxLineLength.
+IfUnlessModifier:
+  Enabled: false # Disabled because I don't agree this is good style.
+
+LineLength:
+  Max: 90 # When these are long, we have a good reason, so I think this is ok. I think we could do 110 actually and just be reasonable.
+
+# Configuration parameters: CountComments.
+MethodLength:
+  Max: 22
+
+# Configuration parameters: SupportedStyles.
+RaiseArgs:
+  EnforcedStyle: compact # I don't like what this does either
+
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, SupportedStyles.
+SignalException:
+  Enabled: false # And I don't like this again...

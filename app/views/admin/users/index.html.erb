@@ -1,0 +1,7 @@
+<table>
+<% @users.each do |user| %>
+<tr>
+  <td><a href="/admin/users/<%=user.id%>"><%= user.name %></a></td>
+</tr>
+<% end %>
+</table>

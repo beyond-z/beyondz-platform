@@ -1,0 +1,9 @@
+<h1>Coaching Dashboard</h1>
+
+<p>Here's the list of students you are coaching. Click on a name to see their progress.</p>
+
+<ul>
+<% @pupils.each do |pupil| %>
+  <li><%= pupil.user.name %></li>
+<% end %>
+</ul>
