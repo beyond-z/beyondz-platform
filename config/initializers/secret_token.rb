@@ -9,4 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-BeyondzPlatform::Application.config.secret_key_base = 'cbda81f5508059dca4113e20a4e662ffcfa5423d25a356b2a7f27bca8fc110afda663af93ba0564de7f79e1682023d6ea0122e9c238b0b38b9551713686e5d4e'
+BeyondzPlatform::Application.config.secret_key_base = ENV['RAILS_SECRET_TOKEN']
