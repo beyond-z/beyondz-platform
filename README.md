@@ -20,16 +20,9 @@ To get all your gems, run:
 
 	bundle install
 
-## DEV Config
+## Configuration
 
-### Database
-Copy "config/database.sample.yml" to "config/database.yml" and update the database connection credentials (username and password) for your Dev and Test environments.
-
-### SMTP (for local email functionality)
-Copy "config/initializers/mail\_development.sample.rb" to "config/initializers/mail\_development.rb" and update the SMTP details (address, user_name, password and to) for the personal SMTP account you wish to use.
-
-### File Attachment Storage (paperclip)
-Copy "config/initializers/paperclip\_development.sample.rb" to "config/initializers/paperclip\_development.rb" and update the S3 details (bucket, access_key_id and secret_access_key) for the DEV S3 storage, or leave this file out altogether to use local storage.
+In the "/env.sample" file is a list of environment variables that must be set for your database, SMTP, etc... to function properly. Be sure these values are set for your Rails environment using your Foreman, Pow or preferred server setup.
 
 ## Running the Application 
 From your repo directory:
@@ -40,17 +33,6 @@ From your repo directory:
 And to start website on local machine, run: $foreman start and the app will be available at http://localhost:3000
 
 ## Code Management
-The application stores some data in environment variables (or Heroku configuration variables on staging/live). These are:
-
-GMAIL_USERNAME=username@gmail.com # for sending email
-GMAIL_PASSWORD=password_for_gmail # for sending email
-GOOGLE_DRIVE_EMAIL=<email>
-GOOGLE_DRIVE_PASSWORD=<password>
-AWS_BUCKET=TODO
-AWS_ACCESS_KEY_ID=TODO
-AWS_SECRET_ACCESS_KEY=TODO
-
-They all should be set when you start the server. For foreman, we have a file called env.sample. Edit that to add the appropriate value, then rename it to ".env" (no quotes) and you can use it directly.
 
 Here is a nice description of the workflow we follow, which is also
 detailed below:
