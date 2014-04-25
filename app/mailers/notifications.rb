@@ -1,5 +1,5 @@
 class Notifications < ActionMailer::Base
-  default from: "no-reply@beyondz.org"
+  default from: 'no-reply@beyondz.org'
 
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
