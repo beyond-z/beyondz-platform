@@ -1,7 +1,7 @@
-# heroku addons:add scheduler 
+# heroku addons:add scheduler
 
 class Reminders < ActionMailer::Base
-  default from: "no-reply@beyondz.org"
+  default from: 'no-reply@beyondz.org'
 
   def assignment_nearly_due(to, name, assignment_name, link)
     @name = name

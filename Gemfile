@@ -58,6 +58,9 @@ gem 'paperclip'
 # Used by paperclip S3 storage
 gem 'aws-sdk', '~> 1.5.8'
 
+# Rubocop code checker
+gem 'rubocop'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
 

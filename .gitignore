@@ -41,6 +41,8 @@
 .env-test
 .env-dev
 
+# Not sure we need /vender/bundle but another dev added it, so I'll assume that's how their system is setup?
+/vendor/bundle/*
 /vender/bundle/*
 
-start.sh
+start.sh # this is my server starting shell script that loads the environment vars, nothing anyone else needs to care about
