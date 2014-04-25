@@ -1,0 +1,17 @@
+# PRODUCTION and STAGING aren't required as this file is automatically created in those environments.
+
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: beyondz-platform_development
+  pool: 5
+  username: <%= ENV['DATABASE_USERNAME'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: beyondz-platform_test
+  pool: 5
+  username: <%= ENV['DATABASE_USERNAME'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>

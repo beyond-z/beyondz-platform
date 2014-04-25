@@ -10,16 +10,16 @@ class TaskFile < ActiveRecord::Base
   }
 
   has_attached_file :image
-	validates_attachment :image,
-  	:content_type => { :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"] },
-  	:size => { :in => 0..2.megabytes
-  }
+  validates_attachment :image,
+                       content_type: { content_type: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'] },
+                       size: { in: 0..2.megabytes
+                     }
 
   has_attached_file :video
-	validates_attachment :video,
-		:content_type => { :content_type => ["video/quicktime", "video/mpeg", "video/avi"] },
-  	:size => { :in => 0..2.megabytes
-  }
+  validates_attachment :video,
+                       content_type: { content_type: ['video/quicktime', 'video/mpeg', 'video/avi'] },
+                       size: { in: 0..2.megabytes
+                     }
 
   has_attached_file :audio
 	validates_attachment :audio,
@@ -43,6 +43,5 @@ class TaskFile < ActiveRecord::Base
 	def reset(file_type)
 		update_attribute(file_type.to_sym, nil)
 	end
-
 
 end

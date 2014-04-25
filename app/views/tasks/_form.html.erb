@@ -4,16 +4,7 @@
 
       <%= form_for [task.assignment, task] do |f| %>
 
-        <% if task.errors.any? %>
-          <div id="error_explanation">
-            <h2>Please fix the following errors before clicking 'Submit':</h2>
-            <ul>
-            <% task.errors.full_messages.each do |msg| %>
-              <li><%= msg.html_safe %></li>
-            <% end %>
-            </ul>
-          </div>
-        <% end %>
+        <%= render "shared/form_errors", locals: {object: task} %>
 
         <% if task.kind == 'file' %>
           <div class="task_file">

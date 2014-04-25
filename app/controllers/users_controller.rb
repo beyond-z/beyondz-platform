@@ -12,9 +12,11 @@ class UsersController < ApplicationController
 
       begin
         User.forgot_password(email, "http://#{request.host}/users/reset_password")
-        redirect_to "/users/password_email_sent"
-      rescue LoginException => e
+        redirect_to '/users/password_email_sent'
+      rescue LoginException
+        # rubocop:disable LineLength
         @message = "That email address isn't on file. If you can't remember the email address you use to log in, please contact tech@beyondz.org."
+        # rubocop:enable LineLength
         render :forgot_password
       end
       return
@@ -31,62 +33,64 @@ class UsersController < ApplicationController
       user = User.find(params[:id])
 
       if user.reset_token != params[:token] || user.reset_expiration < Time.now
-        raise LoginException.new("Your link has expired, please try again.")
+        raise LoginException.new('Your link has expired, please try again.')
       end
 
     rescue LoginException => e
       @message = e.message
       render action: :forgot_password
       return
-    rescue ActiveRecord::RecordNotFound => e
-      @message = "Your user account could not be found, be sure you copied the link correctly out of the email."
+    rescue ActiveRecord::RecordNotFound
+      # rubocop:disable LineLength
+      @message = 'Your user account could not be found, be sure you copied the link correctly out of the email.'
+      # rubocop:enable LineLength
       render action: :forgot_password
       return
     end
 
-    user.reset_token = ""
+    user.reset_token = ''
     user.reset_expiration = Time.now
-    user.save;
+    user.save
 
     # log in immediately with the reset token and send
     # them to change their password now
     session[:user_id] = user.id
-    redirect_to "/users/change_password"
+    redirect_to '/users/change_password'
   end
 
   def change_password
-      if request.post?
-        begin
-          user = User.find(session[:user_id])
-          user.change_password(params[:password], params[:confirm_password]);
-          user.save;
+    if request.post?
+      begin
+        user = User.find(session[:user_id])
+        user.change_password(params[:password], params[:confirm_password])
+        user.save
 
-          flash[:message] = "Your password has been successfully changed.";
-          redirect_to("/")
-        rescue LoginException => e
-          @message = e.message
-          render :change_password
-        end
+        flash[:message] = 'Your password has been successfully changed.'
+        redirect_to('/')
+      rescue LoginException => e
+        @message = e.message
+        render :change_password
       end
+    end
       # otherwise, it will display the view automatically
   end
 
   def logout
     if request.post?
       session[:user_id] = nil
-      flash[:message] = "You have been successfully logged out."
+      flash[:message] = 'You have been successfully logged out.'
     end
-    redirect_to "/"
+    redirect_to '/'
   end
 
   def login
     if request.post?
-      userInfo = params[:user]
+      user_info = params[:user]
       begin
-        session[:user_id] = User.login(userInfo[:email], userInfo[:password])
+        session[:user_id] = User.login(user_info[:email], user_info[:password])
         redirect_to assignments_path
       rescue LoginException => e
-        login_form(userInfo[:email], e.message)
+        login_form(user_info[:email], e.message)
       end
     else
       login_form(params[:email], nil)

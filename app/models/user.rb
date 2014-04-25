@@ -1,4 +1,4 @@
-require 'digest/sha1';
+require 'digest/sha1'
 
 class User < ActiveRecord::Base
   has_many :assignments, dependent: :destroy
@@ -27,24 +27,24 @@ class User < ActiveRecord::Base
         end
       end
 
-    end                                                                                                  
-                                                                                                          
-    save!
+      save!
+
+    end                                                                                                                                                                                                        
   end
- 
+
   # Returns the user ID of the matching user if the credentials
   # pass, otherwise, raises a LoginException
   def self.login(email, passw)
     user = User.find_by email: email
-    if user == nil
-      raise LoginException.new("Incorrect email address")
+    if user.nil?
+      raise LoginException.new('Incorrect email address')
     else
-      parts = user.password.split("-")
+      parts = user.password.split('-')
       salt = parts[0]
       if parts[1] == User.hash_password(salt, passw)
         return user.id
       else
-        raise LoginException.new("Incorrect password")
+        raise LoginException.new('Incorrect password')
       end
     end
   end
@@ -53,13 +53,13 @@ class User < ActiveRecord::Base
   # email address and sends an email with the given link.
   def self.forgot_password(email, reset_link)
     user = User.find_by email: email
-    if user == nil
-      raise LoginException.new("Incorrect email address")
+    if user.nil?
+      raise LoginException.new('Incorrect email address')
     else
       # create a random string of characters to use as the token
-      user.reset_token = User.random_string()
+      user.reset_token = User.random_string
       user.reset_expiration = Time.now + 15.minutes
-      user.save();
+      user.save
 
       reset_link += "?token=#{user.reset_token}&id=#{user.id}"
       Notifications.forgot_password(email, user.name, reset_link).deliver
@@ -70,30 +70,36 @@ class User < ActiveRecord::Base
     next_assignment = Assignment.next_due
 
     User.all.each do |user|
-      total_count = 0;
-      total_done = 0;
+      total_count = 0
+      total_done = 0
       next_assignment.todos.each do |todo|
-        total_count+=1
+        total_count += 1
         user.user_todos.each do |status|
           if status.todo_id == todo.id && status.completed
-           total_done+=1
+            total_done += 1
           end
         end
       end
       if total_count != total_done
-        Reminders.assignment_nearly_due(user.email, user.name, next_assignment.title, "http://platform.beyondz.org/assignments/" + next_assignment.seo_name).deliver
+        Reminders.assignment_nearly_due(
+          user.email,
+          user.name,
+          next_assignment.title,
+          'http://platform.beyondz.org/assignments/' +
+          next_assignment.seo_name)
+            .deliver
       end
     end
   end
 
   # Returns a random string of 8 upper-case letters
   def self.random_string
-    return (0...8).map { (65 + rand(26)).chr }.join
+    (0...8).map { (65 + rand(26)).chr }.join
   end
 
   # Changes the user's password. Don't forget to call save afterward
   def change_password(newPassword, confirmPassword)
-    if(newPassword != confirmPassword)
+    if newPassword != confirmPassword
       raise LoginException.new("Your passwords don't match, please try again.")
     end
 
@@ -102,12 +108,12 @@ class User < ActiveRecord::Base
 
   def self.get_salted_password(passw)
     # Randomization for password hash
-    salt = User.random_string()
-    return salt + "-" + User.hash_password(salt, passw)
+    salt = User.random_string
+    salt + '-' + User.hash_password(salt, passw)
   end
 
   def self.hash_password(salt, passw)
-    return Digest::SHA1.hexdigest("#{salt}#{passw}")
+    Digest::SHA1.hexdigest("#{salt}#{passw}")
   end
 end
 
@@ -116,7 +122,5 @@ class LoginException < Exception
     @message = message
   end
 
-  def message
-    @message
-  end
+  attr_reader :message
 end

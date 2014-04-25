@@ -4,13 +4,21 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   # Setup user information for all controllers
-  before_filter :prepareUserInfo
-  def prepareUserInfo
-    if session["user_id"] != nil
+  before_filter :prepare_user_info
+
+  private
+
+  def prepare_user_info
+    if session['user_id']
       @user_logged_in = true
-      @user = User.find(session["user_id"].to_i)
+      @current_user = User.find(session['user_id'].to_i)
     else
       @user_logged_in = false
+      @current_user = nil
     end
   end
+
+  public
+
+  attr_reader :current_user
 end

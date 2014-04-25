@@ -20,16 +20,9 @@ To get all your gems, run:
 
 	bundle install
 
-## DEV Config
+## Configuration
 
-### Database
-Copy "config/database.sample.yml" to "config/database.yml" and update the database connection credentials (username and password) for your Dev and Test environments.
-
-### SMTP (for local email functionality)
-Copy "config/initializers/mail\_development.sample.rb" to "config/initializers/mail\_development.rb" and update the SMTP details (address, user_name, password and to) for the personal SMTP account you wish to use.
-
-### File Attachment Storage (paperclip)
-Copy "config/initializers/paperclip\_development.sample.rb" to "config/initializers/paperclip\_development.rb" and update the S3 details (bucket, access_key_id and secret_access_key) for the DEV S3 storage, or leave this file out altogether to use local storage.
+In the "/env.sample" file is a list of environment variables that must be set for your database, SMTP, etc... to function properly. Be sure these values are set for your Rails environment using your Foreman, Pow or preferred server setup.
 
 ## Running the Application 
 From your repo directory:
@@ -67,6 +60,15 @@ Push your changes back to your Github fork with:
 
 	git push origin <feature_name>
 
+Before pushing to git, run the lint and the tests. So, the checklist for a pull request are:
+
+	rubocop .
+	rake test
+	git push origin <name>
+
+	Also, don't forget to write a meaningful title and description in the pull request so it is well documented when looking back or at a glance.
+
+
 Once you are ready for it to be tested, select the branch from your Github page using the drop down selector. Then click the green pull request button to the left hand side of the drop down.
 
 On the next screen, click "Edit" near the right-hand side of the screen to choose the Staging branch on beyondz-platform.
@@ -98,3 +100,10 @@ We use standard Rails code conventions with some additional rules:
   * Never commit a FIXME: either fix it or make a task in Asana.
 
 See this for more information: https://github.com/bbatsov/ruby-style-guide
+
+Also install and use Rubocop to help keep your code up to standards:
+	gem install rubocop
+	cd app
+	rubocop
+
+Will list the issues to address.

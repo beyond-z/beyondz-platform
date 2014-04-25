@@ -249,7 +249,4 @@ item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required:
 item.task_definitions.push(TaskDefinition.create(kind: 'file', file_type: 'document', required: true, position: 3, :name => "<strong>Complete and upload <a href=\"#?dl=1\">this document</a> by 9 PM Friday, May 2.</strong>"))
 item.save
 
-
-# create base user assignment/task records
-user.reload
 user.create_child_skeleton_rows

@@ -1,4 +1,8 @@
 class Assignment < ActiveRecord::Base
+  belongs_to :assignment_definition
+  belongs_to :user
+  has_many :submissions
+  has_many :todos
 
 	belongs_to :assignment_definition
 	belongs_to :user

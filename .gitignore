@@ -8,15 +8,8 @@
 /.bundle
 
 # Ignore development specific files
-/config/database.yml
-/config/initializers/mail_development.rb
-/config/initializers/paperclip_development.rb
 # used with local paperlclip storage
 /public/system/*
-
-# Ignore powder setup
-.powder
-.powenv
 
 # Ignore RVM/RBenv setup
 .ruby-gemset
@@ -41,6 +34,12 @@
 .env-test
 .env-dev
 
+# Ignore powder setup
+.powder
+.powenv
+
+# Not sure we need /vender/bundle but another dev added it, so I'll assume that's how their system is setup?
+/vendor/bundle/*
 /vender/bundle/*
 
-start.sh
+start.sh # this is my server starting shell script that loads the environment vars, nothing anyone else needs to care about

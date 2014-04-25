@@ -11,6 +11,7 @@ class AssignmentsController < ApplicationController
       @incomplete_assignments = user.assignments.for_display.incomplete
       @complete_assignments = user.assignments.complete.count
     end
-  end
 
+  end
+  
 end
