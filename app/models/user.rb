@@ -1,7 +1,7 @@
 require 'digest/sha1';
 
 class User < ActiveRecord::Base
-  has_many :assignments
+  has_many :assignments, dependent: :destroy
   has_many :tasks
 
   # This will create the skeletons for assignments, todos,

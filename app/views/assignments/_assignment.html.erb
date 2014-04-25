@@ -23,10 +23,10 @@
         <div class="assign-summary-checklist">
           <h3>Your To-Dos</h3>
           <ul>
-            <% assignment.todos.each do |todo| %>
+            <% assignment.tasks.for_display.each do |task| %>
                 <li>
-                  <%= check_box_tag "todo", todo.id, todo.completed, :class => 'todo-check', 'data-todo-id' => todo.id %>
-                  <%= todo.todo_definition.content.html_safe %>
+                  <%= check_box_tag "task", task.id, task.complete?, :class => 'task_confirm', 'data-assignment-id' => assignment.id, 'data-task-id' => task.id %>
+                  <%= task.task_definition.name.html_safe %>
                 </li>
               <% end %>
           </ul>
@@ -35,7 +35,7 @@
       <section>
         <div class="assign-summary-buttons">
           <a class="btn-assign-left" href="/assignments/<%= assignment.assignment_definition.seo_name %>">View Details</a>
-          <%= link_to 'Upload Assignment', assignment_submissions_path(assignment.id), :class => 'btn-assign-right' %>
+          <%= link_to 'Upload Assignment', assignment_tasks_path(assignment.id), :class => 'btn-assign-right' %>
         </div>
       </section>
     </div>

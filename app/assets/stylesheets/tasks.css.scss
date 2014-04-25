@@ -1,0 +1,55 @@
+// Place all the styles related to the submissions controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#task_instructions
+{
+	float: left;
+	width: 47%;
+	padding: 10px;
+  background-color: #43B5E9;
+  color: #4D4E53;
+}
+
+#task_list
+{
+	float: right;
+	width: 50%;
+
+	#task_table
+	{
+		width: 100%;
+
+		th, td
+		{
+			padding: 5px;
+		}
+
+		th
+		{
+			background-color: #ddd;
+		}
+
+		td
+		{
+			background-color: #eee;
+		}
+	}
+
+	form
+	{
+		.task_file
+		{
+			.task_name
+			{
+			
+			}
+
+			.task_file_field
+			{
+				float: left;
+				margin-left: 15px;
+			}
+		}
+	}
+}

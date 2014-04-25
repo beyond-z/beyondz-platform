@@ -1,6 +1,7 @@
 class AssignmentDefinition < ActiveRecord::Base
   has_many :resources
-  has_many :task_definitions
+  has_many :assignments, dependent: :destroy
+  has_many :task_definitions, dependent: :destroy
 
   def self.next_due
     return AssignmentDefinition.where("assignment_definitions.end_date > ?", Time.now).

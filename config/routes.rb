@@ -7,7 +7,7 @@ BeyondzPlatform::Application.routes.draw do
   get ':controller/:action', controller: 'users'
   post ':controller/:action', controller: 'users'
 
-  get "assignments/:action", controller: "assignments"
+  #get "assignments/:action", controller: "assignments"
   resources :feedback
 
 
