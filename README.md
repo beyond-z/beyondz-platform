@@ -40,6 +40,17 @@ From your repo directory:
 And to start website on local machine, run: $foreman start and the app will be available at http://localhost:3000
 
 ## Code Management
+The application stores some data in environment variables (or Heroku configuration variables on staging/live). These are:
+
+GMAIL_USERNAME=username@gmail.com # for sending email
+GMAIL_PASSWORD=password_for_gmail # for sending email
+GOOGLE_DRIVE_EMAIL=<email>
+GOOGLE_DRIVE_PASSWORD=<password>
+AWS_BUCKET=TODO
+AWS_ACCESS_KEY_ID=TODO
+AWS_SECRET_ACCESS_KEY=TODO
+
+They all should be set when you start the server. For foreman, we have a file called env.sample. Edit that to add the appropriate value, then rename it to ".env" (no quotes) and you can use it directly.
 
 Here is a nice description of the workflow we follow, which is also
 detailed below:
@@ -66,6 +77,15 @@ When you are ready, commit with:
 Push your changes back to your Github fork with:
 
 	git push origin <feature_name>
+
+Before pushing to git, run the lint and the tests. So, the checklist for a pull request are:
+
+	rubocop .
+	rake test
+	git push origin <name>
+
+	Also, don't forget to write a meaningful title and description in the pull request so it is well documented when looking back or at a glance.
+
 
 Once you are ready for it to be tested, select the branch from your Github page using the drop down selector. Then click the green pull request button to the left hand side of the drop down.
 
@@ -98,3 +118,10 @@ We use standard Rails code conventions with some additional rules:
   * Never commit a FIXME: either fix it or make a task in Asana.
 
 See this for more information: https://github.com/bbatsov/ruby-style-guide
+
+Also install and use Rubocop to help keep your code up to standards:
+	gem install rubocop
+	cd app
+	rubocop
+
+Will list the issues to address.
