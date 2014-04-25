@@ -5,6 +5,15 @@ class User < ActiveRecord::Base
   has_many :assignments
   has_many :submissions
 
+  has_many :pupils
+
+  def coach
+    c = Pupil.find_by :pupil_id => id
+    if c != nil
+      return c.coach
+    end
+  end
+
   # This will create the skeletons for assignments, todos,
   # and submissions based on the definitions. We should run
   # this whenever a user is created or a definition is added.

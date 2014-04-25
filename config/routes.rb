@@ -3,6 +3,13 @@ BeyondzPlatform::Application.routes.draw do
 #  root 'programs#college'
   root "home#index"
 
+  namespace :admin do
+    resources :users do
+      resources :pupils
+    end
+  end
+
+
   get "users/login", to: "users#login" # defines users_login_path for use in the form
   get ':controller/:action', controller: 'users'
   post ':controller/:action', controller: 'users'
@@ -14,8 +21,6 @@ BeyondzPlatform::Application.routes.draw do
   resources :assignments, only: [:index] do
     resources :submissions, only: [:index, :update]
   end
-
-
 
 
   # The priority is based upon order of creation: first created -> highest priority.

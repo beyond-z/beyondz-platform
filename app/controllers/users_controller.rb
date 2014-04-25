@@ -1,4 +1,8 @@
 class UsersController < ApplicationController
+  def coaching
+    @pupils = @current_user.pupils
+  end
+
   def login_form(email, message)
     @user = User.new
     @email = email
