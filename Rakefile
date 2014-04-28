@@ -3,9 +3,11 @@
 
 require File.expand_path('../config/application', __FILE__)
 
+# Rake doesn't automatically pull in ENV vars. Load in ENV vars (for database,
+# S3, SMTP, etc...) since we're not using custom DEV configuration files.
+# Need to require this, since rake environment is not loaded yet.
 require 'environment_vars'
-
-EnvironmentVars.load_env
+EnvironmentVars.load_env if (Rails.env.development? || Rails.env.test?)
 
 
 BeyondzPlatform::Application.load_tasks
