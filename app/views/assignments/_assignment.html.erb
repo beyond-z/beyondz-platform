@@ -27,6 +27,11 @@
                 <li>
                   <%= check_box_tag "task", task.id, task.complete?, :class => 'task_confirm', 'data-assignment-id' => assignment.id, 'data-task-id' => task.id %>
                   <%= task.task_definition.name.html_safe %>
+                  <% if task.task_definition.summary.present? %>
+                    <div class="assign-task-summary">
+                      <%= task.task_definition.summary.html_safe %>
+                    </div>
+                  <% end %>
                 </li>
               <% end %>
           </ul>
