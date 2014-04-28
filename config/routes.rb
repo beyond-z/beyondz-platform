@@ -1,18 +1,15 @@
 BeyondzPlatform::Application.routes.draw do
-  get "programs/college"
-#  root 'programs#college'
   root "home#index"
 
   get "users/login", to: "users#login" # defines users_login_path for use in the form
   get ':controller/:action', controller: 'users'
   post ':controller/:action', controller: 'users'
 
-  get "assignments/:action", controller: "assignments"
   resources :feedback
 
 
   resources :assignments, only: [:index] do
-    resources :submissions, only: [:index, :update]
+    resources :tasks, only: [:index, :update]
   end
 
 
