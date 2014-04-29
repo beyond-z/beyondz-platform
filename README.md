@@ -72,11 +72,18 @@ and the tests like this:
 To submit a pull request and integrate your changes back to the main
 repository do the following:
 
-Select the branch from your Github page using the drop down selector. Then click the green pull request button to the left hand side of the drop down.
+Select the feature branch from your Github page using the drop down selector. 
+
+![Edit location](docs/select-branch.png)
+
+
+Then click the green pull request button to the left hand side of the drop down.
 
 On the next screen, click "Edit" near the right-hand side of the screen to choose the Staging branch on beyondz-platform.
 
 ![Edit location](docs/edit-branch.png)
+
+![Edit location](docs/staging-pull.png)
 
 Write a meaningful title and summary so it is well documented what this "feature" 
 is when looking back or at a glance.  Your pull request will be rejected if the 
