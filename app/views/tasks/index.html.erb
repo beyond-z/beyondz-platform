@@ -1,0 +1,39 @@
+<h1>Assignment Uploads</h1>
+
+<div id="task_instructions">
+  Instructions: Please submit your files to the right.
+</div>
+
+<div id="task_list">
+
+  <% @tasks.each do |task| %>
+    <%# only take document uploads for now %>
+    <% if task.kind == 'file' && task.file_type == 'document' %>   
+      <% if task.files.present? %>
+      
+        <table id="task_table">
+          <thead>
+            <th>Name</th>
+            <th>File</th>
+            <th>Uploaded</th>
+          <thead>
+          <tr>
+            <td valign="top">
+              <%= task.task_definition.name.html_safe %>
+            </td>
+            <td valign="top">
+              <%= task.files.first["#{task.file_type}_file_name"] %>
+            </td>
+            <td valign="top">
+              <%= task.updated_at.strftime("%B %d, %Y") %>
+            </td>
+          </tr>
+        </table>
+
+      <% else %>
+        <%= render partial: 'form', locals: {task: task} %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+</div>

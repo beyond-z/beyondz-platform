@@ -4,8 +4,16 @@ class Assignment < ActiveRecord::Base
   has_many :submissions
   has_many :todos
 
-  scope :complete, -> { all.reject { |a| a.todos.incomplete.count > 0 } }
-  scope :incomplete, -> { all.reject { |a| a.todos.incomplete.count == 0 } }
+  belongs_to :assignment_definition
+  belongs_to :user
+  has_many :tasks, dependent: :destroy
+
+  scope :complete, -> { all.reject{|a| a.tasks.incomplete.count > 0 } }
+  scope :incomplete, -> { all.reject{|a| a.tasks.incomplete.count == 0 } }
+  scope :for_display, -> { joins(:assignment_definition).\
+    includes(:assignment_definition).\
+    order("assignment_definitions.start_date ASC") }
+
 
   state_machine :state, :initial => :new do
     # Define events and allowed transitions

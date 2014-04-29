@@ -22,7 +22,13 @@ To get all your gems, run:
 
 ## Configuration
 
-In the "/env.sample" file is a list of environment variables that must be set for your database, SMTP, etc... to function properly. Be sure these values are set for your Rails environment using your Foreman, Pow or preferred server setup.
+In the "/env.sample" file is a list of environment variables that must be set for your database, SMTP, etc... to function properly. Copy this file to ".env"  and be sure these values are set for your Rails environment using your Foreman, Pow or preferred server setup.
+
+### Creating a new Secret Token
+
+	rake secret
+	
+Take the results of the above command and put this in your ".env" file for RAILS\_SECRET\_TOKEN.
 
 ## Running the Application 
 From your repo directory:
