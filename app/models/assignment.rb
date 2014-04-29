@@ -1,18 +1,16 @@
 class Assignment < ActiveRecord::Base
-  belongs_to :assignment_definition
-  belongs_to :user
-  has_many :submissions
-  has_many :todos
 
   belongs_to :assignment_definition
   belongs_to :user
   has_many :tasks, dependent: :destroy
 
-  scope :complete, -> { all.reject{|a| a.tasks.incomplete.count > 0 } }
-  scope :incomplete, -> { all.reject{|a| a.tasks.incomplete.count == 0 } }
-  scope :for_display, -> { joins(:assignment_definition).\
+  scope :complete, -> { where(tasks_complete: true) }
+  scope :incomplete, -> { where(tasks_complete: false) }
+  scope :for_display, -> {
+    joins(:assignment_definition).\
     includes(:assignment_definition).\
-    order("assignment_definitions.start_date ASC") }
+    order("assignment_definitions.start_date ASC")
+  }
 
 
   state_machine :state, :initial => :new do
@@ -34,20 +32,20 @@ class Assignment < ActiveRecord::Base
     end
 
     # Define state transition callbacks
-    after_transition :on => :started, :do => :accept
-    after_transition :on => :pending_approval, :do => :send_to_approver
-    after_transition :on => :pending_revision, :do => :send_back_to_user
-    before_transition :on => :complete, :do => :verify_assignment_completion
-    after_transition :on => :complete, :do => :post_completion_check
+    after_transition :on => :start, :do => :accept
+    after_transition :on => :submit, :do => :send_to_approver
+    after_transition :on => :request_revision, :do => :send_back_to_user
+    before_transition :on => :approve, :do => :verify_completion
+    after_transition :on => :approve, :do => :post_completion_check
 
     # Definte state attributes/methods
-    state all - [:new, :completed] do
+    state all - [:new, :complete] do
       def in_process?
         true
       end
     end
 
-    state :new, :completed do
+    state :new, :complete do
       def in_process?
         false
       end
@@ -56,10 +54,7 @@ class Assignment < ActiveRecord::Base
   end
 
 
-  def initialize
-    # NOTE: This *must* be called, otherwise states won't get initialized
-    super()
-  end
+  ## State machine callbacks
 
   def accept
     # user accepted/started assignment
@@ -74,13 +69,36 @@ class Assignment < ActiveRecord::Base
     # request revision from user
   end
 
-  def verify_assignment_completion
+  def verify_completion
     # verify all requirements are fulfilled before allowing completion
   end
 
   def post_completion_check
     # if all assignments are complete, notify coach?
     # lock assignments?
+  end
+
+
+  def tasks_completed?
+    tasks.incomplete.count < 1
+  end
+
+  def tasks_completed!
+    update_attribute(:tasks_complete, true)
+
+    # For now, make assigment completion based on task completion (may change)
+    update_attribute(:state, :complete)
+  end
+
+  # Run whatever validation/completion checks necessary on tasks to consider
+  # them complete and set the flag on assignment
+  def validate_tasks
+    validated = false
+    if tasks_completed?
+      validated = tasks_completed!
+    end
+
+    validated
   end
 
 end

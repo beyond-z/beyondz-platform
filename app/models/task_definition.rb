@@ -5,5 +5,9 @@ class TaskDefinition < ActiveRecord::Base
 
 
   default_scope order('position ASC')
+  scope :required, -> { where(required: true) }
+  scope :not_required, -> { where(required: false) }
+  scope :require_approval, -> { where(requires_approval: true) }
+  scope :do_not_require_approval, -> { where(requires_approval: false) }
 
 end

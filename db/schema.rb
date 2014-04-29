@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140425211330) do
+ActiveRecord::Schema.define(version: 20140429161900) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(version: 20140425211330) do
     t.boolean  "required",                 default: false
     t.integer  "position"
     t.text     "summary"
+    t.boolean  "requires_approval",        default: false
   end
 
   add_index "task_definitions", ["assignment_definition_id"], name: "index_task_definitions_on_assignment_definition_id", using: :btree

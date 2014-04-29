@@ -15,7 +15,9 @@ class TasksController < ApplicationController
 
       # handle different task types
       if params[:task].has_key?(:user_confirm)
-        task.state = (params[:task][:user_confirm] == 'true') ? "complete" : "new"
+        if params[:task][:user_confirm] == 'true'
+          task.submit!
+        end
         
       elsif params[:task].has_key?(:files)
         if task.files.present?
