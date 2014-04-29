@@ -13,6 +13,7 @@ class Admin::UsersController < Admin::ApplicationController
 
   def create
     if @user = User.create(params[:user].permit(:first_name, :last_name, :email, :name, :password))
+      @user.create_child_skeleton_rows
       @user.change_password(params[:user][:password], params[:user][:password])
       @user.save!
       redirect_to "/admin/users"

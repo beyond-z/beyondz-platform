@@ -1,5 +1,11 @@
 <h1>Coaching Dashboard</h1>
 
+<p>Recent activity by your students</p>
+
+<% @activity.each do |a| %>
+  <%= a %>
+<% end %>
+
 <p>Here's the list of students you are coaching. Click on a name to see their progress.</p>
 
 <ul>

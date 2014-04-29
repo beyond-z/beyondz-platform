@@ -48,6 +48,23 @@ class User < ActiveRecord::Base
     save!
   end
 
+  def recent_activity
+    result = []
+    todos.each do |a|
+      if a.completed
+        result.push(a)
+      end
+    end
+    submissions.each do |a|
+      if a.files.any?
+        result.push(a)
+      end
+    end
+    result = result.sort_by { |h| h[:updated_at] }
+    return result;
+  end
+
+
   # Returns the user ID of the matching user if the credentials
   # pass, otherwise, raises a LoginException
   def self.login(email, passw)
