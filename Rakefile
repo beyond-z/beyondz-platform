@@ -3,4 +3,10 @@
 
 require File.expand_path('../config/application', __FILE__)
 
+# Rake doesn't automatically pull in ENV vars from '.env'.
+# Need to require this, since rake environment is not loaded yet.
+require 'environment_vars'
+EnvironmentVars.load_env if (Rails.env.development? || Rails.env.test?)
+
+
 BeyondzPlatform::Application.load_tasks

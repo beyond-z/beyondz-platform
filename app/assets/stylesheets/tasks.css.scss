@@ -2,7 +2,7 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#submissions_instructions
+#task_instructions
 {
 	float: left;
 	width: 47%;
@@ -11,12 +11,12 @@
   color: #4D4E53;
 }
 
-#submissions_list
+#task_list
 {
 	float: right;
 	width: 50%;
 
-	#submissions_table
+	#task_table
 	{
 		width: 100%;
 
@@ -38,14 +38,14 @@
 
 	form
 	{
-		.submission_file
+		.task_file
 		{
-			.submission_name
+			.task_name
 			{
 				float: left;
 			}
 
-			.submission_file_field
+			.task_file_field
 			{
 				float: left;
 				margin-left: 15px;

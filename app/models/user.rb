@@ -1,9 +1,8 @@
 require 'digest/sha1'
 
 class User < ActiveRecord::Base
-  has_many :todos
-  has_many :assignments
-  has_many :submissions
+  has_many :assignments, dependent: :destroy
+  has_many :tasks
 
   has_many :pupils
 
@@ -21,31 +20,25 @@ class User < ActiveRecord::Base
   # Don't forget to update this code if we add any more has_many
   # relationships with the same skeleton row pattern.
   def create_child_skeleton_rows
-    AssignmentDefinition.all.each do |a|
-      assignment = assignments.find_by assignment_definition_id: a.id
-      if assignment.nil?
-        assignment = Assignment.create(assignment_definition_id: a.id)
-        assignments << assignment
-      end
+    ActiveRecord::Base.transaction do
 
-      a.todo_definitions.each do |td|
-        if nil == (todos.find_by todo_definition_id: td.id)
-          todos << Todo.create(todo_definition_id: td.id, assignment_id: assignment.id)
+      AssignmentDefinition.all.each do |a|
+        assignment = assignments.find_by_assignment_definition_id(a.id)
+        if assignment == nil
+          assignment = Assignment.create(assignment_definition_id: a.id, state: 'new')
+          assignments << assignment
+        end
+        
+        a.task_definitions.each do |td|
+          if nil == (tasks.find_by_task_definition_id(td.id))
+            tasks << Task.create(task_definition_id: td.id, assignment_id: assignment.id, kind: td.kind, file_type: td.file_type, state: 'new')
+          end
         end
       end
 
-      a.submission_definitions.each do |sd|
-        if nil == (submissions.find_by submission_definition_id: sd.id)
-          submissions << Submission.create(
-            submission_definition_id: sd.id,
-            assignment_id: assignment.id,
-            kind: sd.kind,
-            file_type: sd.file_type)
-        end
-      end
-    end
+      save!
 
-    save!
+    end                                                                                                                                                                                                        
   end
 
   def recent_activity

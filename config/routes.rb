@@ -1,6 +1,4 @@
 BeyondzPlatform::Application.routes.draw do
-  get "programs/college"
-#  root 'programs#college'
   root "home#index"
 
   namespace :admin do
@@ -14,12 +12,11 @@ BeyondzPlatform::Application.routes.draw do
   get ':controller/:action', controller: 'users'
   post ':controller/:action', controller: 'users'
 
-  get "assignments/:action", controller: "assignments"
   resources :feedback
 
 
   resources :assignments, only: [:index] do
-    resources :submissions, only: [:index, :update]
+    resources :tasks, only: [:index, :update]
   end
 
 
