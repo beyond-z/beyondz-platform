@@ -8,7 +8,7 @@ BeyondzPlatform::Application.routes.draw do
   resources :feedback
 
 
-  resources :assignments, only: [:index] do
+  resources :assignments, only: [:index, :update] do
     resources :tasks, only: [:index, :update]
   end
 

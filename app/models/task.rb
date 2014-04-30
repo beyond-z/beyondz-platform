@@ -56,13 +56,13 @@ class Task < ActiveRecord::Base
 
     # Definte state attributes/methods
     state all - [:new, :complete] do
-      def in_process?
+      def in_progress?
         true
       end
     end
 
     state :new, :complete do
-      def in_process?
+      def in_progress?
         false
       end
     end

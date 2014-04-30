@@ -276,7 +276,25 @@ section {
   h2 {
     @extend .assign-header; 
     margin-bottom: 0px;
-    } 
+    }
+  .assign-summary-wrapper {
+    padding: 10px;
+    .status_message {
+      clear: both; text-align: right; font-size: 2em; font-weight: bold;
+      }
+    }
+  .in_progress {
+    background-color: #FFFFCC;
+    .status_message {
+      color: #CCCC00;
+      }
+    }
+  .submittable {
+    background-color: #E6F5EB;
+    .status_message {
+      color: #197519;
+      }
+    }
   }
 
 .assign-date {
@@ -300,6 +318,8 @@ section {
   @extend .col-sm-4;
   color: $bzorange;
   border: 5px solid $bzgrey4;
+  margin-right: 10px;
+  width: 32%;
   ul {
     @extend .list-unstyled;
     @extend .icon-list;
