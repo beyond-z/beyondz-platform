@@ -100,10 +100,11 @@ local bracnh.
 ```
 
 * Switch back to staging (or some other branch) and delete the feature
-branch
+branch (locally and remotely)
 ```
   git checkout staging
   git branch -d <feature_name>
+  git push origin :<feature_name>
 ```
 # Code style
 
