@@ -74,7 +74,7 @@ repository do the following:
 
 Select the feature branch from your Github page using the drop down selector. 
 
-![Edit location](docs/select-branch.png)
+![Select Branch](docs/select-branch.png)
 
 
 Then click the green pull request button to the left hand side of the drop down.
@@ -85,16 +85,24 @@ On the next screen, click "Edit" near the right-hand side of the screen.
 
 Then choose the 'staging' branch of the beyondz-platform. 
 
-![Edit location](docs/staging-pull.png)
+![Switch to staging](docs/staging-pull.png)
 
 Write a meaningful title and summary so it is well documented what this "feature" 
 is when looking back or at a glance.  Your pull request will be rejected if the 
 title and  summary is cryptic for other readers.
 
-Finally, stay up to date by merging the staging repository back to your
+Once the pull is merged, do some cleanup on your local branch:
+
+* Stay up to date by merging the staging repository back to your
 local bracnh.
 
 	git pull upstream staging
+
+* Switch back to staging (or some other branch) and delete the feature
+branch
+
+  git checkout staging
+  git branch -d <feature_name>
 
 # Code style
 
