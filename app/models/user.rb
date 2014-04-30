@@ -31,13 +31,24 @@ class User < ActiveRecord::Base
       AssignmentDefinition.all.each do |a|
         assignment = assignments.find_by_assignment_definition_id(a.id)
         if assignment == nil
-          assignment = Assignment.create(assignment_definition_id: a.id, state: 'new')
+          assignment = Assignment.create(
+            assignment_definition_id: a.id,
+            state: 'new'
+          )
           assignments << assignment
         end
         
         a.task_definitions.each do |td|
-          if nil == (tasks.find_by_task_definition_id(td.id))
-            tasks << Task.create(task_definition_id: td.id, assignment_id: assignment.id, kind: td.kind, file_type: td.file_type, state: 'new')
+          task = tasks.find_by_task_definition_id(td.id)
+          if task == nil
+            task = Task.create(
+              task_definition_id: td.id,
+              assignment_id: assignment.id,
+              kind: td.kind,
+              file_type: td.file_type,
+              state: 'new'
+            )
+            tasks << task
           end
         end
       end

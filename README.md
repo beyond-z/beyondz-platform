@@ -58,58 +58,67 @@ Always create a new branch when working on a new feature. From your local master
 
 	git checkout -b <feature_name>
 
-When you are ready, commit with:
+To commit all changes:
 
-	git commit -a -m 'a brief message saying what you did'
+	git commit -am 'a brief message saying what you did. think about future readers.'
 
-Push your changes back to your Github fork with:
-
-	git push origin <feature_name>
-
-Before pushing to git, run the lint and the tests. So, the checklist for a pull request are:
+To push your local changes to your Github fork, run the static code analysis lint tool 
+and the tests like this:
 
 	rubocop .
 	rake test
-	git push origin <name>
+	git push origin <feature_name>
 
-	Also, don't forget to write a meaningful title and description in the pull request so it is well documented when looking back or at a glance.
+To submit a pull request and integrate your changes back to the main
+repository do the following:
+
+Select the feature branch from your Github page using the drop down selector. 
+
+![Select Branch](docs/select-branch.png)
 
 
-Once you are ready for it to be tested, select the branch from your Github page using the drop down selector. Then click the green pull request button to the left hand side of the drop down.
+Then click the green pull request button to the left hand side of the drop down.
 
-On the next screen, click "Edit" near the right-hand side of the screen to choose the Staging branch on beyondz-platform.
+On the next screen, click "Edit" near the right-hand side of the screen.
 
 ![Edit location](docs/edit-branch.png)
 
+Then choose the 'staging' branch of the beyondz-platform. 
 
-Write a message telling what you did, then submit the pull request.
+![Switch to staging](docs/staging-pull.png)
 
+Write a meaningful title and summary so it is well documented what this "feature" 
+is when looking back or at a glance.  Your pull request will be rejected if the 
+title and  summary is cryptic for other readers.
 
-To get changes from staging into your local branch, run
+Once the pull is merged, do some cleanup on your local branch:
 
+* Stay up to date by merging the staging repository back to your
+local bracnh.
+```
 	git pull upstream staging
+```
 
-That will pull the current state of the staging repository to your local copy, bringing you up to date with all changes.
-
+* Switch back to staging (or some other branch) and delete the feature
+branch
+```
+  git checkout staging
+  git branch -d <feature_name>
+```
 # Code style
 
 We use standard Rails code conventions with some additional rules:
 
   * Indent each level with two spaces
+  * Always raise subclasses of Exception specialized to your need, and always rescue a specific type.
+  * Always use Rails database migrations when adding new data.
   * Write the main class at the top of the file. Try to stick to one class per file, but a small helper (e.g. an exception subtype) may appear below the main class.
   * Always use begin, raise, and rescue for error handling. Don't use throw and catch in Ruby.
-  * Always raise subclasses of Exception specialized to your need, and always rescue a specific type.
-  * Write empty parenthesis on zero-argument method calls so they don't look like properties.
-  * Always use Rails database migrations when adding new data.
   * Keep individual lines simple. If a new reader can't immediately tell what it is doing, either simplify the code or refactor it into a named method.
   * Use the flash hash to quick message workflows.
   * Never commit a FIXME: either fix it or make a task in Asana.
 
-See this for more information: https://github.com/bbatsov/ruby-style-guide
+This is the full style guide we adhere to: https://github.com/bbatsov/ruby-style-guide
 
-Also install and use Rubocop to help keep your code up to standards:
-	gem install rubocop
-	cd app
-	rubocop
-
-Will list the issues to address.
+Remember to run rubocop before submitting pull requests to help keep
+your code up to standards.

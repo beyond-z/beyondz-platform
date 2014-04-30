@@ -117,6 +117,7 @@ ActiveRecord::Schema.define(version: 20140430174952) do
     t.boolean  "required",                 default: false
     t.integer  "position"
     t.text     "summary"
+    t.boolean  "requires_approval",        default: false
   end
 
   add_index "task_definitions", ["assignment_definition_id"], name: "index_task_definitions_on_assignment_definition_id", using: :btree
