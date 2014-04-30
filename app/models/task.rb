@@ -79,18 +79,6 @@ class Task < ActiveRecord::Base
       end
     end
 
-    # state :pending_revision do
-    #   def in_review?
-    #     true
-    #   end
-    # end
-
-    # state all - [:new, :pending_revision] do
-    #   def in_review?
-    #     false
-    #   end
-    # end
-
   end
 
 
