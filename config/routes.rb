@@ -14,6 +14,7 @@ BeyondzPlatform::Application.routes.draw do
 
 
   namespace :admin do
+    root "home#index"
     resources :users do
       resources :students
     end

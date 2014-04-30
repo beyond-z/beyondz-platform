@@ -13,6 +13,7 @@ class UsersController < ApplicationController
     @user = User.new
     @email = email
     @message = message
+    @redirect_to = params[:redirect_to]
     render action: 'form'
   end
 
@@ -98,7 +99,11 @@ class UsersController < ApplicationController
       user_info = params[:user]
       begin
         session[:user_id] = User.login(user_info[:email], user_info[:password])
-        redirect_to assignments_path
+        if params[:redirect_to]
+          redirect_to params[:redirect_to]
+        else
+          redirect_to assignments_path
+        end
       rescue LoginException => e
         login_form(user_info[:email], e.message)
       end
