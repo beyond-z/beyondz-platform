@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140429172306) do
+ActiveRecord::Schema.define(version: 20140430174952) do
 
   create_table "assignment_definitions", force: true do |t|
     t.string   "title"
@@ -165,16 +165,6 @@ ActiveRecord::Schema.define(version: 20140429172306) do
   add_index "tasks", ["task_definition_id"], name: "index_tasks_on_task_definition_id", using: :btree
   add_index "tasks", ["user_id"], name: "index_tasks_on_user_id", using: :btree
 
-  create_table "user_coaches", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "pupil_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "user_coaches", ["pupil_id"], name: "index_user_coaches_on_pupil_id", using: :btree
-  add_index "user_coaches", ["user_id"], name: "index_user_coaches_on_user_id", using: :btree
-
   create_table "users", force: true do |t|
     t.string   "email"
     t.string   "name"
@@ -187,6 +177,7 @@ ActiveRecord::Schema.define(version: 20140429172306) do
     t.datetime "reset_expiration"
     t.string   "first_name"
     t.string   "last_name"
+    t.boolean  "is_administrator"
   end
 
 end
