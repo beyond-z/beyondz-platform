@@ -79,9 +79,11 @@ Select the feature branch from your Github page using the drop down selector.
 
 Then click the green pull request button to the left hand side of the drop down.
 
-On the next screen, click "Edit" near the right-hand side of the screen to choose the Staging branch on beyondz-platform.
+On the next screen, click "Edit" near the right-hand side of the screen.
 
 ![Edit location](docs/edit-branch.png)
+
+Then choose the 'staging' branch of the beyondz-platform. 
 
 ![Edit location](docs/staging-pull.png)
 
