@@ -7,9 +7,9 @@ class Assignment < ActiveRecord::Base
   scope :complete, -> { where(tasks_complete: true) }
   scope :incomplete, -> { where(tasks_complete: false) }
   scope :for_display, -> {
-    joins(:assignment_definition).\
-    includes(:assignment_definition).\
-    order("assignment_definitions.start_date ASC")
+    joins(:assignment_definition)\
+    .includes(:assignment_definition)\
+    .order('assignment_definitions.start_date ASC')
   }
 
 
@@ -80,7 +80,7 @@ class Assignment < ActiveRecord::Base
 
 
   def tasks_completed?
-    tasks.incomplete.count < 1
+    tasks.required.incomplete.count < 1
   end
 
   def tasks_completed!
