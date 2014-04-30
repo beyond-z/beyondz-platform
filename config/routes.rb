@@ -1,16 +1,9 @@
 BeyondzPlatform::Application.routes.draw do
   root "home#index"
 
-  namespace :admin do
-    resources :users do
-      resources :pupils
-    end
-  end
-
-
-  get "users/login", to: "users#login" # defines users_login_path for use in the form
-  get ':controller/:action', controller: 'users'
-  post ':controller/:action', controller: 'users'
+  get "/users/login", to: "users#login" # defines users_login_path for use in the form
+  get '/users/:action', controller: 'users'
+  post '/users/:action', controller: 'users'
 
   resources :feedback
 
@@ -19,6 +12,12 @@ BeyondzPlatform::Application.routes.draw do
     resources :tasks, only: [:index, :update]
   end
 
+
+  namespace :admin do
+    resources :users do
+      resources :students
+    end
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

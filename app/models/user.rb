@@ -4,13 +4,19 @@ class User < ActiveRecord::Base
   has_many :assignments, dependent: :destroy
   has_many :tasks
 
-  has_many :pupils
+  has_many :coach_students, foreign_key: :coach_id
+  has_many :students, through: :coach_students, :source => :student
 
   def coach
-    c = Pupil.find_by :pupil_id => id
+    c = CoachStudent.find_by :student_id => id
     if c != nil
       return c.coach
     end
+  end
+
+  def is_coach?
+    students.any?
+    # user role table FIXME
   end
 
   # This will create the skeletons for assignments, todos,
@@ -37,19 +43,13 @@ class User < ActiveRecord::Base
       end
 
       save!
-
-    end                                                                                                                                                                                                        
+    end
   end
 
   def recent_activity
     result = []
-    todos.each do |a|
-      if a.completed
-        result.push(a)
-      end
-    end
-    submissions.each do |a|
-      if a.files.any?
+    tasks.each do |a|
+      if a.complete?
         result.push(a)
       end
     end
@@ -68,6 +68,10 @@ class User < ActiveRecord::Base
       parts = user.password.split('-')
       salt = parts[0]
       if parts[1] == User.hash_password(salt, passw)
+        # FIXME add to asana or something today
+        # This creates any missing skeleton rows now
+        # to ensure all assignments are up to date.
+        user.create_child_skeleton_rows
         return user.id
       else
         raise LoginException.new('Incorrect password')

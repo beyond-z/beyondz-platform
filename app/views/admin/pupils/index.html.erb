@@ -1,7 +1,0 @@
-Pupils for <%= @user.name %>:
-
-<ul>
-  <% @user.pupils.each do |pupil| %>
-    <li><a href="/admin/users/<%=pupil.user.id%>"><%= pupil.user.name %> &lt;<%= pupil.user.email %>&gt;</a></li>
-  <% end %>
-</ul>

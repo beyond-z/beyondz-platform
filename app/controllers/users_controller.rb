@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
   def coaching
-    @pupils = current_user.pupils
+    @students = current_user.students
     @activity = []
-    @pupils.each do |p|
-      p.user.recent_activity.each do |ra|
+    @students.each do |student|
+      student.recent_activity.each do |ra|
         @activity.push(ra)
       end
     end

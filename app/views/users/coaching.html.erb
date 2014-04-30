@@ -2,14 +2,25 @@
 
 <p>Recent activity by your students</p>
 
-<% @activity.each do |a| %>
-  <%= a %>
+<ol>
+<% @activity.each do |task| %>
+  <li><a href="#"><%= task.user.name %></a> completed <%= task.task_definition.name %>
+  by uploading
+    <a href="<%= task.files.first.url %>"><%= task.files.first["#{task.file_type}_file_name"] %></a>
+  at
+    <%= task.updated_at.strftime("%B %d, %Y") %>
+      <form>
+      <button>Comment</button>
+      <button>Approve</button>
+      </form>
+  </li>
 <% end %>
+</ol>
 
 <p>Here's the list of students you are coaching. Click on a name to see their progress.</p>
 
 <ul>
-<% @pupils.each do |pupil| %>
-  <li><%= pupil.user.name %></li>
+<% @students.each do |student| %>
+  <li><a href="/assignments?student=<%=student.id%>"><%= student.name %> &lt;<%= student.email %>&gt;</a></li>
 <% end %>
 </ul>
