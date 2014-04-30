@@ -95,15 +95,16 @@ Once the pull is merged, do some cleanup on your local branch:
 
 * Stay up to date by merging the staging repository back to your
 local bracnh.
-
+```
 	git pull upstream staging
+```
 
 * Switch back to staging (or some other branch) and delete the feature
 branch
-
+```
   git checkout staging
   git branch -d <feature_name>
-
+```
 # Code style
 
 We use standard Rails code conventions with some additional rules:
