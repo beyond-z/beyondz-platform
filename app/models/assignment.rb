@@ -23,7 +23,7 @@ class Assignment < ActiveRecord::Base
 
     event :submit do
       transition [:started, :pending_revision] => :pending_approval,
-        :if => lambda { |assignment| assignment.ready_for_submit? }
+        if: -> (assignment) { assignment.ready_for_submit? }
     end
 
     event :request_revision do

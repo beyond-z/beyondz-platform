@@ -7,7 +7,7 @@ class TasksController < ApplicationController
 
   def update
     ActiveRecord::Base.transaction do
-      
+
       task = Task.find(params[:id])
       task.updated_at = Time.now
 
@@ -16,7 +16,7 @@ class TasksController < ApplicationController
         if params[:task][:user_confirm] == 'true'
           task.submit!
         end
-        
+
       elsif params[:task].key?(:files)
         if task.files.present?
           task_file_params = params[:task][:files][task.file_type.to_sym]

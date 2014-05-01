@@ -15,7 +15,7 @@ class AssignmentsController < ApplicationController
 
   def update
     assignment = Assignment.find(params[:id])
-     
+
     if params[:start] && (params[:start] == 'true')
       assignment.start!
     elsif params[:submit] && (params[:submit] == 'true')
@@ -24,5 +24,5 @@ class AssignmentsController < ApplicationController
 
     redirect_to assignments_path
   end
-  
+
 end

@@ -37,7 +37,7 @@ class Task < ActiveRecord::Base
     # Define events and allowed transitions
     event :submit do
       transition :new => :complete,
-        :if => lambda { |task| !task.task_definition.requires_approval? }
+        if: -> (task) { !task.task_definition.requires_approval? }
       transition [:new, :pending_revision] => :pending_approval
     end
 
@@ -96,8 +96,7 @@ class Task < ActiveRecord::Base
   def post_completion_check
     # if all tasks are complete, notify coach?
     # lock tasks?
-    
-    validated = assignment.validate_tasks
+    assignment.validate_tasks
   end
 
 
