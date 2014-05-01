@@ -10,9 +10,11 @@
       <%
         wrapper_class = ''
         if assignment.submittable?
-          wrapper_class = 'submittable'
+          wrapper_class = 'assignment_submittable'
         elsif assignment.in_progress?
-          wrapper_class = 'in_progress'
+          wrapper_class = 'assignment_in_progress'
+        elsif assignment.complete?
+          wrapper_class = 'assignment_complete'
         end
       %>
       <div class="assign-summary-wrapper <%= wrapper_class %>">
@@ -33,22 +35,29 @@
             <h3>Your To-Dos</h3>
             <ul>
               <% assignment.tasks.for_display.each do |task| %>
-                  <li>
-                    <% if task.submittable? %>
+                <li>
+                  <% if task.submittable? %>
+                    <div class="submittable">
                       <%= check_box_tag "task", task.id, task.complete?, :class => 'task_confirm', 'data-assignment-id' => assignment.id, 'data-task-id' => task.id %>
-                    <% elsif task.pending_approval? %>
-                      (pending)
-                    <% elsif task.complete? %>
-                      <%= check_box_tag "task", task.id, true, :class => 'task_confirm', disabled: true %>
-                    <% end %>
+                    </div>
+                  <% elsif task.pending_approval? %>
+                    <div class="pending_approval"></div>
+                  <% elsif task.complete? %>
+                    <div class="complete"></div>
+                  <% else %>
+                    <div class="unavailable"></div>
+                  <% end %>
+                  <div class="description">
                     <%= task.task_definition.name.html_safe %>
                     <% if task.task_definition.summary.present? %>
                       <div class="assign-task-summary">
                         <%= task.task_definition.summary.html_safe %>
                       </div>
                     <% end %>
-                  </li>
-                <% end %>
+                  </div>
+                  <div class="clear"></div>
+                </li>
+              <% end %>
             </ul>
           </div>
         </section>
@@ -70,6 +79,10 @@
                 <% else %>
                   IN PROGRESS
                 <% end %>
+              </div>
+            <% elsif assignment.complete? %>
+              <div class="status_message">
+                COMPLETE
               </div>
             <% end %>
           </div>

@@ -69,7 +69,7 @@ class Task < ActiveRecord::Base
 
     state :new, :pending_revision do
       def submittable?
-        true
+        assignment.in_progress?
       end
     end
 
