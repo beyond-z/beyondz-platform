@@ -27,8 +27,8 @@
 
 
 <% if @complete_assignments %>
-  <%= link_to 'View Completed Assignments', assignments_path(state: 'complete') %>
-<!--   <a href="/assignments/completed">View Completed Assignments</a> -->
+<br />
+  <%= link_to "View Completed Assignments (#{@complete_assignments})", assignments_path(state: 'complete') %>
 <% end %>
 
 <% @incomplete_assignments.each do |assignment| %>

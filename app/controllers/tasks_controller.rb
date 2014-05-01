@@ -1,9 +1,7 @@
 class TasksController < ApplicationController
 
   def index
-
     @tasks = Task.for_assignment(params[:assignment_id])
-
     @task = Task.new
   end
 
@@ -33,7 +31,7 @@ class TasksController < ApplicationController
         end
       end
       task.save!
-    
+
     end
 
     respond_to do |format|

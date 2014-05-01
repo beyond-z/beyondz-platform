@@ -22,7 +22,7 @@
         </div>
         <div class="assign-summary-checklist">
           <h3>Your To-Dos</h3>
-          <ul>
+          <ul class="static">
             <% assignment_definition.task_definitions.each do |task_definition| %>
                 <li>
                   <%= task_definition.name.html_safe %>

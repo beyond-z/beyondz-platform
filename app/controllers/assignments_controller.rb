@@ -25,14 +25,25 @@ class AssignmentsController < ApplicationController
     end
 
     if params[:state] && (params[:state] == 'complete')
-      @incomplete_assignments = user.assignments.incomplete.count > 0
-      @complete_assignments = user.assignments.for_display.complete.reverse
+      @incomplete_assignments = user.assignments.not_submitted.count > 0
+      @complete_assignments = user.assignments.for_display.submitted.reverse
       render 'completed'
     else
-      @incomplete_assignments = user.assignments.for_display.incomplete
-      @complete_assignments = user.assignments.complete.count > 0
+      @incomplete_assignments = user.assignments.for_display.not_submitted
+      @complete_assignments = user.assignments.submitted.count > 0
+    end
+  end
+
+  def update
+    assignment = Assignment.find(params[:id])
+     
+    if params[:start] && (params[:start] == 'true')
+      assignment.start!
+    elsif params[:submit] && (params[:submit] == 'true')
+      assignment.submit!
     end
 
+    redirect_to assignments_path
   end
   
 end
