@@ -30,6 +30,7 @@ class Task < ActiveRecord::Base
     joins(:task_definition).includes(:task_definition)\
     .order('task_definitions.position ASC')
   }
+  scope :files, -> { where(kind: :file) }
 
 
   state_machine :state, :initial => :new do

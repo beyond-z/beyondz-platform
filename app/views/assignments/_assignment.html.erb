@@ -76,7 +76,9 @@
                 READY FOR SUBMITTAL
               </div>
             <% elsif assignment.in_progress? %>
-              <%= link_to 'Upload Assignment', assignment_tasks_path(assignment.id), :class => 'btn-assign-right' %>
+              <% if assignment.requires_files? %>
+                <%= link_to 'Upload Assignment', assignment_tasks_path(assignment.id), :class => 'btn-assign-right' %>
+              <% end %>
               <div class="status_message">
                 <% if assignment.pending_approval? %>
                   AWAITING APPROVAL

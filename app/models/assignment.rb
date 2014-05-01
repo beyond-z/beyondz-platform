@@ -107,6 +107,10 @@ class Assignment < ActiveRecord::Base
     tasks_complete?
   end
 
+  def requires_files?
+    tasks.files.count > 0
+  end
+
   # Run whatever validation/completion checks necessary on tasks to consider
   # them complete and set the flag on assignment
   def validate_tasks
