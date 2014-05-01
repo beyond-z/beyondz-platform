@@ -1,0 +1,34 @@
+<h1>Coaching Dashboard</h1>
+
+<% if @activity.any? %>
+
+  <h2>Recent activity by your students that needs your attention</h2>
+
+  <ol>
+  <% @activity.each do |task| %>
+    <li><a href="#"><%= task.user.name %></a> submitted <%= task.task_definition.name.html_safe %>
+    <% if task.files.any? %>
+    by uploading
+      <a href="<%= task.files.first.url %>"><%= task.files.first["#{task.file_type}_file_name"] %></a>
+    <% end %>
+    at
+      <%= task.updated_at.strftime("%B %d, %Y") %>
+      <% if !task.complete? %>
+        <div>
+        <button type="button">Comment</button>
+        <button class="approve_task" type="button" data-task-id="<%= task.id %>">Approve</button>
+        </div>
+      <%end%>
+    </li>
+  <% end %>
+  </ol>
+
+<% end %>
+
+<p>Here's the list of students you are coaching. Click on a name to see their progress.</p>
+
+<ul>
+<% @students.each do |student| %>
+  <li><a href="/assignments?student=<%=student.id%>"><%= student.name %> &lt;<%= student.email %>&gt;</a></li>
+<% end %>
+</ul>
