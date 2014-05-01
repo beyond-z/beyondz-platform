@@ -1,14 +1,4 @@
 class UsersController < ApplicationController
-  def coaching
-    @students = current_user.students
-    @activity = []
-    @students.each do |student|
-      student.recent_activity.each do |ra|
-        @activity.push(ra)
-      end
-    end
-  end
-
   def login_form(email, message)
     @user = User.new
     @email = email

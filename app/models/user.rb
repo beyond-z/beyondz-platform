@@ -60,11 +60,11 @@ class User < ActiveRecord::Base
   def recent_activity
     result = []
     tasks.each do |a|
-      if a.complete?
+      if a.complete? || a.pending_approval?
         result.push(a)
       end
     end
-    result = result.sort_by { |h| h[:updated_at] }
+    result = result.sort_by { |h| h[:time_ago] }
     return result;
   end
 
@@ -79,7 +79,6 @@ class User < ActiveRecord::Base
       parts = user.password.split('-')
       salt = parts[0]
       if parts[1] == User.hash_password(salt, passw)
-        # FIXME add to asana or something today
         # This creates any missing skeleton rows now
         # to ensure all assignments are up to date.
         user.create_child_skeleton_rows
