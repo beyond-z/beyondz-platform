@@ -5,8 +5,6 @@ BeyondzPlatform::Application.routes.draw do
   get '/users/:action', controller: 'users'
   post '/users/:action', controller: 'users'
 
-  get '/assignments/:action', controller: 'assignments' # For the hard-coded assignment details
-
   get '/coaches', to: 'coaches#index'
   get '/coaches/:action', controller: 'coaches'
   post '/coaches/:action', controller: 'coaches'
@@ -26,6 +24,8 @@ BeyondzPlatform::Application.routes.draw do
       resources :students
     end
   end
+
+  get '/assignments/:action', controller: 'assignments' # For the hard-coded assignment details
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
