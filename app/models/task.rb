@@ -100,6 +100,14 @@ class Task < ActiveRecord::Base
   end
 
 
+  def file?
+    (kind == 'file')
+  end
+
+  def needs_files?
+    file? && (files.count < 1)
+  end
+
   # blank out uploaded file data
   def reset_files
     files.each do |file|
