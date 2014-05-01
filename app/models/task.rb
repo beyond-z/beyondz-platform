@@ -30,6 +30,7 @@ class Task < ActiveRecord::Base
     joins(:task_definition).includes(:task_definition)\
     .order('task_definitions.position ASC')
   }
+  scope :files, -> { where(kind: :file) }
 
 
   state_machine :state, :initial => :new do
@@ -97,6 +98,14 @@ class Task < ActiveRecord::Base
     # lock tasks?
     
     validated = assignment.validate_tasks
+  end
+
+  def file?
+    (kind == 'file')
+  end
+
+  def needs_files?
+    file? && (files.count < 1)
   end
 
   # blank out uploaded file data

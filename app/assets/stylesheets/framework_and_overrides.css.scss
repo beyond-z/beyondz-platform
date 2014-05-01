@@ -341,23 +341,28 @@ section {
       display: block;
       position: relative;
     }
-    .submittable, .pending_approval, .complete, .unavailable {
+    .submittable, .kind_file, .pending_approval, .complete, .unavailable {
       top: 3px;
       float:left;
       width: 6%;
     }
+    .kind_file, .pending_approval, .complete, .unavailable {
+      @extend .glyphicon;
+    }
     .submittable {
     }
+    .kind_file {
+      @extend .glyphicon-upload;
+      color: #4480f7;
+      font-size: 1.2em;
+    }
     .pending_approval {
-      @extend .glyphicon;
       @extend .glyphicon-random;
     }
     .complete {
-      @extend .glyphicon;
       @extend .glyphicon-check;
     }
     .unavailable {
-      @extend .glyphicon;
       @extend .glyphicon-unchecked;
     }
     .description {

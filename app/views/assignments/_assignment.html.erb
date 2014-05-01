@@ -37,9 +37,13 @@
               <% assignment.tasks.for_display.each do |task| %>
                 <li>
                   <% if task.submittable? %>
-                    <div class="submittable">
-                      <%= check_box_tag "task", task.id, task.complete?, :class => 'task_confirm', 'data-assignment-id' => assignment.id, 'data-task-id' => task.id %>
-                    </div>
+                    <% if task.needs_files? %>
+                      <%= link_to '<div class="kind_file"></div>'.html_safe, assignment_tasks_path(assignment.id), title: 'Upload a file' %>
+                    <% else %>
+                      <div class="submittable">
+                        <%= check_box_tag "task", task.id, task.complete?, :class => 'task_confirm', 'data-assignment-id' => assignment.id, 'data-task-id' => task.id %>
+                      </div>
+                    <% end %>
                   <% elsif task.pending_approval? %>
                     <div class="pending_approval"></div>
                   <% elsif task.complete? %>
@@ -72,7 +76,9 @@
                 READY FOR SUBMITTAL
               </div>
             <% elsif assignment.in_progress? %>
-              <%= link_to 'Upload Assignment', assignment_tasks_path(assignment.id), :class => 'btn-assign-right' %>
+              <% if assignment.requires_files? %>
+                <%= link_to 'Upload Assignment', assignment_tasks_path(assignment.id), :class => 'btn-assign-right' %>
+              <% end %>
               <div class="status_message">
                 <% if assignment.pending_approval? %>
                   AWAITING APPROVAL
