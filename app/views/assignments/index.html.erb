@@ -31,10 +31,19 @@
   <%= link_to "View Completed Assignments (#{@complete_assignments})", assignments_path(state: 'complete') %>
 <% end %>
 
+<% if @coaches_comments.any? %>
+  <h2>Your coach had feedback for you:</h2>
+  <% @coaches_comments.each do |comment| %>
+    The task <strong><%= comment.task.task_definition.name.html_safe %></strong> needs revision.
+    <div>
+      <div><%= comment.user.name %> said:</div>
+      <p><%= comment.content %></p>
+    </div>
+  <% end %>
+<% end %>
+
 <% @incomplete_assignments.each do |assignment| %>
-
   <%= render :partial => 'assignment', locals: {assignment: assignment} %>
-
 <% end %>
 
 </div>

@@ -1,3 +1,4 @@
+<div class="coaching_dashboard">
 <h1>Coaching Dashboard</h1>
 
 <% if @activity.any? %>
@@ -6,17 +7,34 @@
 
   <ol>
   <% @activity.each do |task| %>
-    <li><a href="#"><%= task.user.name %></a> submitted <%= task.task_definition.name.html_safe %>
+    <li><a href="#"><%= task.user.name %></a> submitted <span class="task_name"><%= task.task_definition.name.html_safe %></span>
     <% if task.files.any? %>
     by uploading
       <a href="<%= task.files.first.url %>"><%= task.files.first["#{task.file_type}_file_name"] %></a>
     <% end %>
     at
       <%= task.updated_at.strftime("%B %d, %Y") %>
+
+      <div class="comments_holder">
+        <% task.comments.each do |comment| %>
+          <div class="comment">
+            <div class="comment_by"><b><%= comment.user.id == @current_user.id ? "You" : comment.user.name %></b> commented on <%= comment.updated_at.strftime("%B %d, %Y") %>:</div>
+            <p><%= comment.content %></p>
+          </div>
+        <% end %>
+      </div>
+
       <% if !task.complete? %>
         <div>
-        <button type="button">Comment</button>
+          <%= form_for Comment.new do |f| %>
+            <%= f.text_area :content %>
+            <%= f.hidden_field :task_id, { :value => task.id } %>
+            <br />
+            <button type="submit">Add Comment</button>
+          <% end %>
+          <br />
         <button class="approve_task" type="button" data-task-id="<%= task.id %>">Approve</button>
+        <button class="request_task_revisions" type="button" data-task-id="<%= task.id %>">Request Revisions</button>
         </div>
       <%end%>
     </li>
@@ -25,6 +43,7 @@
 
 <% end %>
 
+<h2>Student List</h2>
 <p>Here's the list of students you are coaching. Click on a name to see their progress.</p>
 
 <ul>
@@ -32,3 +51,4 @@
   <li><a href="/assignments?student=<%=student.id%>"><%= student.name %> &lt;<%= student.email %>&gt;</a></li>
 <% end %>
 </ul>
+</div>

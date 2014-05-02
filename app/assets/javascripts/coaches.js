@@ -13,4 +13,20 @@ $(document).ready(function() {
     });
     return false;
   });
+
+  $('.request_task_revisions').click(function() {
+    var task_id = $(this).data("task-id");
+    
+    $.ajax({
+      url: '/coaches/request_task_revisions' + '.json',
+      type: 'PATCH',
+      data: {
+        'task': {
+          "id" : task_id
+        }
+      }
+    });
+    return false;
+  });
+
 });

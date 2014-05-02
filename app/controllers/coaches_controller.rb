@@ -36,4 +36,16 @@ class CoachesController < ApplicationController
       format.json { render json: { success: true } }
     end
   end
+
+  def request_task_revisions
+    task = Task.find(params[:task][:id])
+    task.request_revision!
+    task.save!
+
+    respond_to do |format|
+      format.html { redirect_to "/coaches" }
+      format.json { render json: { success: true } }
+    end
+  end
+
 end

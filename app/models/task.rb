@@ -5,6 +5,8 @@ class Task < ActiveRecord::Base
   belongs_to :user
   has_many :files, class_name: 'TaskFile', dependent: :destroy
 
+  has_many :comments
+
   scope :for_assignment, -> (assignment_id) {
     where(assignment_id: assignment_id)
   }
