@@ -22,9 +22,16 @@ BeyondzPlatform::Application.routes.draw do
 
   namespace :admin do
     root "home#index"
+
     resources :users do
       resources :students
     end
+
+    resources :coaches, controller: 'users' do
+      resources :students
+    end
+
+    resources :students, controller: 'users'
   end
 
   get '/assignments/:action', controller: 'assignments' # For the hard-coded assignment details
