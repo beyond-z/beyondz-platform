@@ -10,7 +10,7 @@
 
 user = User.create(email: "test@beyondz.org", password: User.get_salted_password("test"), name: "BeyondZ Test")
 coach = User.create(email: "test+coach@beyondz.org", password: User.get_salted_password("test"), name: "BeyondZ Coach")
-admin_user = User.create(email: "admin@beyondz.org", password: User.get_salted_password("test"), name: "BeyondZ Admin")
+admin_user = User.create(email: "admin@beyondz.org", password: User.get_salted_password("test"), name: "BeyondZ Admin", is_administrator: true)
 
 CoachStudent.create(coach_id: coach.id, student_id: user.id)
 
