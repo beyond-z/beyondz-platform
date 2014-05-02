@@ -12,7 +12,7 @@ class Admin::UsersController < Admin::ApplicationController
   end
 
   def create
-    @user = User.create(params[:user].permit(:first_name, :last_name, :email, :name, :password))
+    @user = User.create(params[:user].permit(:first_name, :last_name, :email, :password))
     # Since the password coming from the User.create is not uniquely salted,
     # we'll call the change_password method immediately to ensure it is
     # stored correctly and securely.
