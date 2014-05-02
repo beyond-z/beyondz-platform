@@ -7,6 +7,10 @@ class User < ActiveRecord::Base
   has_many :coach_students, foreign_key: :coach_id
   has_many :students, through: :coach_students, :source => :student
 
+  def name
+    first_name + " " + last_name
+  end
+
   def coach
     c = CoachStudent.find_by :student_id => id
     if c != nil

@@ -17,10 +17,7 @@
 
       <div class="comments_holder">
         <% task.comments.each do |comment| %>
-          <div class="comment">
-            <div class="comment_by"><b><%= comment.user.id == @current_user.id ? "You" : comment.user.name %></b> commented on <%= comment.updated_at.strftime("%B %d, %Y") %>:</div>
-            <p><%= comment.content %></p>
-          </div>
+          <%= render :partial => "comments/comment", locals: { :comment => comment } %>
         <% end %>
       </div>
 

@@ -35,10 +35,8 @@
   <h2>Your coach had feedback for you:</h2>
   <% @coaches_comments.each do |comment| %>
     The task <strong><%= comment.task.task_definition.name.html_safe %></strong> needs revision.
-    <div>
-      <div><%= comment.user.name %> said:</div>
-      <p><%= comment.content %></p>
-    </div>
+
+    <%= render :partial => "comments/comment", locals: { :comment => comment } %>
   <% end %>
 <% end %>
 
