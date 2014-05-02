@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
   has_many :coach_students, foreign_key: :coach_id
   has_many :students, through: :coach_students, :source => :student
 
+  after_create :create_child_skeleton_rows
+
   def name
     first_name + " " + last_name
   end
