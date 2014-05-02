@@ -21,7 +21,7 @@ class AssignmentsController < ApplicationController
     user = User.find(uid)
 
     if user.id != session[:user_id] && (user.coach == nil || user.coach.id != session[:user_id])
-      raise Exception.new("Permission deined")
+      raise ApplicationHelper::PermissionDenied
     end
 
     if params[:state] && (params[:state] == 'complete')
