@@ -32,7 +32,7 @@ class AssignmentsController < ApplicationController
       @incomplete_assignments = user.assignments.for_display.not_submitted
       @complete_assignments = user.assignments.submitted.count
 
-      @coaches_comments = Comment.for_student_attention(uid)
+      @coaches_comments = Comment.needs_student_attention(uid)
     end
   end
 
