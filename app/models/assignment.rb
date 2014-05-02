@@ -4,8 +4,10 @@ class Assignment < ActiveRecord::Base
   belongs_to :user
   has_many :tasks, dependent: :destroy
 
-  scope :complete, -> { where(tasks_complete: true) }
-  scope :incomplete, -> { where(tasks_complete: false) }
+  scope :submitted, -> { where(state: [:pending_approval, :complete]) }
+  scope :not_submitted, -> { where.not(state: [:pending_approval, :complete]) }
+  scope :complete, -> { where(state: :complete) }
+  scope :incomplete, -> { where.not(state: :complete) }
   scope :for_display, -> {
     joins(:assignment_definition)\
     .includes(:assignment_definition)\
@@ -20,7 +22,8 @@ class Assignment < ActiveRecord::Base
     end
 
     event :submit do
-      transition [:started, :pending_revision] => :pending_approval
+      transition [:started, :pending_revision] => :pending_approval,
+        if: -> (assignment) { assignment.ready_for_submit? }
     end
 
     event :request_revision do
@@ -40,19 +43,31 @@ class Assignment < ActiveRecord::Base
 
     # Definte state attributes/methods
     state all - [:new, :complete] do
-      def in_process?
+      def in_progress?
         true
       end
     end
 
     state :new, :complete do
-      def in_process?
+      def in_progress?
+        false
+      end
+    end
+
+    state :started, :pending_revision do
+      def submittable?
+        ready_for_submit?
+      end
+    end
+
+    state :new, :pending_approval, :complete do
+      def submittable?
         false
       end
     end
 
   end
-
+  
 
   ## State machine callbacks
 
@@ -85,9 +100,32 @@ class Assignment < ActiveRecord::Base
 
   def tasks_completed!
     update_attribute(:tasks_complete, true)
+  end
 
-    # For now, make assigment completion based on task completion (may change)
-    update_attribute(:state, :complete)
+  def ready_for_submit?
+    # define conditions that allow an assignment to be submittable
+    tasks_complete?
+  end
+
+  def requires_files?
+    tasks.files.count > 0
+  end
+
+  def human_readable_status
+    status_message = ''
+    if submittable?
+      status_message = 'READY FOR SUBMITTAL'
+    elsif in_progress?
+      if pending_approval?
+        status_message = 'AWAITING APPROVAL'
+      else
+        status_message = 'IN PROGRESS'
+      end
+    elsif complete?
+      status_message = 'COMPLETE'
+    end
+    
+    status_message
   end
 
   # Run whatever validation/completion checks necessary on tasks to consider

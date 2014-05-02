@@ -30,13 +30,14 @@ class Task < ActiveRecord::Base
     joins(:task_definition).includes(:task_definition)\
     .order('task_definitions.position ASC')
   }
+  scope :files, -> { where(kind: :file) }
 
 
   state_machine :state, :initial => :new do
     # Define events and allowed transitions
     event :submit do
       transition :new => :complete,
-        :if => lambda { |task| !task.task_definition.requires_approval? }
+        if: -> (task) { !task.task_definition.requires_approval? }
       transition [:new, :pending_revision] => :pending_approval
     end
 
@@ -56,20 +57,20 @@ class Task < ActiveRecord::Base
 
     # Definte state attributes/methods
     state all - [:new, :complete] do
-      def in_process?
+      def in_progress?
         true
       end
     end
 
     state :new, :complete do
-      def in_process?
+      def in_progress?
         false
       end
     end
 
     state :new, :pending_revision do
       def submittable?
-        true
+        assignment.in_progress?
       end
     end
 
@@ -95,10 +96,17 @@ class Task < ActiveRecord::Base
   def post_completion_check
     # if all tasks are complete, notify coach?
     # lock tasks?
-    
-    validated = assignment.validate_tasks
+    assignment.validate_tasks
   end
 
+
+  def file?
+    (kind == 'file')
+  end
+
+  def needs_files?
+    file? && (files.count < 1)
+  end
 
   # blank out uploaded file data
   def reset_files

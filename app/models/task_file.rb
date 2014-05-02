@@ -33,13 +33,13 @@ class TaskFile < ActiveRecord::Base
     :content_type => { :content_type => ['audio/mp3', 'application/x-mp3'] },
     :size => { :in => 0..2.megabytes }
 
-  
-  default_scope {order('created_at ASC')}
+
+  default_scope { order('created_at ASC') }
 
 
   def url
     # dynamically determine the file url for the given type
-    eval "self.#{self.task.file_type}.url"
+    eval "#{task.file_type}.url"
   end
 
   def type_exists?(file_type)

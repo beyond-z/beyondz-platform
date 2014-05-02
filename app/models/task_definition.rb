@@ -4,7 +4,7 @@ class TaskDefinition < ActiveRecord::Base
   has_many :tasks, dependent: :destroy
 
 
-  default_scope order('position ASC')
+  default_scope { order('position ASC') }
   scope :required, -> { where(required: true) }
   scope :not_required, -> { where(required: false) }
   scope :require_approval, -> { where(requires_approval: true) }
