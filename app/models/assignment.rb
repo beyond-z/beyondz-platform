@@ -138,5 +138,4 @@ class Assignment < ActiveRecord::Base
 
     validated
   end
-
 end

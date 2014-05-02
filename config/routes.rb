@@ -1,11 +1,18 @@
 BeyondzPlatform::Application.routes.draw do
   root "home#index"
 
-  get "users/login", to: "users#login" # defines users_login_path for use in the form
-  get ':controller/:action', controller: 'users'
-  post ':controller/:action', controller: 'users'
+  get "/users/login", to: "users#login" # defines users_login_path for use in the form
+  get '/users/:action', controller: 'users'
+  post '/users/:action', controller: 'users'
+
+  get '/coaches', to: 'coaches#index'
+  get '/coaches/:action', controller: 'coaches'
+  post '/coaches/:action', controller: 'coaches'
+  patch '/coaches/:action', controller: 'coaches'
 
   resources :feedback
+
+  resources :comments
 
 
   resources :assignments, only: [:index, :update] do
@@ -13,7 +20,21 @@ BeyondzPlatform::Application.routes.draw do
   end
 
 
+  namespace :admin do
+    root "home#index"
 
+    resources :users do
+      resources :students
+    end
+
+    resources :coaches, controller: 'users' do
+      resources :students
+    end
+
+    resources :students, controller: 'users'
+  end
+
+  get '/assignments/:action', controller: 'assignments' # For the hard-coded assignment details
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -11,6 +11,8 @@ class TasksController < ApplicationController
       task = Task.find(params[:id])
       task.updated_at = Time.now
 
+      raise ApplicationHelper::PermissionDenied if task.user_id != current_user.id
+
       # handle different task types
       if params[:task].key?(:user_confirm)
         if params[:task][:user_confirm] == 'true'

@@ -1,0 +1,6 @@
+<div class="comment">
+  <div class="comment_by"><span class="comment_speaker"><%= comment.user.id == @current_user.id ? "You" : comment.user.name %></span> commented on <span class="comment_time"><%= comment.updated_at.strftime("%B %d, %Y") %></span>:</div>
+  <div class="comment_content">
+    <p><%= comment.content %></p>
+  </div>
+</div>

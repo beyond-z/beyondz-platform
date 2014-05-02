@@ -11,10 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140429161900) do
-
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+ActiveRecord::Schema.define(version: 20140501214848) do
 
   create_table "assignment_definitions", force: true do |t|
     t.string   "title"
@@ -46,6 +43,27 @@ ActiveRecord::Schema.define(version: 20140429161900) do
   add_index "assignments", ["assignment_definition_id"], name: "index_assignments_on_assignment_definition_id", using: :btree
   add_index "assignments", ["state"], name: "index_assignments_on_state", using: :btree
   add_index "assignments", ["user_id"], name: "index_assignments_on_user_id", using: :btree
+
+  create_table "coach_students", force: true do |t|
+    t.integer  "coach_id"
+    t.integer  "student_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "coach_students", ["coach_id"], name: "index_coach_students_on_coach_id", using: :btree
+  add_index "coach_students", ["student_id"], name: "index_coach_students_on_student_id", using: :btree
+
+  create_table "comments", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "task_id"
+    t.text     "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "comments", ["task_id"], name: "index_comments_on_task_id", using: :btree
+  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
 
   create_table "resources", force: true do |t|
     t.string   "url"
@@ -127,6 +145,9 @@ ActiveRecord::Schema.define(version: 20140429161900) do
     t.string   "password"
     t.string   "reset_token"
     t.datetime "reset_expiration"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.boolean  "is_administrator"
   end
 
 end

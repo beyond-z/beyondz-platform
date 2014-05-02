@@ -1,7 +1,28 @@
 class AssignmentsController < ApplicationController
 
+  before_action :require_login
+
+  private
+
+  def require_login
+    unless @user_logged_in
+      flash[:error] = "Please log in to see your assignments."
+      redirect_to "/users/login?redirect_to=/assignments"
+    end
+  end
+
+  public
+
   def index
-    user = User.find(session[:user_id])
+    uid = session[:user_id]
+    if params[:student]
+      uid = params[:student]
+    end
+    user = User.find(uid)
+
+    if user.id != session[:user_id] && (user.coach == nil || user.coach.id != session[:user_id])
+      raise ApplicationHelper::PermissionDenied
+    end
 
     if params[:state] && (params[:state] == 'complete')
       @incomplete_assignments = user.assignments.not_submitted.count
@@ -10,6 +31,8 @@ class AssignmentsController < ApplicationController
     else
       @incomplete_assignments = user.assignments.for_display.not_submitted
       @complete_assignments = user.assignments.submitted.count
+
+      @coaches_comments = Comment.needs_student_attention(uid)
     end
   end
 
@@ -24,5 +47,4 @@ class AssignmentsController < ApplicationController
 
     redirect_to assignments_path
   end
-
 end
