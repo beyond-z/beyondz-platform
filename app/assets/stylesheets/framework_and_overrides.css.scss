@@ -279,28 +279,28 @@ section {
     }
   .assign-summary-wrapper {
     padding: 10px;
-    .status_message {
+    .status-message {
       clear: both;
       text-align: right;
       font-size: 2em;
       font-weight: bold;
     }
   }
-  .assignment_in_progress {
+  .assign-in-progress {
     background-color: #FFFFCC;
-    .status_message {
+    .status-message {
       color: #CCCC00;
     }
   }
-  .assignment_submittable {
+  .assign-submittable {
     background-color: #E6F5EB;
-    .status_message {
+    .status-message {
       color: #197519;
     }
   }
-  .assignment_complete {
+  .assign-complete {
     background-color: #eee;
-    .status_message {
+    .status-message {
       color: #aaa;
     }
   }
@@ -341,22 +341,22 @@ section {
       display: block;
       position: relative;
     }
-    .submittable, .kind_file, .pending_approval, .complete, .unavailable {
+    .submittable, .kind-file, .pending-approval, .complete, .unavailable {
       top: 3px;
       float:left;
       width: 6%;
     }
-    .kind_file, .pending_approval, .complete, .unavailable {
+    .kind-file, .pending-approval, .complete, .unavailable {
       @extend .glyphicon;
     }
     .submittable {
     }
-    .kind_file {
+    .kind-file {
       @extend .glyphicon-upload;
       color: #4480f7;
       font-size: 1.2em;
     }
-    .pending_approval {
+    .pending-approval {
       @extend .glyphicon-random;
     }
     .complete {
