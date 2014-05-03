@@ -76,6 +76,7 @@
               <% if assignment.requires_files? %>
                 <%= link_to 'Upload Assignment', assignment_tasks_path(assignment.id), :class => 'btn-assign-right' %>
               <% end %>
+            <% end %>
             <div class="status-message">
               <%= assignment.human_readable_status %>
             </div>
