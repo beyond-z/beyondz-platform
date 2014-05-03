@@ -111,6 +111,23 @@ class Assignment < ActiveRecord::Base
     tasks.files.count > 0
   end
 
+  def human_readable_status
+    status_message = ''
+    if submittable?
+      status_message = 'READY FOR SUBMITTAL'
+    elsif in_progress?
+      if pending_approval?
+        status_message = 'AWAITING APPROVAL'
+      else
+        status_message = 'IN PROGRESS'
+      end
+    elsif complete?
+      status_message = 'COMPLETE'
+    end
+    
+    status_message
+  end
+
   # Run whatever validation/completion checks necessary on tasks to consider
   # them complete and set the flag on assignment
   def validate_tasks
