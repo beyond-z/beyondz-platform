@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-  $('.task_confirm').change(function() {
+  $('.task-confirm').change(function() {
     var assignment_id = $(this).data("assignment-id");
     var task_id = $(this).data("task-id");
     

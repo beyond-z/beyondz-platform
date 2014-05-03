@@ -1,4 +1,4 @@
-<div class="coaching_dashboard">
+<div class="coaching-dashboard">
 <h1>Coaching Dashboard</h1>
 
 <% if @activity.any? %>
@@ -7,7 +7,7 @@
 
   <ol>
   <% @activity.each do |task| %>
-    <li><a href="#"><%= task.user.name %></a> submitted <span class="task_name"><%= task.task_definition.name.html_safe %></span>
+    <li><a href="#"><%= task.user.name %></a> submitted <span class="task-name"><%= task.task_definition.name.html_safe %></span>
     <% if task.files.any? %>
     by uploading
       <a href="<%= task.files.first.url %>"><%= task.files.first["#{task.file_type}_file_name"] %></a>
@@ -15,7 +15,7 @@
     at
       <%= task.updated_at.strftime("%B %d, %Y") %>
 
-      <div class="comments_holder">
+      <div class="comments-holder">
         <% task.comments.each do |comment| %>
           <%= render :partial => "comments/comment", locals: { :comment => comment } %>
         <% end %>
@@ -30,8 +30,8 @@
             <button type="submit">Add Comment</button>
           <% end %>
           <br />
-        <button class="approve_task" type="button" data-task-id="<%= task.id %>">Approve</button>
-        <button class="request_task_revisions" type="button" data-task-id="<%= task.id %>">Request Revisions</button>
+        <button class="approve-task" type="button" data-task-id="<%= task.id %>">Approve</button>
+        <button class="request-task-revisions" type="button" data-task-id="<%= task.id %>">Request Revisions</button>
         </div>
       <%end%>
     </li>

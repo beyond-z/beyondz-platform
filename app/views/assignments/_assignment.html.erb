@@ -10,11 +10,11 @@
       <%
         wrapper_class = ''
         if assignment.submittable?
-          wrapper_class = 'assignment_submittable'
+          wrapper_class = 'assignment-submittable'
         elsif assignment.in_progress?
-          wrapper_class = 'assignment_in_progress'
+          wrapper_class = 'assignment-in-progress'
         elsif assignment.complete?
-          wrapper_class = 'assignment_complete'
+          wrapper_class = 'assignment-complete'
         end
       %>
       <div class="assign-summary-wrapper <%= wrapper_class %>">
@@ -38,14 +38,14 @@
                 <li>
                   <% if task.submittable? %>
                     <% if task.needs_files? %>
-                      <%= link_to '<div class="kind_file"></div>'.html_safe, assignment_tasks_path(assignment.id), title: 'Upload a file' %>
+                      <%= link_to '<div class="kind-file"></div>'.html_safe, assignment_tasks_path(assignment.id), title: 'Upload a file' %>
                     <% else %>
                       <div class="submittable">
-                        <%= check_box_tag "task", task.id, task.complete?, :class => 'task_confirm', 'data-assignment-id' => assignment.id, 'data-task-id' => task.id %>
+                        <%= check_box_tag "task", task.id, task.complete?, :class => 'task-confirm', 'data-assignment-id' => assignment.id, 'data-task-id' => task.id %>
                       </div>
                     <% end %>
                   <% elsif task.pending_approval? %>
-                    <div class="pending_approval"></div>
+                    <div class="pending-approval"></div>
                   <% elsif task.complete? %>
                     <div class="complete"></div>
                   <% else %>
@@ -72,14 +72,14 @@
               <%= link_to 'Start Assignment', assignment_path(assignment.id, start: true), method: :patch, :class => 'btn-assign-right' %>
             <% elsif assignment.submittable? %>
               <%= link_to 'Submit Assignment', assignment_path(assignment.id, submit: true), method: :patch, :class => 'btn-assign-right' %>
-              <div class="status_message">
+              <div class="status-message">
                 READY FOR SUBMITTAL
               </div>
             <% elsif assignment.in_progress? %>
               <% if assignment.requires_files? %>
                 <%= link_to 'Upload Assignment', assignment_tasks_path(assignment.id), :class => 'btn-assign-right' %>
               <% end %>
-              <div class="status_message">
+              <div class="status-message">
                 <% if assignment.pending_approval? %>
                   AWAITING APPROVAL
                 <% else %>
@@ -87,7 +87,7 @@
                 <% end %>
               </div>
             <% elsif assignment.complete? %>
-              <div class="status_message">
+              <div class="status-message">
                 COMPLETE
               </div>
             <% end %>
