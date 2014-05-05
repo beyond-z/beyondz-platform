@@ -38,7 +38,7 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
 
 # Acts As State Machine
-gem 'aasm'
+gem 'aasm', '~> 3.1.1'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
