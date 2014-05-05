@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   after_create :create_child_skeleton_rows
 
   def name
-    first_name + " " + last_name
+    "#{first_name} #{last_name}"
   end
 
   def coach
