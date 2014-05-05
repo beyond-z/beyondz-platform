@@ -38,11 +38,11 @@ class Task < ActiveRecord::Base
 
   aasm :column => :state do
     state :new, initial: true
-    state :pending_approval, :after_exit => :send_to_approver
+    state :pending_approval, :after_enter => :send_to_approver
     state :pending_revision
-    state :complete, :after_exit => :post_completion_check
+    state :complete, :after_enter => :post_completion_check
 
-    event :submit, :after => :send_to_approver do
+    event :submit do
       transitions :from => :new, :to => :complete,
         :guard => :does_not_require_approval?
       transitions :from => [:new, :pending_revision], :to => :pending_approval
@@ -73,7 +73,6 @@ class Task < ActiveRecord::Base
     # lock tasks?
     assignment.validate_tasks
   end
-
 
   def in_progress?
     [:pending_approval, :pending_revision].include?(state.to_sym)
