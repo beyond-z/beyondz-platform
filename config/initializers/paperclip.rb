@@ -1,6 +1,6 @@
 Paperclip::Attachment.default_options[:storage] = :s3
 Paperclip::Attachment.default_options[:s3_credentials] = {
-  :bucket => ENV['AWS_BUCKET'],
-  :access_key_id => ENV['AWS_ACCESS_KEY_ID'],
-  :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY']
+  :bucket => Rails.application.secrets.aws_bucket,
+  :access_key_id => Rails.application.secrets.aws_access_key_id,
+  :secret_access_key => Rails.application.secrets.aws_secret_access_key
 }
