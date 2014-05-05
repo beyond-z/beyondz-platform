@@ -1,4 +1,5 @@
 class Assignment < ActiveRecord::Base
+  include AASM
 
   belongs_to :assignment_definition
   belongs_to :user
@@ -14,60 +15,33 @@ class Assignment < ActiveRecord::Base
     .order('assignment_definitions.start_date ASC')
   }
 
-
-  state_machine :state, :initial => :new do
-    # Define events and allowed transitions
-    event :start do
-      transition :new => :started
-    end
-
-    event :submit do
-      transition [:started, :pending_revision] => :pending_approval,
-        if: -> (assignment) { assignment.ready_for_submit? }
-    end
-
-    event :request_revision do
-      transition :pending_approval => :pending_revision
-    end
-
-    event :approve do
-      transition :pending_approval => :complete
-    end
-
-    # Define state transition callbacks
-    after_transition :on => :start, :do => :accept
-    after_transition :on => :submit, :do => :send_to_approver
-    after_transition :on => :request_revision, :do => :send_back_to_user
-    before_transition :on => :approve, :do => :verify_completion
-    after_transition :on => :approve, :do => :post_completion_check
-
-    # Definte state attributes/methods
-    state all - [:new, :complete] do
-      def in_progress?
-        true
-      end
-    end
-
-    state :new, :complete do
-      def in_progress?
-        false
-      end
-    end
-
-    state :started, :pending_revision do
-      def submittable?
-        ready_for_submit?
-      end
-    end
-
-    state :new, :pending_approval, :complete do
-      def submittable?
-        false
-      end
-    end
-
-  end
   
+  aasm :column => :state do
+    state :new, initial: true
+    state :started
+    state :pending_approval
+    state :pending_revision
+    state :complete
+
+    event :start, :after => :accept do
+      transitions :from => :new, :to => :started
+    end
+
+    event :submit, :after => :send_to_approver do
+      transitions :from => [:started, :pending_revision],
+        :to => :pending_approval, :guard => :ready_for_submit?
+    end
+
+    event :request_revision, :after => :send_back_to_user do
+      transitions :from => :pending_approval, :to => :pending_revision
+    end
+
+    event :approve, :before => :verify_completion,
+      :after => :post_completion_check do
+      transitions :from => :pending_approval, :to => :complete
+    end
+  end
+
 
   ## State machine callbacks
 
@@ -93,6 +67,14 @@ class Assignment < ActiveRecord::Base
     # lock assignments?
   end
 
+
+  def in_progress?
+    [:started, :pending_approval, :pending_revision].include?(state.to_sym)
+  end
+
+  def submittable?
+    [:started, :pending_revision].include?(state.to_sym) && ready_for_submit?
+  end
 
   def tasks_completed?
     tasks.required.incomplete.count < 1
