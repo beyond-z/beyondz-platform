@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20140501214848) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "assignment_definitions", force: true do |t|
     t.string   "title"
     t.string   "led_by"
