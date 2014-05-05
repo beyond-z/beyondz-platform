@@ -27,3 +27,15 @@ RaiseArgs:
 
 SignalException:
   Enabled: false # nor this
+
+HashSyntax:
+  Enabled: false # enforce ruby 1.9 hash colon (vs. =>)
+
+EmptyLines:
+  Enabled: false # whether multiple empty lines are allowed together
+
+EmptyLinesAroundBody:
+  Enabled: false # whether empty lines are allowed around methods, etc...
+
+TrailingBlankLines:
+  Enabled: false # whether ending new line is required at end of file

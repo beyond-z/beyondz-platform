@@ -6,49 +6,84 @@
             <span class="session-type">(<%=assignment.assignment_definition.led_by.capitalize%> Led)</span>
           <% end %>
         </h2>
-      </section>  
-      <section>
-        <div class="assign-date">
-          <p><%= assignment.assignment_definition.start_date.strftime("%b %e") %>
-            <% if assignment.assignment_definition.end_date != nil %>
-              -
-              <%= assignment.assignment_definition.end_date.strftime("%b %e") %></p>
-            <% end %>
-        </div>
       </section>
-      <section>
-        <div class="assign-summary-practice">
-          <%= assignment.assignment_definition.front_page_info.html_safe %>
-        </div>
-        <div class="assign-summary-checklist">
-          <h3>Your To-Dos</h3>
-          <ul>
-            <% assignment.tasks.for_display.each do |task| %>
+      <%
+        wrapper_class = ''
+        if assignment.submittable?
+          wrapper_class = 'assign-submittable'
+        elsif assignment.in_progress?
+          wrapper_class = 'assign-in-progress'
+        elsif assignment.complete?
+          wrapper_class = 'assign-complete'
+        end
+      %>
+      <div class="assign-summary-wrapper <%= wrapper_class %>">
+        <section>
+          <div class="assign-date">
+            <p><%= assignment.assignment_definition.start_date.strftime("%b %e") %>
+              <% if assignment.assignment_definition.end_date != nil %>
+                -
+                <%= assignment.assignment_definition.end_date.strftime("%b %e") %></p>
+              <% end %>
+          </div>
+        </section>
+        <section>
+          <div class="assign-summary-practice">
+            <%= assignment.assignment_definition.front_page_info.html_safe %>
+          </div>
+          <div class="assign-summary-checklist">
+            <h3>Your To-Dos</h3>
+            <ul>
+              <% assignment.tasks.for_display.each do |task| %>
                 <li>
                   <% if task.submittable? %>
-                    <%= check_box_tag "task", task.id, task.complete?, :class => 'task_confirm', 'data-assignment-id' => assignment.id, 'data-task-id' => task.id %>
+                    <% if task.needs_files? %>
+                      <%= link_to '<div class="kind-file"></div>'.html_safe, assignment_tasks_path(assignment.id), title: 'Upload a file' %>
+                    <% else %>
+                      <div class="submittable">
+                        <%= check_box_tag "task", task.id, task.complete?, :class => 'task_confirm', 'data-assignment-id' => assignment.id, 'data-task-id' => task.id %>
+                      </div>
+                    <% end %>
                   <% elsif task.pending_approval? %>
-                    (pending)
+                    <div class="pending-approval"></div>
                   <% elsif task.complete? %>
-                    <%= check_box_tag "task", task.id, true, :class => 'task_confirm', disabled: true %>
+                    <div class="complete"></div>
+                  <% else %>
+                    <div class="unavailable"></div>
                   <% end %>
-                  <%= task.task_definition.name.html_safe %>
-                  <% if task.task_definition.summary.present? %>
-                    <div class="assign-task-summary">
-                      <%= task.task_definition.summary.html_safe %>
-                    </div>
-                  <% end %>
+                  <div class="description">
+                    <%= task.task_definition.name.html_safe %>
+                    <% if task.task_definition.summary.present? %>
+                      <div class="assign-task-summary">
+                        <%= task.task_definition.summary.html_safe %>
+                      </div>
+                    <% end %>
+                  </div>
+                  <div class="clear"></div>
                 </li>
               <% end %>
-          </ul>
-        </div>
-      </section>
-      <section>
-        <div class="assign-summary-buttons">
-          <a class="btn-assign-left" href="/assignments/<%= assignment.assignment_definition.seo_name %>">View Details</a>
-          <%= link_to 'Upload Assignment', assignment_tasks_path(assignment.id), :class => 'btn-assign-right' %>
-        </div>
-      </section>
+            </ul>
+          </div>
+        </section>
+        <section>
+          <div class="assign-summary-buttons">
+            <a class="btn-assign-left" href="/assignments/<%= assignment.assignment_definition.seo_name %>">View Details</a>
+            <% if assignment.new? %>
+              <%= link_to 'Start Assignment', assignment_path(assignment.id, start: true), method: :patch, :class => 'btn-assign-right' %>
+            <% elsif assignment.submittable? %>
+              <%= link_to 'Submit Assignment', assignment_path(assignment.id, submit: true), method: :patch, :class => 'btn-assign-right' %>
+            <% elsif assignment.in_progress? %>
+              <% if assignment.requires_files? %>
+                <%= link_to 'Upload Assignment', assignment_tasks_path(assignment.id), :class => 'btn-assign-right' %>
+              <% end %>
+            <% end %>
+
+            <div class="status-message">
+              <%= assignment.human_readable_status %>
+            </div>
+          </div>
+        </section>
+      </div>
     </div>
   </section>
 

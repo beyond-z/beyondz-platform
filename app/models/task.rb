@@ -1,9 +1,12 @@
 class Task < ActiveRecord::Base
+  include AASM
 
   belongs_to :assignment
   belongs_to :task_definition
   belongs_to :user
   has_many :files, class_name: 'TaskFile', dependent: :destroy
+
+  has_many :comments
 
   scope :for_assignment, -> (assignment_id) {
     where(assignment_id: assignment_id)
@@ -30,55 +33,28 @@ class Task < ActiveRecord::Base
     joins(:task_definition).includes(:task_definition)\
     .order('task_definitions.position ASC')
   }
+  scope :files, -> { where(kind: :file) }
 
 
-  state_machine :state, :initial => :new do
-    # Define events and allowed transitions
-    event :submit do
-      transition :new => :complete,
-        :if => lambda { |task| !task.task_definition.requires_approval? }
-      transition [:new, :pending_revision] => :pending_approval
+  aasm :column => :state do
+    state :new, initial: true
+    state :pending_approval, :after_exit => :send_to_approver
+    state :pending_revision
+    state :complete, :after_exit => :post_completion_check
+
+    event :submit, :after => :send_to_approver do
+      transitions :from => :new, :to => :complete,
+        :guard => :does_not_require_approval?
+      transitions :from => [:new, :pending_revision], :to => :pending_approval
     end
 
-    event :request_revision do
-      transition :pending_approval => :pending_revision
+    event :request_revision, :after => :send_back_to_user do
+      transitions :from => :pending_approval, :to => :pending_revision
     end
 
     event :approve do
-      transition :pending_approval => :complete
+      transitions :from => :pending_approval, :to => :complete
     end
-
-    # Define state transition callbacks
-    after_transition any => :pending_approval, :do => :send_to_approver
-    after_transition :pending_approval => :pending_revision,
-      :do => :send_back_to_user
-    after_transition any => :complete, :do => :post_completion_check
-
-    # Definte state attributes/methods
-    state all - [:new, :complete] do
-      def in_process?
-        true
-      end
-    end
-
-    state :new, :complete do
-      def in_process?
-        false
-      end
-    end
-
-    state :new, :pending_revision do
-      def submittable?
-        true
-      end
-    end
-
-    state :pending_approval, :complete do
-      def submittable?
-        false
-      end
-    end
-
   end
 
 
@@ -95,10 +71,43 @@ class Task < ActiveRecord::Base
   def post_completion_check
     # if all tasks are complete, notify coach?
     # lock tasks?
-    
-    validated = assignment.validate_tasks
+    assignment.validate_tasks
   end
 
+
+  def in_progress?
+    [:pending_approval, :pending_revision].include?(state.to_sym)
+  end
+
+  def submittable?
+    can_submit = false
+    
+    if assignment.in_progress?
+      if (state.to_sym == :new)
+        can_submit = true
+      elsif state.to_sym == :pending_revision
+        can_submit = true
+      end
+    end
+
+    can_submit
+  end
+
+  def requires_approval?
+    task_definition.requires_approval? 
+  end
+
+  def does_not_require_approval?
+    !requires_approval?
+  end
+
+  def file?
+    (kind == 'file')
+  end
+
+  def needs_files?
+    file? && (files.count < 1)
+  end
 
   # blank out uploaded file data
   def reset_files

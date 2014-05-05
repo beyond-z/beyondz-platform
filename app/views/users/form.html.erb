@@ -3,6 +3,7 @@
 <%= render "shared/form_errors" %>
 
 <%= form_for @user, url: users_login_path do |f| %>
+  <%= hidden_field_tag :redirect_to, @redirect_to %>
   <div class="form-group">
     <%= f.label :email, 'Email address:' %>
     <%= f.text_field :email, value: @email, autofocus:'autofocus', class: 'form-control', placeholder: 'emailAddress@someDomain.com' %>

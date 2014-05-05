@@ -4,6 +4,27 @@ class User < ActiveRecord::Base
   has_many :assignments, dependent: :destroy
   has_many :tasks
 
+  has_many :coach_students, foreign_key: :coach_id
+  has_many :students, through: :coach_students, :source => :student
+
+  after_create :create_child_skeleton_rows
+
+  def name
+    "#{first_name} #{last_name}"
+  end
+
+  def coach
+    c = CoachStudent.find_by :student_id => id
+    if c != nil
+      return c.coach
+    end
+  end
+
+  def is_coach?
+    students.any?
+    # user role table FIXME
+  end
+
   # This will create the skeletons for assignments, todos,
   # and submissions based on the definitions. We should run
   # this whenever a user is created or a definition is added.
@@ -39,9 +60,20 @@ class User < ActiveRecord::Base
       end
 
       save!
-
-    end                                                                                                                                                                                                        
+    end
   end
+
+  def recent_activity
+    result = []
+    tasks.each do |a|
+      if a.complete? || a.pending_approval?
+        result.push(a)
+      end
+    end
+    result = result.sort_by { |h| h[:time_ago] }
+    return result;
+  end
+
 
   # Returns the user ID of the matching user if the credentials
   # pass, otherwise, raises a LoginException
@@ -53,6 +85,9 @@ class User < ActiveRecord::Base
       parts = user.password.split('-')
       salt = parts[0]
       if parts[1] == User.hash_password(salt, passw)
+        # This creates any missing skeleton rows now
+        # to ensure all assignments are up to date.
+        user.create_child_skeleton_rows
         return user.id
       else
         raise LoginException.new('Incorrect password')

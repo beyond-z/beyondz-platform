@@ -1,0 +1,7 @@
+Students for <%= @user.name %>:
+
+<ul>
+  <% @user.students.each do |student| %>
+    <li><a href="/admin/users/<%=student.id%>"><%= student.name %> &lt;<%= student.email %>&gt;</a></li>
+  <% end %>
+</ul>

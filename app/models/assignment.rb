@@ -1,56 +1,45 @@
 class Assignment < ActiveRecord::Base
+  include AASM
 
   belongs_to :assignment_definition
   belongs_to :user
   has_many :tasks, dependent: :destroy
 
-  scope :complete, -> { where(tasks_complete: true) }
-  scope :incomplete, -> { where(tasks_complete: false) }
+  scope :submitted, -> { where(state: [:pending_approval, :complete]) }
+  scope :not_submitted, -> { where.not(state: [:pending_approval, :complete]) }
+  scope :complete, -> { where(state: :complete) }
+  scope :incomplete, -> { where.not(state: :complete) }
   scope :for_display, -> {
     joins(:assignment_definition)\
     .includes(:assignment_definition)\
     .order('assignment_definitions.start_date ASC')
   }
 
+  
+  aasm :column => :state do
+    state :new, initial: true
+    state :started
+    state :pending_approval
+    state :pending_revision
+    state :complete
 
-  state_machine :state, :initial => :new do
-    # Define events and allowed transitions
-    event :start do
-      transition :new => :started
+    event :start, :after => :accept do
+      transitions :from => :new, :to => :started
     end
 
-    event :submit do
-      transition [:started, :pending_revision] => :pending_approval
+    event :submit, :after => :send_to_approver do
+      transitions :from => [:started, :pending_revision],
+        :to => :pending_approval, :guard => :ready_for_submit?
     end
 
-    event :request_revision do
-      transition :pending_approval => :pending_revision
+    event :request_revision, :after => :send_back_to_user do
+      transitions :from => :pending_approval, :to => :pending_revision
     end
 
-    event :approve do
-      transition :pending_approval => :complete
+    event :approve, :before => :verify_completion,
+      :after => :post_completion_check do
+      transitions :from => :pending_approval, :to => :complete
     end
-
-    # Define state transition callbacks
-    after_transition :on => :start, :do => :accept
-    after_transition :on => :submit, :do => :send_to_approver
-    after_transition :on => :request_revision, :do => :send_back_to_user
-    before_transition :on => :approve, :do => :verify_completion
-    after_transition :on => :approve, :do => :post_completion_check
-
-    # Definte state attributes/methods
-    state all - [:new, :complete] do
-      def in_process?
-        true
-      end
-    end
-
-    state :new, :complete do
-      def in_process?
-        false
-      end
-    end
-
   end
 
 
@@ -79,15 +68,46 @@ class Assignment < ActiveRecord::Base
   end
 
 
+  def in_progress?
+    [:started, :pending_approval, :pending_revision].include?(state.to_sym)
+  end
+
+  def submittable?
+    [:started, :pending_revision].include?(state.to_sym) && ready_for_submit?
+  end
+
   def tasks_completed?
     tasks.required.incomplete.count < 1
   end
 
   def tasks_completed!
     update_attribute(:tasks_complete, true)
+  end
 
-    # For now, make assigment completion based on task completion (may change)
-    update_attribute(:state, :complete)
+  def ready_for_submit?
+    # define conditions that allow an assignment to be submittable
+    tasks_complete?
+  end
+
+  def requires_files?
+    tasks.files.count > 0
+  end
+
+  def human_readable_status
+    status_message = ''
+    if submittable?
+      status_message = 'READY FOR SUBMITTAL'
+    elsif in_progress?
+      if pending_approval?
+        status_message = 'AWAITING APPROVAL'
+      else
+        status_message = 'IN PROGRESS'
+      end
+    elsif complete?
+      status_message = 'COMPLETE'
+    end
+    
+    status_message
   end
 
   # Run whatever validation/completion checks necessary on tasks to consider
@@ -100,5 +120,4 @@ class Assignment < ActiveRecord::Base
 
     validated
   end
-
 end

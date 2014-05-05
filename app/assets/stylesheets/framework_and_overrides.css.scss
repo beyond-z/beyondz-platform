@@ -126,8 +126,8 @@ section {
 }
 
 .checkmark li:before {
-  content: '\e067';
- }
+  @extend .glyphicon-check;
+}
  
 //-----------------------------------------
 // Bootstrap overrides
@@ -276,8 +276,35 @@ section {
   h2 {
     @extend .assign-header; 
     margin-bottom: 0px;
-    } 
+    }
+  .assign-summary-wrapper {
+    padding: 10px;
+    .status-message {
+      clear: both;
+      text-align: right;
+      font-size: 2em;
+      font-weight: bold;
+    }
   }
+  .assign-in-progress {
+    background-color: #FFFFCC;
+    .status-message {
+      color: #CCCC00;
+    }
+  }
+  .assign-submittable {
+    background-color: #E6F5EB;
+    .status-message {
+      color: #197519;
+    }
+  }
+  .assign-complete {
+    background-color: #eee;
+    .status-message {
+      color: #aaa;
+    }
+  }
+}
 
 .assign-date {
   @extend .assign-col;
@@ -300,11 +327,49 @@ section {
   @extend .col-sm-4;
   color: $bzorange;
   border: 5px solid $bzgrey4;
-  ul {
+  margin-right: 10px;
+  width: 32%;
+  ul.static {
     @extend .list-unstyled;
     @extend .icon-list;
     @extend .checkmark;
+  }
+  ul {
+    @extend .list-unstyled;
+    li {
+      padding: 0 0 5px 0px;
+      display: block;
+      position: relative;
     }
+    .submittable, .kind-file, .pending-approval, .complete, .unavailable {
+      top: 3px;
+      float:left;
+      width: 6%;
+    }
+    .kind-file, .pending-approval, .complete, .unavailable {
+      @extend .glyphicon;
+    }
+    .submittable {
+    }
+    .kind-file {
+      @extend .glyphicon-upload;
+      color: #4480f7;
+      font-size: 1.2em;
+    }
+    .pending-approval {
+      @extend .glyphicon-random;
+    }
+    .complete {
+      @extend .glyphicon-check;
+    }
+    .unavailable {
+      @extend .glyphicon-unchecked;
+    }
+    .description {
+      float:left;
+      width: 93%;
+    }
+  }
   h3 {
     color: black;
     }
@@ -319,7 +384,8 @@ section {
 }
 
 .assign-task-summary {
-  font-size: 11px;
+  font-size: .8em;
+  color: #aaa;
 }
 
 .assign-summary-buttons {
