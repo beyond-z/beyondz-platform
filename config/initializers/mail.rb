@@ -1,24 +1,24 @@
 if Rails.env.production?
 
   ActionMailer::Base.smtp_settings = {
-    :address => ENV['SMTP_SERVER'],
+    :address => Rails.application.secrets.smtp_server,
     :port => 587,
     :domain => "beyondz.org",
     :authentication => :plain,
-    :user_name => ENV['SMTP_USERNAME'],
-    :password => ENV["SMTP_PASSWORD"],
+    :user_name => Rails.application.secrets.smtp_username,
+    :password => Rails.application.secrets.smtp_password,
     :enable_starttls_auto => true
   }
 
 else
 
   ActionMailer::Base.smtp_settings = {
-    :address => ENV['SMTP_SERVER'],
+    :address => Rails.application.secrets.smtp_server,
     :port => 587,
     :domain => "beyondz.com",
     :authentication => :plain,
-    :user_name => ENV['SMTP_USERNAME'],
-    :password => ENV['SMTP_PASSWORD'],
+    :user_name => Rails.application.secrets.smtp_username,
+    :password => Rails.application.secrets.smtp_password,
     :enable_starttls_auto => true
   }
 
@@ -26,7 +26,7 @@ else
   # testing or other purposes, so real users don't receive test emails.
   class OverrideRecipientInterceptor
     def delivering_email(message)
-      message.to = ENV['SMTP_OVERRIDE_RECIPIENT']
+      message.to = Rails.application.secrets.smtp_override_recipient
       message.cc = nil
       message.bcc = nil
     end
