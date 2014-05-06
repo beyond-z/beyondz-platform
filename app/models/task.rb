@@ -5,8 +5,10 @@ class Task < ActiveRecord::Base
   belongs_to :task_definition
   belongs_to :user
   has_many :files, class_name: 'TaskFile', dependent: :destroy
-
   has_many :comments
+
+  enum kind: { file: 0, user_confirm: 1 }
+  enum file_type: { document: 0, image: 1, video: 2, audio: 3 }
 
   scope :for_assignment, -> (assignment_id) {
     where(assignment_id: assignment_id)
@@ -33,7 +35,7 @@ class Task < ActiveRecord::Base
     joins(:task_definition).includes(:task_definition)\
     .order('task_definitions.position ASC')
   }
-  scope :files, -> { where(kind: :file) }
+  scope :files, -> { where(kind: Task.kinds[:file]) }
 
 
   aasm :column => :state do
