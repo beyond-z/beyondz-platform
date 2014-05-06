@@ -1,14 +1,5 @@
 class CoachesController < ApplicationController
-  before_action :require_login
-
-  private
-
-  def require_login
-    unless @user_logged_in && current_user.is_coach?
-      flash[:error] = "Please log in to see your coaching dashboard."
-      redirect_to "/users/login?redirect_to=/coaches"
-    end
-  end
+  before_action :require_coach_login
 
   public
 

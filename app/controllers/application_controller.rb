@@ -18,6 +18,21 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def require_login
+    unless @user_logged_in
+      flash[:error] = "Please log in to see your assignments."
+      redirect_to "/users/login?redirect_to=/assignments"
+    end
+  end
+
+  def require_coach_login
+    unless @user_logged_in && current_user.is_coach?
+      flash[:error] = "Please log in to see your coaching dashboard."
+      redirect_to "/users/login?redirect_to=/coaches"
+    end
+  end
+
+
   public
 
   attr_reader :current_user
