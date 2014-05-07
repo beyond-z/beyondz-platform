@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140501214848) do
+ActiveRecord::Schema.define(version: 20140506174217) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -81,8 +81,6 @@ ActiveRecord::Schema.define(version: 20140501214848) do
   create_table "task_definitions", force: true do |t|
     t.integer  "assignment_definition_id"
     t.text     "name"
-    t.string   "kind"
-    t.string   "file_type"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "details"
@@ -90,6 +88,8 @@ ActiveRecord::Schema.define(version: 20140501214848) do
     t.integer  "position"
     t.text     "summary"
     t.boolean  "requires_approval",        default: false
+    t.integer  "kind",                     default: 0
+    t.integer  "file_type"
   end
 
   add_index "task_definitions", ["assignment_definition_id"], name: "index_task_definitions_on_assignment_definition_id", using: :btree
@@ -126,11 +126,11 @@ ActiveRecord::Schema.define(version: 20140501214848) do
     t.integer  "assignment_id"
     t.integer  "task_definition_id"
     t.integer  "user_id"
-    t.string   "kind"
-    t.string   "file_type"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "state"
+    t.integer  "kind",               default: 0
+    t.integer  "file_type"
   end
 
   add_index "tasks", ["assignment_id"], name: "index_tasks_on_assignment_id", using: :btree
