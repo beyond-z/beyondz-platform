@@ -26,11 +26,23 @@ class AssignmentsController < ApplicationController
     end
   end
 
+  def show
+    assignment = Assignment.find(params[:id])
+
+    @assignment = assignment
+
+    tasks = assignment.tasks.needs_student_attention
+
+    @task = tasks.first
+  end
+
   def update
     assignment = Assignment.find(params[:id])
 
     if params[:start] && (params[:start] == 'true')
       assignment.start!
+      redirect_to "/assignments/#{assignment.id}"
+      return
     elsif params[:submit] && (params[:submit] == 'true')
       assignment.submit!
     end

@@ -11,6 +11,7 @@ class Task < ActiveRecord::Base
   scope :for_assignment, -> (assignment_id) {
     where(assignment_id: assignment_id)
   }
+  scope :needs_student_attention, -> { where("state = 'new' or state = 'needs_revision'") }
   scope :complete, -> { where(tasks: { state: :complete }) }
   scope :incomplete, -> { where.not(tasks: { state: :complete }) }
   scope :required, -> {

@@ -1,0 +1,79 @@
+RECENT COACH UPDATES ON THIS ASSIGNMENT
+
+
+<div class="assignment-summary">
+  <section>
+    <h2><%= @assignment.assignment_definition.title %>
+      <% if @assignment.assignment_definition.led_by != nil %>
+        <span class="session-type">(<%=@assignment.assignment_definition.led_by.capitalize%> Led)</span>
+      <% end %>
+    </h2>
+  </section>
+  <%
+    wrapper_class = ''
+    if @assignment.submittable?
+      wrapper_class = 'assignment-submittable'
+    elsif @assignment.in_progress?
+      wrapper_class = 'assignment-in-progress'
+    elsif @assignment.complete?
+      wrapper_class = 'assignment-complete'
+    end
+  %>
+  <div class="assign-summary-wrapper <%= wrapper_class %>">
+    <section>
+      <div class="assignment-date">
+        <p><%= @assignment.assignment_definition.start_date.strftime("%b %e") %>
+          <% if @assignment.assignment_definition.end_date != nil %>
+            -
+            <%= @assignment.assignment_definition.end_date.strftime("%b %e") %></p>
+          <% end %>
+      </div>
+    </section>
+  </div>
+</div>
+
+<% if @task %>
+
+  <h3><%= @task.task_definition.name.html_safe %></h3>
+
+  <% if @task.task_definition.summary %>
+    <h4>Your job:</h4>
+    <%= @task.task_definition.summary.html_safe %>
+  <% end %>
+
+  <% if @task.kind == "user_confirm" %>
+    <%= form_for @task, method: :patch, url: "/assignments/#{@assignment.id}/tasks/#{@task.id}" do |f| %>
+      <%= f.hidden_field :user_confirm, { :value => true } %>
+      <button type="submit">I'm Done!</button>
+    <% end %>
+  <% elsif @task.kind == "file" %>
+    <%= render partial: "tasks/form", locals: { :task => @task } %>
+
+    <% if @task.submittable? %>
+      <%= form_for @task, method: :patch, url: "/assignments/#{@assignment.id}/tasks/#{@task.id}" do |f| %>
+        <%= f.hidden_field :user_confirm, { :value => true } %>
+        <button type="submit">I'm Done!</button>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <h4>Task Discussion</h4>
+  <% @task.comments.each do |comment| %>
+    <%= render partial: "comments/comment", locals: { :comment => comment } %>
+  <% end %>
+    <div>
+      <%= form_for Comment.new do |f| %>
+        <%= f.text_area :content %>
+        <%= f.hidden_field :task_id, { :value => @task.id } %>
+        <br />
+        <button type="submit">Add Comment</button>
+      <% end %>
+    </div>
+
+<% else %>
+  if assignment submittable:
+  Submit Assignment
+
+  else:
+  Pending feedback, please wait for the coach
+<% end %>
