@@ -123,3 +123,7 @@ This is the full style guide we adhere to: https://github.com/bbatsov/ruby-style
 
 Remember to run rubocop before submitting pull requests to help keep
 your code up to standards.
+
+# CSS style
+
+  * Use dashes in class names, not underscores

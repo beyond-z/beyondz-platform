@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  $('.approve_task').click(function() {
+  $('.approve-task').click(function() {
     var task_id = $(this).data("task-id");
     
     $.ajax({
@@ -14,7 +14,7 @@ $(document).ready(function() {
     return false;
   });
 
-  $('.request_task_revisions').click(function() {
+  $('.request-task-revisions').click(function() {
     var task_id = $(this).data("task-id");
     
     $.ajax({
