@@ -87,12 +87,12 @@ section {
   }
 
 // Class used by ruby on rails when validation fails.
-.field_with_errors {
+.field-with-errors {
   @extend .has-error;
 }
 
 // Error messages for failed form validation.
-#error_explanation {
+#error-explanation {
   margin: 20px 0;
   padding: 20px;
   border-left: 3px solid #eee;  
@@ -286,19 +286,19 @@ section {
       font-weight: bold;
     }
   }
-  .assign-in-progress {
+  .assignment-in-progress {
     background-color: #FFFFCC;
     .status-message {
       color: #CCCC00;
     }
   }
-  .assign-submittable {
+  .assignment-submittable {
     background-color: #E6F5EB;
     .status-message {
       color: #197519;
     }
   }
-  .assign-complete {
+  .assignment-complete {
     background-color: #eee;
     .status-message {
       color: #aaa;
