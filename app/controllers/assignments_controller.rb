@@ -32,6 +32,7 @@ class AssignmentsController < ApplicationController
     @assignment = assignment
 
     tasks = assignment.tasks.needs_student_attention
+    @coaches_comments = Comment.needs_student_attention(current_user.id, assignment.id)
 
     @task = tasks.first
   end

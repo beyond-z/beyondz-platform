@@ -1,6 +1,4 @@
-RECENT COACH UPDATES ON THIS ASSIGNMENT
-
-
+<div class="assignment-task-pane">
 <div class="assignment-summary">
   <section>
     <h2><%= @assignment.assignment_definition.title %>
@@ -32,7 +30,18 @@ RECENT COACH UPDATES ON THIS ASSIGNMENT
   </div>
 </div>
 
+
+<% if @coaches_comments.any? %>
+  <h2>Your coach had feedback for you:</h2>
+  <% @coaches_comments.each do |comment| %>
+    The task <strong><%= comment.task.task_definition.name.html_safe %></strong> needs revision.
+
+    <%= render :partial => "comments/comment", locals: { :comment => comment } %>
+  <% end %>
+<% end %>
+
 <% if @task %>
+  <div class="task-container">
 
   <h3><%= @task.task_definition.name.html_safe %></h3>
 
@@ -42,12 +51,12 @@ RECENT COACH UPDATES ON THIS ASSIGNMENT
   <% end %>
 
   <% if @task.kind == "user_confirm" %>
-    <%= form_for @task, method: :patch, url: "/assignments/#{@assignment.id}/tasks/#{@task.id}" do |f| %>
+    <%= form_for [@task.assignment, @task] do |f| %>
       <%= f.hidden_field :user_confirm, { :value => true } %>
       <button type="submit">I'm Done!</button>
     <% end %>
   <% elsif @task.kind == "text" %>
-    <%= form_for @task, method: :patch, url: "/assignments/#{@assignment.id}/tasks/#{@task.id}" do |f| %>
+    <%= form_for [@task.assignment, @task] do |f| %>
       <%= f.text_area :state %>
       <%= f.hidden_field :user_confirm, { :value => true } %>
       <button type="submit">Save Draft</button>
@@ -57,23 +66,27 @@ RECENT COACH UPDATES ON THIS ASSIGNMENT
     <%= render partial: "tasks/form", locals: { :task => @task } %>
 
     <% if @task.submittable? %>
-      <%= form_for @task, method: :patch, url: "/assignments/#{@assignment.id}/tasks/#{@task.id}" do |f| %>
+      <%= form_for [@task.assignment, @task] do |f| %>
         <%= f.hidden_field :user_confirm, { :value => true } %>
         <button type="submit">I'm Done!</button>
       <% end %>
     <% end %>
   <% end %>
+  </div>
 
+  <div class="task-discussion">
   <h4>Task Discussion</h4>
-  <% @task.comments.each do |comment| %>
-    <%= render partial: "comments/comment", locals: { :comment => comment } %>
-  <% end %>
+    <% @task.comments.each do |comment| %>
+      <%= render partial: "comments/comment", locals: { :comment => comment } %>
+    <% end %>
     <%= render partial: "comments/form", locals: { :task => @task } %>
+  </div>
 
 <% else %>
-  if assignment submittable:
-  Submit Assignment
-
-  else:
-  Pending feedback, please wait for the coach
+  <% if @assignment.submittable? %>
+    <%= link_to 'Submit Assignment', assignment_path(@assignment.id, submit: true), method: :patch, :class => 'btn-assignment-right' %>
+  <% else %>
+    This assignment is pending feedback, please wait for the coach.
+  <% end %>
 <% end %>
+</div>
