@@ -89,4 +89,12 @@
     This assignment is pending feedback, please wait for the coach.
   <% end %>
 <% end %>
+
+
+  <% if @previous_task %>
+    <a href="/assignments/<%=@previous_task.assignment.id%>?task_id=<%= @previous_task.id %>">Previous</a>
+  <% end %>
+  <% if @next_task %>
+    <a href="/assignments/<%=@next_task.assignment.id%>?task_id=<%= @next_task.id %>">Next</a>
+  <% end %>
 </div>

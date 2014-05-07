@@ -31,10 +31,31 @@ class AssignmentsController < ApplicationController
 
     @assignment = assignment
 
-    tasks = assignment.tasks.needs_student_attention
     @coaches_comments = Comment.needs_student_attention(current_user.id, assignment.id)
 
-    @task = tasks.first
+    if params[:task_id]
+      @task = Task.find(params[:task_id])
+    else
+      tasks = assignment.tasks.needs_student_attention
+      @task = tasks.first
+    end
+
+    tasks = assignment.tasks
+    @next_task = nil
+    @previous_task = nil
+    last = nil
+    next_is_it = false
+    tasks.each do |task|
+      if next_is_it
+        @next_task = task
+        break
+      end
+      if task == @task
+        @previous_task = last
+        next_is_it = true
+      end
+      last = task
+    end
   end
 
   def update
