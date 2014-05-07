@@ -46,6 +46,13 @@ RECENT COACH UPDATES ON THIS ASSIGNMENT
       <%= f.hidden_field :user_confirm, { :value => true } %>
       <button type="submit">I'm Done!</button>
     <% end %>
+  <% elsif @task.kind == "text" %>
+    <%= form_for @task, method: :patch, url: "/assignments/#{@assignment.id}/tasks/#{@task.id}" do |f| %>
+      <%= f.text_area :state %>
+      <%= f.hidden_field :user_confirm, { :value => true } %>
+      <button type="submit">Save Draft</button>
+      <button type="submit">I'm Done!</button>
+    <% end %>
   <% elsif @task.kind == "file" %>
     <%= render partial: "tasks/form", locals: { :task => @task } %>
 
@@ -61,14 +68,7 @@ RECENT COACH UPDATES ON THIS ASSIGNMENT
   <% @task.comments.each do |comment| %>
     <%= render partial: "comments/comment", locals: { :comment => comment } %>
   <% end %>
-    <div>
-      <%= form_for Comment.new do |f| %>
-        <%= f.text_area :content %>
-        <%= f.hidden_field :task_id, { :value => @task.id } %>
-        <br />
-        <button type="submit">Add Comment</button>
-      <% end %>
-    </div>
+    <%= render partial: "comments/form", locals: { :task => @task } %>
 
 <% else %>
   if assignment submittable:

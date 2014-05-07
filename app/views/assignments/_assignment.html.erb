@@ -68,9 +68,12 @@
             <% elsif assignment.submittable? %>
               <%= link_to 'Submit Assignment', assignment_path(assignment.id, submit: true), method: :patch, :class => 'btn-assignment-right' %>
             <% elsif assignment.in_progress? %>
+                <a class="btn-assignment-right" href="/assignments/<%= assignment.id%>/">Resume Assignment</a>
+              <!--
               <% if assignment.requires_files? %>
                 <%= link_to 'Upload Assignment', assignment_tasks_path(assignment.id), :class => 'btn-assignment-right' %>
               <% end %>
+              -->
             <% end %>
             <div class="status-message">
               <%= assignment.human_readable_status %>

@@ -7,7 +7,7 @@ class Task < ActiveRecord::Base
   has_many :files, class_name: 'TaskFile', dependent: :destroy
   has_many :comments
 
-  enum kind: { file: 0, user_confirm: 1 }
+  enum kind: { file: 0, user_confirm: 1, text: 2 }
   enum file_type: { document: 0, image: 1, video: 2, audio: 3 }
 
   scope :for_assignment, -> (assignment_id) {

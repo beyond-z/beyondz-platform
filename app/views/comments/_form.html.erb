@@ -1,0 +1,8 @@
+<div>
+  <%= form_for Comment.new do |f| %>
+    <%= f.text_area :content %>
+    <%= f.hidden_field :task_id, { :value => task.id } %>
+    <br />
+    <button type="submit">Add Comment</button>
+  <% end %>
+</div>
