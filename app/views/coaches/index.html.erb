@@ -7,7 +7,7 @@
 
   <ol>
   <% @activity.each do |task| %>
-    <li><a href="#"><%= task.user.name %></a> submitted <span class="task-name"><%= task.task_definition.name.html_safe %></span>
+    <li><a href="#"><%= task.user.name %></a> <span class="task-action"><%= task.pending_approval? ? "submitted" : "commented upon" %></span> <span class="task-name"><%= task.task_definition.name.html_safe %></span>
     <% if task.files.any? %>
     by uploading
       <a href="<%= task.files.first.url %>"><%= task.files.first["#{task.file_type}_file_name"] %></a>
@@ -22,7 +22,7 @@
       </div>
       <%= render partial: "comments/form", locals: { :task => task } %>
 
-      <% if !task.complete? %>
+      <% if task.pending_approval? %>
         <div>
           <button class="approve-task" type="button" data-task-id="<%= task.id %>">Approve</button>
           <button class="request-task-revisions" type="button" data-task-id="<%= task.id %>">Request Revisions</button>

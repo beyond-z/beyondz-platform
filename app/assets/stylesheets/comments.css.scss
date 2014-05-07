@@ -5,23 +5,41 @@
 .comment {
   width: 50%;
   border-bottom: solid 2px #ccc;
-  padding: 0.25em;
+  padding: 0px;
   margin: 0.25em;
+
+  &.from-me {
+    background-color: #fefefe;
+  }
+
+  &.from-other {
+    background-color: #f8fff8;
+  }
 
   border: solid 1px #ccc;
   border-radius: 6px;
 
-  .comment_by {
+  .comment-by {
     font-size: 90%;
     border-bottom: solid 1px #f0f0f0;
+    background-color: #fcfcfc;
+    padding: 0.25em;
   }
 
-  .comment_speaker {
+  .comment-speaker {
     font-weight: bold;
   }
 
-  .comment_content {
-    padding: 0.25em;
+  .comment-content {
+    padding: 0.5em;
   }
 }
 
+.comment-form-holder {
+  width: 50%;
+  text-align: right;
+  textarea {
+    text-align: left;
+    width: 100%;
+  }
+}

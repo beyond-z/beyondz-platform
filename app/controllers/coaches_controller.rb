@@ -7,7 +7,7 @@ class CoachesController < ApplicationController
     @students = current_user.students
     @activity = []
     @students.each do |student|
-      student.recent_activity.each do |ra|
+      student.recent_task_activity.each do |ra|
         if !ra.complete?
           @activity.push(ra)
         end
