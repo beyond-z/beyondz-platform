@@ -34,9 +34,7 @@
 <% if @coaches_comments.any? %>
   <h2>Your coach had feedback for you:</h2>
   <% @coaches_comments.each do |comment| %>
-    The task <strong><%= comment.task.task_definition.name.html_safe %></strong> needs revision.
-
-    <%= render :partial => "comments/comment", locals: { :comment => comment } %>
+    The task <a href="/assignments/<%=comment.task.assignment_id%>/?task_id=<%=comment.task_id%>"><%= comment.task.task_definition.name.html_safe %></a> needs revision.
   <% end %>
 <% end %>
 

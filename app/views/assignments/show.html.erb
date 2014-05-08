@@ -1,100 +1,126 @@
 <div class="assignment-task-pane">
-<div class="assignment-summary">
-  <section>
-    <h2><%= @assignment.assignment_definition.title %>
-      <% if @assignment.assignment_definition.led_by != nil %>
-        <span class="session-type">(<%=@assignment.assignment_definition.led_by.capitalize%> Led)</span>
-      <% end %>
-    </h2>
-  </section>
-  <%
-    wrapper_class = ''
-    if @assignment.submittable?
-      wrapper_class = 'assignment-submittable'
-    elsif @assignment.in_progress?
-      wrapper_class = 'assignment-in-progress'
-    elsif @assignment.complete?
-      wrapper_class = 'assignment-complete'
-    end
-  %>
-  <div class="assignment-summary-wrapper <%= wrapper_class %>">
+  <div class="assignment-summary">
     <section>
-      <div class="assignment-date">
-        <p><%= @assignment.assignment_definition.start_date.strftime("%b %e") %>
-          <% if @assignment.assignment_definition.end_date != nil %>
-            -
-            <%= @assignment.assignment_definition.end_date.strftime("%b %e") %></p>
-          <% end %>
-      </div>
+      <h2><%= @assignment.assignment_definition.title %>
+        <% if @assignment.assignment_definition.led_by != nil %>
+          <span class="session-type">(<%=@assignment.assignment_definition.led_by.capitalize%> Led)</span>
+        <% end %>
+      </h2>
     </section>
+    <%
+      wrapper_class = ''
+      if @assignment.submittable?
+        wrapper_class = 'assignment-submittable'
+      elsif @assignment.in_progress?
+        wrapper_class = 'assignment-in-progress'
+      elsif @assignment.complete?
+        wrapper_class = 'assignment-complete'
+      end
+    %>
+    <div class="assignment-summary-wrapper <%= wrapper_class %>">
+      <section>
+        <div class="assignment-date">
+          <p><%= @assignment.assignment_definition.start_date.strftime("%b %e") %>
+            <% if @assignment.assignment_definition.end_date != nil %>
+              -
+              <%= @assignment.assignment_definition.end_date.strftime("%b %e") %></p>
+            <% end %>
+        </div>
+      </section>
+    </div>
   </div>
-</div>
 
 
-<% if @coaches_comments.any? %>
-  <h2>Your coach had feedback for you:</h2>
-  <% @coaches_comments.each do |comment| %>
-    The task <strong><%= comment.task.task_definition.name.html_safe %></strong> needs revision.
+  <% if @task %>
+    <div class="task-container">
 
-    <%= render :partial => "comments/comment", locals: { :comment => comment } %>
-  <% end %>
-<% end %>
+    <h3><%= @task.task_definition.name.html_safe %></h3>
 
-<% if @task %>
-  <div class="task-container">
-
-  <h3><%= @task.task_definition.name.html_safe %></h3>
-
-  <% if @task.task_definition.summary %>
-    <h4>Your job:</h4>
-    <%= @task.task_definition.summary.html_safe %>
-  <% end %>
-
-  <% if @task.kind == "user_confirm" %>
-    <%= form_for [@task.assignment, @task] do |f| %>
-      <%= f.hidden_field :user_confirm, { :value => true } %>
-      <button type="submit">I'm Done!</button>
+    <% if @task.task_definition.summary %>
+      <h4><%= @current_user.is_coach? ? "Student's":"Your"%> job:</h4>
+      <%= @task.task_definition.summary.html_safe %>
     <% end %>
-  <% elsif @task.kind == "text" %>
-    <%= form_for [@task.assignment, @task] do |f| %>
-      <%= f.text_area :state %>
-      <%= f.hidden_field :user_confirm, { :value => true } %>
-      <button type="submit">Save Draft</button>
-      <button type="submit">I'm Done!</button>
-    <% end %>
-  <% elsif @task.kind == "file" %>
-    <%= render partial: "tasks/form", locals: { :task => @task } %>
 
-    <% if @task.submittable? %>
-      <%= form_for [@task.assignment, @task] do |f| %>
-        <%= f.hidden_field :user_confirm, { :value => true } %>
-        <button type="submit">I'm Done!</button>
+    <div class="completion-status">
+      <% if @current_user.is_coach? %>
+          <% if @task.pending_approval? %>
+            <div>
+              <button class="approve-task" type="button" data-task-id="<%= @task.id %>">Approve</button>
+              <button class="request-task-revisions" type="button" data-task-id="<%= @task.id %>">Request Revisions</button>
+            </div>
+          <% elsif @task.pending_revision? %>
+            <p>This task is pending revision from the student.</p>
+              <button class="approve-task" type="button" data-task-id="<%= @task.id %>">Approve without waiting for revisions</button>
+          <% elsif @task.complete? %>
+            <p>This task is complete.</p>
+          <% elsif @task.new? %>
+            <p>The student has not yet submitted this task.</p>
+          <% end %>
+      <% else %>
+          <% if @task.pending_approval? %>
+            <p>This task is waiting on your coach to provide feedback.</p>
+          <% elsif @task.pending_revision? %>
+            <p>This task needs revisions from you.</p>
+          <% elsif @task.complete? %>
+            <p>This task is complete.</p>
+          <% end %>
+        <% if @task.submittable? %>
+          <% if @task.kind == "user_confirm" %>
+              <%= form_for [@task.assignment, @task] do |f| %>
+                <%= f.hidden_field :user_confirm, { :value => true } %>
+                <button type="submit">I'm Done!</button>
+              <% end %>
+          <% elsif @task.kind == "text" %>
+            <%= form_for [@task.assignment, @task] do |f| %>
+              <%= f.text_area :state %>
+              <%= f.hidden_field :user_confirm, { :value => true } %>
+              <button type="submit">Save Draft</button>
+              <button type="submit">I'm Done!</button>
+            <% end %>
+          <% elsif @task.kind == "file" %>
+            <%= render partial: "tasks/form", locals: { :task => @task } %>
+
+            <% if @task.submittable? %>
+              <%= form_for [@task.assignment, @task] do |f| %>
+                <%= f.hidden_field :user_confirm, { :value => true } %>
+                <button type="submit">I'm Done!</button>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
       <% end %>
-    <% end %>
-  <% end %>
+    </div>
   </div>
 
-  <div class="task-discussion">
-  <h4>Task Discussion</h4>
-    <% @task.comments.each do |comment| %>
-      <%= render partial: "comments/comment", locals: { :comment => comment } %>
-    <% end %>
-    <%= render partial: "comments/form", locals: { :task => @task } %>
-  </div>
+    <div class="task-discussion">
+      <h4>Task Discussion</h4>
+      <% if @current_user.is_coach? %>
+        <p>Here, you can communicate with your student.</p>
+      <% else %>
+        <p>Here, you can communicate with your coach. Ask for help or comment here.</p>
+      <% end %>
 
-<% else %>
-  <% if @assignment.submittable? %>
-    <%= link_to 'Submit Assignment', assignment_path(@assignment.id, submit: true), method: :patch, :class => 'btn-assignment-right' %>
+      <% @task.comments.each do |comment| %>
+        <%= render partial: "comments/comment", locals: { :comment => comment } %>
+      <% end %>
+      <%= render partial: "comments/form", locals: { :task => @task } %>
+    </div>
+
   <% else %>
-    This assignment is pending feedback, please wait for the coach.
+    <% if @assignment.submittable? %>
+      <%= link_to 'Submit Assignment', assignment_path(@assignment.id, submit: true), method: :patch, :class => 'btn-assignment-right' %>
+    <% else %>
+      This assignment is pending feedback, please wait for the coach.
+    <% end %>
   <% end %>
-<% end %>
 
 
-  <% if @previous_task %>
-    <a href="/assignments/<%=@previous_task.assignment.id%>?task_id=<%= @previous_task.id %>">Previous</a>
-  <% end %>
-  <% if @next_task %>
-    <a href="/assignments/<%=@next_task.assignment.id%>?task_id=<%= @next_task.id %>">Next</a>
-  <% end %>
+  <div class="task-navigation-buttons">
+    <% if @previous_task %>
+      <a class="previous-task" href="/assignments/<%=@previous_task.assignment.id%>?task_id=<%= @previous_task.id %>">Previous</a>
+    <% end %>
+    <% if @next_task %>
+      <a class="next-task" href="/assignments/<%=@next_task.assignment.id%>?task_id=<%= @next_task.id %>">Next</a>
+    <% end %>
+  </div>
 </div>

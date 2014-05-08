@@ -40,7 +40,7 @@ class AssignmentsController < ApplicationController
       @task = tasks.first
     end
 
-    tasks = assignment.tasks
+    tasks = assignment.tasks.order(:id)
     @next_task = nil
     @previous_task = nil
     last = nil
@@ -48,6 +48,7 @@ class AssignmentsController < ApplicationController
     tasks.each do |task|
       if next_is_it
         @next_task = task
+        next_is_it = false
         break
       end
       if task == @task
