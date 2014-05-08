@@ -31,7 +31,7 @@ class AssignmentsController < ApplicationController
 
     @assignment = assignment
 
-    @coaches_comments = Comment.needs_student_attention(current_user.id, assignment.id)
+    @coaches_comments = Comment.needs_student_attention(current_user.id)
 
     if params[:task_id]
       @task = Task.find(params[:task_id])

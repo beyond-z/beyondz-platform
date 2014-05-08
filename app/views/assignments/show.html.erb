@@ -1,3 +1,9 @@
+<%= render partial: "coaches_feedback" %>
+
+<% if @current_user.is_coach? %>
+  <h1><a href="/coaches">Coaching Dashboard</a> &raquo; <a href="/coaches?student_id=<%=@assignment.user_id %>"><%= @assignment.user.name %></a></h1>
+<% end %>
+
 <div class="assignment-task-pane">
   <div class="assignment-summary">
     <section>
@@ -6,6 +12,7 @@
           <span class="session-type">(<%=@assignment.assignment_definition.led_by.capitalize%> Led)</span>
         <% end %>
       </h2>
+
     </section>
     <%
       wrapper_class = ''
