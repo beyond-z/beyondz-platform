@@ -3,4 +3,14 @@
   <div class="comment-content">
     <p><%= comment.content %></p>
   </div>
+  <% if comment.has_attachment? %>
+      <div class="attachment">
+        <span class="glyphicon glyphicon-paperclip icon"></span>
+        <%= link_to "Download #{comment.file_type} (#{comment.attachment_name})", comment.attachment_url, target: 'attachment' %> 
+      </div>
+      <% if comment.file_type == 'image' %>
+        <%#= image_tag comment.attachment_url(:thumb) %>
+        <%= image_tag comment.attachment_url %>
+      <% end %>
+    <% end %>
 </div>

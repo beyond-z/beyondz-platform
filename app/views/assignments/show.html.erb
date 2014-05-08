@@ -68,7 +68,8 @@ RECENT COACH UPDATES ON THIS ASSIGNMENT
   <% @task.comments.each do |comment| %>
     <%= render partial: "comments/comment", locals: { :comment => comment } %>
   <% end %>
-    <%= render partial: "comments/form", locals: { :task => @task } %>
+  <br />
+  <%= render partial: "comments/form", locals: { :task => @task } %>
 
 <% else %>
   if assignment submittable:
