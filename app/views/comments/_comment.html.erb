@@ -9,8 +9,7 @@
         <%= link_to "Download #{comment.file_type} (#{comment.attachment_name})", comment.attachment_url, target: 'attachment' %> 
       </div>
       <% if comment.file_type == 'image' %>
-        <%#= image_tag comment.attachment_url(:thumb) %>
-        <%= image_tag comment.attachment_url %>
+        <%= image_tag comment.attachment_url(:thumb) %>
       <% end %>
     <% end %>
 </div>

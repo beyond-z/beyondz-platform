@@ -6,18 +6,17 @@ class Comment < ActiveRecord::Base
 
   has_attached_file :document
   validates_attachment :document,
-    :content_type => {
-      :content_type => [
+    content_type: {
+      content_type: [
         'application/pdf',
         'application/msword',
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
       ]
     },
-    :size => { :in => 0..2.megabytes }
+    size: { in: 0..2.megabytes }
 
-  has_attached_file :image
+  has_attached_file :image, styles: { thumb: '100x100>' }
   validates_attachment :image,
-    :styles => { :thumb => '100x100>' },
     content_type: {
       content_type: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif']
     },
@@ -32,8 +31,8 @@ class Comment < ActiveRecord::Base
 
   has_attached_file :audio
   validates_attachment :audio,
-    :content_type => { :content_type => ['audio/mp3', 'application/x-mp3'] },
-    :size => { :in => 0..2.megabytes }
+    content_type: { content_type: ['audio/mp3', 'application/x-mp3'] },
+    size: { in: 0..2.megabytes }
 
 
   default_scope { order('created_at ASC') }
@@ -53,7 +52,7 @@ class Comment < ActiveRecord::Base
     if style
       eval_string += "(:#{style})"
     end
-Rails.logger.info eval_string
+
     eval eval_string
   end
 
