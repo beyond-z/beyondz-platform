@@ -127,4 +127,26 @@ class Task < ActiveRecord::Base
       file.destroy
     end
   end
+
+  def next
+    tasks = assignment.tasks.order(:id)
+    next_is_it = false
+    tasks.each do |task|
+      return task if next_is_it
+      if task.id == id
+        next_is_it = true
+      end
+    end
+    return nil
+  end
+
+  def previous
+    tasks = assignment.tasks.order(:id)
+    last = nil
+    tasks.each do |task|
+      return last if task.id == id
+      last = task
+    end
+    return nil
+  end
 end

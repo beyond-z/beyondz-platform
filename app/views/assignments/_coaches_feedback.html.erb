@@ -2,7 +2,7 @@
   <h2>Your coach had feedback for you:</h2>
   <ul>
   <% @coaches_comments.each do |comment| %>
-    <li>The task <a href="/assignments/<%=comment.task.assignment_id%>/?task_id=<%=comment.task_id%>"><%= comment.task.task_definition.name.html_safe %></a> for the assignment <span><%=comment.task.assignment.assignment_definition.title.html_safe %></span> has a comment from your coach.</li>
+    <li>The task <a href="/assignments/<%=comment.task.assignment_id%>/tasks/<%=comment.task_id%>"><%= comment.task.task_definition.name.html_safe %></a> for the assignment <span><%=comment.task.assignment.assignment_definition.title.html_safe %></span> has a comment from your coach.</li>
   <% end %>
   </ul>
 <% end %>

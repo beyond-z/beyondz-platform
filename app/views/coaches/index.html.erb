@@ -37,7 +37,7 @@
 
     <ol>
     <% @activity.each do |task| %>
-      <li><a href="/coaches?student_id=<%=task.user.id%>"><%= task.user.name %></a> <span class="task-action"><%= task.pending_approval? ? "submitted" : "commented upon" %></span> <a href="/assignments/<%=task.assignment_id%>?task_id=<%=task.id%>" class="task-name"><%= task.task_definition.name.html_safe %></a>
+      <li><a href="/coaches?student_id=<%=task.user.id%>"><%= task.user.name %></a> <span class="task-action"><%= task.pending_approval? ? "submitted" : "commented upon" %></span> <a href="/assignments/<%=task.assignment_id%>/tasks/<%=task.id%>" class="task-name"><%= task.task_definition.name.html_safe %></a>
       <% if task.files.any? %>
       by uploading
         <a href="<%= task.files.first.url %>"><%= task.files.first["#{task.file_type}_file_name"] %></a>

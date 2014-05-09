@@ -27,36 +27,17 @@ class AssignmentsController < ApplicationController
   end
 
   def show
+    @coaches_comments = Comment.needs_student_attention(current_user.id)
     assignment = Assignment.find(params[:id])
 
     @assignment = assignment
-
-    @coaches_comments = Comment.needs_student_attention(current_user.id)
-
-    if params[:task_id]
-      @task = Task.find(params[:task_id])
-    else
-      tasks = assignment.tasks.needs_student_attention
-      @task = tasks.first
-    end
-
-    tasks = assignment.tasks.order(:id)
-    @next_task = nil
-    @previous_task = nil
-    last = nil
-    next_is_it = false
-    tasks.each do |task|
-      if next_is_it
-        @next_task = task
-        next_is_it = false
-        break
-      end
-      if task == @task
-        @previous_task = last
-        next_is_it = true
-      end
-      last = task
-    end
+    # When we show the assignment, we want it to immediately
+    # show the user what needs their attention:
+    # the first unfinished task for this assignment.
+    tasks = assignment.tasks.needs_student_attention
+    @task = tasks.first
+    @next_task = @task.next
+    @previous_task = @task.previous
   end
 
   def update
