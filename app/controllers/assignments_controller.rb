@@ -34,10 +34,21 @@ class AssignmentsController < ApplicationController
     # When we show the assignment, we want it to immediately
     # show the user what needs their attention:
     # the first unfinished task for this assignment.
-    tasks = assignment.tasks.needs_student_attention
-    @task = tasks.first
-    @next_task = @task.next
-    @previous_task = @task.previous
+    if current_user.is_coach?
+      tasks = assignment.tasks.needs_coach_attention
+    else
+      tasks = assignment.tasks.needs_student_attention
+    end
+
+    if tasks.any?
+      @task = tasks.first
+      @next_task = @task.next
+      @previous_task = @task.previous
+    else
+      @task = nil
+      @next_task = nil
+      @previous_task = nil
+    end
   end
 
   def update
@@ -49,6 +60,12 @@ class AssignmentsController < ApplicationController
       return
     elsif params[:submit] && (params[:submit] == 'true')
       assignment.submit!
+    elsif params[:approve] && (params[:approve] == 'true')
+      if assignment.user.coach == current_user
+        assignment.approve!
+        redirect_to coaches_path
+        return
+      end
     end
 
     redirect_to assignments_path
