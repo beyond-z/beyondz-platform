@@ -1,5 +1,5 @@
 class CoachesController < ApplicationController
-  before_action :require_coach_login
+  before_action :require_coach
 
   public
 
