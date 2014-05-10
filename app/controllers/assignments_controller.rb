@@ -28,16 +28,14 @@ class AssignmentsController < ApplicationController
 
   def show
     @coaches_comments = Comment.needs_student_attention(current_user.id)
-    assignment = Assignment.find(params[:id])
-
-    @assignment = assignment
+    @assignment = Assignment.find(params[:id])
     # When we show the assignment, we want it to immediately
     # show the user what needs their attention:
     # the first unfinished task for this assignment.
     if current_user.is_coach?
-      tasks = assignment.tasks.needs_coach_attention
+      tasks = @assignment.tasks.needs_coach_attention
     else
-      tasks = assignment.tasks.needs_student_attention
+      tasks = @assignment.tasks.needs_student_attention
     end
 
     if tasks.any?
