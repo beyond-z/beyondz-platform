@@ -54,7 +54,7 @@ class AssignmentsController < ApplicationController
 
     if params[:start] && (params[:start] == 'true')
       assignment.start!
-      redirect_to "/assignments/#{assignment.id}"
+      redirect_to assignment_path(assignment)
       return
     elsif params[:submit] && (params[:submit] == 'true')
       assignment.submit!

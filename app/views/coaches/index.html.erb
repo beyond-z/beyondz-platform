@@ -4,19 +4,18 @@
   <div class="coaching-views">
     View by:
     <ul>
-      <li><a href="/coaches">Time</a></li>
+      <li><%= link_to "Time", coaches_path %></li>
       <li><a>Student</a>
         <ul>
         <% @students.each do |student| %>
-          <li><a href="/coaches?student_id=<%=student.id%>"><%= student.name %></a></li>
-          <!--<li><a href="/assignments?student=<%=student.id%>"><%= student.name %></a></li>-->
+          <li><%= link_to student.name, coaches_path(:student_id => student.id) %></li>
         <% end %>
         </ul>
       </li>
       <li><a>Assignment</a>
         <ol>
         <% @assignment_definitions.each do |ad| %>
-          <li><a href="/coaches?assignment_id=<%=ad.id%>"><%= ad.title %></a></li>
+          <li><%= link_to ad.title, coaches_path(:assignment_id => ad.id) %></li>
         <% end %>
         </ol>
       </li>
@@ -28,7 +27,7 @@
   <% if @activity.any? %>
 
     <% if @focused_student %>
-      <h2>Recent activity by <a href="/assignments?student=<%=@focused_student.id%>"><%= @focused_student.name %></a></h2>
+      <h2>Recent activity by <%= link_to @focused_student.name, assignments_path(:student => @focused_student.id) %></h2>
     <% elsif @focused_assignment %>
       <h2>Recent activity on <%= @focused_assignment.title %></h2>
     <% else %>
@@ -37,31 +36,16 @@
 
     <ol>
     <% @activity.each do |task| %>
-      <li><a href="/coaches?student_id=<%=task.user.id%>"><%= task.user.name %></a> <span class="task-action"><%= task.pending_approval? ? "submitted" : "commented upon" %></span> <a href="/assignments/<%=task.assignment_id%>/tasks/<%=task.id%>" class="task-name"><%= task.task_definition.name.html_safe %></a>
+      <li>
+        <%= link_to task.user.name, coaches_path(:student_id => task.user.id) %>
+        <span class="task-action"><%= task.pending_approval? ? "submitted" : "commented upon" %></span>
+        <%= link_to task.task_definition.name.html_safe, assignment_task_path(task.assignment_id, task.id), class: "task-name" %>
       <% if task.files.any? %>
       by uploading
         <a href="<%= task.files.first.url %>"><%= task.files.first["#{task.file_type}_file_name"] %></a>
       <% end %>
       at
         <%= task.updated_at.strftime("%B %d, %Y") %>
-
-        <!--
-        <div class="comments-holder">
-          <% task.comments.each do |comment| %>
-            <%= render :partial => "comments/comment", locals: { :comment => comment } %>
-          <% end %>
-          <%= render partial: "comments/form", locals: { :task => task } %>
-        </div>
-        -->
-
-          <!--
-        <% if task.pending_approval? %>
-          <div>
-            <button class="approve-task" type="button" data-task-id="<%= task.id %>">Approve</button>
-            <button class="request-task-revisions" type="button" data-task-id="<%= task.id %>">Request Revisions</button>
-          </div>
-        <%end%>
-          -->
       </li>
     <% end %>
     </ol>

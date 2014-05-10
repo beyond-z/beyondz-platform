@@ -1,7 +1,7 @@
 <%= render partial: "assignments/coaches_feedback" %>
 
 <% if @current_user.is_coach? %>
-  <h1><a href="/coaches">Coaching Dashboard</a> &raquo; <a href="/coaches?student_id=<%=@assignment.user_id %>"><%= @assignment.user.name %></a></h1>
+  <h1><%= link_to "Coaching Dashboard", coaches_path %> &raquo; <%= link_to @assignment.user.name, coaches_path(:student_id => @assignment.user_id) %></h1>
 <% end %>
 
 <div class="assignment-task-pane">
@@ -35,10 +35,10 @@
 
   <div class="task-navigation-buttons">
     <% if @previous_task %>
-      <a class="previous-task" href="/assignments/<%=@previous_task.assignment.id%>/tasks/<%= @previous_task.id %>">Previous</a>
+      <%= link_to "Previous", assignment_task_path(@previous_task.assignment, @previous_task), class: "previous-task" %>
     <% end %>
     <% if @next_task %>
-      <a class="next-task" href="/assignments/<%=@next_task.assignment.id%>/tasks/<%= @next_task.id %>">Next</a>
+      <%= link_to "Next", assignment_task_path(@next_task.assignment, @next_task), class: "next-task" %>
     <% end %>
   </div>
 </div>
