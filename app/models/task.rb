@@ -130,24 +130,12 @@ class Task < ActiveRecord::Base
   end
 
   def next
-    tasks = assignment.tasks.order(:id)
-    next_is_it = false
-    tasks.each do |task|
-      return task if next_is_it
-      if task.id == id
-        next_is_it = true
-      end
-    end
-    return nil
+    return nil if task_definition.position == assignment.tasks.count
+    assignment.tasks.for_display.where("task_definitions.position = ?", task_definition.position + 1).first
   end
 
   def previous
-    tasks = assignment.tasks.order(:id)
-    last = nil
-    tasks.each do |task|
-      return last if task.id == id
-      last = task
-    end
-    return nil
+    return nil if task_definition.position == 1
+    assignment.tasks.for_display.where("task_definitions.position = ?", task_definition.position - 1).first
   end
 end
