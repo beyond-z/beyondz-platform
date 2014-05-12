@@ -1,13 +1,13 @@
 class Admin::ApplicationController < ApplicationController
-  before_action :require_login
+  before_action :require_admin
 
   layout 'admin'
 
   private
 
-  def require_login
+  def require_admin
     unless @user_logged_in
-      flash[:error] = "You must log in to access the admin."
+      flash[:error] = "You must log in to access the admin section."
       redirect_to "/users/login?redirect_to=/admin/"
       return
     end

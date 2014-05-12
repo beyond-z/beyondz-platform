@@ -63,10 +63,10 @@ class User < ActiveRecord::Base
     end
   end
 
-  def recent_activity
+  def recent_task_activity
     result = []
     tasks.each do |a|
-      if a.complete? || a.pending_approval?
+      if a.complete? || a.pending_approval? || (a.comments.any? && !a.complete?)
         result.push(a)
       end
     end

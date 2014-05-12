@@ -1,51 +1,54 @@
 <div class="coaching-dashboard">
-<h1>Coaching Dashboard</h1>
+  <h1>Coaching Dashboard</h1>
 
-<% if @activity.any? %>
-
-  <h2>Recent activity by your students that needs your attention</h2>
-
-  <ol>
-  <% @activity.each do |task| %>
-    <li><a href="#"><%= task.user.name %></a> submitted <span class="task-name"><%= task.task_definition.name.html_safe %></span>
-    <% if task.files.any? %>
-    by uploading
-      <a href="<%= task.files.first.url %>"><%= task.files.first["#{task.file_type}_file_name"] %></a>
-    <% end %>
-    at
-      <%= task.updated_at.strftime("%B %d, %Y") %>
-
-      <div class="comments-holder">
-        <% task.comments.each do |comment| %>
-          <%= render :partial => "comments/comment", locals: { :comment => comment } %>
+  <div class="coaching-views">
+    View by:
+    <ul>
+      <li><%= link_to "Time", coaches_path %></li>
+      <li><a>Student</a>
+        <ul>
+        <% @students.each do |student| %>
+          <li><%= link_to student.name, coaches_path(:student_id => student.id) %></li>
         <% end %>
-      </div>
+        </ul>
+      </li>
+      <li><a>Assignment</a>
+        <ol>
+        <% @assignment_definitions.each do |ad| %>
+          <li><%= link_to ad.title, coaches_path(:assignment_id => ad.id) %></li>
+        <% end %>
+        </ol>
+      </li>
+    </ul>
+  </div>
 
-      <% if !task.complete? %>
-        <div>
-          <%= form_for Comment.new do |f| %>
-            <%= f.text_area :content %>
-            <%= f.hidden_field :task_id, { :value => task.id } %>
-            <br />
-            <button type="submit">Add Comment</button>
-          <% end %>
-          <br />
-        <button class="approve-task" type="button" data-task-id="<%= task.id %>">Approve</button>
-        <button class="request-task-revisions" type="button" data-task-id="<%= task.id %>">Request Revisions</button>
-        </div>
-      <%end%>
-    </li>
+  <div class="coaching-activity">
+
+  <% if @activity.any? %>
+
+    <% if @focused_student %>
+      <h2>Recent activity by <%= link_to @focused_student.name, assignments_path(:student => @focused_student.id) %></h2>
+    <% elsif @focused_assignment %>
+      <h2>Recent activity on <%= @focused_assignment.title %></h2>
+    <% else %>
+      <h2>Recent activity by your students that needs your attention</h2>
+    <% end %>
+
+    <ol>
+    <% @activity.each do |task| %>
+      <li>
+        <%= link_to task.user.name, coaches_path(:student_id => task.user.id) %>
+        <span class="task-action"><%= task.pending_approval? ? "submitted" : "commented upon" %></span>
+        <%= link_to task.task_definition.name.html_safe, assignment_task_path(task.assignment_id, task.id), class: "task-name" %>
+      <% if task.files.any? %>
+      by uploading
+        <a href="<%= task.files.first.url %>"><%= task.files.first["#{task.file_type}_file_name"] %></a>
+      <% end %>
+      at
+        <%= task.updated_at.strftime("%B %d, %Y") %>
+      </li>
+    <% end %>
+    </ol>
   <% end %>
-  </ol>
-
-<% end %>
-
-<h2>Student List</h2>
-<p>Here's the list of students you are coaching. Click on a name to see their progress.</p>
-
-<ul>
-<% @students.each do |student| %>
-  <li><a href="/assignments?student=<%=student.id%>"><%= student.name %> &lt;<%= student.email %>&gt;</a></li>
-<% end %>
-</ul>
+  </div>
 </div>

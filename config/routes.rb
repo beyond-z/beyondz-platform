@@ -15,8 +15,8 @@ BeyondzPlatform::Application.routes.draw do
   resources :comments
 
 
-  resources :assignments, only: [:index, :update] do
-    resources :tasks, only: [:index, :update]
+  resources :assignments, only: [:index, :update, :show] do
+    resources :tasks, only: [:index, :update, :show]
   end
 
 
