@@ -13,7 +13,7 @@ class Task < ActiveRecord::Base
   scope :for_assignment, -> (assignment_id) {
     where(assignment_id: assignment_id)
   }
-  scope :needs_student_attention, -> { where(state: [:new, :pending_revision]) }
+  
   scope :complete, -> { where(tasks: { state: :complete }) }
   scope :incomplete, -> { where.not(tasks: { state: :complete }) }
   scope :required, -> {
@@ -37,6 +37,12 @@ class Task < ActiveRecord::Base
     .order('task_definitions.position ASC')
   }
   scope :files, -> { where(kind: Task.kinds[:file]) }
+  scope :need_student_attention, -> {
+    where(state: [:new, :pending_revision])
+  }
+  scope :need_coach_attention, -> {
+    where(state: [:pending_approval, :pending_revision]) 
+  }
 
 
   aasm :column => :state do
@@ -126,5 +132,15 @@ class Task < ActiveRecord::Base
       file.reset(file_type)
       file.destroy
     end
+  end
+
+  def next
+    return nil if task_definition.position == assignment.tasks.count
+    assignment.tasks.for_display.where("task_definitions.position = ?", task_definition.position + 1).first
+  end
+
+  def previous
+    return nil if task_definition.position == 1
+    assignment.tasks.for_display.where("task_definitions.position = ?", task_definition.position - 1).first
   end
 end

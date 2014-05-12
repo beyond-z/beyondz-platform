@@ -1,0 +1,44 @@
+<%= render partial: "assignments/coaches_feedback" %>
+
+<% if @current_user.is_coach? %>
+  <h1><%= link_to "Coaching Dashboard", coaches_path %> &raquo; <%= link_to @assignment.user.name, coaches_path(:student_id => @assignment.user_id) %></h1>
+<% end %>
+
+<div class="assignment-task-pane">
+  <%= render partial: "assignments/header", locals: { :assignment => @assignment } %>
+
+  <% if @task %>
+    <div class="task-container">
+      <h3><%= @task.task_definition.name.html_safe %></h3>
+
+      <% if @task.task_definition.summary %>
+        <h4>Task to-do:</h4>
+        <%= @task.task_definition.summary.html_safe %>
+      <% end %>
+
+      <% if @current_user.is_coach? %>
+        <%= render "tasks/action_box_coach" %>
+      <% else %>
+        <%= render "tasks/action_box_student" %>
+      <% end %>
+    </div>
+
+    <%= render "tasks/discussion" %>
+  <% else %>
+      <% if @current_user.is_coach? %>
+        <%= render "assignments/action_box_coach" %>
+      <% else %>
+        <%= render "assignments/action_box_student" %>
+      <% end %>
+  <% end %>
+
+
+  <div class="task-navigation-buttons">
+    <% if @previous_task %>
+      <%= link_to "Previous", assignment_task_path(@previous_task.assignment, @previous_task), class: "previous-task" %>
+    <% end %>
+    <% if @next_task %>
+      <%= link_to "Next", assignment_task_path(@next_task.assignment, @next_task), class: "next-task" %>
+    <% end %>
+  </div>
+</div>

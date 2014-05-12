@@ -1,5 +1,5 @@
 class AssignmentsController < ApplicationController
-  before_action :require_login
+  before_action :require_student
 
   public
 
@@ -22,18 +22,31 @@ class AssignmentsController < ApplicationController
       @incomplete_assignments = user.assignments.for_display.not_submitted
       @complete_assignments = user.assignments.submitted.count
 
-      @coaches_comments = Comment.needs_student_attention(uid)
+      @coaches_comments = Comment.need_student_attention(uid)
     end
   end
 
   def show
-    assignment = Assignment.find(params[:id])
+    @coaches_comments = Comment.need_student_attention(current_user.id)
+    @assignment = Assignment.find(params[:id])
+    # When we show the assignment, we want it to immediately
+    # show the user what needs their attention:
+    # the first unfinished task for this assignment.
+    if current_user.is_coach?
+      tasks = @assignment.tasks.need_coach_attention
+    else
+      tasks = @assignment.tasks.need_student_attention
+    end
 
-    @assignment = assignment
-
-    tasks = assignment.tasks.needs_student_attention
-
-    @task = tasks.first
+    if tasks.any?
+      @task = tasks.first
+      @next_task = @task.next
+      @previous_task = @task.previous
+    else
+      @task = nil
+      @next_task = nil
+      @previous_task = nil
+    end
   end
 
   def update
@@ -41,10 +54,16 @@ class AssignmentsController < ApplicationController
 
     if params[:start] && (params[:start] == 'true')
       assignment.start!
-      redirect_to "/assignments/#{assignment.id}"
+      redirect_to assignment_path(assignment)
       return
     elsif params[:submit] && (params[:submit] == 'true')
       assignment.submit!
+    elsif params[:approve] && (params[:approve] == 'true')
+      if assignment.user.coach == current_user
+        assignment.approve!
+        redirect_to coaches_path
+        return
+      end
     end
 
     redirect_to assignments_path

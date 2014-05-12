@@ -36,7 +36,7 @@ class Comment < ActiveRecord::Base
 
 
   default_scope { order('created_at ASC') }
-  scope :needs_student_attention, -> (student_id) {
+  scope :need_student_attention, -> (student_id) {
     joins(:task)\
     .where(tasks: { user_id: student_id, :state => :pending_revision})
   }

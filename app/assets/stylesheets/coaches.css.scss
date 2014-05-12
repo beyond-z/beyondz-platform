@@ -2,18 +2,35 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+@import "palette";
 
 .coaching-dashboard {
+  .coaching-views {
+    float: left;
+    width: 14em;
+    overflow: hidden;
+  }
+
+  .coaching-activity {
+    margin-left: 15em;
+    border-left: solid 1px $subtle_border;
+    padding-left: 1em;
+  }
+
   .task-name {
     font-weight: bold;
   }
 
+  .comments-holder {
+    width: 50%;
+  }
+
   .approve-task {
-    background-color: #00ff00;
+    background-color: $bzgreen;
   }
 
   .request-task-revisions {
-    background-color: #ffff00;
+    background-color: $bzorange;
   }
 
   .comments-holder {

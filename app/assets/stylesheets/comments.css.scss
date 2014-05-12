@@ -2,28 +2,27 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+@import "palette";
 
 .comment {
-  width: 50%;
-  border-bottom: solid 2px #ccc;
+  border-bottom: solid 2px $subtle_border;
   padding: 0px;
   margin: 0.25em;
 
   &.from-me {
-    background-color: #fefefe;
+    /* this is a comment that the logged-in user wrote */
   }
 
   &.from-other {
-    background-color: #f8fff8;
+    /* this is a comment written by another user */
   }
 
-  border: solid 1px #ccc;
+  border: solid 1px $subtle_border;
   border-radius: 6px;
 
   .comment-by {
     font-size: 90%;
-    border-bottom: solid 1px #f0f0f0;
-    background-color: #fcfcfc;
+    border-bottom: solid 1px $subtle_border;
     padding: 0.25em;
   }
 
@@ -46,7 +45,7 @@
 }
 
 .comment-form-holder {
-  width: 50%;
+  
   textarea {
     text-align: left;
     width: 100%;
