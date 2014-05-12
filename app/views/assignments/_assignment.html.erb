@@ -35,22 +35,16 @@
             <h3>Your To-Dos</h3>
             <ul>
               <% assignment.tasks.for_display.each do |task| %>
+                <%
+                  task_indicator_class = 'incomplete'
+                  if task.pending_approval?
+                    task_indicator_class = 'pending-approval'
+                  elsif task.complete?
+                    task_indicator_class = 'complete'
+                  end
+                %>
                 <li>
-                  <% if task.submittable? %>
-                    <% if task.needs_files? %>
-                      <%= link_to '<div class="kind-file"></div>'.html_safe, assignment_tasks_path(assignment.id), title: 'Upload a file' %>
-                    <% else %>
-                      <div class="submittable">
-                        <%= check_box_tag "task", task.id, task.complete?, :class => 'task-confirm', 'data-assignment-id' => assignment.id, 'data-task-id' => task.id %>
-                      </div>
-                    <% end %>
-                  <% elsif task.pending_approval? %>
-                    <div class="pending-approval"></div>
-                  <% elsif task.complete? %>
-                    <div class="complete"></div>
-                  <% else %>
-                    <div class="unavailable"></div>
-                  <% end %>
+                  <div class="<%= task_indicator_class%>"></div>
                   <div class="description">
                     <%= task.task_definition.name.html_safe %>
                   </div>
@@ -68,12 +62,7 @@
             <% elsif assignment.submittable? %>
               <%= link_to 'Submit Assignment', assignment_path(assignment.id, submit: true), method: :patch, :class => 'btn-assignment-right' %>
             <% elsif assignment.in_progress? %>
-                <a class="btn-assignment-right" href="/assignments/<%= assignment.id%>/">Resume Assignment</a>
-              <!--
-              <% if assignment.requires_files? %>
-                <%= link_to 'Upload Assignment', assignment_tasks_path(assignment.id), :class => 'btn-assignment-right' %>
-              <% end %>
-              -->
+              <%= link_to 'Resume Assignment', assignment_path(assignment.id), :class => 'btn-assignment-right' %>
             <% end %>
             <div class="status-message">
               <%= assignment.human_readable_status %>

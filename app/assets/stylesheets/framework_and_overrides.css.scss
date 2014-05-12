@@ -341,20 +341,15 @@ section {
       display: block;
       position: relative;
     }
-    .submittable, .kind-file, .pending-approval, .complete, .unavailable {
+    .submittable, .pending-approval, .complete, .incomplete {
       top: 3px;
       float:left;
       width: 6%;
     }
-    .kind-file, .pending-approval, .complete, .unavailable {
+    .pending-approval, .complete, .incomplete {
       @extend .glyphicon;
     }
     .submittable {
-    }
-    .kind-file {
-      @extend .glyphicon-upload;
-      color: #4480f7;
-      font-size: 1.2em;
     }
     .pending-approval {
       @extend .glyphicon-random;
@@ -362,7 +357,7 @@ section {
     .complete {
       @extend .glyphicon-check;
     }
-    .unavailable {
+    .incomplete {
       @extend .glyphicon-unchecked;
     }
     .description {
