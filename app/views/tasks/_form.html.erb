@@ -12,7 +12,7 @@
               <span class="task-name"><%= "#{task.task_definition.name} (#{task.file_type})".html_safe %>:</span>
               <span class="task-file-field"><%= file.file_field task.file_type %></span>
             <% end %>
-            <span><%= f.submit "Submit", class: 'btn-assign-submit' %></span>
+            <span><%= f.submit "Submit", class: 'btn-assignment-submit' %></span>
           </div>
           <div class="clear"></div>
         <% end %>

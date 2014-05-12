@@ -1,0 +1,7 @@
+<% if @assignment.submittable? %>
+  <p>All your tasks are good to go! The final step is to submit the assignment for final review.</p>
+  <%= link_to 'Submit Assignment', assignment_path(@assignment.id, submit: true), method: :patch, :class => 'btn-assignment-right' %>
+<% else %>
+  This assignment is pending feedback, please wait for the coach.
+<% end %>
+

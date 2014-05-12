@@ -1,5 +1,5 @@
   <section>
-    <div class="assign-summary">
+    <div class="assignment-summary">
       <section>
         <h2><%= assignment.assignment_definition.title %>
           <% if assignment.assignment_definition.led_by != nil %>
@@ -17,9 +17,9 @@
           wrapper_class = 'assignment-complete'
         end
       %>
-      <div class="assign-summary-wrapper <%= wrapper_class %>">
+      <div class="assignment-summary-wrapper <%= wrapper_class %>">
         <section>
-          <div class="assign-date">
+          <div class="assignment-date">
             <p><%= assignment.assignment_definition.start_date.strftime("%b %e") %>
               <% if assignment.assignment_definition.end_date != nil %>
                 -
@@ -28,10 +28,10 @@
           </div>
         </section>
         <section>
-          <div class="assign-summary-practice">
+          <div class="assignment-summary-practice">
             <%= assignment.assignment_definition.front_page_info.html_safe %>
           </div>
-          <div class="assign-summary-checklist">
+          <div class="assignment-summary-checklist">
             <h3>Your To-Dos</h3>
             <ul>
               <% assignment.tasks.for_display.each do |task| %>
@@ -53,11 +53,6 @@
                   <% end %>
                   <div class="description">
                     <%= task.task_definition.name.html_safe %>
-                    <% if task.task_definition.summary.present? %>
-                      <div class="assign-task-summary">
-                        <%= task.task_definition.summary.html_safe %>
-                      </div>
-                    <% end %>
                   </div>
                   <div class="clear"></div>
                 </li>
@@ -66,16 +61,14 @@
           </div>
         </section>
         <section>
-          <div class="assign-summary-buttons">
-            <a class="btn-assign-left" href="/assignments/<%= assignment.assignment_definition.seo_name %>">View Details</a>
+          <div class="assignment-summary-buttons">
+            <a class="btn-assignment-left" href="/assignments/<%= assignment.assignment_definition.seo_name %>">View Details</a>
             <% if assignment.new? %>
-              <%= link_to 'Start Assignment', assignment_path(assignment.id, start: true), method: :patch, :class => 'btn-assign-right' %>
+              <%= link_to 'Start Assignment', assignment_path(assignment.id, start: true), method: :patch, :class => 'btn-assignment-right' %>
             <% elsif assignment.submittable? %>
-              <%= link_to 'Submit Assignment', assignment_path(assignment.id, submit: true), method: :patch, :class => 'btn-assign-right' %>
+              <%= link_to 'Submit Assignment', assignment_path(assignment.id, submit: true), method: :patch, :class => 'btn-assignment-right' %>
             <% elsif assignment.in_progress? %>
-              <% if assignment.requires_files? %>
-                <%= link_to 'Upload Assignment', assignment_tasks_path(assignment.id), :class => 'btn-assign-right' %>
-              <% end %>
+              <%= link_to 'Resume Assignment', assignment_path(assignment.id), :class => 'btn-assignment-right' %>
             <% end %>
             <div class="status-message">
               <%= assignment.human_readable_status %>

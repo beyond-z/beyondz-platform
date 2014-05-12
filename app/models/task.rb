@@ -7,12 +7,14 @@ class Task < ActiveRecord::Base
   has_many :files, class_name: 'TaskFile', dependent: :destroy
   has_many :comments
 
-  enum kind: { file: 0, user_confirm: 1 }
+  enum kind: { file: 0, user_confirm: 1, text: 2 }
   enum file_type: { document: 0, image: 1, video: 2, audio: 3 }
 
   scope :for_assignment, -> (assignment_id) {
     where(assignment_id: assignment_id)
   }
+  scope :needs_student_attention, -> { where("(state = 'new' or state = 'pending_revision')") }
+  scope :needs_coach_attention, -> { where("(state = 'pending_approval' or state = 'pending_revision')") }
   scope :complete, -> { where(tasks: { state: :complete }) }
   scope :incomplete, -> { where.not(tasks: { state: :complete }) }
   scope :required, -> {
@@ -125,5 +127,15 @@ class Task < ActiveRecord::Base
       file.reset(file_type)
       file.destroy
     end
+  end
+
+  def next
+    return nil if task_definition.position == assignment.tasks.count
+    assignment.tasks.for_display.where("task_definitions.position = ?", task_definition.position + 1).first
+  end
+
+  def previous
+    return nil if task_definition.position == 1
+    assignment.tasks.for_display.where("task_definitions.position = ?", task_definition.position - 1).first
   end
 end

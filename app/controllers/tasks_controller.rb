@@ -5,6 +5,15 @@ class TasksController < ApplicationController
     @task = Task.new
   end
 
+  def show
+    @coaches_comments = Comment.needs_student_attention(current_user.id)
+    @assignment = Assignment.find(params[:assignment_id])
+    @task = Task.find(params[:id])
+    @next_task = @task.next
+    @previous_task = @task.previous
+  end
+
+
   def update
     ActiveRecord::Base.transaction do
 
@@ -37,7 +46,7 @@ class TasksController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to assignment_tasks_path(params[:assignment_id]) }
+      format.html { redirect_to :back } # assignment_tasks_path(params[:assignment_id]) }
       format.json { render json: { success: true } }
     end
   end
