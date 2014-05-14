@@ -1,0 +1,4 @@
+function load_modal()
+{
+
+};

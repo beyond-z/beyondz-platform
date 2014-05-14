@@ -1,7 +1,7 @@
 class CoachesController < ApplicationController
+  
   before_action :require_coach
-
-  public
+  before_action :use_controller_js
 
   def index
     @students = current_user.students

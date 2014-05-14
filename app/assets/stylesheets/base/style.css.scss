@@ -1,0 +1,32 @@
+/*
+ * Manifest file only.... no CSS rules
+ */
+
+// Import presentational CSS
+// define base configuration (font sizes, font families, directories, etc...)
+@import "config";
+// define core button style
+@import "buttons";
+// define base form styles
+@import "forms";
+// define styles for global use
+@import "global_design";
+// define base typography styles
+@import "typography";
+
+// Import functional CSS
+// define button variations
+//@import "buttons/*";
+// define component-specific styles
+//@import "components/*";
+// define form variations
+//@import "forms/*";
+// define layout specific elements
+@import "layouts/*";
+// define static reusable page modules/sections
+//@import "modules/*";
+// define color palettes
+@import "palettes/*";
+// define typographic sets
+//@import "typography/*";
+

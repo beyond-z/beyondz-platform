@@ -1,0 +1,9 @@
+/*
+ * CSS rules that are common to the admin only
+ *
+ *= require_self
+ *= require_directory ./admin
+ */
+
+@import './base/style';
+

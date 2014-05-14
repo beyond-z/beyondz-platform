@@ -180,7 +180,6 @@ DEPENDENCIES
   aasm (~> 3.1.1)
   aws-sdk (~> 1.5.8)
   bootstrap-sass
-  coffee-rails (~> 4.0.0)
   google_drive
   jbuilder (~> 1.2)
   jquery-rails

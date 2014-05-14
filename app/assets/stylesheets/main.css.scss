@@ -1,0 +1,507 @@
+/*
+ * CSS rules that are common to the entire site
+ *
+ *= require_self
+ */
+
+ @import './base/style';
+
+.clear {
+  clear: both;
+}
+
+
+// Override bootstrap LESS/SASS variables up here, before importing it.
+
+// Customize the primary, warning, and danger colors here to be our own.  E.g.
+//$brand-primary: $bzblue;
+//$brand-warning: $bzorange;
+
+$font-size-base: 14px;
+$font-size-large: ceil($font-size-base * 1.25); // ~18px
+$font-size-small: ceil($font-size-base * 0.85); // ~12px
+
+$font-size-h1: floor($font-size-base * 2.15); // ~30px
+$font-size-h2: ceil($font-size-base * 1.7); // ~24px 
+$font-size-h3: ceil($font-size-base * 1.25); // ~18px
+$font-size-h4: $font-size-base;
+$font-size-h5: ceil($font-size-base * .85); // ~12px
+
+// import the CSS framework
+@import "bootstrap";
+
+// For site-wide styles, apply Bootstrap styles mixed with our
+// own styles so that the HTML is framework neutral (e.g. we can move
+// away from Bootstrap without changing all the HTML)
+
+//#############
+// BTODO: for now, all styles will go in this file.  As we get past the rough, initial site
+// then organize the CSS into separate files for maintaince while still following DRY principles.
+// Here is an intro for how to organize the SASS files: http://thesassway.com/beginner/how-to-structure-a-sass-project/
+// But really, this post seems to really think everything through in better detail: http://gist.io/4436524
+//#############
+
+
+//-----------------------------------------
+// base styles
+//-----------------------------------------
+
+html, body {
+  height: 100%;
+}
+
+// make all images responsive by default
+img {
+  @extend .img-responsive;
+  margin: 0 auto;
+  }
+
+main {
+  @extend .container-fluid;
+  background-color: white;
+  width: 100%;
+  }
+
+section {
+  @extend .row;
+  }
+
+// Make all form submit buttons based off the following Bootstrap styles
+.submit {
+  @extend .btn;
+  @extend .btn-primary;
+  @extend .btn-lg;
+  }
+
+// Class used by ruby on rails when validation fails.
+.field-with-errors {
+  @extend .has-error;
+}
+
+// Error messages for failed form validation.
+#error-explanation {
+  margin: 20px 0;
+  padding: 20px;
+  border-left: 3px solid #eee;  
+  background-color: #fdf7f7;
+  border-color: #d9534f;
+  h2 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    color: #d9534f;
+    font-size: 18px;
+  }
+  ul li {
+    font-size: 14px;
+  }
+}
+
+// This class can be used to add Glyphicon images as the bullet points for a list
+// like this: <ul class="list-unstyled icon-list checkmark">
+// See: http://www.bootply.com/116739
+.icon-list li {
+  padding: 0 0 5px 20px;
+  display: block;
+  position: relative;
+}
+.icon-list li:before {
+  font-family: 'Glyphicons Halflings';
+  position: absolute;
+  left: 0px;
+  top:3px;
+  font-size:80%
+}
+
+.checkmark li:before {
+  @extend .glyphicon-check;
+}
+ 
+//-----------------------------------------
+// Bootstrap overrides
+//-----------------------------------------
+
+
+.list-group-item {
+  background-color: transparent;
+  }
+
+.btn-primary {
+  @include button-variant(white, $greyBackground, $bzgrey10);
+  }
+
+.btn-warning {
+  @include button-variant(white, $bzorange, $bzgrey6);
+  }
+
+.lead {
+  font-size: $font-size-large;
+  }
+
+// Jumbotron is too big, we're not selling anything.  Reduce it down a bit...
+.jumbotron {
+  padding: .3em 1em; 
+  h1 { 
+    font-size: 2.3em; 
+    }
+  p {
+    font-size: 1.3em;
+    }
+  }
+
+//-----------------------------------------
+// Beyond Z styles
+//-----------------------------------------
+
+
+// Text indicating the type of session for the week, peer led vs coach led.
+.session-type {
+  font-style: italic;
+  color: $bzblue;
+  }
+
+// The general panel for assignments.
+.assignment-col {
+  @extend .col-sm-12;
+  }
+  
+// The header row for assignments
+.assignment-header {
+  @extend .assignment-col;
+  background-color: $greyBackground;
+  color: white;
+  }
+
+// Lead text for assignments
+.assignment-text-lead {
+  color: $bzorange;
+  font-size: 110%;
+  } 
+
+// An emphasized section for assignments
+.assignment-jumbotron {
+  @extend .col-sm-10;
+  @extend .col-sm-offset-1;
+  @extend .jumbotron;
+  background-color: $bzblue;
+  color: $bzgrey11;
+  h1, h2, h3 {
+     color: white;
+    }
+  } 
+
+// A table for meeting agendas
+.meeting-agenda-table {
+  @extend .table;
+  @extend .table-bordered;
+  }
+
+//-----------------------------------------
+// Styles for the college program main page
+//-----------------------------------------
+
+// The header showing the logo
+.program-header {
+  img {
+    width: 200px;
+    }
+  }
+
+.student-login {
+    float: right;
+    margin-right: 2em;
+    padding-bottom: 3px;
+    font-size: 75%;
+    legend {
+      font-size: 125%;
+      margin-bottom: 3px;
+      }
+    label {
+      display: block;
+      > span {
+        display: inline-block;
+  width: 10em;
+  text-align: right;
+        }
+      }
+    .submit-holder {
+      padding-left: 10em;
+    }
+  }
+
+// Top bar of links to resources like the submission instructions, summer internships opps, etc.
+.program-resources-container {
+  @extend .assignment-header; 
+}
+
+.program-resources {
+//  @extend .col-sm-offset-4; 
+}
+
+.btn-resources {
+  @extend .col-sm-4;
+  @extend .btn;
+  @extend .btn-primary;
+  }
+
+// The intro section for the program page.
+.program-intro {
+  @extend .assignment-jumbotron;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 0px;
+  }
+
+// Call to action to post to the group forum
+.program-forum {
+  @extend .assignment-col;
+  text-align: center;
+  }
+
+// The summary panel for assignments.
+.assignment-summary {
+  @extend .assignment-col;
+  h2 {
+    @extend .assignment-header; 
+    margin-bottom: 0px;
+    }
+  .assignment-summary-wrapper {
+    padding: 10px;
+    .status-message {
+      clear: both;
+      text-align: right;
+      font-size: 2em;
+      font-weight: bold;
+    }
+  }
+  .assignment-in-progress {
+    background-color: #FFFFCC;
+    .status-message {
+      color: #CCCC00;
+    }
+  }
+  .assignment-submittable {
+    background-color: #E6F5EB;
+    .status-message {
+      color: #197519;
+    }
+  }
+  .assignment-complete {
+    background-color: #eee;
+    .status-message {
+      color: #aaa;
+    }
+  }
+}
+
+.assignment-date {
+  @extend .assignment-col;
+  color: $bzorange;
+  font-size: $font-size-large;
+  font-weight: bold;
+  p {
+    margin: 3px 0px 0px;
+    }
+  }
+
+.assignment-summary-practice {
+  @extend .col-sm-8;
+  h3 {
+     color: black;
+    }
+  }
+
+.assignment-summary-checklist {
+  @extend .col-sm-4;
+  color: $bzorange;
+  border: 5px solid $bzgrey4;
+  margin-right: 10px;
+  width: 32%;
+  ul.static {
+    @extend .list-unstyled;
+    @extend .icon-list;
+    @extend .checkmark;
+  }
+  ul {
+    @extend .list-unstyled;
+    li {
+      padding: 0 0 5px 0px;
+      display: block;
+      position: relative;
+    }
+    .submittable, .kind-file, .pending-approval, .complete, .unavailable {
+      top: 3px;
+      float:left;
+      width: 6%;
+    }
+    .kind-file, .pending-approval, .complete, .unavailable {
+      @extend .glyphicon;
+    }
+    .submittable {
+    }
+    .kind-file {
+      @extend .glyphicon-upload;
+      color: #4480f7;
+      font-size: 1.2em;
+    }
+    .pending-approval {
+      @extend .glyphicon-random;
+    }
+    .complete {
+      @extend .glyphicon-check;
+    }
+    .unavailable {
+      @extend .glyphicon-unchecked;
+    }
+    .description {
+      float:left;
+      width: 93%;
+    }
+  }
+  h3 {
+    color: black;
+    }
+  a {
+    color: $bzorange;
+    text-decoration: underline;
+    }
+  a:hover, a:focus {
+    color: darken($bzorange, 15%);
+    text-decoration: underline;
+    }
+}
+
+.assignment-task-summary {
+  font-size: .8em;
+  color: #aaa;
+}
+
+.assignment-summary-buttons {
+  @extend .assignment-col;
+  }
+
+.btn-assign {
+  @extend .col-sm-2;
+  @extend .btn;
+  @extend .btn-warning;
+  }
+
+.btn-assignment-left {
+  @extend .btn-assign;
+  @extend .col-sm-offset-2;
+  margin-right: 10px;
+  }
+
+.btn-assignment-right {
+  @extend .btn-assign;
+  margin-left: 10px;
+  }
+
+//------------------------------------------
+// Styles for the assignment submission pages.
+//-----------------------------------------
+
+.assignment-form-submit {
+   @extend .col-sm-8;
+   margin: 10px;
+   }
+
+.btn-assignment-submit {
+   @extend .btn-assign;
+   }
+
+
+//------------------------------------------
+// Styles for the assignment details pages.
+//-----------------------------------------
+
+// Container for the whole details page.
+.assignment-details-container {
+  @extend .assignment-col;
+  h2 {
+    @extend .assignment-header; 
+    margin-bottom: 0px;
+    }
+  }
+
+// The main section for assignment details.
+.assignment-details-main {
+  @extend .col-sm-10;
+}
+
+// The sidebar containing assignment resources.
+.assignment-details-sidebar {
+  @extend .col-sm-2;
+  margin-top: 10px;
+  
+  // BTODO: not able to get the column to stretch and match the height of the main div.
+  //background-color: $greyBackground;
+  //min-height: 100%;
+}
+
+.assignment-details-summary {
+  @extend .assignment-col;
+  @extend .lead;
+  margin: 0px;
+  }
+
+.assignment-details-jumbotron {
+  @extend .assignment-jumbotron;
+  padding: 0px;
+  h3 {
+    text-align: center;
+    border-bottom: 4px solid white;
+    padding-bottom: 5px;
+    margin: 5px 0px;
+    }
+  a {
+    color: white;
+    text-decoration: none;
+    }
+  a:hover, a:focus {
+    color: $bzgrey1;
+    text-decoration: underline;
+    }
+  }
+
+.assignment-details-articles {
+  @extend .assignment-details-jumbotron;
+  }
+
+.assignment-details-homework {
+  @extend .assignment-details-jumbotron;
+  p {
+    padding: 0px 15px 0px;
+    }
+  }
+
+.assignment-details-body {
+  @extend .assignment-col;
+  } 
+
+.assignment-details-center {
+  @extend .col-sm-10;
+  @extend .col-sm-offset-1;
+  }
+
+.assignment-details-buttons {
+  @extend .col-sm-12;
+  }
+
+.btn-assignment-details {
+  @extend .col-sm-12;
+  @extend .btn;
+  @extend .btn-warning;
+  @extend .pull-right;
+  margin-bottom: 10px;
+  }
+
+.assignment-details-half-screen {
+  @extend .col-sm-6;
+  }
+
+//------------------------------------------
+// Styles for the footer
+//-----------------------------------------
+.footer {
+  text-align: center;
+  } 
