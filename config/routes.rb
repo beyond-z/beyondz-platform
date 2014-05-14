@@ -19,6 +19,14 @@ BeyondzPlatform::Application.routes.draw do
     resources :tasks, only: [:index, :update, :show]
   end
 
+  namespace :coach do
+    root "home#index"
+
+    resources :students do
+      resources :tasks
+    end
+  end
+
 
   namespace :admin do
     root "home#index"
