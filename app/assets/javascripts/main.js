@@ -1,3 +1,5 @@
+// JavaScript that is common to the entire site
+//
 // This is a manifest file that'll be compiled into main.js, which will
 // include all the files listed below.
 //
