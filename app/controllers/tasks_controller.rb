@@ -11,6 +11,9 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
     @next_task = @task.next
     @previous_task = @task.previous
+
+    @previous_task_url = @previous_task ? assignment_task_path(@previous_task.assignment, @previous_task) : nil
+    @next_task_url = @next_task ? assignment_task_path(@next_task.assignment, @next_task) : nil
   end
 
 

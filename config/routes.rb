@@ -5,15 +5,8 @@ BeyondzPlatform::Application.routes.draw do
   get '/users/:action', controller: 'users'
   post '/users/:action', controller: 'users'
 
-  get '/coaches', to: 'coaches#index'
-  get '/coaches/:action', controller: 'coaches'
-  post '/coaches/:action', controller: 'coaches'
-  patch '/coaches/:action', controller: 'coaches'
-
   resources :feedback
-
   resources :comments
-
 
   resources :assignments, only: [:index, :update, :show] do
     resources :tasks, only: [:index, :update, :show]
@@ -22,11 +15,11 @@ BeyondzPlatform::Application.routes.draw do
   namespace :coach do
     root "home#index"
 
+    resources :assignments
     resources :students do
       resources :tasks
     end
   end
-
 
   namespace :admin do
     root "home#index"

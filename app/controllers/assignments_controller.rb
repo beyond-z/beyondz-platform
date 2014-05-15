@@ -42,6 +42,9 @@ class AssignmentsController < ApplicationController
       @task = tasks.first
       @next_task = @task.next
       @previous_task = @task.previous
+
+      @previous_task_url = @previous_task ? assignment_task_path(@previous_task.assignment, @previous_task) : nil
+      @next_task_url = @next_task ? assignment_task_path(@next_task.assignment, @next_task) : nil
     else
       @task = nil
       @next_task = nil
@@ -58,12 +61,6 @@ class AssignmentsController < ApplicationController
       return
     elsif params[:submit] && (params[:submit] == 'true')
       assignment.submit!
-    elsif params[:approve] && (params[:approve] == 'true')
-      if assignment.user.coach == current_user
-        assignment.approve!
-        redirect_to coaches_path
-        return
-      end
     end
 
     redirect_to assignments_path
