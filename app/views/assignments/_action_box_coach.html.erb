@@ -1,5 +1,5 @@
 <% if @assignment.pending_approval? %>
-  <%= link_to 'Approve Assignment', assignment_path(@assignment.id, approve: true), method: :patch, :class => 'btn-assignment-right' %>
+  <%= link_to 'Approve Assignment', coach_assignment_path(@assignment.id, approve: true), method: :patch, :class => 'btn-assignment-right' %>
 <% else %>
   The student has not yet submitted this assignment for final approval.
 <% end %>

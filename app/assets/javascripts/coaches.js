@@ -1,34 +1,25 @@
 $(document).ready(function() {
-  $('.approve-task').click(function() {
-    var task_id = $(this).data("task-id");
-    
-    $.ajax({
-      url: '/coaches/approve_task' + '.json',
-      success: function() { alert("Task approved."); },
-      type: 'PATCH',
-      data: {
-        'task': {
-          "id" : task_id
+  function act_upon_task(action, on_success) {
+    return function() {
+      var task_id = $(this).data("task-id");
+      var student_id = $(this).data("student-id");
+      
+      $.ajax({
+        url: '/coach/students/' + student_id + '/tasks/' + task_id + '.json',
+        success: on_success,
+        type: 'PATCH',
+        data: {
+          "task_state" : action
         }
-      }
-    });
-    return false;
-  });
+      });
+      return false;
+    };
+  }
 
-  $('.request-task-revisions').click(function() {
-    var task_id = $(this).data("task-id");
-    
-    $.ajax({
-      url: '/coaches/request_task_revisions' + '.json',
-      success: function() { alert("Revisions requested. Please remember to leave a comment for the student giving them tips on how to move forward."); },
-      type: 'PATCH',
-      data: {
-        'task': {
-          "id" : task_id
-        }
-      }
-    });
-    return false;
-  });
-
+  $('.approve-task').click(act_upon_task("approve", function() {
+    alert("Approved!");
+  }));
+  $('.request-task-revisions').click(act_upon_task("request_revision", function() {
+    alert("Revisions requested. Please remember to leave a comment for the student giving them tips on how to move forward.");
+  }));
 });
