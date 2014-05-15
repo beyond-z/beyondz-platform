@@ -33,12 +33,57 @@
   .comment-content {
     padding: 0.5em;
   }
+
+  .attachment {
+    padding: 5px;
+    border-top: solid 1px #ccc;
+
+    .icon {
+      color: #aaa;
+    }
+  }
 }
 
 .comment-form-holder {
-  text-align: right;
+  
   textarea {
     text-align: left;
     width: 100%;
+  }
+
+  .post {
+    text-align: right;
+  }
+
+  .attachment {
+
+    #buttons {
+
+      #attachment-button {
+        margin-right: 2em;
+        float: left;
+      }
+
+      #select-type {
+        display: none;
+        float: left;
+      }
+    }
+
+    .document, .image {
+      display: none;
+      margin: 10px 0 0 10px;   
+
+      .upload_symbol {
+        font-size: 3em;
+        float: left;
+        width: 1.2em;
+      }
+
+      .upload_instructions {
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+    }
   }
 }

@@ -13,8 +13,7 @@ class Task < ActiveRecord::Base
   scope :for_assignment, -> (assignment_id) {
     where(assignment_id: assignment_id)
   }
-  scope :needs_student_attention, -> { where("(state = 'new' or state = 'pending_revision')") }
-  scope :needs_coach_attention, -> { where("(state = 'pending_approval' or state = 'pending_revision')") }
+  
   scope :complete, -> { where(tasks: { state: :complete }) }
   scope :incomplete, -> { where.not(tasks: { state: :complete }) }
   scope :required, -> {
@@ -38,6 +37,12 @@ class Task < ActiveRecord::Base
     .order('task_definitions.position ASC')
   }
   scope :files, -> { where(kind: Task.kinds[:file]) }
+  scope :need_student_attention, -> {
+    where(state: [:new, :pending_revision])
+  }
+  scope :need_coach_attention, -> {
+    where(state: [:pending_approval, :pending_revision]) 
+  }
 
 
   aasm :column => :state do
