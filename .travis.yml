@@ -2,6 +2,5 @@ language: ruby
 cache: bundler
 rvm:
   - 2.1.1
-before_install: gem update --remote bundler
 script:
-  - cd app; rubocop
+  - cd app; bundle exec rubocop
