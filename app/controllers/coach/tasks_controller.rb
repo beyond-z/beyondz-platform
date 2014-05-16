@@ -24,7 +24,9 @@ class Coach::TasksController < Coach::ApplicationController
     if params[:task_state] == "request_revision"
       task.request_revision!
     elsif params[:task_state] == "approve"
-      task.submit! # to support approve without waiting for the user (this may be a misfeature, we should talk about it)
+      if task.submittable?
+       task.submit! # to support approve without waiting for the user (this may be a misfeature, we should talk about it)
+      end
       task.approve!
     else
       raise "unknown action #{params[:task_state]}"

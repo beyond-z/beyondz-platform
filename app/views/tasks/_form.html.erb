@@ -7,6 +7,16 @@
         <%= render "shared/form_errors", locals: {object: task} %>
 
         <% if task.kind == 'file' %>
+          <% if task.files.any? %>
+            <p>You have already uploaded these files:</p>
+            <ul>
+              <% task.files.each do |file| %>
+                <li><a href="<%= file.url %>"><%= file["#{task.file_type}_file_name"] %></a></li>
+              <% end %>
+            </ul>
+            <p>You may upload a replacement:</p>
+          <% end %>
+
           <div class="task-file">
             <%= f.fields_for :files do |file| %>
               <span class="task-name"><%= "#{task.task_definition.name} (#{task.file_type})".html_safe %>:</span>

@@ -35,7 +35,7 @@ class TasksController < ApplicationController
         if task.files.present?
           task_file_params = params[:task][:files][task.file_type.to_sym]
           # restrict to single/first file for now
-          task.files.first.update_attribute(task.file_type => task_file_params)
+          task.files.first.update_attribute(task.file_type, task_file_params)
         else
           task.files << TaskFile.create(
             task_definition_id: task.task_definition.id,
