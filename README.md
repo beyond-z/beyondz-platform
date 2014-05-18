@@ -106,6 +106,13 @@ branch (locally and remotely)
   git branch -d <feature_name>
   git push origin :<feature_name>
 ```
+
+We use a continuous integration test server on all pull requests. When you
+open a pull request, it will be automatically tested and the results displayed
+on GitHub in the form of a checkbox or an X mark.
+
+You can see the details of tests here: https://travis-ci.org/beyond-z/beyondz-platform
+
 # Code style
 
 We use standard Rails code conventions with some additional rules:
