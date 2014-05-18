@@ -9,10 +9,12 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 user = User.create(email: "test@beyondz.org", password: User.get_salted_password("test"), first_name: "BeyondZ", last_name: "Test")
+user2 = User.create(email: "test+student@beyondz.org", password: User.get_salted_password("test"), first_name: "Second", last_name: "Student")
 coach = User.create(email: "test+coach@beyondz.org", password: User.get_salted_password("test"), first_name: "BeyondZ", last_name: "Coach")
 admin_user = User.create(email: "test+admin@beyondz.org", password: User.get_salted_password("test"), first_name: "BeyondZ", last_name: "Admin", is_administrator: true)
 
 CoachStudent.create(coach_id: coach.id, student_id: user.id)
+CoachStudent.create(coach_id: coach.id, student_id: user2.id)
 
 # Assignment imports from the existing HTML
 
@@ -253,5 +255,6 @@ item.task_definitions.push(TaskDefinition.create(kind: 'file', file_type: 'docum
 item.save
 
 user.create_child_skeleton_rows
+user2.create_child_skeleton_rows
 coach.create_child_skeleton_rows
 admin_user.create_child_skeleton_rows
