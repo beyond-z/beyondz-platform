@@ -1,5 +1,4 @@
 .comments {
-
   .discussion {
     margin-bottom: 1em;
   }
@@ -64,14 +63,45 @@
       width: 100%;
     }
 
+    .toggle-column {
+      @extend .col-sm-1;
+    }
+
+    .select-column {
+      @extend .col-sm-11;
+    }
+
+    .upload-column {
+      @extend .col-sm-11;
+      @extend .col-sm-offset-1;
+    }
+
     #attachment-button {
+      @extend .btn;
+      @extend .btn-default;
+      @extend .glyphicon;
+      @extend .glyphicon-paperclip;
       margin-right: 2em;
       float: left;
     }
 
-    #select-type {
+    #select-type { 
       @extend .btn-group;
       display: none;
+
+      #select-document, #select-image {
+        @extend .btn;
+        @extend .btn-default;
+        @extend .glyphicon;
+      }
+
+      #select-document {
+        @extend .glyphicon-file;
+      }
+
+      #select-image {
+        @extend .glyphicon-picture;
+      }
     }
 
     .file_type_symbol {
@@ -99,11 +129,7 @@
       margin-bottom: .5em;
     }
 
-    .post_button {
-      // not sure if this extending is good... it extends 374 classes (4488 additional bytes)
-      @extend .btn;
-      @extend .btn-sm;
-      @extend .btn-default;
+    input[type=submit] {
       float: right;
     }
   } 

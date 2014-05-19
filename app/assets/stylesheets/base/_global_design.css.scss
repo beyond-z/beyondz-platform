@@ -50,9 +50,14 @@ section {
 // Make all form submit buttons based off the following Bootstrap styles
 .submit {
   @extend .btn;
+  @extend .btn-default;
+}
+
+.submit_primary {
+  @extend .btn;
   @extend .btn-primary;
   @extend .btn-lg;
-  }
+}
 
 // Class used by ruby on rails when validation fails.
 .field-with-errors {

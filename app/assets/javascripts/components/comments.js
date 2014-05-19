@@ -26,9 +26,10 @@ function load_component_comments()
   select_document.click(function() {
     document_type.show();
     image_type.hide();
-  })
+  });
+
   select_image.click(function() {
     image_type.show();
     document_type.hide();   
-  })
+  });
 };
