@@ -5,14 +5,14 @@ class TaskFile < ActiveRecord::Base
 
   has_attached_file :document
   validates_attachment :document,
-    :content_type => {
-      :content_type => [
+    content_type: {
+      content_type: [
         'application/pdf',
         'application/msword',
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
       ]
     },
-    :size => { :in => 0..2.megabytes }
+    size: { in: 0..2.megabytes }
 
   has_attached_file :image
   validates_attachment :image,
@@ -30,8 +30,8 @@ class TaskFile < ActiveRecord::Base
 
   has_attached_file :audio
   validates_attachment :audio,
-    :content_type => { :content_type => ['audio/mp3', 'application/x-mp3'] },
-    :size => { :in => 0..2.megabytes }
+    content_type: { content_type: ['audio/mp3', 'application/x-mp3'] },
+    size: { in: 0..2.megabytes }
 
 
   default_scope { order('created_at ASC') }

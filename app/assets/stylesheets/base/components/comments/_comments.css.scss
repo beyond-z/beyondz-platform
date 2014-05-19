@@ -1,0 +1,110 @@
+.comments {
+
+  .discussion {
+    margin-bottom: 1em;
+  }
+
+  .comment {
+    border: solid 0.2em $subtle_border;
+    padding: 0em;
+    margin-bottom: 1em;
+    // Add border radius as mixin
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+
+    &.mine {
+      /* this is a comment that the logged-in user wrote */
+      background-color: #eee;
+      margin-right: 3em;
+    }
+
+    &.not-mine {
+      /* this is a comment written by another user */
+      margin-left: 3em;
+    }
+
+    .by {
+      font-size: 0.9em;
+      border-bottom: solid 0.1em $subtle_border;
+      padding: 0.25em;
+    }
+
+    .speaker {
+      font-weight: bold;
+    }
+
+    .time {
+      float: right;
+    }
+
+    .content {
+      padding: 0.5em;
+    }
+
+    .attachment {
+      padding: 0.5em;
+      border-top: solid 0.1em #ccc;
+
+      .icon {
+        @extend .glyphicon;
+        @extend .glyphicon-paperclip;
+        color: #aaa;
+      }
+
+      img {
+        @extend .img-thumbnail;
+      }
+    }
+  }
+
+  .comment-form {
+    
+    textarea {
+      width: 100%;
+    }
+
+    #attachment-button {
+      margin-right: 2em;
+      float: left;
+    }
+
+    #select-type {
+      @extend .btn-group;
+      display: none;
+    }
+
+    .file_type_symbol {
+      @extend .glyphicon;
+      font-size: 3em;
+      float: left;
+      width: 1.2em;
+    }
+
+    .file_type_sub_form {
+      display: none;
+      margin-top: 10px;
+
+      & .document {
+        @extend .glyphicon-file;
+      }
+
+      & .image {
+        @extend .glyphicon-picture;
+      }
+    }
+
+    .upload_instructions {
+      font-weight: bold;
+      margin-bottom: .5em;
+    }
+
+    .post_button {
+      // not sure if this extending is good... it extends 374 classes (4488 additional bytes)
+      @extend .btn;
+      @extend .btn-sm;
+      @extend .btn-default;
+      float: right;
+    }
+  } 
+}

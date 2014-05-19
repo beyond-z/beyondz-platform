@@ -2,31 +2,36 @@
  * Manifest file only.... no CSS rules
  */
 
-// Import presentational CSS
+// Import the CSS framework
+@import "bootstrap";
+
+
+// Import functional and presentational base
+// Order is specific based on dependency (typography depends on palettes,
+// buttons depend on typography, forms depend on buttons, etc...)
+
 // define base configuration (font sizes, font families, directories, etc...)
-@import "config";
-// define core button style
-@import "buttons";
-// define base form styles
-@import "forms";
-// define styles for global use
-@import "global_design";
-// define base typography styles
-@import "typography";
-
-// Import functional CSS
-// define button variations
-//@import "buttons/*";
-// define component-specific styles
-//@import "components/*";
-// define form variations
-//@import "forms/*";
-// define layout specific elements
-@import "layouts/*";
-// define static reusable page modules/sections
-@import "modules/feedback_button/*";
+@import "config";           // functional
 // define color palettes
-@import "palettes/*";
+@import "palettes/*";       // functional
+// define base typography styles
+@import "typography";       // functional?
 // define typographic sets
-//@import "typography/*";
+//@import "typography/*";   // functional?
+// define core button style
+@import "buttons";          // presentational?
+// define button variations
+//@import "buttons/*";      // presentational?
+// define base form styles
+@import "forms";            // presentational
+// define form variations
+//@import "forms/*";        // presentational
+// define styles for global use
+@import "global_design";    // presentational
 
+// define component-specific styles
+@import "components/comments/*";      // presentational
+// define static reusable page modules/sections
+@import "modules/feedback_button/*";  // presentational
+// define layout specific elements
+//@import "layouts/*";                // presentational

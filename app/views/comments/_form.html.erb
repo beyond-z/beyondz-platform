@@ -1,8 +1,41 @@
-<div class="comment-form-holder">
-  <%= form_for Comment.new do |f| %>
-    <%= f.text_area :content, size: "60x4", placeholder: "Add a comment..." %>
-    <%= f.hidden_field :task_id, { :value => task.id } %>
-    <br />
-    <button type="submit">Post Comment</button>
+<div class="comment-form">
+  <%= form_for Comment.new, html: { role: 'form' } do |f| %>
+    <%= f.text_area :content, rows: 4, placeholder: "Add a comment..." %>
+    <%# use appropriate id for task or assignment %>
+    <%= f.hidden_field "#{item.class.model_name.human.downcase}_id", { :value => item.id } %>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-1">
+          <!--  <div id="buttons"> -->
+            <button id="attachment-button" type="button" class="btn btn-default glyphicon glyphicon-paperclip" data-toggle="button"></button>
+        </div>
+        <div class="col-sm-11">
+          <span id="select-type" data-toggle="buttons">
+            <label id="select-document" class="btn btn-default glyphicon glyphicon-file">
+              <input type="radio" name="attachment_type" value="document">
+            </label>
+            <label id="select-image" class="btn btn-default glyphicon glyphicon-picture">
+              <input type="radio" name="attachment_type" value="image">
+            </label>
+          </span>
+          <div class="clear"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-11 col-sm-offset-1">
+          <div class="file_type_sub_form document">
+            <span class="file_type_symbol document"></span>
+            <div class="upload_instructions">Upload a document (.doc, .pdf)</div>
+            <%= f.file_field :document %>
+          </div>
+          <div class="file_type_sub_form image">
+            <span class="file_type_symbol image"></span>
+            <div class="upload_instructions">Upload an image (.jpg, .png, .gif)</div>
+           <%= f.file_field :image %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%= f.submit 'Post Comment', :class => 'post_button' %>
   <% end %>
 </div>

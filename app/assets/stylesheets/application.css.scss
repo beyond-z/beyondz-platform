@@ -1,9 +1,9 @@
 /*
  * CSS rules that are common to the general application (non-admin)
- *
- *= require_self
- *= require_directory ./application
  */
 
 @import './base/style';
+
+
+@import "./application/*";
 

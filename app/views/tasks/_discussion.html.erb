@@ -5,9 +5,6 @@
   <% else %>
     <p>Here, you can communicate with your coach. Ask for help or comment here.</p>
   <% end %>
-
-  <% @task.comments.each do |comment| %>
-    <%= render partial: "comments/comment", locals: { :comment => comment } %>
-  <% end %>
-  <%= render partial: "comments/form", locals: { :task => @task } %>
+  
+  <%= render 'shared/comments', item: @task %>
 </div>

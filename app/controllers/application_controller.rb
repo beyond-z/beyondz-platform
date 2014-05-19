@@ -26,6 +26,7 @@ class ApplicationController < ActionController::Base
       end
     end
 
+
     def require_student
       unless @user_logged_in
         flash[:error] = "Please log in to see your assignments."
@@ -36,7 +37,7 @@ class ApplicationController < ActionController::Base
     def require_coach
       unless @user_logged_in && current_user.is_coach?
         flash[:error] = "Please log in to see your coaching dashboard."
-        redirect_to users_login_path(:redirect_to => coaches_path)
+        redirect_to users_login_path(:redirect_to => coach_root_path)
       end
     end
 

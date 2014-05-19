@@ -1,6 +1,24 @@
-<div class="comment <%= comment.user.id == @current_user.id ? "from-me" : "from-other" %>">
-  <div class="comment-by"><span class="comment-speaker"><%= comment.user.id == @current_user.id ? "You" : comment.user.name %></span> commented on <span class="comment-time"><%= comment.updated_at.strftime("%B %d, %Y") %></span>:</div>
-  <div class="comment-content">
+<div class="comment <%= comment.user.id == @current_user.id ? "mine" : "not-mine" %>">
+  <div class="by">
+    <span class="speaker">
+      <%= comment.user.name %> <%= comment.user.id == @current_user.id ? '(You)' : ''%>
+    </span>
+    <span class="time">
+      <%= comment.updated_at.strftime("%B %d, %Y at %l:%M %P") %>
+    </span>
+  </div>
+  <div class="content">
     <p><%= comment.content %></p>
   </div>
+  <% if comment.has_attachment? %>
+    <div class="attachment">
+      <div>
+        <span class="icon"></span>
+        <%= link_to "Download #{comment.file_type} (#{comment.attachment_name})", comment.attachment_url, target: 'attachment' %>
+      </div>
+      <% if comment.file_type == 'image' %>
+        <%= image_tag comment.attachment_url(:thumb), alt: comment.attachment_name %>
+      <% end %>
+    </div>
+  <% end %>
 </div>
