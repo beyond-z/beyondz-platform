@@ -1,9 +1,10 @@
-$(document).ready(function() {
-  var attachment_button = $('.attachment #attachment-button');
-  var select_document = $('.attachment #select-document');
-  var select_image = $('.attachment #select-image');
-  var document_type = $('.attachment .document');
-  var image_type = $('.attachment .image');
+function load_component_comments()
+{
+  var attachment_button = $('.comment-form #attachment-button');
+  var select_document = $('.comment-form #select-document');
+  var select_image = $('.comment-form #select-image');
+  var document_type = $('.comment-form .file_type_sub_form.document');
+  var image_type = $('.comment-form .file_type_sub_form.image');
 
   attachment_button.click(function() {
     var select_type = $('#select-type');
@@ -25,9 +26,10 @@ $(document).ready(function() {
   select_document.click(function() {
     document_type.show();
     image_type.hide();
-  })
+  });
+
   select_image.click(function() {
     image_type.show();
     document_type.hide();   
-  })
-});
+  });
+};

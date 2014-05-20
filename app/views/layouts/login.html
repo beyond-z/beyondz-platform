@@ -2,26 +2,23 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= yield(:title) || "Beyond Z" %></title>
-    <meta name="description" content="<%= yield(:description) || "Beyond Z" %>">
+    <title><%= content_for?(:title) ? yield(:title) : "Beyond Z" %></title>
+    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Beyond Z" %>">
     
     <!-- Until we add a landing page and login, keep our site out of search engines -->
     <meta name="robots" content="noindex">
-    <%= render 'shared/asset_includes' %>
+    <%= stylesheet_link_tag "main", media: "all", "data-turbolinks-track" => true %>
+    <%= javascript_include_tag "main", "data-turbolinks-track" => true %>
     <%= csrf_meta_tags %>
   </head>
   <body>
-    <header>
-      <%= render 'shared/header' %>
-      <%= render 'shared/navigation' %>
-    </header>
     <main role="main">
        <%= render 'shared/messages' %>
        <%= yield %>
     </main>
 
     <%= render 'shared/footer' %>
-    <%= render 'shared/feedback_button' %>
+
     <%= render 'shared/google_analytics' %>
   </body>
 </html>

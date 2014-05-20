@@ -1,0 +1,9 @@
+<%# pass in task or assignment as item %>
+<div class="comments">
+  <div class="discussion">
+    <% item.comments.each do |comment| %>
+      <%= render partial: "comments/comment", locals: { comment: comment } %>
+    <% end %>
+  </div>
+  <%= render partial: "comments/form", locals: { item: item } %>
+</div>

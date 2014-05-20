@@ -1,7 +1,7 @@
 class AssignmentsController < ApplicationController
+  
   before_action :require_student
-
-  public
+  before_action :use_controller_js
 
   def index
     uid = session[:user_id]

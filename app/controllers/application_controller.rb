@@ -4,36 +4,41 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   # Setup user information for all controllers
-  before_filter :prepare_user_info
+  before_action :prepare_user_info
+  
+  attr_reader :current_user
 
   private
 
-  def prepare_user_info
-    if session['user_id']
-      @user_logged_in = true
-      @current_user = User.find(session['user_id'].to_i)
-    else
-      @user_logged_in = false
-      @current_user = nil
+    # use controller specific JS whene requested
+    # use: before_action :use_controller_js
+    def use_controller_js
+      @controller_js = params[:controller]
     end
-  end
 
-  def require_student
-    unless @user_logged_in
-      flash[:error] = "Please log in to see your assignments."
-      redirect_to users_login_path(:redirect_to => assignments_path)
+    def prepare_user_info
+      if session['user_id']
+        @user_logged_in = true
+        @current_user = User.find(session['user_id'].to_i)
+      else
+        @user_logged_in = false
+        @current_user = nil
+      end
     end
-  end
 
-  def require_coach
-    unless @user_logged_in && current_user.is_coach?
-      flash[:error] = "Please log in to see your coaching dashboard."
-      redirect_to users_login_path(:redirect_to => coach_root_path)
+
+    def require_student
+      unless @user_logged_in
+        flash[:error] = "Please log in to see your assignments."
+        redirect_to users_login_path(:redirect_to => assignments_path)
+      end
     end
-  end
 
+    def require_coach
+      unless @user_logged_in && current_user.is_coach?
+        flash[:error] = "Please log in to see your coaching dashboard."
+        redirect_to users_login_path(:redirect_to => coach_root_path)
+      end
+    end
 
-  public
-
-  attr_reader :current_user
 end

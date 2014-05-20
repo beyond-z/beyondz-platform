@@ -1,18 +1,75 @@
 /*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
- * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the top of the
- * compiled file, but it's generally better to create a new file per style scope.
- *
- *= require_self
- *= require_tree .
+ * CSS rules that are common to the general application (non-admin)
  */
 
-.clear
-{
-	clear: both;
+@import './base/style';
+
+
+@import "./application/*";
+
+
+// The header showing the logo
+.program-header {
+  img {
+    width: 200px;
+  }
+}
+
+.student-login {
+  float: right;
+  margin-right: 2em;
+  padding-bottom: 3px;
+  font-size: 75%;
+
+  legend {
+    font-size: 125%;
+    margin-bottom: 3px;
+    }
+
+  label {
+    display: block;
+    > span {
+      display: inline-block;
+      width: 10em;
+      text-align: right;
+    }
+  }
+  .submit-holder {
+    padding-left: 10em;
+  }
+}
+
+// Top bar of links to resources like the submission instructions, summer internships opps, etc.
+.program-resources-container {
+  @extend .assignment-header; 
+}
+
+.program-resources {
+//  @extend .col-sm-offset-4; 
+}
+
+.btn-resources {
+  @extend .col-sm-4;
+  @extend .btn;
+  @extend .btn-primary;
+}
+
+// The intro section for the program page.
+.program-intro {
+  @extend .assignment-jumbotron;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 0px;
+  }
+
+// Call to action to post to the group forum
+.program-forum {
+  @extend .assignment-col;
+  text-align: center;
+  }
+
+// A table for meeting agendas
+.meeting-agenda-table {
+  @extend .table;
+  @extend .table-bordered;
 }
