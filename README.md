@@ -94,7 +94,7 @@ title and  summary is cryptic for other readers.
 Once the pull is merged, do some cleanup on your local branch:
 
 * Stay up to date by merging the staging repository back to your
-local bracnh.
+local branch.
 ```
 	git pull upstream staging
 ```
@@ -107,13 +107,18 @@ branch (locally and remotely)
   git push origin :<feature_name>
 ```
 
+### Continuous Integration
 We use a continuous integration test server on all pull requests. When you
 open a pull request, it will be automatically tested and the results displayed
 on GitHub in the form of a checkbox or an X mark.
 
-You can see the details of tests here: https://travis-ci.org/beyond-z/beyondz-platform
+The current integration runs the test suite as well as rubocop. Any errors resulting from either will show as a failure.
 
-# Code style
+You can see the details here: https://travis-ci.org/beyond-z/beyondz-platform
+
+# Coding Conventions
+
+## Ruby/Rails
 
 We use standard Rails code conventions with some additional rules:
 
@@ -128,9 +133,33 @@ We use standard Rails code conventions with some additional rules:
 
 This is the full style guide we adhere to: https://github.com/bbatsov/ruby-style-guide
 
-Remember to run rubocop before submitting pull requests to help keep
-your code up to standards.
+Remember to run rubocop before submitting pull requests to help keep code up to standards.
 
-# CSS style
+## CSS
 
-  * Use dashes in class names, not underscores
+Structure CSS files according to the ![asset management guide](app/assets/asset_management_guide.pdf).
+
+  * Avoid placing CSS in view files.
+  * Use dashes in class/id names, not underscores.
+  * Beginning curly brace should be on the same line as the class name.
+  * Ending curly brace should be vertically inline with the class name.
+  * Use empty lines between class definitions.
+  * Use Bootstrap styles and components (CSS and JS) whenever possible.
+  * Whenever possible, avoid using Bootstrap classes directly in view files. Instead, create a class that extends Bootstrap classes.
+  * Utilize SASS, but minimize nesting. Be aware of bloat.
+  * Consider refactoring and generalizing styles into the asset management structure to maximize reuse.
+  * Choose semantic concepts for styles over those that are page specific (e.g. .contact-us-header), mapped to HTML structures (e.g. .contact-table-row), or style descriptions (e.g. .green-button).
+  * When possible use CSS selectors that address tags (input[type=submit]) instead of custom names (.submit-button).
+  * All styles should be properly scoped so that generic classes like ".document" or ".form" don't accidentally override other styles. Instead use something like ".comment .document" or ".comment form" to limit their application.
+
+## JavaScript
+
+Structure JS files according to the ![asset management guide](app/assets/asset_management_guide.pdf).
+
+  * Avoid placing JS in view files.
+  * Use Bootstrap components wherever possible.
+  * Use JQuery for additional components or to add interactivity, etc...
+  * Use inline curly braces.
+  * Properly scope selectors so to avoid side effects on other elements.
+  * Reuse selector variables wherever possible. No need to continually reselect the same HTML elements.
+  * Use single quotes wherever possible.
