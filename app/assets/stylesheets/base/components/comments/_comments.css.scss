@@ -104,14 +104,14 @@
       }
     }
 
-    .file_type_symbol {
+    .file-type-symbol {
       @extend .glyphicon;
       font-size: 3em;
       float: left;
       width: 1.2em;
     }
 
-    .file_type_sub_form {
+    .file-type-sub-form {
       display: none;
       margin-top: 10px;
 
@@ -124,7 +124,7 @@
       }
     }
 
-    .upload_instructions {
+    .upload-instructions {
       font-weight: bold;
       margin-bottom: .5em;
     }
