@@ -42,7 +42,7 @@ class Comment < ActiveRecord::Base
   }
 
 
-  def has_attachment?
+  def attachment?
     !file_type.nil?
   end
 
