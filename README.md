@@ -162,4 +162,3 @@ Structure JS files according to the ![asset management guide](app/assets/asset_m
   * Use inline curly braces.
   * Properly scope selectors so to avoid side effects on other elements.
   * Reuse selector variables wherever possible. No need to continually reselect the same HTML elements.
-  * Use single quotes wherever possible.
