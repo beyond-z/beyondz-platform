@@ -140,25 +140,243 @@ Remember to run rubocop before submitting pull requests to help keep code up to 
 Structure CSS files according to the ![asset management guide](app/assets/asset_management_guide.pdf).
 
   * Avoid placing CSS in view files.
+  * Indent each level with two spaces
   * Use dashes in class/id names, not underscores.
-  * Beginning curly brace should be on the same line as the class name.
-  * Ending curly brace should be vertically inline with the class name.
-  * Use empty lines between class definitions.
-  * Use Bootstrap styles and components (CSS and JS) whenever possible.
-  * Whenever possible, avoid using Bootstrap classes directly in view files. Instead, create a class that extends Bootstrap classes.
-  * Utilize SASS, but minimize nesting. Be aware of bloat.
-  * Consider refactoring and generalizing styles into the asset management structure to maximize reuse.
-  * Choose semantic concepts for styles over those that are page specific (e.g. .contact-us-header), mapped to HTML structures (e.g. .contact-table-row), or style descriptions (e.g. .green-button).
-  * When possible use CSS selectors that address tags (input[type=submit]) instead of custom names (.submit-button).
+  
+	**Fig. 1**
+  
+	```
+	.content-container ...
+
+	// NOT
+	.content_container ...
+	```
+  * Beginning curly brace should be on the same line as the class name (see fig 2).
+  * Ending curly brace should be vertically inline with the class name (see fig 2).
+  * Use empty lines between class definitions (see fig 2).
+  
+  	**Fig. 2**
+  	```
+	body {
+	  background-color: #fff;
+	}
+					// <-- empty line
+  	.content-container {
+  	  color: #eee;
+  	  width: 100%;
+  					// <-- empty line
+	  .section {
+		font-size: 1.5em;
+	  }
+	}
+
+  	// NOT
+  	.content-container { ... }
+  	
+	// OR
+	.content-section
+	{
+	  ...
+	}
+  	```
+  * Use Bootstrap styles and components (CSS and JS) whenever possible (see fig 3).
+  * Whenever possible, avoid using Bootstrap classes directly in view files. Instead, create a class that extends Bootstrap classes (see fig 3).
+  	
+	**Fig. 3**
+  	```
+  	// in the CSS
+  	.attachment-button {
+      @extend .btn;
+      @extend .btn-default;
+      @extend .glyphicon;
+      @extend .glyphicon-paperclip;
+      margin-right: 2em;
+      float: left;
+    }
+    
+	// in the HTML
+	<button id="attachment-button"></button>
+    
+	// NOT
+	// in the CSS
+  	.attachment-button {
+      float: left;
+    }
+    
+	// in the HTML
+	<button id="attachment-button btn btn-default glyphicon glyphicon-paperclip"></button>
+  	```
+  * Utilize SASS, but minimize nesting. Be aware of bloat and cascading brittleness (see fig 4).
   * All styles should be properly scoped so that generic classes like ".document" or ".form" don't accidentally override other styles. Instead use something like ".comment .document" or ".comment form" to limit their application.
+  	
+	**Fig. 4**
+  	```
+  	// This scopes the generic elements sufficiently under a unique
+  	// "special-form" class. If the designer wanted to move the "button-1"
+  	// HTML element inside either column, the style would still apply.
+  	// This also scopes the generic classes like 'column-1' under a
+  	// unique class 'special-form'.
+  	
+  	.special-form {
+  	  .column-1 {
+  	  	...
+  	  }
+  	  
+	  .column-2 {
+	    ...
+	  }
+	  
+	  .button-1 {
+	  	...
+	  }
+	  
+	  .button-2 {
+	  	...
+	  }
+	}
+	
+	// NOT
+	// This creates unnecessary class definition length and restricts minor
+	// design changes because the CSS nesting mimics the HTML nesting.  If the
+	// designer wanted to move the "button-1" HTML element inside of the
+	// "column-1" HTML element, the style would NOT be applied.
+	
+	.special-form {
+  	  .column-1 {
+  	  	...
+  	  }
+  	  
+	  .column-2 {
+	  	...
+	  	
+	  	.button-1 {
+	 	  ...
+	 	}
+	  
+	  	.button-2 {
+	  	  ...
+	  	}
+	  }
+	}
+  	```
+  * Consider refactoring and generalizing styles into the asset management structure to maximize reuse.
+  * Try to use scalable sizing for all elements. Opt for "em" over "px" (see fig 5).
+  * Choose semantic concepts for styles over those that are page specific, mapped to HTML structures, or style descriptions.
+  	
+  	**Fig. 5**
+  	```
+  	// Do's
+  	.page-header {
+      font-size: 2em;
+      width: 100%;
+  	}
+  	
+	.basic-list {
+	  margin-top: 3em;
+	  
+		li {
+		  color: #eee;
+		}
+	}
+	
+	// name is not overly style descriptive
+	.thick-bottom-line {
+	  border-bottom: solid 10px #f00;
+	}
+	
+	// reusable class extends generic class (but could extend .thin-bottom-line)
+	.page-title {
+	  @extend .thick-bottom-line;
+	  
+	}
+
+  	// Dont's
+  	.contact-page-header {
+  	  font-size: 16px;
+  	  width: 100%;
+  	}
+  	
+	.article-list {
+	  margin-top: 10px;
+	  
+		.article-list-item {
+		  color: #eee;
+		}
+	}
+	
+	.line_10px_red {
+	  border-bottom: solid 10px #f00;
+	}
+  ```
+  * When possible use CSS selectors that address tags instead of custom names. This will reduce extraneous class definitions and HTML bloat. It also makes the CSS clear as to what type of element is being referenced without having to traverse the HTML.
+  
+  **Fig. 6**
+  ```
+  	// If you know that "special-form" is a form and had a submit button
+  	// there is rarely a need to give it an id or class and define a named
+  	// CSS style for it.
+  	
+  	.special-form {
+  	  .input[type=submit] {
+  	  	...
+  	  }
+  	}
+	
+	// NOT	
+	.special-form {
+  	  .submit-button {
+  	  	...
+  	  }
+	}
+  	```
+  
 
 ## JavaScript
 
 Structure JS files according to the ![asset management guide](app/assets/asset_management_guide.pdf).
 
   * Avoid placing JS in view files.
+  * Indent each level with two spaces
   * Use Bootstrap components wherever possible.
   * Use JQuery for additional components or to add interactivity, etc...
   * Use inline curly braces.
-  * Properly scope selectors so to avoid side effects on other elements.
+  	```
+  	say_hello = function()
+  	{
+  	  ...
+  	}
+  	
+	if(true)
+	{
+	  ...
+	}
+	else
+	{
+	  ...
+	}
+	
+	// NOT	
+	say_hello = function(){
+  	  ...
+  	}
+  	
+	if(true){
+	  ...
+	}
+	else{
+	  ...
+	}
+	```
+  * Properly scope selectors so to avoid side effects on other elements (see below).
   * Reuse selector variables wherever possible. No need to continually reselect the same HTML elements.
+  	```
+  	var list_items = $('.basic-list li');
+  	
+	list_items.hide();
+	list_items.show();
+  	
+	
+	// NOT	
+	$('li').hide();
+	$('li').show();
+	```
