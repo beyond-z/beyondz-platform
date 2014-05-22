@@ -1,0 +1,15 @@
+/*
+ * CSS rules that are common to the public areas of the site
+ */
+
+@import './base/style';
+
+
+@import "./public/*";
+
+
+header {
+  @extend .container-fluid;
+  background-color: white;
+  width: 100%;
+}

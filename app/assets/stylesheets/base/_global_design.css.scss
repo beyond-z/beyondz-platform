@@ -403,5 +403,6 @@ section {
 // Styles for the footer
 //-----------------------------------------
 .footer {
+  @extend .container-fluid;
   text-align: center;
 } 

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= yield(:title) || "Beyond Z" %></title>
+    <meta name="description" content="<%= yield(:description) || "Beyond Z" %>">
+    
+    <!-- Until we add a landing page and login, keep our site out of search engines -->
+    <meta name="robots" content="noindex">
+    <%= render 'shared/asset_includes' %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <div class="container" style="max-width: 960px; padding: 0px;">
+      <header role="banner">
+        <div class="row">
+          <div class="col-sm-3" style="background-color: #f00;">
+            logo
+          </div>
+          <div class="col-sm-6" style="background-color: #cc9;">
+            banner
+          </div>
+          <div class="col-sm-3" style="background-color: #f00;">
+            enroll/signup
+          </div>
+        </div>
+
+        <div>
+          <div role="navigation">
+            <ul class="nav nav-pills nav-justified">
+              <li><a href="">Student/Fellows</a></li>
+              <li><a href="">Volunteers</a></li>
+              <li><a href="">Alumni</a></li>
+              <li><a href="">Nominate</a></li>
+            </ul>
+          </div>
+        </div>
+
+      </header>
+
+      <main role="main">
+        <%= render 'shared/messages' %>
+        <%= yield %>
+      </main>
+
+
+      <%= content_for :footer do %>
+        Contact Info
+      <% end %>
+      <%= render 'shared/footer' %>
+      <%= render 'shared/google_analytics' %>
+    </div>
+  </body>
+</html>
