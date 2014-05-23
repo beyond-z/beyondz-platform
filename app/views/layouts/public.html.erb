@@ -12,27 +12,63 @@
   </head>
   <body>
     <div class="container" style="max-width: 960px; padding: 0px;">
-      <header role="banner">
+      <header role="banner" style="padding: 0px;">
         <div class="row">
-          <div class="col-sm-3" style="background-color: #f00;">
-            logo
+          <div class="col-sm-3" style="padding: 0px; padding-top: 40px;">
+            <%= image_tag 'bz_logo_211.png' %>
           </div>
-          <div class="col-sm-6" style="background-color: #cc9;">
-            banner
+          <div class="col-sm-6" style="padding: 0px;">
+
+            <div id="bz-banner-carousel" class="carousel slide" data-ride="carousel">
+              <ol class="carousel-indicators" style="bottom: 0px;">
+                <li data-target="#bz-banner-carousel" data-slide-to="0" class="active"></li>
+                <li data-target="#bz-banner-carousel" data-slide-to="1"></li>
+                <li data-target="#bz-banner-carousel" data-slide-to="2"></li>
+                <li data-target="#bz-banner-carousel" data-slide-to="3"></li>
+                <li data-target="#bz-banner-carousel" data-slide-to="4"></li>
+                <li data-target="#bz-banner-carousel" data-slide-to="5"></li>
+              </ol>
+              <div class="carousel-inner">
+                <div class="item active">
+                  <%= image_tag 'carousel_1.jpg', alt: 'Leadership' %>
+                </div>
+                <div class="item">
+                  <%= image_tag 'carousel_2.jpg', alt: 'Leadership' %>
+                </div>
+                <div class="item">
+                  <%= image_tag 'carousel_3.jpg', alt: 'Leadership' %>
+                </div>
+                <div class="item">
+                  <%= image_tag 'carousel_4.jpg', alt: 'Leadership' %>
+                </div>
+                <div class="item">
+                  <%= image_tag 'carousel_5.jpg', alt: 'Leadership' %>
+                </div>
+                <div class="item">
+                  <%= image_tag 'carousel_6.jpg', alt: 'Leadership' %>
+                </div>
+              </div>
+              <!-- <a class="left carousel-control" href="#bz-banner-carousel" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+              </a>
+              <a class="right carousel-control" href="#bz-banner-carousel" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+              </a> -->
+            </div>
+
           </div>
-          <div class="col-sm-3" style="background-color: #f00;">
-            enroll/signup
+          <div class="col-sm-3 text-right" style="padding-top: 30px;">
+            <%= link_to '<button type="button" class="btn btn-lg btn-primary" style="width: 90%; height: 3em; font-size: 2em;">Apply Now</button>'.html_safe, new_enrollment_path %>
           </div>
         </div>
 
-        <div>
-          <div role="navigation">
-            <ul class="nav nav-pills nav-justified">
-              <li><a href="">Student/Fellows</a></li>
-              <li><a href="">Volunteers</a></li>
-              <li><a href="">Alumni</a></li>
-              <li><a href="">Nominate</a></li>
-            </ul>
+        <div role="navigation" class="btn-toolbar" style="margin-top: 30px;">
+          <div class="btn-group btn-group-justified">
+            <%= link_to 'Home', enrollments_path, :class => 'btn btn-primary' %>
+            <%= link_to 'Student/Fellows', enrollments_path, :class => 'btn btn-default' %>
+            <%= link_to 'Volunteers', enrollments_path, :class => 'btn btn-default' %>
+            <%= link_to 'Alumni', enrollments_path, :class => 'btn btn-default' %>
+            <%= link_to 'Nominate', enrollments_path, :class => 'btn btn-default' %>
           </div>
         </div>
 
@@ -45,7 +81,7 @@
 
 
       <%= content_for :footer do %>
-        Contact Info
+        Contact Info (link to contact form?)
       <% end %>
       <%= render 'shared/footer' %>
       <%= render 'shared/google_analytics' %>
