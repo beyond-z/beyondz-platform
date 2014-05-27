@@ -57,7 +57,7 @@ item.start_date = Time.parse("Mar 3")
 item.end_date = Time.parse("Mar 9")
 item.seo_name = "passions-professions"
 item.save
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 1, :name => "Attend the group session.", :requires_approval => true))
+item.task_definitions.push(TaskDefinition.create(kind: 'text', required: true, position: 1, :name => "Attend the group session. What are your thoughts?", :requires_approval => true))
 item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 2, :name => "Request at least one informational interview to explore summer opportunities and/or career majors.", :requires_approval => true))
 item.task_definitions.push(TaskDefinition.create(kind: 'file', file_type: 'document', required: true, position: 3, :name => 'Evidence of Applied Learning', :summary => "Complete and upload <a href=\"https://www.dropbox.com/s/5kolp0reqiyon8k/F%20%20Week%201_Exploring%20Passions%20and%20Professions.docx?dl=1\">Evidence of Applied Learning (EAL)</a> by 9 PM, Friday, March 14.", :requires_approval => true))
 item.save

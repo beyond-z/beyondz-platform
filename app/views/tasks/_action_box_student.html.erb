@@ -14,10 +14,11 @@
         <% end %>
     <% elsif @task.kind == "text" %>
       <%= form_for [@task.assignment, @task] do |f| %>
-        <%= f.text_area :state %>
+        <%= f.text_area :state, :size => "40x6" %>
         <%= f.hidden_field :user_confirm, { :value => true } %>
-        <button type="submit">Save Draft</button>
-        <button type="submit">I'm Done!</button>
+        <br />
+        <button class="btn" type="submit">Save Draft</button>
+        <button class="btn" type="submit">I'm Done!</button>
       <% end %>
     <% elsif @task.kind == "file" %>
       <%= render partial: "tasks/form", locals: { :task => @task } %>
