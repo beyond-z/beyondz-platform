@@ -18,6 +18,6 @@ class Admin::UsersController < Admin::ApplicationController
     # stored correctly and securely.
     @user.change_password(params[:user][:password], params[:user][:password])
     @user.save!
-    redirect_to "/admin/users"
+    redirect_to '/admin/users'
   end
 end

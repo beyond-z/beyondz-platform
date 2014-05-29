@@ -1,7 +1,7 @@
 class Coach::AssignmentsController < Coach::ApplicationController
   def show
     coach_home(nil, params[:id])
-    render "/coach/home/index"
+    render '/coach/home/index'
   end
 
   def update

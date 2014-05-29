@@ -1,6 +1,6 @@
 <%= render partial: "assignments/coaches_feedback" %>
 
-<% if @current_user.is_coach? %>
+<% if @current_user.coach? %>
   <h1><%= link_to "Coaching Dashboard", coach_root_path %> &raquo; <%= link_to @assignment.user.name, coach_student_path(@assignment.user_id) %></h1>
 <% end %>
 
@@ -16,7 +16,7 @@
         <%= @task.task_definition.summary.html_safe %>
       <% end %>
 
-      <% if @current_user.is_coach? %>
+      <% if @current_user.coach? %>
         <%= render "tasks/action_box_coach" %>
       <% else %>
         <%= render "tasks/action_box_student" %>
@@ -25,7 +25,7 @@
 
     <%= render "tasks/discussion" %>
   <% else %>
-      <% if @current_user.is_coach? %>
+      <% if @current_user.coach? %>
         <%= render "assignments/action_box_coach" %>
       <% else %>
         <%= render "assignments/action_box_student" %>

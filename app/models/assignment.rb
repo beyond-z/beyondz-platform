@@ -15,7 +15,7 @@ class Assignment < ActiveRecord::Base
     .order('assignment_definitions.start_date ASC')
   }
 
-  
+
   aasm :column => :state do
     state :new, initial: true
     state :started
@@ -29,7 +29,7 @@ class Assignment < ActiveRecord::Base
 
     event :submit, :after => :send_to_approver do
       transitions :from => [:started, :pending_revision],
-        :to => :pending_approval, :guard => :ready_for_submit?
+                  :to => :pending_approval, :guard => :ready_for_submit?
     end
 
     event :request_revision, :after => :send_back_to_user do
@@ -37,7 +37,7 @@ class Assignment < ActiveRecord::Base
     end
 
     event :approve, :before => :verify_completion,
-      :after => :post_completion_check do
+                    :after => :post_completion_check do
       transitions :from => :pending_approval, :to => :complete
     end
   end
@@ -106,7 +106,7 @@ class Assignment < ActiveRecord::Base
     elsif complete?
       status_message = 'COMPLETE'
     end
-    
+
     status_message
   end
 
