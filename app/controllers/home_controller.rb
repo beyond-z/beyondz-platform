@@ -8,6 +8,8 @@ class HomeController < ApplicationController
       else
         redirect_to assignments_path
       end
+    else
+      redirect_to users_login_path
     end
     @assignment_definitions = AssignmentDefinition.all
   end
