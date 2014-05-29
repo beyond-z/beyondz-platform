@@ -7,6 +7,13 @@
 <div class="assignment-task-pane">
   <%= render partial: "assignments/header", locals: { :assignment => @assignment } %>
 
+  <div class="tasks-progress-bar">
+    <div class="completion-bar" style="
+      width: <%= 100 - (@assignment.tasks.need_student_attention.count * 100 / @assignment.tasks.count) %>%;
+    ">
+    </div>
+  </div>
+
   <% if @task %>
     <div class="task-container">
       <h3><%= @task.task_definition.name.html_safe %></h3>
