@@ -5,6 +5,7 @@ class Task < ActiveRecord::Base
   belongs_to :task_definition
   belongs_to :user
   has_many :files, class_name: 'TaskFile', dependent: :destroy
+  has_one :text, class_name: 'TaskText', dependent: :destroy
   has_many :comments
 
   enum kind: { file: 0, user_confirm: 1, text: 2 }
@@ -87,13 +88,26 @@ class Task < ActiveRecord::Base
     [:pending_approval, :pending_revision].include?(state.to_sym)
   end
 
+  def submitted?
+    [:pending_approval, :complete].include?(state.to_sym)
+  end
+
+  # does task type meet submit requirements
+  def ready_to_submit?
+    ready_to_submit = true
+    if needs_files? || needs_text? || user_confirm?
+      ready_to_submit = false
+    end
+
+    ready_to_submit
+  end
+
+  # is task state ready to submit
   def submittable?
     can_submit = false
     
     if assignment.in_progress?
-      if (state.to_sym == :new)
-        can_submit = true
-      elsif state.to_sym == :pending_revision
+      if new? || pending_revision?
         can_submit = true
       end
     end
@@ -109,9 +123,13 @@ class Task < ActiveRecord::Base
     !requires_approval?
   end
 
-  def file?
-    (kind == 'file')
+  def needs_text?
+    text? && text.nil?
   end
+
+  # def needs_user_confirm?
+  #   user_confirm? && !submittable?
+  # end
 
   def needs_files?
     file? && (files.count < 1)

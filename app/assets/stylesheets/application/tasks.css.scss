@@ -1,3 +1,62 @@
+.task-pane {
+  h4 {
+    background-color: $bzgrey1;
+    color: black;
+    font-weight: bold;
+    padding-left: 0.5em;
+  }
+
+  .completion-status p {
+    margin: 2em;
+    padding: 1em;
+    border: solid 1px $bzred;
+    text-align: center;
+  }
+
+  .task-container {
+    float: left;
+    width: 48%;
+  }
+
+  .action-box {
+  	
+  }
+
+  .task-discussion {
+    float: right;
+    width: 48%;
+  }
+
+  .task-navigation-buttons {
+    clear: both;
+    padding: 2em;
+
+    a {
+      display: inline-block;
+      vertical-align: middle;
+      text-decoration: none;
+      padding: 0.25em 2em;
+      border: solid 1px $subtle_border;
+      width: 10em;
+      text-align: center;
+    }
+
+    .previous-task {
+      float: left;
+      color: white;
+      background-color: $bzorange;
+    }
+
+    .next-task {
+      float: right;
+      color: white;
+      background-color: $bzgreen;
+    }
+  }
+}
+
+
+
 #task_instructions
 {
 	float: left;

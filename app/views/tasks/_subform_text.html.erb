@@ -1,0 +1,5 @@
+<%= f.fields_for :text do |t| %>
+  <%= t.text_area :content %>
+<% end %>
+
+<span><%= f.submit "Submit", class: 'btn-assignment-submit' %></span>

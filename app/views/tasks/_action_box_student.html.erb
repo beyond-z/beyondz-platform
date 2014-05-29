@@ -6,28 +6,14 @@
   <% elsif @task.complete? %>
     <p>This task is complete.</p>
   <% end %>
-  <% if @task.submittable? %>
-    <% if @task.kind == "user_confirm" %>
-        <%= form_for [@task.assignment, @task] do |f| %>
-          <%= f.hidden_field :user_confirm, { :value => true } %>
-          <button type="submit">I'm Done!</button>
-        <% end %>
-    <% elsif @task.kind == "text" %>
-      <%= form_for [@task.assignment, @task] do |f| %>
-        <%= f.text_area :state %>
-        <%= f.hidden_field :user_confirm, { :value => true } %>
-        <button type="submit">Save Draft</button>
-        <button type="submit">I'm Done!</button>
-      <% end %>
-    <% elsif @task.kind == "file" %>
-      <%= render partial: "tasks/form", locals: { :task => @task } %>
-
-      <% if @task.submittable? %>
-        <%= form_for [@task.assignment, @task] do |f| %>
-          <%= f.hidden_field :user_confirm, { :value => true } %>
-          <button type="submit">I'm Done!</button>
-        <% end %>
-      <% end %>
-    <% end %>
-  <% end %>
 </div>
+
+<% if @task.submittable? %>
+  <%= render "tasks/form", { task: @task } %>
+
+  <% if @task.ready_to_submit? %>
+    <%= render 'tasks/form_done', { task: @task } %>
+  <% end %>
+
+<% end %>
+

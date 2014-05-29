@@ -4,7 +4,7 @@
   <h1><%= link_to "Coaching Dashboard", coach_root_path %> &raquo; <%= link_to @assignment.user.name, coach_student_path(@assignment.user_id) %></h1>
 <% end %>
 
-<div class="assignment-task-pane">
+<div class="task-pane">
   <%= render partial: "assignments/header", locals: { :assignment => @assignment } %>
 
   <% if @task %>
@@ -12,15 +12,17 @@
       <h3><%= @task.task_definition.name.html_safe %></h3>
 
       <% if @task.task_definition.summary %>
-        <h4>Task to-do:</h4>
+        <h4>Details:</h4>
         <%= @task.task_definition.summary.html_safe %>
       <% end %>
 
-      <% if @current_user.is_coach? %>
-        <%= render "tasks/action_box_coach" %>
-      <% else %>
-        <%= render "tasks/action_box_student" %>
-      <% end %>
+      <div class='action-box'>
+        <% if @current_user.is_coach? %>
+          <%= render "tasks/action_box_coach" %>
+        <% else %>
+          <%= render "tasks/action_box_student" %>
+        <% end %>
+      </div>
     </div>
 
     <%= render "tasks/discussion" %>

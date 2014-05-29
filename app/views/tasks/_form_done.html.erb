@@ -1,0 +1,10 @@
+<div class="container-fluid">
+  <section>
+    <div id="task_done">
+      <%= form_for [@task.assignment, @task] do |f| %>
+        <%= f.hidden_field :done, { :value => true } %>
+        <span><%= f.submit "I'm Done", class: 'btn-assignment-submit' %></span>
+      <% end %>
+    </div>
+  </section>
+</div>
