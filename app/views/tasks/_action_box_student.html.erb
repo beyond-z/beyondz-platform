@@ -10,7 +10,7 @@
     <% if @task.kind == "user_confirm" %>
         <%= form_for [@task.assignment, @task] do |f| %>
           <%= f.hidden_field :user_confirm, { :value => true } %>
-          <button type="submit">I'm Done!</button>
+          <button class="btn" type="submit">I'm Done!</button>
         <% end %>
     <% elsif @task.kind == "text" %>
       <%= form_for [@task.assignment, @task] do |f| %>
@@ -26,7 +26,7 @@
       <% if @task.submittable? %>
         <%= form_for [@task.assignment, @task] do |f| %>
           <%= f.hidden_field :user_confirm, { :value => true } %>
-          <button type="submit">I'm Done!</button>
+          <button class="btn" type="submit">I'm Done!</button>
         <% end %>
       <% end %>
     <% end %>
