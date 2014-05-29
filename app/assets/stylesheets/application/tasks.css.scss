@@ -1,4 +1,6 @@
 .task-pane {
+	@extend .container-fluid;
+
   h4 {
     background-color: $bzgrey1;
     color: black;
@@ -19,7 +21,7 @@
   }
 
   .action-box {
-  	
+
   }
 
   .task-discussion {
