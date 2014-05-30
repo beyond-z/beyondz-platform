@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
     # user role table FIXME
   end
 
-  # This will create the skeletons for assignments, todos,
+  # This will create the skeletons for assignments, tasks,
   # and submissions based on the definitions. We should run
   # this whenever a user is created or a definition is added.
   #

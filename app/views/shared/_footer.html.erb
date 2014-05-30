@@ -1,8 +1,7 @@
 <footer>
-  <div class="container-fluid">
-    <hr/>
-    <div class="row footer">
-      <p>&copy; Beyond Z <%= Date.today.year %></p>
-    </div>
+  <hr/>
+  <%= yield :footer %>
+  <div class="row footer">
+    <p>&copy; Beyond Z <%= Date.today.year %></p>
   </div>
 </footer>

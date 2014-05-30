@@ -7,6 +7,7 @@ BeyondzPlatform::Application.routes.draw do
 
   resources :feedback
   resources :comments
+  resources :enrollments, only: [:index, :new, :create]
 
   resources :assignments, only: [:index, :update, :show] do
     resources :tasks, only: [:index, :update, :show]

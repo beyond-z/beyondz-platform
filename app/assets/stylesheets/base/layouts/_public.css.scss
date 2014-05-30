@@ -1,0 +1,55 @@
+
+header #banner .top-left {
+  @extend .col-sm-3;
+  padding: 0px;
+  padding-top: 40px;
+}
+
+header #banner .top-middle {
+  @extend .col-sm-6;
+  padding: 0px;
+}
+
+header #banner .top-right {
+  @extend .col-sm-3;
+  @extend .text-right;
+  padding-top: 30px;
+
+  .apply-button {
+    @extend .btn;
+    @extend .btn-lg;
+    @extend .btn-primary;
+    width: 90%;
+    height: 3em;
+    font-size: 2em;
+  }
+}
+
+header #top-navigation {
+  @extend .btn-toolbar;
+  margin-top: 30px;
+
+  .button-group {
+    @extend .btn-group;
+    @extend .btn-group-justified;
+  }
+
+  .button {
+    @extend .btn;
+    @extend .btn-default;
+  }
+
+  .button-primary {
+    @extend .btn;
+    @extend .btn-primary;
+  }
+}
+
+#public-carousel {
+  @extend .carousel;
+  @extend .slide;
+
+  .carousel-indicators {
+    bottom: 0px;
+  }
+}
