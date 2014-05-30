@@ -1,6 +1,6 @@
 <div class="task-discussion">
   <h4>Task Discussion</h4>
-  <% if @current_user.is_coach? %>
+  <% if @current_user.coach? %>
     <p>Here, you can communicate with your student.</p>
   <% else %>
     <p>Here, you can communicate with your coach. Ask for help or comment here.</p>

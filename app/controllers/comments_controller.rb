@@ -7,11 +7,10 @@ class CommentsController < ApplicationController
     # use first passed file type (only active one is passed)
     comment[:file_type] = file_types.first
 
-    if @comment = Comment.create(comment)
-      respond_to do |format|
-        format.html { redirect_to :back }
-        format.json { render json: { success: true, id: @comment.id } }
-      end
+    @comment = Comment.create(comment)
+    respond_to do |format|
+      format.html { redirect_to :back }
+      format.json { render json: { success: true, id: @comment.id } }
     end
   end
 end

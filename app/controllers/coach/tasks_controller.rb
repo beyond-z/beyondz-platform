@@ -1,7 +1,7 @@
 class Coach::TasksController < Coach::ApplicationController
   def show
     coach_home(nil, params[:id])
-    render "/coach/home/index"
+    render '/coach/home/index'
   end
 
   def show
@@ -21,11 +21,11 @@ class Coach::TasksController < Coach::ApplicationController
 
     raise ApplicationHelper::PermissionDenied if task.user.coach.id != current_user.id
 
-    if params[:task_state] == "request_revision"
+    if params[:task_state] == 'request_revision'
       task.request_revision!
-    elsif params[:task_state] == "approve"
+    elsif params[:task_state] == 'approve'
       if task.submittable?
-       task.submit! # to support approve without waiting for the user (this may be a misfeature, we should talk about it)
+        task.submit! # to support approve without waiting for the user (this may be a misfeature, we should talk about it)
       end
       task.approve!
     else

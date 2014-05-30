@@ -4,6 +4,18 @@
 
 #comments below added by me
 
+ClassAndModuleChildren:
+  Enabled: false # without this, it complains about the namespaced classes
+
+CyclomaticComplexity:
+  Max: 8
+
+ClassLength:
+  Max: 125
+
+Lambda:
+  Enabled: false
+
 Documentation:
   Enabled: false # we can fix these
 
@@ -14,10 +26,10 @@ GlobalVars:
   Enabled: false # $userInfo from json (we'll be replacing this soon with db)
 
 LineLength:
-  Max: 87 # largest line in here currently
+  Max: 125 # largest line in here currently
 
 MethodLength:
-  Max: 22 # largest method in here currently
+  Max: 35 # largest method in here currently
 
 IfUnlessModifier:
   Enabled: false # I think the cure is worse than the disease here
