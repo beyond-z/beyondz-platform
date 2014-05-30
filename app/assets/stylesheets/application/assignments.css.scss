@@ -14,13 +14,11 @@
   }
 
   .task-container {
-    float: left;
-    width: 48%;
+    @extend .col-md-6;
   }
 
   .task-discussion {
-    float: right;
-    width: 48%;
+    @extend .col-md-6;
   }
 
   .task-navigation-buttons {

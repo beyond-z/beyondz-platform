@@ -1,10 +1,10 @@
 <div class="completion-status">
   <% if @task.pending_approval? %>
-      <button class="approve-task" type="button" data-assignment-id="<%= @task.assignment_id %>" data-student-id="<%= @task.user_id %>" data-task-id="<%= @task.id %>">Approve</button>
-      <button class="request-task-revisions" type="button" data-assignment-id="<%= @task.assignment_id %>" data-student-id="<%= @task.user.id %>" data-task-id="<%= @task.id %>">Request Revisions</button>
+      <button class="btn approve-task" type="button" data-assignment-id="<%= @task.assignment_id %>" data-student-id="<%= @task.user_id %>" data-task-id="<%= @task.id %>">Approve</button>
+      <button class="btn request-task-revisions" type="button" data-assignment-id="<%= @task.assignment_id %>" data-student-id="<%= @task.user.id %>" data-task-id="<%= @task.id %>">Request Revisions</button>
   <% elsif @task.pending_revision? %>
     <p>This task is pending revision from the student.</p>
-      <button class="approve-task" type="button" data-assignment-id="<%= @task.assignment_id %>" data-student-id="<%= @task.user_id %>" data-task-id="<%= @task.id %>">Approve without waiting for revisions</button>
+      <button class="btn approve-task" type="button" data-assignment-id="<%= @task.assignment_id %>" data-student-id="<%= @task.user_id %>" data-task-id="<%= @task.id %>">Approve without waiting for revisions</button>
   <% elsif @task.complete? %>
     <p>This task is complete.</p>
   <% elsif @task.new? %>
