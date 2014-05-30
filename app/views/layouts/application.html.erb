@@ -11,17 +11,20 @@
     <%= csrf_meta_tags %>
   </head>
   <body>
-    <header>
-      <%= render 'shared/header' %>
-      <%= render 'shared/navigation' %>
-    </header>
-    <main role="main">
-       <%= render 'shared/messages' %>
-       <%= yield %>
-    </main>
+    <div id="content">
+      <header>
+        <%= render 'shared/header' %>
+        <%= render 'shared/navigation' %>
+      </header>
+      <main role="main">
+         <%= render 'shared/messages' %>
+         <%= yield %>
+      </main>
 
-    <%= render 'shared/footer' %>
-    <%= render 'shared/feedback_button' %>
+      <%= render 'shared/footer' %>
+      <%= render 'shared/feedback_button' %>
+    </div>
+    
     <%= render 'shared/google_analytics' %>
   </body>
 </html>

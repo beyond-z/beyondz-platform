@@ -5,21 +5,3 @@
 @import './base/style';
 
 @import "./public/*";
-
-
-//TODO: move these into main and use in other layouts????
-#content {
-  @extend .container;
-  max-width: 960px;
-  padding: 0px;
-}
-
-header {
-  @extend .container-fluid;
-  background-color: white;
-  width: 100%;
-  padding: 0px;
-}
-
-
-

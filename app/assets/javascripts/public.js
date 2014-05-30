@@ -7,7 +7,4 @@
 
 $(document).ready(function() {
 
-  // TODO: is this needed?  
-  //$('#public-carousel').carousel();
-
 });

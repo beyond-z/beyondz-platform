@@ -180,7 +180,7 @@ Structure CSS files according to the ![asset management guide](app/assets/asset_
 	}
   	```
   * Use Bootstrap styles and components (CSS and JS) whenever possible (see fig 3).
-  * Whenever possible, avoid using Bootstrap classes directly in view files. Instead, create a class that extends Bootstrap classes (see fig 3).
+  * Whenever possible, avoid using Bootstrap classes directly in view files. Instead, create a class that extends Bootstrap classes (see fig 3). This doesn't mean that you create a custom class for everything. You can use Bootstrap classes in the HTML, but opt for using existing defined styles or abstracting to more generic reusable styles that extend Bootstrap.
   	
 	**Fig. 3**
   	```
