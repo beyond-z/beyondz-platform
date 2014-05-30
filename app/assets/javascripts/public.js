@@ -6,7 +6,8 @@
 //= require_self
 
 $(document).ready(function() {
-  
-  $('.carousel').carousel();
+
+  // TODO: is this needed?  
+  //$('#public-carousel').carousel();
 
 });
