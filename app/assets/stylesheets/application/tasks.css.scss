@@ -5,11 +5,11 @@
 
   border-radius: 0.5em;
   overflow: hidden;
-  background-color: #f2f2f2;
+  background-color: $bzgrey1;
   clear: both;
 
   .completion-bar {
-    background-color: green;
+    background-color: $bzgreen;
     height: 100%;
   }
 }
