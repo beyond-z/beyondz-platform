@@ -1,5 +1,6 @@
 <h1>Platform Log-in</h1>
 
+<div class="login-form-holder">
 <%= render "shared/form_errors" %>
 
 <%= form_for @user, url: users_login_path do |f| %>
@@ -12,9 +13,12 @@
     <%= f.label :password, 'Password:' %>
     <%= f.password_field :password, class: 'form-control' %>
   </div>
-  <%= f.submit "Submit", class: 'btn-assignment-submit' %>
+  <div class="submit-holder">
+    <%= f.submit "Submit", class: 'btn-assignment-submit' %>
+  </div>
 
   <br style="clear: both;" />
   <br />
   <%= link_to "Forgot password?", "forgot_password" %>
 <% end %>
+</div>

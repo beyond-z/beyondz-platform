@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  layout 'login'
+
   def login_form(email, message)
     @user = User.new
     @email = email
