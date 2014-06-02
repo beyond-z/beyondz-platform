@@ -1,49 +1,45 @@
-<h1>
-  Jump start your career and leadership path
-</h1>
-<p>
-  Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
-</p>
+<section>
+  <h1>
+    Jump start your career and leadership path
+  </h1>
+</section>
 
-<h2>
-  Join us! Apply to become a BZ Academy Fellow today
-</h2>
-
-<p>
-  Let's get started. Tell us about yourself.
-</p>
-<%= form_tag '', role: 'form' do %>
-  <div class="form-group clear">
-    <label for="type">I am a</label>
-    <%= select_tag 'type', '', :class => 'form-control'%>
+<section>
+  <div class="col-sm-8 col-sm-offset-2">
+    <h2>
+      Join us! Apply to become a BZ Academy Fellow today
+    </h2>
+    <p>
+      Let's get started. Tell us about yourself.
+    </p>
+    <%= form_tag '', role: 'form' do %>
+      <div class="form-group clear">
+        <label for="type">I am a</label>
+        <%= select_tag 'type', options_for_select('Student' => 'student'), :class => 'form-control'%>
+      </div>
+      <div class="form-group">
+        <label for="first_name">Name</label>
+        <section>
+          <div class="col-sm-6">
+            <%= text_field_tag 'first_name', '', :class => 'form-control', placeholder: 'First Name', style: 'float: left;' %>
+            <p class="help-block">Enter your first name.</p>
+          </div>
+          <div class="col-sm-6">
+            <%= text_field_tag 'last_name', '', :class => 'form-control', placeholder: 'Last Name', style: 'float: left;'  %>
+            <p class="help-block">Enter your last name.</p>
+          <div>
+        </section>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <%= text_field_tag 'email', '', :class => 'form-control', placeholder: 'Email'%>
+      </div>
+      <div class="form-group">
+        <label for="email_verification">Email Verification</label>
+        <%= text_field_tag 'email_verification', '', :class => 'form-control', placeholder: 'Email Verification'%>
+        <p class="help-block">Enter your email again for verification.</p>
+      </div>
+      <button type="submit" class="btn btn-lg btn-primary">Continue</button>
+    <% end %>
   </div>
-  <div class="form-group">
-    <label for="first_name">Name</label>
-    <div>
-      <%= text_field_tag 'first_name', '', :class => 'form-control', placeholder: 'First Name', style: 'width: 200px; float: left;' %>
-      <%= text_field_tag 'last_name', '', :class => 'form-control', placeholder: 'Last Name', style: 'width: 200px; float: left;'  %>
-    <div>
-  </div>
-  <div class="form-group clear">
-    <label for="email">Email</label>
-    <%= text_field_tag 'email', '', :class => 'form-control', placeholder: 'Email'%>
-    <p class="help-block">Enter your email again for verification.</p>
-  </div>
-  <div class="form-group">
-    <label for="email_verification">Email Verification</label>
-    <%= text_field_tag 'email_verification', '', :class => 'form-control', placeholder: 'Email Verification'%>
-  </div>
-  <div class="form-group">
-    <label for="password">Password</label>
-    <%= password_field_tag 'password', '', :class => 'form-control', placeholder: 'Password'%>
-  </div>
-  <div class="form-group">
-    <label for="password_verification">Email Verification</label>
-    <%= password_field_tag 'password_verification', '', :class => 'form-control', placeholder: 'Password Verification'%>
-  </div>
-  <div class="form-group">
-    <label for="university">University</label>
-    <%= text_field_tag 'university', '', :class => 'form-control', placeholder: 'University'%>
-  </div>
-  <button type="submit" class="btn btn-lg btn-primary">Submit</button>
-<% end %>
+</section>
