@@ -20,7 +20,7 @@ class Coach::ApplicationController < ApplicationController
           end
           @focused_assignment = ra.assignment.assignment_definition
         end
-        if !ra.complete?
+        unless ra.complete?
           @activity.push(ra)
         end
       end

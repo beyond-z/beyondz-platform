@@ -47,7 +47,6 @@ header #top-navigation {
 
 #public-carousel {
   @extend .carousel;
-  @extend .slide;
 
   .carousel-indicators {
     bottom: 0px;
