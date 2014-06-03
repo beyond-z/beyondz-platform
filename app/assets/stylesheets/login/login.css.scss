@@ -1,4 +1,4 @@
-main {
-  max-width: 640px;
-  margin: 0px auto;
+.login-form-holder {
+  @extend .col-md-6;
+  @extend .col-md-offset-3;
 }
