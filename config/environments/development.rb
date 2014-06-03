@@ -27,4 +27,11 @@ BeyondzPlatform::Application.configure do
   # number of complex assets.
   config.assets.debug = true
 
+  config.assets.precompile = [
+    # compile main files (JS and CSS)
+    'main.js', 'application.*', 'admin.*', 'public.*', 'login.*',
+    #compile subdirectories (JS only, CSS children are 'required')
+    'application/*.js', 'admin/*.js', 'public/*.js', 'login/*.js'
+  ]
+
 end
