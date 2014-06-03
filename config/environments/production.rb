@@ -32,6 +32,13 @@ BeyondzPlatform::Application.configure do
   # Generate digests for assets URLs.
   config.assets.digest = true
 
+  config.assets.precompile += [
+    # compile main files (JS and CSS)
+    'main.js', 'application.*', 'admin.*', 'public.*', 'login.*',
+    #compile subdirectories (JS only, CSS children are 'required')
+    'application/*.js', 'admin/*.js', 'public/*.js', 'login/*.js'
+  ]
+
   # Version of your assets, change this if you want to expire all your assets.
   config.assets.version = '1.0'
 
