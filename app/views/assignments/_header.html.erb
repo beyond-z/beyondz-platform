@@ -23,8 +23,9 @@
         <p><%= assignment.assignment_definition.start_date.strftime("%b %e") %>
           <% if assignment.assignment_definition.end_date != nil %>
             -
-            <%= assignment.assignment_definition.end_date.strftime("%b %e") %></p>
+            <%= assignment.assignment_definition.end_date.strftime("%b %e") %>
           <% end %>
+        </p>
       </div>
     </section>
   </div>

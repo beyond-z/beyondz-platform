@@ -1,11 +1,18 @@
 <%= render partial: "assignments/coaches_feedback" %>
 
-<% if @current_user.is_coach? %>
+<% if @current_user.coach? %>
   <h1><%= link_to "Coaching Dashboard", coach_root_path %> &raquo; <%= link_to @assignment.user.name, coach_student_path(@assignment.user_id) %></h1>
 <% end %>
 
 <div class="task-pane">
   <%= render partial: "assignments/header", locals: { :assignment => @assignment } %>
+
+  <div class="tasks-progress-bar">
+    <div class="completion-bar" style="
+      width: <%= 100 - (@assignment.tasks.need_student_attention.count * 100 / @assignment.tasks.count) %>%;
+    ">
+    </div>
+  </div>
 
   <% if @task %>
     <div class="task-container">
@@ -27,7 +34,7 @@
 
     <%= render "tasks/discussion" %>
   <% else %>
-      <% if @current_user.is_coach? %>
+      <% if @current_user.coach? %>
         <%= render "assignments/action_box_coach" %>
       <% else %>
         <%= render "assignments/action_box_student" %>

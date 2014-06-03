@@ -57,7 +57,21 @@
   }
 }
 
+.tasks-progress-bar {
+  height: 1.5em;
+  width: 50%;
+  margin: 1em;
 
+  border-radius: 0.5em;
+  overflow: hidden;
+  background-color: $bzgrey1;
+  clear: both;
+
+  .completion-bar {
+    background-color: $bzgreen;
+    height: 100%;
+  }
+}
 
 #task_instructions
 {

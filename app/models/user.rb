@@ -15,17 +15,17 @@ class User < ActiveRecord::Base
 
   def coach
     c = CoachStudent.find_by :student_id => id
-    if c != nil
+    if c
       return c.coach
     end
   end
 
-  def is_coach?
+  def coach?
     students.any?
     # user role table FIXME
   end
 
-  # This will create the skeletons for assignments, todos,
+  # This will create the skeletons for assignments, tasks,
   # and submissions based on the definitions. We should run
   # this whenever a user is created or a definition is added.
   #
@@ -36,17 +36,17 @@ class User < ActiveRecord::Base
 
       AssignmentDefinition.all.each do |a|
         assignment = assignments.find_by_assignment_definition_id(a.id)
-        if assignment == nil
+        if assignment.nil?
           assignment = Assignment.create(
             assignment_definition_id: a.id,
             state: 'new'
           )
           assignments << assignment
         end
-        
+
         a.task_definitions.each do |td|
           task = tasks.find_by_task_definition_id(td.id)
-          if task == nil
+          if task.nil?
             task = Task.create(
               task_definition_id: td.id,
               assignment_id: assignment.id,
@@ -71,7 +71,7 @@ class User < ActiveRecord::Base
       end
     end
     result = result.sort_by { |h| h[:time_ago] }
-    return result;
+    result
   end
 
 
