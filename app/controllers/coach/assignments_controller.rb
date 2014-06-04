@@ -1,7 +1,20 @@
 class Coach::AssignmentsController < Coach::ApplicationController
-  def show
+  def index
     coach_home(nil, params[:id])
     render '/coach/home/index'
+  end
+
+  def show
+    @assignment = Assignment.find(params[:id])
+
+    tasks = @assignment.tasks.need_coach_attention
+    if !tasks.any?
+      tasks = @assignment.tasks
+    end
+
+    @task = tasks.first
+    @next_task = @task.next
+    @previous_task = @task.previous
   end
 
   def update

@@ -1,20 +1,15 @@
-<div class="container-fluid">
-  <section>
-    <div id="task_update">
+<div id="task-update-student" class="container-fluid">
+  <%= form_for [task.assignment, task], role: 'form' do |f| %>
 
-      <%= form_for [task.assignment, task] do |f| %>
+    <%= render "shared/form_errors", locals: { object: task } %>
 
-        <%= render "shared/form_errors", locals: { object: task } %>
+    <% if task.file? %>
+      <%= render 'tasks/subform_file', { f: f, task: task } %>
+    <% elsif task.text? %>
+      <%= render 'tasks/subform_text', { f: f, task: task } %>
+    <% elsif task.user_confirm? %>
+      <%= render 'tasks/subform_user_confirm', { f: f, task: task } %>
+    <% end %>
 
-        <% if task.file? %>
-          <%= render 'tasks/subform_file', { f: f, task: task } %>
-        <% elsif task.text? %>
-          <%= render 'tasks/subform_text', { f: f, task: task } %>
-        <% elsif task.user_confirm? %>
-          <%= render 'tasks/subform_user_confirm', { f: f, task: task } %>
-        <% end %>
-
-      <% end %>
-    </div>
-  </section>
+  <% end %>
 </div>

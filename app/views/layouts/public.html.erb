@@ -7,7 +7,6 @@
     
     <!-- Until we add a landing page and login, keep our site out of search engines -->
     <meta name="robots" content="noindex">
-    <%= render 'shared/asset_includes' %>
     <%= csrf_meta_tags %>
   </head>
   <body>
@@ -81,6 +80,7 @@
       
     </div>
 
+    <%= render 'shared/asset_includes' %>
     <%= render 'shared/google_analytics' %>
   </body>
 </html>

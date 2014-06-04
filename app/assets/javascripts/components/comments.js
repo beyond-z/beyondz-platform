@@ -3,8 +3,8 @@ function load_component_comments()
   var attachment_button = $('.comment-form #attachment-button');
   var select_document = $('.comment-form #select-document');
   var select_image = $('.comment-form #select-image');
-  var document_type = $('.comment-form .file_type_sub_form.document');
-  var image_type = $('.comment-form .file_type_sub_form.image');
+  var document_type = $('.comment-form .file-type-sub-form.document');
+  var image_type = $('.comment-form .file-type-sub-form.image');
 
   attachment_button.click(function() {
     var select_type = $('#select-type');

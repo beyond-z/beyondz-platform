@@ -1,5 +1,8 @@
 <%= f.fields_for :text do |t| %>
-  <%= t.text_area :content %>
+  <div class="form-group">
+    <%= t.text_area :content, :class => 'form-control' %>
+  </div>
 <% end %>
 
-<span><%= f.submit "Submit", class: 'btn-assignment-submit' %></span>
+
+<%= f.submit "Submit", class: 'button-primary' %>

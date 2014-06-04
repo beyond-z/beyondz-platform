@@ -314,8 +314,9 @@ section {
   margin: 10px;
 }
 
-.btn-assignment-submit {
-  @extend .btn-assign;
+.button-primary {
+  @extend .btn;
+  @extend .btn-primary;
 }
 
 

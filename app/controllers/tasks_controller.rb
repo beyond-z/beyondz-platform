@@ -13,9 +13,6 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
     @next_task = @task.next
     @previous_task = @task.previous
-
-    @previous_task_url = @previous_task ? assignment_task_path(@previous_task.assignment, @previous_task) : nil
-    @next_task_url = @next_task ? assignment_task_path(@next_task.assignment, @next_task) : nil
   end
 
 
@@ -64,8 +61,7 @@ class TasksController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { render partial: 'tasks/action_box_student' }
-      ##format.html { redirect_to :back } # assignment_tasks_path(params[:assignment_id]) }
+      format.html { render partial: 'tasks/action_box' }
       format.json { render json: { success: true } }
     end
   end

@@ -1,3 +1,25 @@
+.assignment-progress-bar {
+  @extend .progress;
+  height: 1.5em;
+  width: 50%;
+  margin: 1em;
+
+  .completion-bar {
+    @extend .progress-bar;
+    @extend .progress-bar-success;
+  }
+
+  .in-progress-bar {
+    @extend .progress-bar;
+    @extend .progress-bar-info;
+  }
+
+  .pending-bar {
+    @extend .progress-bar;
+    @extend .progress-bar-warning;
+  }
+}
+
 .task-pane {
 	@extend .container-fluid;
 
@@ -5,122 +27,59 @@
     background-color: $bzgrey1;
     color: black;
     font-weight: bold;
-    padding-left: 0.5em;
-  }
-
-  .completion-status p {
-    margin: 2em;
-    padding: 1em;
-    border: solid 1px $bzred;
-    text-align: center;
-  }
-
-  .task-container {
-    float: left;
-    width: 48%;
+    padding: 0.5em;
   }
 
   .action-box {
-
+    padding-top: 2em;
   }
 
-  .task-discussion {
-    float: right;
-    width: 48%;
+  .completion-status {
+    text-align: center;
+    font-size: 1.5em;
+
+    div {
+      @extend .alert;
+
+      &.status-student-pending-approval, &.status-coach-pending-revision {
+        @extend .alert-warning;
+      }
+      &.status-student-pending-revision, &.status-coach-pending-approval {
+        @extend .alert-info;
+      }
+      &.status-complete {
+        @extend .alert-success;
+      }
+    }
+  }
+
+
+  #task-update-student {
+  
+    .file-upload-progress {
+      @extend .progress;
+    }
+  }
+
+  #task-done {
+    margin-top: 2em;
   }
 
   .task-navigation-buttons {
-    clear: both;
-    padding: 2em;
+    margin-top: 4em;
 
     a {
-      display: inline-block;
-      vertical-align: middle;
-      text-decoration: none;
-      padding: 0.25em 2em;
-      border: solid 1px $subtle_border;
       width: 10em;
-      text-align: center;
     }
 
-    .previous-task {
-      float: left;
-      color: white;
-      background-color: $bzorange;
+    .previous {
+      @extend .btn;
+      @extend .btn-warning;
     }
 
-    .next-task {
-      float: right;
-      color: white;
-      background-color: $bzgreen;
+    .next {
+      @extend .btn;
+      @extend .btn-success;
     }
   }
-}
-
-.tasks-progress-bar {
-  height: 1.5em;
-  width: 50%;
-  margin: 1em;
-
-  border-radius: 0.5em;
-  overflow: hidden;
-  background-color: $bzgrey1;
-  clear: both;
-
-  .completion-bar {
-    background-color: $bzgreen;
-    height: 100%;
-  }
-}
-
-#task_instructions
-{
-	float: left;
-	width: 47%;
-	padding: 10px;
-  background-color: #43B5E9;
-  color: #4D4E53;
-}
-
-#task_list
-{
-	float: right;
-	width: 50%;
-
-	#task_table
-	{
-		width: 100%;
-
-		th, td
-		{
-			padding: 5px;
-		}
-
-		th
-		{
-			background-color: #ddd;
-		}
-
-		td
-		{
-			background-color: #eee;
-		}
-	}
-
-	form
-	{
-		.task_file
-		{
-			.task_name
-			{
-				float: left;
-			}
-
-			.task_file_field
-			{
-				float: left;
-				margin-left: 15px;
-			}
-		}
-	}
 }

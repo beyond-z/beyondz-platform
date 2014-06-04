@@ -10,10 +10,10 @@ class ApplicationController < ActionController::Base
 
   private
 
-    # use controller specific JS whene requested
-    # use: before_action :use_controller_js
+  # use controller specific JS whene requested
+  # use: before_action :use_controller_js
   def use_controller_js
-    @controller_js = params[:controller]
+    @controller_js = params[:controller].split('/')[-1]
   end
 
   def prepare_user_info

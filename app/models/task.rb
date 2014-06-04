@@ -127,10 +127,6 @@ class Task < ActiveRecord::Base
     text? && text.nil?
   end
 
-  # def needs_user_confirm?
-  #   user_confirm? && !submittable?
-  # end
-
   def needs_files?
     file? && (files.count < 1)
   end

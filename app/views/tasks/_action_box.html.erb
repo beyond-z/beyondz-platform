@@ -1,0 +1,17 @@
+<div class="completion-status">
+  <% if @task.pending_approval? %>
+    <div class="status-student-pending-approval">This task is waiting on your coach to provide feedback.</div>
+  <% elsif @task.pending_revision? %>
+    <div class="status-student-pending-revision">This task needs revisions from you.</div>
+  <% elsif @task.complete? %>
+    <div class="status-complete">COMPLETE!</div>
+  <% end %>
+</div>
+
+<% if @task.submittable? %>
+  <%= render "tasks/form", { task: @task } %>
+
+  <% if @task.ready_to_submit? %>
+    <%= render 'tasks/form_done', { task: @task } %>
+  <% end %>
+<% end %>
