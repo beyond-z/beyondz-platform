@@ -1,7 +1,7 @@
-<div class="comment <%= comment.user.id == @current_user.id ? "mine" : "not-mine" %>">
+<div class="comment <%= comment.user.id == current_user.id ? "mine" : "not-mine" %>">
   <div class="by">
     <span class="speaker">
-      <%= comment.user.name %> <%= comment.user.id == @current_user.id ? '(You)' : ''%>
+      <%= comment.user.name %> <%= comment.user.id == current_user.id ? '(You)' : ''%>
     </span>
     <span class="time">
       <%= comment.updated_at.strftime("%B %d, %Y at %l:%M %P") %>

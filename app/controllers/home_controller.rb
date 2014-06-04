@@ -9,7 +9,7 @@ class HomeController < ApplicationController
         redirect_to assignments_path
       end
     else
-      redirect_to users_login_path
+      redirect_to new_user_session_path
     end
     @assignment_definitions = AssignmentDefinition.all
   end

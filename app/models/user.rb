@@ -1,6 +1,8 @@
-require 'digest/sha1'
-
 class User < ActiveRecord::Base
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
   has_many :assignments, dependent: :destroy
   has_many :tasks
 
@@ -74,44 +76,6 @@ class User < ActiveRecord::Base
     result
   end
 
-
-  # Returns the user ID of the matching user if the credentials
-  # pass, otherwise, raises a LoginException
-  def self.login(email, passw)
-    user = User.find_by email: email
-    if user.nil?
-      raise LoginException.new('Incorrect email address')
-    else
-      parts = user.password.split('-')
-      salt = parts[0]
-      if parts[1] == User.hash_password(salt, passw)
-        # This creates any missing skeleton rows now
-        # to ensure all assignments are up to date.
-        user.create_child_skeleton_rows
-        return user.id
-      else
-        raise LoginException.new('Incorrect password')
-      end
-    end
-  end
-
-  # Prepares a reset token for the account with the given
-  # email address and sends an email with the given link.
-  def self.forgot_password(email, reset_link)
-    user = User.find_by email: email
-    if user.nil?
-      raise LoginException.new('Incorrect email address')
-    else
-      # create a random string of characters to use as the token
-      user.reset_token = User.random_string
-      user.reset_expiration = Time.now + 15.minutes
-      user.save
-
-      reset_link += "?token=#{user.reset_token}&id=#{user.id}"
-      Notifications.forgot_password(email, user.name, reset_link).deliver
-    end
-  end
-
   def self.send_reminders
     next_assignment = Assignment.next_due
 
@@ -136,30 +100,6 @@ class User < ActiveRecord::Base
             .deliver
       end
     end
-  end
-
-  # Returns a random string of 8 upper-case letters
-  def self.random_string
-    (0...8).map { (65 + rand(26)).chr }.join
-  end
-
-  # Changes the user's password. Don't forget to call save afterward
-  def change_password(newPassword, confirmPassword)
-    if newPassword != confirmPassword
-      raise LoginException.new("Your passwords don't match, please try again.")
-    end
-
-    self.password = User.get_salted_password(newPassword)
-  end
-
-  def self.get_salted_password(passw)
-    # Randomization for password hash
-    salt = User.random_string
-    salt + '-' + User.hash_password(salt, passw)
-  end
-
-  def self.hash_password(salt, passw)
-    Digest::SHA1.hexdigest("#{salt}#{passw}")
   end
 end
 
