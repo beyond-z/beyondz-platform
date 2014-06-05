@@ -150,12 +150,16 @@ class Task < ActiveRecord::Base
 
   def next
     return nil if task_definition.position == assignment.tasks.count
-    assignment.tasks.for_display.where('task_definitions.position = ?', task_definition.position + 1).first
+    assignment.tasks.for_display\
+      .where('task_definitions.position = ?', task_definition.position + 1)\
+      .first
   end
 
   def previous
     return nil if task_definition.position == 1
-    assignment.tasks.for_display.where('task_definitions.position = ?', task_definition.position - 1).first
+    assignment.tasks.for_display\
+      .where('task_definitions.position = ?', task_definition.position - 1)\
+      .first
   end
 
   def update(task_params)
@@ -164,39 +168,36 @@ class Task < ActiveRecord::Base
       self.updated_at = Time.now
 
       # handle different task types
-      if task_params.key?(:user_confirm)
-        if task_params[:user_confirm] == 'true'
-          self.submit!
-        end
-      elsif task_params.key?(:text)
-        if task_params[:text][:content]
-          if self.text.present?
-            text.update_attribute(:content, task_params[:text][:content])
-          else
-            self.text = TaskText.create(
-              task_id: self.id,
-              content: task_params[:text][:content]
-            )
-          end
+      if task_params.key?(:user_confirm) && task_params[:user_confirm] == 'true'
+        submit!
+      elsif task_params.key?(:text) && task_params[:text][:content]
+        if text.present?
+          text.update_attribute(:content, task_params[:text][:content])
+        else
+          self.text = TaskText.create(
+            task_id: id,
+            content: task_params[:text][:content]
+          )
         end
       elsif task_params.key?(:files)
-        if self.files.present?
-          task_file_params = task_params[:files][self.file_type.to_sym]
+        if files.present?
+          task_file_params = task_params[:files][file_type.to_sym]
           # restrict to single/first file for now
-          self.files.first.update_attribute(self.file_type, task_file_params)
+          files.first.update_attribute(file_type, task_file_params)
         else
-          self.files << TaskFile.create(
-            task_definition_id: self.task_definition.id,
-            task_id: self.id,
-            self.file_type => task_params[:files][self.file_type.to_sym]
+          files << TaskFile.create(
+            task_definition_id: task_definition.id,
+            task_id: id,
+            file_type => task_params[:files][file_type.to_sym]
           )
         end
       elsif task_params.key?(:done) && (task_params[:done] == 'true')
         # task was submitted as complete
-        self.submit!
+        submit!
       end
-      self.save!
+      save!
 
     end
   end
+
 end
