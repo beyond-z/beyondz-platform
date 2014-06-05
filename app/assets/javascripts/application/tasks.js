@@ -1,1 +1,1 @@
-$(document).ready(enableYouTubeFeatures);
+$(document).ready(load_youtube_features);

@@ -1,4 +1,4 @@
-function enable_youtube_features() {
+function load_youtube_features() {
   function addYouTubeScript() {
     // does async loading of the youtube script dependency
     var tag = document.createElement('script');
