@@ -8,7 +8,7 @@ class Coach::AssignmentsController < Coach::ApplicationController
     @assignment = Assignment.find(params[:id])
 
     tasks = @assignment.tasks.need_coach_attention
-    if !tasks.any?
+    unless tasks.any?
       tasks = @assignment.tasks
     end
 
