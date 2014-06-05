@@ -161,44 +161,42 @@ class Task < ActiveRecord::Base
   def update(task_params)
     ActiveRecord::Base.transaction do
 
-      updated_at = Time.now
+      self.updated_at = Time.now
 
       # handle different task types
       if task_params.key?(:user_confirm)
         if task_params[:user_confirm] == 'true'
-          submit!
+          self.submit!
         end
       elsif task_params.key?(:text)
         if task_params[:text][:content]
-          if text.present?
+          if self.text.present?
             text.update_attribute(:content, task_params[:text][:content])
           else
-            text = TaskText.create(
-              task_id: id,
+            self.text = TaskText.create(
+              task_id: self.id,
               content: task_params[:text][:content]
             )
           end
         end
       elsif task_params.key?(:files)
-        if files.present?
-          task_file_params = task_params[:files][file_type.to_sym]
+        if self.files.present?
+          task_file_params = task_params[:files][self.file_type.to_sym]
           # restrict to single/first file for now
-          files.first.update_attribute(file_type, task_file_params)
+          self.files.first.update_attribute(self.file_type, task_file_params)
         else
-          files << TaskFile.create(
-            task_definition_id: task_definition.id,
-            task_id: id,
-            file_type => task_params[:files][file_type.to_sym]
+          self.files << TaskFile.create(
+            task_definition_id: self.task_definition.id,
+            task_id: self.id,
+            self.file_type => task_params[:files][self.file_type.to_sym]
           )
         end
       elsif task_params.key?(:done) && (task_params[:done] == 'true')
         # task was submitted as complete
-        submit!
+        self.submit!
       end
-      save!
+      self.save!
 
     end
-    
-    return self
   end
 end
