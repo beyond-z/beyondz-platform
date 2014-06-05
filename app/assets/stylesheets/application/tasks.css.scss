@@ -14,6 +14,41 @@
   }
 }
 
+.annotated-video {
+  width: 640px;
+  height: 390px;
+  position: relative;
+
+  .player-holder,
+  .quiz {
+    position: absolute;
+    left: 0em;
+    top: 0em;
+    width: 100%;
+    height: 100%;
+  }
+
+  .quiz {
+    z-index: 3;
+    background-color: rgba(0, 0, 0, 0.8);
+    p {
+      color: white;
+    }
+    padding: 4em;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+
+    display: none;
+  }
+
+  button {
+    background-color: $bzgreen;
+    color: white;
+    opacity: 1;
+  }
+}
+
 #task_instructions
 {
 	float: left;
