@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  load_component_video_quiz();
  
   load_component_comments();
 

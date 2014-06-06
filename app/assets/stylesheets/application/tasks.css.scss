@@ -21,7 +21,7 @@
 }
 
 .task-pane {
-	@extend .container-fluid;
+  @extend .container-fluid;
 
   h4 {
     background-color: $bzgrey1;
@@ -55,7 +55,6 @@
 
 
   #task-update-student {
-  
     .file-upload-progress {
       @extend .progress;
     }
@@ -83,3 +82,4 @@
     }
   }
 }
+
