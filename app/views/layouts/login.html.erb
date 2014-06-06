@@ -17,8 +17,10 @@
       <a href="/"><%= image_tag "customLogo2.png", alt: "Beyond Z" %></a>
     </header>
     <main role="main">
-       <%= render 'shared/messages' %>
-       <%= yield %>
+      <div class="login-container">
+        <%= render 'shared/messages' %>
+        <%= yield %>
+      </div>
     </main>
 
     <%= render 'shared/footer' %>

@@ -2,8 +2,18 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
+  layout :get_default_layout
 
   private
+
+  # see: http://stackoverflow.com/questions/4982073/different-layout-for-sign-in-action-in-devise
+  def get_default_layout
+    if devise_controller?
+      "login"
+    else
+      "application"
+    end
+  end
 
     # use controller specific JS whene requested
     # use: before_action :use_controller_js
