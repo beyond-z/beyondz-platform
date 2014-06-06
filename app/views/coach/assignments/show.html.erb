@@ -1,0 +1,10 @@
+<% content_for :additional_js do %>
+  <%= javascript_include_tag "application/tasks", "data-turbolinks-track" => true %>
+<% end %>
+
+<h1>
+  <%= link_to "Coaching Dashboard", coach_root_path %> &raquo;
+  <%= link_to @assignment.user.name, coach_student_path(@assignment.user_id) %>
+</h1>
+
+<%= render "/tasks/pane" %>

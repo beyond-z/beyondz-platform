@@ -60,15 +60,16 @@
   .comment-form {
     
     textarea {
+      @extend .form-control;
       width: 100%;
     }
 
     .toggle-column {
-      @extend .col-sm-1;
+      @extend .col-sm-2;
     }
 
     .select-column {
-      @extend .col-sm-11;
+      @extend .col-sm-10;
     }
 
     .upload-column {
