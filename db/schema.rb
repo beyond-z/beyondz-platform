@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140507151036) do
+ActiveRecord::Schema.define(version: 20140603175001) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -139,6 +139,15 @@ ActiveRecord::Schema.define(version: 20140507151036) do
   add_index "task_files", ["task_definition_id"], name: "index_task_files_on_task_definition_id", using: :btree
   add_index "task_files", ["task_id"], name: "index_task_files_on_task_id", using: :btree
 
+  create_table "task_texts", force: true do |t|
+    t.integer  "task_id",    null: false
+    t.text     "content",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "task_texts", ["task_id"], name: "index_task_texts_on_task_id", using: :btree
+
   create_table "tasks", force: true do |t|
     t.integer  "assignment_id"
     t.integer  "task_definition_id"
@@ -168,6 +177,18 @@ ActiveRecord::Schema.define(version: 20140507151036) do
     t.string   "first_name"
     t.string   "last_name"
     t.boolean  "is_administrator"
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
   end
+
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end

@@ -1,51 +1,55 @@
-<%= render partial: "assignments/coaches_feedback" %>
-
-<% if @current_user.coach? %>
-  <h1><%= link_to "Coaching Dashboard", coach_root_path %> &raquo; <%= link_to @assignment.user.name, coach_student_path(@assignment.user_id) %></h1>
-<% end %>
-
-<div class="assignment-task-pane">
+<div class="task-pane">
   <%= render partial: "assignments/header", locals: { :assignment => @assignment } %>
 
-  <div class="tasks-progress-bar">
-    <div class="completion-bar" style="
-      width: <%= 100 - (@assignment.tasks.need_student_attention.count * 100 / @assignment.tasks.count) %>%;
-    ">
+  <div class="assignment-progress-bar">
+    <div class="completion-bar" style="width: <%= @assignment.percent_complete %>%;">
+      <span class="sr-only"><%= @assignment.percent_complete %>% Complete</span>
+    </div>
+    <div class="in-progress-bar" style="width: <%= @assignment.percent_in_progress %>%;">
+      <span class="sr-only"><%= @assignment.percent_in_progress %>% In Progress</span>
+    </div>
+    <div class="pending-bar" style="width: <%= @assignment.percent_pending %>%;">
+      <span class="sr-only"><%= @assignment.percent_pending %>% Pending Approval</span>
     </div>
   </div>
 
-  <% if @task %>
-    <div class="task-container">
-      <h3><%= @task.task_definition.name.html_safe %></h3>
+  <section>
+    <div class="col-sm-8">
+      <div class="task-container">
+        <h3><%= @task.task_definition.name.html_safe %></h3>
 
-      <% if @task.task_definition.summary %>
-        <h4>Task to-do:</h4>
-        <%= @task.task_definition.summary.html_safe %>
-      <% end %>
+        <% if @task.task_definition.summary %>
+          <h4>Summary:</h4>
+          <%= @task.task_definition.summary.html_safe %>
+        <% end %>
 
-      <% if @current_user.coach? %>
-        <%= render "tasks/action_box_coach" %>
-      <% else %>
-        <%= render "tasks/action_box_student" %>
+        <div class="action-box">
+          <% if @current_user.coach? %>
+            <%= render "coach/tasks/action_box" %>
+          <% else %>
+            <%= render "tasks/action_box" %>
+          <% end %>
+        </div>
+      </div>
+
+      <% if !@current_user.coach? %>
+        <section class="task-navigation-buttons">
+          <div class="col-sm-6">
+            <% if @previous_task %>
+              <%= link_to "Previous", assignment_task_path(@previous_task.assignment, @previous_task), class: "previous" %>
+            <% end %>
+          </div>
+          <div class="col-sm-6 text-right">
+            <% if @next_task %>
+              <%= link_to "Next", assignment_task_path(@next_task.assignment, @next_task), class: "next" %>
+            <% end %>
+          </div>
+        </section>
       <% end %>
     </div>
-
-    <%= render "tasks/discussion" %>
-  <% else %>
-      <% if @current_user.coach? %>
-        <%= render "assignments/action_box_coach" %>
-      <% else %>
-        <%= render "assignments/action_box_student" %>
-      <% end %>
-  <% end %>
-
-
-  <div class="task-navigation-buttons">
-    <% if @previous_task %>
-      <%= link_to "Previous", @previous_task_url, class: "previous-task" %>
-    <% end %>
-    <% if @next_task %>
-      <%= link_to "Next", assignment_task_path(@next_task.assignment, @next_task), class: "next-task" %>
-    <% end %>
-  </div>
+    <div class="col-sm-4">
+      <%= render "tasks/discussion" %>
+    </div>
+  </section>
+  
 </div>

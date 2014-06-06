@@ -1,106 +1,85 @@
-.tasks-progress-bar {
+.assignment-progress-bar {
+  @extend .progress;
   height: 1.5em;
   width: 50%;
   margin: 1em;
 
-  border-radius: 0.5em;
-  overflow: hidden;
-  background-color: $bzgrey1;
-  clear: both;
-
   .completion-bar {
-    background-color: $bzgreen;
-    height: 100%;
+    @extend .progress-bar;
+    @extend .progress-bar-success;
+  }
+
+  .in-progress-bar {
+    @extend .progress-bar;
+    @extend .progress-bar-info;
+  }
+
+  .pending-bar {
+    @extend .progress-bar;
+    @extend .progress-bar-warning;
   }
 }
 
-.annotated-video {
-/*
-  // this is the default youtube size, we need to maintain
-  // this ratio
-  width: 640px;
-  height: 390px;
-*/
-  position: relative;
+.task-pane {
+  @extend .container-fluid;
 
-  .player-holder,
-  .quiz {
-    position: absolute;
-    left: 0em;
-    top: 0em;
-    width: 100%;
-    height: 100%;
+  h4 {
+    background-color: $bzgrey1;
+    color: black;
+    font-weight: bold;
+    padding: 0.5em;
   }
 
-  .quiz {
-    z-index: 3;
-    background-color: rgba(0, 0, 0, 0.8);
-    p {
-      color: white;
+  .action-box {
+    padding-top: 2em;
+  }
+
+  .completion-status {
+    text-align: center;
+    font-size: 1.5em;
+
+    div {
+      @extend .alert;
+
+      &.status-student-pending-approval, &.status-coach-pending-revision {
+        @extend .alert-warning;
+      }
+      &.status-student-pending-revision, &.status-coach-pending-approval {
+        @extend .alert-info;
+      }
+      &.status-complete {
+        @extend .alert-success;
+      }
     }
-    padding: 4em;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-
-    display: none;
   }
 
-  button {
-    background-color: $bzgreen;
-    color: white;
-    opacity: 1;
+
+  #task-update-student {
+    .file-upload-progress {
+      @extend .progress;
+    }
+  }
+
+  #task-done {
+    margin-top: 2em;
+  }
+
+  .task-navigation-buttons {
+    margin-top: 4em;
+
+    a {
+      width: 10em;
+    }
+
+    .previous {
+      @extend .btn;
+      @extend .btn-warning;
+    }
+
+    .next {
+      @extend .btn;
+      @extend .btn-success;
+    }
   }
 }
 
-#task_instructions
-{
-	float: left;
-	width: 47%;
-	padding: 10px;
-  background-color: #43B5E9;
-  color: #4D4E53;
-}
-
-#task_list
-{
-	float: right;
-	width: 50%;
-
-	#task_table
-	{
-		width: 100%;
-
-		th, td
-		{
-			padding: 5px;
-		}
-
-		th
-		{
-			background-color: #ddd;
-		}
-
-		td
-		{
-			background-color: #eee;
-		}
-	}
-
-	form
-	{
-		.task_file
-		{
-			.task_name
-			{
-				float: left;
-			}
-
-			.task_file_field
-			{
-				float: left;
-				margin-left: 15px;
-			}
-		}
-	}
-}

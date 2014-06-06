@@ -73,15 +73,15 @@ function load_component_video_quiz() {
       playerHolder.className = "player-holder";
       holder.insertBefore(playerHolder, holder.firstChild);
 
-      var player = new YT.Player(playerHolder), {
+      var player = new YT.Player(playerHolder, {
         height: holder.height,
         width: holder.width,
         videoId: holder.getAttribute("data-youtube-id"),
         playerVars: {
           'start': readTime(holder.getAttribute("data-start-time")),
-	  'playsinline': 1, // keeps it inline even on iOS so we can draw over it
-	  'modestbranding': 1, // disables the "watch on youtube" button
-	  'fs':0 // disables the full screen button, so we can still pop up over it
+          'playsinline': 1, // keeps it inline even on iOS so we can draw over it
+          'modestbranding': 1, // disables the "watch on youtube" button
+          'fs':0 // disables the full screen button, so we can still pop up over it
         }
       });
 

@@ -93,6 +93,18 @@ class Assignment < ActiveRecord::Base
     tasks.files.count > 0
   end
 
+  def percent_complete
+    (tasks.complete.count * 100 / tasks.count)
+  end
+
+  def percent_in_progress
+    (tasks.pending_revision.count * 100 / tasks.count)
+  end
+
+  def percent_pending
+    (tasks.pending_approval.count * 100 / tasks.count)
+  end
+
   def human_readable_status
     status_message = ''
     if submittable?
