@@ -11,7 +11,7 @@ CyclomaticComplexity:
   Max: 10
 
 ClassLength:
-  Max: 300
+  Max: 250
 
 Lambda:
   Enabled: false
