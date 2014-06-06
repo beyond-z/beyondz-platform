@@ -54,6 +54,7 @@ $(document).ready(function() {
     }
     catch(e)
     {
+      alert('Unable to update task.');
     }
 
     return false;
