@@ -15,8 +15,12 @@
 }
 
 .annotated-video {
+/*
+  // this is the default youtube size, we need to maintain
+  // this ratio
   width: 640px;
   height: 390px;
+*/
   position: relative;
 
   .player-holder,

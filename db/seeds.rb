@@ -41,8 +41,6 @@ item.task_definitions.push(TaskDefinition.create(kind: 'text', required: true, p
 item.task_definitions.push(TaskDefinition.create(kind: 'file', file_type: 'document', required: true, position: 3, :name => 'Personality Assessment Results', :summary => "Upload your <a href=\"https://docs.google.com/a/beyondz.org/forms/d/1cgwwrGn3ZMNkrKvL-Uj4FNz1Qf27xPc6usqse7fTWBg/viewform\">personality assessment results </a> by the end of Weekend 0.", :requires_approval => true))
 item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 4, :name => "Watch <a href=\"http://neworganizing.com/toolbox/training/story-of-self/\">Story of Self</a> Video <em>(40 min)</em>", summary: '
 <div class="annotated-video" data-youtube-id="Obiztwn2oEU" data-start-time="12:55">
-                <div class="player-holder"></div>
-
                 <div class="quiz" data-time-to-display="13:00">
                         <p>Challenge or outcome?</p>
                         <textarea style="width: 100%;"></textarea>

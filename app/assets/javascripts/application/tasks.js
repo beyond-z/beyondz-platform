@@ -1,1 +1,3 @@
-$(document).ready(load_youtube_features);
+$(document).ready(function() {
+	load_component_video_quiz();
+});

@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
   load_component_comments();
-  load_youtube_features();
+  load_component_video_quiz();
 
 });
