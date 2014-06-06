@@ -1,3 +1,4 @@
+// see below for example
 function load_component_video_quiz() {
   // does async loading of the youtube script dependency
   function addYouTubeScript() {
@@ -106,3 +107,34 @@ function load_component_video_quiz() {
   // and asynchronously load the youtube API code
   addYouTubeScript();
 }
+
+/*
+<!-- data-youtube-id is the youtube video ID (in v= in the url). It is required. -->
+<!-- data-start-time is the time of the video that we'll start. So if it is 1:30,
+     hitting play in the video will start it at one minute, thirty seconds in to the video -->
+<div class="annotated-video" data-youtube-id="Obiztwn2oEU" data-start-time="12:55">
+  <!-- Inside the div, we can add our quizzes. They must be dives with the quiz class -->
+  <!-- the data-time-to-display attribute is required. It tells when this quiz shows. When
+       the video reaches this point, it will pause and display this div over the video. -->
+  <div class="quiz" data-time-to-display="13:00">
+    <p>Challenge or outcome?</p>
+    <textarea style="width: 100%;"></textarea>
+
+    <!-- Each quiz should have some kind of close button. If you have a form inside,
+         be sure to submit it via AJAX unless you are done with the video because otherwise
+	 the page refresh will reset the whole video. -->
+    <button type="button" class="close">Back to the video</button>
+  </div>
+
+  <!-- You may have as many quizzes as you want, each with independent content. -->
+  <div class="quiz" data-time-to-display="13:05">
+    <p>Quiz 2 can be different</p>
+    <textarea style="width: 100%;"></textarea>
+    <select><option>Choice 1</option><option>Choice 2</option></select>
+
+    <button type="button" class="close">Back to the video</button>
+  </div>
+
+</div>
+
+*/
