@@ -4,13 +4,13 @@ class AssignmentsController < ApplicationController
   before_action :use_controller_js
 
   def index
-    uid = session[:user_id]
+    uid = current_user.id
     if params[:student]
       uid = params[:student]
     end
     user = User.find(uid)
 
-    if user.id != session[:user_id] && (user.coach.nil? || user.coach.id != session[:user_id])
+    if user.id != current_user.id && (user.coach.nil? || user.coach.id != current_user.id)
       raise ApplicationHelper::PermissionDenied
     end
 

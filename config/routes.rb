@@ -1,4 +1,6 @@
 BeyondzPlatform::Application.routes.draw do
+  devise_for :users
+
   root "home#index"
 
   get "/users/login", to: "users#login" # defines users_login_path for use in the form
