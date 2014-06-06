@@ -139,6 +139,15 @@ ActiveRecord::Schema.define(version: 20140603175001) do
   add_index "task_files", ["task_definition_id"], name: "index_task_files_on_task_definition_id", using: :btree
   add_index "task_files", ["task_id"], name: "index_task_files_on_task_id", using: :btree
 
+  create_table "task_texts", force: true do |t|
+    t.integer  "task_id",    null: false
+    t.text     "content",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "task_texts", ["task_id"], name: "index_task_texts_on_task_id", using: :btree
+
   create_table "tasks", force: true do |t|
     t.integer  "assignment_id"
     t.integer  "task_definition_id"
