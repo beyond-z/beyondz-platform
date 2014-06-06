@@ -7,23 +7,25 @@
     
     <!-- Until we add a landing page and login, keep our site out of search engines -->
     <meta name="robots" content="noindex">
-
-    <%= render 'shared/asset_includes' %>
-
+    <%= render 'shared/asset_stylesheet_includes' %>
     <%= csrf_meta_tags %>
   </head>
   <body>
-    <header>
-      <a href="/"><%= image_tag "customLogo2.png", alt: "Beyond Z" %></a>
-    </header>
-    <main role="main">
-      <div class="login-container">
-        <%= render 'shared/messages' %>
-        <%= yield %>
-      </div>
-    </main>
+    <div id="content">
+      <header>
+        <%= link_to image_tag("customLogo2.png", alt: "Beyond Z").html_safe, root_path %>
+      </header>
+      <main role="main">
+        <div class="login-container">
+          <%= render 'shared/messages' %>
+          <%= yield %>
+        </div>
+      </main>
 
-    <%= render 'shared/footer' %>
+      <%= render 'shared/footer' %>
+    </div>
+
+    <%= render 'shared/asset_javascript_includes' %>
     <%= render 'shared/google_analytics' %>
   </body>
 </html>
