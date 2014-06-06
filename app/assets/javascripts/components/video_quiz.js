@@ -1,6 +1,7 @@
 // see below for example
 function load_component_video_quiz() {
   // does async loading of the youtube script dependency
+  // see: https://developers.google.com/youtube/iframe_api_reference
   function addYouTubeScript() {
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
@@ -13,7 +14,7 @@ function load_component_video_quiz() {
   function onYouTubeIframeAPIReady() {
     // reads time in the form of MM:SS and translates it to plain seconds
     function readTime(sTime) {
-      if(sTime === null)
+      if(sTime === null || sTime === "")
         return 0;
       var parts = sTime.split(":");
       return (((parts[0]|0) * 60) + (parts[1]|0));
