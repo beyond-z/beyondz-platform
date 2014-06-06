@@ -3,22 +3,26 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  # Setup user information for all controllers
-  before_filter :prepare_user_info
-
   private
 
-  def prepare_user_info
-    if session['user_id']
-      @user_logged_in = true
-      @current_user = User.find(session['user_id'].to_i)
-    else
-      @user_logged_in = false
-      @current_user = nil
+    # use controller specific JS whene requested
+    # use: before_action :use_controller_js
+  def use_controller_js
+    @controller_js = params[:controller]
+  end
+
+  def require_student
+    unless user_signed_in?
+      flash[:error] = 'Please log in to see your assignments.'
+      redirect_to new_user_session_path
     end
   end
 
-  public
+  def require_coach
+    unless user_signed_in? && current_user.coach?
+      flash[:error] = 'Please log in to see your coaching dashboard.'
+      redirect_to new_user_session_path
+    end
+  end
 
-  attr_reader :current_user
 end

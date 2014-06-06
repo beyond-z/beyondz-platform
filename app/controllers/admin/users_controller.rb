@@ -16,8 +16,8 @@ class Admin::UsersController < Admin::ApplicationController
     # Since the password coming from the User.create is not uniquely salted,
     # we'll call the change_password method immediately to ensure it is
     # stored correctly and securely.
-    @user.change_password(params[:user][:password], params[:user][:password])
+    @user.password = params[:user][:password]
     @user.save!
-    redirect_to "/admin/users"
+    redirect_to '/admin/users'
   end
 end

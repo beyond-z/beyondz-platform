@@ -1,26 +1,16 @@
 class AssignmentsController < ApplicationController
 
-  before_action :require_login
-
-  private
-
-  def require_login
-    unless @user_logged_in
-      flash[:error] = "Please log in to see your assignments."
-      redirect_to "/users/login?redirect_to=/assignments"
-    end
-  end
-
-  public
+  before_action :require_student
+  before_action :use_controller_js
 
   def index
-    uid = session[:user_id]
+    uid = current_user.id
     if params[:student]
       uid = params[:student]
     end
     user = User.find(uid)
 
-    if user.id != session[:user_id] && (user.coach == nil || user.coach.id != session[:user_id])
+    if user.id != current_user.id && (user.coach.nil? || user.coach.id != current_user.id)
       raise ApplicationHelper::PermissionDenied
     end
 
@@ -32,7 +22,33 @@ class AssignmentsController < ApplicationController
       @incomplete_assignments = user.assignments.for_display.not_submitted
       @complete_assignments = user.assignments.submitted.count
 
-      @coaches_comments = Comment.needs_student_attention(uid)
+      @coaches_comments = Comment.need_student_attention(uid)
+    end
+  end
+
+  def show
+    @coaches_comments = Comment.need_student_attention(current_user.id)
+    @assignment = Assignment.find(params[:id])
+    # When we show the assignment, we want it to immediately
+    # show the user what needs their attention:
+    # the first unfinished task for this assignment.
+    if current_user.coach?
+      tasks = @assignment.tasks.need_coach_attention
+    else
+      tasks = @assignment.tasks.need_student_attention
+    end
+
+    if tasks.any?
+      @task = tasks.first
+      @next_task = @task.next
+      @previous_task = @task.previous
+
+      @previous_task_url = @previous_task ? assignment_task_path(@previous_task.assignment, @previous_task) : nil
+      @next_task_url = @next_task ? assignment_task_path(@next_task.assignment, @next_task) : nil
+    else
+      @task = nil
+      @next_task = nil
+      @previous_task = nil
     end
   end
 
@@ -41,6 +57,8 @@ class AssignmentsController < ApplicationController
 
     if params[:start] && (params[:start] == 'true')
       assignment.start!
+      redirect_to assignment_path(assignment)
+      return
     elsif params[:submit] && (params[:submit] == 'true')
       assignment.submit!
     end

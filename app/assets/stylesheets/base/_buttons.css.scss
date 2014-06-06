@@ -1,0 +1,10 @@
+.button-default {
+  @extend .btn;
+  @extend .btn-default;
+}
+
+.button-primary {
+  @extend .btn;
+  @extend .btn-primary;
+  @extend .btn-lg;
+}

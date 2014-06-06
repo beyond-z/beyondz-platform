@@ -1,0 +1,67 @@
+.tasks-progress-bar {
+  height: 1.5em;
+  width: 50%;
+  margin: 1em;
+
+  border-radius: 0.5em;
+  overflow: hidden;
+  background-color: $bzgrey1;
+  clear: both;
+
+  .completion-bar {
+    background-color: $bzgreen;
+    height: 100%;
+  }
+}
+
+#task_instructions
+{
+	float: left;
+	width: 47%;
+	padding: 10px;
+  background-color: #43B5E9;
+  color: #4D4E53;
+}
+
+#task_list
+{
+	float: right;
+	width: 50%;
+
+	#task_table
+	{
+		width: 100%;
+
+		th, td
+		{
+			padding: 5px;
+		}
+
+		th
+		{
+			background-color: #ddd;
+		}
+
+		td
+		{
+			background-color: #eee;
+		}
+	}
+
+	form
+	{
+		.task_file
+		{
+			.task_name
+			{
+				float: left;
+			}
+
+			.task_file_field
+			{
+				float: left;
+				margin-left: 15px;
+			}
+		}
+	}
+}

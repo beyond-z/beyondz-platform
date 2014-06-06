@@ -8,11 +8,13 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-user = User.create(email: "test@beyondz.org", password: User.get_salted_password("test"), first_name: "BeyondZ", last_name: "Test")
-coach = User.create(email: "test+coach@beyondz.org", password: User.get_salted_password("test"), first_name: "BeyondZ", last_name: "Coach")
-admin_user = User.create(email: "test+admin@beyondz.org", password: User.get_salted_password("test"), first_name: "BeyondZ", last_name: "Admin", is_administrator: true)
+user = User.create(email: "test+student1@beyondz.org", password: "test", first_name: "BeyondZ", last_name: "Test")
+user2 = User.create(email: "test+student2@beyondz.org", password: "test", first_name: "Second", last_name: "Student")
+coach = User.create(email: "test+coach1@beyondz.org", password: "test", first_name: "BeyondZ", last_name: "Coach")
+admin_user = User.create(email: "test+admin@beyondz.org", password: ("test", first_name: "BeyondZ", last_name: "Admin", is_administrator: true)
 
 CoachStudent.create(coach_id: coach.id, student_id: user.id)
+CoachStudent.create(coach_id: coach.id, student_id: user2.id)
 
 # Assignment imports from the existing HTML
 
@@ -35,9 +37,9 @@ item.end_date = Time.parse("Mar 1")
 item.seo_name = "story-of-self"
 item.save
 item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 1, :name => "Take Myers Briggs <a href=\"http://www.humanmetrics.com/cgi-win/JTypes1.htm\">Personality Test</a>", :requires_approval => true))
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 2, :name => "Go through the <a href=\"http://www.nsrfharmony.org/protocol/doc/north_south.pdf\">Compass Exercise</a> and pick a direction that represents you", :requires_approval => true))
+item.task_definitions.push(TaskDefinition.create(kind: 'text', required: true, position: 2, :name => "Go through the <a href=\"http://www.nsrfharmony.org/protocol/doc/north_south.pdf\">Compass Exercise</a> and pick a direction that represents you", :requires_approval => true))
 item.task_definitions.push(TaskDefinition.create(kind: 'file', file_type: 'document', required: true, position: 3, :name => 'Personality Assessment Results', :summary => "Upload your <a href=\"https://docs.google.com/a/beyondz.org/forms/d/1cgwwrGn3ZMNkrKvL-Uj4FNz1Qf27xPc6usqse7fTWBg/viewform\">personality assessment results </a> by the end of Weekend 0.", :requires_approval => true))
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 4, :name => "Watch <a href=\"http://neworganizing.com/toolbox/training/story-of-self/\">Story of Self</a> Video <em>(40 min)</em>"))
+item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 4, :name => "Watch <a href=\"http://neworganizing.com/toolbox/training/story-of-self/\">Story of Self</a> Video <em>(40 min)</em>", summary: '<iframe width="640" height="360" src="//www.youtube.com/embed/Obiztwn2oEU?feature=player_embedded" frameborder="0" allowfullscreen></iframe>'))
 item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 5, :name => "Complete Beyond Z <a href=\"https://docs.google.com/forms/d/10JAYX6qwuZ_z9ZXooZ_QsXmCWhGeLtsTFqIUKz6blp4/viewform\">College Survey <em>(15 min)</em></a>", :requires_approval => true))
 item.save
 
@@ -57,7 +59,7 @@ item.start_date = Time.parse("Mar 3")
 item.end_date = Time.parse("Mar 9")
 item.seo_name = "passions-professions"
 item.save
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 1, :name => "Attend the group session.", :requires_approval => true))
+item.task_definitions.push(TaskDefinition.create(kind: 'text', required: true, position: 1, :name => "Attend the group session. What are your thoughts?", :requires_approval => true))
 item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 2, :name => "Request at least one informational interview to explore summer opportunities and/or career majors.", :requires_approval => true))
 item.task_definitions.push(TaskDefinition.create(kind: 'file', file_type: 'document', required: true, position: 3, :name => 'Evidence of Applied Learning', :summary => "Complete and upload <a href=\"https://www.dropbox.com/s/5kolp0reqiyon8k/F%20%20Week%201_Exploring%20Passions%20and%20Professions.docx?dl=1\">Evidence of Applied Learning (EAL)</a> by 9 PM, Friday, March 14.", :requires_approval => true))
 item.save
@@ -253,5 +255,6 @@ item.task_definitions.push(TaskDefinition.create(kind: 'file', file_type: 'docum
 item.save
 
 user.create_child_skeleton_rows
+user2.create_child_skeleton_rows
 coach.create_child_skeleton_rows
 admin_user.create_child_skeleton_rows

@@ -7,12 +7,13 @@ class Task < ActiveRecord::Base
   has_many :files, class_name: 'TaskFile', dependent: :destroy
   has_many :comments
 
-  enum kind: { file: 0, user_confirm: 1 }
+  enum kind: { file: 0, user_confirm: 1, text: 2 }
   enum file_type: { document: 0, image: 1, video: 2, audio: 3 }
 
   scope :for_assignment, -> (assignment_id) {
     where(assignment_id: assignment_id)
   }
+
   scope :complete, -> { where(tasks: { state: :complete }) }
   scope :incomplete, -> { where.not(tasks: { state: :complete }) }
   scope :required, -> {
@@ -36,6 +37,12 @@ class Task < ActiveRecord::Base
     .order('task_definitions.position ASC')
   }
   scope :files, -> { where(kind: Task.kinds[:file]) }
+  scope :need_student_attention, -> {
+    where(state: [:new, :pending_revision])
+  }
+  scope :need_coach_attention, -> {
+    where(state: [:pending_approval, :pending_revision])
+  }
 
 
   aasm :column => :state do
@@ -46,7 +53,7 @@ class Task < ActiveRecord::Base
 
     event :submit do
       transitions :from => :new, :to => :complete,
-        :guard => :does_not_require_approval?
+                  :guard => :does_not_require_approval?
       transitions :from => [:new, :pending_revision], :to => :pending_approval
     end
 
@@ -82,9 +89,9 @@ class Task < ActiveRecord::Base
 
   def submittable?
     can_submit = false
-    
+
     if assignment.in_progress?
-      if (state.to_sym == :new)
+      if state.to_sym == :new
         can_submit = true
       elsif state.to_sym == :pending_revision
         can_submit = true
@@ -95,7 +102,7 @@ class Task < ActiveRecord::Base
   end
 
   def requires_approval?
-    task_definition.requires_approval? 
+    task_definition.requires_approval?
   end
 
   def does_not_require_approval?
@@ -125,5 +132,15 @@ class Task < ActiveRecord::Base
       file.reset(file_type)
       file.destroy
     end
+  end
+
+  def next
+    return nil if task_definition.position == assignment.tasks.count
+    assignment.tasks.for_display.where('task_definitions.position = ?', task_definition.position + 1).first
+  end
+
+  def previous
+    return nil if task_definition.position == 1
+    assignment.tasks.for_display.where('task_definitions.position = ?', task_definition.position - 1).first
   end
 end
