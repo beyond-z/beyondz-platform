@@ -8,16 +8,6 @@
     @extend .progress-bar;
     @extend .progress-bar-success;
   }
-
-  .in-progress-bar {
-    @extend .progress-bar;
-    @extend .progress-bar-info;
-  }
-
-  .pending-bar {
-    @extend .progress-bar;
-    @extend .progress-bar-warning;
-  }
 }
 
 .task-pane {
