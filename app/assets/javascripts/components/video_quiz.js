@@ -1,3 +1,28 @@
+/*
+  This is used to trigger the youtube loading code even if it is
+  already loaded.
+
+  Since Rails uses a jQuery-turbolinks plugin which preloads links
+  with javascript (to make the load appear faster to the end user)
+  clicking a link doesn't necessarily refresh the page and reload
+  the scripts.
+
+  The youtube api is loaded asynchronously and our custom code is
+  triggered when the api loads. This minimizes user wait time
+  efficiently on regular loads.
+
+  However, with a turbolink load (which happens, for example, when
+  you click the Next button on the task pane), the API is already
+  loaded so this event is not triggered again!
+
+  In that case, we use this global variable (the long name is to try
+  to ensure uniqueness across the app) to tell us that it has already
+  loaded once. Then, on subsequent loads, instead of waiting for the
+  async event, we will simply call the handler function immediately
+  ourselves, fixing the issue.
+*/
+var load_component_video_quiz_ytReady = false;
+
 // see below for example
 function load_component_video_quiz() {
   // does async loading of the youtube script dependency
@@ -12,6 +37,7 @@ function load_component_video_quiz() {
   // this is called when the youtube script is loaded and prepares our usage of it,
   // searching for video containers and creating the YT players and event handlers
   function onYouTubeIframeAPIReady() {
+    load_component_video_quiz_ytReady = true;
     // reads time in the form of MM:SS and translates it to plain seconds
     function readTime(sTime) {
       if(sTime === null || sTime === "")
@@ -106,7 +132,10 @@ function load_component_video_quiz() {
   window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
 
   // and asynchronously load the youtube API code
-  addYouTubeScript();
+  if(load_component_video_quiz_ytReady)
+    onYouTubeIframeAPIReady();
+  else
+    addYouTubeScript();
 }
 
 /*
