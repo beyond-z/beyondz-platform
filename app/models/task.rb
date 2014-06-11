@@ -15,7 +15,7 @@ class Task < ActiveRecord::Base
     where(assignment_id: assignment_id)
   }
 
-  scope :complete, -> { where(tasks: { state: :complete }) }
+  scope :submitted, -> { where.not(state: :new) }
   scope :incomplete, -> { where.not(tasks: { state: :complete }) }
   scope :required, -> {
     joins(:task_definition)\
@@ -40,6 +40,9 @@ class Task < ActiveRecord::Base
   scope :files, -> { where(kind: Task.kinds[:file]) }
   scope :need_student_attention, -> {
     where(state: [:new, :pending_revision])
+  }
+  scope :do_not_need_student_attention, -> {
+    where(state: [:pending_approval, :complete])
   }
   scope :need_coach_attention, -> {
     where(state: [:pending_approval, :pending_revision])
