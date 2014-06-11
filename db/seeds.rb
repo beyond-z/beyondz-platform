@@ -120,8 +120,9 @@ item.end_date = Time.parse("Mar 16")
 item.seo_name = "resume"
 item.save
 item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 1, :name => "Read the summary - check out optional articles if you want"))
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 2, :name => "Compose your Resume", :requires_approval => true))
-item.task_definitions.push(TaskDefinition.create(kind: 'file', file_type: 'document', required: true, position: 3, :name => 'Resume', :summary => "Submit Resume and complete Evidence of Applied Learning (EAL) by 9 PM Friday, March 21.", :requires_approval => true))
+item.task_definitions.push(TaskDefinition.create(kind: 'quiz', required: true, position: 2, :name => 'Rank the resumés', :summary => 'Determine which resumés are the strongest and weakest.'))
+item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 3, :name => "Compose your Resume", :requires_approval => true))
+item.task_definitions.push(TaskDefinition.create(kind: 'file', file_type: 'document', required: true, position: 4, :name => 'Resume', :summary => "Submit Resume and complete Evidence of Applied Learning (EAL) by 9 PM Friday, March 21.", :requires_approval => true))
 item.save
 
 item = AssignmentDefinition.new
