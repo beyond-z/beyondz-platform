@@ -104,14 +104,14 @@ item.save
 
 item = AssignmentDefinition.new
 item.front_page_info = "
-          <h3>You will get practice this week:</h3>
-          <ul>
-            <li>Emphasizing your assets as you write your resume.</li>
-            <li>Practice giving feedback on another college participant&#8217;s resume.</li>
-            <li>Finding summer internships and tailoring your resume to different opportunities that you identify.</li>
-            <li><strong>NOTE: This is a 2-part module that asks you to write a Resume and a Cover Letter, spending a total of 3 hours across both artifacts.</strong></li>
-          </ul>
-        "
+    <h3>You will get practice this week:</h3>
+    <ul>
+      <li>Emphasizing your assets as you write your resume.</li>
+      <li>Practice giving feedback on another college participant&#8217;s resume.</li>
+      <li>Finding summer internships and tailoring your resume to different opportunities that you identify.</li>
+      <li><strong>NOTE: This is a 2-part module that asks you to write a Resume and a Cover Letter, spending a total of 3 hours across both artifacts.</strong></li>
+    </ul>
+  "
 item.title = "Week 2(b): Resume"
 item.led_by = "Peer"
 item.assignment_download_url = "assignments/resume/submissions/new"
@@ -120,19 +120,30 @@ item.end_date = Time.parse("Mar 16")
 item.seo_name = "resume"
 item.save
 item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 1, :name => "Read the summary - check out optional articles if you want"))
-item.task_definitions.push(TaskDefinition.create(kind: 'quiz', required: true, position: 2, :name => 'Rank the resumés', :summary => 'Determine which resumés are the strongest and weakest.'))
+item.task_definitions.push(TaskDefinition.create(kind: 'quiz', required: true,
+  position: 2, :name => 'Rank the resumés',
+  summary: 'Determine which resumés are the strongest and weakest.',
+  details: '<p>This is an entire paragraph about what makes a good resumé.
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </p><p>Review each resume and rate them below.</p>'
+  ))
 item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 3, :name => "Compose your Resume", :requires_approval => true))
 item.task_definitions.push(TaskDefinition.create(kind: 'file', file_type: 'document', required: true, position: 4, :name => 'Resume', :summary => "Submit Resume and complete Evidence of Applied Learning (EAL) by 9 PM Friday, March 21.", :requires_approval => true))
 item.save
 
 item = AssignmentDefinition.new
 item.front_page_info = "
-          <h3>You will get practice this week:</h3>
-          <ul>
-            <li><strong>Networks:</strong> Identify the members of participant networks who provide key supports.</li>
-            <li><strong>Networks/ Self -Discipline: </strong> Learn habits and strategies that help to build a network.</li>
-          </ul>
-        "
+    <h3>You will get practice this week:</h3>
+    <ul>
+      <li><strong>Networks:</strong> Identify the members of participant networks who provide key supports.</li>
+      <li><strong>Networks/ Self -Discipline: </strong> Learn habits and strategies that help to build a network.</li>
+    </ul>
+  "
 item.title = "Week 3: Power through Networks"
 item.led_by = "Coach"
 item.assignment_download_url = "assignments/networks/submissions/new"
