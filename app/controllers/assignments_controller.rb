@@ -15,12 +15,15 @@ class AssignmentsController < ApplicationController
     end
 
     if params[:state] && (params[:state] == 'complete')
-      @incomplete_assignments = user.assignments.not_submitted.count
-      @complete_assignments = user.assignments.for_display.submitted.reverse
+      @incomplete_assignments = user.assignments.need_student_attention.count
+      @complete_assignments = user.assignments.for_display\
+        .do_not_need_student_attention.reverse
       render 'completed'
     else
-      @incomplete_assignments = user.assignments.for_display.not_submitted
-      @complete_assignments = user.assignments.submitted.count
+      @incomplete_assignments = user.assignments.for_display\
+        .need_student_attention
+      @complete_assignments = user.assignments.do_not_need_student_attention\
+        .count
 
       @coaches_comments = Comment.need_student_attention(uid)
     end
@@ -29,27 +32,15 @@ class AssignmentsController < ApplicationController
   def show
     @coaches_comments = Comment.need_student_attention(current_user.id)
     @assignment = Assignment.find(params[:id])
-    # When we show the assignment, we want it to immediately
-    # show the user what needs their attention:
-    # the first unfinished task for this assignment.
-    if current_user.coach?
-      tasks = @assignment.tasks.need_coach_attention
-    else
-      tasks = @assignment.tasks.need_student_attention
+
+    tasks = @assignment.tasks.need_student_attention
+    unless tasks.any?
+      tasks = @assignment.tasks
     end
 
-    if tasks.any?
-      @task = tasks.first
-      @next_task = @task.next
-      @previous_task = @task.previous
-
-      @previous_task_url = @previous_task ? assignment_task_path(@previous_task.assignment, @previous_task) : nil
-      @next_task_url = @next_task ? assignment_task_path(@next_task.assignment, @next_task) : nil
-    else
-      @task = nil
-      @next_task = nil
-      @previous_task = nil
-    end
+    @task = tasks.first
+    @next_task = @task.next
+    @previous_task = @task.previous
   end
 
   def update

@@ -5,16 +5,17 @@ class Task < ActiveRecord::Base
   belongs_to :task_definition
   belongs_to :user
   has_many :files, class_name: 'TaskFile', dependent: :destroy
+  has_one :text, class_name: 'TaskText', dependent: :destroy
   has_many :comments
 
-  enum kind: { file: 0, user_confirm: 1, text: 2 }
+  enum kind: { file: 0, user_confirm: 1, text: 2, quiz: 3  }
   enum file_type: { document: 0, image: 1, video: 2, audio: 3 }
 
   scope :for_assignment, -> (assignment_id) {
     where(assignment_id: assignment_id)
   }
 
-  scope :complete, -> { where(tasks: { state: :complete }) }
+  scope :submitted, -> { where.not(state: :new) }
   scope :incomplete, -> { where.not(tasks: { state: :complete }) }
   scope :required, -> {
     joins(:task_definition)\
@@ -39,6 +40,9 @@ class Task < ActiveRecord::Base
   scope :files, -> { where(kind: Task.kinds[:file]) }
   scope :need_student_attention, -> {
     where(state: [:new, :pending_revision])
+  }
+  scope :do_not_need_student_attention, -> {
+    where(state: [:pending_approval, :complete])
   }
   scope :need_coach_attention, -> {
     where(state: [:pending_approval, :pending_revision])
@@ -87,13 +91,26 @@ class Task < ActiveRecord::Base
     [:pending_approval, :pending_revision].include?(state.to_sym)
   end
 
+  def submitted?
+    [:pending_approval, :complete].include?(state.to_sym)
+  end
+
+  # does task type meet submit requirements
+  def ready_to_submit?
+    ready_to_submit = true
+    if needs_files? || needs_text? || user_confirm?
+      ready_to_submit = false
+    end
+
+    ready_to_submit
+  end
+
+  # is task state ready to submit
   def submittable?
     can_submit = false
 
     if assignment.in_progress?
-      if state.to_sym == :new
-        can_submit = true
-      elsif state.to_sym == :pending_revision
+      if new? || pending_revision?
         can_submit = true
       end
     end
@@ -109,8 +126,8 @@ class Task < ActiveRecord::Base
     !requires_approval?
   end
 
-  def file?
-    (kind == 'file')
+  def needs_text?
+    text? && text.nil?
   end
 
   def needs_files?
@@ -136,11 +153,54 @@ class Task < ActiveRecord::Base
 
   def next
     return nil if task_definition.position == assignment.tasks.count
-    assignment.tasks.for_display.where('task_definitions.position = ?', task_definition.position + 1).first
+    assignment.tasks.for_display\
+      .where('task_definitions.position = ?', task_definition.position + 1)\
+      .first
   end
 
   def previous
     return nil if task_definition.position == 1
-    assignment.tasks.for_display.where('task_definitions.position = ?', task_definition.position - 1).first
+    assignment.tasks.for_display\
+      .where('task_definitions.position = ?', task_definition.position - 1)\
+      .first
   end
+
+  def update(task_params)
+    ActiveRecord::Base.transaction do
+
+      self.updated_at = Time.now
+
+      # handle different task types
+      if task_params.key?(:user_confirm) && task_params[:user_confirm] == 'true'
+        submit!
+      elsif task_params.key?(:text) && task_params[:text][:content]
+        if text.present?
+          text.update_attribute(:content, task_params[:text][:content])
+        else
+          self.text = TaskText.create(
+            task_id: id,
+            content: task_params[:text][:content]
+          )
+        end
+      elsif task_params.key?(:files)
+        if files.present?
+          task_file_params = task_params[:files][file_type.to_sym]
+          # restrict to single/first file for now
+          files.first.update_attribute(file_type, task_file_params)
+        else
+          files << TaskFile.create(
+            task_definition_id: task_definition.id,
+            task_id: id,
+            file_type => task_params[:files][file_type.to_sym]
+          )
+        end
+      elsif task_params.key?(:done) && (task_params[:done] == 'true')
+        # task was submitted as complete
+        submit!
+      end
+      save!
+
+    end
+  end
+
 end

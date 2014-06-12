@@ -1,0 +1,13 @@
+<div class="completion-status">
+  <% if @task.pending_approval? %>
+    <div class="status-coach-pending-approval">This task needs approval from you.</div>
+  <% elsif @task.pending_revision? %>
+    <div class="status-coach-pending-revision">This task is pending revision from the student.</div>
+  <% elsif @task.complete? %>
+    <div class="status-complete">COMPLETE!</div>
+  <% elsif @task.new? %>
+    <p>The student has not yet submitted this task.</p>
+  <% end %>
+</div>
+
+<%= render "coach/tasks/form", { task: @task } %>

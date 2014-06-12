@@ -1,0 +1,25 @@
+<% if task.files.any? %>
+  <p>You have already uploaded these files:</p>
+  <ul>
+    <% task.files.each do |file| %>
+      <li><a href="<%= file.url %>"><%= file["#{task.file_type}_file_name"] %></a></li>
+    <% end %>
+  </ul>
+  <p>You may upload a replacement:</p>
+<% end %>
+
+<div class="task-file">
+  <%= f.fields_for :files do |file| %>
+    <span class="task-name"><%= "#{task.task_definition.name} (#{task.file_type})".html_safe %>:</span>
+    <span class="task-file-field"><%= file.file_field task.file_type %></span>
+  <% end %>
+</div>
+<div class="clear"></div>
+
+<div class="file-upload-progress invisible">
+  <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+    <span class="sr-only">0% Complete</span>
+  </div>
+</div>
+
+<span><%= f.submit "Upload", class: 'button-primary' %></span>

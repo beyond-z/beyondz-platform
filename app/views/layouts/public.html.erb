@@ -7,10 +7,14 @@
     
     <!-- Until we add a landing page and login, keep our site out of search engines -->
     <meta name="robots" content="noindex">
-    <%= render 'shared/asset_includes' %>
+    <%= render 'shared/asset_stylesheet_includes' %>
     <%= csrf_meta_tags %>
   </head>
   <body>
+
+    <%= render 'shared/standard_modals' %>
+    <%= yield :modals %>
+
     <div id="content">
       <header>
         <section id="banner" role="banner">
@@ -52,7 +56,7 @@
 
           </div>
           <div class="top-right">
-            <%= link_to '<button type="button" class="apply-button">Apply Now</button>'.html_safe, new_enrollment_path %>
+            <%= link_to '<button type="button" class="apply-button">Sign Up</button>'.html_safe, new_enrollment_path %>
           </div>
         </section>
 
@@ -81,6 +85,7 @@
       
     </div>
 
+    <%= render 'shared/asset_javascript_includes' %>
     <%= render 'shared/google_analytics' %>
   </body>
 </html>

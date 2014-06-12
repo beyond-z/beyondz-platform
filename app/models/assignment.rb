@@ -5,14 +5,22 @@ class Assignment < ActiveRecord::Base
   belongs_to :user
   has_many :tasks, dependent: :destroy
 
-  scope :submitted, -> { where(state: [:pending_approval, :complete]) }
-  scope :not_submitted, -> { where.not(state: [:pending_approval, :complete]) }
-  scope :complete, -> { where(state: :complete) }
+  scope :submitted, -> { where.not(state: [:new, :started]) }
+  scope :not_submitted, -> { where(state: [:new, :started]) }
   scope :incomplete, -> { where.not(state: :complete) }
   scope :for_display, -> {
     joins(:assignment_definition)\
     .includes(:assignment_definition)\
     .order('assignment_definitions.start_date ASC')
+  }
+  scope :need_student_attention, -> {
+    where(state: [:new, :started, :pending_revision])
+  }
+  scope :do_not_need_student_attention, -> {
+    where(state: [:pending_approval, :complete])
+  }
+  scope :need_coach_attention, -> {
+    where(state: [:pending_approval, :pending_revision])
   }
 
 
@@ -91,6 +99,15 @@ class Assignment < ActiveRecord::Base
 
   def requires_files?
     tasks.files.count > 0
+  end
+
+  def percent_submitted
+    # count all tasks that are not new
+    (tasks.submitted.count * 100 / tasks.count)
+  end
+
+  def percent_complete
+    (tasks.complete.count * 100 / tasks.count)
   end
 
   def human_readable_status

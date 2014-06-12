@@ -11,7 +11,7 @@
 user = User.create(email: "test+student1@beyondz.org", password: "test", first_name: "BeyondZ", last_name: "Test")
 user2 = User.create(email: "test+student2@beyondz.org", password: "test", first_name: "Second", last_name: "Student")
 coach = User.create(email: "test+coach1@beyondz.org", password: "test", first_name: "BeyondZ", last_name: "Coach")
-admin_user = User.create(email: "test+admin@beyondz.org", password: ("test", first_name: "BeyondZ", last_name: "Admin", is_administrator: true)
+admin_user = User.create(email: "test+admin@beyondz.org", password: "test", first_name: "BeyondZ", last_name: "Admin", is_administrator: true)
 
 CoachStudent.create(coach_id: coach.id, student_id: user.id)
 CoachStudent.create(coach_id: coach.id, student_id: user2.id)
@@ -39,7 +39,25 @@ item.save
 item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 1, :name => "Take Myers Briggs <a href=\"http://www.humanmetrics.com/cgi-win/JTypes1.htm\">Personality Test</a>", :requires_approval => true))
 item.task_definitions.push(TaskDefinition.create(kind: 'text', required: true, position: 2, :name => "Go through the <a href=\"http://www.nsrfharmony.org/protocol/doc/north_south.pdf\">Compass Exercise</a> and pick a direction that represents you", :requires_approval => true))
 item.task_definitions.push(TaskDefinition.create(kind: 'file', file_type: 'document', required: true, position: 3, :name => 'Personality Assessment Results', :summary => "Upload your <a href=\"https://docs.google.com/a/beyondz.org/forms/d/1cgwwrGn3ZMNkrKvL-Uj4FNz1Qf27xPc6usqse7fTWBg/viewform\">personality assessment results </a> by the end of Weekend 0.", :requires_approval => true))
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 4, :name => "Watch <a href=\"http://neworganizing.com/toolbox/training/story-of-self/\">Story of Self</a> Video <em>(40 min)</em>", summary: '<iframe width="640" height="360" src="//www.youtube.com/embed/Obiztwn2oEU?feature=player_embedded" frameborder="0" allowfullscreen></iframe>'))
+item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 4, :name => "Watch <a href=\"http://neworganizing.com/toolbox/training/story-of-self/\">Story of Self</a> Video <em>(40 min)</em>", summary: '
+<div class="annotated-video" data-youtube-id="Obiztwn2oEU" data-start-time="12:55">
+                <div class="quiz" data-time-to-display="13:00">
+                        <p>Challenge or outcome?</p>
+                        <textarea style="width: 100%;"></textarea>
+
+                        <button type="button" class="close">Back to the video</button>
+                </div>
+
+                <div class="quiz" data-time-to-display="13:05">
+                        <p>Quiz 2 can be different</p>
+                        <textarea style="width: 100%;"></textarea>
+                        <select><option>Choice 1</option><option>Choice 2</option></select>
+
+                        <button type="button" class="close">Back to the video</button>
+                </div>
+
+</div>
+'))
 item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 5, :name => "Complete Beyond Z <a href=\"https://docs.google.com/forms/d/10JAYX6qwuZ_z9ZXooZ_QsXmCWhGeLtsTFqIUKz6blp4/viewform\">College Survey <em>(15 min)</em></a>", :requires_approval => true))
 item.save
 
@@ -86,14 +104,14 @@ item.save
 
 item = AssignmentDefinition.new
 item.front_page_info = "
-          <h3>You will get practice this week:</h3>
-          <ul>
-            <li>Emphasizing your assets as you write your resume.</li>
-            <li>Practice giving feedback on another college participant&#8217;s resume.</li>
-            <li>Finding summer internships and tailoring your resume to different opportunities that you identify.</li>
-            <li><strong>NOTE: This is a 2-part module that asks you to write a Resume and a Cover Letter, spending a total of 3 hours across both artifacts.</strong></li>
-          </ul>
-        "
+    <h3>You will get practice this week:</h3>
+    <ul>
+      <li>Emphasizing your assets as you write your resume.</li>
+      <li>Practice giving feedback on another college participant&#8217;s resume.</li>
+      <li>Finding summer internships and tailoring your resume to different opportunities that you identify.</li>
+      <li><strong>NOTE: This is a 2-part module that asks you to write a Resume and a Cover Letter, spending a total of 3 hours across both artifacts.</strong></li>
+    </ul>
+  "
 item.title = "Week 2(b): Resume"
 item.led_by = "Peer"
 item.assignment_download_url = "assignments/resume/submissions/new"
@@ -102,18 +120,30 @@ item.end_date = Time.parse("Mar 16")
 item.seo_name = "resume"
 item.save
 item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 1, :name => "Read the summary - check out optional articles if you want"))
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 2, :name => "Compose your Resume", :requires_approval => true))
-item.task_definitions.push(TaskDefinition.create(kind: 'file', file_type: 'document', required: true, position: 3, :name => 'Resume', :summary => "Submit Resume and complete Evidence of Applied Learning (EAL) by 9 PM Friday, March 21.", :requires_approval => true))
+item.task_definitions.push(TaskDefinition.create(kind: 'quiz', required: true,
+  position: 2, :name => 'Rank the resumés',
+  summary: 'Determine which resumés are the strongest and weakest.',
+  details: '<p>This is an entire paragraph about what makes a good resumé.
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </p><p>Review each resume and rate them below.</p>'
+  ))
+item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 3, :name => "Compose your Resume", :requires_approval => true))
+item.task_definitions.push(TaskDefinition.create(kind: 'file', file_type: 'document', required: true, position: 4, :name => 'Resume', :summary => "Submit Resume and complete Evidence of Applied Learning (EAL) by 9 PM Friday, March 21.", :requires_approval => true))
 item.save
 
 item = AssignmentDefinition.new
 item.front_page_info = "
-          <h3>You will get practice this week:</h3>
-          <ul>
-            <li><strong>Networks:</strong> Identify the members of participant networks who provide key supports.</li>
-            <li><strong>Networks/ Self -Discipline: </strong> Learn habits and strategies that help to build a network.</li>
-          </ul>
-        "
+    <h3>You will get practice this week:</h3>
+    <ul>
+      <li><strong>Networks:</strong> Identify the members of participant networks who provide key supports.</li>
+      <li><strong>Networks/ Self -Discipline: </strong> Learn habits and strategies that help to build a network.</li>
+    </ul>
+  "
 item.title = "Week 3: Power through Networks"
 item.led_by = "Coach"
 item.assignment_download_url = "assignments/networks/submissions/new"

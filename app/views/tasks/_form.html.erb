@@ -1,34 +1,17 @@
-<div class="container-fluid">
-  <section>
-    <div>
+<div id="task-update-student" class="container-fluid">
+  <%= form_for [task.assignment, task], role: 'form' do |f| %>
 
-      <%= form_for [task.assignment, task] do |f| %>
+    <%= render "shared/form_errors", locals: { object: task } %>
 
-        <%= render "shared/form_errors", locals: {object: task} %>
+    <% if task.file? %>
+      <%= render 'tasks/subform_file', { f: f, task: task } %>
+    <% elsif task.text? %>
+      <%= render 'tasks/subform_text', { f: f, task: task } %>
+    <% elsif task.user_confirm? %>
+      <%= render 'tasks/subform_user_confirm', { f: f, task: task } %>
+    <% elsif task.quiz? %>
+      <%= render 'tasks/subform_quiz', { f: f, task: task } %>
+    <% end %>
 
-        <% if task.kind == 'file' %>
-          <% if task.files.any? %>
-            <p>You have already uploaded these files:</p>
-            <ul>
-              <% task.files.each do |file| %>
-                <li><a href="<%= file.url %>"><%= file["#{task.file_type}_file_name"] %></a></li>
-              <% end %>
-            </ul>
-            <p>You may upload a replacement:</p>
-          <% end %>
-
-          <div class="task-file">
-            <%= f.fields_for :files do |file| %>
-              <span class="task-name"><%= "#{task.task_definition.name} (#{task.file_type})".html_safe %>:</span>
-              <span class="task-file-field"><%= file.file_field task.file_type %></span>
-            <% end %>
-            <span><%= f.submit "Submit", class: 'btn-assignment-submit' %></span>
-          </div>
-          <div class="clear"></div>
-        <% end %>
-
-      <% end %>
-
-    </div>
-  </section>
+  <% end %>
 </div>

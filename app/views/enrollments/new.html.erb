@@ -1,0 +1,45 @@
+<section>
+  <h1>
+    Jump start your career and leadership path
+  </h1>
+</section>
+
+<section>
+  <div class="col-sm-8 col-sm-offset-2">
+    <h2>
+      Join us! Apply to become a BZ Academy Fellow today
+    </h2>
+    <p>
+      Let's get started. Tell us about yourself.
+    </p>
+    <%= form_tag '', role: 'form' do %>
+      <div class="form-group clear">
+        <label for="type">I am a</label>
+        <%= select_tag 'type', options_for_select('Student' => 'student'), :class => 'form-control'%>
+      </div>
+      <div class="form-group">
+        <label for="first_name">Name</label>
+        <section>
+          <div class="col-sm-6">
+            <%= text_field_tag 'first_name', '', :class => 'form-control', placeholder: 'First Name', style: 'float: left;' %>
+            <p class="help-block">Enter your first name.</p>
+          </div>
+          <div class="col-sm-6">
+            <%= text_field_tag 'last_name', '', :class => 'form-control', placeholder: 'Last Name', style: 'float: left;'  %>
+            <p class="help-block">Enter your last name.</p>
+          <div>
+        </section>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <%= text_field_tag 'email', '', :class => 'form-control', placeholder: 'Email'%>
+      </div>
+      <div class="form-group">
+        <label for="email_verification">Email Verification</label>
+        <%= text_field_tag 'email_verification', '', :class => 'form-control', placeholder: 'Email Verification'%>
+        <p class="help-block">Enter your email again for verification.</p>
+      </div>
+      <button type="submit" class="btn btn-lg btn-primary">Continue</button>
+    <% end %>
+  </div>
+</section>
