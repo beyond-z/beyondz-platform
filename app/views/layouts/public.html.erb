@@ -51,7 +51,9 @@
 
           </div>
           <div class="top-right">
+            <% if !user_signed_in? %>
             <%= link_to '<button type="button" class="apply-button">Sign Up</button>'.html_safe, new_enrollment_path %>
+            <% end %>
           </div>
         </section>
 

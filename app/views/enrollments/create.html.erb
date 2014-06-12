@@ -1,0 +1,13 @@
+<h1>Thank you</h1>
+
+<p>Welcome, <%= @new_user.first_name %>!</p>
+
+<p>Your application has been received. We'll be in touch shortly - please check your email in a few minutes to confirm your contact information.</p>
+
+<% if @new_user_type == 'student' %>
+  <p>Here's some student specific information.</p>
+<% elsif @new_user_type == 'volunteer' %>
+  <p>Here's some information that a volunteer (coach) would want to know.</p>
+<% elsif @new_user_type == 'supporter' %>
+  <p>Here's info for supporters.</p>
+<% end %>

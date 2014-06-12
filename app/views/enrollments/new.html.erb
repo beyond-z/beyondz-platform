@@ -4,42 +4,60 @@
   </h1>
 </section>
 
+<%= image_tag("hands_up.jpg") %>
+
 <section>
-  <div class="col-sm-8 col-sm-offset-2">
+  <div class="col-sm-8 col-sm-offset-1">
     <h2>
       Join us! Apply to become a BZ Academy Fellow today
     </h2>
     <p>
       Let's get started. Tell us about yourself.
     </p>
-    <%= form_tag '', role: 'form' do %>
-      <div class="form-group clear">
-        <label for="type">I am a</label>
-        <%= select_tag 'type', options_for_select('Student' => 'student'), :class => 'form-control'%>
-      </div>
+    <%= form_tag enrollments_path, role: 'form' do %>
       <div class="form-group">
-        <label for="first_name">Name</label>
+        <label for="user[first_name]">Name</label>
         <section>
           <div class="col-sm-6">
-            <%= text_field_tag 'first_name', '', :class => 'form-control', placeholder: 'First Name', style: 'float: left;' %>
+            <%= text_field_tag 'user[first_name]', '', :class => 'form-control', placeholder: 'First Name', style: 'float: left;' %>
             <p class="help-block">Enter your first name.</p>
           </div>
           <div class="col-sm-6">
-            <%= text_field_tag 'last_name', '', :class => 'form-control', placeholder: 'Last Name', style: 'float: left;'  %>
+            <%= text_field_tag 'user[last_name]', '', :class => 'form-control', placeholder: 'Last Name', style: 'float: left;'  %>
             <p class="help-block">Enter your last name.</p>
           <div>
         </section>
       </div>
       <div class="form-group">
-        <label for="email">Email</label>
-        <%= text_field_tag 'email', '', :class => 'form-control', placeholder: 'Email'%>
+        <label for="user[email]">Email</label>
+        <%= text_field_tag 'user[email]', '', :type => 'email', :required => 'required', :class => 'form-control', placeholder: 'Email'%>
       </div>
+
       <div class="form-group">
-        <label for="email_verification">Email Verification</label>
-        <%= text_field_tag 'email_verification', '', :class => 'form-control', placeholder: 'Email Verification'%>
-        <p class="help-block">Enter your email again for verification.</p>
+        <label for="user[password]">Create Password</label>
+        <%= password_field_tag 'user[password]', '', :class => 'form-control', placeholder: 'Password'%>
+        <p class="help-block">Enter a password so you can log in later.</p>
       </div>
+
+      <div class="form-group clear">
+        <label for="type">I am a</label>
+        <%= select_tag 'type', options_for_select(
+          'College Student' => 'student',
+          'College Faculty or Staff' => 'volunteer',
+          'Professional' => 'volunteer',
+          'Supporter' => 'supporter',
+          ), :class => 'form-control'%>
+      </div>
+
       <button type="submit" class="btn btn-lg btn-primary">Continue</button>
     <% end %>
+  </div>
+
+  <div class="col-sm-2">
+    <h2>Why Join?</h2>
+    <blockquote>
+      <p>Something inspirational</p>
+      <cite>--Aimee</cite>
+    </blockquote>
   </div>
 </section>
