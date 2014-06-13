@@ -1,6 +1,12 @@
+require 'csv'
+
 class Admin::UsersController < Admin::ApplicationController
   def index
     @users = User.all
+    respond_to do |format|
+      format.html { render }
+      format.csv { render text: csv_export }
+    end
   end
 
   def new
@@ -12,12 +18,33 @@ class Admin::UsersController < Admin::ApplicationController
   end
 
   def create
-    @user = User.create(params[:user].permit(:first_name, :last_name, :email, :password))
-    # Since the password coming from the User.create is not uniquely salted,
-    # we'll call the change_password method immediately to ensure it is
-    # stored correctly and securely.
-    @user.password = params[:user][:password]
+    @user = User.new(params[:user].permit(
+      :first_name, :last_name, :email, :password))
+    @user.skip_confirmation! # admins don't need to confirm new accounts
     @user.save!
-    redirect_to '/admin/users'
+    redirect_to admin_users_path
+  end
+
+  private
+
+  def csv_export
+    CSV.generate do |csv|
+      header = Array.new
+      header << 'First Name'
+      header << 'Last Name'
+      header << 'Email'
+      header << 'Type'
+      header << 'Signup Date'
+      csv << header
+      @users.each do |user|
+        exportable = Array.new
+        exportable << user.first_name
+        exportable << user.last_name
+        exportable << user.email
+        exportable << user.applicant_type
+        exportable << user.created_at.to_s
+        csv << exportable
+      end
+    end
   end
 end
