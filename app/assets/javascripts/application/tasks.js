@@ -3,6 +3,20 @@ $(document).ready(function() {
  
   load_component_comments();
 
+  $(".document_comparison_rank").jRating({
+    rateMax: 5,
+    step: true,
+    bigStarsPath: '/images/jRating/stars.png',
+    smallStarsPath: '/images/jRating/small.png',
+    sendRequest: false,
+    canRateAgain: true,
+    showRateInfo: true,
+    nbRates: 5,
+    onClick: function(element, rate) {
+      //alert(rate);
+    }
+  });
+
   var task_action_box = $('.task-container .action-box');
   var task_update_submit = '#task-update-student .edit_task input[type=submit]';
   var task_done_submit = '#task-done .edit_task input[type=submit]';

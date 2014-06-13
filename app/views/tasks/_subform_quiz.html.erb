@@ -69,14 +69,23 @@
   <% end %>
 
   <section>
-    <div class="col-sm-4">
+    <div class="col-sm-4 text-center">
+      <div><span class="glyphicon glyphicon-file" style="font-size: 8em; cursor: hand; cursor: pointer;" data-toggle="modal" data-target="#<%= "task_#{task.id}_comparison_1" %>"></span></div>
       <div class="btn btn-default" data-toggle="modal" data-target="#<%= "task_#{task.id}_comparison_1" %>">Resumé 1</div>
+      <br /><br />
+      <div class="document_comparison_rank center-block" data-average="12" data-id="1"></div>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-4 text-center">
+      <div><span class="glyphicon glyphicon-file" style="font-size: 8em; cursor: hand; cursor: pointer;" data-toggle="modal" data-target="#<%= "task_#{task.id}_comparison_2" %>"></span></div>
       <div class="btn btn-default" data-toggle="modal" data-target="#<%= "task_#{task.id}_comparison_2" %>">Resumé 2</div>
+      <br /><br />
+      <div class="document_comparison_rank center-block" data-average="12" data-id="1"></div>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-4 text-center">
+      <div><span class="glyphicon glyphicon-file" style="font-size: 8em; cursor: hand; cursor: pointer;" data-toggle="modal" data-target="#<%= "task_#{task.id}_comparison_3" %>"></span></div>
       <div class="btn btn-default" data-toggle="modal" data-target="#<%= "task_#{task.id}_comparison_3" %>">Resumé 3</div>
+      <br /><br />
+      <div class="document_comparison_rank center-block" data-average="12" data-id="1"></div>
     </div>
   </section>
 
