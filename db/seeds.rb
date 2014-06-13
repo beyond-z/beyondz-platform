@@ -8,10 +8,20 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-user = User.create(email: "test+student1@beyondz.org", password: "test", first_name: "BeyondZ", last_name: "Test")
-user2 = User.create(email: "test+student2@beyondz.org", password: "test", first_name: "Second", last_name: "Student")
-coach = User.create(email: "test+coach1@beyondz.org", password: "test", first_name: "BeyondZ", last_name: "Coach")
-admin_user = User.create(email: "test+admin@beyondz.org", password: "test", first_name: "BeyondZ", last_name: "Admin", is_administrator: true)
+user = User.new(email: "test+student1@beyondz.org", password: "test", first_name: "BeyondZ", last_name: "Test")
+user2 = User.new(email: "test+student2@beyondz.org", password: "test", first_name: "Second", last_name: "Student")
+coach = User.new(email: "test+coach1@beyondz.org", password: "test", first_name: "BeyondZ", last_name: "Coach")
+admin_user = User.new(email: "test+admin@beyondz.org", password: "test", first_name: "BeyondZ", last_name: "Admin", is_administrator: true)
+
+user.skip_confirmation!
+user2.skip_confirmation!
+coach.skip_confirmation!
+admin_user.skip_confirmation!
+
+user.save!
+user2.save!
+coach.save!
+admin_user.save!
 
 CoachStudent.create(coach_id: coach.id, student_id: user.id)
 CoachStudent.create(coach_id: coach.id, student_id: user2.id)
@@ -272,7 +282,4 @@ item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required:
 item.task_definitions.push(TaskDefinition.create(kind: 'file', file_type: 'document', required: true, position: 3, :name => 'This Document', :summary => "Complete and upload <a href=\"#?dl=1\">this document</a> by 9 PM Friday, May 2.", :requires_approval => true))
 item.save
 
-user.create_child_skeleton_rows
-user2.create_child_skeleton_rows
-coach.create_child_skeleton_rows
-admin_user.create_child_skeleton_rows
+User.all.each do |u| u.create_child_skeleton_rows ; end
