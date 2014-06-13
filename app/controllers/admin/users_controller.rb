@@ -18,9 +18,9 @@ class Admin::UsersController < Admin::ApplicationController
   end
 
   def create
-    @user = User.create(params[:user].permit(
+    @user = User.new(params[:user].permit(
       :first_name, :last_name, :email, :password))
-    @user.confirm!
+    @user.skip_confirmation! # admins don't need to confirm new accounts
     @user.save!
     redirect_to admin_users_path
   end
