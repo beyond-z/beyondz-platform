@@ -1,84 +1,99 @@
-<% if task.id == 13 %>
-  <%= content_for :modals do %>
-    <%= large_modal("task_#{task.id}_comparison_1",
-      title: 'Rate this resume',
-      content: '<h3>John Doe</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-        <h4>SKILLS</h4>
-          <ul>
-          <li>Nemo enim ipsam</li>
-          <li>Incidunt ut labore</li>
-          <li>Dolore magnam</li>
-          <li>Aliquam quaerat voluptatem</li>
-          <li>Voluptate velit esse quam</li>
-          </ul>
-        <h4>EXPERIENCE</h4>
-          <ul>
-          <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-          <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-          <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-          <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-          <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
-          </ul>
-        <h4>EDUCATION</h4>
-        <p>Masters in Photography from PU, 1981</p>'
-    ) %>
-    <%= large_modal("task_#{task.id}_comparison_2",
-      title: 'Rate this resume',
-      content: '<h3>John Dough</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-        <h4>SKILLS</h4>
-          <ul>
-          <li>Nemo enim ipsam</li>
-          <li>Incidunt ut labore</li>
-          <li>Dolore magnam</li>
-          <li>Aliquam quaerat voluptatem</li>
-          <li>Voluptate velit esse quam</li>
-          </ul>
-        <h4>EXPERIENCE</h4>
-          <ul>
-          <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-          <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-          <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-          <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-          <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
-          </ul>
-        <h4>EDUCATION</h4>
-        <p>Masters in Photography from PU, 1981</p>'
-    ) %>
-    <%= large_modal("task_#{task.id}_comparison_3",
-      title: 'Rate this resume',
-      content: '<h3>John DOH</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-        <h4>SKILLS</h4>
-          <ul>
-          <li>Nemo enim ipsam</li>
-          <li>Incidunt ut labore</li>
-          <li>Dolore magnam</li>
-          <li>Aliquam quaerat voluptatem</li>
-          <li>Voluptate velit esse quam</li>
-          </ul>
-        <h4>EXPERIENCE</h4>
-          <ul>
-          <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-          <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-          <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-          <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-          <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
-          </ul>
-        <h4>EDUCATION</h4>
-        <p>Masters in Photography from PU, 1981</p>'
-    ) %>
-  <% end %>
+<% if task.task_definition.id == 13 %>
+  <%
+    # this data will be replaced by a database driven version on a following pull request (no where to put this mock data right now)
+    compare_type = 'Resumé'
+    rank_items = [
+      {
+        label: 'Resumé 1',
+        content: '<h3>John Doe</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+          <h4>SKILLS</h4>
+            <ul>
+            <li>Nemo enim ipsam</li>
+            <li>Incidunt ut labore</li>
+            <li>Dolore magnam</li>
+            <li>Aliquam quaerat voluptatem</li>
+            <li>Voluptate velit esse quam</li>
+            </ul>
+          <h4>EXPERIENCE</h4>
+            <ul>
+            <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
+            <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
+            <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
+            <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
+            <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
+            </ul>
+          <h4>EDUCATION</h4>
+          <p>Masters in Photography from PU, 1981</p>'
+      },
+      {
+        label: 'Resumé 2',
+        content: '<h3>John Dough</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+          <h4>SKILLS</h4>
+            <ul>
+            <li>Nemo enim ipsam</li>
+            <li>Incidunt ut labore</li>
+            <li>Dolore magnam</li>
+            <li>Aliquam quaerat voluptatem</li>
+            <li>Voluptate velit esse quam</li>
+            </ul>
+          <h4>EXPERIENCE</h4>
+            <ul>
+            <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
+            <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
+            <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
+            <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
+            <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
+            </ul>
+          <h4>EDUCATION</h4>
+          <p>Masters in Photography from PU, 1981</p>'
+      },
+      {
+        label: 'Resumé 3',
+        content: '<h3>John DOH</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+          <h4>SKILLS</h4>
+            <ul>
+            <li>Nemo enim ipsam</li>
+            <li>Incidunt ut labore</li>
+            <li>Dolore magnam</li>
+            <li>Aliquam quaerat voluptatem</li>
+            <li>Voluptate velit esse quam</li>
+            </ul>
+          <h4>EXPERIENCE</h4>
+            <ul>
+            <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
+            <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
+            <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
+            <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
+            <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
+            </ul>
+          <h4>EDUCATION</h4>
+          <p>Masters in Photography from PU, 1981</p>'
+      }
+    ]
 
-  <section>
-    <div class="col-sm-4">
-      <div class="btn btn-default" data-toggle="modal" data-target="#<%= "task_#{task.id}_comparison_1" %>">Resumé 1</div>
-    </div>
-    <div class="col-sm-4">
-      <div class="btn btn-default" data-toggle="modal" data-target="#<%= "task_#{task.id}_comparison_2" %>">Resumé 2</div>
-    </div>
-    <div class="col-sm-4">
-      <div class="btn btn-default" data-toggle="modal" data-target="#<%= "task_#{task.id}_comparison_3" %>">Resumé 3</div>
-    </div>
-  </section>
+  %>
+  <div id="compare-and-rank">
+    <section>
+      <% rank_items.each_with_index do |r, i| %>
+        <% rank_modal_id = "task_#{task.id}_comparison_#{i}" %>
+        <%= content_for :modals do %>
+          <%= large_modal(rank_modal_id,
+            title: "Review this #{compare_type}",
+            content: r[:content]
+          ) %>
+        <% end %>
 
+        <div class="selection-column">
+          <div>
+            <span class="small" data-toggle="modal" data-target="#<%= rank_modal_id %>"></span>
+          </div>
+          <div class="view-button" data-toggle="modal" data-target="#<%= rank_modal_id %>"><%= r[:label] %></div>
+            <br /><br />
+            <div class="rating" data-average="0" data-id="1">
+          </div>
+        </div>
+      <% end %>
+    </section>
+  </div>
 
 <% end %>

@@ -29,9 +29,16 @@
 // define styles for global use
 @import "global_design";    // presentational
 
-// define component-specific styles
-@import "components/comments/*";      // presentational
-// define static reusable page modules/sections
-@import "modules/feedback_button/*";  // presentational
-// define layout specific elements
-@import "layouts/*";                // presentational
+// define component-specific styles - presentational
+@import "components/comments/*";
+@import "components/compare_and_rank/*";
+
+// define static reusable page modules/sections - presentational
+@import "modules/feedback_button/*";
+
+// define layout specific elements - presentational
+@import "layouts/*";
+
+
+// // Vendor imports
+@import "jRating.jquery"

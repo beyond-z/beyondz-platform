@@ -1,0 +1,24 @@
+#compare-and-rank {
+  .selection-column {
+    @extend .col-sm-4;
+    @extend .text-center;
+  }
+
+  .small {
+    @extend .glyphicon;
+    @extend .glyphicon-file;
+    font-size: 8em;
+    cursor: hand;
+    cursor: pointer;
+  }
+
+  .view-button {
+    @extend .btn;
+    @extend .btn-default;
+    margin-top: 0.5em;
+  }
+
+  .rating {
+    @extend .center-block;
+  }
+}
