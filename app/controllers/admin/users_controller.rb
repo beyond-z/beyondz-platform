@@ -20,6 +20,7 @@ class Admin::UsersController < Admin::ApplicationController
   def create
     @user = User.create(params[:user].permit(
       :first_name, :last_name, :email, :password))
+    @user.confirm!
     @user.save!
     redirect_to admin_users_path
   end

@@ -4,10 +4,10 @@
 
 <p>Thank you for signing up! You should receive an email in a moment to activate your account. Please check your email and follow the instructions to activate your account.</p>
 
-<% if @new_user_type == 'student' %>
+<% if @new_user.applicant_type == 'student' %>
   <p>Here's some student specific information.</p>
-<% elsif @new_user_type == 'volunteer' %>
+<% elsif @new_user.applicant_type == 'volunteer' %>
   <p>Here's some information that a volunteer (coach) would want to know.</p>
-<% elsif @new_user_type == 'supporter' %>
+<% elsif @new_user.applicant_type == 'supporter' %>
   <p>Here's info for supporters.</p>
 <% end %>
