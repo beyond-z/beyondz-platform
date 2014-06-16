@@ -142,7 +142,7 @@ item.task_definitions.push(TaskDefinition.create(kind: 'quiz', required: true,
     non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </p><p>Review each resume and rate them below.</p>'
   ))
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 3, :name => "Compose your Resume", :requires_approval => true))
+item.task_definitions.push(TaskDefinition.create(kind: 'quiz', required: true, position: 3, :name => "Compose your Resume", :requires_approval => true))
 item.task_definitions.push(TaskDefinition.create(kind: 'file', file_type: 'document', required: true, position: 4, :name => 'Resume', :summary => "Submit Resume and complete Evidence of Applied Learning (EAL) by 9 PM Friday, March 21.", :requires_approval => true))
 item.save
 
