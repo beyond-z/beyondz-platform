@@ -15,12 +15,15 @@ class AssignmentsController < ApplicationController
     end
 
     if params[:state] && (params[:state] == 'complete')
-      @incomplete_assignments = user.assignments.not_submitted.count
-      @complete_assignments = user.assignments.for_display.submitted.reverse
+      @incomplete_assignments = user.assignments.need_student_attention.count
+      @complete_assignments = user.assignments.for_display\
+        .do_not_need_student_attention.reverse
       render 'completed'
     else
-      @incomplete_assignments = user.assignments.for_display.not_submitted
-      @complete_assignments = user.assignments.submitted.count
+      @incomplete_assignments = user.assignments.for_display\
+        .need_student_attention
+      @complete_assignments = user.assignments.do_not_need_student_attention\
+        .count
 
       @coaches_comments = Comment.need_student_attention(uid)
     end

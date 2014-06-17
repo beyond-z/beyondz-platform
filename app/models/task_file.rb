@@ -46,6 +46,10 @@ class TaskFile < ActiveRecord::Base
     self["#{file_type}_file_name"].present?
   end
 
+  def name
+    self["#{task.file_type}_file_name"]
+  end
+
   def reset(file_type)
     update_attribute(file_type.to_sym, nil)
   end

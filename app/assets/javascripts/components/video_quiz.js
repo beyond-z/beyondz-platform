@@ -1,3 +1,28 @@
+/*
+  This is used to trigger the youtube loading code even if it is
+  already loaded.
+
+  Since Rails uses a jQuery-turbolinks plugin which preloads links
+  with javascript (to make the load appear faster to the end user)
+  clicking a link doesn't necessarily refresh the page and reload
+  the scripts.
+
+  The youtube api is loaded asynchronously and our custom code is
+  triggered when the api loads. This minimizes user wait time
+  efficiently on regular loads.
+
+  However, with a turbolink load (which happens, for example, when
+  you click the Next button on the task pane), the API is already
+  loaded so this event is not triggered again!
+
+  In that case, we use this global variable (the long name is to try
+  to ensure uniqueness across the app) to tell us that it has already
+  loaded once. Then, on subsequent loads, instead of waiting for the
+  async event, we will simply call the handler function immediately
+  ourselves, fixing the issue.
+*/
+var load_component_video_quiz_ytReady = false;
+
 // see below for example
 function load_component_video_quiz() {
   // does async loading of the youtube script dependency
@@ -12,6 +37,7 @@ function load_component_video_quiz() {
   // this is called when the youtube script is loaded and prepares our usage of it,
   // searching for video containers and creating the YT players and event handlers
   function onYouTubeIframeAPIReady() {
+    load_component_video_quiz_ytReady = true;
     // reads time in the form of MM:SS and translates it to plain seconds
     function readTime(sTime) {
       if(sTime === null || sTime === "")
@@ -26,11 +52,11 @@ function load_component_video_quiz() {
     // Using the closure variables, it can handle multiple independent
     // players, creating a new timer for each of them and calculating
     // when quizzes need to be shown by looking at html attributes.
-    function onPlayerStateChange(player, holder) {
+    function onPlayerStateChange(holder) {
       var interval = null;
       var quizzes = {};
 
-      $(".quiz").each(function(idx, quiz) {
+      $(".quiz", holder).each(function(idx, quiz) {
         quizzes[readTime(quiz.getAttribute("data-time-to-display"))] = quiz;
       });
 
@@ -38,6 +64,9 @@ function load_component_video_quiz() {
         // if playing, we set the polling timer to check the time
 	// and display stuff needed there. If it is not playing, we
 	// stop the timer interval.
+
+	var player = event.target;
+
         if (event.data == YT.PlayerState.PLAYING) {
           if(interval)
             clearInterval(interval);
@@ -82,10 +111,11 @@ function load_component_video_quiz() {
           'playsinline': 1, // keeps it inline even on iOS so we can draw over it
           'modestbranding': 1, // disables the "watch on youtube" button
           'fs':0 // disables the full screen button, so we can still pop up over it
-        }
+        },
+	events: {
+          'onStateChange': onPlayerStateChange(holder)
+	}
       });
-
-      player.addEventListener("onStateChange", onPlayerStateChange(player, holder));
 
       // This handles the close button inside the quizzes.
       // The quiz html must include the button, but should not include
@@ -106,7 +136,33 @@ function load_component_video_quiz() {
   window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
 
   // and asynchronously load the youtube API code
-  addYouTubeScript();
+  if(load_component_video_quiz_ytReady)
+    // We have two options to work around the turbolinks issue above:
+    // try to do as little as possible or to just reload the page.
+    // The first line was doing little, and it worked on my dev, but
+    // didn't work on staging. I don't know why - the specific symptom
+    // is that the youtube onStateChange event handler was never triggered
+    // with this. I tried using a string as the documentation suggests for
+    // the function name instead of a proper reference, but that didn't work.
+    //
+    // The root cause probably has to do with cross-domain communication
+    // between youtube.com and our site, which might also explain why it
+    // works differently on my dev machine. But I'm not really sure.
+    //
+    // So, the easy solution is to just automatically do what we do manually
+    // when this happens: reload the page. location.reload uses the cache
+    // so it is pretty quick; this really just undoes the turbolink load,
+    // transforming it into a standard page load on demand. The difference
+    // is pretty small.... and importantly, this fix actually works reliably
+    // in my tests.
+    //
+    // So bottom line, if the youtube API is already loaded, refresh to ensure
+    // we get a good load. If this becomes a performance issue, we can readdress
+    // this later.
+    //onYouTubeIframeAPIReady();
+    window.location.reload();
+  else
+    addYouTubeScript();
 }
 
 /*

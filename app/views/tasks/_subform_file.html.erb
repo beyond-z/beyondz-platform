@@ -2,7 +2,9 @@
   <p>You have already uploaded these files:</p>
   <ul>
     <% task.files.each do |file| %>
-      <li><a href="<%= file.url %>"><%= file["#{task.file_type}_file_name"] %></a></li>
+      <li>
+        <%= link_to file.name, file.url %>
+      </li>
     <% end %>
   </ul>
   <p>You may upload a replacement:</p>

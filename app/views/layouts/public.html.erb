@@ -7,9 +7,14 @@
     
     <!-- Until we add a landing page and login, keep our site out of search engines -->
     <meta name="robots" content="noindex">
+    <%= render 'shared/asset_stylesheet_includes' %>
     <%= csrf_meta_tags %>
   </head>
   <body>
+
+    <%= render 'shared/standard_modals' %>
+    <%= yield :modals %>
+
     <div id="content">
       <header>
         <section id="banner" role="banner">
@@ -85,7 +90,7 @@
       
     </div>
 
-    <%= render 'shared/asset_includes' %>
+    <%= render 'shared/asset_javascript_includes' %>
     <%= render 'shared/google_analytics' %>
   </body>
 </html>

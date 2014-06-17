@@ -1,7 +1,8 @@
 $(document).ready(function() {
   load_component_video_quiz();
- 
   load_component_comments();
+  load_component_compare_and_rank();
+
 
   var task_action_box = $('.task-container .action-box');
   var task_update_submit = '#task-update-student .edit_task input[type=submit]';

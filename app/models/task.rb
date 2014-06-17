@@ -8,14 +8,14 @@ class Task < ActiveRecord::Base
   has_one :text, class_name: 'TaskText', dependent: :destroy
   has_many :comments
 
-  enum kind: { file: 0, user_confirm: 1, text: 2 }
+  enum kind: { file: 0, user_confirm: 1, text: 2, quiz: 3  }
   enum file_type: { document: 0, image: 1, video: 2, audio: 3 }
 
   scope :for_assignment, -> (assignment_id) {
     where(assignment_id: assignment_id)
   }
 
-  scope :complete, -> { where(tasks: { state: :complete }) }
+  scope :submitted, -> { where.not(state: :new) }
   scope :incomplete, -> { where.not(tasks: { state: :complete }) }
   scope :required, -> {
     joins(:task_definition)\
@@ -40,6 +40,9 @@ class Task < ActiveRecord::Base
   scope :files, -> { where(kind: Task.kinds[:file]) }
   scope :need_student_attention, -> {
     where(state: [:new, :pending_revision])
+  }
+  scope :do_not_need_student_attention, -> {
+    where(state: [:pending_approval, :complete])
   }
   scope :need_coach_attention, -> {
     where(state: [:pending_approval, :pending_revision])

@@ -9,6 +9,8 @@
       <%= render 'tasks/subform_text', { f: f, task: task } %>
     <% elsif task.user_confirm? %>
       <%= render 'tasks/subform_user_confirm', { f: f, task: task } %>
+    <% elsif task.quiz? %>
+      <%= render 'tasks/subform_quiz', { f: f, task: task } %>
     <% end %>
 
   <% end %>

@@ -8,6 +8,7 @@
 //= require turbolinks
 //= require bootstrap
 //= require handlebars-v1.3.0
+//= require jRating.jquery.min
 //
 //= require_directory ./components
 //= require_self
