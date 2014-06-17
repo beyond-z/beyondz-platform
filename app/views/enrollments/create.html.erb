@@ -6,8 +6,11 @@
 
 <% if @new_user.applicant_type == 'student' %>
   <p>Here's some student specific information.</p>
-<% elsif @new_user.applicant_type == 'volunteer' %>
+<% elsif @new_user.applicant_type == 'college_faculty' || @new_user.applicant_type == 'professional' %>
   <p>Here's some information that a volunteer (coach) would want to know.</p>
 <% elsif @new_user.applicant_type == 'supporter' %>
   <p>Here's info for supporters.</p>
+<% else %>
+  <!-- This covers the "Other?" field on the "are you a" form -->
+  <p>We'll get in touch with you to see how we can best work together.</p>
 <% end %>
