@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= yield(:title) || "Beyond Z" %></title>
+    <title><%= content_for?(:title) ? yield(:title) : "Beyond Z" %></title>
     <meta name="description" content="<%= yield(:description) || "Beyond Z" %>">
     
     <!-- Until we add a landing page and login, keep our site out of search engines -->
@@ -22,7 +22,7 @@
             <%= image_tag 'bz_logo_211.png' %>
           </div>
           <div class="top-middle">
-
+            <!--
             <div id="public-carousel" data-ride="carousel">
               <ol class="carousel-indicators">
                 <li data-target="#public-carousel" data-slide-to="0"></li>
@@ -53,15 +53,17 @@
                 </div>
               </div>
             </div>
+              -->
 
           </div>
           <div class="top-right">
             <% if !user_signed_in? %>
-            <%= link_to '<button type="button" class="apply-button">Sign Up</button>'.html_safe, new_enrollment_path %>
+              <%= link_to '<button type="button" class="sign-in-button">Sign In</button>'.html_safe, new_user_session_path %>
             <% end %>
           </div>
         </section>
 
+        <!--
         <div id="top-navigation" role="navigation">
           <div class="button-group">
             <%= link_to 'Home', enrollments_path, :class => 'button-primary' %>
@@ -71,6 +73,7 @@
             <%= link_to 'Nominate', enrollments_path, :class => 'button' %>
           </div>
         </div>
+        -->
 
       </header>
 

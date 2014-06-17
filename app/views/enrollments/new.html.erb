@@ -4,15 +4,13 @@
   </h1>
 </section>
 
-<%= image_tag("sign_up_anchor.jpg") %>
-
 <section>
   <div class="col-sm-8 col-sm-offset-1">
     <h2>
       Join us! Apply to become a BZ Academy Fellow today
     </h2>
     <p>
-      Let's get started. Tell us about yourself.
+      Tell us who you are and we will be in touch directly with you!
     </p>
     <%= form_tag enrollments_path, role: 'form' do %>
       <div class="form-group">
@@ -40,15 +38,28 @@
       </div>
 
       <div class="form-group clear">
-        <label for="type">I am a</label>
-        <%= select_tag 'user[applicant_type]', options_for_select(
-          'College Student' => 'student',
-          'College Faculty or Staff' => 'volunteer',
-          'Professional' => 'volunteer',
-          'Supporter' => 'supporter',
-          ), :class => 'form-control'%>
+        <h3>Are you a...</h3>
+          <label><input type="radio" name="user[applicant_type]" value="student" checked="checked" /> College Student with an anticipated graduation year of</label>
+            <select name="user[anticipated_graduation]">
+              <option>2015</option>
+              <option>2016</option>
+              <option>2017</option>
+              <option>2018</option>
+              <option>2019</option>
+            </select>
+          <br />
+          <label><input type="radio" name="user[applicant_type]" value="college_faculty" /> College Faculty or Staff</label>
+          <br />
+          <label><input type="radio" name="user[applicant_type]" value="professional" /> Professional</label>
+          <br />
+          <label><input type="radio" name="user[applicant_type]" value="supporter" /> Supporter</label>
+          <br />
+          <label><input type="radio" name="user[applicant_type]" value="other" /> Other?</label> <input type="text" name="other_type" />
       </div>
 
+      <label><input type="checkbox" name="user[keep_updated]" checked="checked" /> Keep me updated about the BZ 2014-2015 Program</label>
+
+      <br />
       <button type="submit" class="btn btn-lg btn-primary">Continue</button>
     <% end %>
   </div>
