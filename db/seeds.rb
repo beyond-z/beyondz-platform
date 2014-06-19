@@ -26,8 +26,13 @@ admin_user.save!
 CoachStudent.create(coach_id: coach.id, student_id: user.id)
 CoachStudent.create(coach_id: coach.id, student_id: user2.id)
 
-# Assignment imports from the existing HTML
+# Task Modules
+text_module = TaskModule.create(name: 'Text', code: 'text')
+compare_module = TaskModule.create(name: 'Compare and Rank', code: 'compare_and_rank')
+resume_builder_module = TaskModule.create(name: 'Resumé Builder', code: 'resume_builder')
+video_quiz_module = TaskModule.create(name: 'Video Quiz', code: 'video_quiz')
 
+# Assignment imports from the existing HTML
 item = AssignmentDefinition.new
 item.front_page_info = "
           <h3>You will get practice this week:</h3>
@@ -46,29 +51,94 @@ item.start_date = Time.parse("Feb 28")
 item.end_date = Time.parse("Mar 1")
 item.seo_name = "story-of-self"
 item.save
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 1, :name => "Take Myers Briggs <a href=\"http://www.humanmetrics.com/cgi-win/JTypes1.htm\">Personality Test</a>", :requires_approval => true))
-item.task_definitions.push(TaskDefinition.create(kind: 'text', required: true, position: 2, :name => "Go through the <a href=\"http://www.nsrfharmony.org/protocol/doc/north_south.pdf\">Compass Exercise</a> and pick a direction that represents you", :requires_approval => true))
-item.task_definitions.push(TaskDefinition.create(kind: 'file', file_type: 'document', required: true, position: 3, :name => 'Personality Assessment Results', :summary => "Upload your <a href=\"https://docs.google.com/a/beyondz.org/forms/d/1cgwwrGn3ZMNkrKvL-Uj4FNz1Qf27xPc6usqse7fTWBg/viewform\">personality assessment results </a> by the end of Weekend 0.", :requires_approval => true))
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 4, :name => "Watch <a href=\"http://neworganizing.com/toolbox/training/story-of-self/\">Story of Self</a> Video <em>(40 min)</em>", summary: '
-<div class="annotated-video" data-youtube-id="Obiztwn2oEU" data-start-time="12:55">
-                <div class="quiz" data-time-to-display="13:00">
-                        <p>Challenge or outcome?</p>
-                        <textarea style="width: 100%;"></textarea>
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'user_confirm', required: true, position: 1, requires_approval: true,
+    name: 'Take Myers Briggs Personality Test',
+    details: 'Take this test: <a href="http://www.humanmetrics.com/cgi-win/JTypes1.htm">Take Myers Briggs Personality Test</a>'
+  )
+)
 
-                        <button type="button" class="close">Back to the video</button>
-                </div>
+task_definition = TaskDefinition.create(
+  kind: 'text', required: true, position: 2, requires_approval: true,
+  name: 'Compass Exercise',
+  details: 'Go through the <a href="http://www.nsrfharmony.org/protocol/doc/north_south.pdf\">Compass Exercise</a> and pick a direction that represents you.'
+  
+)
+task_definition.sections.push(
+  TaskSection.create(
+    task_module_id: text_module.id,
+    configuration: {question: 'Which direction represents you?'}.to_json
+  )
+)
+task_definition.sections.push(
+  TaskSection.create(
+    task_module_id: text_module.id,
+    configuration: {question: 'Why?'}.to_json
+  )
+)
+item.task_definitions.push(task_definition)
 
-                <div class="quiz" data-time-to-display="13:05">
-                        <p>Quiz 2 can be different</p>
-                        <textarea style="width: 100%;"></textarea>
-                        <select><option>Choice 1</option><option>Choice 2</option></select>
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'file', file_type: 'document', required: true, position: 3,
+    requires_approval: true, name: 'Personality Assessment Results',
+    summary: 'Upload the results of the Myers Briggs Personality Test.',
+    details: 'Upload the <a href="https://docs.google.com/a/beyondz.org/forms/d/1cgwwrGn3ZMNkrKvL-Uj4FNz1Qf27xPc6usqse7fTWBg/viewform">personality assessment results </a> by the end of Weekend 0.'
+  )
+)
 
-                        <button type="button" class="close">Back to the video</button>
-                </div>
+task_definition = TaskDefinition.create(
+  kind: nil, required: true, position: 4,
+  name: 'Watch Story of Self',
+  summary: 'Discover your story!'
+)
+task_definition.sections.push(
+  TaskSection.create(
+    task_module_id: video_quiz_module.id,
+    content: 'Watch this video (40 min) and answer the questions.',
+    configuration: {
+      youtube_id: 'Obiztwn2oEU',
+      start_time: '12:55',
+      items: [
+        {
+          time: '13:00',
+          question: 'Challenge or outcome?',
+          fields: [
+            {
+              name: 'some_field',
+              type: :textarea,
+            }
+          ]
+        },
+        {
+          time: '13:05',
+          question: 'Quiz 2 can be different',
+          fields: [
+            {
+              name: 'another_field',
+              type: :textarea,
+            },
+            {
+              name: 'yet_another_field',
+              type: 'select',
+              options: ['Choice 1', 'Choice 2']
+            }
+          ]
+        }
+      ]
+    }.to_json
+  )
+)
+item.task_definitions.push(task_definition)
 
-</div>
-'))
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 5, :name => "Complete Beyond Z <a href=\"https://docs.google.com/forms/d/10JAYX6qwuZ_z9ZXooZ_QsXmCWhGeLtsTFqIUKz6blp4/viewform\">College Survey <em>(15 min)</em></a>", :requires_approval => true))
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'user_confirm', required: true, position: 5, requires_approval: true,
+    name: 'Beyond Z College Survey',
+    details: 'Complete the <a href="https://docs.google.com/forms/d/10JAYX6qwuZ_z9ZXooZ_QsXmCWhGeLtsTFqIUKz6blp4/viewform">Beyond Z College Survey</a> <em>(15 min)</em>.'
+  )
+)
 item.save
 
 item = AssignmentDefinition.new
@@ -87,9 +157,31 @@ item.start_date = Time.parse("Mar 3")
 item.end_date = Time.parse("Mar 9")
 item.seo_name = "passions-professions"
 item.save
-item.task_definitions.push(TaskDefinition.create(kind: 'text', required: true, position: 1, :name => "Attend the group session. What are your thoughts?", :requires_approval => true))
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 2, :name => "Request at least one informational interview to explore summer opportunities and/or career majors.", :requires_approval => true))
-item.task_definitions.push(TaskDefinition.create(kind: 'file', file_type: 'document', required: true, position: 3, :name => 'Evidence of Applied Learning', :summary => "Complete and upload <a href=\"https://www.dropbox.com/s/5kolp0reqiyon8k/F%20%20Week%201_Exploring%20Passions%20and%20Professions.docx?dl=1\">Evidence of Applied Learning (EAL)</a> by 9 PM, Friday, March 14.", :requires_approval => true))
+task_definition = TaskDefinition.create(
+  kind: 'text', required: true, position: 1, requires_approval: true,
+  name: 'Attend the group session'
+)
+task_definition.sections.push(
+  TaskSection.create(
+    task_module_id: text_module.id,
+    configuration: {question: 'What are your thoughts after the session?'}.to_json
+  )
+)
+item.task_definitions.push(task_definition)
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'user_confirm', required: true, position: 2, requires_approval: true,
+    name: 'Request informational interview',
+    summary: 'Request at least one informational interview to explore summer opportunities and/or career majors.'
+  )
+)
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'file', file_type: 'document', required: true, position: 3, requires_approval: true,
+    name: 'Evidence of Applied Learning',
+    details: 'Complete and upload <a href="https://www.dropbox.com/s/5kolp0reqiyon8k/F%20%20Week%201_Exploring%20Passions%20and%20Professions.docx?dl=1">Evidence of Applied Learning (EAL)</a> (by 9 PM, Friday, March 14th).'
+  )
+)
 item.save
 
 item = AssignmentDefinition.new
@@ -107,9 +199,28 @@ item.start_date = Time.parse("Mar 10")
 item.end_date = Time.parse("Mar 16")
 item.seo_name = "cover-letter"
 item.save
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 1, :name => "Read the summary and 2 half-page articles", :summary => "Read <a href=\"http://www.slate.com/articles/business/moneybox/2013/08/cover_letter_writing_advice_how_to_write_a_cover_letter_for_an_entry_level.html\">I&#8217;ve Read 500 Cover Letters for Entry Level Media Jobs</a> and <a href=\"http://www.fastcompany.com/3016727/leadership-now/dont-be-boring-how-to-write-a-cover-letter-that-can-get-you-the-job\">Don&#8217;t Be Boring: How to Write a Cover Letter That Can Get You the Job</a>"))
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 2, :name => "Draft Cover Letter", :requires_approval => true))
-item.task_definitions.push(TaskDefinition.create(kind: 'file', file_type: 'document', required: true, position: 3, :name => 'Cover Letter', :summary => "Submit Cover Letter and complete Evidence of Applied Learning (EAL) by 9 PM Friday, March 21.", :requires_approval => true))
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'user_confirm', required: true, position: 1,
+    name: 'Learn about cover letters',
+    summary: 'Get the lowdown on cover letters and prepare to write your own.',
+    details: 'Read <a href="http://www.slate.com/articles/business/moneybox/2013/08/cover_letter_writing_advice_how_to_write_a_cover_letter_for_an_entry_level.html">I&#8217;ve Read 500 Cover Letters for Entry Level Media Jobs</a> and <a href="http://www.fastcompany.com/3016727/leadership-now/dont-be-boring-how-to-write-a-cover-letter-that-can-get-you-the-job">Don&#8217;t Be Boring: How to Write a Cover Letter That Can Get You the Job</a>'
+  )
+)
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'user_confirm', required: true, position: 2, requires_approval: true,
+    name: 'Draft Cover Letter',
+    summary: 'Put together your own cover letter.'
+  )
+)
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'file', file_type: 'document', required: true, position: 3,
+    requires_approval: true, name: 'Cover Letter',
+    details: 'Submit Cover Letter and complete Evidence of Applied Learning (EAL) by 9 PM Friday, March 21.'
+  )
+)
 item.save
 
 item = AssignmentDefinition.new
@@ -129,9 +240,14 @@ item.start_date = Time.parse("Mar 10")
 item.end_date = Time.parse("Mar 16")
 item.seo_name = "resume"
 item.save
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 1, :name => "Read the summary - check out optional articles if you want"))
-item.task_definitions.push(TaskDefinition.create(kind: 'quiz', required: true,
-  position: 2, :name => 'Rank the resumés',
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'user_confirm', required: true, position: 1,
+    name: 'Read the summary - check out optional articles if you want'
+  )
+)
+task_definition = TaskDefinition.create(
+  kind: nil, required: true, position: 2, name: 'Rank the resumés',
   summary: 'Determine which resumés are the strongest and weakest.',
   details: '<p>This is an entire paragraph about what makes a good resumé.
     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -140,10 +256,114 @@ item.task_definitions.push(TaskDefinition.create(kind: 'quiz', required: true,
     consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
     cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
     non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-    </p><p>Review each resume and rate them below.</p>'
-  ))
-item.task_definitions.push(TaskDefinition.create(kind: 'quiz', required: true, position: 3, :name => "Compose your Resume", :requires_approval => true))
-item.task_definitions.push(TaskDefinition.create(kind: 'file', file_type: 'document', required: true, position: 4, :name => 'Resume', :summary => "Submit Resume and complete Evidence of Applied Learning (EAL) by 9 PM Friday, March 21.", :requires_approval => true))
+    </p>'
+  )
+task_definition.sections.push(
+  TaskSection.create(
+    task_module_id: compare_module.id,
+    content: 'Review each resume and rate them below.',
+    configuration: {
+      item_label: 'Resumé',
+      items: [
+        {
+          label: 'Resumé 1',
+          content: '<h3>John Doe</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            <h4>SKILLS</h4>
+              <ul>
+              <li>Nemo enim ipsam</li>
+              <li>Incidunt ut labore</li>
+              <li>Dolore magnam</li>
+              <li>Aliquam quaerat voluptatem</li>
+              <li>Voluptate velit esse quam</li>
+              </ul>
+            <h4>EXPERIENCE</h4>
+              <ul>
+              <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
+              <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
+              <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
+              <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
+              <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
+              </ul>
+            <h4>EDUCATION</h4>
+            <p>Masters in Photography from PU, 1981</p>'
+        },
+        {
+          label: 'Resumé 2',
+          content: '<h3>John Dough</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            <h4>SKILLS</h4>
+              <ul>
+              <li>Nemo enim ipsam</li>
+              <li>Incidunt ut labore</li>
+              <li>Dolore magnam</li>
+              <li>Aliquam quaerat voluptatem</li>
+              <li>Voluptate velit esse quam</li>
+              </ul>
+            <h4>EXPERIENCE</h4>
+              <ul>
+              <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
+              <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
+              <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
+              <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
+              <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
+              </ul>
+            <h4>EDUCATION</h4>
+            <p>Masters in Photography from PU, 1981</p>'
+        },
+        {
+          label: 'Resumé 3',
+          content: '<h3>John DOH</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            <h4>SKILLS</h4>
+              <ul>
+              <li>Nemo enim ipsam</li>
+              <li>Incidunt ut labore</li>
+              <li>Dolore magnam</li>
+              <li>Aliquam quaerat voluptatem</li>
+              <li>Voluptate velit esse quam</li>
+              </ul>
+            <h4>EXPERIENCE</h4>
+              <ul>
+              <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
+              <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
+              <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
+              <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
+              <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
+              </ul>
+            <h4>EDUCATION</h4>
+            <p>Masters in Photography from PU, 1981</p>'
+        }
+      ],
+      answer: 2
+    }.to_json
+  )
+)
+item.task_definitions.push(task_definition)
+task_definition = TaskDefinition.create(
+  kind: nil, required: true, position: 3, requires_approval: true,
+  name: "Compose your Resumé",
+  summary: 'A solid resume is key to getting into the door of the job you want.',
+  details: '<p>This is an entire paragraph about how to make a good resumé.
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </p>'
+)
+task_definition.sections.push(
+  TaskSection.create(
+    task_module_id: resume_builder_module.id,
+    content: 'Use the form below to complete your resumé.'
+  )
+)
+item.task_definitions.push(task_definition)
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'file', file_type: 'document', required: true, position: 4,
+    requires_approval: true, name: 'Resumé',
+    details: 'Submit resumé and complete Evidence of Applied Learning (EAL) by 9 PM Friday, March 21st.'
+  )
+)
 item.save
 
 item = AssignmentDefinition.new
@@ -161,9 +381,25 @@ item.start_date = Time.parse("Mar 17")
 item.end_date = Time.parse("Mar 23")
 item.seo_name = "networks"
 item.save
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 1, :name => "Read the articles."))
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 2, :name => "Set-up LinkedIn Account and send to 10 connections.", :requires_approval => true))
-item.task_definitions.push(TaskDefinition.create(kind: 'file', file_type: 'document', required: true, position: 3, :name => 'Evidence of Applied Learning', :summary => "Complete and upload <a href=\"https://www.dropbox.com/s/3n193wtct2tso3c/I%20%20Week%203_%20Power%20through%20Networks_EAL.docx?dl=1\">Evidence of Applied Learning (EAL) </a> by 9 PM Friday, April 4.", :requires_approval => true))
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'user_confirm', required: true, position: 1,
+    name: 'Read the articles'
+  )
+)
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'user_confirm', required: true, position: 2, requires_approval: true,
+    name: 'Set-up LinkedIn Account and send to 10 connections.'
+  )
+)
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'file', file_type: 'document', required: true, position: 3,
+    requires_approval: true, name: 'Evidence of Applied Learning',
+    details: 'Complete and upload <a href="https://www.dropbox.com/s/3n193wtct2tso3c/I%20%20Week%203_%20Power%20through%20Networks_EAL.docx?dl=1">Evidence of Applied Learning (EAL) </a> by 9 PM Friday, April 4th.'
+  )
+)
 item.save
 
 item = AssignmentDefinition.new
@@ -182,8 +418,20 @@ item.start_date = Time.parse("Mar 24")
 item.end_date = Time.parse("Mar 30")
 item.seo_name = "best-self"
 item.save
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 1, :name => "Read the <a href=\"https://www.dropbox.com/s/9jb9zvt1lpdcovv/K%20%20Week%204_Spring%20Break%20-%20Best%20Self%20Exercise%20Request.docx?dl=1\">Best Self Exercise.</a>"))
-item.task_definitions.push(TaskDefinition.create(kind: 'file', file_type: 'document', required: true, position: 2, :name => 'Evidence of Applied Learning', :summary => "Complete and upload <a href=\"https://www.dropbox.com/s/ucddx42at97b9iv/K%20%20Week%204_Spring%20Break%20-%20Best%20Self%20Exercise%20Request_EAL.docx?dl=1\">Evidence of Applied Learning (EAL)</a> by 9 PM, Friday, April 4.", :requires_approval => true))
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'user_confirm', required: true, position: 1,
+    name: 'Best Self Exercise',
+    details: 'Read the <a href="https://www.dropbox.com/s/9jb9zvt1lpdcovv/K%20%20Week%204_Spring%20Break%20-%20Best%20Self%20Exercise%20Request.docx?dl=1">Best Self Exercise</a>.'
+  )
+)
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'file', file_type: 'document', required: true, position: 2,
+    requires_approval: true, name: 'Evidence of Applied Learning',
+    details: 'Complete and upload <a href="https://www.dropbox.com/s/ucddx42at97b9iv/K%20%20Week%204_Spring%20Break%20-%20Best%20Self%20Exercise%20Request_EAL.docx?dl=1">Evidence of Applied Learning (EAL)</a> by 9 PM, Friday, April 4th.'
+  )
+)
 item.save
 
 item = AssignmentDefinition.new
@@ -204,10 +452,33 @@ item.start_date = Time.parse("Mar 31")
 item.end_date = Time.parse("Apr 6")
 item.seo_name = "asking-for-help"
 item.save
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 1, :name => "Write Blog #1", :summary => "Topic: Give guidance to younger BZ students about overcoming hardship."))
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 2, :name => "Give your coach 2 contacts for the <a href=\"https://www.dropbox.com/s/9jb9zvt1lpdcovv/K%20%20Week%204_Spring%20Break%20-%20Best%20Self%20Exercise%20Request.docx?dl=1\">Best Self Exercise</a> by Friday, April 4", :requires_approval => true))
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 3, :name => "Sign up for mock interviews <a href=\"https://docs.google.com/spreadsheet/ccc?key=0AqSVLa-AGkW_dEIzT2t0NG9iRWY5XzBqbWVqZ0tqb0E&amp;usp=sharing\">here</a>.", :requires_approval => true))
-item.task_definitions.push(TaskDefinition.create(kind: 'file', file_type: 'document', required: true, position: 4, :name => 'Evidence of Applied Learning', :summary => "Complete and upload <a href=\"https://www.dropbox.com/s/4mjwhueiaje18wy/L%20%20Week%205_Failing%20and%20Learning%20-%20EAL.docx?dl=1\">Evidence of Applied Learning (EAL)</a> by 9 PM, Friday, April 11.", :requires_approval => true))
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'user_confirm', required: true, position: 1, name: 'Write Blog #1',
+    summary: 'Topic: Give guidance to younger BZ students about overcoming hardship.'
+  )
+)
+item.task_definitions.push(
+    TaskDefinition.create(
+      kind: 'user_confirm', required: true, position: 2, requires_approval: true,
+      name: 'Contacts for the Best Self Exercise (by Friday, April 4th)',
+      details: 'Give your coach 2 contacts for the <a href="https://www.dropbox.com/s/9jb9zvt1lpdcovv/K%20%20Week%204_Spring%20Break%20-%20Best%20Self%20Exercise%20Request.docx?dl=1">Best Self Exercise</a> by Friday, April 4th.'
+    )
+  )
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'user_confirm', required: true, position: 3, requires_approval: true,
+    name: 'Sign up for mock interviews',
+    details: 'Sign up for mock interviews <a href="https://docs.google.com/spreadsheet/ccc?key=0AqSVLa-AGkW_dEIzT2t0NG9iRWY5XzBqbWVqZ0tqb0E&amp;usp=sharing">here</a>.'
+  )
+)
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'file', file_type: 'document', required: true, position: 4,
+    requires_approval: true, name: 'Evidence of Applied Learning',
+    details: 'Complete and upload <a href="https://www.dropbox.com/s/4mjwhueiaje18wy/L%20%20Week%205_Failing%20and%20Learning%20-%20EAL.docx?dl=1">Evidence of Applied Learning (EAL)</a> by 9 PM, Friday, April 11th.'
+  )
+)
 item.save
 
 item = AssignmentDefinition.new
@@ -229,9 +500,28 @@ item.start_date = Time.parse("Apr 7")
 item.end_date = Time.parse("13")
 item.seo_name = "interview-simulations"
 item.save
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 1, :name => "Go through Steps 1-6", :summary => "Optional Resources to check out: Interview Simulator and Online Flashcards."))
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 2, :name => "Sign-up for 1 phone interview and 1 in person mock interview", :summary => "Sign-up by Sunday, April 6 here: <a href=\"https://docs.google.com/spreadsheet/ccc?key=0AqSVLa-AGkW_dEIzT2t0NG9iRWY5XzBqbWVqZ0tqb0E&amp;usp=sharing\">Mock Interview Sign-Up Form</a>:  (Sign up for a total of 2 mock interviews)", :requires_approval => true))
-item.task_definitions.push(TaskDefinition.create(kind: 'file', file_type: 'document', required: true, position: 3, :name => 'Evidence of Applied Learning', :summary => "Complete and upload <a href=\"https://www.dropbox.com/s/p4du6bcv1ypbtxj/N%20%20Week%206_Career%20Portfolio_Interviews_EAL.docx?dl=1\">Evidence of Applied Learning (EAL)</a> by 9 PM Friday, April 11.", :requires_approval => true))
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'user_confirm', required: true, position: 1,
+    name: 'Go through Steps 1-6',
+    details: 'Optional Resources to check out: Interview Simulator and Online Flashcards.'
+  )
+)
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'user_confirm', required: true, position: 2, requires_approval: true,
+    name: 'Interview Sign-up',
+    summary: 'Sign-up for 1 phone interview and 1 in-person mock interview',
+    details: 'Sign-up by Sunday, April 6 here: <a href="https://docs.google.com/spreadsheet/ccc?key=0AqSVLa-AGkW_dEIzT2t0NG9iRWY5XzBqbWVqZ0tqb0E&amp;usp=sharing">Mock Interview Sign-Up Form</a>:  (Sign up for a total of 2 mock interviews)'
+  )
+)
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'file', file_type: 'document', required: true, position: 3, requires_approval: true,
+    name: 'Evidence of Applied Learning',
+    details: 'Complete and upload <a href="https://www.dropbox.com/s/p4du6bcv1ypbtxj/N%20%20Week%206_Career%20Portfolio_Interviews_EAL.docx?dl=1">Evidence of Applied Learning (EAL)</a> by 9 PM Friday, April 11th.'
+  )
+)
 item.save
 
 item = AssignmentDefinition.new
@@ -246,9 +536,25 @@ item.title = "BZ Academy Midpoint Summit:"
 item.start_date = Time.parse("Apr 12")
 item.seo_name = "dropbox.com/s/gaycnymb36ji6c9/BZ%20Academy%20Midpoint%20Summit%20Agenda.docx?dl=1"
 item.save
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 1, :name => "10 copies of your resume and cover letter"))
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 2, :name => "Your padfolio (from weekend 0) and pen"))
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 3, :name => "Your A-Game for interviewing and networking practice!"))
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'user_confirm', required: true, position: 1,
+    name: 'Copies of your resume and cover letter',
+    details: 'Make 10 copies of your resume and cover letter for distribution.'
+  )
+)
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'user_confirm', required: true, position: 2,
+    name: 'Your padfolio (from weekend 0) and pen'
+  )
+)
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'user_confirm', required: true, position: 3,
+    name: 'Your A-Game for interviewing and networking practice!'
+  )
+)
 item.save
 
 item = AssignmentDefinition.new
@@ -268,9 +574,27 @@ item.start_date = Time.parse("Apr 14")
 item.end_date = Time.parse("Apr 20")
 item.seo_name = "work-ethic"
 item.save
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 1, :name => "For inspiration read <a href=\"http://www.forbes.com/special-report/2014/30-under-30/finance.html\">30 Under 30 Leaders who are changing the world!</a>"))
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 2, :name => "Write Blog #2", :summary => "Topic: What keeps you driven to succeed and how you stay organized and on track to meet that goal.", :requires_approval => true))
-item.task_definitions.push(TaskDefinition.create(kind: 'file', file_type: 'document', required: true, position: 3, :name => 'This Document', :summary => "Complete and upload <a href=\"#?dl=1\">this document</a> by 9 PM Friday, April 25.", :requires_approval => true))
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'user_confirm', required: true, position: 1,
+    name: 'Read "30 Under 30 Leaders who are changing the world!"',
+    details: 'For inspiration read <a href="http://www.forbes.com/special-report/2014/30-under-30/finance.html">30 Under 30 Leaders who are changing the world!</a>'
+  )
+)
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'user_confirm', required: true, position: 2, requires_approval: true,
+    name: 'Write Blog #2',
+    summary: 'Topic: What keeps you driven to succeed and how you stay organized and on track to meet that goal.'
+  )
+)
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'file', file_type: 'document', required: true, position: 3, requires_approval: true,
+    name: 'This Document',
+    details: 'Complete and upload <a href="#?dl=1">this document</a> by 9 PM Friday, April 25th.'
+  )
+)
 item.save
 
 item = AssignmentDefinition.new
@@ -289,9 +613,26 @@ item.start_date = Time.parse("Apr 21")
 item.end_date = Time.parse("Apr 27")
 item.seo_name = "organization-self-mgmt"
 item.save
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 1, :name => "Write Blog #3", :requires_approval => true))
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 2, :name => "Write advice on staying organized and on top of your summer opportunity search.", :requires_approval => true))
-item.task_definitions.push(TaskDefinition.create(kind: 'file', file_type: 'document', required: true, position: 3, :name => 'This Document', :summary => "Complete and upload <a href=\"#?dl=1\">this document</a> by 9 PM Friday, May 2.", :requires_approval => true))
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'user_confirm', required: true, position: 1, requires_approval: true,
+    name: 'Write Blog #3'
+  )
+)
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'user_confirm', required: true, position: 2, requires_approval: true,
+    name: 'Write job search advice',
+    summary: 'Write advice on staying organized and on top of your summer opportunity search.'
+  )
+)
+item.task_definitions.push(
+  TaskDefinition.create(
+    kind: 'file', file_type: 'document', required: true, position: 3,
+    requires_approval: true, name: 'This Document',
+    details: 'Complete and upload <a href="#?dl=1">this document</a> by 9 PM Friday, May 2nd.'
+  )
+)
 item.save
 
 User.all.each do |u| u.create_child_skeleton_rows ; end

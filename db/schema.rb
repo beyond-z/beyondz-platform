@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140612171701) do
+ActiveRecord::Schema.define(version: 20140616204540) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -139,14 +139,36 @@ ActiveRecord::Schema.define(version: 20140612171701) do
   add_index "task_files", ["task_definition_id"], name: "index_task_files_on_task_definition_id", using: :btree
   add_index "task_files", ["task_id"], name: "index_task_files_on_task_id", using: :btree
 
-  create_table "task_texts", force: true do |t|
-    t.integer  "task_id",    null: false
-    t.text     "content",    null: false
+  create_table "task_modules", force: true do |t|
+    t.string   "name"
+    t.string   "code"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "task_texts", ["task_id"], name: "index_task_texts_on_task_id", using: :btree
+  create_table "task_responses", force: true do |t|
+    t.integer  "task_id"
+    t.integer  "task_section_id"
+    t.text     "answers"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "task_responses", ["task_id"], name: "index_task_responses_on_task_id", using: :btree
+  add_index "task_responses", ["task_section_id"], name: "index_task_responses_on_task_section_id", using: :btree
+
+  create_table "task_sections", force: true do |t|
+    t.integer  "task_definition_id"
+    t.integer  "task_module_id"
+    t.integer  "position",           default: 1, null: false
+    t.text     "content"
+    t.text     "configuration"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "task_sections", ["task_definition_id"], name: "index_task_sections_on_task_definition_id", using: :btree
+  add_index "task_sections", ["task_module_id"], name: "index_task_sections_on_task_module_id", using: :btree
 
   create_table "tasks", force: true do |t|
     t.integer  "assignment_id"

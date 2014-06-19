@@ -1,137 +1,139 @@
-<h4>Head Section</h4>
-<section>
-  <div class="form-group col-sm-6">
-    <%= label_tag 'full_name' %>
-    <%= text_field_tag 'full_name', nil, placeholder: 'Your full name', :class => 'form-control' %>
-  </div>
-</section>
-<section>
-  <div class="form-group col-sm-6">
-    <%= label_tag 'phone' %>
-    <%= text_field_tag 'phone', nil, placeholder: 'Phone', :class => 'form-control' %>
-  </div>
-  <div class="form-group col-sm-6">
-    <%= label_tag 'street_address' %>
-    <%= text_field_tag 'street_address', nil, placeholder: 'Street address', :class => 'form-control' %>
-  </div>
-</section>
-<section>
-  <div class="form-group col-sm-6">
-    <%= label_tag 'email' %>
-    <%= text_field_tag 'email', nil, placeholder: 'Email', :class => 'form-control' %>
-  </div>
-  <div class="form-group col-sm-6">
-    <%= label_tag 'city_state_zip', 'City, State, Zip' %>
-    <%= text_field_tag 'city_state_zip', nil, placeholder: 'City, State, Zip', :class => 'form-control' %>
-  </div>
-</section>
+<%= f.fields_for task_section.module.code do |m| %>
+  <h4>Head Section</h4>
+  <section>
+    <div class="form-group col-sm-6">
+      <%= m.label :full_name %>
+      <%= m.text_field :full_name, placeholder: 'Your full name', :class => 'form-control' %>
+    </div>
+  </section>
+  <section>
+    <div class="form-group col-sm-6">
+      <%= m.label :phone %>
+      <%= m.text_field :phone, placeholder: 'Phone', :class => 'form-control' %>
+    </div>
+    <div class="form-group col-sm-6">
+      <%= m.label :email %>
+      <%= m.text_field :email, placeholder: 'Email', :class => 'form-control' %>
+    </div>
+  </section>
+  <section>
+    <div class="form-group col-sm-6">
+      <%= m.label :street_address %>
+      <%= m.text_field :street_address, placeholder: 'Street address', :class => 'form-control' %>
+    </div>
+    <div class="form-group col-sm-6">
+      <%= m.label :city_state_zip, 'City, State, Zip' %>
+      <%= m.text_field :city_state_zip, placeholder: 'City, State, Zip', :class => 'form-control' %>
+    </div>
+  </section>
 
-<h4>Summary</h4>
-<div class="form-group">
-  <p class="help-block">Summarize your background, experience and objective in looking for work.</p>
-  <%= text_area_tag 'summary', nil, placeholder: 'Summarize your background and experience', :class => 'form-control', rows: 4 %>
-</div>
+  <h4>Summary</h4>
+  <div class="form-group">
+    <p class="help-block">Summarize your background, experience and objective in looking for work.</p>
+    <%= m.text_area :summary, placeholder: 'Summarize your background and experience', :class => 'form-control', rows: 4 %>
+  </div>
 
-<h4>Skills</h4>
-<section>
-  <div class="form-group col-sm-4">
-    <%= text_field_tag 'skill_1', nil, placeholder: 'skill', :class => 'form-control' %>
-  </div>
-  <div class="form-group col-sm-4">
-    <%= text_field_tag 'skill_2', nil, placeholder: 'skill', :class => 'form-control' %>
-  </div>
-  <div class="form-group col-sm-4">
-    <%= text_field_tag 'skill_3', nil, placeholder: 'skill', :class => 'form-control' %>
-  </div>
-</section>
-<section>
-  <div class="form-group col-sm-4">
-    <%= text_field_tag 'skill_4', nil, placeholder: 'skill', :class => 'form-control' %>
-  </div>
-  <div class="form-group col-sm-4">
-    <%= text_field_tag 'skill_5', nil, placeholder: 'skill', :class => 'form-control' %>
-  </div>
-  <div class="form-group col-sm-4">
-    <%= text_field_tag 'skill_6', nil, placeholder: 'skill', :class => 'form-control' %>
-  </div>
-</section>
-<section>
-  <div class="form-group col-sm-4">
-    <%= text_field_tag 'skill_7', nil, placeholder: 'skill', :class => 'form-control' %>
-  </div>
-  <div class="form-group col-sm-4">
-    <%= text_field_tag 'skill_8', nil, placeholder: 'skill', :class => 'form-control' %>
-  </div>
-  <div class="form-group col-sm-4">
-    <%= text_field_tag 'skill_9', nil, placeholder: 'skill', :class => 'form-control' %>
-  </div>
-</section>
+  <h4>Skills</h4>
+  <section>
+    <div class="form-group col-sm-4">
+      <%= m.text_field :skill_1, placeholder: 'skill', :class => 'form-control' %>
+    </div>
+    <div class="form-group col-sm-4">
+      <%= m.text_field :skill, placeholder: 'skill', :class => 'form-control' %>
+    </div>
+    <div class="form-group col-sm-4">
+      <%= m.text_field :skill_3, placeholder: 'skill', :class => 'form-control' %>
+    </div>
+  </section>
+  <section>
+    <div class="form-group col-sm-4">
+      <%= m.text_field :skill_4, placeholder: 'skill', :class => 'form-control' %>
+    </div>
+    <div class="form-group col-sm-4">
+      <%= m.text_field :skill_5, placeholder: 'skill', :class => 'form-control' %>
+    </div>
+    <div class="form-group col-sm-4">
+      <%= m.text_field :skill_6, placeholder: 'skill', :class => 'form-control' %>
+    </div>
+  </section>
+  <section>
+    <div class="form-group col-sm-4">
+      <%= m.text_field :skill_7, placeholder: 'skill', :class => 'form-control' %>
+    </div>
+    <div class="form-group col-sm-4">
+      <%= m.text_field :skill_8, placeholder: 'skill', :class => 'form-control' %>
+    </div>
+    <div class="form-group col-sm-4">
+      <%= m.text_field :skill_9, placeholder: 'skill', :class => 'form-control' %>
+    </div>
+  </section>
 
-<h4>Education</h4>
-<div class="form-group">
-  <%= text_field_tag 'education_1', nil, placeholder: 'School, Graduation Year, Major/Minor', :class => 'form-control' %>
-</div>
-<div class="form-group">
-  <%= text_field_tag 'education_2', nil, placeholder: 'School, Graduation Year, Major/Minor', :class => 'form-control' %>
-</div>
-<div class="form-group">
-  <%= text_field_tag 'education_3', nil, placeholder: 'School, Graduation Year, Major/Minor', :class => 'form-control' %>
-</div>
+  <h4>Education</h4>
+  <div class="form-group">
+    <%= m.text_field :education_1, placeholder: 'School, Graduation Year, Major/Minor', :class => 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= m.text_field :education_2, placeholder: 'School, Graduation Year, Major/Minor', :class => 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= m.text_field :education_3, placeholder: 'School, Graduation Year, Major/Minor', :class => 'form-control' %>
+  </div>
 
-<h4>Experience</h4>
-<section>
-  <div class="form-group col-sm-4">
-    <%= label_tag 'experience_1_company', 'Company name' %>
-    <%= text_field_tag 'experience_1_company', nil, placeholder: 'Company name', :class => 'form-control' %>
+  <h4>Experience</h4>
+  <section>
+    <div class="form-group col-sm-4">
+      <%= m.label :experience_1_company, 'Company name' %>
+      <%= m.text_field :experience_1_company, placeholder: 'Company name', :class => 'form-control' %>
+    </div>
+    <div class="form-group col-sm-4">
+      <%= m.label :experience_1_span, 'Time span' %>
+      <%= m.text_field :experience_1_span, placeholder: 'Example: April 2014 - Present', :class => 'form-control' %>
+    </div>
+    <div class="form-group col-sm-4">
+      <%= m.label :experience_1_position, 'Position' %>
+      <%= m.text_field :experience_1_position, placeholder: 'Example: Waiter, Dock Loader', :class => 'form-control' %>
+    </div>
+  </section>
+  <div class="form-group">
+    <%= m.label :experience_1_description, 'Job description' %>
+    <%= m.text_area :experience_1_description, placeholder: 'Summarize your work and skills related to this position.', :class => 'form-control', rows: 3 %>
   </div>
-  <div class="form-group col-sm-4">
-    <%= label_tag 'experience_1_span', 'Time span' %>
-    <%= text_field_tag 'experience_1_span', nil, placeholder: 'Example: April 2014 - Present', :class => 'form-control' %>
+  <hr />
+  <section>
+    <div class="form-group col-sm-4">
+      <%= m.label :experience_2_company, 'Company name' %>
+      <%= m.text_field :experience_2_company, placeholder: 'Company name', :class => 'form-control' %>
+    </div>
+    <div class="form-group col-sm-4">
+      <%= m.label :experience_2_span, 'Time span' %>
+      <%= m.text_field :experience_2_span, placeholder: 'Example: April 2014 - Present', :class => 'form-control' %>
+    </div>
+    <div class="form-group col-sm-4">
+      <%= m.label :experience_2_position, 'Position' %>
+      <%= m.text_field :experience_2_position, placeholder: 'Example: Waiter, Dock Loader', :class => 'form-control' %>
+    </div>
+  </section>
+  <div class="form-group">
+    <%= m.label :experience_2_description, 'Job description' %>
+    <%= m.text_area :experience_2_description, placeholder: 'Summarize your work and skills related to this position.', :class => 'form-control', rows: 3 %>
   </div>
-  <div class="form-group col-sm-4">
-    <%= label_tag 'experience_1_position', 'Position' %>
-    <%= text_field_tag 'experience_1_position', nil, placeholder: 'Example: Waiter, Dock Loader', :class => 'form-control' %>
+  <hr />
+  <section>
+    <div class="form-group col-sm-4">
+      <%= m.label :experience_3_company, 'Company name' %>
+      <%= m.text_field :experience_3_company, placeholder: 'Company name', :class => 'form-control' %>
+    </div>
+    <div class="form-group col-sm-4">
+      <%= m.label :experience_3_span, 'Time span' %>
+      <%= m.text_field :experience_3_span, placeholder: 'Example: April 2014 - Present', :class => 'form-control' %>
+    </div>
+    <div class="form-group col-sm-4">
+      <%= m.label :experience_3_position, 'Position' %>
+      <%= m.text_field :experience_3_position, placeholder: 'Example: Waiter, Dock Loader', :class => 'form-control' %>
+    </div>
+  </section>
+  <div class="form-group">
+    <%= m.label :experience_3_description, 'Job description' %>
+    <%= m.text_area :experience_3_description, placeholder: 'Summarize your work and skills related to this position.', :class => 'form-control', rows: 3 %>
   </div>
-</section>
-<div class="form-group">
-  <%= label_tag 'experience_1_description', 'Job description' %>
-  <%= text_area_tag 'experience_1_description', nil, placeholder: 'Summarize your work and skills related to this position.', :class => 'form-control', rows: 3 %>
-</div>
-<hr />
-<section>
-  <div class="form-group col-sm-4">
-    <%= label_tag 'experience_1_company', 'Company name' %>
-    <%= text_field_tag 'experience_1_company', nil, placeholder: 'Company name', :class => 'form-control' %>
-  </div>
-  <div class="form-group col-sm-4">
-    <%= label_tag 'experience_1_span', 'Time span' %>
-    <%= text_field_tag 'experience_1_span', nil, placeholder: 'Example: April 2014 - Present', :class => 'form-control' %>
-  </div>
-  <div class="form-group col-sm-4">
-    <%= label_tag 'experience_1_position', 'Position' %>
-    <%= text_field_tag 'experience_1_position', nil, placeholder: 'Example: Waiter, Dock Loader', :class => 'form-control' %>
-  </div>
-</section>
-<div class="form-group">
-  <%= label_tag 'experience_1_description', 'Job description' %>
-  <%= text_area_tag 'experience_1_description', nil, placeholder: 'Summarize your work and skills related to this position.', :class => 'form-control', rows: 3 %>
-</div>
-<hr />
-<section>
-  <div class="form-group col-sm-4">
-    <%= label_tag 'experience_1_company', 'Company name' %>
-    <%= text_field_tag 'experience_1_company', nil, placeholder: 'Company name', :class => 'form-control' %>
-  </div>
-  <div class="form-group col-sm-4">
-    <%= label_tag 'experience_1_span', 'Time span' %>
-    <%= text_field_tag 'experience_1_span', nil, placeholder: 'Example: April 2014 - Present', :class => 'form-control' %>
-  </div>
-  <div class="form-group col-sm-4">
-    <%= label_tag 'experience_1_position', 'Position' %>
-    <%= text_field_tag 'experience_1_position', nil, placeholder: 'Example: Waiter, Dock Loader', :class => 'form-control' %>
-  </div>
-</section>
-<div class="form-group">
-  <%= label_tag 'experience_1_description', 'Job description' %>
-  <%= text_area_tag 'experience_1_description', nil, placeholder: 'Summarize your work and skills related to this position.', :class => 'form-control', rows: 3 %>
-</div>
+<% end %>
