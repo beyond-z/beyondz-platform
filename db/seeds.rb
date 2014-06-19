@@ -68,12 +68,14 @@ task_definition = TaskDefinition.create(
 task_definition.sections.push(
   TaskSection.create(
     task_module_id: text_module.id,
+    position: 1,
     configuration: {question: 'Which direction represents you?'}.to_json
   )
 )
 task_definition.sections.push(
   TaskSection.create(
     task_module_id: text_module.id,
+    position: 2,
     configuration: {question: 'Why?'}.to_json
   )
 )
