@@ -3,7 +3,6 @@ class Task < ActiveRecord::Base
 
   belongs_to :assignment
   belongs_to :task_definition
-  belongs_to :definition, class_name: 'TaskDefinition'
   belongs_to :user
   has_many :responses, class_name: 'TaskResponse'
   has_many :files, class_name: 'TaskFile', dependent: :destroy
