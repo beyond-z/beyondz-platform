@@ -26,4 +26,8 @@ class EnrollmentsController < ApplicationController
     # sign_in(:user, @new_user)
   end
 
+  def welcome
+
+  end
+
 end

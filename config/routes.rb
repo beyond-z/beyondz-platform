@@ -11,6 +11,8 @@ BeyondzPlatform::Application.routes.draw do
   resources :comments
   resources :enrollments, only: [:index, :new, :create]
 
+  get '/enrollments/welcome', to: 'enrollments#welcome'
+
   resources :assignments, only: [:index, :update, :show] do
     resources :tasks, only: [:index, :update, :show]
   end
