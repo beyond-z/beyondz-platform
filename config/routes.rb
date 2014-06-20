@@ -4,10 +4,6 @@ BeyondzPlatform::Application.routes.draw do
   root "home#index"
   get '/welcome', to: 'home#welcome'
 
-  get "/users/login", to: "users#login" # defines users_login_path for use in the form
-  get '/users/:action', controller: 'users'
-  post '/users/:action', controller: 'users'
-
   resources :feedback
   resources :comments
   resources :enrollments, only: [:index, :new, :create]
