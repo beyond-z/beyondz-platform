@@ -57,9 +57,7 @@
 
           </div>
           <div class="top-right">
-            <% if !user_signed_in? %>
-              <%= link_to '<button type="button" class="sign-in-button">Sign In</button>'.html_safe, new_user_session_path %>
-            <% end %>
+            <%= render 'shared/login_button' %>
           </div>
         </section>
 
