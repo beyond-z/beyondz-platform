@@ -6,9 +6,9 @@
     <% if task.task_definition.sections.any? %>
       <div class="task-section">
         <% task.task_definition.sections.each do |task_section| %>
-          <% if task_section.content? %>
+          <% if task_section.introduction? %>
             <p>
-              <%= task_section.content.html_safe %>
+              <%= task_section.introduction.html_safe %>
             </p>
           <% end %>
           <%= f.fields_for :section do |s| %>

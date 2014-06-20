@@ -98,7 +98,7 @@ task_definition = TaskDefinition.create(
 task_definition.sections.push(
   TaskSection.create(
     task_module_id: video_quiz_module.id,
-    content: 'Watch this video (40 min) and answer the questions.',
+    introduction: 'Watch this video (40 min) and answer the questions.',
     configuration: {
       youtube_id: 'Obiztwn2oEU',
       start_time: '12:55',
@@ -263,7 +263,7 @@ task_definition = TaskDefinition.create(
 task_definition.sections.push(
   TaskSection.create(
     task_module_id: compare_module.id,
-    content: 'Review each resume and rate them below.',
+    introduction: 'Review each resume and rate them below.',
     configuration: {
       item_label: 'Resumé',
       items: [
@@ -355,7 +355,7 @@ task_definition = TaskDefinition.create(
 task_definition.sections.push(
   TaskSection.create(
     task_module_id: resume_builder_module.id,
-    content: 'Use the form below to complete your resumé.'
+    introduction: 'Use the form below to complete your resumé.'
   )
 )
 item.task_definitions.push(task_definition)
