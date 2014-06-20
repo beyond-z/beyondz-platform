@@ -60,8 +60,6 @@ class User < ActiveRecord::Base
           end
         end
       end
-
-      save!
     end
   end
 
