@@ -129,7 +129,24 @@ item.start_date = Time.parse("Mar 10")
 item.end_date = Time.parse("Mar 16")
 item.seo_name = "resume"
 item.save
-item.task_definitions.push(TaskDefinition.create(kind: 'user_confirm', required: true, position: 1, :name => "Read the summary - check out optional articles if you want"))
+item.task_definitions.push(TaskDefinition.create(
+  kind: 'user_confirm',
+  required: true, position: 1, :name => 'Your resumé',
+  details: '<p>Your resumé is the crown jewel of your career portfolio. Just
+    like companies have logos and "brand reputations" where they are publicly
+    known for certain things, a resumé reflects your own personal brand and
+    represents what you stand for as a leader and as a professional. It\'s one
+    of the most important professional documents that represents you.</p>
+    <p>A good resumé will help you to open doors to interviews for competitive
+    internships and job opportunities. Your objective in crafting a resumé is
+    to set yourself apart from hundreds or thousands of other candidates and
+    position yourself as a unique candidate.</p>
+    <p>We’re going to meet Alex, Eric, and Amanda. They are all sophomore
+    students at UC Berkeley and are competing for the same summer internship
+    in education in DC over the summer and have all created their resumés.
+    Based on their resumés, we\'re going to have you predict which one has the
+    best shot and scoring an interview.</p>'
+))
 item.task_definitions.push(TaskDefinition.create(kind: 'quiz', required: true,
   position: 2, :name => 'Rank the resumés',
   summary: 'Determine which resumés are the strongest and weakest.',
