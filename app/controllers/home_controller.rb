@@ -11,10 +11,7 @@ class HomeController < ApplicationController
       else
         redirect_to assignments_path
       end
-    else
-      redirect_to enrollments_path
     end
-    @assignment_definitions = AssignmentDefinition.all
   end
 
   def welcome
