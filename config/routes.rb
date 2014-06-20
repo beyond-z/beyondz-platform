@@ -2,6 +2,7 @@ BeyondzPlatform::Application.routes.draw do
   devise_for :users, controllers: { confirmations: 'confirmations' }
 
   root "home#index"
+  get '/welcome', to: 'home#welcome'
 
   get "/users/login", to: "users#login" # defines users_login_path for use in the form
   get '/users/:action', controller: 'users'
@@ -10,8 +11,6 @@ BeyondzPlatform::Application.routes.draw do
   resources :feedback
   resources :comments
   resources :enrollments, only: [:index, :new, :create]
-
-  get '/enrollments/welcome', to: 'enrollments#welcome'
 
   resources :assignments, only: [:index, :update, :show] do
     resources :tasks, only: [:index, :update, :show]

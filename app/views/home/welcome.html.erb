@@ -1,0 +1,15 @@
+<h1>Welcome, <%= current_user.first_name %>!</h1>
+
+<!-- instead of alert me when the app opens we'll have soem text placeholder
+that says here's what the process is -->
+
+<% if current_user.applicant_type == 'student' %>
+  <%= render 'welcome_student' %>
+<% elsif current_user.applicant_type == 'college_faculty' || current_user.applicant_type == 'professional' %>
+  <%= render 'welcome_coach' %>
+<% elsif current_user.applicant_type == 'supporter' %>
+  <%= render 'welcome_supporter' %>
+<% else %>
+  <!-- This covers the "Other?" field on the "are you a" form -->
+  <%= render 'welcome_other' %>
+<% end %>

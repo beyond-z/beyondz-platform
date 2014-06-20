@@ -21,19 +21,11 @@ header #banner .top-right {
 }
 
 .big-picture {
-  .apply-button {
-    @extend .btn;
-    @extend .btn-lg;
-    @extend .btn-primary;
-    height: 3em;
-    font-size: 2em;
-  }
-
   .sign-up-button-container {
     position: absolute;
 
-    right: 28%;
-    top: 20%;
+    right: 20%;
+    top: 10%;
     width: 33%;
     height: 33%;
   }

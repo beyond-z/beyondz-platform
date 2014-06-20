@@ -25,12 +25,4 @@ class EnrollmentsController < ApplicationController
     @new_user = User.create(user)
     # sign_in(:user, @new_user)
   end
-
-  def welcome
-    if !user_signed_in?
-      redirect_to new_user_session_path
-    end
-
-  end
-
 end

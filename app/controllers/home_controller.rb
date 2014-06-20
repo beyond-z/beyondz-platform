@@ -1,4 +1,7 @@
 class HomeController < ApplicationController
+
+  layout 'public'
+
   def index
     if current_user
       if current_user.is_administrator?
@@ -12,5 +15,11 @@ class HomeController < ApplicationController
       redirect_to enrollments_path
     end
     @assignment_definitions = AssignmentDefinition.all
+  end
+
+  def welcome
+    unless user_signed_in?
+      redirect_to new_user_session_path
+    end
   end
 end
