@@ -5,16 +5,6 @@
     <% if !user_signed_in? %>
       <div class="sign-up-button-container">
         <%= link_to image_tag("join_us.png").html_safe, new_enrollment_path %>
-        <!--
-        <div class="vertical-align-wrapper">
-          <div>
-            <p>Accelerate Your Career with a network you Trust.</p>
-          </div>
-          <div>
-            <%= link_to '<button type="button" class="apply-button">Sign Up</button>'.html_safe, new_enrollment_path %>
-          </div>
-        </div>
-        -->
       </div>
     <% end %>
   </div>
