@@ -45,6 +45,10 @@
 
 
   #task-update-student {
+    .task-section {
+      margin-bottom: 1em;
+    }
+
     .file-upload-progress {
       @extend .progress;
     }

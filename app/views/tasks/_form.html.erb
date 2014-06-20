@@ -3,14 +3,28 @@
 
     <%= render "shared/form_errors", locals: { object: task } %>
 
-    <% if task.file? %>
+    <% if task.task_definition.sections.any? %>
+      <div class="task-section">
+        <% task.task_definition.sections.each do |task_section| %>
+          <% if task_section.introduction? %>
+            <p>
+              <%= task_section.introduction.html_safe %>
+            </p>
+          <% end %>
+          <%= f.fields_for :section do |s| %>
+            <%= s.fields_for "#{task_section.id}" do |section_number| %>
+              <%= render "tasks/modules/#{task_section.module.code}",
+                { f: section_number, task: task, task_section: task_section } %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+      <%= f.submit "Submit", class: 'button-primary' %>
+
+    <% elsif task.file? %>
       <%= render 'tasks/subform_file', { f: f, task: task } %>
-    <% elsif task.text? %>
-      <%= render 'tasks/subform_text', { f: f, task: task } %>
     <% elsif task.user_confirm? %>
       <%= render 'tasks/subform_user_confirm', { f: f, task: task } %>
-    <% elsif task.quiz? %>
-      <%= render 'tasks/subform_quiz', { f: f, task: task } %>
     <% end %>
 
   <% end %>

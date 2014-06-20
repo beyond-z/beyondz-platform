@@ -10,11 +10,11 @@
   <section>
     <div class="col-sm-8">
       <div class="task-container">
-        <h3><%= @task.task_definition.name.html_safe %></h3>
+        <h3><%= @task.task_definition.name %></h3>
 
         <% if @task.task_definition.summary %>
           <p class="lead">
-            <%= @task.task_definition.summary.html_safe %>
+            <%= @task.task_definition.summary %>
           </p>
         <% end %>
 

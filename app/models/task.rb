@@ -4,11 +4,11 @@ class Task < ActiveRecord::Base
   belongs_to :assignment
   belongs_to :task_definition
   belongs_to :user
+  has_many :responses, class_name: 'TaskResponse'
   has_many :files, class_name: 'TaskFile', dependent: :destroy
-  has_one :text, class_name: 'TaskText', dependent: :destroy
   has_many :comments
 
-  enum kind: { file: 0, user_confirm: 1, text: 2, quiz: 3  }
+  enum kind: { file: 0, user_confirm: 1, text: 2 }
   enum file_type: { document: 0, image: 1, video: 2, audio: 3 }
 
   scope :for_assignment, -> (assignment_id) {
@@ -98,7 +98,7 @@ class Task < ActiveRecord::Base
   # does task type meet submit requirements
   def ready_to_submit?
     ready_to_submit = true
-    if needs_files? || needs_text? || user_confirm?
+    if needs_responses? || needs_files? || user_confirm?
       ready_to_submit = false
     end
 
@@ -126,8 +126,12 @@ class Task < ActiveRecord::Base
     !requires_approval?
   end
 
-  def needs_text?
-    text? && text.nil?
+  def needs_responses?
+    # Maybe opt for an "accepted" flag instead. This may be unreliable since
+    # not all tasks will require answers
+    if !file? && !user_confirm?
+      !responses.any? || (responses.select { |r| r.answers.nil? }.any?)
+    end
   end
 
   def needs_files?
@@ -170,33 +174,34 @@ class Task < ActiveRecord::Base
 
       self.updated_at = Time.now
 
-      # handle different task types
-      if task_params.key?(:user_confirm) && task_params[:user_confirm] == 'true'
-        submit!
-      elsif task_params.key?(:text) && task_params[:text][:content]
-        if text.present?
-          text.update_attribute(:content, task_params[:text][:content])
-        else
-          self.text = TaskText.create(
-            task_id: id,
-            content: task_params[:text][:content]
-          )
+      if task_params
+        # handle different task types
+        if task_params.key?(:section)
+          task_params[:section].each do |task_section_id, answers|
+            task_response = TaskResponse.find_or_create_by(
+              task_id: id, task_section_id: task_section_id
+            )
+            task_response.update_attributes(answers: answers.to_json)
+            responses.push(task_response)
+          end
+        elsif task_params.key?(:user_confirm) && task_params[:user_confirm] == 'true'
+          submit!
+        elsif task_params.key?(:files)
+          if files.present?
+            task_file_params = task_params[:files][file_type.to_sym]
+            # restrict to single/first file for now
+            files.first.update_attribute(file_type, task_file_params)
+          else
+            files << TaskFile.create(
+              task_definition_id: task_definition.id,
+              task_id: id,
+              file_type => task_params[:files][file_type.to_sym]
+            )
+          end
+        elsif task_params.key?(:done) && (task_params[:done] == 'true')
+          # task was submitted as complete
+          submit!
         end
-      elsif task_params.key?(:files)
-        if files.present?
-          task_file_params = task_params[:files][file_type.to_sym]
-          # restrict to single/first file for now
-          files.first.update_attribute(file_type, task_file_params)
-        else
-          files << TaskFile.create(
-            task_definition_id: task_definition.id,
-            task_id: id,
-            file_type => task_params[:files][file_type.to_sym]
-          )
-        end
-      elsif task_params.key?(:done) && (task_params[:done] == 'true')
-        # task was submitted as complete
-        submit!
       end
       save!
 

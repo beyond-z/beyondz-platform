@@ -1,4 +1,5 @@
 #compare-and-rank {
+  margin-bottom: 15px;
   .selection-column {
     @extend .col-sm-4;
     @extend .text-center;
@@ -15,7 +16,7 @@
   .view-button {
     @extend .btn;
     @extend .btn-default;
-    margin-top: 0.5em;
+    margin: 0.5em 0 0.8em 0;
   }
 
   .rating {
