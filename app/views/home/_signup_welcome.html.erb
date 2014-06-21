@@ -1,6 +1,7 @@
-<div class="well">
-  <h1>Welcome, <%= @new_user.first_name %>!</h1>
-  <% if @new_user %>
+ <% if @new_user %>
+  <div class="well">
+    <h1>Welcome, <%= @new_user.first_name %>!</h1>
+ 
     <h1>Thank you</h1>
     <p>Welcome, <%= @new_user.first_name %>!</p>
     <p>Thank you for signing up! You should receive an email at <b><%= @new_user.email %></b> in a moment to activate your account. Please check your email and follow the instructions to activate your account.</p>
@@ -15,5 +16,5 @@
       <!-- This covers the "Other?" field on the "are you a" form -->
       <p>We'll get in touch with you to see how we can best work together.</p>
     <% end %>
-  <% end %>
-</div>
+  </div>
+<% end %>

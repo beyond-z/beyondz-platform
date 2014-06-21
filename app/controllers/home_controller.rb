@@ -31,7 +31,9 @@ class HomeController < ApplicationController
   private
 
   def get_new_user
-    @new_user = User.find(params[:new_user_id])
+    if params[:new_user_id]
+      @new_user = User.find(params[:new_user_id])
+    end
   end
 
 end
