@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
 
-  before_action :get_new_user, only: [:coach_info, :student_info, :supporter_info, :others_info]
+  before_action :new_user, only: [:coach_info, :student_info, :supporter_info, :others_info]
 
   layout 'public'
 
@@ -30,7 +30,7 @@ class HomeController < ApplicationController
 
   private
 
-  def get_new_user
+  def new_user
     if params[:new_user_id]
       @new_user = User.find(params[:new_user_id])
     end
