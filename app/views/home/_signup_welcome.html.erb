@@ -1,0 +1,19 @@
+<div class="well">
+  <h1>Welcome, <%= @new_user.first_name %>!</h1>
+  <% if @new_user %>
+    <h1>Thank you</h1>
+    <p>Welcome, <%= @new_user.first_name %>!</p>
+    <p>Thank you for signing up! You should receive an email at <b><%= @new_user.email %></b> in a moment to activate your account. Please check your email and follow the instructions to activate your account.</p>
+
+    <% if @new_user.applicant_type == 'student' %>
+      <p>Here's some student specific information.</p>
+    <% elsif @new_user.applicant_type == 'college_faculty' || @new_user.applicant_type == 'professional' %>
+      <p>Here's some information that a volunteer (coach) would want to know.</p>
+    <% elsif @new_user.applicant_type == 'supporter' %>
+      <p>Here's info for supporters.</p>
+    <% else %>
+      <!-- This covers the "Other?" field on the "are you a" form -->
+      <p>We'll get in touch with you to see how we can best work together.</p>
+    <% end %>
+  <% end %>
+</div>

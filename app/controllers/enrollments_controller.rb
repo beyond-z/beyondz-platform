@@ -19,5 +19,17 @@ class EnrollmentsController < ApplicationController
       user[:applicant_type] = params[:other_type]
     end
     @new_user = User.create(user)
+
+    redirect_path = case @new_user.applicant_type
+      when 'student'
+        student_info_path(new_user_id: @new_user.id)
+      when 'college_faculty' || 'professional'
+        coach_info_path(new_user_id: @new_user.id)
+      when 'supporter'
+        supporter_info_path(new_user_id: @new_user.id)
+      else others_info_path(new_user_id: @new_user.id)
+    end
+
+    redirect_to redirect_path
   end
 end
