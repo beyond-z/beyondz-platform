@@ -1,15 +1,74 @@
-<div class="container-fluid">
-  <section>
-    <div class="program-intro">
-      <h1>Leadership and Career Prep Academy<br/>Portal</h1>
-      <p>Beyond Z’s college program provides participants with opportunities to practice building up their leadership skills and to gain valuable exposure to exploring careers. The curriculum is action-oriented and organized around discussions and interactive applications of real-world, applied skills that can be used immediately in a professional setting.</p>
+<section>
+
+  <div class="col-sm-12 big-picture">
+    <%= image_tag("sign_up_anchor.jpg") %>
+    <% if !user_signed_in? %>
+      <div class="sign-up-button-container">
+        <%= link_to image_tag("join_us.png").html_safe, new_enrollment_path %>
+      </div>
+    <% end %>
+  </div>
+  <div class="col-sm-12">
+    <h2>
+      Inspiring Summary of BZ
+    </h2>
+  </div>
+</section>
+<section>
+  <div class="col-sm-8">
+    <p class="lead">
+      Leaders Emerge From Everywhere
+    </p>
+    <p>
+      Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+    </p>
+  </div>
+  <div class="col-sm-4">
+    <blockquote>
+      <p>
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+      </p>
+      <footer>Aimee Eubanks Davis</footer>
+    </blockquote>
+  </div>
+</section>
+<section>
+  <div class="col-sm-12">
+    <%= image_tag 'bz_infographic.jpg', :class => 'bz-infographic' %>
+    <br />
+    <div class="text-center">
+      <button type="button" class="btn btn-default btn-lg">Explore our Model</button>
     </div>
-  </section>
+  </div>
+</section>
 
-	<% @assignment_definitions.each do |assignment_definition| %>
+<hr />
 
-	  <%= render :partial => 'assignment', locals: {assignment_definition: assignment_definition} %>
+<section>
+  <div class="col-sm-12">
+    <h2>
+      Testimonials from Coaches, Students, campus partners
+    </h2>
+  </div>
+</section>
+<section>
+  <div class="video-box">
+    <iframe width="400" height="225" src="//www.youtube.com/embed/lB6K60mkmho" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <div class="video-box">
+    <iframe width="400" height="225" src="//www.youtube.com/embed/r9LelXa3U_I" frameborder="0" allowfullscreen></iframe>
+  </div>
+</section>
+<section class="video-blurbs">
+  <div class="blurb-box col-sm-offset-1">
+    At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia.
+  </div>
+  <div class="blurb-box col-sm-offset-2">
+    Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.
+  </div>
+</section>
 
-	<% end %>
-
-</div>
+<section class="text-center">
+  <h1>Ready to Jumpstart your career and leadership path today?</h1>
+  <%= link_to '<button type="button" class="apply-button btn btn-primary btn-lg">Sign Up</button>'.html_safe, new_enrollment_path %>
+</section>

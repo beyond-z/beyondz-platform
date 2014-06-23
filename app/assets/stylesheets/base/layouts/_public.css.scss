@@ -1,33 +1,20 @@
-
-header #banner .top-left {
-  @extend .col-sm-3;
-  padding: 4px 0px;
+header #banner {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
 }
 
-header #banner .top-middle {
-  @extend .col-sm-6;
-  padding: 0px;
+header #banner .top-left {
+  @extend .col-sm-2;
 }
 
 header #banner .top-right {
-  @extend .col-sm-3;
+  @extend .col-sm-10;
   @extend .text-right;
   padding-top: 30px;
 
   .sign-in-button {
     @extend .btn;
     @extend .btn-primary;
-  }
-}
-
-.big-picture {
-  .sign-up-button-container {
-    position: absolute;
-
-    right: 20%;
-    top: 10%;
-    width: 33%;
-    height: 33%;
   }
 }
 
@@ -48,13 +35,5 @@ header #top-navigation {
   .button-primary {
     @extend .btn;
     @extend .btn-primary;
-  }
-}
-
-#public-carousel {
-  @extend .carousel;
-
-  .carousel-indicators {
-    bottom: 0px;
   }
 }

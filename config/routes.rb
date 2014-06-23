@@ -2,11 +2,14 @@ BeyondzPlatform::Application.routes.draw do
   devise_for :users, controllers: { confirmations: 'confirmations' }
 
   root "home#index"
-  get '/welcome', to: 'home#welcome'
+  get '/coach_info', to: 'home#coach_info'
+  get '/student_info', to: 'home#student_info'
+  get '/supporter_info', to: 'home#supporter_info'
+  get '/general_info', to: 'home#general_info'
 
   resources :feedback
   resources :comments
-  resources :enrollments, only: [:index, :new, :create]
+  resources :enrollments, only: [:new, :create]
 
   resources :assignments, only: [:index, :update, :show] do
     resources :tasks, only: [:index, :update, :show]
