@@ -1,5 +1,7 @@
 class HomeController < ApplicationController
 
+  before_action :new_user, only: [:coach_info, :student_info, :supporter_info, :others_info]
+
   layout 'public'
 
   def index
@@ -14,9 +16,24 @@ class HomeController < ApplicationController
     end
   end
 
-  def welcome
-    unless user_signed_in?
-      redirect_to new_user_session_path
+  def coach_info
+  end
+
+  def student_info
+  end
+
+  def supporter_info
+  end
+
+  def others_info
+  end
+
+  private
+
+  def new_user
+    if params[:new_user_id]
+      @new_user = User.find(params[:new_user_id])
     end
   end
+
 end
