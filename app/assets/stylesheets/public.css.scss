@@ -5,3 +5,14 @@
 @import './base/style';
 
 @import "./public/*";
+
+.big-picture {
+  .sign-up-button-container {
+    position: absolute;
+
+    right: 20%;
+    top: 10%;
+    width: 33%;
+    height: 33%;
+  }
+}
