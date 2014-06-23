@@ -20,7 +20,7 @@ class EnrollmentsController < ApplicationController
     end
     @new_user = User.create(user)
 
-    redirect_path = others_info_path(new_user_id: @new_user.id)
+    redirect_path = general_info_path(new_user_id: @new_user.id)
 
     case @new_user.applicant_type
     when 'student'
