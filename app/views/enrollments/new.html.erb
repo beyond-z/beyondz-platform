@@ -1,74 +1,79 @@
 <section>
-  <h1>
-    Jump start your career and leadership path
-  </h1>
+  <div class="col-sm-12">
+    <h1>
+      Jump start your career and leadership path
+    </h1>
+  </div>
 </section>
 
-<section>
-  <div class="col-sm-8 col-sm-offset-1">
-    <h2>
+<section id="sign-up-form">
+  <div class="col-sm-5 col-sm-offset-1">
+    <h2 class="well well-lg">
       Join us! Apply to become a BZ Academy Fellow today
     </h2>
-    <p>
+    <p class="lead">
       Tell us who you are and we will be in touch directly with you!
     </p>
-    <%= form_tag enrollments_path, role: 'form' do %>
+    <%= form_for :user, url: enrollments_path, role: 'form' do |f| %>
       <div class="form-group">
-        <label for="user[first_name]">Name</label>
+        <%= f.label :first_name, 'Name' %>
         <section>
           <div class="col-sm-6">
-            <%= text_field_tag 'user[first_name]', '', :class => 'form-control', placeholder: 'First Name', style: 'float: left;' %>
+            <%= f.text_field :first_name, :class => 'form-control', placeholder: 'First Name', style: 'float: left;' %>
             <p class="help-block">Enter your first name.</p>
           </div>
           <div class="col-sm-6">
-            <%= text_field_tag 'user[last_name]', '', :class => 'form-control', placeholder: 'Last Name', style: 'float: left;'  %>
+            <%= f.text_field :last_name, :class => 'form-control', placeholder: 'Last Name', style: 'float: left;'  %>
             <p class="help-block">Enter your last name.</p>
           <div>
         </section>
       </div>
       <div class="form-group">
-        <label for="user[email]">Email</label>
-        <%= text_field_tag 'user[email]', '', :type => 'email', :required => 'required', :class => 'form-control', placeholder: 'Email'%>
+        <%= f.label :email %>
+        <%= f.text_field :email, :type => 'email', :required => 'required', :class => 'form-control', placeholder: 'Email'%>
       </div>
 
       <div class="form-group">
-        <label for="user[password]">Create Password</label>
-        <%= password_field_tag 'user[password]', '', :class => 'form-control', placeholder: 'Password'%>
+        <%= f.label  :password %>
+        <%= f.password_field :password, :class => 'form-control', placeholder: 'Password'%>
         <p class="help-block">Enter a password so you can log in later.</p>
       </div>
 
-      <div class="form-group clear">
-        <h3>Are you a...</h3>
-          <label><input type="radio" name="user[applicant_type]" value="student" checked="checked" /> College Student with an anticipated graduation year of</label>
-            <select name="user[anticipated_graduation]">
-              <option>2015</option>
-              <option>2016</option>
-              <option>2017</option>
-              <option>2018</option>
-              <option>2019</option>
-            </select>
-          <br />
-          <label><input type="radio" name="user[applicant_type]" value="college_faculty" /> College Faculty or Staff</label>
-          <br />
-          <label><input type="radio" name="user[applicant_type]" value="professional" /> Professional</label>
-          <br />
-          <label><input type="radio" name="user[applicant_type]" value="supporter" /> Supporter</label>
-          <br />
-          <label><input type="radio" name="user[applicant_type]" value="other" /> Other?</label> <input type="text" name="other_type" />
+      <div class="form-group">
+        <h3>I am a...</h3>
+        <%= f.radio_button :applicant_type, 'student', checked: true %>
+        <%= f.label :applicant_type_student, 'College Student with an anticipated graduation year of' %>
+        <%= f.select :anticipated_graduation, options_for_select([2015, 2016, 2017, 2018, 2019]) %>
+        <br />
+        <%= f.radio_button :applicant_type, 'college_faculty' %>
+        <%= f.label :applicant_type_college_faculty, 'College Faculty or Staff' %>
+        <br />
+        <%= f.radio_button :applicant_type, 'professional' %>
+        <%= f.label :applicant_type_professional, 'Professional' %>
+        <br />
+        <%= f.radio_button :applicant_type, 'supporter' %>
+        <%= f.label :applicant_type_supporter, 'Supporter' %>
+        <br />
+        <%= f.radio_button :applicant_type, 'other' %>
+        <%= f.label :applicant_type_other, 'Other?' %>
+        <%= text_field_tag :other_type, nil, :class => 'form-control' %>
       </div>
 
-      <label><input type="checkbox" name="user[keep_updated]" checked="checked" /> Keep me updated about the BZ 2014-2015 Program</label>
-
-      <br />
-      <button type="submit" class="btn btn-lg btn-primary">Continue</button>
+      <div class="form-group">
+        <%= f.check_box :keep_updated, checked: true %>
+        <%= f.label :keep_updated, 'Keep me updated about the BZ 2014-2015 Program' %>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-lg btn-primary">Continue</button>
+      </div>
     <% end %>
   </div>
 
-  <div class="col-sm-2">
+  <div class="col-sm-4 col-sm-offset-2">
     <h2>Why Join?</h2>
     <blockquote>
-      <p>Something inspirational</p>
-      <cite>--Aimee</cite>
+      <p>"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."</p>
+      <footer>Aimee</footer>
     </blockquote>
   </div>
 </section>

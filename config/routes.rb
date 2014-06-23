@@ -6,6 +6,7 @@ BeyondzPlatform::Application.routes.draw do
   get '/student_info', to: 'home#student_info'
   get '/supporter_info', to: 'home#supporter_info'
   get '/general_info', to: 'home#general_info'
+  get '/others_info', to: 'home#others_info'
 
   resources :feedback
   resources :comments

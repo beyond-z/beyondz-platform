@@ -35,4 +35,20 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # direct users to the proper path upon registration
+  def redirect_to_welcome_path(user)
+    redirect_path = others_info_path(new_user_id: user.id)
+
+    case user.applicant_type
+    when 'student'
+      redirect_path = student_info_path(new_user_id: user.id)
+    when 'college_faculty' || 'professional'
+      redirect_path = coach_info_path(new_user_id: user.id)
+    when 'supporter'
+      redirect_path = supporter_info_path(new_user_id: user.id)
+    end
+
+    redirect_path
+  end
+
 end

@@ -8,7 +8,8 @@ header #banner .top-left {
 }
 
 header #banner .top-right {
-  @extend .col-sm-10;
+  @extend .col-sm-2;
+  @extend .col-sm-offset-8;
   @extend .text-right;
   padding-top: 30px;
 
