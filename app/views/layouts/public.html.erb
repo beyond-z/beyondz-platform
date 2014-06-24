@@ -19,7 +19,7 @@
       <header>
         <section id="banner" role="banner">
           <div class="top-left">
-            <%= image_tag 'bz_logo_211.png' %>
+            <%= link_to image_tag('bz_logo_211.png'), root_path %>
           </div>
           <div class="top-right">
             <%= render 'shared/login_button' %>
@@ -47,7 +47,7 @@
 
 
       <%= content_for :footer do %>
-        Contact us: <a href="mailto:tech@beyondz.org">tech@beyondz.org</a>
+        Contact us: <a href="mailto:info@beyondz.org">info@beyondz.org</a>
       <% end %>
       <%= render 'shared/footer' %>
       

@@ -1,7 +1,6 @@
- <% if @new_user %>
+<% if @new_user && @new_user.confirmed_at.nil? %>
   <div class="well">
     <h1>Welcome, <%= @new_user.first_name %>!</h1>
- 
     <p>Thank you for signing up! You should receive an email at <b><%= @new_user.email %></b> in a moment to activate your account. Please check your email and follow the instructions.</p>
   </div>
 <% end %>

@@ -29,17 +29,6 @@ class EnrollmentsController < ApplicationController
       return
     end
 
-    redirect_path = general_info_path(new_user_id: @new_user.id)
-
-    case @new_user.applicant_type
-    when 'student'
-      redirect_path = student_info_path(new_user_id: @new_user.id)
-    when 'college_faculty' || 'professional'
-      redirect_path = coach_info_path(new_user_id: @new_user.id)
-    when 'supporter'
-      redirect_path = supporter_info_path(new_user_id: @new_user.id)
-    end
-
-    redirect_to redirect_path
+    redirect_to redirect_to_welcome_path(@new_user)
   end
 end
