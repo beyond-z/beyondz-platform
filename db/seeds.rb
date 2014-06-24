@@ -272,10 +272,10 @@ item.task_definitions.push(
   )
 )
 task_definition = TaskDefinition.create(
-  kind: nil, required: true, position: 3, name: 'Resumé formatting',
-  summary: 'Determine which resumés are the strongest and weakest.',
-  details: '<p>This is an entire paragraph about what makes a good resumé.
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+  kind: nil, required: true, position: 3, name: 'Formatting',
+  summary: 'Determine which resumés have the best formatting.',
+  details: '<p>This is an entire paragraph about what makes good resumé
+    formatting. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
     tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
     quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
     consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
@@ -286,75 +286,105 @@ task_definition = TaskDefinition.create(
 task_definition.sections.push(
   TaskSection.create(
     task_module_id: compare_module.id,
-    introduction: 'Review each resume and rate them below.',
+    introduction: 'Review each resume and rate their formatting below.',
     configuration: {
       item_label: 'Resumé',
       items: [
         {
           label: 'Resumé 1',
-          content: '<h3>John Doe</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-            <h4>SKILLS</h4>
+          content: '
+            <div>
+              <h3>John Doe</h3>
+              <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            </div>
+            <div>
+              <h4>SKILLS</h4>
               <ul>
-              <li>Nemo enim ipsam</li>
-              <li>Incidunt ut labore</li>
-              <li>Dolore magnam</li>
-              <li>Aliquam quaerat voluptatem</li>
-              <li>Voluptate velit esse quam</li>
+                <li>Nemo enim ipsam</li>
+                <li>Incidunt ut labore</li>
+                <li>Dolore magnam</li>
+                <li>Aliquam quaerat voluptatem</li>
+                <li>Voluptate velit esse quam</li>
               </ul>
-            <h4>EXPERIENCE</h4>
+            </div>
+            <div>
+              <h4>EXPERIENCE</h4>
               <ul>
-              <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-              <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-              <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-              <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-              <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
+                <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
+                <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
+                <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
+                <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
+                <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
               </ul>
-            <h4>EDUCATION</h4>
-            <p>Masters in Photography from PU, 1981</p>'
+            </div>
+            <div>
+              <h4>EDUCATION</h4>
+              <p>Masters in Photography from PU, 1981</p>
+            </div>'
         },
         {
           label: 'Resumé 2',
-          content: '<h3>John Dough</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-            <h4>SKILLS</h4>
+          content: '
+            <div>
+              <h3>John Dough</h3>
+              <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            </div>
+            <div>
+              <h4>SKILLS</h4>
               <ul>
-              <li>Nemo enim ipsam</li>
-              <li>Incidunt ut labore</li>
-              <li>Dolore magnam</li>
-              <li>Aliquam quaerat voluptatem</li>
-              <li>Voluptate velit esse quam</li>
+                <li>Nemo enim ipsam</li>
+                <li>Incidunt ut labore</li>
+                <li>Dolore magnam</li>
+                <li>Aliquam quaerat voluptatem</li>
+                <li>Voluptate velit esse quam</li>
               </ul>
-            <h4>EXPERIENCE</h4>
+            </div>
+            <div>
+              <h4>EXPERIENCE</h4>
               <ul>
-              <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-              <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-              <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-              <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-              <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
+                <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
+                <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
+                <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
+                <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
+                <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
               </ul>
-            <h4>EDUCATION</h4>
-            <p>Masters in Photography from PU, 1981</p>'
+            </div>
+            <div>
+              <h4>EDUCATION</h4>
+              <p>Masters in Photography from PU, 1981</p>
+            </div>'
         },
         {
           label: 'Resumé 3',
-          content: '<h3>John DOH</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-            <h4>SKILLS</h4>
+          content: '
+            <div>
+              <h3>John DOH</h3>
+              <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            </div>
+            <div>
+              <h4>SKILLS</h4>
               <ul>
-              <li>Nemo enim ipsam</li>
-              <li>Incidunt ut labore</li>
-              <li>Dolore magnam</li>
-              <li>Aliquam quaerat voluptatem</li>
-              <li>Voluptate velit esse quam</li>
+                <li>Nemo enim ipsam</li>
+                <li>Incidunt ut labore</li>
+                <li>Dolore magnam</li>
+                <li>Aliquam quaerat voluptatem</li>
+                <li>Voluptate velit esse quam</li>
               </ul>
-            <h4>EXPERIENCE</h4>
+            </div>
+            <div>
+              <h4>EXPERIENCE</h4>
               <ul>
-              <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-              <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-              <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-              <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-              <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
+                <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
+                <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
+                <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
+                <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
+                <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
               </ul>
-            <h4>EDUCATION</h4>
-            <p>Masters in Photography from PU, 1981</p>'
+            </div>
+            <div>
+              <h4>EDUCATION</h4>
+              <p>Masters in Photography from PU, 1981</p>
+            </div>'
         }
       ],
       answer: 2
@@ -363,9 +393,9 @@ task_definition.sections.push(
 )
 item.task_definitions.push(task_definition)
 task_definition = TaskDefinition.create(
-  kind: nil, required: true, position: 4, name: 'Resumé education section',
-  summary: 'Determine which resumés are the strongest and weakest.',
-  details: '<p>This is an entire paragraph about what makes a good resumé.
+  kind: nil, required: true, position: 4, name: 'Education section',
+  summary: 'Determine which resumés have the best education section.',
+  details: '<p>This is an entire paragraph about what makes a good education section.
     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
     tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
     quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
@@ -377,75 +407,105 @@ task_definition = TaskDefinition.create(
 task_definition.sections.push(
   TaskSection.create(
     task_module_id: compare_module.id,
-    introduction: 'Review each resume and rate them below.',
+    introduction: 'Review each resume and rate their educaion section below.',
     configuration: {
       item_label: 'Resumé',
       items: [
         {
           label: 'Resumé 1',
-          content: '<h3>John Doe</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-            <h4>SKILLS</h4>
+          content: '
+            <div class="lowlight">
+              <h3>John Doe</h3>
+              <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            </div>
+            <div class="lowlight">
+              <h4>SKILLS</h4>
               <ul>
-              <li>Nemo enim ipsam</li>
-              <li>Incidunt ut labore</li>
-              <li>Dolore magnam</li>
-              <li>Aliquam quaerat voluptatem</li>
-              <li>Voluptate velit esse quam</li>
+                <li>Nemo enim ipsam</li>
+                <li>Incidunt ut labore</li>
+                <li>Dolore magnam</li>
+                <li>Aliquam quaerat voluptatem</li>
+                <li>Voluptate velit esse quam</li>
               </ul>
-            <h4>EXPERIENCE</h4>
+            </div>
+            <div class="lowlight">
+              <h4>EXPERIENCE</h4>
               <ul>
-              <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-              <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-              <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-              <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-              <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
+                <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
+                <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
+                <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
+                <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
+                <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
               </ul>
-            <h4>EDUCATION</h4>
-            <p>Masters in Photography from PU, 1981</p>'
+            </div>
+            <div class="highlight">
+              <h4>EDUCATION</h4>
+              <p>Masters in Photography from PU, 1981</p>
+            </div>'
         },
         {
           label: 'Resumé 2',
-          content: '<h3>John Dough</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-            <h4>SKILLS</h4>
+          content: '
+            <div class="lowlight">
+              <h3>John Dough</h3>
+              <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            </div>
+            <div class="lowlight">
+              <h4>SKILLS</h4>
               <ul>
-              <li>Nemo enim ipsam</li>
-              <li>Incidunt ut labore</li>
-              <li>Dolore magnam</li>
-              <li>Aliquam quaerat voluptatem</li>
-              <li>Voluptate velit esse quam</li>
+                <li>Nemo enim ipsam</li>
+                <li>Incidunt ut labore</li>
+                <li>Dolore magnam</li>
+                <li>Aliquam quaerat voluptatem</li>
+                <li>Voluptate velit esse quam</li>
               </ul>
-            <h4>EXPERIENCE</h4>
+            </div>
+            <div class="lowlight">
+              <h4>EXPERIENCE</h4>
               <ul>
-              <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-              <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-              <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-              <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-              <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
+                <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
+                <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
+                <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
+                <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
+                <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
               </ul>
-            <h4>EDUCATION</h4>
-            <p>Masters in Photography from PU, 1981</p>'
+            </div>
+            <div class="highlight">
+              <h4>EDUCATION</h4>
+              <p>Masters in Photography from PU, 1981</p>
+            </div>'
         },
         {
           label: 'Resumé 3',
-          content: '<h3>John DOH</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-            <h4>SKILLS</h4>
+          content: '
+            <div class="lowlight">
+              <h3>John DOH</h3>
+              <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            </div>
+            <div class="lowlight">
+              <h4>SKILLS</h4>
               <ul>
-              <li>Nemo enim ipsam</li>
-              <li>Incidunt ut labore</li>
-              <li>Dolore magnam</li>
-              <li>Aliquam quaerat voluptatem</li>
-              <li>Voluptate velit esse quam</li>
+                <li>Nemo enim ipsam</li>
+                <li>Incidunt ut labore</li>
+                <li>Dolore magnam</li>
+                <li>Aliquam quaerat voluptatem</li>
+                <li>Voluptate velit esse quam</li>
               </ul>
-            <h4>EXPERIENCE</h4>
+            </div>
+            <div class="lowlight">
+              <h4>EXPERIENCE</h4>
               <ul>
-              <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-              <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-              <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-              <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-              <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
+                <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
+                <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
+                <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
+                <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
+                <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
               </ul>
-            <h4>EDUCATION</h4>
-            <p>Masters in Photography from PU, 1981</p>'
+            </div>
+            <div class="highlight">
+              <h4>EDUCATION</h4>
+              <p>Masters in Photography from PU, 1981</p>
+            </div>'
         }
       ],
       answer: 2
@@ -454,9 +514,9 @@ task_definition.sections.push(
 )
 item.task_definitions.push(task_definition)
 task_definition = TaskDefinition.create(
-  kind: nil, required: true, position: 5, name: 'Resumé experience section',
-  summary: 'Determine which resumés are the strongest and weakest.',
-  details: '<p>This is an entire paragraph about what makes a good resumé.
+  kind: nil, required: true, position: 5, name: 'Experience section',
+  summary: 'Determine which resumés have the best experience section.',
+  details: '<p>This is an entire paragraph about what makes a good experience section.
     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
     tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
     quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
@@ -468,75 +528,105 @@ task_definition = TaskDefinition.create(
 task_definition.sections.push(
   TaskSection.create(
     task_module_id: compare_module.id,
-    introduction: 'Review each resume and rate them below.',
+    introduction: 'Review each resume and rate their experience section below.',
     configuration: {
       item_label: 'Resumé',
       items: [
         {
           label: 'Resumé 1',
-          content: '<h3>John Doe</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-            <h4>SKILLS</h4>
+          content: '
+            <div class="lowlight">
+              <h3>John Doe</h3>
+              <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            </div>
+            <div class="lowlight">
+              <h4>SKILLS</h4>
               <ul>
-              <li>Nemo enim ipsam</li>
-              <li>Incidunt ut labore</li>
-              <li>Dolore magnam</li>
-              <li>Aliquam quaerat voluptatem</li>
-              <li>Voluptate velit esse quam</li>
+                <li>Nemo enim ipsam</li>
+                <li>Incidunt ut labore</li>
+                <li>Dolore magnam</li>
+                <li>Aliquam quaerat voluptatem</li>
+                <li>Voluptate velit esse quam</li>
               </ul>
-            <h4>EXPERIENCE</h4>
+            </div>
+            <div class="highlight">
+              <h4>EXPERIENCE</h4>
               <ul>
-              <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-              <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-              <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-              <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-              <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
+                <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
+                <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
+                <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
+                <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
+                <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
               </ul>
-            <h4>EDUCATION</h4>
-            <p>Masters in Photography from PU, 1981</p>'
+            </div>
+            <div class="lowlight">
+              <h4>EDUCATION</h4>
+              <p>Masters in Photography from PU, 1981</p>
+            </div>'
         },
         {
           label: 'Resumé 2',
-          content: '<h3>John Dough</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-            <h4>SKILLS</h4>
+          content: '
+            <div class="lowlight">
+              <h3>John Dough</h3>
+              <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            </div>
+            <div class="lowlight">
+              <h4>SKILLS</h4>
               <ul>
-              <li>Nemo enim ipsam</li>
-              <li>Incidunt ut labore</li>
-              <li>Dolore magnam</li>
-              <li>Aliquam quaerat voluptatem</li>
-              <li>Voluptate velit esse quam</li>
+                <li>Nemo enim ipsam</li>
+                <li>Incidunt ut labore</li>
+                <li>Dolore magnam</li>
+                <li>Aliquam quaerat voluptatem</li>
+                <li>Voluptate velit esse quam</li>
               </ul>
-            <h4>EXPERIENCE</h4>
+            </div>
+            <div class="highlight">
+              <h4>EXPERIENCE</h4>
               <ul>
-              <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-              <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-              <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-              <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-              <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
+                <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
+                <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
+                <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
+                <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
+                <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
               </ul>
-            <h4>EDUCATION</h4>
-            <p>Masters in Photography from PU, 1981</p>'
+            </div>
+            <div class="lowlight">
+              <h4>EDUCATION</h4>
+              <p>Masters in Photography from PU, 1981</p>
+            </div>'
         },
         {
           label: 'Resumé 3',
-          content: '<h3>John DOH</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-            <h4>SKILLS</h4>
+          content: '
+            <div class="lowlight">
+              <h3>John DOH</h3>
+              <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            </div>
+            <div class="lowlight">
+             <h4>SKILLS</h4>
               <ul>
-              <li>Nemo enim ipsam</li>
-              <li>Incidunt ut labore</li>
-              <li>Dolore magnam</li>
-              <li>Aliquam quaerat voluptatem</li>
-              <li>Voluptate velit esse quam</li>
+                <li>Nemo enim ipsam</li>
+                <li>Incidunt ut labore</li>
+                <li>Dolore magnam</li>
+                <li>Aliquam quaerat voluptatem</li>
+                <li>Voluptate velit esse quam</li>
               </ul>
-            <h4>EXPERIENCE</h4>
+            </div>
+            <div class="highlight">
+              <h4>EXPERIENCE</h4>
               <ul>
-              <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-              <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-              <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-              <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-              <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
+                <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
+                <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
+                <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
+                <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
+                <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
               </ul>
-            <h4>EDUCATION</h4>
-            <p>Masters in Photography from PU, 1981</p>'
+            </div>
+            <div class="lowlight">
+              <h4>EDUCATION</h4>
+              <p>Masters in Photography from PU, 1981</p>
+            </div>'
         }
       ],
       answer: 2
@@ -545,9 +635,9 @@ task_definition.sections.push(
 )
 item.task_definitions.push(task_definition)
 task_definition = TaskDefinition.create(
-  kind: nil, required: true, position: 6, name: 'Resumé leadership section',
-  summary: 'Determine which resumés are the strongest and weakest.',
-  details: '<p>This is an entire paragraph about what makes a good resumé.
+  kind: nil, required: true, position: 6, name: 'Leadership section',
+  summary: 'Determine which resumés have the best leadership section.',
+  details: '<p>This is an entire paragraph about what makes a good leadership section.
     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
     tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
     quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
@@ -559,75 +649,105 @@ task_definition = TaskDefinition.create(
 task_definition.sections.push(
   TaskSection.create(
     task_module_id: compare_module.id,
-    introduction: 'Review each resume and rate them below.',
+    introduction: 'Review each resume and rate their leadership section below.',
     configuration: {
       item_label: 'Resumé',
       items: [
         {
           label: 'Resumé 1',
-          content: '<h3>John Doe</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-            <h4>SKILLS</h4>
+          content: '
+            <div>
+              <h3>John Doe</h3>
+              <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            </div>
+            <div>
+              <h4>SKILLS</h4>
               <ul>
-              <li>Nemo enim ipsam</li>
-              <li>Incidunt ut labore</li>
-              <li>Dolore magnam</li>
-              <li>Aliquam quaerat voluptatem</li>
-              <li>Voluptate velit esse quam</li>
+                <li>Nemo enim ipsam</li>
+                <li>Incidunt ut labore</li>
+                <li>Dolore magnam</li>
+                <li>Aliquam quaerat voluptatem</li>
+                <li>Voluptate velit esse quam</li>
               </ul>
-            <h4>EXPERIENCE</h4>
+            </div>
+            <div>
+              <h4>EXPERIENCE</h4>
               <ul>
-              <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-              <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-              <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-              <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-              <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
+                <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
+                <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
+                <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
+                <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
+                <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
               </ul>
-            <h4>EDUCATION</h4>
-            <p>Masters in Photography from PU, 1981</p>'
+            </div>
+            <div>
+              <h4>EDUCATION</h4>
+              <p>Masters in Photography from PU, 1981</p>
+            </div>'
         },
         {
           label: 'Resumé 2',
-          content: '<h3>John Dough</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-            <h4>SKILLS</h4>
+          content: '
+            <div>
+              <h3>John Dough</h3>
+              <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            </div>
+            <div>
+              <h4>SKILLS</h4>
               <ul>
-              <li>Nemo enim ipsam</li>
-              <li>Incidunt ut labore</li>
-              <li>Dolore magnam</li>
-              <li>Aliquam quaerat voluptatem</li>
-              <li>Voluptate velit esse quam</li>
+                <li>Nemo enim ipsam</li>
+                <li>Incidunt ut labore</li>
+                <li>Dolore magnam</li>
+                <li>Aliquam quaerat voluptatem</li>
+                <li>Voluptate velit esse quam</li>
               </ul>
-            <h4>EXPERIENCE</h4>
+            </div>
+            <div>
+              <h4>EXPERIENCE</h4>
               <ul>
-              <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-              <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-              <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-              <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-              <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
+                <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
+                <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
+                <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
+                <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
+                <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
               </ul>
-            <h4>EDUCATION</h4>
-            <p>Masters in Photography from PU, 1981</p>'
+            </div>
+            <div>
+              <h4>EDUCATION</h4>
+              <p>Masters in Photography from PU, 1981</p>
+            </div>'
         },
         {
           label: 'Resumé 3',
-          content: '<h3>John DOH</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-            <h4>SKILLS</h4>
+          content: '
+            <div>
+              <h3>John DOH</h3>
+              <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            </div>
+            <div>
+              <h4>SKILLS</h4>
               <ul>
-              <li>Nemo enim ipsam</li>
-              <li>Incidunt ut labore</li>
-              <li>Dolore magnam</li>
-              <li>Aliquam quaerat voluptatem</li>
-              <li>Voluptate velit esse quam</li>
+                <li>Nemo enim ipsam</li>
+                <li>Incidunt ut labore</li>
+                <li>Dolore magnam</li>
+                <li>Aliquam quaerat voluptatem</li>
+                <li>Voluptate velit esse quam</li>
               </ul>
-            <h4>EXPERIENCE</h4>
+            </div>
+            <div>
+              <h4>EXPERIENCE</h4>
               <ul>
-              <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-              <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-              <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-              <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-              <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
+                <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
+                <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
+                <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
+                <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
+                <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
               </ul>
-            <h4>EDUCATION</h4>
-            <p>Masters in Photography from PU, 1981</p>'
+            </div>
+            <div>
+              <h4>EDUCATION</h4>
+              <p>Masters in Photography from PU, 1981</p>
+            </div>'
         }
       ],
       answer: 2
@@ -636,9 +756,9 @@ task_definition.sections.push(
 )
 item.task_definitions.push(task_definition)
 task_definition = TaskDefinition.create(
-  kind: nil, required: true, position: 7, name: 'Resumé skills and experiences',
-  summary: 'Determine which resumés are the strongest and weakest.',
-  details: '<p>This is an entire paragraph about what makes a good resumé.
+  kind: nil, required: true, position: 7, name: 'Skills and experiences',
+  summary: 'Determine which resumés have the best skills and experiences section.',
+  details: '<p>This is an entire paragraph about what makes a good skills and experience section.
     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
     tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
     quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
@@ -650,75 +770,105 @@ task_definition = TaskDefinition.create(
 task_definition.sections.push(
   TaskSection.create(
     task_module_id: compare_module.id,
-    introduction: 'Review each resume and rate them below.',
+    introduction: 'Review each resume and rate their skills and experience section below.',
     configuration: {
       item_label: 'Resumé',
       items: [
         {
           label: 'Resumé 1',
-          content: '<h3>John Doe</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-            <h4>SKILLS</h4>
+          content: '
+            <div class="lowlight">
+              <h3>John Doe</h3>
+              <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            </div>
+            <div class="highlight">
+              <h4>SKILLS</h4>
               <ul>
-              <li>Nemo enim ipsam</li>
-              <li>Incidunt ut labore</li>
-              <li>Dolore magnam</li>
-              <li>Aliquam quaerat voluptatem</li>
-              <li>Voluptate velit esse quam</li>
+                <li>Nemo enim ipsam</li>
+                <li>Incidunt ut labore</li>
+                <li>Dolore magnam</li>
+                <li>Aliquam quaerat voluptatem</li>
+                <li>Voluptate velit esse quam</li>
               </ul>
-            <h4>EXPERIENCE</h4>
+            </div>
+            <div class="lowlight">
+              <h4>EXPERIENCE</h4>
               <ul>
-              <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-              <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-              <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-              <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-              <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
+                <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
+                <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
+                <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
+                <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
+                <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
               </ul>
-            <h4>EDUCATION</h4>
-            <p>Masters in Photography from PU, 1981</p>'
+            </div>
+            <div class="lowlight">
+              <h4>EDUCATION</h4>
+              <p>Masters in Photography from PU, 1981</p>
+            </div>'
         },
         {
           label: 'Resumé 2',
-          content: '<h3>John Dough</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-            <h4>SKILLS</h4>
+          content: '
+            <div class="lowlight">
+              <h3>John Dough</h3>
+              <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            </div>
+            <div class="highlight">
+              <h4>SKILLS</h4>
               <ul>
-              <li>Nemo enim ipsam</li>
-              <li>Incidunt ut labore</li>
-              <li>Dolore magnam</li>
-              <li>Aliquam quaerat voluptatem</li>
-              <li>Voluptate velit esse quam</li>
+                <li>Nemo enim ipsam</li>
+                <li>Incidunt ut labore</li>
+                <li>Dolore magnam</li>
+                <li>Aliquam quaerat voluptatem</li>
+                <li>Voluptate velit esse quam</li>
               </ul>
-            <h4>EXPERIENCE</h4>
+            </div>
+            <div class="lowlight">
+              <h4>EXPERIENCE</h4>
               <ul>
-              <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-              <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-              <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-              <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-              <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
+                <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
+                <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
+                <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
+                <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
+                <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
               </ul>
-            <h4>EDUCATION</h4>
-            <p>Masters in Photography from PU, 1981</p>'
+            </div>
+            <div class="lowlight">
+              <h4>EDUCATION</h4>
+              <p>Masters in Photography from PU, 1981</p>
+            </div>'
         },
         {
           label: 'Resumé 3',
-          content: '<h3>John DOH</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-            <h4>SKILLS</h4>
+          content: '
+            <div class="lowlight">
+              <h3>John DOH</h3>
+              <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            </div>
+            <div class="highlight">
+              <h4>SKILLS</h4>
               <ul>
-              <li>Nemo enim ipsam</li>
-              <li>Incidunt ut labore</li>
-              <li>Dolore magnam</li>
-              <li>Aliquam quaerat voluptatem</li>
-              <li>Voluptate velit esse quam</li>
+                <li>Nemo enim ipsam</li>
+                <li>Incidunt ut labore</li>
+                <li>Dolore magnam</li>
+                <li>Aliquam quaerat voluptatem</li>
+                <li>Voluptate velit esse quam</li>
               </ul>
-            <h4>EXPERIENCE</h4>
+            </div>
+            <div class="lowlight">
+              <h4>EXPERIENCE</h4>
               <ul>
-              <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-              <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-              <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-              <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-              <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
+                <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
+                <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
+                <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
+                <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
+                <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
               </ul>
-            <h4>EDUCATION</h4>
-            <p>Masters in Photography from PU, 1981</p>'
+            </div>
+            <div class="lowlight">
+              <h4>EDUCATION</h4>
+              <p>Masters in Photography from PU, 1981</p>
+            </div>'
         }
       ],
       answer: 2
@@ -747,69 +897,99 @@ task_definition.sections.push(
       items: [
         {
           label: 'Resumé 1',
-          content: '<h3>John Doe</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-            <h4>SKILLS</h4>
+          content: '
+            <div>
+              <h3>John Doe</h3>
+              <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            </div>
+            <div>
+              <h4>SKILLS</h4>
               <ul>
-              <li>Nemo enim ipsam</li>
-              <li>Incidunt ut labore</li>
-              <li>Dolore magnam</li>
-              <li>Aliquam quaerat voluptatem</li>
-              <li>Voluptate velit esse quam</li>
+                <li>Nemo enim ipsam</li>
+                <li>Incidunt ut labore</li>
+                <li>Dolore magnam</li>
+                <li>Aliquam quaerat voluptatem</li>
+                <li>Voluptate velit esse quam</li>
               </ul>
-            <h4>EXPERIENCE</h4>
+            </div>
+            <div>
+              <h4>EXPERIENCE</h4>
               <ul>
-              <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-              <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-              <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-              <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-              <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
+                <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
+                <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
+                <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
+                <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
+                <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
               </ul>
-            <h4>EDUCATION</h4>
-            <p>Masters in Photography from PU, 1981</p>'
+            </div>
+            <div>
+              <h4>EDUCATION</h4>
+              <p>Masters in Photography from PU, 1981</p>
+            </div>'
         },
         {
           label: 'Resumé 2',
-          content: '<h3>John Dough</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-            <h4>SKILLS</h4>
+          content: '
+            <div>
+              <h3>John Dough</h3>
+              <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            </div>
+            <div>
+              <h4>SKILLS</h4>
               <ul>
-              <li>Nemo enim ipsam</li>
-              <li>Incidunt ut labore</li>
-              <li>Dolore magnam</li>
-              <li>Aliquam quaerat voluptatem</li>
-              <li>Voluptate velit esse quam</li>
+                <li>Nemo enim ipsam</li>
+                <li>Incidunt ut labore</li>
+                <li>Dolore magnam</li>
+                <li>Aliquam quaerat voluptatem</li>
+                <li>Voluptate velit esse quam</li>
               </ul>
-            <h4>EXPERIENCE</h4>
+            </div>
+            <div>
+              <h4>EXPERIENCE</h4>
               <ul>
-              <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-              <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-              <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-              <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-              <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
+                <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
+                <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
+                <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
+                <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
+                <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
               </ul>
-            <h4>EDUCATION</h4>
-            <p>Masters in Photography from PU, 1981</p>'
+            </div>
+            <div>
+              <h4>EDUCATION</h4>
+              <p>Masters in Photography from PU, 1981</p>
+            </div>'
         },
         {
           label: 'Resumé 3',
-          content: '<h3>John DOH</h3><p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-            <h4>SKILLS</h4>
+          content: '
+            <div>
+              <h3>John DOH</h3>
+              <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            </div>
+            <div>
+              <h4>SKILLS</h4>
               <ul>
-              <li>Nemo enim ipsam</li>
-              <li>Incidunt ut labore</li>
-              <li>Dolore magnam</li>
-              <li>Aliquam quaerat voluptatem</li>
-              <li>Voluptate velit esse quam</li>
+                <li>Nemo enim ipsam</li>
+                <li>Incidunt ut labore</li>
+                <li>Dolore magnam</li>
+                <li>Aliquam quaerat voluptatem</li>
+                <li>Voluptate velit esse quam</li>
               </ul>
-            <h4>EXPERIENCE</h4>
+            </div>
+            <div>
+              <h4>EXPERIENCE</h4>
               <ul>
-              <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-              <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-              <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-              <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-              <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
+                <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
+                <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
+                <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
+                <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
+                <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
               </ul>
-            <h4>EDUCATION</h4>
-            <p>Masters in Photography from PU, 1981</p>'
+            </div>
+            <div>
+              <h4>EDUCATION</h4>
+              <p>Masters in Photography from PU, 1981</p>
+            </div>'
         }
       ],
       answer: 2

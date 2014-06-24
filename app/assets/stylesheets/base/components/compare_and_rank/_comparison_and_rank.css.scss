@@ -23,3 +23,13 @@
     @extend .center-block;
   }
 }
+
+.compare-and-rank-modal {
+  .highlight {
+    border: 0.2em dashed $bzgrey2;
+  }
+
+  .lowlight {
+    color: $bzgrey4;
+  }
+}

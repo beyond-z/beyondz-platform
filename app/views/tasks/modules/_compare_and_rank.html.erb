@@ -8,7 +8,7 @@
         <%= content_for :modals do %>
           <%= large_modal(rank_modal_id,
             title: "Review this #{section_config['item_label']}",
-            content: r['content']
+            content: "<div class=\"compare-and-rank-modal\">#{r['content']}</div>"
           ) %>
         <% end %>
         <div class="selection-column">
