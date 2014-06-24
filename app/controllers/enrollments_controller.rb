@@ -18,7 +18,7 @@ class EnrollmentsController < ApplicationController
     if user[:applicant_type] == 'other'
       user[:applicant_type] = params[:other_type]
     end
-    @new_user = User.create!(user)
+    @new_user = User.create(user)
 
     redirect_to redirect_to_welcome_path(@new_user)
   end
