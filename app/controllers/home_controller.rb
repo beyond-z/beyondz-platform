@@ -25,7 +25,7 @@ class HomeController < ApplicationController
   def supporter_info
   end
 
-  def others_info
+  def general_info
   end
 
   private

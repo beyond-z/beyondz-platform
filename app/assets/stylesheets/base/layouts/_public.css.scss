@@ -37,3 +37,8 @@ header #top-navigation {
     @extend .btn-primary;
   }
 }
+
+.open-application-notification {
+  @extend .alert;
+  @extend .alert-info;
+}

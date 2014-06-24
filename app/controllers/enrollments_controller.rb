@@ -20,6 +20,15 @@ class EnrollmentsController < ApplicationController
     end
     @new_user = User.create(user)
 
+    unless @new_user.id
+      # If User.create failed; we have an existing user
+      # trying to sign up again. Instead, let's tell them
+      # to log in
+      flash[:message] = 'You have already joined us, please log in.'
+      redirect_to new_user_session_path
+      return
+    end
+
     redirect_path = general_info_path(new_user_id: @new_user.id)
 
     case @new_user.applicant_type
