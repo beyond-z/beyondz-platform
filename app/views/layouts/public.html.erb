@@ -19,12 +19,10 @@
       <header>
         <section id="banner" role="banner">
           <div class="top-left">
-            <%= image_tag 'bz_logo_211.png' %>
+            <%= link_to image_tag('bz_logo_211.png'), root_path %>
           </div>
           <div class="top-right">
-            <% if !user_signed_in? %>
-              <%= link_to '<button type="button" class="sign-in-button">Sign In</button>'.html_safe, new_user_session_path %>
-            <% end %>
+            <%= render 'shared/login_button' %>
           </div>
         </section>
 
@@ -49,7 +47,7 @@
 
 
       <%= content_for :footer do %>
-        Contact us: <a href="mailto:tech@beyondz.org">tech@beyondz.org</a>
+        Contact us: <a href="mailto:info@beyondz.org">info@beyondz.org</a>
       <% end %>
       <%= render 'shared/footer' %>
       

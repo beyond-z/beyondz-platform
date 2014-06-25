@@ -1,0 +1,11 @@
+<% if user_signed_in? %>
+  <div class="student-login">
+    <%= "Welcome back, #{current_user.name}" %>
+    <%= link_to '<button type="button" class="btn sign-out-button">Sign Out</button>'.html_safe, destroy_user_session_path, :method=>'DELETE' %>
+  </div>
+<% else %>
+  <div class="student-login">
+        <%= link_to '<button type="button" class="btn sign-in-button">Sign In</button>'.html_safe, new_user_session_path %>
+  </div>
+<% end %>
+
