@@ -22,6 +22,10 @@ group :development do
   gem 'binding_of_caller'
 end
 
+group :development, :test do
+  gem 'factory_girl_rails'
+end
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
 

@@ -72,6 +72,11 @@ GEM
       warden (~> 1.2.3)
     erubis (2.7.0)
     execjs (2.2.0)
+    factory_girl (4.4.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.4.1)
+      factory_girl (~> 4.4.0)
+      railties (>= 3.0.0)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
     google_drive (0.3.9)
@@ -208,6 +213,7 @@ DEPENDENCIES
   bootstrap-sass
   debugger
   devise
+  factory_girl_rails
   google_drive
   jbuilder (~> 1.2)
   jquery-rails
