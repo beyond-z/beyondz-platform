@@ -42,7 +42,7 @@ class ApplicationController < ActionController::Base
     case user.applicant_type
     when 'student'
       redirect_path = student_info_path(new_user_id: user.id)
-    when 'college_faculty' || 'professional'
+    when 'college_faculty' || 'professional' || 'educator'
       redirect_path = coach_info_path(new_user_id: user.id)
     when 'supporter'
       redirect_path = supporter_info_path(new_user_id: user.id)
