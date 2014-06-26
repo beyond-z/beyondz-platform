@@ -15,8 +15,8 @@ class ApplicationController < ActionController::Base
     end
   end
 
-    # use controller specific JS whene requested
-    # use: before_action :use_controller_js
+  # use controller specific JS whene requested
+  # use: before_action :use_controller_js
   def use_controller_js
     @controller_js = params[:controller].split('/')[-1]
   end
