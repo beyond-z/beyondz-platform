@@ -6,7 +6,6 @@ $(document).ready(function() {
 
   var task_action_box = $('.task-container .action-box');
   var task_update_submit = '#task-update-student .edit_task input[type=submit]';
-  var task_done_submit = '#task-done .edit_task input[type=submit]';
 
   // update task
   task_action_box.on('click', task_update_submit, function(e){
@@ -64,6 +63,7 @@ $(document).ready(function() {
 
 
   // "submit" task
+  var task_done_submit = '#task-done .edit_task input[type=submit]';
   task_action_box.on('click', task_done_submit, function(e){
     var el = $(this);
     var form = el.closest('form');

@@ -53,7 +53,6 @@ class User < ActiveRecord::Base
               task_definition_id: td.id,
               assignment_id: assignment.id,
               kind: td.kind,
-              file_type: td.file_type,
               state: 'new'
             )
             tasks << task
