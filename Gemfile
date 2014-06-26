@@ -24,6 +24,8 @@ end
 
 group :development, :test do
   gem 'factory_girl_rails'
+  gem 'capybara'
+  gem 'capybara_minitest_spec'
 end
 
 # Use SCSS for stylesheets
