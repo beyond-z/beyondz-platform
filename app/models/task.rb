@@ -135,7 +135,7 @@ class Task < ActiveRecord::Base
     current_position = task_definition.position
     return nil if current_position == 1
 
-    assignment.tasks.for_display.find_by( 
+    assignment.tasks.for_display.find_by(
       task_definitions: { position: current_position - 1 }
     )
   end
@@ -171,7 +171,7 @@ class Task < ActiveRecord::Base
           end
         end
       end
-      
+
       if save!
         submit!
       end
