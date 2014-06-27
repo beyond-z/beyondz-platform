@@ -6,10 +6,10 @@ class TaskResponse < ActiveRecord::Base
 
   enum file_type: { document: 0, image: 1, video: 2, audio: 3 }
 
-  scope :for_section, -> (task_section_id) {
-    find_by_task_section_id(task_section_id)
-  }
 
+  def self.for_section(task_section_id)
+    find_by_task_section_id(task_section_id)
+  end
 
   # blank out uploaded file data
   def reset_files

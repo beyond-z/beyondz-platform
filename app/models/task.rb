@@ -90,30 +90,21 @@ class Task < ActiveRecord::Base
 
   # does task type meet submit requirements
   def ready_to_submit?
-    ready_to_submit = true
-    if needs_responses? || user_confirm?
-      ready_to_submit = false
-    end
+    # add other criteria over time
+    ready_to_submit = needs_responses?
 
     ready_to_submit
   end
 
   # is task state ready to submit
   def submittable?
-    can_submit = false
-
-    if assignment.in_progress?
-      if new? || pending_revision?
-        can_submit = true
-      end
-    end
-
-    can_submit
+    assignment.in_progress? && (new? || pending_revision?)
   end
 
+  # Used to autosubmit tasks that don't have task modules
   def submit_previous_task!
     last_task = previous
-    if last_task && last_task.submittable? && !last_task.task_definition.sections.any?
+    if last_task && last_task.submittable? && !last_task.needs_responses?
       last_task.submit!
     end
   end
@@ -127,9 +118,7 @@ class Task < ActiveRecord::Base
   end
 
   def needs_responses?
-    # Maybe opt for an "accepted" flag instead. This may be unreliable since
-    # not all tasks will require answers
-    !user_confirm? && (!responses.any? || (responses.select { |r| r.answers.nil? }.any?))
+    task_definition.sections.count > responses.count
   end
 
   def next
