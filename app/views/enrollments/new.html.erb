@@ -36,7 +36,11 @@
       <div class="form-group">
         <h3>I am a...</h3>
         <%= f.radio_button :applicant_type, 'student', checked: true %>
-        <%= f.label :applicant_type_student, 'College Student with an anticipated graduation year of' %>
+        <%= f.label :applicant_type_student, 'Undergraduate student with an anticipated graduation year of' %>
+        <%= f.select :anticipated_graduation, options_for_select([2015, 2016, 2017, 2018, 2019]) %>
+        <br />
+        <%= f.radio_button :applicant_type, 'grad_student', checked: true %>
+        <%= f.label :applicant_type_student, 'Graduate student with an anticipated graduation year of' %>
         <%= f.select :anticipated_graduation, options_for_select([2015, 2016, 2017, 2018, 2019]) %>
         <br />
         <%= f.radio_button :applicant_type, 'college_faculty' %>
