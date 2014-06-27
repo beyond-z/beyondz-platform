@@ -112,9 +112,9 @@ class Task < ActiveRecord::Base
   end
 
   def submit_previous_task!
-    previous_task = previous
-    if previous_task && previous_task.submittable? && previous_task.task_definition.sections.any?
-      previous_task.submit!
+    last_task = previous
+    if last_task && last_task.submittable? && !last_task.task_definition.sections.any?
+      last_task.submit!
     end
   end
 
