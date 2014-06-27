@@ -7,7 +7,7 @@ class TaskDefinition < ActiveRecord::Base
   has_many :tasks, dependent: :destroy
   has_many :sections, class_name: 'TaskSection', dependent: :destroy
 
-  enum kind: { user_confirm: 1}
+  enum kind: { user_confirm: 1 }
 
   default_scope { order('position ASC') }
   scope :required, -> { where(required: true) }
