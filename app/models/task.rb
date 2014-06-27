@@ -7,8 +7,6 @@ class Task < ActiveRecord::Base
   has_many :responses, class_name: 'TaskResponse', dependent: :destroy
   has_many :comments, dependent: :destroy
 
-  enum kind: { user_confirm: 1 }
-
   scope :for_assignment, -> (assignment_id) {
     where(assignment_id: assignment_id)
   }
@@ -111,6 +109,13 @@ class Task < ActiveRecord::Base
     end
 
     can_submit
+  end
+
+  def submit_previous_task!
+    previous_task = previous
+    if previous_task && previous_task.submittable? && previous_task.task_definition.sections.any?
+      previous_task.submit!
+    end
   end
 
   def requires_approval?

@@ -49,7 +49,6 @@ class User < ActiveRecord::Base
             task = Task.create(
               task_definition_id: td.id,
               assignment_id: assignment.id,
-              kind: td.kind,
               state: 'new'
             )
             tasks << task

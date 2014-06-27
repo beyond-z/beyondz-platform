@@ -12,7 +12,7 @@ BeyondzPlatform::Application.routes.draw do
   resources :enrollments, only: [:new, :create]
 
   resources :assignments, only: [:index, :update, :show] do
-    resources :tasks, only: [:index, :update, :show]
+    resources :tasks, only: [:update, :show]
   end
 
   namespace :coach do

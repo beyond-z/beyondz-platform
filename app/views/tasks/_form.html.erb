@@ -13,7 +13,10 @@
         <%= f.fields_for :section do |s| %>
           <%= s.fields_for "#{task_section.id}" do |section_number| %>
             <%= render "tasks/modules/#{task_section.module.code}",
-              { task_form: f, section_form: section_number, task: task, task_section: task_section } %>
+              { task_form: f, section_form: section_number,
+                task: task, task_section: task_section,
+                task_section_response: task.responses.for_section(task_section.id).first
+              } %>
           <% end %>
         <% end %>
       <% end %>

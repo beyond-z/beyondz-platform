@@ -3,17 +3,13 @@ class TasksController < ApplicationController
   before_action :require_student
   before_action :use_controller_js
 
-  def index
-    @tasks = Task.for_assignment(params[:assignment_id])
-    @task = Task.new
-  end
-
   def show
     @coaches_comments = Comment.need_student_attention(current_user.id)
     @assignment = Assignment.find(params[:assignment_id])
     @task = Task.find(params[:id])
     @next_task = @task.next
     @previous_task = @task.previous
+    @task.submit_previous_task!
   end
 
 

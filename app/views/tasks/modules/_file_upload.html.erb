@@ -1,8 +1,8 @@
 <%= section_form.fields_for task_section.module.code do |m| %>
-  <% if task.responses.for_section(task_section.id) %>
+  <% if task_section_response %>
     <p>You have already uploaded these versions:</p>
     <ul>
-      <% task.responses.for_section(task_section.id).files.each do |file| %>
+      <% task_section_response.files.each do |file| %>
         <li>
           <%= link_to file.name, file.url %> (<%= file.created_at.strftime("%b %d, %Y") %>)
         </li>
