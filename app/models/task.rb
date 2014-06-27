@@ -128,17 +128,22 @@ class Task < ActiveRecord::Base
   end
 
   def next
-    return nil if task_definition.position == assignment.tasks.count
-    assignment.tasks.for_display\
-      .where('task_definitions.position = ?', task_definition.position + 1)\
-      .first
+    current_position = task_definition.position
+    assignment_tasks = assignment.tasks
+    return nil if current_position == assignment_tasks.count
+
+    assignment.tasks.for_display.find_by(
+      task_definitions: { position: current_position + 1 }
+    )
   end
 
   def previous
-    return nil if task_definition.position == 1
-    assignment.tasks.for_display\
-      .where('task_definitions.position = ?', task_definition.position - 1)\
-      .first
+    current_position = task_definition.position
+    return nil if current_position == 1
+
+    assignment.tasks.for_display.find_by( 
+      task_definitions: { position: current_position - 1 }
+    )
   end
 
   def update(task_params)
@@ -170,14 +175,16 @@ class Task < ActiveRecord::Base
             end
             responses.push(task_response)
           end
-        elsif task_params.key?(:user_confirm) && task_params[:user_confirm] == 'true'
-          submit!
-        elsif task_params.key?(:done) && (task_params[:done] == 'true')
-          # task was submitted as complete
-          submit!
+        # elsif task_params.key?(:user_confirm) && task_params[:user_confirm] == 'true'
+        #   submit!
+        # elsif task_params.key?(:done) && (task_params[:done] == 'true')
+        #   # task was submitted as complete
+        #   submit!
         end
       end
-      save!
+      if save!
+        submit!
+      end
 
     end
   end

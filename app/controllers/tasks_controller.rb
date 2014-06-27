@@ -20,6 +20,8 @@ class TasksController < ApplicationController
   def update
     @task = current_user.tasks.find_by_id(params[:id])
     @task.update(params[:task])
+    @next_task = @task.next
+    @previous_task = @task.previous
 
     respond_to do |format|
       format.html { render partial: 'tasks/action_box' }
