@@ -169,13 +169,9 @@ class Task < ActiveRecord::Base
             end
             responses.push(task_response)
           end
-        # elsif task_params.key?(:user_confirm) && task_params[:user_confirm] == 'true'
-        #   submit!
-        # elsif task_params.key?(:done) && (task_params[:done] == 'true')
-        #   # task was submitted as complete
-        #   submit!
         end
       end
+      
       if save!
         submit!
       end
