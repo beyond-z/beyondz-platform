@@ -61,7 +61,7 @@ item.task_definitions.push(
 )
 
 task_definition = TaskDefinition.create(
-  kind: 'text', required: true, position: 2, requires_approval: true,
+  required: true, position: 2, requires_approval: true,
   name: 'Compass Exercise',
   details: 'Go through the <a href="http://www.nsrfharmony.org/protocol/doc/north_south.pdf\">Compass Exercise</a> and pick a direction that represents you.'
   
@@ -167,7 +167,7 @@ item.end_date = Time.parse("Mar 9")
 item.seo_name = "passions-professions"
 item.save
 task_definition = TaskDefinition.create(
-  kind: 'text', required: true, position: 1, requires_approval: true,
+  required: true, position: 1, requires_approval: true,
   name: 'Attend the group session'
 )
 task_definition.sections.push(
