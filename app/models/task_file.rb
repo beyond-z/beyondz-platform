@@ -1,7 +1,7 @@
 class TaskFile < ActiveRecord::Base
 
-  belongs_to :task_definition
-  belongs_to :task
+  belongs_to :task_section
+  belongs_to :task_response
 
   has_attached_file :document
   validates_attachment :document,
@@ -39,7 +39,7 @@ class TaskFile < ActiveRecord::Base
 
   def url
     # dynamically determine the file url for the given type
-    eval "#{task.file_type}.url"
+    eval "#{task_response.file_type}.url"
   end
 
   def type_exists?(file_type)
@@ -47,7 +47,7 @@ class TaskFile < ActiveRecord::Base
   end
 
   def name
-    self["#{task.file_type}_file_name"]
+    self["#{task_response.file_type}_file_name"]
   end
 
   def reset(file_type)

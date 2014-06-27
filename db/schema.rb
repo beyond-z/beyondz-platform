@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140620011615) do
+ActiveRecord::Schema.define(version: 20140625185025) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,7 +106,6 @@ ActiveRecord::Schema.define(version: 20140620011615) do
     t.text     "summary"
     t.boolean  "requires_approval",        default: false
     t.integer  "kind",                     default: 0
-    t.integer  "file_type"
   end
 
   add_index "task_definitions", ["assignment_definition_id"], name: "index_task_definitions_on_assignment_definition_id", using: :btree
@@ -114,8 +113,6 @@ ActiveRecord::Schema.define(version: 20140620011615) do
   add_index "task_definitions", ["required"], name: "index_task_definitions_on_required", using: :btree
 
   create_table "task_files", force: true do |t|
-    t.integer  "task_definition_id"
-    t.integer  "task_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "image_file_name"
@@ -134,10 +131,12 @@ ActiveRecord::Schema.define(version: 20140620011615) do
     t.string   "audio_content_type"
     t.integer  "audio_file_size"
     t.datetime "audio_updated_at"
+    t.integer  "task_section_id"
+    t.integer  "task_response_id"
   end
 
-  add_index "task_files", ["task_definition_id"], name: "index_task_files_on_task_definition_id", using: :btree
-  add_index "task_files", ["task_id"], name: "index_task_files_on_task_id", using: :btree
+  add_index "task_files", ["task_response_id"], name: "index_task_files_on_task_response_id", using: :btree
+  add_index "task_files", ["task_section_id"], name: "index_task_files_on_task_section_id", using: :btree
 
   create_table "task_modules", force: true do |t|
     t.string   "name"
@@ -152,6 +151,7 @@ ActiveRecord::Schema.define(version: 20140620011615) do
     t.text     "answers"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "file_type"
   end
 
   add_index "task_responses", ["task_id"], name: "index_task_responses_on_task_id", using: :btree
@@ -165,6 +165,7 @@ ActiveRecord::Schema.define(version: 20140620011615) do
     t.text     "configuration"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "file_type"
   end
 
   add_index "task_sections", ["task_definition_id"], name: "index_task_sections_on_task_definition_id", using: :btree
@@ -178,7 +179,6 @@ ActiveRecord::Schema.define(version: 20140620011615) do
     t.datetime "updated_at"
     t.string   "state"
     t.integer  "kind",               default: 0
-    t.integer  "file_type"
   end
 
   add_index "tasks", ["assignment_id"], name: "index_tasks_on_assignment_id", using: :btree
