@@ -51,3 +51,9 @@ EmptyLinesAroundBody:
 
 TrailingBlankLines:
   Enabled: false # whether ending new line is required at end of file
+
+Style/Next:
+  Enabled: false # I have no idea what it is complaining about here. It says "use next to skip iteration" but that's not what we're doign
+
+Style/GuardClause:
+  Enabled: false # it complains about this when we have a simple if statement but i prefer the if
