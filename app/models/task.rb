@@ -124,9 +124,7 @@ class Task < ActiveRecord::Base
   def needs_responses?
     # Maybe opt for an "accepted" flag instead. This may be unreliable since
     # not all tasks will require answers
-    if !user_confirm?
-      !responses.any? || (responses.select { |r| r.answers.nil? }.any?)
-    end
+    !user_confirm? && (!responses.any? || (responses.select { |r| r.answers.nil? }.any?))
   end
 
   def next

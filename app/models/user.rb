@@ -16,10 +16,7 @@ class User < ActiveRecord::Base
   end
 
   def coach
-    c = CoachStudent.find_by :student_id => id
-    if c
-      return c.coach
-    end
+    CoachStudent.find_by(student_id: id).try(:coach)
   end
 
   def coach?
