@@ -23,7 +23,9 @@ group :development do
 end
 
 group :development, :test do
+  # makes creating complex objects easier in tests
   gem 'factory_girl_rails'
+  # allows for user browser simulation in integration testing
   gem 'capybara'
   gem 'capybara_minitest_spec'
 end
