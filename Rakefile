@@ -8,5 +8,4 @@ require File.expand_path('../config/application', __FILE__)
 require 'environment_vars'
 EnvironmentVars.load_env if (Rails.env.development? || Rails.env.test?)
 
-
 BeyondzPlatform::Application.load_tasks

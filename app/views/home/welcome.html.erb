@@ -1,0 +1,27 @@
+<%= render 'signup_welcome' %>
+<% if @new_user && !@new_user.confirmed_at.nil? %>
+  <p>Congrats! Your account is confirmed. We'll be in touch soon!</p>
+<% end %>
+
+<section>
+  <div class="col-sm-6">
+    In the mean time, explore how you can...
+    <ul>
+      <li><%= link_to 'Become a fellow', student_info_path %></li>
+      <li><%= link_to 'Volunteer with Beyond Z', coach_info_path %></li>
+      <li><%= link_to 'Partner with Beyond Z', coach_info_path %></li>
+    </ul>
+  </div>
+  <div class="col-sm-6">
+    <div class="mission-photo">
+      <p>The Beyond Z Accelerator discovers, develops, and connects diverse talent to ensure that our next generation of leaders can emerge from everywhere.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <blockquote>
+    <p>"Beyond Z had provided me with innumerable opportunities for personal and professional growth, but the Capstone project took our learning experiences beyond that of our own and empowered me to give back to my community. I really appreciated this opportunity, it was a great learning experience in regards to leadership for me as a project manager."</p>
+    <footer><cite>- Kelly Hernandez, Stanford University </cite></footer>
+  </blockquote>
+</section>

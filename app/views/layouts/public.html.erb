@@ -21,23 +21,20 @@
           <div class="top-left">
             <%= link_to image_tag('bz_logo_211.png'), root_path %>
           </div>
+          <div class="navigation-holder">
+            <div id="top-navigation" role="navigation">
+              <div class="button-group">
+                <%= link_to 'Home', root_path, :class => 'button-primary' %>
+                <%= link_to 'Apply', student_info_path, :class => 'button' %>
+                <%= link_to 'Volunteer', coach_info_path, :class => 'button' %>
+                <%= link_to 'Partner', enrollments_path, :class => 'button' %>
+              </div>
+            </div>
+          </div>
           <div class="top-right">
             <%= render 'shared/login_button' %>
           </div>
         </section>
-
-        <!--
-        <div id="top-navigation" role="navigation">
-          <div class="button-group">
-            <%#= link_to 'Home', enrollments_path, :class => 'button-primary' %>
-            <%#= link_to 'Student/Fellows', enrollments_path, :class => 'button' %>
-            <%#= link_to 'Volunteers', enrollments_path, :class => 'button' %>
-            <%#= link_to 'Alumni', enrollments_path, :class => 'button' %>
-            <%#= link_to 'Nominate', enrollments_path, :class => 'button' %>
-          </div>
-        </div>
-        -->
-
       </header>
 
       <main role="main">
