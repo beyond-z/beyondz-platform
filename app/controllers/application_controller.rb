@@ -36,19 +36,11 @@ class ApplicationController < ActionController::Base
   end
 
   # direct users to the proper path upon registration
+  # We are now sending them all to a generic page, but I'm
+  # keeping this method because we might change our mind back
+  # and then we'd do to undo just to redo...
   def redirect_to_welcome_path(user)
-    redirect_path = general_info_path(new_user_id: user.id)
-
-    case user.applicant_type
-    when 'student' || 'grad_student'
-      redirect_path = student_info_path(new_user_id: user.id)
-    when 'college_faculty' || 'professional' || 'educator'
-      redirect_path = coach_info_path(new_user_id: user.id)
-    when 'supporter'
-      redirect_path = supporter_info_path(new_user_id: user.id)
-    end
-
-    redirect_path
+    welcome_path
   end
 
 end
