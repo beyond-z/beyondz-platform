@@ -287,7 +287,7 @@ item.task_definitions.push(
     name: 'Parts of a resumé',
     details: '<p>But before you rank resumes, we go to unpack the basic
       building blocks of a resume and discuss what makes a good resume.</p>
-      <p>(Details forthcoming...)</p>'
+      <iframe width="560" height="315" src="//www.youtube.com/embed/PAthQKLhBTs?rel=0" frameborder="0" allowfullscreen></iframe>'
   )
 )
 task_definition = TaskDefinition.create(
