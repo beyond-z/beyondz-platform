@@ -27,7 +27,6 @@ group :development, :test do
   gem 'factory_girl_rails'
   # allows for user browser simulation in integration testing
   gem 'capybara'
-  gem 'capybara_minitest_spec'
 end
 
 # Use SCSS for stylesheets
