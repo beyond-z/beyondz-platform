@@ -7,8 +7,6 @@ class Task < ActiveRecord::Base
   has_many :responses, class_name: 'TaskResponse', dependent: :destroy
   has_many :comments, dependent: :destroy
 
-  enum kind: { user_confirm: 1 }
-
   scope :for_assignment, -> (assignment_id) {
     where(assignment_id: assignment_id)
   }
@@ -92,25 +90,23 @@ class Task < ActiveRecord::Base
 
   # does task type meet submit requirements
   def ready_to_submit?
-    ready_to_submit = true
-    if needs_responses? || user_confirm?
-      ready_to_submit = false
-    end
+    # add other criteria over time
+    ready_to_submit = needs_responses?
 
     ready_to_submit
   end
 
   # is task state ready to submit
   def submittable?
-    can_submit = false
+    assignment.in_progress? && (new? || pending_revision?)
+  end
 
-    if assignment.in_progress?
-      if new? || pending_revision?
-        can_submit = true
-      end
+  # Used to autosubmit tasks that don't have task modules
+  def submit_previous_task!
+    last_task = previous
+    if last_task && last_task.submittable? && !last_task.needs_responses?
+      last_task.submit!
     end
-
-    can_submit
   end
 
   def requires_approval?
@@ -122,23 +118,26 @@ class Task < ActiveRecord::Base
   end
 
   def needs_responses?
-    # Maybe opt for an "accepted" flag instead. This may be unreliable since
-    # not all tasks will require answers
-    !user_confirm? && (!responses.any? || (responses.select { |r| r.answers.nil? }.any?))
+    task_definition.sections.count > responses.count
   end
 
   def next
-    return nil if task_definition.position == assignment.tasks.count
-    assignment.tasks.for_display\
-      .where('task_definitions.position = ?', task_definition.position + 1)\
-      .first
+    current_position = task_definition.position
+    assignment_tasks = assignment.tasks
+    return nil if current_position == assignment_tasks.count
+
+    assignment.tasks.for_display.find_by(
+      task_definitions: { position: current_position + 1 }
+    )
   end
 
   def previous
-    return nil if task_definition.position == 1
-    assignment.tasks.for_display\
-      .where('task_definitions.position = ?', task_definition.position - 1)\
-      .first
+    current_position = task_definition.position
+    return nil if current_position == 1
+
+    assignment.tasks.for_display.find_by(
+      task_definitions: { position: current_position - 1 }
+    )
   end
 
   def update(task_params)
@@ -170,14 +169,12 @@ class Task < ActiveRecord::Base
             end
             responses.push(task_response)
           end
-        elsif task_params.key?(:user_confirm) && task_params[:user_confirm] == 'true'
-          submit!
-        elsif task_params.key?(:done) && (task_params[:done] == 'true')
-          # task was submitted as complete
-          submit!
         end
       end
-      save!
+
+      if save!
+        submit!
+      end
 
     end
   end

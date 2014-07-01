@@ -54,7 +54,7 @@ item.seo_name = "story-of-self"
 item.save
 item.task_definitions.push(
   TaskDefinition.create(
-    kind: 'user_confirm', required: true, position: 1, requires_approval: true,
+    required: true, position: 1, requires_approval: true,
     name: 'Take Myers Briggs Personality Test',
     details: 'Take this test: <a href="http://www.humanmetrics.com/cgi-win/JTypes1.htm">Take Myers Briggs Personality Test</a>'
   )
@@ -98,7 +98,7 @@ task_definition.sections.push(
 item.task_definitions.push(task_definition)
 
 task_definition = TaskDefinition.create(
-  kind: nil, required: true, position: 4,
+  required: true, position: 4,
   name: 'Watch Story of Self',
   summary: 'Discover your story!'
 )
@@ -143,7 +143,7 @@ item.task_definitions.push(task_definition)
 
 item.task_definitions.push(
   TaskDefinition.create(
-    kind: 'user_confirm', required: true, position: 5, requires_approval: true,
+    required: true, position: 5, requires_approval: true,
     name: 'Beyond Z College Survey',
     details: 'Complete the <a href="https://docs.google.com/forms/d/10JAYX6qwuZ_z9ZXooZ_QsXmCWhGeLtsTFqIUKz6blp4/viewform">Beyond Z College Survey</a> <em>(15 min)</em>.'
   )
@@ -179,7 +179,7 @@ task_definition.sections.push(
 item.task_definitions.push(task_definition)
 item.task_definitions.push(
   TaskDefinition.create(
-    kind: 'user_confirm', required: true, position: 2, requires_approval: true,
+    required: true, position: 2, requires_approval: true,
     name: 'Request informational interview',
     summary: 'Request at least one informational interview to explore summer opportunities and/or career majors.'
   )
@@ -216,7 +216,7 @@ item.seo_name = "cover-letter"
 item.save
 item.task_definitions.push(
   TaskDefinition.create(
-    kind: 'user_confirm', required: true, position: 1,
+    required: true, position: 1,
     name: 'Learn about cover letters',
     summary: 'Get the lowdown on cover letters and prepare to write your own.',
     details: 'Read <a href="http://www.slate.com/articles/business/moneybox/2013/08/cover_letter_writing_advice_how_to_write_a_cover_letter_for_an_entry_level.html">I&#8217;ve Read 500 Cover Letters for Entry Level Media Jobs</a> and <a href="http://www.fastcompany.com/3016727/leadership-now/dont-be-boring-how-to-write-a-cover-letter-that-can-get-you-the-job">Don&#8217;t Be Boring: How to Write a Cover Letter That Can Get You the Job</a>'
@@ -224,7 +224,7 @@ item.task_definitions.push(
 )
 item.task_definitions.push(
   TaskDefinition.create(
-    kind: 'user_confirm', required: true, position: 2, requires_approval: true,
+    required: true, position: 2, requires_approval: true,
     name: 'Draft Cover Letter',
     summary: 'Put together your own cover letter.'
   )
@@ -263,7 +263,7 @@ item.seo_name = "resume"
 item.save
 item.task_definitions.push(
   TaskDefinition.create(
-    kind: 'user_confirm', required: true, position: 1,
+    required: true, position: 1,
     name: 'Your resumé',
     details: '<p>Your resumé is the crown jewel of your career portfolio. Just
       like companies have logos and "brand reputations" where they are publicly
@@ -283,7 +283,7 @@ item.task_definitions.push(
 )
 item.task_definitions.push(
   TaskDefinition.create(
-    kind: 'user_confirm', required: true, position: 2,
+    required: true, position: 2,
     name: 'Parts of a resumé',
     details: '<p>But before you rank resumes, we go to unpack the basic
       building blocks of a resume and discuss what makes a good resume.</p>
@@ -291,7 +291,7 @@ item.task_definitions.push(
   )
 )
 task_definition = TaskDefinition.create(
-  kind: nil, required: true, position: 3, name: 'Formatting',
+  required: true, position: 3, name: 'Formatting',
   summary: 'Determine which resumés have the best formatting.',
   details: '<p>This is an entire paragraph about what makes good resumé
     formatting. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
@@ -412,7 +412,7 @@ task_definition.sections.push(
 )
 item.task_definitions.push(task_definition)
 task_definition = TaskDefinition.create(
-  kind: nil, required: true, position: 4, name: 'Education section',
+  required: true, position: 4, name: 'Education section',
   summary: 'Determine which resumés have the best education section.',
   details: '<p>This is an entire paragraph about what makes a good education section.
     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -533,7 +533,7 @@ task_definition.sections.push(
 )
 item.task_definitions.push(task_definition)
 task_definition = TaskDefinition.create(
-  kind: nil, required: true, position: 5, name: 'Experience section',
+  required: true, position: 5, name: 'Experience section',
   summary: 'Determine which resumés have the best experience section.',
   details: '<p>This is an entire paragraph about what makes a good experience section.
     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -654,7 +654,7 @@ task_definition.sections.push(
 )
 item.task_definitions.push(task_definition)
 task_definition = TaskDefinition.create(
-  kind: nil, required: true, position: 6, name: 'Leadership section',
+  required: true, position: 6, name: 'Leadership section',
   summary: 'Determine which resumés have the best leadership section.',
   details: '<p>This is an entire paragraph about what makes a good leadership section.
     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -775,7 +775,7 @@ task_definition.sections.push(
 )
 item.task_definitions.push(task_definition)
 task_definition = TaskDefinition.create(
-  kind: nil, required: true, position: 7, name: 'Skills and experiences',
+  required: true, position: 7, name: 'Skills and experiences',
   summary: 'Determine which resumés have the best skills and experiences section.',
   details: '<p>This is an entire paragraph about what makes a good skills and experience section.
     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -896,7 +896,7 @@ task_definition.sections.push(
 )
 item.task_definitions.push(task_definition)
 task_definition = TaskDefinition.create(
-  kind: nil, required: true, position: 8, name: 'Rank the resumés',
+  required: true, position: 8, name: 'Rank the resumés',
   summary: 'Determine which resumés are the strongest and weakest.',
   details: '<p>This is an entire paragraph about what makes a good resumé.
     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -1017,7 +1017,7 @@ task_definition.sections.push(
 )
 item.task_definitions.push(task_definition)
 task_definition = TaskDefinition.create(
-  kind: nil, required: true, position: 9, requires_approval: true,
+  required: true, position: 9, requires_approval: true,
   name: "Compose your Resumé",
   summary: 'A solid resume is key to getting into the door of the job you want.',
   details: '<p>This is an entire paragraph about how to make a good resumé.
@@ -1068,13 +1068,13 @@ item.seo_name = "networks"
 item.save
 item.task_definitions.push(
   TaskDefinition.create(
-    kind: 'user_confirm', required: true, position: 1,
+    required: true, position: 1,
     name: 'Read the articles'
   )
 )
 item.task_definitions.push(
   TaskDefinition.create(
-    kind: 'user_confirm', required: true, position: 2, requires_approval: true,
+    required: true, position: 2, requires_approval: true,
     name: 'Set-up LinkedIn Account and send to 10 connections.'
   )
 )
@@ -1111,7 +1111,7 @@ item.seo_name = "best-self"
 item.save
 item.task_definitions.push(
   TaskDefinition.create(
-    kind: 'user_confirm', required: true, position: 1,
+    required: true, position: 1,
     name: 'Best Self Exercise',
     details: 'Read the <a href="https://www.dropbox.com/s/9jb9zvt1lpdcovv/K%20%20Week%204_Spring%20Break%20-%20Best%20Self%20Exercise%20Request.docx?dl=1">Best Self Exercise</a>.'
   )
@@ -1151,20 +1151,20 @@ item.seo_name = "asking-for-help"
 item.save
 item.task_definitions.push(
   TaskDefinition.create(
-    kind: 'user_confirm', required: true, position: 1, name: 'Write Blog #1',
+    required: true, position: 1, name: 'Write Blog #1',
     summary: 'Topic: Give guidance to younger BZ students about overcoming hardship.'
   )
 )
 item.task_definitions.push(
     TaskDefinition.create(
-      kind: 'user_confirm', required: true, position: 2, requires_approval: true,
+      required: true, position: 2, requires_approval: true,
       name: 'Contacts for the Best Self Exercise (by Friday, April 4th)',
       details: 'Give your coach 2 contacts for the <a href="https://www.dropbox.com/s/9jb9zvt1lpdcovv/K%20%20Week%204_Spring%20Break%20-%20Best%20Self%20Exercise%20Request.docx?dl=1">Best Self Exercise</a> by Friday, April 4th.'
     )
   )
 item.task_definitions.push(
   TaskDefinition.create(
-    kind: 'user_confirm', required: true, position: 3, requires_approval: true,
+    required: true, position: 3, requires_approval: true,
     name: 'Sign up for mock interviews',
     details: 'Sign up for mock interviews <a href="https://docs.google.com/spreadsheet/ccc?key=0AqSVLa-AGkW_dEIzT2t0NG9iRWY5XzBqbWVqZ0tqb0E&amp;usp=sharing">here</a>.'
   )
@@ -1205,14 +1205,14 @@ item.seo_name = "interview-simulations"
 item.save
 item.task_definitions.push(
   TaskDefinition.create(
-    kind: 'user_confirm', required: true, position: 1,
+    required: true, position: 1,
     name: 'Go through Steps 1-6',
     details: 'Optional Resources to check out: Interview Simulator and Online Flashcards.'
   )
 )
 item.task_definitions.push(
   TaskDefinition.create(
-    kind: 'user_confirm', required: true, position: 2, requires_approval: true,
+    required: true, position: 2, requires_approval: true,
     name: 'Interview Sign-up',
     summary: 'Sign-up for 1 phone interview and 1 in-person mock interview',
     details: 'Sign-up by Sunday, April 6 here: <a href="https://docs.google.com/spreadsheet/ccc?key=0AqSVLa-AGkW_dEIzT2t0NG9iRWY5XzBqbWVqZ0tqb0E&amp;usp=sharing">Mock Interview Sign-Up Form</a>:  (Sign up for a total of 2 mock interviews)'
@@ -1247,20 +1247,20 @@ item.seo_name = "dropbox.com/s/gaycnymb36ji6c9/BZ%20Academy%20Midpoint%20Summit%
 item.save
 item.task_definitions.push(
   TaskDefinition.create(
-    kind: 'user_confirm', required: true, position: 1,
+    required: true, position: 1,
     name: 'Copies of your resume and cover letter',
     details: 'Make 10 copies of your resume and cover letter for distribution.'
   )
 )
 item.task_definitions.push(
   TaskDefinition.create(
-    kind: 'user_confirm', required: true, position: 2,
+    required: true, position: 2,
     name: 'Your padfolio (from weekend 0) and pen'
   )
 )
 item.task_definitions.push(
   TaskDefinition.create(
-    kind: 'user_confirm', required: true, position: 3,
+    required: true, position: 3,
     name: 'Your A-Game for interviewing and networking practice!'
   )
 )
@@ -1285,14 +1285,14 @@ item.seo_name = "work-ethic"
 item.save
 item.task_definitions.push(
   TaskDefinition.create(
-    kind: 'user_confirm', required: true, position: 1,
+    required: true, position: 1,
     name: 'Read "30 Under 30 Leaders who are changing the world!"',
     details: 'For inspiration read <a href="http://www.forbes.com/special-report/2014/30-under-30/finance.html">30 Under 30 Leaders who are changing the world!</a>'
   )
 )
 item.task_definitions.push(
   TaskDefinition.create(
-    kind: 'user_confirm', required: true, position: 2, requires_approval: true,
+    required: true, position: 2, requires_approval: true,
     name: 'Write Blog #2',
     summary: 'Topic: What keeps you driven to succeed and how you stay organized and on track to meet that goal.'
   )
@@ -1330,13 +1330,13 @@ item.seo_name = "organization-self-mgmt"
 item.save
 item.task_definitions.push(
   TaskDefinition.create(
-    kind: 'user_confirm', required: true, position: 1, requires_approval: true,
+    required: true, position: 1, requires_approval: true,
     name: 'Write Blog #3'
   )
 )
 item.task_definitions.push(
   TaskDefinition.create(
-    kind: 'user_confirm', required: true, position: 2, requires_approval: true,
+    required: true, position: 2, requires_approval: true,
     name: 'Write job search advice',
     summary: 'Write advice on staying organized and on top of your summer opportunity search.'
   )
