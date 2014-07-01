@@ -50,9 +50,6 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    capybara_minitest_spec (1.0.2)
-      capybara (>= 2)
-      minitest (>= 2)
     climate_control (0.0.3)
       activesupport (>= 3.0)
     cocaine (0.5.4)
@@ -223,7 +220,6 @@ DEPENDENCIES
   binding_of_caller
   bootstrap-sass
   capybara
-  capybara_minitest_spec
   debugger
   devise
   factory_girl_rails

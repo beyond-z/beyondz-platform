@@ -1,36 +1,78 @@
-<%= render 'signup_welcome' %>
+<h1>Join the Beyond Z Accelerator</h1>
+<h2>Leaders emerge from everywhere</h2>
 
 <section>
   <div class="col-md-6">
-    <!-- FIXME: Replace this with an actual student picture, just using me to fill the space until that asset is available -->
-    <%= image_tag 'http://graph.facebook.com/adamdruppe/picture?type=large', alt: 'Picture of Student' %>
+    <div style="text-align: center">
+      <iframe src="//player.vimeo.com/video/99267372" width="400" height="225" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+      <blockquote>
+      <p>“I joined Beyond Z because I wanted to be a part of a community that would help me develop my career skills...one particular thing that I’ve learned is to work together with other people and have confidence in myself”</p>
+      <footer><cite>Cesar Ramirez, UC Berkeley </cite></footer>
+      </blockquote>
+    </div>
   </div>
   <div class="col-md-6">
-    <h2>As a BZ fellow...</h2>
-    <p>Here's a summary of the experience.</p>
-    <p>All kinds of cool stuff will be a part of it and I can write a few words here to fill in the space just to see how this looks.</p>
+    <p>You got into college. You figured out how to pay for it. You’ve adapted to college life. You take classes, study hard, and maybe even chose a major. Now, you want to develop your leadership and career skills so you can get a job after you graduate that sets you up to reach your potential. Beyond Z is here to help. The Beyond Z Accelerator discovers, develops, and connects diverse talent to ensure that our next generation of leaders can emerge from everywhere.</p>
   </div>
 </section>
 
+<% if user_signed_in? %>
 <section>
   <div class="open-application-notification">
     <p>You will be notified when applications are open.</p>
   </div>
 </section>
+<% else %>
+  <a href="/enrollments/new">Sign Up to receive application</a>
+<% end %>
 
 <section>
   <div class="col-md-6">
-    <h2>Benefits of joining Beyond Z</h2>
+    <h2>Selection Criteria &amp; Process</h2>
 
+    <p>We’re looking for students who want to accelerate their leadership and career, care about bettering their community, and believe in the importance of diversifying our nation’s leadership force. </p>
+
+    <h3>Qualifications: </h3>
     <ul>
-      <li>Learn important real world skills</li>
-      <li>Networking to make professional contacts</li>
-      <li>More material</li>
+      <li>Must be in sophomore standing at your college or university </li>
+      <li>Must have a 2.5 cumulative GPA or higher </li>
+      <li>Must be able to commit an average of 2 hours a week to Beyond Z from mid October to late April (excluding all holidays and breaks) </li>
+    </ul>
+    <p>Spots for our 2014-2015 class are limited and we may not be able to accept all qualified applicants at this time.  </p>
+
+    <h3>Timeline:</h3>
+    <ul>
+      <li>Now – Sign Up to Stay in Touch</li>
+      <li>Early August – Application Opens</li>
+      <li>Mid September – Application Due</li>
+      <li>Late September – Phone Interviews</li>
+      <li>Early October – Application Notification</li>
+      <li>Mid October - Program Launch</li>
+      <li>Late April – Program Wrap Up</li>
+      <li>Summer – Self Chosen Summer Experience</li>
     </ul>
   </div>
   <div class="col-md-6">
-    <h2>Selection Criteria &amp; Process</h2>
-    <p>Here's some student specific information.</p>
+    <h2>What to expect:</h2>
+    <p>As a Beyond Z Leader, you will join a community that will help you explore your authentic leadership, develop 21st Century skills, and accelerate you into your career. Specifically, you’ll: </p>
+    <ul>
+      <li><b>Meet</b> with a small cohort of your peers led by a Leadership Coach, a local professional who will act as your coach and champion </li>
+      <li><b>Reflect</b> on your identity, strengths, skills, and passions and direct those towards a career</li>
+      <li><b>Master</b> key career readiness skills like networking, interviewing, and creating an online brand</li>
+      <li><b>Create</b> your own products, programs, and presentations, just like you would in a real job </li>
+      <li><b>Secure</b> an awesome summer opportunity like an internship with support from Beyond Z </li>
+    </ul>
   </div>
+</section>
+
+<section>
+  <blockquote>
+    <div style="float: left; padding-right: 1em;">
+    <%= image_tag('aimee.jpg') %>
+    </div>
+    <p>“ This next generation of extraordinary, diverse future leaders is compelled to pay it forward for those who come after them...and to recognize all those who came before them, on whose shoulders they stand.” </p>
+    <footer><cite>Aimee Eubanks Davis, Founder </cite></footer>
+    <br class="clear-fix" />
+  </blockquote>
 </section>
 

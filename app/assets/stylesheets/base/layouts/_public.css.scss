@@ -7,9 +7,12 @@ header #banner .top-left {
   @extend .col-sm-2;
 }
 
+header #banner .navigation-holder {
+  @extend .col-sm-8;
+}
+
 header #banner .top-right {
   @extend .col-sm-2;
-  @extend .col-sm-offset-8;
   @extend .text-right;
   padding-top: 30px;
 
@@ -42,4 +45,42 @@ header #top-navigation {
 .open-application-notification {
   @extend .alert;
   @extend .alert-info;
+}
+
+.infographic-column {
+  @extend .col-sm-4;
+
+  h3, p {
+    font-size: 150%;
+  }
+
+  h3 {
+    color: red;
+    text-transform: uppercase;
+  }
+
+  p {
+
+  }
+}
+
+.mission-photo {
+  position: relative;
+  width: 100%;
+  padding-bottom: 75%;
+  background-image: url("bz_group_photo.jpg");
+
+  p {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+
+    padding: 10%;
+    font-size: 150%;
+
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+  }
 }

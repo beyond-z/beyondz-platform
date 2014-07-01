@@ -2,6 +2,7 @@ BeyondzPlatform::Application.routes.draw do
   devise_for :users, controllers: { confirmations: 'confirmations' }
 
   root "home#index"
+  get '/welcome', to: 'home#welcome'
   get '/coach_info', to: 'home#coach_info'
   get '/student_info', to: 'home#student_info'
   get '/supporter_info', to: 'home#supporter_info'

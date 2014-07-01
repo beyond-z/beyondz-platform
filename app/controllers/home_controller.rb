@@ -16,6 +16,9 @@ class HomeController < ApplicationController
     end
   end
 
+  def welcome
+  end
+
   def coach_info
   end
 

@@ -3,6 +3,9 @@
     <h1>
       Get involved with the movement to ensure our next generation of leaders emerges from everywhere.
     </h1>
+    <p class="lead">
+    We’re excited for you to get involved!  Whether you’re interested in participating as a fellow, volunteering as a speaker or coach, or becoming a partner organization, you’re in the right place. Tell us who you are and we’ll be in touch soon!  
+    </p>
   </div>
 </section>
 
@@ -35,7 +38,7 @@
 
       <div class="form-group">
         <h3>I am a...</h3>
-        <%= f.radio_button :applicant_type, 'student', checked: true %>
+        <%= f.radio_button :applicant_type, 'undergrad_student', checked: true %>
         <%= f.label :applicant_type_student, 'Undergraduate student with an anticipated graduation year of' %>
         <%= f.select :anticipated_graduation, options_for_select([2015, 2016, 2017, 2018, 2019]) %>
         <br />
@@ -43,19 +46,22 @@
         <%= f.label :applicant_type_student, 'Graduate student with an anticipated graduation year of' %>
         <%= f.select :anticipated_graduation, options_for_select([2015, 2016, 2017, 2018, 2019]) %>
         <br />
-        <%= f.radio_button :applicant_type, 'college_faculty' %>
-        <%= f.label :applicant_type_college_faculty, 'College Faculty or Staff' %>
+        <%= f.radio_button :applicant_type, 'school_student', checked: true %>
+        <%= f.label :applicant_type_student, 'Middle school or high school student in grade ' %>
+        <%= f.select :anticipated_graduation, options_for_select(1..12) %>
         <br />
-        <%= f.radio_button :applicant_type, 'educator' %>
-        <%= f.label :applicant_type_educator, 'Educator or School Leader' %>
-        <br />
+
         <%= f.radio_button :applicant_type, 'professional' %>
         <%= f.label :applicant_type_professional, 'Local Professional' %>
+        <%= text_field_tag :other_type, nil, :class => 'form-control', :placeholder => 'what do you do?' %>
         <!--
         <br />
         <%= f.radio_button :applicant_type, 'supporter' %>
         <%= f.label :applicant_type_supporter, 'Supporter' %>
         -->
+        <br />
+        <%= f.radio_button :applicant_type, 'family_member' %>
+        <%= f.label :applicant_type_family_member, 'Family member of a Beyond Z Participant' %>
         <br />
         <%= f.radio_button :applicant_type, 'other' %>
         <%= f.label :applicant_type_other, 'Other?' %>
@@ -63,9 +69,17 @@
       </div>
 
       <div class="form-group">
+        <%= f.label  :location %>
+        <%= f.text_field :location, :class => 'form-control', required: 'required', placeholder: 'Where do you live?'%>
+      </div>
+
+
+      <!--
+      <div class="form-group">
         <%= f.check_box :keep_updated, checked: true %>
         <%= f.label :keep_updated, 'Keep me updated about the BZ 2014-2015 Program' %>
       </div>
+      -->
       <div class="form-group">
         <button type="submit" class="btn btn-lg btn-primary">Continue</button>
       </div>
@@ -77,6 +91,10 @@
     <blockquote>
       <p>"You become part of a team that could actually make a difference. You learn that you have a story and how to tell it. You meet lots of highly motivated, inspiring people."</p>
       <footer>Andy Yitalo, Stanford University</footer>
+    </blockquote>
+    <blockquote>
+      <p>"I loved getting to know the kids and hanging out with them - we got to know each of their personalities really well. I particularly loved watching them plan the Hackathon and seeing their efforts pay off. Their excitement for coding, planning, and leading at Beyond Hacks was contagious and I was thrilled for them."</p>
+      <footer>Aly Mejia</footer>
     </blockquote>
   </div>
 </section>
