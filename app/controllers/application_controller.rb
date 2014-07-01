@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
   # We are now sending them all to a generic page, but I'm
   # keeping this method because we might change our mind back
   # and then we'd do to undo just to redo...
-  def redirect_to_welcome_path(user)
+  def redirect_to_welcome_path(_user)
     welcome_path
   end
 
