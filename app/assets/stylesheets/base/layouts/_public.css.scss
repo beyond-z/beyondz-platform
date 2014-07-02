@@ -86,8 +86,9 @@ header #top-navigation {
 }
 
 .quote {
-  border: solid 1px #ccc;
-  background-color: #f0f0f0;
+  border: solid 1px $bzgrey3;
+  background-color: $bzgrey1;
+  border-radius: 6px;
   padding: 1em;
 
   cite { font-weight: bold; }
@@ -95,4 +96,5 @@ header #top-navigation {
 
 .form-option-details {
   display: none;
+  padding-left: 2em;
 }

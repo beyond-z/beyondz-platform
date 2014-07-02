@@ -19,16 +19,16 @@ class HomeController < ApplicationController
   def welcome
   end
 
-  def coach_info
+  def volunteer
   end
 
-  def student_info
+  def apply
   end
 
   def supporter_info
   end
 
-  def general_info
+  def partner
   end
 
   private
