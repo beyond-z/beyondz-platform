@@ -84,3 +84,15 @@ header #top-navigation {
     color: white;
   }
 }
+
+.quote {
+  border: solid 1px #ccc;
+  background-color: #f0f0f0;
+  padding: 1em;
+
+  cite { font-weight: bold; }
+}
+
+.form-option-details {
+  display: none;
+}
