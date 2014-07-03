@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
 
-  before_action :new_user, only: [:coach_info, :student_info, :supporter_info, :general_info]
+  before_action :new_user, only: [:welcome, :volunteer, :apply, :partner]
 
   layout 'public'
 
@@ -19,16 +19,16 @@ class HomeController < ApplicationController
   def welcome
   end
 
-  def coach_info
+  def volunteer
   end
 
-  def student_info
+  def apply
   end
 
   def supporter_info
   end
 
-  def general_info
+  def partner
   end
 
   private

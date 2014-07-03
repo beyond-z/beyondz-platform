@@ -1,7 +1,7 @@
 <section>
   <div class="col-sm-12">
     <h1>
-      Get involved with the movement to ensure our next generation of leaders emerges from everywhere.
+      Get Involved
     </h1>
     <p class="lead">
     We’re excited for you to get involved!  Whether you’re interested in participating as a fellow, volunteering as a speaker or coach, or becoming a partner organization, you’re in the right place. Tell us who you are and we’ll be in touch soon!  
@@ -12,16 +12,15 @@
 <section id="sign-up-form">
   <div class="col-sm-5 col-sm-offset-1">
     <%= form_for :user, url: enrollments_path, role: 'form' do |f| %>
+      <%= render 'shared/form_errors', locals: { object: @user } %>
       <div class="form-group">
         <%= f.label :first_name, 'Name' %>
         <section>
           <div class="col-sm-6">
             <%= f.text_field :first_name, :class => 'form-control', required: 'required', placeholder: 'First Name', style: 'float: left;' %>
-            <p class="help-block">Enter your first name.</p>
           </div>
           <div class="col-sm-6">
             <%= f.text_field :last_name, :class => 'form-control', required: 'required', placeholder: 'Last Name', style: 'float: left;'  %>
-            <p class="help-block">Enter your last name.</p>
           <div>
         </section>
       </div>
@@ -32,47 +31,78 @@
 
       <div class="form-group">
         <%= f.label  :password %>
-        <%= f.password_field :password, :class => 'form-control', required: 'required', placeholder: 'Password'%>
-        <p class="help-block">Enter a password so you can log in later.</p>
+        <%= f.password_field :password, :class => 'form-control', required: 'required', placeholder: 'Create a password'%>
+        <!-- <p class="help-block">Enter a password so you can log in later.</p> -->
       </div>
 
       <div class="form-group">
-        <h3>I am a...</h3>
-        <%= f.radio_button :applicant_type, 'undergrad_student', checked: true %>
-        <%= f.label :applicant_type_student, 'Undergraduate student with an anticipated graduation year of' %>
-        <%= f.select :anticipated_graduation, options_for_select([2015, 2016, 2017, 2018, 2019]) %>
-        <br />
-        <%= f.radio_button :applicant_type, 'grad_student', checked: true %>
-        <%= f.label :applicant_type_student, 'Graduate student with an anticipated graduation year of' %>
-        <%= f.select :anticipated_graduation, options_for_select([2015, 2016, 2017, 2018, 2019]) %>
-        <br />
-        <%= f.radio_button :applicant_type, 'school_student', checked: true %>
-        <%= f.label :applicant_type_student, 'Middle school or high school student in grade ' %>
-        <%= f.select :anticipated_graduation, options_for_select(1..12) %>
-        <br />
+        <label style="display: block;">Where do you live?</label>
+        <%= f.text_field :city, :class => 'form-control', required: 'required', placeholder: 'City', style: 'width: 20em; display: inline-block;' %>
+        <%= f.select :state, options_for_select([
+          'AL', 'AK', 'AZ', 'AR', 'CA', 'CO',
+          'CT', 'DE', 'DC', 'FL', 'GA', 'HI',
+          'ID', 'IL', 'IN', 'IA', 'KS', 'KY',
+          'LA', 'ME', 'MD', 'MA', 'MI', 'MN',
+          'MS', 'MO', 'MT', 'NE', 'NV', 'NH',
+          'NJ', 'NM', 'NY', 'NC', 'ND', 'OH',
+          'OK', 'OR', 'PA', 'RI', 'SC', 'SD',
+          'TN', 'TX', 'UT', 'VT', 'VA', 'WA',
+          'WV', 'WI', 'WY',
+        ]) %>
+      </div>
 
-        <%= f.radio_button :applicant_type, 'professional' %>
-        <%= f.label :applicant_type_professional, 'Local Professional' %>
-        <%= text_field_tag :other_type, nil, :class => 'form-control', :placeholder => 'what do you do?' %>
+      <div class="form-group">
+        <label>I am a...</label>
+        <div>
+          <%= f.radio_button :applicant_type, 'undergrad_student', required: 'required' %>
+          <%= f.label :applicant_type_undergrad_student, 'Undergraduate student' %>
+          <div class="form-option-details">
+            Anticipated graduation:
+            <%= select_tag :anticipated_undergrad_graduation, options_for_select(graduation_years) %>
+          </div>
+        </div>
+        <div>
+          <%= f.radio_button :applicant_type, 'grad_student', required: 'required' %>
+          <%= f.label :applicant_type_grad_student, 'Graduate student' %>
+          <div class="form-option-details">
+            Anticipated graduation:
+            <%= select_tag :anticipated_grad_graduation, options_for_select(graduation_years) %>
+          </div>
+        </div>
+        <div>
+          <%= f.radio_button :applicant_type, 'school_student' %>
+          <%= f.label :applicant_type_school_student, 'Middle school or high school student', required: 'required' %>
+          <div class="form-option-details">
+            Grade:
+            <%= select_tag :grade, options_for_select([12, 11, 10, 9, 8, 7, 6]) %>
+          </div>
+        </div>
+        <div>
+
+          <%= f.radio_button :applicant_type, 'professional', required: 'required' %>
+          <%= f.label :applicant_type_professional, 'Local Professional' %>
+          <div class="form-option-details">
+            <%= text_field_tag :professional_details, nil, :class => 'form-control', :placeholder => 'What do you do?' %>
+          </div>
+        </div>
         <!--
-        <br />
-        <%= f.radio_button :applicant_type, 'supporter' %>
-        <%= f.label :applicant_type_supporter, 'Supporter' %>
+        <div>
+          <%= f.radio_button :applicant_type, 'supporter', required: 'required' %>
+          <%= f.label :applicant_type_supporter, 'Supporter' %>
+        </div>
         -->
-        <br />
-        <%= f.radio_button :applicant_type, 'family_member' %>
-        <%= f.label :applicant_type_family_member, 'Family member of a Beyond Z Participant' %>
-        <br />
-        <%= f.radio_button :applicant_type, 'other' %>
-        <%= f.label :applicant_type_other, 'Other?' %>
-        <%= text_field_tag :other_type, nil, :class => 'form-control', :placeholder => 'Who?' %>
+        <div>
+          <%= f.radio_button :applicant_type, 'family_member', required: 'required' %>
+          <%= f.label :applicant_type_family_member, 'Family member of a Beyond Z Participant' %>
+        </div>
+        <div>
+          <%= f.radio_button :applicant_type, 'other' %>
+          <%= f.label :applicant_type_other, 'Other?' %>
+          <div class="form-option-details">
+            <%= text_field_tag :other_details, nil, :class => 'form-control', :placeholder => 'Who?' %>
+          </div>
+        </div>
       </div>
-
-      <div class="form-group">
-        <%= f.label  :location %>
-        <%= f.text_field :location, :class => 'form-control', required: 'required', placeholder: 'Where do you live?'%>
-      </div>
-
 
       <!--
       <div class="form-group">
@@ -81,7 +111,7 @@
       </div>
       -->
       <div class="form-group">
-        <button type="submit" class="btn btn-lg btn-primary">Continue</button>
+        <button type="submit" class="btn btn-lg btn-primary">Submit</button>
       </div>
     <% end %>
   </div>
