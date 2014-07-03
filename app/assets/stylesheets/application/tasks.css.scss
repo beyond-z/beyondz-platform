@@ -54,8 +54,11 @@
     }
   }
 
-  #task-done {
-    margin-top: 2em;
+  .context-notes {
+    border: dotted 0.05em $bzorange;
+  }
+  .context-notes:hover {
+    background-color: $bzgrey1;
   }
 
   .task-navigation-buttons {
