@@ -12,7 +12,7 @@
 <section id="sign-up-form">
   <div class="col-sm-5 col-sm-offset-1">
     <%= form_for :user, url: enrollments_path, role: 'form' do |f| %>
-      <%= render 'shared/form_errors', locals: { object: @user } %>
+      <%= render :partial => 'shared/form_errors', locals: { object: @user } %>
       <div class="form-group">
         <%= f.label :first_name, 'Name' %>
         <section>
