@@ -672,6 +672,9 @@ task_definition = TaskDefinition.create(
     consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
     cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
     non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </p>
+    <p class="context-notes" data-placement="top" data-content="And here\'s some amazing content. It\s very engaging. Right?">
+    Check this out...
     </p>'
   )
 
