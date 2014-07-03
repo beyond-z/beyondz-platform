@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
 
-  before_action :new_user, only: [:coach_info, :student_info, :supporter_info, :general_info]
+  before_action :new_user, only: [:welcome, :volunteer, :apply, :partner]
 
   layout 'public'
 

@@ -15,23 +15,19 @@ class EnrollmentsController < ApplicationController
       :applicant_type,
       :keep_updated)
 
-    if user[:applicant_type] == 'other'
+    case user[:applicant_type]
+    when 'other'
       user[:applicant_details] = params[:other_details]
-    end
-    if user[:applicant_type] == 'professional'
+    when 'professional'
       user[:applicant_details] = params[:professional_details]
-    end
-
-    # Each of these has different names in the form to ensure no data
-    # conflict as the user explores the bullets, but they all map to
-    # the same database field since it is really the same data
-    if user[:applicant_type] == 'grad_student'
+    when 'grad_student'
+      # Each of these has different names in the form to ensure no data
+      # conflict as the user explores the bullets, but they all map to
+      # the same database field since it is really the same data
       user[:anticipated_graduation] = params[:anticipated_grad_graduation]
-    end
-    if user[:applicant_type] == 'undergrad_student'
+    when 'undergrad_student'
       user[:anticipated_graduation] = params[:anticipated_undergrad_graduation]
-    end
-    if user[:applicant_type] == 'school_student'
+    when 'school_student'
       user[:anticipated_graduation] = 'Grade ' + params[:grade]
     end
 
