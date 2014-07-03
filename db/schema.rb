@@ -215,6 +215,7 @@ ActiveRecord::Schema.define(version: 20140702172713) do
     t.string   "applicant_type"
     t.boolean  "keep_updated"
     t.string   "anticipated_graduation"
+    t.string   "location"
     t.string   "city"
     t.string   "state"
     t.string   "applicant_details"
