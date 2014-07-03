@@ -312,97 +312,348 @@ task_definition.sections.push(
         {
           label: 'Resumé 1',
           content: '
-            <div>
-              <h3>John Doe</h3>
-              <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-            </div>
-            <div>
-              <h4>SKILLS</h4>
-              <ul>
-                <li>Nemo enim ipsam</li>
-                <li>Incidunt ut labore</li>
-                <li>Dolore magnam</li>
-                <li>Aliquam quaerat voluptatem</li>
-                <li>Voluptate velit esse quam</li>
-              </ul>
-            </div>
-            <div>
-              <h4>EXPERIENCE</h4>
-              <ul>
-                <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-                <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-                <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-                <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-                <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
-              </ul>
-            </div>
-            <div>
-              <h4>EDUCATION</h4>
-              <p>Masters in Photography from PU, 1981</p>
+            <div style="font-family: georgia; padding: 5em;">
+              <section>
+                <div class="col-sm-12 text-center">
+                  <strong>Louis Smith</strong><br />
+                  Louis17@sjsu.edu<br />
+                  (805) 555-7777
+                </div>
+              </section>
+              <section>
+                <div class="col-sm-12">
+                  3268 Andora Drive<br />
+                  San Jose, CA 95148
+                </div>
+              </section>
+              <section>
+                <div class="col-sm-12 text-center"><h5><strong>Education</strong></h5></div>
+              </section>
+              <section>
+                <div class="col-sm-10">
+                  <strong>SAN JOSE STATE UNIVERSITY</strong><br />
+                  First-year student studying Computer Science, GPA 4.0
+                </div>
+                <div class="col-sm-2 text-right">
+                  <em>San Jose, CA<br />
+                  2013-Present</em>
+                </div>
+              </section>
+              <br />
+              <section>
+                <div class="col-sm-12">
+                  <strong>INDEPENDENCE HIGH SCHOOL</strong><br />
+                  Magna cum Laude, Honor Roll, Electronics Academy Award, STRUT Computer Competition Bronze Medal, Robotics club, Greenhouse club, Kids for Community
+                </div>
+              </section>
+              <section>
+                <div class="col-sm-12 text-center"><h5><strong>Experience</strong></h5></div>
+              </section>
+               <section>
+                <div class="col-sm-10">
+                  <strong>Lunch - Math Peer Tutoring</strong><br />
+                  Tutored high school freshment
+                </div>
+                <div class="col-sm-2 text-right">
+                  <em>San Jose, CA<br />
+                  2013-Present</em>
+                </div>
+              </section>
+              <section>
+                <div class="col-sm-12 text-center"><h5><strong>Skills & Interests</strong></h5></div>
+              </section>
+              <section>
+                <div class="col-sm-12">
+                  <strong>Computer:</strong> Microsoft PowerPoint<br />
+                  <strong>Language:</strong> English, Vietnamese<br />
+                  <strong>Interests:</strong> oral communications, classrom presentations, computer programming, social service
+                </div>
+              </section>
             </div>'
         },
         {
           label: 'Resumé 2',
           content: '
-            <div>
-              <h3>John Dough</h3>
-              <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-            </div>
-            <div>
-              <h4>SKILLS</h4>
-              <ul>
-                <li>Nemo enim ipsam</li>
-                <li>Incidunt ut labore</li>
-                <li>Dolore magnam</li>
-                <li>Aliquam quaerat voluptatem</li>
-                <li>Voluptate velit esse quam</li>
-              </ul>
-            </div>
-            <div>
-              <h4>EXPERIENCE</h4>
-              <ul>
-                <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-                <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-                <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-                <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-                <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
-              </ul>
-            </div>
-            <div>
-              <h4>EDUCATION</h4>
-              <p>Masters in Photography from PU, 1981</p>
+             <div style="font-family: georgia; padding: 5em;">
+              <section>
+                <div class="col-sm-12">
+                  Eric Smith<br />
+                  2650 Haste Street Berkeley, CA 94720 | 415-999-0000
+                  <hr style="border-color: #000;" />
+                </div>
+              </section>
+              
+              <section>
+                <div class="col-sm-12 text-center"><h5><strong>Education</strong></h5></div>
+              </section>
+              <section>
+                <div class="col-sm-6">
+                  <strong>UNIVERSITY OF CALIFORNIA, BERKELEY</strong><br />
+                  Intended major: business administration
+                </div>
+                <div class="col-sm-6 text-right">
+                  Berkeley, CA<br />
+                  Expected graduation date: May 2017
+                </div>
+              </section>
+              <br />
+              <section>
+                <div class="col-sm-9">
+                  <strong>PHILLIP AND SALA BURTON ACADEMIC HIGH SCHOOL</strong><br />
+                  Graduated with high honors. GPA 3.9.
+                </div>
+                <div class="col-sm-3 text-right">
+                  San Francisco, CA<br />
+                  May 2013
+                </div>
+              </section>
+              <section>
+                <div class="col-sm-12 text-center"><h5><strong>Experiences and Leadership</strong></h5></div>
+              </section>
+              <section>
+                <div class="col-sm-6">
+                  <strong>HALL ASSOCIATION</strong><br />
+                  <em>Secretary</em>
+                </div>
+                <div class="col-sm-6 text-right">
+                  Berkeley, CA<br />
+                  September 2013 - Present
+                </div>
+              </section>
+              <section>
+                <div class="col-sm-12">
+                  <ul>
+                    <li>Record and post minutes during meetings for residents to be up-to-date with future events and sign ups</li>
+                    <li>Collect and organize feedback from the residents to be discussed with committee</li>
+                  </ul>
+                </div>
+              </section>
+              <br />
+
+              <section>
+                <div class="col-sm-6">
+                  <strong>YEARBOOK</strong><br />
+                  <em>Executive Managing Editor</em>
+                </div>
+                <div class="col-sm-6 text-right">
+                  San Francisco, CA<br />
+                  August 2012 - May 2013
+                </div>
+              </section>
+              <section>
+                <div class="col-sm-12">
+                  <ul>
+                    <li>Monitored picture quality and consistency and ensured that spreads were completed on time</li>
+                    <li>Edited spreads with precision and accuracy for the final product</li>
+                  </ul>
+                </div>
+              </section>
+              <br />
+
+              <section>
+                <div class="col-sm-6">
+                  <strong>OFFICE OF PRINCIPAL</strong><br />
+                  <em>Assistant</em>
+                </div>
+                <div class="col-sm-6 text-right">
+                  San Francisco, CA<br />
+                  August 2013 - May 2013
+                </div>
+              </section>
+              <section>
+                <div class="col-sm-12">
+                  <ul>
+                    <li>Answered phone calls and recorded messages, constructed school fliers, assembled copies, reminded staff of meetings, inputted data, documented files, and outreached to peers</li>
+                  </ul>
+                </div>
+              </section>
+              <br />
+
+              <section>
+                <div class="col-sm-6">
+                  <strong>ASSOCIATED STUDENT BODY</strong><br />
+                  <em>Treasurer</em>
+                </div>
+                <div class="col-sm-6 text-right">
+                  San Francisco, CA<br />
+                  January 2012 - January 2013
+                </div>
+              </section>
+              <section>
+                <div class="col-sm-12">
+                  <ul>
+                    <li>Fund raised finances for the senior class and budgeted events and activities</li>
+                    <li>Collected money and kept/updated orders/records for senior class hoodies and events such as Food Fest, Senior Skate Night, and Senior Class Trip</li>
+                  </ul>
+                </div>
+              </section>
+              <br />
+
+              <section>
+                <div class="col-sm-6">
+                  <strong>DAXIN GENERAL MERCHANDISE STORE</strong><br />
+                  <em>Volunteer</em>
+                </div>
+                <div class="col-sm-6 text-right">
+                  San Francisco, CA<br />
+                  August 2009 - May 2011
+                </div>
+              </section>
+              <section>
+                <div class="col-sm-12">
+                  <ul>
+                    <li>Volunteered as an assistant to greet customers, record sales, restock and organize merchandise, answer phone calls, and translate administrative letters</li>
+                  </ul>
+                </div>
+              </section>
+
+              <section>
+                <div class="col-sm-12 text-center"><h5><strong>Skills & Interests</strong></h5></div>
+              </section>
+              <section>
+                <div class="col-sm-12">
+                  <strong>Computer:</strong> Microsoft Word, Power Point, can type approximately 80 words per minute<br /><br />
+                  <strong>Other:</strong> Very detail-oriented and organized, adequate skills in Mandarin<br /><br />
+                  <strong>Interests:</strong> reading mystery, romantic, and adventure novels, watching basketball
+                </div>
+              </section>
             </div>'
         },
         {
           label: 'Resumé 3',
           content: '
-            <div>
-              <h3>John DOH</h3>
-              <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-            </div>
-            <div>
-              <h4>SKILLS</h4>
-              <ul>
-                <li>Nemo enim ipsam</li>
-                <li>Incidunt ut labore</li>
-                <li>Dolore magnam</li>
-                <li>Aliquam quaerat voluptatem</li>
-                <li>Voluptate velit esse quam</li>
-              </ul>
-            </div>
-            <div>
-              <h4>EXPERIENCE</h4>
-              <ul>
-                <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-                <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-                <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-                <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-                <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
-              </ul>
-            </div>
-            <div>
-              <h4>EDUCATION</h4>
-              <p>Masters in Photography from PU, 1981</p>
+            <div style="font-family: georgia; padding: 5em;">
+              <section>
+                <div class="col-sm-12 text-center">
+                  <span style="font-size: 2.5em; font-weight: bold;">AMANDA SMITH</span><br />
+                  2732 Channing Way, Berkeley, CA 94704 | Amanda_smith@berkeley.edu
+                </div>
+              </section>
+              
+              <section>
+                <div class="col-sm-12"><h5 style="padding-bottom: 1px; border-bottom: solid 1px #000;"><strong>EDUCATION</strong></h5></div>
+              </section>
+              <section>
+                <div class="col-sm-6">
+                  <strong>UNIVERSITY OF CALIFORNIA, BERKELEY</strong><br />
+                  <ul style="list-style-type: square;">
+                    <li>Intended Political Economy Major</li>
+                  </ul>
+                </div>
+                <div class="col-sm-6 text-right">
+                  <strong>Expected Graduation Date: May 2017</strong><br />
+                  <strong>Cumulative GPA:</strong> 3.53
+                </div>
+              </section>
+             
+              <section>
+                <div class="col-sm-12"><h4 style="padding-bottom: 1px; border-bottom: solid 1px #000;"><strong>PROFESSIONAL EXPERIENCE</strong></h4></div>
+              </section>
+              <section>
+                <div class="col-sm-9">
+                  <strong>LYFT | ON-DEMAND RIDE SHARING</strong><br />
+                  Campus Growth manager | January 2014 - Present
+                </div>
+                <div class="col-sm-3 text-right">
+                  <strong><em>Berkeley, CA</em></strong>
+                </div>
+              </section>
+              <section>
+                <div class="col-sm-12">
+                  <ul style="list-style-type: square;">
+                    <li>Utilized social media, personal networking and partnering with UC Berkeley organizations in order to promote the download and usage of Lyft application</li>
+                    <li>Developed and coordinated events with local Berkeley city businesses in order to expose Lyft to the East Bay Area</li>
+                  </ul>
+                </div>
+              </section>
+
+              <section>
+                <div class="col-sm-9">
+                  <strong>SPOTIFY | MRY MARKETING</strong><br />
+                  Campus Influencer | January 2014 - Present
+                </div>
+                <div class="col-sm-3 text-right">
+                  <strong><em>Berkeley, CA</em></strong>
+                </div>
+              </section>
+              <section>
+                <div class="col-sm-12">
+                  <ul style="list-style-type: square;">
+                    <li>Created social awareness of Spotify through traditional marketing and social media; distributing product materials through hosted events and in-person interactions with students on campus</li>
+                  </ul>
+                </div>
+              </section>
+
+              <section>
+                <div class="col-sm-9">
+                  <strong>WINDOWS 8 | FLUENT MARKETING</strong><br />
+                  Promotional Representative | September 2013 - February 2014
+                </div>
+                <div class="col-sm-3 text-right">
+                  <strong><em>Berkeley, CA</em></strong>
+                </div>
+              </section>
+              <section>
+                <div class="col-sm-12">
+                  <ul style="list-style-type: square;">
+                    <li>Formally trained in the features of Windows 8.1 in order to market the program and features to those in the Berkeley community</li>
+                    <li>DWorked with multiple, extremely extroverted Brand Ambassadors; distributed promotional materials and registered booth visitors to Visa and Windows Tablet giveaways</li>
+                    <li>Used social media and traditional forms of marketing techniques to promote the Windows 8 Tour on campus; managed response surveys to improve tour efficiency</li>
+                  </ul>
+                </div>
+              </section>
+
+              <section>
+                <div class="col-sm-9">
+                  <strong>HYUNDAI | INFIELD PROMO MARKETING</strong><br />
+                  Promotional Representative | September 2013 – November 2014
+                </div>
+                <div class="col-sm-3 text-right">
+                  <strong><em>Berkeley, CA</em></strong>
+                </div>
+              </section>
+              <section>
+                <div class="col-sm-12">
+                  <ul style="list-style-type: square;">
+                    <li>Worked with a team of five personable promotional models to showcase Hyundai’s newest car models and to help market Hyundai to UC Berkeley alumni who are in the car market</li>
+                    <li>Directed booth visitors to iPad kiosks to register for Hyundai’s national car giveaway</li>
+                  </ul>
+                </div>
+              </section>
+
+              <section>
+                <div class="col-sm-12"><h4 style="padding-bottom: 1px; border-bottom: solid 1px #000;"><strong>LEADERSHIP EXPERIENCE & ACTIVITIES</strong></h4></div>
+              </section>
+              <section>
+                <div class="col-sm-12">
+                  <strong>BEYOND Z ACADEMY</strong> | Beta Tester and Member of Inaugural Class (2014-Present)
+                  <ul style="list-style-type: square;">
+                    <li>Working with a team of eight cohorts for leadership development through professional networking and brand marketing; engaging with other participants from San Jose State, Stanford and San Francisco State</li>
+                    <li>Beta tested the program and development of the academy for 10 weeks; utilizing results learned to benefit low-income families and those ages 8-28 in developing confidence and leadership abilities</li>
+                  </ul>
+                </div>
+              </section>
+              <section>
+                <div class="col-sm-12">
+                  <strong>GAMMA PHI BETA PANHELLENIC SORORITY</strong> | Assistant Membership Vice President
+                  <ul style="list-style-type: square;">
+                    <li>Worked alongside current Membership Vice President to plan and execute 2014 recruitments through to grow the number of members, who not only reflect the organization’s values, but could continue to grow the in leadership and development</li>
+                    <li>Attended formal round tables with other MVP’s of other Panhellenic chapters to plan for Recruiting over 800 potential sorority women</li>
+                  </ul>
+                </div>
+              </section>
+
+              <section>
+                <div class="col-sm-12"><h4 style="padding-bottom: 1px; border-bottom: solid 1px #000;"><strong>Skills & Interests</strong></h4></div>
+              </section>
+              <section>
+                <div class="col-sm-12">
+                  <strong>Languages:</strong> Fluent in Spanish | Proficient in Tagalog<br />
+                  <strong>Technical Skills:</strong> Photoshop/Photo Editing, Google Analytics<br />
+                  <strong>Workshop Experience:</strong> Interpersonal Connections/Communications, Improvisation, Leadership Development<br />
+                  <strong>Interests:</strong> Singing, Drawing
+                </div>
+              </section>
             </div>'
         }
       ],
@@ -423,114 +674,7 @@ task_definition = TaskDefinition.create(
     non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </p>'
   )
-# task_definition.sections.push(
-#   TaskSection.create(
-#     task_module_id: compare_module.id,
-#     introduction: 'Review each resume and rate their formatting below.',
-#     configuration: {
-#       item_label: 'Resumé',
-#       items: [
-#         {
-#           label: 'Resumé 1',
-#           content: '
-#             <div>
-#               <h3>John Doe</h3>
-#               <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-#             </div>
-#             <div>
-#               <h4>SKILLS</h4>
-#               <ul>
-#                 <li>Nemo enim ipsam</li>
-#                 <li>Incidunt ut labore</li>
-#                 <li>Dolore magnam</li>
-#                 <li>Aliquam quaerat voluptatem</li>
-#                 <li>Voluptate velit esse quam</li>
-#               </ul>
-#             </div>
-#             <div>
-#               <h4>EXPERIENCE</h4>
-#               <ul>
-#                 <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-#                 <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-#                 <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-#                 <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-#                 <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
-#               </ul>
-#             </div>
-#             <div>
-#               <h4>EDUCATION</h4>
-#               <p>Masters in Photography from PU, 1981</p>
-#             </div>'
-#         },
-#         {
-#           label: 'Resumé 2',
-#           content: '
-#             <div>
-#               <h3>John Dough</h3>
-#               <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-#             </div>
-#             <div>
-#               <h4>SKILLS</h4>
-#               <ul>
-#                 <li>Nemo enim ipsam</li>
-#                 <li>Incidunt ut labore</li>
-#                 <li>Dolore magnam</li>
-#                 <li>Aliquam quaerat voluptatem</li>
-#                 <li>Voluptate velit esse quam</li>
-#               </ul>
-#             </div>
-#             <div>
-#               <h4>EXPERIENCE</h4>
-#               <ul>
-#                 <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-#                 <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-#                 <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-#                 <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-#                 <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
-#               </ul>
-#             </div>
-#             <div>
-#               <h4>EDUCATION</h4>
-#               <p>Masters in Photography from PU, 1981</p>
-#             </div>'
-#         },
-#         {
-#           label: 'Resumé 3',
-#           content: '
-#             <div>
-#               <h3>John DOH</h3>
-#               <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-#             </div>
-#             <div>
-#               <h4>SKILLS</h4>
-#               <ul>
-#                 <li>Nemo enim ipsam</li>
-#                 <li>Incidunt ut labore</li>
-#                 <li>Dolore magnam</li>
-#                 <li>Aliquam quaerat voluptatem</li>
-#                 <li>Voluptate velit esse quam</li>
-#               </ul>
-#             </div>
-#             <div>
-#               <h4>EXPERIENCE</h4>
-#               <ul>
-#                 <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-#                 <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-#                 <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-#                 <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-#                 <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
-#               </ul>
-#             </div>
-#             <div>
-#               <h4>EDUCATION</h4>
-#               <p>Masters in Photography from PU, 1981</p>
-#             </div>'
-#         }
-#       ],
-#       answer: 2
-#     }.to_json
-#   )
-# )
+
 item.task_definitions.push(task_definition)
 task_definition = TaskDefinition.create(
   required: true, position: 5, name: 'Education section',
@@ -544,114 +688,7 @@ task_definition = TaskDefinition.create(
     non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </p>'
   )
-# task_definition.sections.push(
-#   TaskSection.create(
-#     task_module_id: compare_module.id,
-#     introduction: 'Review each resume and rate their educaion section below.',
-#     configuration: {
-#       item_label: 'Resumé',
-#       items: [
-#         {
-#           label: 'Resumé 1',
-#           content: '
-#             <div class="lowlight">
-#               <h3>John Doe</h3>
-#               <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-#             </div>
-#             <div class="lowlight">
-#               <h4>SKILLS</h4>
-#               <ul>
-#                 <li>Nemo enim ipsam</li>
-#                 <li>Incidunt ut labore</li>
-#                 <li>Dolore magnam</li>
-#                 <li>Aliquam quaerat voluptatem</li>
-#                 <li>Voluptate velit esse quam</li>
-#               </ul>
-#             </div>
-#             <div class="lowlight">
-#               <h4>EXPERIENCE</h4>
-#               <ul>
-#                 <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-#                 <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-#                 <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-#                 <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-#                 <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
-#               </ul>
-#             </div>
-#             <div class="highlight">
-#               <h4>EDUCATION</h4>
-#               <p>Masters in Photography from PU, 1981</p>
-#             </div>'
-#         },
-#         {
-#           label: 'Resumé 2',
-#           content: '
-#             <div class="lowlight">
-#               <h3>John Dough</h3>
-#               <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-#             </div>
-#             <div class="lowlight">
-#               <h4>SKILLS</h4>
-#               <ul>
-#                 <li>Nemo enim ipsam</li>
-#                 <li>Incidunt ut labore</li>
-#                 <li>Dolore magnam</li>
-#                 <li>Aliquam quaerat voluptatem</li>
-#                 <li>Voluptate velit esse quam</li>
-#               </ul>
-#             </div>
-#             <div class="lowlight">
-#               <h4>EXPERIENCE</h4>
-#               <ul>
-#                 <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-#                 <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-#                 <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-#                 <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-#                 <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
-#               </ul>
-#             </div>
-#             <div class="highlight">
-#               <h4>EDUCATION</h4>
-#               <p>Masters in Photography from PU, 1981</p>
-#             </div>'
-#         },
-#         {
-#           label: 'Resumé 3',
-#           content: '
-#             <div class="lowlight">
-#               <h3>John DOH</h3>
-#               <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-#             </div>
-#             <div class="lowlight">
-#               <h4>SKILLS</h4>
-#               <ul>
-#                 <li>Nemo enim ipsam</li>
-#                 <li>Incidunt ut labore</li>
-#                 <li>Dolore magnam</li>
-#                 <li>Aliquam quaerat voluptatem</li>
-#                 <li>Voluptate velit esse quam</li>
-#               </ul>
-#             </div>
-#             <div class="lowlight">
-#               <h4>EXPERIENCE</h4>
-#               <ul>
-#                 <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-#                 <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-#                 <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-#                 <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-#                 <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
-#               </ul>
-#             </div>
-#             <div class="highlight">
-#               <h4>EDUCATION</h4>
-#               <p>Masters in Photography from PU, 1981</p>
-#             </div>'
-#         }
-#       ],
-#       answer: 2
-#     }.to_json
-#   )
-# )
+
 item.task_definitions.push(task_definition)
 task_definition = TaskDefinition.create(
   required: true, position: 6, name: 'Experience section',
@@ -665,114 +702,7 @@ task_definition = TaskDefinition.create(
     non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </p>'
   )
-# task_definition.sections.push(
-#   TaskSection.create(
-#     task_module_id: compare_module.id,
-#     introduction: 'Review each resume and rate their experience section below.',
-#     configuration: {
-#       item_label: 'Resumé',
-#       items: [
-#         {
-#           label: 'Resumé 1',
-#           content: '
-#             <div class="lowlight">
-#               <h3>John Doe</h3>
-#               <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-#             </div>
-#             <div class="lowlight">
-#               <h4>SKILLS</h4>
-#               <ul>
-#                 <li>Nemo enim ipsam</li>
-#                 <li>Incidunt ut labore</li>
-#                 <li>Dolore magnam</li>
-#                 <li>Aliquam quaerat voluptatem</li>
-#                 <li>Voluptate velit esse quam</li>
-#               </ul>
-#             </div>
-#             <div class="highlight">
-#               <h4>EXPERIENCE</h4>
-#               <ul>
-#                 <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-#                 <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-#                 <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-#                 <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-#                 <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
-#               </ul>
-#             </div>
-#             <div class="lowlight">
-#               <h4>EDUCATION</h4>
-#               <p>Masters in Photography from PU, 1981</p>
-#             </div>'
-#         },
-#         {
-#           label: 'Resumé 2',
-#           content: '
-#             <div class="lowlight">
-#               <h3>John Dough</h3>
-#               <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-#             </div>
-#             <div class="lowlight">
-#               <h4>SKILLS</h4>
-#               <ul>
-#                 <li>Nemo enim ipsam</li>
-#                 <li>Incidunt ut labore</li>
-#                 <li>Dolore magnam</li>
-#                 <li>Aliquam quaerat voluptatem</li>
-#                 <li>Voluptate velit esse quam</li>
-#               </ul>
-#             </div>
-#             <div class="highlight">
-#               <h4>EXPERIENCE</h4>
-#               <ul>
-#                 <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-#                 <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-#                 <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-#                 <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-#                 <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
-#               </ul>
-#             </div>
-#             <div class="lowlight">
-#               <h4>EDUCATION</h4>
-#               <p>Masters in Photography from PU, 1981</p>
-#             </div>'
-#         },
-#         {
-#           label: 'Resumé 3',
-#           content: '
-#             <div class="lowlight">
-#               <h3>John DOH</h3>
-#               <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-#             </div>
-#             <div class="lowlight">
-#              <h4>SKILLS</h4>
-#               <ul>
-#                 <li>Nemo enim ipsam</li>
-#                 <li>Incidunt ut labore</li>
-#                 <li>Dolore magnam</li>
-#                 <li>Aliquam quaerat voluptatem</li>
-#                 <li>Voluptate velit esse quam</li>
-#               </ul>
-#             </div>
-#             <div class="highlight">
-#               <h4>EXPERIENCE</h4>
-#               <ul>
-#                 <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-#                 <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-#                 <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-#                 <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-#                 <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
-#               </ul>
-#             </div>
-#             <div class="lowlight">
-#               <h4>EDUCATION</h4>
-#               <p>Masters in Photography from PU, 1981</p>
-#             </div>'
-#         }
-#       ],
-#       answer: 2
-#     }.to_json
-#   )
-# )
+
 item.task_definitions.push(task_definition)
 task_definition = TaskDefinition.create(
   required: true, position: 7, name: 'Leadership section',
@@ -786,114 +716,7 @@ task_definition = TaskDefinition.create(
     non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </p>'
   )
-# task_definition.sections.push(
-#   TaskSection.create(
-#     task_module_id: compare_module.id,
-#     introduction: 'Review each resume and rate their leadership section below.',
-#     configuration: {
-#       item_label: 'Resumé',
-#       items: [
-#         {
-#           label: 'Resumé 1',
-#           content: '
-#             <div>
-#               <h3>John Doe</h3>
-#               <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-#             </div>
-#             <div>
-#               <h4>SKILLS</h4>
-#               <ul>
-#                 <li>Nemo enim ipsam</li>
-#                 <li>Incidunt ut labore</li>
-#                 <li>Dolore magnam</li>
-#                 <li>Aliquam quaerat voluptatem</li>
-#                 <li>Voluptate velit esse quam</li>
-#               </ul>
-#             </div>
-#             <div>
-#               <h4>EXPERIENCE</h4>
-#               <ul>
-#                 <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-#                 <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-#                 <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-#                 <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-#                 <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
-#               </ul>
-#             </div>
-#             <div>
-#               <h4>EDUCATION</h4>
-#               <p>Masters in Photography from PU, 1981</p>
-#             </div>'
-#         },
-#         {
-#           label: 'Resumé 2',
-#           content: '
-#             <div>
-#               <h3>John Dough</h3>
-#               <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-#             </div>
-#             <div>
-#               <h4>SKILLS</h4>
-#               <ul>
-#                 <li>Nemo enim ipsam</li>
-#                 <li>Incidunt ut labore</li>
-#                 <li>Dolore magnam</li>
-#                 <li>Aliquam quaerat voluptatem</li>
-#                 <li>Voluptate velit esse quam</li>
-#               </ul>
-#             </div>
-#             <div>
-#               <h4>EXPERIENCE</h4>
-#               <ul>
-#                 <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-#                 <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-#                 <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-#                 <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-#                 <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
-#               </ul>
-#             </div>
-#             <div>
-#               <h4>EDUCATION</h4>
-#               <p>Masters in Photography from PU, 1981</p>
-#             </div>'
-#         },
-#         {
-#           label: 'Resumé 3',
-#           content: '
-#             <div>
-#               <h3>John DOH</h3>
-#               <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-#             </div>
-#             <div>
-#               <h4>SKILLS</h4>
-#               <ul>
-#                 <li>Nemo enim ipsam</li>
-#                 <li>Incidunt ut labore</li>
-#                 <li>Dolore magnam</li>
-#                 <li>Aliquam quaerat voluptatem</li>
-#                 <li>Voluptate velit esse quam</li>
-#               </ul>
-#             </div>
-#             <div>
-#               <h4>EXPERIENCE</h4>
-#               <ul>
-#                 <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-#                 <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-#                 <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-#                 <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-#                 <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
-#               </ul>
-#             </div>
-#             <div>
-#               <h4>EDUCATION</h4>
-#               <p>Masters in Photography from PU, 1981</p>
-#             </div>'
-#         }
-#       ],
-#       answer: 2
-#     }.to_json
-#   )
-# )
+
 item.task_definitions.push(task_definition)
 task_definition = TaskDefinition.create(
   required: true, position: 8, name: 'Skills and experiences',
@@ -907,114 +730,7 @@ task_definition = TaskDefinition.create(
     non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </p>'
   )
-# task_definition.sections.push(
-#   TaskSection.create(
-#     task_module_id: compare_module.id,
-#     introduction: 'Review each resume and rate their skills and experience section below.',
-#     configuration: {
-#       item_label: 'Resumé',
-#       items: [
-#         {
-#           label: 'Resumé 1',
-#           content: '
-#             <div class="lowlight">
-#               <h3>John Doe</h3>
-#               <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-#             </div>
-#             <div class="highlight">
-#               <h4>SKILLS</h4>
-#               <ul>
-#                 <li>Nemo enim ipsam</li>
-#                 <li>Incidunt ut labore</li>
-#                 <li>Dolore magnam</li>
-#                 <li>Aliquam quaerat voluptatem</li>
-#                 <li>Voluptate velit esse quam</li>
-#               </ul>
-#             </div>
-#             <div class="lowlight">
-#               <h4>EXPERIENCE</h4>
-#               <ul>
-#                 <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-#                 <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-#                 <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-#                 <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-#                 <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
-#               </ul>
-#             </div>
-#             <div class="lowlight">
-#               <h4>EDUCATION</h4>
-#               <p>Masters in Photography from PU, 1981</p>
-#             </div>'
-#         },
-#         {
-#           label: 'Resumé 2',
-#           content: '
-#             <div class="lowlight">
-#               <h3>John Dough</h3>
-#               <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-#             </div>
-#             <div class="highlight">
-#               <h4>SKILLS</h4>
-#               <ul>
-#                 <li>Nemo enim ipsam</li>
-#                 <li>Incidunt ut labore</li>
-#                 <li>Dolore magnam</li>
-#                 <li>Aliquam quaerat voluptatem</li>
-#                 <li>Voluptate velit esse quam</li>
-#               </ul>
-#             </div>
-#             <div class="lowlight">
-#               <h4>EXPERIENCE</h4>
-#               <ul>
-#                 <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-#                 <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-#                 <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-#                 <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-#                 <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
-#               </ul>
-#             </div>
-#             <div class="lowlight">
-#               <h4>EDUCATION</h4>
-#               <p>Masters in Photography from PU, 1981</p>
-#             </div>'
-#         },
-#         {
-#           label: 'Resumé 3',
-#           content: '
-#             <div class="lowlight">
-#               <h3>John DOH</h3>
-#               <p class="lead">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-#             </div>
-#             <div class="highlight">
-#               <h4>SKILLS</h4>
-#               <ul>
-#                 <li>Nemo enim ipsam</li>
-#                 <li>Incidunt ut labore</li>
-#                 <li>Dolore magnam</li>
-#                 <li>Aliquam quaerat voluptatem</li>
-#                 <li>Voluptate velit esse quam</li>
-#               </ul>
-#             </div>
-#             <div class="lowlight">
-#               <h4>EXPERIENCE</h4>
-#               <ul>
-#                 <li><h5>2013 - Present: Dolorem</h5>Vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</li>
-#                 <li><h5>2010 - 2013: Dignissimos</h5>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.</li>
-#                 <li><h5>2008 - 2010: Neque</h5>Et harum quidem rerum facilis est et expedita distinctio.</li>
-#                 <li><h5>2007 - 2008: Quis autem</h5>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</li>
-#                 <li><h5>2000 - 2007: Temporibus</h5>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.</li>
-#               </ul>
-#             </div>
-#             <div class="lowlight">
-#               <h4>EDUCATION</h4>
-#               <p>Masters in Photography from PU, 1981</p>
-#             </div>'
-#         }
-#       ],
-#       answer: 2
-#     }.to_json
-#   )
-# )
+
 item.task_definitions.push(task_definition)
 task_definition = TaskDefinition.create(
   required: true, position: 9, requires_approval: true,
