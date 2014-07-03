@@ -12,11 +12,15 @@ class HomeController < ApplicationController
         redirect_to coach_root_path
       elsif current_user.student?
         redirect_to assignments_path
+      else
+        # This is a logged in user who is not yet
+        # accepted into the program - we'll give them
+        # the welcome screen so they can learn more.
+        redirect_to welcome_path
       end
     end
-    # Otherwise, non-logged in users and
-    # people who signed up but are not yet
-    # accepted just get the public home page
+    # Otherwise, non-logged in users
+    # just get the public home page
     # via the home/index view
   end
 
