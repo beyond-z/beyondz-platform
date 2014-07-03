@@ -19,9 +19,19 @@ class User < ActiveRecord::Base
     CoachStudent.find_by(student_id: id).try(:coach)
   end
 
+  # We do need to decide exactly how users will be accepted
+  # into the program and as what roles. For now, it will just
+  # see if we added any students in the admin, thus making them
+  # a coach, or if not, the applicant type is set if they enrolled
+  # thus telling us they aren't a full student yet. (This realistically
+  # only separates our seed data from real data - which is fine until
+  # we start actually accepting people.)
   def coach?
     students.any?
-    # user role table FIXME
+  end
+
+  def student?
+    applicant_type.nil? || applicant_type.empty?
   end
 
   # This will create the skeletons for assignments, tasks,

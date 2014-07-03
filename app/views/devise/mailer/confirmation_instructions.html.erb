@@ -1,4 +1,4 @@
-<p>Welcome to Beyond Z, <%= @email %>! We're excited to connect with you. Please confirm your email address to activate your account by clicking the link below:</p>
+<p>Welcome to Beyond Z, <%= @user.first_name %>! We're excited to connect with you. Please confirm your email address to activate your account by clicking the link below:</p>
 
 <p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>
 

@@ -10,6 +10,15 @@ module ApplicationHelper
     end
   end
 
+  def nav_button(text, path)
+    c = 'button'
+    if request.path == path
+      c = 'button-primary'
+    end
+
+    link_to text, path, :class => c
+  end
+
   # Generate standard-sized Bootstrap modal HTML
   # Pass HTML ID and allowable options (defined in modal_options())
   # Most common options include title, content and footer

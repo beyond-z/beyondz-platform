@@ -1,7 +1,7 @@
 <div id="task-update-student" class="container-fluid">
   <%= form_for [task.assignment, task], role: 'form' do |f| %>
 
-    <%= render "shared/form_errors", locals: { object: task } %>
+    <%= render :partial => "shared/form_errors", locals: { object: task } %>
 
     <div class="task-section">
       <% task.task_definition.sections.each do |task_section| %>

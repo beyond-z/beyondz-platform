@@ -10,10 +10,14 @@ class HomeController < ApplicationController
         redirect_to admin_root_path
       elsif current_user.coach?
         redirect_to coach_root_path
-      else
+      elsif current_user.student?
         redirect_to assignments_path
       end
     end
+    # Otherwise, non-logged in users and
+    # people who signed up but are not yet
+    # accepted just get the public home page
+    # via the home/index view
   end
 
   def welcome
