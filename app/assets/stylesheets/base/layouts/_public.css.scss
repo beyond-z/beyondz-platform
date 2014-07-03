@@ -68,7 +68,7 @@ header #top-navigation {
   position: relative;
   width: 100%;
   padding-bottom: 75%;
-  background-image: url("bz_group_photo.jpg");
+  background-image: url(image_path("bz_group_photo.jpg"));
 
   p {
     position: absolute;
@@ -83,4 +83,18 @@ header #top-navigation {
     background-color: rgba(0, 0, 0, 0.4);
     color: white;
   }
+}
+
+.quote {
+  border: solid 1px $bzgrey3;
+  background-color: $bzgrey1;
+  border-radius: 6px;
+  padding: 1em;
+
+  cite { font-weight: bold; }
+}
+
+.form-option-details {
+  display: none;
+  padding-left: 2em;
 }

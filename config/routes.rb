@@ -3,10 +3,10 @@ BeyondzPlatform::Application.routes.draw do
 
   root "home#index"
   get '/welcome', to: 'home#welcome'
-  get '/coach_info', to: 'home#coach_info'
-  get '/student_info', to: 'home#student_info'
+  get '/apply', to: 'home#apply'
+  get '/volunteer', to: 'home#volunteer'
+  get '/partner', to: 'home#partner'
   get '/supporter_info', to: 'home#supporter_info'
-  get '/general_info', to: 'home#general_info'
 
   resources :feedback
   resources :comments

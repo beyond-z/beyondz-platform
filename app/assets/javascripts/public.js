@@ -4,6 +4,7 @@
 // include all the files listed below.
 //
 //= require_self
+//= require_directory ./public
 
 $(document).ready(function() {
 

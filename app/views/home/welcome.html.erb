@@ -1,15 +1,18 @@
 <%= render 'signup_welcome' %>
-<% if @new_user && !@new_user.confirmed_at.nil? %>
-  <p>Congrats! Your account is confirmed. We'll be in touch soon!</p>
-<% end %>
 
 <section>
   <div class="col-sm-6">
-    In the mean time, explore how you can...
+
+  <% if @new_user && !@new_user.confirmed_at.nil? %>
+    <div class="well">
+      <p>Congrats! Your account is confirmed and we're excited for you to get involvedd. We'll be in touch personally via email soon!</p>
+    </div>
+  <% end %>
+    <p style="padding-top: 2em;">In the mean time, explore how you can...</p>
     <ul>
-      <li><%= link_to 'Become a fellow', student_info_path %></li>
-      <li><%= link_to 'Volunteer with Beyond Z', coach_info_path %></li>
-      <li><%= link_to 'Partner with Beyond Z', coach_info_path %></li>
+      <li><%= link_to 'Become a fellow', apply_path %></li>
+      <li><%= link_to 'Volunteer with Beyond Z', volunteer_path %></li>
+      <li><%= link_to 'Partner with Beyond Z', partner_path %></li>
     </ul>
   </div>
   <div class="col-sm-6">
