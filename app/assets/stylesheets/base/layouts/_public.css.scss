@@ -49,9 +49,10 @@ header #top-navigation {
 
 .infographic-column {
   @extend .col-sm-4;
+  @extend .text-center;
 
   h3, p {
-    font-size: 150%;
+    font-size: 1.5em;
   }
 
   h3 {
@@ -85,13 +86,28 @@ header #top-navigation {
   }
 }
 
-.quote {
-  border: solid 1px $bzgrey3;
-  background-color: $bzgrey1;
-  border-radius: 6px;
-  padding: 1em;
+.large-quotes {
+  font-size: 3em;
+  line-height: 0.5em;
+  vertical-align: text-top;
+  font-family: 'Times New Roman';
+  color: $bzorange;
+  font-style: italic;
+  padding: 0 0.03em 0 0.03em;
+}
 
-  cite { font-weight: bold; }
+.sunk-quote {
+  @extend .well;
+  @extend .well-lg;
+
+  p {
+    font-style: italic;
+  }
+
+  footer {
+    margin-top: 10px;
+    font-weight: bold;
+  }
 }
 
 .form-option-details {
