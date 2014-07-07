@@ -61,6 +61,41 @@
     background-color: $bzgrey1;
   }
 
+  .matrix-table
+  {
+    @extend .table;
+    @extend .table-bordered;
+    @extend .table-hover;
+
+    thead {
+      background-color: $bzorange;
+      color: $bzwhite;
+      font-weight: bold;
+
+      th {
+        vertical-align: top;
+      }
+
+      .rank-star {
+        @extend .glyphicon;
+        @extend .glyphicon-star;
+
+        font-size: 2em;
+      }
+    }
+  }
+
+  .html-document {
+     border: solid 1px #000;
+  }
+
+  .partial-html-document {
+     border-left: solid 1px #000;
+     border-right: solid 1px #000;
+     border-top: dashed 1px #ccc;
+     border-bottom: dashed 1px #ccc;
+  }
+
   .task-navigation-buttons {
     margin-top: 4em;
 
