@@ -94,7 +94,7 @@
               <%= f.label :applicant_type_family_member, 'Family member of a Beyond Z Participant' %>
             </div>
             <div>
-              <%= f.radio_button :applicant_type, 'other' %>
+              <%= f.radio_button :applicant_type, 'other', required: 'required' %>
               <%= f.label :applicant_type_other, 'Other?' %>
               <div class="form-option-details">
                 <%= text_field_tag :other_details, nil, :class => 'form-control', :placeholder => 'Who?' %>
