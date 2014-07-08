@@ -9,6 +9,9 @@ class User < ActiveRecord::Base
   has_many :coach_students, foreign_key: :coach_id
   has_many :students, through: :coach_students, :source => :student
 
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+
   after_create :create_child_skeleton_rows
 
   def name

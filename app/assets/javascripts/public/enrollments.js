@@ -7,4 +7,7 @@ $(document).ready(function() {
     if(this.checked)
       $("~ .form-option-details", this).show();
   });
+
+  // also showing the current selection details, if there is one
+  $("input[type=radio]:checked ~ .form-option-details").show();
 });
