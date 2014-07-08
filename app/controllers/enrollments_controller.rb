@@ -33,6 +33,12 @@ class EnrollmentsController < ApplicationController
 
     @new_user = User.create(user)
 
+    if @new_user.errors.any?
+      @user = @new_user
+      render 'new'
+      return
+    end
+
     unless @new_user.id
       # If User.create failed; we have an existing user
       # trying to sign up again. Instead, let's tell them
