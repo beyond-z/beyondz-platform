@@ -7,13 +7,16 @@
 @import "./public/*";
 
 .big-picture {
-  .sign-up-button-container {
+  .join-us-button-container {
     position: absolute;
-
     right: 20%;
     top: 10%;
     width: 33%;
     height: 33%;
+
+    .join-us-text-overlay {
+      margin-top: -45%;
+    }
   }
 }
 
@@ -35,6 +38,10 @@
     border-left-color: $bzorange;
     border-bottom-color: $bzorange;
   }
+}
+
+.well-light {
+  background-color: $bzwhite;
 }
 
 .bz-infographic {

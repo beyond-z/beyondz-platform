@@ -3,9 +3,9 @@
   <div class="col-sm-12 big-picture">
     <%= image_tag("sign_up_anchor.jpg") %>
     <% if !user_signed_in? %>
-      <div class="sign-up-button-container">
+      <div class="join-us-button-container">
         <%= image_tag 'join_us.png', id: 'join-circle' %>
-        <div style="margin-top: -45%;" class="text-center">
+        <div class="join-us-text-overlay text-center">
           <br />
           <%= link_to '<button id="join-us-button" type="button" class="btn btn-lg btn-default">JOIN US!</button>'.html_safe, new_enrollment_path %>
         </div>
@@ -68,7 +68,7 @@
     </div>
   </section>
 </div>
-<div class="well well-lg" style="background-color: #fff;">
+<div class="well well-lg well-light">
   <h3>
     Coaches
   </h3>
