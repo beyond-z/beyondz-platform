@@ -4,11 +4,17 @@ header #banner {
 }
 
 header #banner .top-left {
-  @extend .col-sm-2;
+  @extend .col-sm-4;
+}
+
+header #banner .top-left img {
+  margin-bottom: -50px; /* overlap the z in the image - pixels because it is based on the png itself. Note this should have no effect on narrower screens because then the menu is under it; seems to work right for me */
+  position: relative; /* needed for z-index to take effect */
+  z-index: 12; /* puts it on top of the image below */
 }
 
 header #banner .navigation-holder {
-  @extend .col-sm-8;
+  @extend .col-sm-6;
 }
 
 header #banner .top-right {
@@ -51,17 +57,14 @@ header #top-navigation {
   @extend .col-sm-4;
   @extend .text-center;
 
-  h3, p {
+  p {
     font-size: 1.5em;
   }
 
   h3 {
     color: $bzred;
     text-transform: uppercase;
-  }
-
-  p {
-
+    font-size: 2.5em;
   }
 }
 
@@ -113,4 +116,9 @@ header #top-navigation {
 .form-option-details {
   display: none;
   padding-left: 2em;
+}
+
+#top-navigation .nav {
+  font-weight: bold;
+  text-align: center;
 }
