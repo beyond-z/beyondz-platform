@@ -13,7 +13,7 @@
 */
 $(document).ready(function() {
   var resizeVideos = function() {
-    $(".video-box").each(function(idx, element) {
+    $(".video-box, .big-video-box").each(function(idx, element) {
       var e = $(element);
       $("iframe", element).attr('height', e.width() * 9 / 16);
       $("iframe", element).attr('width', e.width());
