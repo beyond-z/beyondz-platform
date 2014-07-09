@@ -16,7 +16,7 @@ module ApplicationHelper
       c = 'active'
     end
 
-    ("<li>" + (link_to text, path, :class => c) + "</li>").html_safe
+    ('<li>' + (link_to text, path, :class => c) + '</li>').html_safe
   end
 
   # Generate standard-sized Bootstrap modal HTML
