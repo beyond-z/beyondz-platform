@@ -1717,14 +1717,21 @@ task_definition = TaskDefinition.create(
     consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
     cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
     non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </p>
+    <p>
+      Download the Word document below and use it as a template to complete your
+      own resumé.
+    </p>
+    <p>
+      <a href="/docs/resume_template.docx">Resumé template (Word)</a>
     </p>'
 )
-task_definition.sections.push(
-  TaskSection.create(
-    task_module_id: resume_builder_module.id,
-    introduction: 'Use the form below to complete your resumé.'
-  )
-)
+# task_definition.sections.push(
+#   TaskSection.create(
+#     task_module_id: resume_builder_module.id,
+#     introduction: 'Use the form below to complete your resumé.'
+#   )
+# )
 item.task_definitions.push(task_definition)
 
 task_definition = TaskDefinition.create(
@@ -1735,7 +1742,8 @@ task_definition = TaskDefinition.create(
 task_definition.sections.push(
   TaskSection.create(
     task_module_id: file_upload_module.id,
-    file_type: 'document'
+    file_type: 'document',
+    introduction: 'Upload your new resumé once you have it finished.'
   )
 )
 item.task_definitions.push(task_definition)
