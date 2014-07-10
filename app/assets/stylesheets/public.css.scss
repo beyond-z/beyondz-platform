@@ -7,14 +7,46 @@
 @import "./public/*";
 
 .big-picture {
-  .sign-up-button-container {
+  .join-us-button-container {
     position: absolute;
-
     right: 20%;
     top: 10%;
     width: 33%;
     height: 33%;
+
+    .join-us-text-overlay {
+      margin-top: -45%;
+    }
   }
+}
+
+#join-us-button {
+  background-color: $bzorange;
+  color: $bzwhite;
+  font-weight: bold;
+  border-top-color: $primary_button_highlight;
+  border-right-color: $primary_button_highlight;
+  border-left-color: $primary_button_lowlight;
+  border-bottom-color: $primary_button_lowlight;
+
+  &:hover {
+    background-color: $primary_button_highlight;
+    color: $bzwhite;
+    font-weight: bold;
+    border-top-color: $primary_button_lowlight;
+    border-right-color: $primary_button_lowlight;
+    border-left-color: $bzorange;
+    border-bottom-color: $bzorange;
+  }
+}
+
+.well-light {
+  background-color: $bzwhite;
+}
+
+.bz-infographic {
+  @extend .img-rounded;
+  width: 50em;
 }
 
 #sign-up-form {
