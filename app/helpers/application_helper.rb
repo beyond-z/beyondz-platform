@@ -11,12 +11,12 @@ module ApplicationHelper
   end
 
   def nav_button(text, path)
-    c = 'button'
+    c = ''
     if request.path == path
-      c = 'button-primary'
+      c = 'active'
     end
 
-    link_to text, path, :class => c
+    ('<li>' + (link_to text, path, :class => c) + '</li>').html_safe
   end
 
   # Generate standard-sized Bootstrap modal HTML
