@@ -4,7 +4,7 @@
    This min width is determined by looking at about how much it needs for the
    full horizontal nav bar on my screen. */
 @media screen and (min-width: 850px) {
-  .scrolled-down header {
+  .scrolled-down .header {
     .floating-header {
       position: fixed;
       top: 0px;
@@ -38,21 +38,44 @@
         header should be so other content isn't pushed too far up. */
       /* It uses a percentage of the width for responsive height, similar
          to a video aspect ratio trick you can read about on the internet. */
-      padding-top: 10%; /* Determined by looking at the existing header which is 1200 wide and 120 tall by default */
+      padding-top: 12%; /* Determined by looking at the existing header which is 1200 wide and 120 tall by default */
     }
   }
 }
 
-header #banner {
+.public-container {
+  padding: 0px;
+}
+
+.wide-section {
+  width: 100%;
+
+  .section-container {
+    @extend .container;
+
+    max-width: 1440px;
+    padding: 0px;
+  }
+}
+
+.header-section {
+  background-color: $bzgrey9;
+}
+
+.footer-section {
+  background-color: $bzgrey9;
+}
+
+#banner {
   padding-top: 0.5em;
   padding-bottom: 0.5em;
 }
 
-header #banner .top-left {
+#banner .top-left {
   @extend .col-sm-4;
 }
 
-header #banner .top-left img {
+#banner .top-left img {
   z-index: 12; /* puts it on top of the image below */
   position: relative; /* needed for z-index to take effect */
 }
@@ -70,11 +93,11 @@ header #banner .top-left img {
   }
 }
 
-header #banner .navigation-holder {
+#banner .navigation-holder {
   @extend .col-sm-8;
 }
 
-header #top-navigation {
+#top-navigation {
   margin-top: 24px;
 
   /* As we get smaller, the logo shrinks, so we move this up a bit too
