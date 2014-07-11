@@ -8,7 +8,7 @@ describe 'Login' do
     visit(new_user_session_path)
     fill_in('Email', :with => user.email)
     fill_in('Password', :with => user.password)
-    click_on 'Sign in'
+    click_on 'Log in'
 
     current_path.must_equal(assignments_path)
 
@@ -24,7 +24,7 @@ describe 'Login' do
     visit(new_user_session_path)
     fill_in('Email', :with => user.email)
     fill_in('Password', :with => 'wrong')
-    click_on 'Sign in'
+    click_on 'Log in'
 
     # We should still be on the page
     current_path.must_equal(new_user_session_path)

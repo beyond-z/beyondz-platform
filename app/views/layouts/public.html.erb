@@ -17,24 +17,25 @@
 
     <div id="content">
       <header>
-        <section id="banner" role="banner">
-          <div class="top-left">
-            <%= link_to image_tag('bz_logo_338.png'), root_path %>
-          </div>
-          <div class="navigation-holder">
-            <div id="top-navigation" role="navigation">
-              <ul class="nav navbar-nav">
-                <%= nav_button 'Home', root_path %>
-                <%= nav_button 'Apply', apply_path %>
-                <%= nav_button 'Volunteer', volunteer_path %>
-                <%= nav_button 'Partner', partner_path %>
-              </ul>
+        <div class="floating-header">
+          <section id="banner" role="banner">
+            <div class="top-left">
+              <%= link_to image_tag('bz_logo_338.png'), root_path %>
             </div>
-          </div>
-          <div class="top-right">
-            <%= render 'shared/login_button' %>
-          </div>
-        </section>
+            <div class="navigation-holder">
+              <div id="top-navigation" role="navigation">
+                <ul class="nav navbar-nav">
+                  <%= nav_button 'Home', root_path %>
+                  <%= nav_button 'Apply', apply_path %>
+                  <%= nav_button 'Volunteer', volunteer_path %>
+                  <%= nav_button 'Partner', partner_path %>
+                  <li><%= render 'shared/login_button' %></li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class="floating-header-spacer"></div> <!-- this acts to fill the space when the main banner is fixed position -->
       </header>
 
       <main role="main">

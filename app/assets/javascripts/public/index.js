@@ -25,4 +25,12 @@ $(document).ready(function() {
 
   // size it dynamically too
   $(window).resize(resizeVideos);
+
+
+  var setScrollClass = function() {
+    $("body")[$(window).scrollTop() == 0 ? "removeClass" : "addClass"]("scrolled-down");
+  };
+
+  $(window).scroll(setScrollClass);
+  setScrollClass(); // ensure it is correctly set upon page load too
 });
