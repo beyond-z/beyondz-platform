@@ -45,7 +45,7 @@ img {
 
 header {
   @extend .container-fluid;
-  background-color: white;
+
   width: 100%;
   padding: 0px;
 }
@@ -419,6 +419,5 @@ section {
 // Styles for the footer
 //-----------------------------------------
 .footer {
-  @extend .container-fluid;
   text-align: center;
 } 

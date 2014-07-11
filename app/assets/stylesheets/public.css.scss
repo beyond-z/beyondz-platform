@@ -7,17 +7,36 @@
 @import "./public/*";
 
 .big-picture {
+  padding: 8em;
   .join-us-button-container {
-    position: absolute;
-    right: 20%;
-    top: 10%;
-    width: 33%;
-    height: 33%;
+    margin-top: -25%;
+    width: 100%;
 
     .join-us-text-overlay {
-      margin-top: -45%;
+     margin-top: -45%;
     }
   }
+}
+
+.sign-up-anchor-section {
+  background-image: url(image_path('sign_up_anchor.jpg'));
+  background-size: 100%;
+  background-repeat: no;
+  background-position: center center;
+
+  .image-pads {
+    height: 4em;
+  }
+}
+
+.video-intro-section {
+  background-color: $bzgreen;
+  padding: 4em 0 4em 0;
+}
+
+.voices-section {
+  background-color: $bzred;
+  padding: 4em 0 4em 0;
 }
 
 #join-us-button {

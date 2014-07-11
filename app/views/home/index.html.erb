@@ -1,122 +1,157 @@
-<section>
+<div class="wide-section sign-up-anchor-section">
+  <div class="section-container">
+    <section>
+      <div class="col-sm-12 image-pads">
+      </div>
+    </section>
+    <section>
+      <div class="col-sm-6 col-sm-offset-6 big-picture">
+        <% if !user_signed_in? %>
+          <div class="join-us-button-container">
+            <%= image_tag 'join_us.png', id: 'join-circle' %>
+            <div class="join-us-text-overlay text-center">
+              <br />
+              <%= link_to '<button id="join-us-button" type="button" class="btn btn-lg btn-default">JOIN US!</button>'.html_safe, new_enrollment_path %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </section>
+    <section>
+      <div class="col-sm-12 image-pads">
+      </div>
+    </section>
+  </div>
+</div>
+<div class="wide-section video-intro-section">
+  <div class="section-container">
+    <section>
+      <div class="col-sm-12">
+        <h1 class="text-center">
+          Beyond Z Accelerator
+        </h1>
+      </div>
+      <div class="col-sm-6 col-sm-offset-3">
+        <p class="lead text-center">
+          The Beyond Z Accelerator discovers, develops, and connects diverse talent to ensure that our next generation of leaders can emerge from everywhere.
+        </p>
+      </div>
+    </section>
+    <section>
+      <div class="col-sm-12 text-center big-video-box">
+        <iframe src="//player.vimeo.com/video/99267372" width="800" height="450" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+      </div>
+    </section>
+  </div>
+</div>
 
-  <div class="col-sm-12 big-picture">
-    <%= image_tag("sign_up_anchor.jpg") %>
-    <% if !user_signed_in? %>
-      <div class="join-us-button-container">
-        <%= image_tag 'join_us.png', id: 'join-circle' %>
-        <div class="join-us-text-overlay text-center">
-          <br />
-          <%= link_to '<button id="join-us-button" type="button" class="btn btn-lg btn-default">JOIN US!</button>'.html_safe, new_enrollment_path %>
+<div class="wide-section">
+  <div class="section-container">
+    <section>
+      <div class="col-sm-12">
+        <h2>Our Approach</h2>
+      </div>
+    </section>
+    <section>
+      <div class="infographic-column">
+        <h3>Discover</h3>
+        <%= image_tag("discover.png") %>
+        <p>young people with the focus, drive, and talent to be great</p>
+      </div>
+      <div class="infographic-column">
+        <h3>Develop</h3>
+        <%= image_tag("develop.png") %>
+        <p>their authentic leadership and 21st century career skills</p>
+      </div>
+      <div class="infographic-column">
+        <h3>Connect</h3>
+        <%= image_tag("connect.png") %>
+        <p>to inspiring students, influential advocates, and career opportunities</p>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="wide-section voices-section">
+  <div class="section-container">
+    <section>
+      <div class="col-sm-12">
+        <h2>Voices</h2>
+      </div>
+    </section>
+    <section>
+      <div class="col-sm-12">
+        <div class="well well-lg">
+          <h3>
+            Students
+          </h3>
+          <section>
+            <div class="col-sm-6 video-box">
+              <iframe src="//player.vimeo.com/video/99269824" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
+            </div>
+            <div class="col-sm-5 sunk-quote">
+              <p><span class="large-quotes">&ldquo;</span>Beyond Z introduced me into the real world outside of academics! My interviewing and networking skills have definitely grown - I have met some incredible people and stayed in touch with many of them. My decision to enter the Education field has been reinforced through my time at BZ as well!<span class="large-quotes">&rdquo;</span>
+              </p>
+              <footer>-Martha Mendoza</footer>
+            </div>
+          </section>
         </div>
       </div>
-    <% end %>
+    </section>
+    <section>
+      <div class="col-sm-12">
+        <div class="well well-lg">
+          <h3>
+            Coaches
+          </h3>
+          <section>
+            <div class="col-sm-6 video-box">
+              <iframe width="500" height="281" src="//www.youtube.com/embed/r9LelXa3U_I" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="col-sm-5 sunk-quote">
+              <p><span class="large-quotes">&ldquo;</span>
+              Beyond Z had provided me with innumerable opportunities for personal and professional growth, but the Capstone project took our learning experiences beyond that of our own and empowered me to give back to my community. And it was a great learning experience to be the project manager.
+              <span class="large-quotes">&rdquo;</span>
+              </p>
+              <footer>-Kelly Hernandez</footer>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="col-sm-12">
+        <div class="well well-lg">
+          <h3>
+            Partners
+          </h3>
+          <section>
+            <div class="col-sm-5 sunk-quote">
+              <p><span class="large-quotes">&ldquo;</span>All young people should be able to dream without boundaries. I am excited to be an inaugural partner with Beyond Z because their curriculum and programming will help to level the playing field for under-represented populations lacking resources and human capital necessary to reach the highest levels of leadership.<span class="large-quotes">&rdquo;</span>
+              </p>
+              <footer>-Kaya Henderson, Chancellor, Washington D.C. Public Schools</footer>
+            </div>
+            <div class="col-sm-5 col-sm-offset-1 sunk-quote">
+              <p><span class="large-quotes">&ldquo;</span>Beyond Z's mission is so important – provide leadership development to young people, especially first-generation college students, so that they are positioned to excel at the highest level and become global leaders. I hire Beyond Z interns because they are exceptionally talented. They are smart, passionate, and driven college students who get results.<span class="large-quotes">&rdquo;</span>
+              </p>
+              <footer>-Patrick O'Donnell, Vice President of Parent and Family Engagement, Teach For America</footer>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
   </div>
-</section>
-<h1 class="text-center">
-  Beyond Z Accelerator
-</h1>
-<section>
- <div class="col-sm-6 col-sm-offset-3 text-center">
-    <p class="lead text-center">
-      The Beyond Z Accelerator discovers, develops, and connects diverse talent to ensure that our next generation of leaders can emerge from everywhere.
-    </p>
-  </div>
-</section>
-<section>
-  <div class="col-sm-12 text-center big-video-box">
-    <iframe src="//player.vimeo.com/video/99267372" width="800" height="450" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-  </div>
-</section>
-<hr />
-<h2>
-  Our Approach
-</h2>
-<section>
-  <div class="infographic-column">
-    <h3>Discover</h3>
-    <%= image_tag("discover.png") %>
-    <p>young people with the focus, drive, and talent to be great</p>
-  </div>
-  <div class="infographic-column">
-    <h3>Develop</h3>
-    <%= image_tag("develop.png") %>
-    <p>their authentic leadership and 21st century career skills</p>
-  </div>
-  <div class="infographic-column">
-    <h3>Connect</h3>
-    <%= image_tag("connect.png") %>
-    <p>to inspiring students, influential advocates, and career opportunities</p>
-  </div>
-</section>
-
-<hr />
-
-<h2>Voices</h2>
-<div class="well well-lg">
-  <h3>
-    Students
-  </h3>
-  <section>
-    <div class="col-sm-6 video-box">
-      <iframe src="//player.vimeo.com/video/99269824" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
-    </div>
-    <div class="col-sm-5 sunk-quote">
-      <p><span class="large-quotes">&ldquo;</span>Beyond Z introduced me into the real world outside of academics! My interviewing and networking skills have definitely grown - I have met some incredible people and stayed in touch with many of them. My decision to enter the Education field has been reinforced through my time at BZ as well!<span class="large-quotes">&rdquo;</span>
-      </p>
-      <footer>-Martha Mendoza</footer>
-    </div>
-  </section>
 </div>
-<div class="well well-lg well-light">
-  <h3>
-    Coaches
-  </h3>
-  <section>
-    <div class="col-sm-6 video-box">
-      <iframe width="500" height="281" src="//www.youtube.com/embed/r9LelXa3U_I" frameborder="0" allowfullscreen></iframe>
-    </div>
-    <div class="col-sm-5 sunk-quote">
-      <p><span class="large-quotes">&ldquo;</span>
-      Beyond Z had provided me with innumerable opportunities for personal and professional growth, but the Capstone project took our learning experiences beyond that of our own and empowered me to give back to my community. And it was a great learning experience to be the project manager.
-      <span class="large-quotes">&rdquo;</span>
-      </p>
-      <footer>-Kelly Hernandez</footer>
-    </div>
-  </section>
-</div>
-<div class="well well-lg">
-  <h3>
-    Partners
-  </h3>
-  <section>
-    <div class="col-sm-6">
-     
-    </div>
-    <div class="col-sm-5 sunk-quote">
-      <p><span class="large-quotes">&ldquo;</span>All young people should be able to dream without boundaries. I am excited to be an inaugural partner with Beyond Z because their curriculum and programming will help to level the playing field for under-represented populations lacking resources and human capital necessary to reach the highest levels of leadership.<span class="large-quotes">&rdquo;</span>
-      </p>
-      <footer>-Kaya Henderson, Chancellor, Washington D.C. Public Schools</footer>
-    </div>
-  </section>
-  <section>
-    <div class="col-sm-6">
-     
-    </div>
-    <div class="col-sm-5 sunk-quote">
-      <p><span class="large-quotes">&ldquo;</span>Beyond Z's mission is so important – provide leadership development to young people, especially first-generation college students, so that they are positioned to excel at the highest level and become global leaders. I hire Beyond Z interns because they are exceptionally talented. They are smart, passionate, and driven college students who get results.<span class="large-quotes">&rdquo;</span>
-      </p>
-      <footer>-Patrick O'Donnell, Vice President of Parent and Family Engagement, Teach For America</footer>
-    </div>
-  </section>
-</div>
-
 <hr />
 
-<section class="text-center">
-  <div class="col-sm-12">
-    <h1>Ready to jumpstart your career and leadership path today?</h1>
-    <br />
-    <%= link_to '<button id="join-us-button" type="button" class="btn btn-primary btn-lg">JOIN US!</button>'.html_safe, new_enrollment_path %>
+<div class="wide-section">
+  <div class="section-container text-center">
+    <section>
+      <div class="col-sm-12">
+        <h1>Ready to jumpstart your career and leadership path today?</h1>
+        <br />
+        <%= link_to '<button id="join-us-button" type="button" class="btn btn-primary btn-lg">JOIN US!</button>'.html_safe, new_enrollment_path %>
+      </div>
+    </section>
   </div>
-</section>
+</div>
