@@ -17,7 +17,7 @@
 
         <p>Whatever the time you have to give, we have a role ready to be filled.  Whatever the passions you wish to share, we know a future leader ready to be inspired.</p>
 
-        <p>Join us.</p>
+        <p><%= link_to "Join us.", new_enrollment_path %></p>
       </div>
     </section>
   </div>
@@ -26,19 +26,33 @@
 <div class="wide-section">
   <div class="section-container">
     <section>
-      <div class="col-md-4">
-        <p style="font-weight: bold; font-style: italic;">Behind every great team stands a great coach – someone who helps them see and then become who they’ve always had the potential to be.</p>
+      <div class="infographic-column">
+        <h3>Lorem</h3>
+        <%= image_tag("volunteer_icon_1.png") %>
+        <p>Behind every great team stands a great coach - someone who helps them see and then become who they've always had the potential to be.</p>
+      </div>
+      <div class="infographic-column">
+        <h3>Ipsum</h3>
+        <%= image_tag("volunteer_icon_2.png") %>
+        <p>The greatest contributors in every field, from the arts to the sciences and beyond, were each introduced to their craft long before their potential was known.</p>
+      </div>
+      <div class="infographic-column">
+        <h3>Dolor</h3>
+        <%= image_tag("volunteer_icon_3.png") %>
+        <p>The ways that your personal story, your experiences, and your network could transform a young person's future are endless. Let us help you make those connections.</p>
+      </div>
+    </section>
 
-        <p>We seek volunteers interested in making a commitment for the full academic year to coach a small group of young people regularly. LEARN MORE.</p>
+    <section>
+      <div class="col-md-4">
+        <p>We seek volunteers interested in making a commitment for the full academic year to coach a small group of young people regularly. <%= link_to "Learn More", new_enrollment_path %>.</p>
 
          <p>We’ll support you with high quality resources and trainings, as well as a community of staff and volunteers, so you can focus on building a collaborative culture that ensures they connect meaningfully with you and with one another.</p>
       </div>
       <div class="col-md-4">
-        <p style="font-weight: bold; font-style: italic;">The greatest contributors in every field, from the arts to the sciences and beyond, were each introduced to their craft long before their potential was known.</p>
         <p>Throughout the year, we need passionate volunteers who are excited to lead our multi-day, hands-on lessons that immerse our students and their coaches in unfamiliar, 21st-century, STEM-rich disciplines like Robotics.</p>
       </div>
       <div class="col-md-4">
-        <p style="font-weight: bold; font-style: italic;">The ways that your personal story, your experiences, and your network could transform a young person’s future are endless. Let us help you make those connections.</p>
         <p>We are eager to engage volunteers in diverse events and opportunities designed to expand our participants’ perspectives on what contributions they can make and changes they can lead.</p>
       </div>
     </section>
