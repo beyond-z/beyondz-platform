@@ -65,7 +65,7 @@ header #banner .top-left img {
   /* If we're on a small screen, the bootstrap columns above will go vertical
      instead of horizontal. In that case, we no longer want to overlap - if we
      did, it would cover up the final nav menu item instead of the Z! */
-  @media screen and (max-width: @screen-sm-min) {
+  @media screen and (max-width: $screen-sm-min) {
     margin-top: 0px;
   }
 }
@@ -167,7 +167,7 @@ header #top-navigation {
      we want to right align the nav so it is opposite the logo on
      the screen. When smaller, it becomes a vertical list under
      the logo. */
-  @media screen and (min-width: @screen-sm-min) {
+  @media screen and (min-width: $screen-sm-min) {
     .nav {
       float: right;
     }
