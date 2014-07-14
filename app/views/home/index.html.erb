@@ -11,7 +11,7 @@
             <%= image_tag 'join_us.png', id: 'join-circle' %>
             <div class="join-us-text-overlay text-center">
               <br />
-              <%= link_to '<button id="join-us-button" type="button" class="btn btn-lg btn-default">JOIN US!</button>'.html_safe, new_enrollment_path %>
+              <%= link_to '<button id="join-us-button" type="button" class="button-primary">JOIN US!</button>'.html_safe, new_enrollment_path %>
             </div>
           </div>
         <% end %>
@@ -94,7 +94,7 @@
             <div class="col-sm-6">
               <div class="video-box"><iframe src="//player.vimeo.com/video/99269824" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>
             </div>
-            <div class="col-sm-5 sunk-quote">
+            <div class="col-sm-4 col-sm-offset-1 sunk-quote">
               <p><span class="large-quotes">&ldquo;</span>Beyond Z introduced me into the real world outside of academics! My interviewing and networking skills have definitely grown - I have met some incredible people and stayed in touch with many of them. My decision to enter the Education field has been reinforced through my time at BZ as well!<span class="large-quotes">&rdquo;</span>
               </p>
               <footer>- Martha Mendoza<br />University of California at Berkeley, 2016</footer>
@@ -112,9 +112,9 @@
           </h3>
           <section>
             <div class="col-sm-6">
-              <div class="video-box"><iframe width="500" height="281" src="//www.youtube.com/embed/r9LelXa3U_I" frameborder="0" allowfullscreen></iframe></div>
+              <%= image_tag 'coach_voices_still.png' %>
             </div>
-            <div class="col-sm-5 sunk-quote">
+            <div class="col-sm-4 col-sm-offset-1 sunk-quote">
               <p><span class="large-quotes">&ldquo;</span>
                 I loved getting to know the kids and hanging out with them - we got to know each of their personalities really well. I particularly loved watching them plan the Hackathon and seeing their efforts pay off. Their excitement for coding, planning, and leading at Beyond Hacks was contagious and I was thrilled for them.
               <span class="large-quotes">&rdquo;</span>
@@ -133,12 +133,12 @@
             Partners
           </h3>
           <section>
-            <div class="col-sm-5 sunk-quote">
+            <div class="col-sm-4 col-sm-offset-1 sunk-quote">
               <p><span class="large-quotes">&ldquo;</span>Beyond Z's mission is so important – provide leadership development to young people, especially first-generation college students, so that they are positioned to excel at the highest level and become global leaders. I hire Beyond Z interns because they are exceptionally talented. They are smart, passionate, and driven college students who get results.<span class="large-quotes">&rdquo;</span>
               </p>
               <footer>-Patrick O'Donnell<br />Vice President of Parent and Family Engagement, Teach For America</footer>
             </div>
-            <div class="col-sm-5 col-sm-offset-2 sunk-quote">
+            <div class="col-sm-4 col-sm-offset-2 sunk-quote">
               <p><span class="large-quotes">&ldquo;</span>All young people should be able to dream without boundaries. I am excited to be an inaugural partner with Beyond Z because their curriculum and programming will help to level the playing field for under-represented populations lacking resources and human capital necessary to reach the highest levels of leadership.<span class="large-quotes">&rdquo;</span>
               </p>
               <footer>-Kaya Henderson<br />Chancellor, Washington D.C. Public Schools</footer>
@@ -156,7 +156,7 @@
       <div class="col-sm-12">
         <h1>Ready to jumpstart your career and leadership path today?</h1>
         <br />
-        <%= link_to '<button id="join-us-button" type="button" class="btn btn-primary btn-lg">JOIN US!</button>'.html_safe, new_enrollment_path %>
+        <%= link_to '<button id="join-us-button" type="button" class="button-primary">JOIN US!</button>'.html_safe, new_enrollment_path %>
       </div>
     </section>
   </div>

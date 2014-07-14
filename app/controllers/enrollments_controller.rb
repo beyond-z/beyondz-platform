@@ -3,6 +3,7 @@ class EnrollmentsController < ApplicationController
   layout 'public'
 
   def new
+    get_states
     @user = User.new
   end
 
@@ -34,6 +35,7 @@ class EnrollmentsController < ApplicationController
     @new_user = User.create(user)
 
     if @new_user.errors.any?
+      get_states
       @user = @new_user
       render 'new'
       return
@@ -49,5 +51,21 @@ class EnrollmentsController < ApplicationController
     end
 
     redirect_to redirect_to_welcome_path(@new_user)
+  end
+
+  private
+
+  def get_states
+    @states = [
+      'AL', 'AK', 'AZ', 'AR', 'CA', 'CO',
+      'CT', 'DE', 'DC', 'FL', 'GA', 'HI',
+      'ID', 'IL', 'IN', 'IA', 'KS', 'KY',
+      'LA', 'ME', 'MD', 'MA', 'MI', 'MN',
+      'MS', 'MO', 'MT', 'NE', 'NV', 'NH',
+      'NJ', 'NM', 'NY', 'NC', 'ND', 'OH',
+      'OK', 'OR', 'PA', 'RI', 'SC', 'SD',
+      'TN', 'TX', 'UT', 'VT', 'VA', 'WA',
+      'WV', 'WI', 'WY'
+    ]
   end
 end

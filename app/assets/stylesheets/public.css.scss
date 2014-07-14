@@ -39,25 +39,9 @@
   padding: 4em 0 4em 0;
 }
 
-#join-us-button {
-  background-color: $bzorange;
-  color: $bzwhite;
-  font-weight: bold;
-  border-top-color: $primary_button_highlight;
-  border-right-color: $primary_button_highlight;
-  border-left-color: $primary_button_lowlight;
-  border-bottom-color: $primary_button_lowlight;
-
-  &:hover {
-    background-color: $primary_button_highlight;
-    color: $bzwhite;
-    font-weight: bold;
-    border-top-color: $primary_button_lowlight;
-    border-right-color: $primary_button_lowlight;
-    border-left-color: $bzorange;
-    border-bottom-color: $bzorange;
-  }
-}
+ #join-us-button {
+   font-weight: bold;
+ }
 
 .well-light {
   background-color: $bzwhite;
