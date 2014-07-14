@@ -178,6 +178,10 @@
   }
 }
 
+blockquote {
+  border-left-color: $accent_blue;
+}
+
 .form-option-details {
   display: none;
   padding-left: 2em;
