@@ -21,11 +21,12 @@
 .sign-up-anchor-section {
   background-image: url(image_path('sign_up_anchor.jpg'));
   background-size: 100%;
-  background-repeat: no;
+  background-repeat: no-repeat;
   background-position: center center;
 
   .image-pads {
     height: 4em;
+    @extend .hidden-xs; /* On very small screens this gives excessive whitespace because the photo aspect ratio leads to there being some white already */
   }
 }
 
