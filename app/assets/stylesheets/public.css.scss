@@ -18,16 +18,30 @@
   }
 }
 
-.sign-up-anchor-section {
-  background-image: url(image_path('sign_up_anchor.jpg'));
+.large-picture-section {
   background-size: 100%;
-  background-repeat: no;
+  background-repeat: no-repeat;
   background-position: center center;
 
   .image-pads {
     height: 4em;
+    @extend .hidden-xs; /* On very small screens this gives excessive whitespace because the photo aspect ratio leads to there being some white already */
   }
 }
+
+.sign-up-anchor-section {
+  @extend .large-picture-section;
+  background-image: url(image_path('sign_up_anchor.jpg'));
+}
+
+.volunteer-image-section {
+  @extend .large-picture-section;
+  background-image: url(image_path('volunteer_header.jpg'));
+  padding-bottom: 37.5%; /* the image is 1200 x 450 so we want height to be this percent of the width */
+}
+
+
+
 
 .video-intro-section {
   background-color: $bzgreen;
