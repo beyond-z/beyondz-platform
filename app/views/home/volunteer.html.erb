@@ -1,5 +1,15 @@
 <%= render 'signup_welcome' %>
 
+<div class="wide-section volunteer-image-section should-overlap-logo">
+  <div class="section-container">
+    <section>
+      <div class="col-md-12">
+        <!-- this space intentionally left blank (this area is just a decoration bg image) -->
+      </div>
+    </section>
+  </div>
+</div>
+
 <div class="wide-section">
   <div class="section-container">
     <section>
@@ -17,7 +27,9 @@
 
         <p>Whatever the time you have to give, we have a role ready to be filled.  Whatever the passions you wish to share, we know a future leader ready to be inspired.</p>
 
-        <p><%= link_to "Join us.", new_enrollment_path %></p>
+        <div class="text-center">
+          <%= link_to '<button id="join-us-button" type="button" class="btn btn-primary btn-lg">JOIN US!</button>'.html_safe, new_enrollment_path %>
+        </div>
       </div>
     </section>
   </div>
@@ -27,17 +39,17 @@
   <div class="section-container">
     <section>
       <div class="infographic-column">
-        <h3>Lorem</h3>
+        <h3></h3>
         <%= image_tag("volunteer_icon_1.png") %>
         <p>Behind every great team stands a great coach - someone who helps them see and then become who they've always had the potential to be.</p>
       </div>
       <div class="infographic-column">
-        <h3>Ipsum</h3>
+        <h3></h3>
         <%= image_tag("volunteer_icon_2.png") %>
         <p>The greatest contributors in every field, from the arts to the sciences and beyond, were each introduced to their craft long before their potential was known.</p>
       </div>
       <div class="infographic-column">
-        <h3>Dolor</h3>
+        <h3></h3>
         <%= image_tag("volunteer_icon_3.png") %>
         <p>The ways that your personal story, your experiences, and your network could transform a young person's future are endless. Let us help you make those connections.</p>
       </div>
