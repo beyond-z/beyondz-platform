@@ -7,6 +7,7 @@ BeyondzPlatform::Application.routes.draw do
   get '/volunteer', to: 'home#volunteer'
   get '/partner', to: 'home#partner'
   get '/supporter_info', to: 'home#supporter_info'
+  get '/jobs', to: 'home#jobs'
 
   resources :feedback
   resources :comments
