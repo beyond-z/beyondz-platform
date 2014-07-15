@@ -37,18 +37,14 @@
 
               <div class="form-group">
                 <label style="display: block;">Where do you live?</label>
-                <%= f.text_field :city, :class => 'form-control', required: 'required', placeholder: 'City', style: 'width: 20em; display: inline-block;' %>
-                <%= f.select :state, options_for_select([
-                  'AL', 'AK', 'AZ', 'AR', 'CA', 'CO',
-                  'CT', 'DE', 'DC', 'FL', 'GA', 'HI',
-                  'ID', 'IL', 'IN', 'IA', 'KS', 'KY',
-                  'LA', 'ME', 'MD', 'MA', 'MI', 'MN',
-                  'MS', 'MO', 'MT', 'NE', 'NV', 'NH',
-                  'NJ', 'NM', 'NY', 'NC', 'ND', 'OH',
-                  'OK', 'OR', 'PA', 'RI', 'SC', 'SD',
-                  'TN', 'TX', 'UT', 'VT', 'VA', 'WA',
-                  'WV', 'WI', 'WY',
-                ]) %>
+                <section>
+                  <div class="col-sm-6">
+                    <%= f.text_field :city, :class => 'form-control', required: 'required', placeholder: 'City' %>
+                  </div>
+                  <div class="col-sm-6">
+                    <%= f.select :state, options_for_select(@states), {}, :class => 'form-control' %>
+                  </div>
+                </section>
               </div>
 
               <div class="form-group">
@@ -111,7 +107,7 @@
               </div>
              -->
               <div class="form-group">
-                <button type="submit" class="btn btn-lg btn-primary">Submit</button>
+                <button type="submit" class="button-primary">Submit</button>
               </div>
             <% end %>
           </div>
