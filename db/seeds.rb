@@ -278,7 +278,13 @@ item.task_definitions.push(
       students at UC Berkeley and are competing for the same summer internship
       in education in DC over the summer and have all created their resumés.
       Based on their resumés, we\'re going to have you predict which one has the
-      best shot and scoring an interview.</p>'
+      best shot and scoring an interview.</p>
+      
+      <object width="560" height="315">
+        <param name="movie" value="' + ("/videos/Interactive_Resume_Louis_Amanda_Eric_Intro_Video.swf") + '" />
+        <embed src="' + ("/videos/Interactive_Resume_Louis_Amanda_Eric_Intro_Video.swf") + '" width="560" height="315"></embed>
+      </object>
+      '
   )
 )
 item.task_definitions.push(
@@ -287,7 +293,12 @@ item.task_definitions.push(
     name: 'Parts of a resumé',
     details: '<p>But before you rank resumes, we go to unpack the basic
       building blocks of a resume and discuss what makes a good resume.</p>
-      <iframe width="560" height="315" src="//www.youtube.com/embed/PAthQKLhBTs?rel=0" frameborder="0" allowfullscreen></iframe>'
+
+      <object width="560" height="315">
+        <param name="movie" value="' + ("/videos/Interactive_Resume_Parts_Video.swf") + '" />
+        <embed src="' + ("/videos/Interactive_Resume_Parts_Video.swf") + '" width="560" height="315"></embed>
+      </object>
+    '
   )
 )
 task_definition = TaskDefinition.create(
