@@ -28,7 +28,7 @@ $(document).ready(function() {
 
 
   var setScrollClass = function() {
-    $("body")[$(window).scrollTop() == 0 ? "removeClass" : "addClass"]("scrolled-down");
+    $("body")[$(window).scrollTop() <= 0 ? "removeClass" : "addClass"]("scrolled-down");
   };
 
   $(window).scroll(setScrollClass);
