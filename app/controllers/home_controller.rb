@@ -39,6 +39,9 @@ class HomeController < ApplicationController
   def partner
   end
 
+  def jobs
+  end
+
   private
 
   def new_user
