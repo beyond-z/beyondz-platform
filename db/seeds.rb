@@ -304,14 +304,7 @@ item.task_definitions.push(
 task_definition = TaskDefinition.create(
   required: true, position: 3, name: 'Rank the resumés',
   summary: 'Determine which resumés are the strongest and weakest.',
-  details: '<p>This is an entire paragraph about what makes a good resumé.
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-    </p>'
+  details: '<p>As you are writing your resume, don\'t forget to refer to the <a target="_BLANK" href="/docs/action-verbs.html">list of action verbs</a>.</p>'
   )
 task_definition.sections.push(
   TaskSection.create(
