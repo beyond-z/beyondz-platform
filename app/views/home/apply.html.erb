@@ -2,13 +2,36 @@
   <div class="wide-section should-overlap-logo" style="background-color: #0071bd;">
     <div class="section-container" style="background-image: url(<%=image_path('cesar_ramirez.jpg')%>);">
       <section>
-        <div class="col-md-12">
-          <div style="text-align: center">
-            <iframe src="//player.vimeo.com/video/99269824" width="400" height="225" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
-            <blockquote>
+        <div class="col-md-12" style="width: 100%; height: 565px;">
+            <%= large_modal('video',
+                 title: '',
+                 content: '<div style="text-align: center">
+                            <iframe src="//player.vimeo.com/video/99269824" width="400" height="225" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
+                          </div>'
+            ) %>
+            <blockquote style="position: absolute;
+              left: 3em;
+              top: 3em;
+              color: white;
+              width: 40%;">
             <p>&ldquo;I joined <b>Beyond Z</b> because I wanted to be a part of a <b>community</b> that would help me develop my <b>career skills</b>...one particular thing that I&rsquo;ve learned is to <b>work together</b> with other people and have <b>confidence</b> in myself&rdquo;</p>
             <footer><cite>Cesar Ramirez, UC Berkeley </cite></footer>
             </blockquote>
+            <i style="position: absolute;
+              left: 50%;
+              top: 50%;
+              text-align: center;
+              vertical-align: midle;
+              line-height: 3em;
+              margin-top: -1.5em;
+              margin-left: -1.5em;
+              font-size: 3em;
+              color: white;
+              border: solid 5px white;
+              border-radius: 100%;
+              width: 3em;
+              height: 3em;
+              cursor: pointer;" data-toggle="modal" data-target="#video" class="glyphicon-play"></i>
           </div>
         </div>
       </section>
@@ -35,7 +58,7 @@
                <p>You will be notified when applications are open.</p>
               </div>
             <% else %>
-              <a href="/enrollments/new">Sign Up to receive application</a>
+              <%= apply_now_button %>
             <% end %>
           </div>
         </div>
@@ -83,7 +106,7 @@
               <li>Spots for our 2014-2015 class are limited and we may not be able to accept all qualified applicants at this time.  </li>
             </ul>
 
-            Apply Now
+            <%= apply_now_button %>
           </div>
         </div>
         <div class="col-md-8"><!-- intentionally blank to show bg image --></div>
@@ -97,7 +120,7 @@
         <div class="col-md-12">
           <div class="apply-page-content-holder">
             <h2>Application and program timeline:</h2>
-            <dl class="timeline">
+            <dl class="timeline" style="text-align: center;">
               <dt>Now</dt>
                 <dd>Sign Up to Stay in Touch</dd>
               <dt>Early August</dt>
@@ -115,7 +138,7 @@
               <dt>Summer</dt>
                 <dd>Self Chosen Summer Experience</dd>
             </dl>
-            Apply Now
+            <%= apply_now_button %>
           </div>
         </div>
       </section>
