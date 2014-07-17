@@ -1,102 +1,139 @@
-<div class="wide-section">
-  <div class="section-container">
-    <section>
-      <div class="col-sm-12">
-        <h1>Join the Beyond Z Accelerator</h1>
-        <h2>Leaders emerge from everywhere</h2>
-      </div>
-    </section>
-  </div>
-</div>
-<div class="wide-section">
-  <div class="section-container">
-    <section>
-      <div class="col-md-6">
-        <div style="text-align: center">
-          <iframe src="//player.vimeo.com/video/99269824" width="400" height="225" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
-          <blockquote>
-          <p>“I joined Beyond Z because I wanted to be a part of a community that would help me develop my career skills...one particular thing that I’ve learned is to work together with other people and have confidence in myself”</p>
-          <footer><cite>Cesar Ramirez, UC Berkeley </cite></footer>
-          </blockquote>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <p>You got into college. You figured out how to pay for it. You’ve adapted to college life. You take classes, study hard, and maybe even chose a major. Now, you want to develop your leadership and career skills so you can get a job after you graduate that sets you up to reach your potential. Beyond Z is here to help. The Beyond Z Accelerator discovers, develops, and connects diverse talent to ensure that our next generation of leaders can emerge from everywhere.</p>
-      </div>
-    </section>
-  </div>
-<div>
-
-
-<div class="wide-section">
-  <div class="section-container">
-    <section>
-      <div class="col-sm-12">
-        <% if user_signed_in? %>
-          <div class="open-application-notification">
-           <p>You will be notified when applications are open.</p>
+<div class="apply-page">
+  <div class="wide-section should-overlap-logo" style="background-color: #0071bd;">
+    <div class="section-container" style="background-image: url(<%=image_path('cesar_ramirez.jpg')%>);">
+      <section>
+        <div class="col-md-12">
+          <div style="text-align: center">
+            <iframe src="//player.vimeo.com/video/99269824" width="400" height="225" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
+            <blockquote>
+            <p>&ldquo;I joined <b>Beyond Z</b> because I wanted to be a part of a <b>community</b> that would help me develop my <b>career skills</b>...one particular thing that I&rsquo;ve learned is to <b>work together</b> with other people and have <b>confidence</b> in myself&rdquo;</p>
+            <footer><cite>Cesar Ramirez, UC Berkeley </cite></footer>
+            </blockquote>
           </div>
-        <% else %>
-          <a href="/enrollments/new">Sign Up to receive application</a>
-        <% end %>
-      </div>
-    </section>
-  </div>
-</div>
-
-<div class="wide-section">
-  <div class="section-container">
-    <section>
-      <div class="col-md-6">
-        <h2>Selection Criteria &amp; Process</h2>
-
-        <p>We’re looking for students who want to accelerate their leadership and career, care about bettering their community, and believe in the importance of diversifying our nation’s leadership force. </p>
-
-        <h3>Qualifications: </h3>
-        <ul>
-          <li>Must be in sophomore standing at your college or university </li>
-          <li>Must have a 2.5 cumulative GPA or higher </li>
-          <li>Must be able to commit an average of 2 hours a week to Beyond Z from mid October to late April (excluding all holidays and breaks) </li>
-        </ul>
-        <p>Spots for our 2014-2015 class are limited and we may not be able to accept all qualified applicants at this time.  </p>
-
-        <h3>Timeline:</h3>
-        <ul>
-          <li>Now – Sign Up to Stay in Touch</li>
-          <li>Early August – Application Opens</li>
-          <li>Mid September – Application Due</li>
-          <li>Late September – Phone Interviews</li>
-          <li>Early October – Application Notification</li>
-          <li>Mid October - Program Launch</li>
-          <li>Late April – Program Wrap Up</li>
-          <li>Summer – Self Chosen Summer Experience</li>
-        </ul>
-      </div>
-      <div class="col-md-6">
-        <h2>What to expect:</h2>
-        <p>As a Beyond Z Leader, you will join a community that will help you explore your authentic leadership, develop 21st Century skills, and accelerate you into your career. Specifically, you’ll: </p>
-        <ul>
-          <li><b>Meet</b> with a small cohort of your peers led by a Leadership Coach, a local professional who will act as your coach and champion </li>
-          <li><b>Reflect</b> on your identity, strengths, skills, and passions and direct those towards a career</li>
-          <li><b>Master</b> key career readiness skills like networking, interviewing, and creating an online brand</li>
-          <li><b>Create</b> your own products, programs, and presentations, just like you would in a real job </li>
-          <li><b>Secure</b> an awesome summer opportunity like an internship with support from Beyond Z </li>
-        </ul>
-      </div>
-    </section>
-</div>
-</div>
-<div class="wide-section">
-  <div class="section-container">
-    <section>
-      <blockquote>
-        <div style="float: left; padding-right: 1em;">
-        <%= image_tag('aimee.jpg') %>
         </div>
-        <p>“ This next generation of extraordinary, diverse future leaders is compelled to pay it forward for those who come after them...and to recognize all those who came before them, on whose shoulders they stand.” </p>
-        <footer><cite>Aimee Eubanks Davis, Founder </cite></footer>
-        <br class="clear-fix" />
-      </blockquote>
-    </section>
+      </section>
+    </div>
+  </div>
+
+
+  <div class="wide-section" style="background-color: #009345;">
+    <div class="section-container" style="background-color: #3ab54a; color: white; text-align: center;">
+      <section>
+        <div class="col-sm-12">
+          <div class="apply-page-content-holder">
+            <p class="feature">You got into college. You figured out how to pay for it. You study hard. But you know it takes more than that to reach your full potential.</p>
+
+            <p class="shoutout">You want to develop your leadership and career skills so you can get a job after you graduate. Beyond Z is here to help.</p>
+
+            <p class="feature">Beyond Z discovers, develops, and connects diverse talent <b>like you</b> to ensure that our next generation of leaders can emerge from everywhere.</p>
+
+            <!--
+            <p>You got into college. You figured out how to pay for it. You’ve adapted to college life. You take classes, study hard, and maybe even chose a major. Now, you want to develop your leadership and career skills so you can get a job after you graduate that sets you up to reach your potential. Beyond Z is here to help. The Beyond Z Accelerator discovers, develops, and connects diverse talent to ensure that our next generation of leaders can emerge from everywhere.</p>
+            -->
+            <% if user_signed_in? %>
+              <div class="open-application-notification">
+               <p>You will be notified when applications are open.</p>
+              </div>
+            <% else %>
+              <a href="/enrollments/new">Sign Up to receive application</a>
+            <% end %>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="wide-section" style="background-color: #e6e6e6;">
+    <div class="section-container" style="background-color: white;">
+      <section>
+        <div class="col-md-8">
+          <%= image_tag("what_to_expect.jpg") %>
+        </div>
+        <div class="col-md-4">
+          <div class="apply-page-content-holder" style="padding-left: 0px; padding-bottom: 0px;">
+            <h2>What to expect:</h2>
+            <p>As a Beyond Z Leader, you will join a community that will help you explore your authentic leadership, develop 21st Century skills, and accelerate you into your career. Specifically, you’ll: </p>
+            <ul>
+              <li><b>Meet</b> with a small cohort of your peers led by a Leadership Coach, a local professional who will act as your coach and champion </li>
+              <li><b>Reflect</b> on your identity, strengths, skills, and passions and direct those towards a career</li>
+              <li><b>Master</b> key career readiness skills like networking, interviewing, and creating an online brand</li>
+              <li><b>Create</b> your own products, programs, and presentations, just like you would in a real job </li>
+              <li><b>Secure</b> an awesome summer opportunity like an internship with support from Beyond Z </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="wide-section" style="background-color: #c2272d;">
+    <div class="section-container" style="background-color: white; background-image: url(<%=image_path('who_can_apply.jpg')%>); background-position: top right; background-repeat: no-repeat; background-size: 100%; background-contain: cover;">
+      <section>
+        <div class="col-md-4">
+          <div class="apply-page-content-holder">
+            <h2>Who can apply</h2>
+
+            <p>We’re looking for students who want to accelerate their leadership and career, care about bettering their community, and believe in the importance of diversifying our nation’s leadership force. </p>
+
+            <h3>Qualifications: </h3>
+            <ul>
+              <li>Must be in sophomore standing at your college or university </li>
+              <li>Must have a 2.5 cumulative GPA or higher </li>
+              <li>Must be able to commit an average of 2 hours a week to Beyond Z from mid October to late April (excluding all holidays and breaks) </li>
+              <li>Spots for our 2014-2015 class are limited and we may not be able to accept all qualified applicants at this time.  </li>
+            </ul>
+
+            Apply Now
+          </div>
+        </div>
+        <div class="col-md-8"><!-- intentionally blank to show bg image --></div>
+      </section>
+    </div>
+  </div>
+
+  <div class="wide-section" style="background-color: #f2f2f2;">
+    <div class="section-container" style="background-color: white;">
+      <section>
+        <div class="col-md-12">
+          <div class="apply-page-content-holder">
+            <h2>Application and program timeline:</h2>
+            <dl class="timeline">
+              <dt>Now</dt>
+                <dd>Sign Up to Stay in Touch</dd>
+              <dt>Early August</dt>
+                <dd>Application Opens</dd>
+              <dt>Mid September</dt>
+                <dd>Application Due</dd>
+              <dt>Late September</dt>
+                <dd>Phone Interviews</dd>
+              <dt>Early October</dt>
+                <dd>Application Notification</dd>
+              <dt>Mid October</dt>
+                <dd>Program Launch</dd>
+              <dt>Late April</dt>
+                <dd>Program Wrap Up</dd>
+              <dt>Summer</dt>
+                <dd>Self Chosen Summer Experience</dd>
+            </dl>
+            Apply Now
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="wide-section" style="background-color: #70848b;">
+    <div class="section-container" style="background-color: #8699a0; color: white;">
+      <section>
+        <blockquote>
+          <div style="float: left; padding-right: 1em;">
+          <%= image_tag('aimee.jpg') %>
+          </div>
+          <p>“ This next generation of extraordinary, diverse future leaders is compelled to pay it forward for those who come after them...and to recognize all those who came before them, on whose shoulders they stand.” </p>
+          <footer><cite>Aimee Eubanks Davis, Founder </cite></footer>
+          <br class="clear-fix" />
+        </blockquote>
+      </section>
+    </div>
   </div>
 </div>
