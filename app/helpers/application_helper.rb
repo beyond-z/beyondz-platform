@@ -20,8 +20,8 @@ module ApplicationHelper
   end
 
   def apply_now_button
-    (link_to '<button id="join-us-button" type="button" class="button-primary">JOIN US!</button>'.
-      html_safe, new_enrollment_path).html_safe
+    (link_to '<button id="join-us-button" type="button" class="button-primary">JOIN US!</button>'
+      .html_safe, new_enrollment_path).html_safe
   end
 
   # Generate standard-sized Bootstrap modal HTML
