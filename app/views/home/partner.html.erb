@@ -21,7 +21,8 @@
 
         <p>We’d love to work with you to bring our vision to reality!</p>
 
-        Learn more about partnering with Beyond Z
+        
+        <%= link_to 'Learn more about partnering with Beyond Z', new_enrollment_path %>
       </div>
     </section>
   </div>
@@ -54,6 +55,17 @@
     <section>
       <div class="col-md-12">
         <%= image_tag("educational_photo.jpg") %>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="wide-section">
+  <div class="section-container text-center">
+    <section>
+      <div class="col-sm-12">
+        <br />
+        <%= link_to '<button id="join-us-button" type="button" class="button-primary">JOIN US!</button>'.html_safe, new_enrollment_path %>
       </div>
     </section>
   </div>

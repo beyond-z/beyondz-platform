@@ -55,10 +55,19 @@
   }
 
   .context-notes {
-    border: dotted 0.05em $bzorange;
-  }
-  .context-notes:hover {
-    background-color: $bzgrey1;
+    padding: 3px;
+
+    &:before {
+      @extend .glyphicon;
+      @extend .glyphicon-info-sign;
+      
+      color: $bzgrey7;
+      padding-right: 3px;
+    }
+
+    &:hover {
+      background-color: $bzgrey1;
+    }
   }
 
   .matrix-table
@@ -74,13 +83,6 @@
 
       th {
         vertical-align: top;
-      }
-
-      .rank-star {
-        @extend .glyphicon;
-        @extend .glyphicon-star;
-
-        font-size: 2em;
       }
     }
   }
