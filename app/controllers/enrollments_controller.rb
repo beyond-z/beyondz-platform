@@ -14,6 +14,8 @@ class EnrollmentsController < ApplicationController
       :email,
       :password,
       :applicant_type,
+      :city,
+      :state,
       :keep_updated)
 
     case user[:applicant_type]
