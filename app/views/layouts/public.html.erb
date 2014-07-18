@@ -4,46 +4,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= content_for?(:title) ? yield(:title) : "Beyond Z" %></title>
     <meta name="description" content="<%= yield(:description) || "Beyond Z" %>">
-    <style>
-      .apply-page-content-holder {
-        padding: 1em;
-      }
-
-      .apply-page blockquote {
-        border: none;
-        font-style: normal;
-      }
-
-      .apply-page .pitch-holder .feature {
-        max-width: 40em;
-        margin: 0px auto;
-      }
-
-      .apply-page .pitch-holder .shoutout {
-        padding: 0.5em 1em;
-      }
-
-      .apply-page blockquote footer {
-        color: white;
-      }
-
-      .apply-page blockquote footer:before {
-        content: '';
-      }
-
-      .timeline dt {
-        margin-top: 1em;
-        font-weight: bold;
-      }
-
-      .timeline dd {
-        font-style: italic;
-      }
-
-      .apply-page ul {
-        padding-left: 1em;
-      }
-    </style>
     
     <!-- Until we add a landing page and login, keep our site out of search engines -->
     <meta name="robots" content="noindex">
