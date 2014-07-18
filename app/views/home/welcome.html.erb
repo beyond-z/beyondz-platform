@@ -3,8 +3,8 @@
     <section>
       <div class="col-sm-6 col-sm-offset-3 text-center">
         <% if @new_user && !@new_user.confirmed_at.nil? %>
-          <h2>Welcome <%= @new_user.name %></h2>
-          <p>Please check our email at <%= @new_user.email %> and follow the instructions to complete your account activation.</p>
+          <p class="shoutout">Welcome <%= @new_user.name %>!</p>
+          <p class="feature">Please check our email at <%= @new_user.email %> and follow the instructions to complete your account activation.</p>
         <% end %>
       </div>
       <div class="col-sm-4 col-sm-offset-4 text-center">
@@ -23,7 +23,7 @@
   <div class="section-container" style="padding-top: 4em; padding-bottom: 4em;">
     <section>
       <div class="col-sm-4 col-sm-offset-4">
-        <h2>Why stop here?</h2>
+        <p class="shoutout">Why stop here?</p>
         <p>Help spread the word so we can discover more leaders and expand the network that supports them:</p>
 
         (TWITTER WIDGET HERE!!!)
@@ -37,7 +37,7 @@
   <div class="section-container" style="padding-top: 4em; padding-bottom: 4em;">
     <section>
       <div class="col-sm-4 col-sm-offset-4">
-        <h2>Looking for what to do next?</h2>
+        <p class="shoutout">Looking for what to do next?</p>
         <p>
           Check out the following links to discover all the great reasons people are joining BeyondZ:<br />
           <%= link_to 'Become a fellow', apply_path %><br />
