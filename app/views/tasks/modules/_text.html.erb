@@ -1,0 +1,9 @@
+<%= section_form.fields_for task_section.module.code do |m| %>
+  <% section_config = JSON.parse(task_section.configuration) %>
+  <div class="form-group">
+    <% if section_config['question'] %>
+      <%= m.label :answer, section_config['question'] %>
+    <% end %>
+    <%= m.text_area :answer, :class => 'form-control' %>
+  </div>
+<% end %>

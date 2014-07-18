@@ -3,7 +3,7 @@
   <%= form_for @task, url: coach_student_task_path(@task.user, @task), :method => :patch, role: 'form' do |f| %>
     <%= f.hidden_field :action, { :value => true } %>
   
-    <%= render "shared/form_errors", locals: { object: @task } %>
+    <%= render :partial => "shared/form_errors", locals: { object: @task } %>
 
     <% if @task.pending_approval? %>
       <%= f.submit "Approve", :class => 'btn btn-primary', 'data-task-action' => 'approve', 'data-task-status' => @task.state %>

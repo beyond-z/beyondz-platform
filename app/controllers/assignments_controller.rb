@@ -41,6 +41,7 @@ class AssignmentsController < ApplicationController
     @task = tasks.first
     @next_task = @task.next
     @previous_task = @task.previous
+    @task.submit_previous_task!
   end
 
   def update

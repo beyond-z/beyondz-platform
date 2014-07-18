@@ -18,7 +18,3 @@ function update_progress_bar(progress_container, event)
   progress_bar.find('.sr-only').html(event.loaded + '% Complete');
 }
 
-
-$(document).ready(function() {
- 
-});

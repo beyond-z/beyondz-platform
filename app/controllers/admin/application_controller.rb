@@ -6,14 +6,14 @@ class Admin::ApplicationController < ApplicationController
   private
 
   def require_admin
-    unless @user_logged_in
+    unless user_signed_in?
       flash[:error] = 'You must log in to access the admin section.'
-      redirect_to '/users/login?redirect_to=/admin/'
+      redirect_to new_user_session_path
       return
     end
-    unless current_user.is_administrator
+    unless current_user.is_administrator?
       flash[:error] = 'Please log in with your admin account.'
-      redirect_to '/users/login?redirect_to=/admin/'
+      redirect_to new_user_session_path
       return
     end
   end

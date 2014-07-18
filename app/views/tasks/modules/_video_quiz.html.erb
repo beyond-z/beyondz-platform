@@ -1,0 +1,20 @@
+<%= section_form.fields_for task_section.module.code do |m| %>
+  <% section_config = JSON.parse(task_section.configuration) %>
+  <div class="annotated-video" data-youtube-id="<%= section_config['youtube_id'] %>" data-start-time="<%= section_config['start_time'] %>">
+    <% section_config['items'].each do |i| %>
+      <div class="quiz" data-time-to-display="<%= i['time'] %>">
+        <p><%= i['question'] %></p>
+        <% i['fields'].each do |field| %>
+          <% if field['type'] == 'text' %>
+            <%= m.text_field field['name'], :class => 'form-control' %>
+          <% elsif field['type'] == 'textarea' %>
+            <%= m.text_area field['name'], rows: 2, :class => 'form-control' %>
+          <% elsif field['type'] == 'select' %>
+            <%= m.select field['name'], options_for_select(field['options']) %>
+          <% end %>
+        <% end %>
+        <button type="button" class="close">Continue</button>
+      </div>
+    <% end %>
+  </div>
+<% end %>

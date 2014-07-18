@@ -1,5 +1,5 @@
 <div class="task-pane">
-  <%= render partial: "assignments/header", locals: { :assignment => @assignment } %>
+  <%= render "assignments/header", { :assignment => @assignment } %>
 
   <div class="assignment-progress-bar">
     <div class="completion-bar" style="width: <%= @assignment.percent_submitted %>%;">
@@ -10,11 +10,11 @@
   <section>
     <div class="col-sm-8">
       <div class="task-container">
-        <h3><%= @task.task_definition.name.html_safe %></h3>
+        <h3><%= @task.task_definition.name %></h3>
 
         <% if @task.task_definition.summary %>
           <p class="lead">
-            <%= @task.task_definition.summary.html_safe %>
+            <%= @task.task_definition.summary %>
           </p>
         <% end %>
 
@@ -30,21 +30,6 @@
           <% end %>
         </div>
       </div>
-
-      <% if !@current_user.coach? %>
-        <section class="task-navigation-buttons">
-          <div class="col-sm-6">
-            <% if @previous_task %>
-              <%= link_to "Previous", assignment_task_path(@previous_task.assignment, @previous_task), class: "previous" %>
-            <% end %>
-          </div>
-          <div class="col-sm-6 text-right">
-            <% if @next_task %>
-              <%= link_to "Next", assignment_task_path(@next_task.assignment, @next_task), class: "next" %>
-            <% end %>
-          </div>
-        </section>
-      <% end %>
     </div>
     <div class="col-sm-4">
       <%= render "tasks/discussion" %>

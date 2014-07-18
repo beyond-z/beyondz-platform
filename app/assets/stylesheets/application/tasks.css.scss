@@ -45,25 +45,74 @@
 
 
   #task-update-student {
-    .file-upload-progress {
-      @extend .progress;
+    .task-section {
+      margin-bottom: 1em;
+
+      .file-upload-progress {
+        @extend .progress;
+      }
     }
   }
 
-  #task-done {
-    margin-top: 2em;
+  .context-notes {
+    padding: 3px;
+
+    &:before {
+      @extend .glyphicon;
+      @extend .glyphicon-info-sign;
+      
+      color: $bzgrey7;
+      padding-right: 3px;
+    }
+
+    &:hover {
+      background-color: $bzgrey1;
+    }
+  }
+
+  .matrix-table
+  {
+    @extend .table;
+    @extend .table-bordered;
+    @extend .table-hover;
+
+    thead {
+      background-color: $bzorange;
+      color: $bzwhite;
+      font-weight: bold;
+
+      th {
+        vertical-align: top;
+      }
+    }
+  }
+
+  .html-document {
+     border: solid 1px #000;
+  }
+
+  .partial-html-document {
+     border-left: solid 1px #000;
+     border-right: solid 1px #000;
+     border-top: dashed 1px #ccc;
+     border-bottom: dashed 1px #ccc;
   }
 
   .task-navigation-buttons {
     margin-top: 4em;
 
-    a {
+    a, button, input[type=submit] {
       width: 10em;
     }
 
     .previous {
       @extend .btn;
       @extend .btn-warning;
+    }
+
+    .complete {
+      @extend .btn;
+      @extend .btn-primary;
     }
 
     .next {

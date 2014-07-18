@@ -1,18 +1,20 @@
 BeyondzPlatform::Application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { confirmations: 'confirmations' }
 
   root "home#index"
-
-  get "/users/login", to: "users#login" # defines users_login_path for use in the form
-  get '/users/:action', controller: 'users'
-  post '/users/:action', controller: 'users'
+  get '/welcome', to: 'home#welcome'
+  get '/apply', to: 'home#apply'
+  get '/volunteer', to: 'home#volunteer'
+  get '/partner', to: 'home#partner'
+  get '/supporter_info', to: 'home#supporter_info'
+  get '/jobs', to: 'home#jobs'
 
   resources :feedback
   resources :comments
-  resources :enrollments, only: [:index, :new, :create]
+  resources :enrollments, only: [:new, :create]
 
   resources :assignments, only: [:index, :update, :show] do
-    resources :tasks, only: [:index, :update, :show]
+    resources :tasks, only: [:update, :show]
   end
 
   namespace :coach do

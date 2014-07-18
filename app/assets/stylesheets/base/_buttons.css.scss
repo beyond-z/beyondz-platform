@@ -7,4 +7,13 @@
   @extend .btn;
   @extend .btn-primary;
   @extend .btn-lg;
+
+  background-color: $bzorange !important;
+  border-color: $bzwhite !important;
+
+  &:hover {
+    background-color: $primary_button_highlight !important;
+    border-color: $bzgrey1 !important;
+
+  }
 }

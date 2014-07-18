@@ -2,12 +2,15 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable, :confirmable
   has_many :assignments, dependent: :destroy
   has_many :tasks
 
   has_many :coach_students, foreign_key: :coach_id
   has_many :students, through: :coach_students, :source => :student
+
+  validates :first_name, presence: true
+  validates :last_name, presence: true
 
   after_create :create_child_skeleton_rows
 
@@ -16,15 +19,22 @@ class User < ActiveRecord::Base
   end
 
   def coach
-    c = CoachStudent.find_by :student_id => id
-    if c
-      return c.coach
-    end
+    CoachStudent.find_by(student_id: id).try(:coach)
   end
 
+  # We do need to decide exactly how users will be accepted
+  # into the program and as what roles. For now, it will just
+  # see if we added any students in the admin, thus making them
+  # a coach, or if not, the applicant type is set if they enrolled
+  # thus telling us they aren't a full student yet. (This realistically
+  # only separates our seed data from real data - which is fine until
+  # we start actually accepting people.)
   def coach?
     students.any?
-    # user role table FIXME
+  end
+
+  def student?
+    applicant_type.nil? || applicant_type.empty?
   end
 
   # This will create the skeletons for assignments, tasks,
@@ -52,16 +62,12 @@ class User < ActiveRecord::Base
             task = Task.create(
               task_definition_id: td.id,
               assignment_id: assignment.id,
-              kind: td.kind,
-              file_type: td.file_type,
               state: 'new'
             )
             tasks << task
           end
         end
       end
-
-      save!
     end
   end
 

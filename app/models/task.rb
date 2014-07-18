@@ -4,17 +4,12 @@ class Task < ActiveRecord::Base
   belongs_to :assignment
   belongs_to :task_definition
   belongs_to :user
-  has_many :files, class_name: 'TaskFile', dependent: :destroy
-  has_one :text, class_name: 'TaskText', dependent: :destroy
-  has_many :comments
-
-  enum kind: { file: 0, user_confirm: 1, text: 2, quiz: 3  }
-  enum file_type: { document: 0, image: 1, video: 2, audio: 3 }
+  has_many :responses, class_name: 'TaskResponse', dependent: :destroy
+  has_many :comments, dependent: :destroy
 
   scope :for_assignment, -> (assignment_id) {
     where(assignment_id: assignment_id)
   }
-
   scope :submitted, -> { where.not(state: :new) }
   scope :incomplete, -> { where.not(tasks: { state: :complete }) }
   scope :required, -> {
@@ -37,7 +32,6 @@ class Task < ActiveRecord::Base
     joins(:task_definition).includes(:task_definition)\
     .order('task_definitions.position ASC')
   }
-  scope :files, -> { where(kind: Task.kinds[:file]) }
   scope :need_student_attention, -> {
     where(state: [:new, :pending_revision])
   }
@@ -47,7 +41,6 @@ class Task < ActiveRecord::Base
   scope :need_coach_attention, -> {
     where(state: [:pending_approval, :pending_revision])
   }
-
 
   aasm :column => :state do
     state :new, initial: true
@@ -97,25 +90,23 @@ class Task < ActiveRecord::Base
 
   # does task type meet submit requirements
   def ready_to_submit?
-    ready_to_submit = true
-    if needs_files? || needs_text? || user_confirm?
-      ready_to_submit = false
-    end
+    # add other criteria over time
+    ready_to_submit = needs_responses?
 
     ready_to_submit
   end
 
   # is task state ready to submit
   def submittable?
-    can_submit = false
+    assignment.in_progress? && (new? || pending_revision?)
+  end
 
-    if assignment.in_progress?
-      if new? || pending_revision?
-        can_submit = true
-      end
+  # Used to autosubmit tasks that don't have task modules
+  def submit_previous_task!
+    last_task = previous
+    if last_task && last_task.submittable? && !last_task.needs_responses?
+      last_task.submit!
     end
-
-    can_submit
   end
 
   def requires_approval?
@@ -126,43 +117,27 @@ class Task < ActiveRecord::Base
     !requires_approval?
   end
 
-  def needs_text?
-    text? && text.nil?
-  end
-
-  def needs_files?
-    file? && (files.count < 1)
-  end
-
-  # blank out uploaded file data
-  def reset_files
-    files.each do |file|
-      # if attachment type exists, delete it
-      if type_exists?(file_type)
-        file.reset(file_type)
-      end
-    end
-  end
-
-  def delete_files
-    files.each do |file|
-      file.reset(file_type)
-      file.destroy
-    end
+  def needs_responses?
+    task_definition.sections.count > responses.count
   end
 
   def next
-    return nil if task_definition.position == assignment.tasks.count
-    assignment.tasks.for_display\
-      .where('task_definitions.position = ?', task_definition.position + 1)\
-      .first
+    current_position = task_definition.position
+    assignment_tasks = assignment.tasks
+    return nil if current_position == assignment_tasks.count
+
+    assignment.tasks.for_display.find_by(
+      task_definitions: { position: current_position + 1 }
+    )
   end
 
   def previous
-    return nil if task_definition.position == 1
-    assignment.tasks.for_display\
-      .where('task_definitions.position = ?', task_definition.position - 1)\
-      .first
+    current_position = task_definition.position
+    return nil if current_position == 1
+
+    assignment.tasks.for_display.find_by(
+      task_definitions: { position: current_position - 1 }
+    )
   end
 
   def update(task_params)
@@ -170,35 +145,36 @@ class Task < ActiveRecord::Base
 
       self.updated_at = Time.now
 
-      # handle different task types
-      if task_params.key?(:user_confirm) && task_params[:user_confirm] == 'true'
-        submit!
-      elsif task_params.key?(:text) && task_params[:text][:content]
-        if text.present?
-          text.update_attribute(:content, task_params[:text][:content])
-        else
-          self.text = TaskText.create(
-            task_id: id,
-            content: task_params[:text][:content]
-          )
+      if task_params
+        # handle different task types
+        if task_params.key?(:section)
+          task_params[:section].each do |task_section_id, answers|
+            # if already exists, just find it (allows user to update their task)
+            task_response = TaskResponse.find_or_create_by(
+              task_id: id, task_section_id: task_section_id
+            )
+
+            # handle file upload if exists
+            if answers.key?(:file_upload)
+              file_type = answers[:file_upload][:file_type]
+              task_response.update_attributes(file_type: file_type)
+              task_response.files << TaskFile.create(
+                task_section_id: task_section_id,
+                task_response_id: id,
+                file_type => answers[:file_upload][file_type.to_sym]
+              )
+            else
+              # shove all other response data into answers
+              task_response.update_attributes(answers: answers.to_json)
+            end
+            responses.push(task_response)
+          end
         end
-      elsif task_params.key?(:files)
-        if files.present?
-          task_file_params = task_params[:files][file_type.to_sym]
-          # restrict to single/first file for now
-          files.first.update_attribute(file_type, task_file_params)
-        else
-          files << TaskFile.create(
-            task_definition_id: task_definition.id,
-            task_id: id,
-            file_type => task_params[:files][file_type.to_sym]
-          )
-        end
-      elsif task_params.key?(:done) && (task_params[:done] == 'true')
-        # task was submitted as complete
+      end
+
+      if save!
         submit!
       end
-      save!
 
     end
   end

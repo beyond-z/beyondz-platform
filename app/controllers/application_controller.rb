@@ -15,8 +15,8 @@ class ApplicationController < ActionController::Base
     end
   end
 
-    # use controller specific JS whene requested
-    # use: before_action :use_controller_js
+  # use controller specific JS whene requested
+  # use: before_action :use_controller_js
   def use_controller_js
     @controller_js = params[:controller].split('/')[-1]
   end
@@ -33,6 +33,14 @@ class ApplicationController < ActionController::Base
       flash[:error] = 'Please log in to see your coaching dashboard.'
       redirect_to new_user_session_path
     end
+  end
+
+  # direct users to the proper path upon registration
+  # We are now sending them all to a generic page, but I'm
+  # keeping this method because we might change our mind back
+  # and then we'd do to undo just to redo...
+  def redirect_to_welcome_path(user)
+    welcome_path(new_user_id: user.id)
   end
 
 end

@@ -6,14 +6,27 @@ ruby "2.1.1"
 gem 'rails', '4.1.0'
 
 # Use postgresql as the database for Active Record
-group :production do
-  gem 'pg'
-end
+gem 'pg'
+
+# group :production do
+# end
 
 # Let's use Twitter Boostrap.
 gem 'bootstrap-sass'
 group :development do
   gem 'rails_layout'
+  # Use debugger
+  gem 'debugger'
+  gem 'better_errors'
+  # used with 'better_errors'
+  gem 'binding_of_caller'
+end
+
+group :development, :test do
+  # makes creating complex objects easier in tests
+  gem 'factory_girl_rails'
+  # allows for user browser simulation in integration testing
+  gem 'capybara'
 end
 
 # Use SCSS for stylesheets
@@ -21,9 +34,6 @@ gem 'sass-rails', '~> 4.0.0'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
-
-# Use CoffeeScript for .js.coffee assets and views
-#gem 'coffee-rails', '~> 4.0.0'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'therubyracer', platforms: :ruby
@@ -72,8 +82,5 @@ gem 'rubocop'
 
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development
-
-# Use debugger
-# gem 'debugger', group: [:development, :test]
 
 gem 'devise'

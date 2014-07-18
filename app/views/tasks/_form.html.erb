@@ -1,17 +1,49 @@
 <div id="task-update-student" class="container-fluid">
   <%= form_for [task.assignment, task], role: 'form' do |f| %>
 
-    <%= render "shared/form_errors", locals: { object: task } %>
+    <%= render :partial => "shared/form_errors", locals: { object: task } %>
 
-    <% if task.file? %>
-      <%= render 'tasks/subform_file', { f: f, task: task } %>
-    <% elsif task.text? %>
-      <%= render 'tasks/subform_text', { f: f, task: task } %>
-    <% elsif task.user_confirm? %>
-      <%= render 'tasks/subform_user_confirm', { f: f, task: task } %>
-    <% elsif task.quiz? %>
-      <%= render 'tasks/subform_quiz', { f: f, task: task } %>
-    <% end %>
+    <div class="task-section">
+      <% task.task_definition.sections.each do |task_section| %>
+        <% if task_section.introduction? %>
+          <p>
+            <%= task_section.introduction.html_safe %>
+          </p>
+        <% end %>
+        <%= f.fields_for :section do |s| %>
+          <%= s.fields_for "#{task_section.id}" do |section_number| %>
+            <%= render "tasks/modules/#{task_section.module.code}",
+              { task_form: f, section_form: section_number,
+                task: task, task_section: task_section,
+                task_section_response: task.responses.for_section(task_section.id)
+              } %>
+          <% end %>
+        <% end %>
+      <% end %>
+  
+      <!-- use progress bar if needed -->
+      <div class="file-upload-progress invisible">
+        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+          <span class="sr-only">0% Complete</span>
+        </div>
+      </div>
+    </div>
+
+    <section class="task-navigation-buttons">
+      <div class="col-sm-6">
+        <% if @previous_task %>
+          <%= link_to "Previous", assignment_task_path(@previous_task.assignment, @previous_task), class: "previous" %>
+        <% end %>
+      </div>
+      <div class="col-sm-6 text-right">
+        <%= f.submit "Submit", class: 'complete' %>
+        <% if @next_task %>
+          <button type="button" class="next disabled" disabled="disabled">Next</button>
+        <% else %>
+          <button type="button" class="next disabled" disabled="disabled">Finish</button>
+        <% end %>
+      </div>
+    </section>
 
   <% end %>
 </div>

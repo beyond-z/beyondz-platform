@@ -5,3 +5,57 @@
 @import './base/style';
 
 @import "./public/*";
+
+.big-picture {
+  padding: 8em;
+  .join-us-button-container {
+    margin-top: -25%;
+    width: 100%;
+
+    .join-us-text-overlay {
+     margin-top: -45%;
+    }
+  }
+}
+
+.large-picture-section {
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+
+  .image-pads {
+    height: 4em;
+    @extend .hidden-xs; /* On very small screens this gives excessive whitespace because the photo aspect ratio leads to there being some white already */
+  }
+}
+
+.sign-up-anchor-section {
+  @extend .large-picture-section;
+  background-image: url(image_path('sign_up_anchor.jpg'));
+}
+
+.volunteer-image-section {
+  @extend .large-picture-section;
+  background-image: url(image_path('volunteer_header.jpg'));
+  padding-bottom: 37.5%; /* the image is 1200 x 450 so we want height to be this percent of the width */
+}
+
+ #join-us-button {
+   font-weight: bold;
+ }
+
+.well-light {
+  background-color: $bzwhite;
+}
+
+.bz-infographic {
+  @extend .img-rounded;
+  width: 50em;
+}
+
+#sign-up-form {
+  #other_type {
+    width: 20em;
+    display: inline-block;
+  }
+}

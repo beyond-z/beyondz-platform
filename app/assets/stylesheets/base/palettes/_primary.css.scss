@@ -1,13 +1,16 @@
 //////////////////////////////
 //PRIMARY PALETTE
-$bzorange: #f7a333;
+$bzorange: #f26522;
 $bzblue:   #43b5e9;
 
 //SECONDARY PALETTE
 $bzgreen:  #abd044;
 $bzred:    #f37344;
+$primary_button_highlight: #f37440;
+$primary_button_lowlight: #b5541e;
 
 //NEUTRAL PALETTE (light to dark)
+$bzwhite:  #fff;
 $bzgrey1:  #e2e1dd;
 $bzgrey2:  #d6d6d4;
 $bzgrey3:  #cacac8;
@@ -27,3 +30,5 @@ $greyBackground: $bzgrey11;
 
 
 $subtle_border: $bzgrey3;
+
+$accent_blue: #428bca;

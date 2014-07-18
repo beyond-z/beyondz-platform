@@ -45,7 +45,7 @@ img {
 
 header {
   @extend .container-fluid;
-  background-color: white;
+
   width: 100%;
   padding: 0px;
 }
@@ -54,6 +54,8 @@ main {
   @extend .container-fluid;
   background-color: white;
   width: 100%;
+  padding-left: 0em;
+  padding-right: 0em;
 }
 
 section {
@@ -314,11 +316,6 @@ section {
   margin: 10px;
 }
 
-.button-primary {
-  @extend .btn;
-  @extend .btn-primary;
-}
-
 
 //------------------------------------------
 // Styles for the assignment details pages.
@@ -417,6 +414,5 @@ section {
 // Styles for the footer
 //-----------------------------------------
 .footer {
-  @extend .container-fluid;
   text-align: center;
 } 

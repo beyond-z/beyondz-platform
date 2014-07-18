@@ -10,6 +10,20 @@ module ApplicationHelper
     end
   end
 
+  def nav_button(text, path)
+    c = ''
+    if request.path == path
+      c = 'active'
+    end
+
+    ('<li>' + (link_to text, path, :class => c) + '</li>').html_safe
+  end
+
+  def apply_now_button
+    (link_to '<button id="join-us-button" type="button" class="button-primary">JOIN US!</button>'
+      .html_safe, new_enrollment_path).html_safe
+  end
+
   # Generate standard-sized Bootstrap modal HTML
   # Pass HTML ID and allowable options (defined in modal_options())
   # Most common options include title, content and footer

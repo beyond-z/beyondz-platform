@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140603175001) do
+ActiveRecord::Schema.define(version: 20140702172713) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,7 +106,6 @@ ActiveRecord::Schema.define(version: 20140603175001) do
     t.text     "summary"
     t.boolean  "requires_approval",        default: false
     t.integer  "kind",                     default: 0
-    t.integer  "file_type"
   end
 
   add_index "task_definitions", ["assignment_definition_id"], name: "index_task_definitions_on_assignment_definition_id", using: :btree
@@ -114,8 +113,6 @@ ActiveRecord::Schema.define(version: 20140603175001) do
   add_index "task_definitions", ["required"], name: "index_task_definitions_on_required", using: :btree
 
   create_table "task_files", force: true do |t|
-    t.integer  "task_definition_id"
-    t.integer  "task_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "image_file_name"
@@ -134,19 +131,45 @@ ActiveRecord::Schema.define(version: 20140603175001) do
     t.string   "audio_content_type"
     t.integer  "audio_file_size"
     t.datetime "audio_updated_at"
+    t.integer  "task_section_id"
+    t.integer  "task_response_id"
   end
 
-  add_index "task_files", ["task_definition_id"], name: "index_task_files_on_task_definition_id", using: :btree
-  add_index "task_files", ["task_id"], name: "index_task_files_on_task_id", using: :btree
+  add_index "task_files", ["task_response_id"], name: "index_task_files_on_task_response_id", using: :btree
+  add_index "task_files", ["task_section_id"], name: "index_task_files_on_task_section_id", using: :btree
 
-  create_table "task_texts", force: true do |t|
-    t.integer  "task_id",    null: false
-    t.text     "content",    null: false
+  create_table "task_modules", force: true do |t|
+    t.string   "name"
+    t.string   "code"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "task_texts", ["task_id"], name: "index_task_texts_on_task_id", using: :btree
+  create_table "task_responses", force: true do |t|
+    t.integer  "task_id"
+    t.integer  "task_section_id"
+    t.text     "answers"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "file_type"
+  end
+
+  add_index "task_responses", ["task_id"], name: "index_task_responses_on_task_id", using: :btree
+  add_index "task_responses", ["task_section_id"], name: "index_task_responses_on_task_section_id", using: :btree
+
+  create_table "task_sections", force: true do |t|
+    t.integer  "task_definition_id"
+    t.integer  "task_module_id"
+    t.integer  "position",           default: 1, null: false
+    t.text     "introduction"
+    t.text     "configuration"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "file_type"
+  end
+
+  add_index "task_sections", ["task_definition_id"], name: "index_task_sections_on_task_definition_id", using: :btree
+  add_index "task_sections", ["task_module_id"], name: "index_task_sections_on_task_module_id", using: :btree
 
   create_table "tasks", force: true do |t|
     t.integer  "assignment_id"
@@ -156,7 +179,6 @@ ActiveRecord::Schema.define(version: 20140603175001) do
     t.datetime "updated_at"
     t.string   "state"
     t.integer  "kind",               default: 0
-    t.integer  "file_type"
   end
 
   add_index "tasks", ["assignment_id"], name: "index_tasks_on_assignment_id", using: :btree
@@ -186,8 +208,19 @@ ActiveRecord::Schema.define(version: 20140603175001) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.string   "confirmation_token"
+    t.string   "unconfirmed_email"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string   "applicant_type"
+    t.boolean  "keep_updated"
+    t.string   "anticipated_graduation"
+    t.string   "city"
+    t.string   "state"
+    t.string   "applicant_details"
   end
 
+  add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
