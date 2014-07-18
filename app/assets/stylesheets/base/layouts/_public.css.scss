@@ -4,7 +4,7 @@
    This min width is determined by looking at about how much it needs for the
    full horizontal nav bar on my screen. */
 @media screen and (min-width: 850px) {
-  .scrolled-down .header {
+  /*.scrolled-down*/ .header {
     .floating-header {
       position: fixed;
       top: 0px;
@@ -36,7 +36,9 @@
         header should be so other content isn't pushed too far up. */
       /* It uses a percentage of the width for responsive height, similar
          to a video aspect ratio trick you can read about on the internet. */
-      padding-top: 10%; /* Determined by looking at the existing header which is 1200 wide and 120 tall by default */
+      // padding-top: 10%; /* Determined by looking at the existing header which is 1200 wide and 120 tall by default */
+
+      padding-top: 58px; /* Matches the header which now doesn't change */
     }
   }
 }
@@ -417,6 +419,7 @@ i, em, blockquote {
 .shoutout {
 	/* need moar attentionz! */
 	font-size: 36px;
+        line-height: 42px;
 }
 .reverse {
 	/* when text is on dark background */

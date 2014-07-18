@@ -2,18 +2,16 @@
   <div class="section-container" style="background-color: #39b54a; padding-top: 4em; padding-bottom: 2em; color: #fff;">
     <section>
       <div class="col-sm-6 col-sm-offset-3 text-center">
-        <% if @new_user && !@new_user.confirmed_at.nil? %>
+        <% if @new_user && @new_user.confirmed_at.nil? %>
           <p class="shoutout">Welcome <%= @new_user.name %>!</p>
           <p class="feature">Please check our email at <%= @new_user.email %> and follow the instructions to complete your account activation.</p>
+        <% else %>
+          <p class="shoutout">Your account was successfully activated.</p>
+          <p>
+            Congratulations, you've just become part of a growing community devoted to making sure more talented young people fulfill their potential to become leaders, no matter where they come from.
+          </p>
+          <p class="feature">We'll be in touch personally via email soon!</p>
         <% end %>
-      </div>
-      <div class="col-sm-4 col-sm-offset-4 text-center">
-        <p>
-          Congratulations, you've just become part of a growing community devoted to making sure more talented young people fulfill their potential to become leaders, no matter where they come from.
-        </p>
-        <p>
-          We'll contact you personally once your account is fully activated to discuss next steps.
-        </p>
       </div>
     </section>
   </div>
@@ -23,7 +21,7 @@
   <div class="section-container" style="background-color: #fff;padding-top: 4em; padding-bottom: 4em;">
     <section>
       <div class="col-sm-4 col-sm-offset-4">
-        <p class="shoutout">Why stop here?</p>
+        <h2>Why stop here?</h2>
         <p>Help spread the word so we can discover more leaders and expand the network that supports them:</p>
 
         <a href="https://twitter.com/intent/tweet?button_hashtag=BeyondZ&text=I%20just%20signed%20up%20for" class="twitter-hashtag-button" data-size="large" data-related="destructionator" data-url="http://beyondz.org/">Tweet #BeyondZ</a>
@@ -38,7 +36,7 @@
   <div class="section-container" style="background-color: #e6e6e6; padding-top: 4em; padding-bottom: 4em;">
     <section>
       <div class="col-sm-4 col-sm-offset-4">
-        <p class="shoutout">Looking for what to do next?</p>
+        <h2>Looking for what to do next?</h2>
         <p>
           Check out the following links to discover all the great reasons people are joining BeyondZ:<br />
           <%= link_to 'Become a fellow', apply_path %><br />
