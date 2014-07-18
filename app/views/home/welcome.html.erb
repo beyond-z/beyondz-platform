@@ -1,30 +1,50 @@
-<%= render 'signup_welcome' %>
-
-<section>
-  <div class="col-sm-6">
-
-  <% if @new_user && !@new_user.confirmed_at.nil? %>
-    <div class="well">
-      <p>Congrats! Your account is confirmed and we're excited for you to get involved. We'll be in touch personally via email soon!</p>
-    </div>
-  <% end %>
-    <p style="padding-top: 2em;">In the mean time, explore how you can...</p>
-    <ul>
-      <li><%= link_to 'Become a fellow', apply_path %></li>
-      <li><%= link_to 'Volunteer with Beyond Z', volunteer_path %></li>
-      <li><%= link_to 'Partner with Beyond Z', partner_path %></li>
-    </ul>
+<div class="wide-section" style="background-color: #009245;">
+  <div class="section-container" style="background-color: #39b54a; padding-top: 4em; padding-bottom: 2em; color: #fff;">
+    <section>
+      <div class="col-sm-6 col-sm-offset-3 text-center">
+        <% if @new_user && !@new_user.confirmed_at.nil? %>
+          <h2>Welcome <%= @new_user.name %></h2>
+          <p>Please check our email at <%= @new_user.email %> and follow the instructions to complete your account activation.</p>
+        <% end %>
+      </div>
+      <div class="col-sm-4 col-sm-offset-4 text-center">
+        <p>
+          Congratulations, you've just become part of a growing community devoted to making sure more talented young people fulfill their potential to become leaders, no matter where they come from.
+        </p>
+        <p>
+          We'll contact you personally once your account is fully activated to discuss next steps.
+        </p>
+      </div>
+    </section>
   </div>
-  <div class="col-sm-6">
-    <div class="mission-photo">
-      <p>The Beyond Z Accelerator discovers, develops, and connects diverse talent to ensure that our next generation of leaders can emerge from everywhere.</p>
-    </div>
-  </div>
-</section>
+</div>
 
-<section>
-  <blockquote>
-    <p>"Beyond Z had provided me with innumerable opportunities for personal and professional growth, but the Capstone project took our learning experiences beyond that of our own and empowered me to give back to my community. I really appreciated this opportunity, it was a great learning experience in regards to leadership for me as a project manager."</p>
-    <footer><cite>- Kelly Hernandez, Stanford University </cite></footer>
-  </blockquote>
-</section>
+<div class="wide-section">
+  <div class="section-container" style="padding-top: 4em; padding-bottom: 4em;">
+    <section>
+      <div class="col-sm-4 col-sm-offset-4">
+        <h2>Why stop here?</h2>
+        <p>Help spread the word so we can discover more leaders and expand the network that supports them:</p>
+
+        (TWITTER WIDGET HERE!!!)
+
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="wide-section">
+  <div class="section-container" style="padding-top: 4em; padding-bottom: 4em;">
+    <section>
+      <div class="col-sm-4 col-sm-offset-4">
+        <h2>Looking for what to do next?</h2>
+        <p>
+          Check out the following links to discover all the great reasons people are joining BeyondZ:<br />
+          <%= link_to 'Become a fellow', apply_path %><br />
+          <%= link_to 'Volunteer with Beyond Z', volunteer_path %><br />
+          <%= link_to 'Partner with Beyond Z', partner_path %>
+        </p>
+      </div>
+    </section>
+  </div>
+</div>

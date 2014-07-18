@@ -11,7 +11,7 @@
             <%= image_tag 'join_us.png', id: 'join-circle' %>
             <div class="join-us-text-overlay text-center">
               <br />
-              <%= link_to '<button id="join-us-button" type="button" class="button-primary">JOIN US!</button>'.html_safe, new_enrollment_path %>
+              <%= render 'shared/join_us_button' %>
             </div>
           </div>
         <% end %>
@@ -156,7 +156,7 @@
       <div class="col-sm-12">
         <h1>Ready to jumpstart your career and leadership path today?</h1>
         <br />
-        <%= link_to '<button id="join-us-button" type="button" class="button-primary">JOIN US!</button>'.html_safe, new_enrollment_path %>
+        <%= render 'shared/join_us_button' %>
       </div>
     </section>
   </div>
