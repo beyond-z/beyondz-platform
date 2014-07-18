@@ -9,17 +9,11 @@
   @extend .btn-lg;
 
   background-color: $bzorange !important;
-  border-top-color: $primary_button_highlight !important;
-  border-right-color: $primary_button_highlight !important;
-  border-left-color: $primary_button_lowlight !important;
-  border-bottom-color: $primary_button_lowlight !important;
+  border-color: $bzwhite !important;
 
   &:hover {
     background-color: $primary_button_highlight !important;
-    border-top-color: $primary_button_lowlight !important;
-    border-right-color: $primary_button_lowlight !important;
-    border-left-color: $bzorange !important;
-    border-bottom-color: $bzorange !important;
+    border-color: $bzgrey1 !important;
 
   }
 }

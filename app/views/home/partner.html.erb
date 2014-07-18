@@ -1,18 +1,13 @@
 <%= render 'signup_welcome' %>
 
-<div class="wide-section">
-  <div class="section-container">
+<div class="wide-section" style="background-color: #009245;">
+  <div class="section-container" style="background-color: #39b54a; padding: 4em; color: #fff;">
     <section>
       <div class="col-sm-12">
         <h1>Partner with Beyond Z</h1>
-        <h2>Leaders Emerge From Everywhere</h2>
+        <p class="shoutout">Leaders Emerge From Everywhere</p>
       </div>
     </section>
-  </div>
-</div>
-
-<div class="wide-section">
-  <div class="section-container">
     <section>
       <div class="col-sm-12">
         <p>Our country tracks test scores over time to predict how many prison cells we need. We track young athletic talent over time to develop the next group of Division 1 athletes.  This leads to the key question - <i>why aren’t we identifying and developing academic and leadership talent over time, creating a pipeline to careers for kids growing up in low-income communities?</i></p>
@@ -21,15 +16,16 @@
 
         <p>We’d love to work with you to bring our vision to reality!</p>
 
-        
-        <%= link_to 'Learn more about partnering with Beyond Z', new_enrollment_path %>
+        <div class="text-center">
+          <%= apply_now_button %>
+        </div>
       </div>
     </section>
   </div>
 </div>
 
-<div class="wide-section">
-  <div class="section-container">
+<div class="wide-section" style="background-color: #f2f2f2;">
+  <div class="section-container" style="background-color: #fff; padding: 4em;">
     <section>
       <div class="infographic-column">
         <h3><br />Employers</h3>
@@ -50,8 +46,8 @@
   </div>
 </div>
 
-<div class="wide-section">
-  <div class="section-container">
+<div class="wide-section" style="background-color: #d93833;">
+  <div class="section-container" style="background-color: #ea6537;">
     <section>
       <div class="col-md-12">
         <%= image_tag("educational_photo.jpg") %>
@@ -59,13 +55,11 @@
     </section>
   </div>
 </div>
-
-<div class="wide-section">
-  <div class="section-container text-center">
+<div class="wide-section" style="background-color: #d93833;">
+  <div class="section-container" style="background-color: #ea6537; padding: 2em;">
     <section>
-      <div class="col-sm-12">
-        <br />
-        <%= link_to '<button id="join-us-button" type="button" class="button-primary">JOIN US!</button>'.html_safe, new_enrollment_path %>
+      <div class="col-sm-12 text-center">
+        <%= apply_now_button %>
       </div>
     </section>
   </div>
