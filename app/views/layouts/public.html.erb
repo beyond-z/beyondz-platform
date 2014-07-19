@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= content_for?(:title) ? yield(:title) : "Beyond Z" %></title>
+    <meta name="description" content="<%= yield(:description) || "Beyond Z" %>">
+    
+    <!-- Until we add a landing page and login, keep our site out of search engines -->
+    <meta name="robots" content="noindex">
+    <%= render 'shared/asset_stylesheet_includes' %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+
+    <%= render 'shared/standard_modals' %>
+    <%= yield :modals %>
+    <div class="public-container">
+
+      <div class="header">
+        <div class="floating-header">
+          <div class="wide-section">
+            <div class="section-container">
+              <section id="banner" role="banner">
+                <div class="top-left">
+                  <%= link_to image_tag('bz_logo_338.png'), root_path %>
+                </div>
+                <div class="navigation-holder">
+                  <div id="top-navigation" role="navigation">
+                    <ul class="nav navbar-nav">
+                      <%= nav_button 'Home', root_path %>
+                      <%= nav_button 'Apply', apply_path %>
+                      <%= nav_button 'Volunteer', volunteer_path %>
+                      <%= nav_button 'Partner', partner_path %>
+                      <li><%= render 'shared/login_button' %></li>
+                    </ul>
+                  </div>
+                </div>
+              </section>
+            </div> <!-- .section-container -->
+          </div>
+        </div> <!-- .floating-header -->
+        <!-- this acts to fill the space when the floating header is in fixed position up top -->
+        <!-- when it moves down, this spacer assumes its size, keeping the rest of the page content
+             from jumping around, confusing the user as to where they were looking -->
+        <div class="floating-header-spacer"></div>
+      </div> <!-- .header -->
+
+      <main role="main">
+        <%= render 'shared/messages' %>
+        <%= yield %>
+      </main>
+
+      <div class="wide-section">
+        <%= content_for :footer do %>
+          <div class="section-container">
+            <section>
+              <div class="col-sm-6">
+                <%= link_to 'Jobs', jobs_path %>
+              </div>
+              <div class="col-sm-6 text-right">
+                Contact us: <a href="mailto:info@beyondz.org">info@beyondz.org</a><br />
+              </div>
+            </section>
+          </div>
+        <% end %>
+        <%= render 'shared/footer' %>
+      </div>
+    </div> <!-- .public-container -->
+
+    <%= render 'shared/asset_javascript_includes' %>
+    <%= render 'shared/google_analytics' %>
+  </body>
+</html>

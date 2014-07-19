@@ -1,0 +1,7 @@
+<%= stylesheet_link_tag current_layout, media: "all", "data-turbolinks-track" => true %>
+<%= javascript_include_tag "main", "data-turbolinks-track" => true, "data-turbolinks-eval" => false %>
+<%= javascript_include_tag current_layout, "data-turbolinks-track" => true %>
+<% if @controller_js %>
+  <%= javascript_include_tag "#{current_layout}/#{@controller_js}", "data-turbolinks-track" => true %>
+<% end %>
+<%= yield :additional_js %>

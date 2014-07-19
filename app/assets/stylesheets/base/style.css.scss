@@ -1,0 +1,46 @@
+/*
+ * Manifest file only.... no CSS rules
+ */
+
+// Import the CSS framework
+@import "bootstrap";
+
+
+// Import functional and presentational base
+// Order is specific based on dependency (typography depends on palettes,
+// buttons depend on typography, forms depend on buttons, etc...)
+
+// define base configuration (font sizes, font families, directories, etc...)
+@import "config";           // functional
+// define color palettes
+@import "palettes/*";       // functional
+// define base typography styles
+@import "typography";       // functional?
+// define typographic sets
+//@import "typography/*";   // functional?
+// define core button style
+@import "buttons";          // presentational?
+// define button variations
+//@import "buttons/*";      // presentational?
+// define base form styles
+@import "forms";            // presentational
+// define form variations
+//@import "forms/*";        // presentational
+// define styles for global use
+@import "global_design";    // presentational
+
+// define component-specific styles - presentational
+@import "components/file_upload/*";
+@import "components/comments/*";
+@import "components/compare_and_rank/*";
+@import "components/video_quiz/*";
+
+// define static reusable page modules/sections - presentational
+@import "modules/feedback_button/*";
+
+// define layout specific elements - presentational
+@import "layouts/*";
+
+
+// // Vendor imports
+@import "jRating.jquery"

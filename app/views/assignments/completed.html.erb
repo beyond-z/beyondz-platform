@@ -1,0 +1,11 @@
+<div class="container-fluid">
+	<% if @incomplete_assignments %>
+    <br />
+		<%= link_to "View Upcoming Assignments (#{@incomplete_assignments})", assignments_path %>
+	<% end %>
+
+	<% @complete_assignments.each do |assignment| %>
+	  <%= render :partial => assignment %>
+	<% end %>
+
+</div>

@@ -1,17 +1,20 @@
-// This is a manifest file that'll be compiled into application.js, which will include all the files
-// listed below.
+// JavaScript that is common to the general application (non-admin)
 //
-// Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
-// or vendor/assets/javascripts of plugins, if any, can be referenced here using a relative path.
+// This is a manifest file that'll be compiled into application.js, which will
+// include all the files listed below.
 //
-// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
-// compiled file.
-//
-// Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
-// about supported directives.
-//
-//= require jquery
-//= require jquery_ujs
-//= require turbolinks
-//= require bootstrap
-//= require_tree .
+//= require_self
+
+
+// update general progress bars
+function update_progress_bar(progress_container, event)
+{
+  var progress_bar = $(progress_container).find('.progress-bar');
+  progress_bar.attr({
+    'aria-valuenow': event.loaded,
+    'aria-valuemax': event.total,
+    style: 'width: ' + event.loaded + '%;'
+  });
+  progress_bar.find('.sr-only').html(event.loaded + '% Complete');
+}
+

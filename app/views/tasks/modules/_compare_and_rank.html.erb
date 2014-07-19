@@ -1,0 +1,25 @@
+<%= section_form.fields_for task_section.module.code do |m| %>
+  <% section_config = JSON.parse(task_section.configuration) %>
+  <div id="compare-and-rank">
+    <section>
+      <% section_config['items'].each_with_index do |r, i| %>
+        <% i += 1 %>
+        <% rank_modal_id = "task_#{task.id}_comparison_#{i}" %>
+        <%= content_for :modals do %>
+          <%= large_modal(rank_modal_id,
+            title: "Review this #{section_config['item_label']}",
+            content: "<div class=\"compare-and-rank-modal\">#{r['content']}</div>"
+          ) %>
+        <% end %>
+        <div class="selection-column">
+          <div>
+            <span class="small" data-toggle="modal" data-target="#<%= rank_modal_id %>"></span>
+          </div>
+          <div class="view-button" data-toggle="modal" data-target="#<%= rank_modal_id %>"><%= r['label'] %></div>
+          <div class="rating" data-average="0" data-id="<%= "rank_#{i}" %>"></div>
+          <%= m.hidden_field "rank_#{i}", 'data-target' => "rank_#{i}" %>
+        </div>
+      <% end %>
+    </section>
+  </div>
+<% end %>

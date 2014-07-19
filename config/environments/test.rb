@@ -33,4 +33,11 @@ BeyondzPlatform::Application.configure do
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
+
+  # This is used to generate links back to the site in emails
+  # Since we don't actually send the emails in test, the specifics
+  # aren't important here, but it is important to have so the view
+  # can actually be generated during the test process (e.g. confirming
+  # test users generates the email text but doesn't actually send it)
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 end

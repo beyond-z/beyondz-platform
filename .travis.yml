@@ -1,0 +1,8 @@
+language: ruby
+cache: bundler
+rvm:
+  - 2.1.1
+script:
+  - cd app; bundle exec rubocop
+  - bundle exec rake db:create db:migrate
+  - bundle exec rake test

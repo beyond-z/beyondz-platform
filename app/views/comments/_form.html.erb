@@ -1,0 +1,38 @@
+<div class="comment-form">
+  <%= form_for Comment.new, html: { role: 'form' } do |f| %>
+    <%= f.text_area :content, rows: 4, placeholder: "Add a comment..." %>
+    <%# use appropriate id for task or assignment %>
+    <%= f.hidden_field "#{item.class.model_name.human.downcase}_id", { :value => item.id } %>
+    <section>
+      <div class="toggle-column">
+        <button id="attachment-button" type="button" data-toggle="button"></button>
+      </div>
+      <div class="select-column">
+        <span id="select-type" data-toggle="buttons">
+          <label id="select-document" class="btn">
+            <input type="radio" name="attachment_type" value="document">
+          </label>
+          <label id="select-image" class="btn">
+            <input type="radio" name="attachment_type" value="image">
+          </label>
+        </span>
+        <div class="clear"></div>
+      </div>
+    </section>
+    <section>
+      <div class="upload-column">
+        <div class="file-type-sub-form document">
+          <span class="file-type-symbol document"></span>
+          <div class="upload_instructions">Upload a document (.doc, .pdf)</div>
+          <%= f.file_field :document %>
+        </div>
+        <div class="file-type-sub-form image">
+          <span class="file-type-symbol image"></span>
+          <div class="upload-instructions">Upload an image (.jpg, .png, .gif)</div>
+          <%= f.file_field :image %>
+        </div>
+      </div>
+    </section>
+    <%= f.submit 'Post Comment', :class => 'button-default' %>
+  <% end %>
+</div>

@@ -1,0 +1,22 @@
+<%= section_form.fields_for task_section.module.code do |m| %>
+  <% if task_section_response %>
+    <p>You have already uploaded these versions:</p>
+    <ul>
+      <% task_section_response.files.each do |file| %>
+        <li>
+          <%= link_to file.name, file.url %> (<%= file.created_at.strftime("%b %d, %Y") %>)
+        </li>
+      <% end %>
+    </ul>
+    <p>Do you have a more recent version?</p>
+  <% end %>
+
+  <div class="task-file">
+    <%= m.hidden_field :file_type, value: task_section.file_type %>
+    <div class='form-group'>
+      <%= m.label task_section.file_type %>
+      <%= m.file_field task_section.file_type %>
+    </div>
+  </div>
+  <div class="clear"></div>
+<% end %>

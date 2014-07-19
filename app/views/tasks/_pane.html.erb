@@ -1,0 +1,39 @@
+<div class="task-pane">
+  <%= render "assignments/header", { :assignment => @assignment } %>
+
+  <div class="assignment-progress-bar">
+    <div class="completion-bar" style="width: <%= @assignment.percent_submitted %>%;">
+      <span class="sr-only"><%= @assignment.percent_submitted %>% Complete</span>
+    </div>
+  </div>
+
+  <section>
+    <div class="col-sm-8">
+      <div class="task-container">
+        <h3><%= @task.task_definition.name %></h3>
+
+        <% if @task.task_definition.summary %>
+          <p class="lead">
+            <%= @task.task_definition.summary %>
+          </p>
+        <% end %>
+
+        <% if @task.task_definition.details %>
+          <%= @task.task_definition.details.html_safe %>
+        <% end %>
+
+        <div class="action-box">
+          <% if @current_user.coach? %>
+            <%= render "coach/tasks/action_box" %>
+          <% else %>
+            <%= render "tasks/action_box" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <%= render "tasks/discussion" %>
+    </div>
+  </section>
+  
+</div>

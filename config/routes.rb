@@ -1,29 +1,46 @@
 BeyondzPlatform::Application.routes.draw do
-  get "programs/college"
-  root 'programs#college'
+  devise_for :users, controllers: { confirmations: 'confirmations' }
 
-  # These are static routes for the college assignments for Phase 1.  In Phase 2, remove this and use
-  # resourceful dynamic routes, database modles, views, etc to add new assignments.
-  get "assignments/story-of-self", to: "assignments#story-of-self", as: :story_of_self_page
-  get "assignments/passions-professions", to: "assignments#passions-professions", as: :passions_professions_page
-  get "assignments/cover-letter", to: "assignments#cover-letter", as: :cover_letter_page
-  get "assignments/resume", to: "assignments#resume", as: :resume_page
-  get "assignments/networks", to: "assignments#networks", as: :networks_page
-  get "assignments/best-self", to: "assignments#best-self", as: :best_self_page
-  get "assignments/asking-for-help", to: "assignments#asking-for-help", as: :asking_for_help_page
-  get "assignments/interview-simulations", to: "assignments#interview-simulations", as: :interview_simulations_page
-  get "assignments/capstone-launch", to: "assignments#capstone-launch", as: :capstone_launch_page
-  get "assignments/brainstorm-challenge-ideas", to: "assignments#brainstorm-challenge-ideas", as: :brainstorm_challenge_ideas_page
-  get "assignments/presentation-rehearsal", to: "assignments#presentation-rehearsal", as: :presentation_rehearsal_page
-#  get "assignments/insertpath", to: "assignments#insertpath", as: :insertPath_page
+  root "home#index"
+  get '/welcome', to: 'home#welcome'
+  get '/apply', to: 'home#apply'
+  get '/volunteer', to: 'home#volunteer'
+  get '/partner', to: 'home#partner'
+  get '/supporter_info', to: 'home#supporter_info'
+  get '/jobs', to: 'home#jobs'
 
-  # Handle assignment submissions, such as GET <root>/assignments/submissions/new  
-  resources :assignments, only: [:index] do
-    resources :submissions, only: [:new, :create]
+  resources :feedback
+  resources :comments
+  resources :enrollments, only: [:new, :create]
+
+  resources :assignments, only: [:index, :update, :show] do
+    resources :tasks, only: [:update, :show]
   end
 
+  namespace :coach do
+    root "home#index"
 
+    resources :assignments
+    resources :students do
+      resources :tasks
+    end
+  end
 
+  namespace :admin do
+    root "home#index"
+
+    resources :users do
+      resources :students
+    end
+
+    resources :coaches, controller: 'users' do
+      resources :students
+    end
+
+    resources :students, controller: 'users'
+  end
+
+  get '/assignments/:action', controller: 'assignments' # For the hard-coded assignment details
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

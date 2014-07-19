@@ -1,0 +1,8 @@
+<p>Welcome to Beyond Z, <%= @user.first_name %>! We're excited to connect with you. Please confirm your email address to activate your account by clicking the link below:</p>
+
+<p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>
+
+<p>We'll be in touch soon!</p>
+
+<p>Thank you,
+<br />-The Beyond Z Team</p>

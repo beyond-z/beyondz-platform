@@ -1,0 +1,14 @@
+<h1>User Details</h1>
+
+<table>
+<%= @user.name %>
+<%= @user.email %>
+<%= @user.first_name %>
+<%= @user.last_name %>
+
+<br />
+<% if @user.coach %>
+  Coached by: <a href="/admin/users/<%=@user.coach.id%>"><%= @user.coach.name %></a>
+<% end %>
+
+<br /><a href="/admin/users/<%=@user.id%>/students">Students this user is Coaching...</a>

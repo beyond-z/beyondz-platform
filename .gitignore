@@ -7,6 +7,14 @@
 # Ignore bundler config.
 /.bundle
 
+# Ignore development specific files
+# used with local paperlclip storage
+/public/system/*
+
+# Ignore RVM/RBenv setup
+.ruby-gemset
+.ruby-version
+
 # Ignore the default SQLite database.
 /db/*.sqlite3
 /db/*.sqlite3-journal
@@ -24,6 +32,16 @@
 .env
 .env-prod
 .env-test
+.env-staging
 .env-dev
 
+# Ignore powder setup
+.powder
+.powenv
+
+# Not sure we need /vender/bundle but another dev added it, so I'll assume that's how their system is setup?
+/vendor/bundle/*
 /vender/bundle/*
+
+# this is my server starting shell script that loads the environment vars, nothing anyone else needs to care about
+start.sh

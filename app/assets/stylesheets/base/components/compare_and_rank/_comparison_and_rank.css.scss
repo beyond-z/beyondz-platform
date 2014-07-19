@@ -1,0 +1,35 @@
+#compare-and-rank {
+  margin-bottom: 15px;
+  .selection-column {
+    @extend .col-sm-4;
+    @extend .text-center;
+  }
+
+  .small {
+    @extend .glyphicon;
+    @extend .glyphicon-file;
+    font-size: 8em;
+    cursor: hand;
+    cursor: pointer;
+  }
+
+  .view-button {
+    @extend .btn;
+    @extend .btn-info;
+    margin: 0.5em 0 0.8em 0;
+  }
+
+  .rating {
+    @extend .center-block;
+  }
+}
+
+.compare-and-rank-modal {
+  .highlight {
+    border: 0.2em dashed $bzgrey2;
+  }
+
+  .lowlight {
+    color: $bzgrey4;
+  }
+}

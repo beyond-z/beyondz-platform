@@ -1,0 +1,40 @@
+<div class="container-fluid">
+  <section>
+    <div class="program-intro">
+      <h1>Leadership and Career Prep Academy<br/>Portal</h1>
+      <p>Beyond Z’s college program provides participants with opportunities to practice building up their leadership skills and to gain valuable exposure to exploring careers. The curriculum is action-oriented and organized around discussions and interactive applications of real-world, applied skills that can be used immediately in a professional setting.</p>
+    </div>
+  </section>
+
+  <!-- BTODO: we are going to create a facebook group and have one of the participants own it.  We can post a link to that once it happens
+  <section>
+    <div class="program-forum">
+      <h3>If you have questions or discussions please post them to the <a href="http://groups.google.com/a/beyondz.org/d/forum/career-prep-and-leadership-academy">group</a>.</h3>
+    </div>
+  </section>  
+  -->
+
+  <!-- BTODO: ToC?
+  <section>
+    <div class="program-panel">
+      <ul class="list-group">
+        <li class="list-group-item"><a href="#template-section">Sample Assignment Template</a></li>
+        <li class="list-group-item"><a href="#coverletter-section">How to Write a Cover Letter</a></li>
+      </ul>
+    </div>
+  </section>
+  -->
+
+
+<% if @complete_assignments %>
+<br />
+  <%= link_to "View Completed Assignments (#{@complete_assignments})", assignments_path(state: 'complete') %>
+<% end %>
+
+<%= render partial: "coaches_feedback" %>
+
+<% @incomplete_assignments.each do |assignment| %>
+  <%= render :partial => 'assignment', locals: {assignment: assignment} %>
+<% end %>
+
+</div>

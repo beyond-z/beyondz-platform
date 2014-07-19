@@ -1,0 +1,137 @@
+.comments {
+  .discussion {
+    margin-bottom: 1em;
+  }
+
+  .comment {
+    border: solid 0.2em $subtle_border;
+    padding: 0em;
+    margin-bottom: 1em;
+    // Add border radius as mixin
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+
+    &.mine {
+      /* this is a comment that the logged-in user wrote */
+      background-color: #eee;
+      margin-right: 3em;
+    }
+
+    &.not-mine {
+      /* this is a comment written by another user */
+      margin-left: 3em;
+    }
+
+    .by {
+      font-size: 0.9em;
+      border-bottom: solid 0.1em $subtle_border;
+      padding: 0.25em;
+    }
+
+    .speaker {
+      font-weight: bold;
+    }
+
+    .time {
+      float: right;
+    }
+
+    .content {
+      padding: 0.5em;
+    }
+
+    .attachment {
+      padding: 0.5em;
+      border-top: solid 0.1em #ccc;
+
+      .icon {
+        @extend .glyphicon;
+        @extend .glyphicon-paperclip;
+        color: #aaa;
+      }
+
+      img {
+        @extend .img-thumbnail;
+      }
+    }
+  }
+
+  .comment-form {
+    
+    textarea {
+      @extend .form-control;
+      width: 100%;
+    }
+
+    .toggle-column {
+      @extend .col-sm-2;
+    }
+
+    .select-column {
+      @extend .col-sm-10;
+    }
+
+    .upload-column {
+      @extend .col-sm-11;
+      @extend .col-sm-offset-1;
+    }
+
+    #attachment-button {
+      @extend .btn;
+      @extend .btn-default;
+      @extend .glyphicon;
+      @extend .glyphicon-paperclip;
+      margin-right: 2em;
+      float: left;
+    }
+
+    #select-type { 
+      @extend .btn-group;
+      display: none;
+
+      #select-document, #select-image {
+        @extend .btn;
+        @extend .btn-default;
+        @extend .glyphicon;
+      }
+
+      #select-document {
+        @extend .glyphicon-file;
+      }
+
+      #select-image {
+        @extend .glyphicon-picture;
+      }
+    }
+
+    .file-type-symbol {
+      @extend .glyphicon;
+      font-size: 3em;
+      float: left;
+      width: 1.2em;
+    }
+
+    .file-type-sub-form {
+      display: none;
+      margin-top: 10px;
+
+      & .document {
+        @extend .glyphicon-file;
+      }
+
+      & .image {
+        @extend .glyphicon-picture;
+      }
+    }
+
+    .upload-instructions {
+      font-weight: bold;
+      margin-bottom: .5em;
+    }
+
+    input[type=submit] {
+      float: right;
+    }
+  } 
+}
