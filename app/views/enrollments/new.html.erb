@@ -56,24 +56,42 @@
                   <%= f.radio_button :applicant_type, 'undergrad_student', required: 'required' %>
                   <%= f.label :applicant_type_undergrad_student, 'Undergraduate student' %>
                   <div class="form-option-details">
-                    Anticipated graduation:
-                    <%= select_tag :anticipated_undergrad_graduation, options_for_select(graduation_years, params[:anticipated_undergrad_graduation]) %>
-                  </div>
+                    <section>
+                      <div class="col-sm-6 text-right">
+                        Anticipated graduation:
+                      </div>
+                      <div class="col-sm-6">
+                        <%= select_tag :anticipated_undergrad_graduation, options_for_select(graduation_years, params[:anticipated_undergrad_graduation]), :class => 'form-control', include_blank: true %>
+                      </div>
+                    </section>
+                  </div>                  
                 </div>
                 <div>
                   <%= f.radio_button :applicant_type, 'grad_student', required: 'required' %>
                   <%= f.label :applicant_type_grad_student, 'Graduate student' %>
                   <div class="form-option-details">
-                    Anticipated graduation:
-                    <%= select_tag :anticipated_grad_graduation, options_for_select(graduation_years, params[:anticipated_grad_graduation]) %>
+                    <section>
+                      <div class="col-sm-6 text-right">
+                        Anticipated graduation:
+                      </div>
+                      <div class="col-sm-6">
+                        <%= select_tag :anticipated_grad_graduation, options_for_select(graduation_years, params[:anticipated_grad_graduation]), :class => 'form-control', include_blank: true %>
+                      </div>
+                    </section>
                   </div>
                 </div>
                 <div>
                   <%= f.radio_button :applicant_type, 'school_student' %>
                   <%= f.label :applicant_type_school_student, 'Middle school or high school student', required: 'required' %>
                   <div class="form-option-details">
-                    Grade:
-                    <%= select_tag :grade, options_for_select([12, 11, 10, 9, 8, 7, 6], params[:grade]) %>
+                    <section>
+                      <div class="col-sm-6 text-right">
+                        Grade:
+                      </div>
+                      <div class="col-sm-6">
+                        <%= select_tag :grade, options_for_select([12, 11, 10, 9, 8, 7, 6], params[:grade]), :class => 'form-control', include_blank: true %>
+                      </div>
+                    </section>
                   </div>
                 </div>
                 <div>
