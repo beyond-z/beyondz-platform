@@ -56,6 +56,28 @@
 
     max-width: 1440px;
     padding: 0px;
+
+    // set default padding around section column content
+    & section > div:not(.no-pad) {
+      padding: 2.25em 0.938em 1.5em 0.938em;
+
+      &:first-child {
+        padding-left: 1.8em;
+      }
+
+      &:last-child {
+        padding-right: 1.8em;
+      }
+    }
+
+    & section > div.no-pad {
+      padding-top: 0em;
+      padding-bottom: 0em;
+
+      &:not(:first-child):not(:last-child) {
+        padding: 0em;
+      }
+    }
   }
 }
 
@@ -364,6 +386,14 @@ blockquote {
       width: 40%;
     }
   }
+
+  .what-to-expect-img {
+    height: 420px;
+    background-position: top left;
+    background-repeat: no-repeat;
+    background-image: url(image_path('what_to_expect.jpg'));
+    background-size: 155%;
+  }
 }
 
 .right-side-bg-image {
@@ -371,6 +401,7 @@ blockquote {
   background-repeat: no-repeat;
   background-size: 100%;
   background-contain: cover;
+  background-image: url(image_path('who_can_apply.jpg'));
 }
 
 
@@ -407,10 +438,6 @@ blockquote {
       color: #ccc;
     }
   }
-}
-
-.apply-page-content-holder {
-  padding: 1em;
 }
 
 .apply-page {

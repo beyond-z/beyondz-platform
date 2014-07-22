@@ -5,16 +5,18 @@
       </div>
     </section>
     <section>
-      <div class="col-sm-6 col-sm-offset-6 big-picture">
-        <% if !user_signed_in? %>
-          <div class="join-us-button-container">
-            <%= image_tag 'join_us.png', id: 'join-circle' %>
-            <div class="join-us-text-overlay text-center">
-              <br />
-              <%= apply_now_button %>
+      <div class="col-sm-6 col-sm-offset-6">
+        <div class="big-picture">
+          <% if !user_signed_in? %>
+            <div class="join-us-button-container">
+              <%= image_tag 'join_us.png', id: 'join-circle' %>
+              <div class="join-us-text-overlay text-center">
+                <br />
+                <%= apply_now_button %>
+              </div>
             </div>
-          </div>
-        <% end %>
+          <% end %>
+        </div>
       </div>
     </section>
     <section>
@@ -25,17 +27,13 @@
 </div>
 
 <div class="plank tertiary-md">
-  <div class="section-container" style="padding: 4em 0 4em 0;">
+  <div class="section-container">
     <section>
-      <div class="col-sm-12">
-        <h1 class="text-center">
+      <div class="col-sm-6 col-sm-offset-3 text-center">
+        <h1>
           Beyond Z
         </h1>
-      </div>
-    </section>
-    <section>
-     <div class="col-sm-6 col-sm-offset-3 text-center">
-        <p class="lead text-center">
+        <p class="lead">
           The Beyond Z career accelerator discovers, develops, and connects diverse talent to networks and opportunities they deserve.
         </p>
       </div>
@@ -49,7 +47,7 @@
 </div>
 
 <div class="plank plain-lt">
-  <div class="section-container" style="padding: 4em;">
+  <div class="section-container">
     <section>
       <div class="col-sm-12">
         <h2>
@@ -79,7 +77,7 @@
 </div>
 
 <div class="plank knockout-lt">
-  <div class="section-container" style="padding-left: 4em;">
+  <div class="section-container">
     <section>
       <div class="col-sm-12">
         <h2>Voices</h2>
@@ -88,7 +86,7 @@
   </div>
 </div>
 <div class="plank plain-lt">
-  <div class="section-container" style="padding: 4em;">
+  <div class="section-container">
     <section>
       <div class="col-sm-12">
         <h2>
@@ -110,7 +108,7 @@
   </div>
 </div>
 <div class="plank plain-md">
-  <div class="section-container" style="padding: 4em;">
+  <div class="section-container">
     <section>
       <div class="col-sm-12">
         <h2>
@@ -134,7 +132,7 @@
   </div>
 </div>
 <div class="plank plain-lt">
-  <div class="section-container" style="padding: 4em;">
+  <div class="section-container">
     <section>
       <div class="col-sm-12">
         <h2>
@@ -159,7 +157,7 @@
 </div>
 
 <div class="plank primary-lt">
-  <div class="section-container text-center" style="padding: 4em;">
+  <div class="section-container text-center">
     <section>
       <div class="col-sm-12">
         <p class="shoutout">Ready to jumpstart your career and leadership path today?</p>

@@ -30,9 +30,7 @@
 
             <p class="feature">Beyond Z discovers, develops, and connects diverse talent <b>like you</b> to ensure that our next generation of leaders can emerge from everywhere.</p>
 
-            <!--
-            <p>You got into college. You figured out how to pay for it. You’ve adapted to college life. You take classes, study hard, and maybe even chose a major. Now, you want to develop your leadership and career skills so you can get a job after you graduate that sets you up to reach your potential. Beyond Z is here to help. The Beyond Z Accelerator discovers, develops, and connects diverse talent to ensure that our next generation of leaders can emerge from everywhere.</p>
-            -->
+            <br />
             <% if user_signed_in? %>
               <div class="open-application-notification">
                <p>You will be notified when applications are open.</p>
@@ -49,11 +47,10 @@
   <div class="plank plain-md">
     <div class="section-container">
       <section>
-        <div class="col-md-8" style="margin-right: -2em;">
-          <%= image_tag("what_to_expect.jpg") %>
+        <div class="col-md-6 no-pad">
+          <div class="what-to-expect-img"></div>
         </div>
-        <div class="col-md-4">
-          <div class="apply-page-content-holder" style="padding-right: 2px;">
+        <div class="col-md-6">
             <h2>What to expect</h2>
             <p>As a Beyond Z Leader, you will join a community that will help you explore your authentic leadership, develop 21st Century skills, and accelerate you into your career. Specifically, you’ll: </p>
             <ul>
@@ -63,33 +60,28 @@
               <li><b>Create</b> your own products, programs, and presentations, just like you would in a real job </li>
               <li><b>Secure</b> an awesome summer opportunity like an internship with support from Beyond Z </li>
             </ul>
-          </div>
         </div>
       </section>
     </div>
   </div>
 
   <div class="plank primary-lt dark">
-    <div class="section-container right-side-bg-image" style="background-image: url(<%=image_path('who_can_apply.jpg')%>);">
+    <div class="section-container right-side-bg-image">
       <section>
         <div class="col-md-4">
-          <div class="apply-page-content-holder">
-            <h2>Who can apply</h2>
+          <h2>Who can apply</h2>
+          <p>We’re looking for students who want to accelerate their leadership and career, care about bettering their community, and believe in the importance of diversifying our nation’s leadership force.</p>
 
-            <p>We’re looking for students who want to accelerate their leadership and career, care about bettering their community, and believe in the importance of diversifying our nation’s leadership force. </p>
+          <h3>Qualifications: </h3>
+          <ul>
+            <li>Must be in sophomore standing at your college or university </li>
+            <li>Must have a 2.5 cumulative GPA or higher </li>
+            <li>Must be able to commit an average of 2 hours a week to Beyond Z from mid October to late April (excluding all holidays and breaks) </li>
+            <li>Spots for our 2014-2015 class are limited and we may not be able to accept all qualified applicants at this time.  </li>
+          </ul>
 
-            <h3>Qualifications: </h3>
-            <ul>
-              <li>Must be in sophomore standing at your college or university </li>
-              <li>Must have a 2.5 cumulative GPA or higher </li>
-              <li>Must be able to commit an average of 2 hours a week to Beyond Z from mid October to late April (excluding all holidays and breaks) </li>
-              <li>Spots for our 2014-2015 class are limited and we may not be able to accept all qualified applicants at this time.  </li>
-            </ul>
-
-            <%= apply_now_button %>
-          </div>
+          <%= apply_now_button %>
         </div>
-        <div class="col-md-8"><!-- intentionally blank to show bg image --></div>
       </section>
     </div>
   </div>
@@ -97,30 +89,28 @@
   <div class="plank plain-lt">
     <div class="section-container">
       <section>
-        <div class="col-md-12">
-          <div class="apply-page-content-holder">
-            <h2>Application and program timeline</h2>
-            <dl class="timeline text-center">
-              <dt>Now</dt>
-                <dd><%= link_to 'Sign Up', new_enrollment_path %> to Stay in Touch</dd>
-              <dt>Early August</dt>
-                <dd>Application Opens</dd>
-              <dt>Mid September</dt>
-                <dd>Application Due</dd>
-              <dt>Late September</dt>
-                <dd>Phone Interviews</dd>
-              <dt>Early October</dt>
-                <dd>Application Notification</dd>
-              <dt>Mid October</dt>
-                <dd>Program Launch</dd>
-              <dt>Late April</dt>
-                <dd>Program Wrap Up</dd>
-              <dt>Summer</dt>
-                <dd>Self Chosen Summer Experience</dd>
-            </dl>
-            <div class="text-center">
-              <%= apply_now_button %>
-            </div>
+        <div class="col-md-12 text-center">
+          <h2>Application and program timeline</h2>
+          <dl class="timeline">
+            <dt>Now</dt>
+              <dd><%= link_to 'Sign Up', new_enrollment_path %> to Stay in Touch</dd>
+            <dt>Early August</dt>
+              <dd>Application Opens</dd>
+            <dt>Mid September</dt>
+              <dd>Application Due</dd>
+            <dt>Late September</dt>
+              <dd>Phone Interviews</dd>
+            <dt>Early October</dt>
+              <dd>Application Notification</dd>
+            <dt>Mid October</dt>
+              <dd>Program Launch</dd>
+            <dt>Late April</dt>
+              <dd>Program Wrap Up</dd>
+            <dt>Summer</dt>
+              <dd>Self Chosen Summer Experience</dd>
+          </dl>
+          <div class="text-center">
+            <%= apply_now_button %>
           </div>
         </div>
       </section>
@@ -130,10 +120,10 @@
   <div class="plank plain-md">
     <div class="section-container">
       <section>
-        <div class="col-sm-4">
+        <div class="col-sm-4 no-pad">
           <%= image_tag 'aimee.jpg', width: '100%' %>
         </div>
-        <div class="col-sm-8" style="padding: 3em;">
+        <div class="col-sm-8">
           <blockquote>
             “This next generation of extraordinary, diverse future leaders is compelled to pay it forward for those who come after them...and to recognize all those who came before them, on whose shoulders they stand.”
             <footer>Aimee Eubanks Davis, Founder</footer>
