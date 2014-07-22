@@ -47,7 +47,8 @@
   padding: 0px;
 }
 
-.wide-section {
+// define general plank/container sizes
+.plank {
   width: 100%;
 
   .section-container {
@@ -55,6 +56,142 @@
 
     max-width: 1440px;
     padding: 0px;
+  }
+}
+
+// define plank color sets
+.plank {
+  // set default font color to dark incase default isn't set
+  color: $txt-dk;
+
+  &.primary-lt {
+    background-color: $primary-md;
+    color: $txt-lt;
+    a {
+      color: $link-exlt;
+    }
+
+    .section-container {
+      background-color: $primary-lt;
+    }
+  }
+
+  &.primary-md {
+    background-color: $primary-dk;
+    color: $txt-lt;
+
+    a {
+      color: $link-lt;
+    }
+    
+    .section-container {
+      background-color: $primary-md;
+    }
+  }
+
+  &.secondary-lt {
+    background-color: $secondary-md;
+
+    a {
+      color: $link-dk;
+    }
+    .section-container {
+      background-color: $secondary-lt;
+    }
+  }
+
+  &.secondary-md {
+    background-color: $secondary-dk;
+    color: $txt-lt;
+
+    a {
+      color: $link-dk;
+    }
+
+    .section-container {
+      background-color: $secondary-md;
+    }
+  }
+
+  &.tertiary-lt {
+    background-color: $tertiary-md;
+    a {
+      color: $link-dk;
+    }
+
+    .section-container {
+      background-color: $tertiary-lt;
+    }
+  }
+
+  &.tertiary-md {
+    background-color: $tertiary-dk;
+    color: $txt-lt;
+
+    a {
+      color: $link-dk;
+    }
+    
+    .section-container {
+      background-color: $tertiary-md;
+    }
+  }
+
+  &.plain-lt {
+    background-color: $plain-md;
+    a {
+      color: $link-dk;
+    }
+
+    .section-container {
+      background-color: $plain-lt;
+    }
+  }
+
+  &.plain-md {
+    background-color: $plain-dk;
+    a {
+      color: $link-dk;
+    }
+    
+    .section-container {
+      background-color: $plain-md;
+    }
+  }
+
+  &.knockout-lt {
+    background-color: $knockout-md;
+    color: $txt-lt;
+
+    a {
+      color: $link-dk;
+    }
+    
+    .section-container {
+      background-color: $knockout-lt;
+    }
+  }
+
+  &.knockout-md {
+    background-color: $knockout-dk;
+    color: $txt-lt;
+
+    a {
+      color: $link-dk;
+    }
+    
+    .section-container {
+      background-color: $knockout-md;
+    }
+  }
+
+  // set light/dark font overrides
+  &.light {
+    color: $txt-lt;
+  }
+
+  &.dark {
+    color: $txt-dk;
   }
 }
 
@@ -229,41 +366,6 @@ blockquote {
   }
 }
 
-.green-plank {
-  background-color: #009345;
-
-  .section-container {
-    background-color: #3ab54a;
-    color: white;
-    text-align: center;
-  }
-}
-
-.gray-plank {
-  background-color: #e6e6e6;
-
-  .section-container {
-    background-color: #ffffff;
-  }
-}
-
-.white-plank {
-  background-color: #f2f2f2;
-
-  .section-container {
-    background-color: #ffffff;
-  }
-}
-
-
-.red-plank {
-  background-color: #c2272d;
-
-  .section-container {
-    background-color: #ffffff;
-  }
-}
-
 .right-side-bg-image {
   background-position: top right;
   background-repeat: no-repeat;
@@ -273,9 +375,7 @@ blockquote {
 
 
 .featured-video-content {
-  background-color: #0071bd;
   > .section-container {
-    background-color: blue; /* FIXME */
 
     height: 565px; /* Give room for the background to show */
 
@@ -359,7 +459,7 @@ blockquote {
 
 
 body {
-	color: #333;
+	color: $txt-dk;
 
 	font-family: "Open Sans", sans-serif;
 	/* probably best to load from Google Fonts CDN, */
@@ -419,11 +519,11 @@ i, em, blockquote {
 .shoutout {
 	/* need moar attentionz! */
 	font-size: 36px;
-        line-height: 42px;
+  line-height: 42px;
 }
 .reverse {
 	/* when text is on dark background */
-	color: #fff;
+	color: $plain-lt;
 }
 ul, ol, a, cite {
 	/* ...and others... more work probably needed, let's first see what they look like without tweaks. */
