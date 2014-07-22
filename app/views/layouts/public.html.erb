@@ -5,8 +5,6 @@
     <title><%= content_for?(:title) ? yield(:title) : "Beyond Z" %></title>
     <meta name="description" content="<%= yield(:description) || "Beyond Z" %>">
     
-    <!-- Until we add a landing page and login, keep our site out of search engines -->
-    <meta name="robots" content="noindex">
     <%= render 'shared/asset_stylesheet_includes' %>
     <%= csrf_meta_tags %>
   </head>

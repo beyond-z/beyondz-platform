@@ -4,7 +4,7 @@
       <div class="col-sm-6 col-sm-offset-3 text-center">
         <% if @new_user && @new_user.confirmed_at.nil? %>
           <p class="shoutout">Welcome <%= @new_user.name %>!</p>
-          <p class="feature">Please check our email at <%= @new_user.email %> and follow the instructions to complete your account activation.</p>
+          <p class="feature">Please check your email at <%= @new_user.email %> and follow the instructions to complete your account activation.</p>
         <% else %>
           <p class="shoutout">Your account was successfully activated.</p>
           <p>
