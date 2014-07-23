@@ -36,6 +36,7 @@ class Admin::UsersController < Admin::ApplicationController
       header << 'Type'
       header << 'Details'
       header << 'Anticipated Graduation'
+      header << 'University Name'
       header << 'Signup Date'
       header << 'Subscribed to Email'
       csv << header
@@ -47,6 +48,7 @@ class Admin::UsersController < Admin::ApplicationController
         exportable << user.applicant_type
         exportable << user.applicant_details
         exportable << user.anticipated_graduation
+        exportable << user.university_name
         exportable << user.created_at.to_s
         exportable << user.keep_updated
         csv << exportable

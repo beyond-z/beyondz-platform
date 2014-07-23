@@ -64,6 +64,16 @@
                         <%= select_tag :anticipated_undergrad_graduation, options_for_select(graduation_years, params[:anticipated_undergrad_graduation]), :class => 'form-control', include_blank: true %>
                       </div>
                     </section>
+                    <br />
+                    <section>
+                      <div class="col-sm-6 text-right">
+                        University name:
+                      </div>
+                      <div class="col-sm-6">
+                        <%= text_field_tag :undergrad_university_name, nil, :class => 'form-control', :value => params[:undergrad_university_name] %>
+                      </div>
+                    </section>
+
                   </div>                  
                 </div>
                 <div>
@@ -78,6 +88,16 @@
                         <%= select_tag :anticipated_grad_graduation, options_for_select(graduation_years, params[:anticipated_grad_graduation]), :class => 'form-control', include_blank: true %>
                       </div>
                     </section>
+                    <br />
+                    <section>
+                      <div class="col-sm-6 text-right">
+                        University name:
+                      </div>
+                      <div class="col-sm-6">
+                        <%= text_field_tag :grad_university_name, nil, :class => 'form-control', :value => params[:grad_university_name] %>
+                      </div>
+                    </section>
+
                   </div>
                 </div>
                 <div>
