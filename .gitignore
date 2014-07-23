@@ -32,6 +32,7 @@
 .env
 .env-prod
 .env-test
+.env-staging
 .env-dev
 
 # Ignore powder setup
