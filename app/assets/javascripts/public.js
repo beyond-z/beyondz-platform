@@ -16,7 +16,17 @@ $(document).ready(function() {
     // sets the source to nothing, stopping the video
     iframe.attr('src',''); 
 
+    vidsrc = vidsrc.replace('?autoplay=1', ''); // don't want it to autoplay in background when hidden
+
     // sets it back to the correct link so that it reloads immediately on the next window open
     iframe.attr('src', vidsrc);
+  });
+
+  $('#intro-video').on('shown.bs.modal', function(e) {
+    var iframe = $('#intro-video').find('iframe');
+    var vidsrc = iframe.attr('src');
+
+    // cause it to autoplay when it shows
+    iframe.attr('src', vidsrc + '?autoplay=1');
   });
 });
