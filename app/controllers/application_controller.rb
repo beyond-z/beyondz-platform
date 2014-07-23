@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   # see: http://stackoverflow.com/questions/4982073/different-layout-for-sign-in-action-in-devise
   def default_layout
     if devise_controller?
-      'login'
+      'public'
     else
       'application'
     end
