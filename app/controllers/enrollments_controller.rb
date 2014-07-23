@@ -18,6 +18,30 @@ class EnrollmentsController < ApplicationController
       :state,
       :keep_updated)
 
+    populate_user_details user
+
+    @new_user = User.create(user)
+
+    if @new_user.errors.any?
+      states
+      @user = @new_user
+      render 'new'
+      return
+    end
+
+    unless @new_user.id
+      # If User.create failed without errors, we have an existing user
+      flash[:message] = 'You have already joined us, please log in.'
+      redirect_to new_user_session_path
+      return
+    end
+
+    redirect_to redirect_to_welcome_path(@new_user)
+  end
+
+  private
+
+  def populate_user_details(user)
     case user[:applicant_type]
     when 'other'
       user[:applicant_details] = params[:other_details]
@@ -36,28 +60,7 @@ class EnrollmentsController < ApplicationController
       user[:anticipated_graduation] = 'Grade ' + params[:grade]
     end
 
-    @new_user = User.create(user)
-
-    if @new_user.errors.any?
-      states
-      @user = @new_user
-      render 'new'
-      return
-    end
-
-    unless @new_user.id
-      # If User.create failed; we have an existing user
-      # trying to sign up again. Instead, let's tell them
-      # to log in
-      flash[:message] = 'You have already joined us, please log in.'
-      redirect_to new_user_session_path
-      return
-    end
-
-    redirect_to redirect_to_welcome_path(@new_user)
   end
-
-  private
 
   def states
     @states = {
