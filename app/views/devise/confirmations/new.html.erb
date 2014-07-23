@@ -1,10 +1,18 @@
-<h2>Resend confirmation instructions</h2>
+<div class="plank plain-md">
+  <div class="section-container">
+    <section>
+      <div class="col-md-4 col-md-offset-4">
+        <h2>Resend confirmation instructions</h2>
 
-<%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render :partial => 'shared/form_errors', locals: { object: resource } %>
+        <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
+          <%= render :partial => 'shared/form_errors', locals: { object: resource } %>
 
-  <div><%= f.label :email %><br />
-  <%= f.email_field :email, autofocus: true, :class => 'form-control' %></div>
-
-  <div><%= f.submit "Resend confirmation instructions", :class => 'btn btn-primary' %></div>
-<% end %>
+          <div><%= f.label :email %><br />
+          <%= f.email_field :email, autofocus: true, :class => 'form-control' %></div>
+          <br />
+          <div><%= f.submit "Resend confirmation instructions", :class => 'button-primary' %></div>
+        <% end %>
+      </div>
+    </section>
+  </div>
+</div>
