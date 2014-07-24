@@ -18,21 +18,7 @@ class EnrollmentsController < ApplicationController
       :state,
       :keep_updated)
 
-    case user[:applicant_type]
-    when 'other'
-      user[:applicant_details] = params[:other_details]
-    when 'professional'
-      user[:applicant_details] = params[:professional_details]
-    when 'grad_student'
-      # Each of these has different names in the form to ensure no data
-      # conflict as the user explores the bullets, but they all map to
-      # the same database field since it is really the same data
-      user[:anticipated_graduation] = params[:anticipated_grad_graduation]
-    when 'undergrad_student'
-      user[:anticipated_graduation] = params[:anticipated_undergrad_graduation]
-    when 'school_student'
-      user[:anticipated_graduation] = 'Grade ' + params[:grade]
-    end
+    populate_user_details user
 
     @new_user = User.create(user)
 
@@ -44,9 +30,7 @@ class EnrollmentsController < ApplicationController
     end
 
     unless @new_user.id
-      # If User.create failed; we have an existing user
-      # trying to sign up again. Instead, let's tell them
-      # to log in
+      # If User.create failed without errors, we have an existing user
       flash[:message] = 'You have already joined us, please log in.'
       redirect_to new_user_session_path
       return
@@ -56,6 +40,27 @@ class EnrollmentsController < ApplicationController
   end
 
   private
+
+  def populate_user_details(user)
+    case user[:applicant_type]
+    when 'other'
+      user[:applicant_details] = params[:other_details]
+    when 'professional'
+      user[:applicant_details] = params[:professional_details]
+    when 'grad_student'
+      # Each of these has different names in the form to ensure no data
+      # conflict as the user explores the bullets, but they all map to
+      # the same database field since it is really the same data
+      user[:anticipated_graduation] = params[:anticipated_grad_graduation]
+      user[:university_name] = params[:grad_university_name]
+    when 'undergrad_student'
+      user[:anticipated_graduation] = params[:anticipated_undergrad_graduation]
+      user[:university_name] = params[:undergrad_university_name]
+    when 'school_student'
+      user[:anticipated_graduation] = 'Grade ' + params[:grade]
+    end
+
+  end
 
   def states
     @states = {
