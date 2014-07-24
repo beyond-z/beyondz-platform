@@ -1,5 +1,5 @@
 class StaffNotifications < ActionMailer::Base
-  default from: '"Beyond Z" <no-reply@beyondz.org>'
+  default from: '"Website Signup Notifier" <no-reply@beyondz.org>'
 
   def new_enrollment(new_user)
     @user = new_user
