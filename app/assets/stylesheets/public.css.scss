@@ -40,9 +40,119 @@
   padding-bottom: 37.5%; /* the image is 1200 x 450 so we want height to be this percent of the width */
 }
 
- #join-us-button {
-   font-weight: bold;
- }
+#join-us-button, #join-us-button-lg {
+  font-weight: bold;
+}
+
+.apply-button {
+  display: inline-block;
+
+  .apply-icon {
+    display: inline-block;
+    height: 48px;
+    width: 48px;
+    vertical-align: middle;
+    margin-right: 12px;
+    background: url(image_path('bz_icons.svg')) 0 -1989px;
+
+    &:hover {
+      background: url(image_path('bz_icons.svg')) -58px -1989px;
+    }
+  }
+
+  .apply-text {
+    vertical-align: middle;
+    display: inline-block;
+    color: $txt-lt;
+    font-weight: bold;
+    font-size: 1.5em;
+  }
+}
+
+.apply-button-lg {
+  text-align: center;
+
+  .apply-icon {
+    display: inline-block;
+    height: 89px;
+    width: 89px;
+    background: url(image_path('bz_icons.svg')) 0 -1890px;
+
+    &:hover {
+      background: url(image_path('bz_icons.svg')) -99px -1890px;
+    }
+  }
+
+  .apply-text {
+    color: $txt-lt;
+    font-weight: bold;
+    font-size: 1.8em;
+    line-height: 2em;
+  }
+}
+
+.page-jump {
+  display: inline-block;
+
+  .jump-icon {
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    vertical-align: middle;
+    margin-right: 6px;
+    background: url(image_path('bz_icons.svg')) -26px -2141px;
+  }
+
+  .jump-text {
+    vertical-align: middle;
+    display: inline-block;
+    color: $txt-lt;
+    font-weight: bold;
+    font-size: 1em;
+  }
+}
+
+.learn-more-link {
+  display: inline-block;
+
+  .learn-more-icon {
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+    vertical-align: middle;
+    margin-right: 6px;
+    background: url(image_path('bz_icons.svg')) 0 -2047px;
+  }
+
+  .learn-more-text {
+    vertical-align: middle;
+    display: inline-block;
+    //color: $cta;
+    font-weight: bold;
+    font-size: 1em;
+  }
+}
+
+.sign-up-link {
+  display: inline-block;
+
+  .sign-up-icon {
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+    vertical-align: middle;
+    margin-right: 6px;
+    background: url(image_path('bz_icons.svg')) -136px -2047px;
+  }
+
+  .sign-up-text {
+    vertical-align: middle;
+    display: inline-block;
+    color: $cta;
+    font-weight: bold;
+    font-size: 1em;
+  }
+}
 
 .well-light {
   background-color: $bzwhite;
