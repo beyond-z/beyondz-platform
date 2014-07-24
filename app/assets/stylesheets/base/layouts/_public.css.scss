@@ -271,14 +271,27 @@
   @extend .col-sm-4;
   @extend .text-center;
 
-  p {
-    font-size: 1.5em;
+  h3 {
+    text-transform: uppercase;
+    font-weight: bold;
   }
 
-  h3 {
-    color: $bzred;
-    text-transform: uppercase;
-    font-size: 2.5em;
+  .discover-icon, .develop-icon, .connect-icon {
+    height: 200px;
+    width: 200px;
+    display: inline-block;
+  }
+
+  .discover-icon {
+    background: url(image_path('bz_icons.svg')) 0 -1050px;
+  }
+
+  .develop-icon {
+    background: url(image_path('bz_icons.svg')) 0 -840px;
+  }
+
+  .connect-icon {
+    background: url(image_path('bz_icons.svg')) 0 -1680px;
   }
 }
 
@@ -301,16 +314,6 @@
     background-color: rgba(0, 0, 0, 0.4);
     color: white;
   }
-}
-
-.large-quotes {
-  font-size: 3em;
-  line-height: 0.5em;
-  vertical-align: text-top;
-  font-family: 'Times New Roman';
-  color: $bzorange;
-  font-style: italic;
-  padding: 0 0.03em 0 0.03em;
 }
 
 .sunk-quote {
@@ -355,13 +358,24 @@ blockquote {
   }
 }
 
-.big-video-box {
-  text-align: center;
-  max-width: 980px;
-  margin: 0px auto;
-}
 
 /* The next block of code relates to the new Ehud designed pages */
+
+.home-page {
+  .featured-video-content {
+    .section-container {
+      background-image: url(image_path('home_top_feature.jpg'));
+      background-position: top right;
+    }
+
+    .video-quote {
+      margin-top: 3em;
+      width: 33%;
+    }
+  }
+
+
+}
 
 .apply-page {
   .featured-video-content {

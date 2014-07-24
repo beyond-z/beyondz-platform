@@ -6,32 +6,11 @@
 
 @import "./public/*";
 
-.big-picture {
-  padding: 8em;
-  .join-us-button-container {
-    margin-top: -25%;
-    width: 100%;
-
-    .join-us-text-overlay {
-     margin-top: -45%;
-    }
-  }
-}
 
 .large-picture-section {
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center center;
-
-  .image-pads {
-    height: 4em;
-    @extend .hidden-xs; /* On very small screens this gives excessive whitespace because the photo aspect ratio leads to there being some white already */
-  }
-}
-
-.sign-up-anchor-section {
-  @extend .large-picture-section;
-  background-image: url(image_path('sign_up_anchor.jpg'));
 }
 
 .volunteer-image-section {
@@ -86,8 +65,8 @@
   .apply-text {
     color: $txt-lt;
     font-weight: bold;
-    font-size: 1.8em;
-    line-height: 2em;
+    font-size: 2.4em;
+    line-height: 1.5em;
   }
 }
 
