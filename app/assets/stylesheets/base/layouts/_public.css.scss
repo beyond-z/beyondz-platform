@@ -15,7 +15,7 @@
       height: 58px;
 
       background-color: white; /* This ensures it has a sane bg as it starts to be on top of random content. */
-      border-bottom: solid 1px #f0f0f0; /* And just gives gives a very subtle separation that doesn't visually stand out, but does help to keep partially obscured text underneath as you scroll through a half-line look less sloppy. */
+      border-bottom: solid 1px $plain-md; /* And just gives gives a very subtle separation that doesn't visually stand out, but does help to keep partially obscured text underneath as you scroll through a half-line look less sloppy. */
     }
 
     .top-left {
@@ -406,7 +406,7 @@
     cursor: pointer;
 
     &:hover {
-      color: #ccc;
+      color: #BAE3FF;
     }
   }
 }

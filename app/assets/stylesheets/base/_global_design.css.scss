@@ -37,6 +37,14 @@ img {
   margin: 0 auto;
 }
 
+a {
+  text-decoration: none;
+
+  &:hover, &:focus {
+    text-decoration: none;
+  }
+}
+
 #content {
   @extend .container;
   max-width: 1440px;
@@ -56,6 +64,10 @@ main {
   width: 100%;
   padding-left: 0em;
   padding-right: 0em;
+}
+
+#footer {
+  border-top: 15px solid $plain-dk;
 }
 
 section {
