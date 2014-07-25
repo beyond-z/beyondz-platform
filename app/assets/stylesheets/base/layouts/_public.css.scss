@@ -271,14 +271,27 @@
   @extend .col-sm-4;
   @extend .text-center;
 
-  p {
-    font-size: 1.5em;
+  h3 {
+    text-transform: uppercase;
+    font-weight: bold;
   }
 
-  h3 {
-    color: $bzred;
-    text-transform: uppercase;
-    font-size: 2.5em;
+  .discover-icon, .develop-icon, .connect-icon {
+    height: 200px;
+    width: 200px;
+    display: inline-block;
+  }
+
+  .discover-icon {
+    background: url(image_path('bz_icons.svg')) 0 -1050px;
+  }
+
+  .develop-icon {
+    background: url(image_path('bz_icons.svg')) 0 -840px;
+  }
+
+  .connect-icon {
+    background: url(image_path('bz_icons.svg')) 0 -1680px;
   }
 }
 
@@ -303,38 +316,6 @@
   }
 }
 
-.large-quotes {
-  font-size: 3em;
-  line-height: 0.5em;
-  vertical-align: text-top;
-  font-family: 'Times New Roman';
-  color: $bzorange;
-  font-style: italic;
-  padding: 0 0.03em 0 0.03em;
-}
-
-.sunk-quote {
-  @extend .well;
-  @extend .well-lg;
-
-  font-size: 1.2em;
-
-  p {
-    font-style: italic;
-  }
-
-  footer {
-    margin-top: 10px;
-    font-weight: bold;
-    text-align: right;
-    font-size: 1.1em;
-  }
-}
-
-blockquote {
-  border-left-color: $accent_blue;
-}
-
 .form-option-details {
   display: none;
   padding-left: 2em;
@@ -355,13 +336,22 @@ blockquote {
   }
 }
 
-.big-video-box {
-  text-align: center;
-  max-width: 980px;
-  margin: 0px auto;
-}
 
 /* The next block of code relates to the new Ehud designed pages */
+
+.home-page {
+  .featured-video-content {
+    .section-container {
+      background-image: url(image_path('home_top_feature.jpg'));
+      background-position: top right;
+    }
+
+    .video-quote {
+      margin-top: 3em;
+      width: 33%;
+    }
+  }
+}
 
 .apply-page {
   .featured-video-content {
@@ -374,14 +364,6 @@ blockquote {
       margin-top: 3em;
       width: 40%;
     }
-  }
-
-  .what-to-expect-img {
-    height: 430px;
-    background-position: top left;
-    background-repeat: no-repeat;
-    background-image: url(image_path('what_to_expect.jpg'));
-    background-size: 155%;
   }
 }
 
@@ -511,6 +493,18 @@ i, em, blockquote {
 	font-style: italic;
 	/* I know, this precludes italics in bold text. Small price to pay for one less font to load... */
 }
+
+blockquote {
+  font-size: 1.5em;
+  border: none;
+  padding-left: 0px;
+
+  footer {
+    font-weight: light; /* fallback */
+    font-weight: 300;
+  }
+}
+
 .feature {
 	/* e.g. a div we to which we want draw some attention */
 	font-size: 18px; 
