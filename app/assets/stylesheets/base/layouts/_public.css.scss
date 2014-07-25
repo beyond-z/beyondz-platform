@@ -316,28 +316,6 @@
   }
 }
 
-.sunk-quote {
-  @extend .well;
-  @extend .well-lg;
-
-  font-size: 1.2em;
-
-  p {
-    font-style: italic;
-  }
-
-  footer {
-    margin-top: 10px;
-    font-weight: bold;
-    text-align: right;
-    font-size: 1.1em;
-  }
-}
-
-blockquote {
-  border-left-color: $accent_blue;
-}
-
 .form-option-details {
   display: none;
   padding-left: 2em;
@@ -373,8 +351,6 @@ blockquote {
       width: 33%;
     }
   }
-
-
 }
 
 .apply-page {
@@ -388,14 +364,6 @@ blockquote {
       margin-top: 3em;
       width: 40%;
     }
-  }
-
-  .what-to-expect-img {
-    height: 430px;
-    background-position: top left;
-    background-repeat: no-repeat;
-    background-image: url(image_path('what_to_expect.jpg'));
-    background-size: 155%;
   }
 }
 
@@ -525,6 +493,18 @@ i, em, blockquote {
 	font-style: italic;
 	/* I know, this precludes italics in bold text. Small price to pay for one less font to load... */
 }
+
+blockquote {
+  font-size: 1.5em;
+  border: none;
+  padding-left: 0px;
+
+  footer {
+    font-weight: light; /* fallback */
+    font-weight: 300;
+  }
+}
+
 .feature {
 	/* e.g. a div we to which we want draw some attention */
 	font-size: 18px; 
