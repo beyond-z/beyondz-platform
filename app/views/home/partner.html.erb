@@ -1,66 +1,100 @@
-<%= render 'signup_welcome' %>
+<div class="partner-page">
+  <div class="plank secondary-md light featured-video-content should-overlap-logo">
+    <div class="section-container">
+      <section>
+        <div class="col-md-5">
+          <h1>Partner with Beyond Z</h1>
+          <p>Our country tracks test scores of kids growing up in low-income communities over time to predict how many prison cells we need. Shouldn't we be tracking academic and leadership talent in those communities to create a pipeline to successful careers instead?</p>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="plank tertiary-md">
+    <div class="section-container">
+      <section>
+        <div class="col-md-6 col-md-offset-3">
+          <p class="feature">Beyond Z discovers, develops, and connects diverse talent from under-resourced communities so that our next generation of leaders can emerge from everywhere. </p>
 
-<div class="plank tertiary-md">
-  <div class="section-container">
-    <section>
-      <div class="col-sm-12">
-        <h1>Partner with Beyond Z</h1>
-        <p class="shoutout">Leaders Emerge From Everywhere</p>
-      </div>
-    </section>
-    <section>
-      <div class="col-sm-12">
-        <p>Our country tracks test scores over time to predict how many prison cells we need. We track young athletic talent over time to develop the next group of Division 1 athletes.  This leads to the key question - <i>why aren’t we identifying and developing academic and leadership talent over time, creating a pipeline to careers for kids growing up in low-income communities?</i></p>
+          <p class="feature">We’d love to work with you to bring our vision to reality!</p>
 
-        <p>Beyond Z discovers, develops, and connects diverse talent from under-resourced communities so that our next generation of leaders can emerge from everywhere. </p>
+          <div class="text-center">
+            <%= apply_button %>
+          </div>
 
-        <p>We’d love to work with you to bring our vision to reality!</p>
+              <br /><br />
+              <%= light_page_jump 'For Employers', 'employers' %> |
+              <%= light_page_jump 'For Educational Institutions', 'educational-institutions' %> |
+              <%= light_page_jump 'For Organizations', 'organization' %>
+        </div>
+      </section>
+    </div>
+  </div>
 
-        <div class="text-center">
+
+  <div class="plank plain-md">
+    <div class="section-container">
+      <section>
+        <div class="col-md-8">
+          <a id="employers"></a>
+          <h2>Employers</h2>
+          <p>We've found talented, diverse college students from all academic backgrounds who are ready to join your team for the summer of 2015. Sign up to learn about bringing on a Beyond Z participant as an intern.</p>
+          <%= sign_up_link %>
+          </div>
+          <div class="col-md-4">
+            <div class="bz-icon-briefcase"></div>
+          </div>
+      </section>
+    </div>
+  </div>
+  <div class="plank plain-lt">
+    <div class="section-container">
+      <section>
+          <div class="col-md-4">
+            <div class="bz-icon-cap"></div>
+          </div>
+        <div class="col-md-8">
+          <a id="educational-institutions"></a>
+          <h2>Educational Institutions</h2>
+          <p>We currently work with middle school and college students in the Bay Area, Washington DC, and New York City. Sign up to learn about bringing Beyond Z to your school.</p>
+          <%= sign_up_link %>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="plank plain-md">
+    <div class="section-container">
+      <section>
+        <div class="col-md-8">
+          <a id="organizations"></a>
+          <h2>Organizations</h2>
+          <p>We've partnered with NFTE, Tink, and other organizations to bring 21st century skills programming to our participants. Sign up to learn about implementing your program with Beyond Z's students.</p>
+          <%= sign_up_link %>
+        </div>
+          <div class="col-md-4">
+            <div class="bz-icon-building"></div>
+          </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="plank secondary-lt">
+    <div class="section-container">
+      <section>
+        <div class="col-md-12 no-pad">
+          <%= image_tag("educational_photo.jpg") %>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="plank primary-lt">
+    <div class="section-container text-center">
+      <section>
+        <div class="col-md-12">
+          <p class="shoutout">Ready to make a real difference?</p>
+          <br />
           <%= apply_button %>
         </div>
-      </div>
-    </section>
-  </div>
-</div>
-
-<div class="plank plain-lt">
-  <div class="section-container">
-    <section>
-      <div class="infographic-column">
-        <h3><br />Employers</h3>
-        <%= image_tag("employer.png") %>
-        <p>We’ve found talented, diverse college students from all academic backgrounds who are ready to join your team for the summer of 2015. Sign up to learn about bringing on a Beyond Z participant as an intern.</p>
-      </div>
-      <div class="infographic-column">
-        <h3>Educational<br />institutions</h3>
-        <%= image_tag("eduinst.png") %>
-        <p>We currently work with middle school and college students in the Bay Area, Washington DC, and New York City. Sign up to learn about bringing Beyond Z to your school.</p>
-      </div>
-      <div class="infographic-column">
-        <h3><br />Organizations</h3>
-        <%= image_tag("organiztn.png") %>
-        <p>We’ve partnered with NFTE, Tink, and other organizations to bring 21st century skills programming to our participants. Sign up to learn about implementing your program with Beyond Z’s students.</p>
-      </div>
-    </section>
-  </div>
-</div>
-
-<div class="plank primary-lt">
-  <div class="section-container">
-    <section>
-      <div class="col-md-12 no-pad">
-        <%= image_tag("educational_photo.jpg") %>
-      </div>
-    </section>
-  </div>
-</div>
-<div class="plank primary-lt">
-  <div class="section-container">
-    <section>
-      <div class="col-sm-12 text-center">
-        <%= apply_button %>
-      </div>
-    </section>
+      </section>
+    </div>
   </div>
 </div>
