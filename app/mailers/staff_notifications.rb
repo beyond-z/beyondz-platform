@@ -4,10 +4,10 @@ class StaffNotifications < ActionMailer::Base
   def new_enrollment(new_user)
     @user = new_user
 
-    if Rails.env.staging?
-      to = 'tech@beyondz.org'
-    else
+    if Rails.env.production?
       to = 'signup-notification@beyondz.org'
+    else
+      to = 'tech@beyondz.org'
     end
 
     mail(to: to, subject: 'New user sign up')
