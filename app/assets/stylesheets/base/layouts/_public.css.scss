@@ -58,7 +58,7 @@
     padding: 0px;
 
     // set default padding around section column content
-    & section > div:not(.no-pad) {
+    & > section > div:not(.no-pad) {
       padding: 2.25em 0.938em 1.5em 0.938em;
 
       &:first-child {
@@ -70,7 +70,7 @@
       }
     }
 
-    & section > div.no-pad {
+    & > section > div.no-pad {
       padding-top: 0em;
       padding-bottom: 0em;
 
@@ -365,22 +365,19 @@ blockquote {
 
 .apply-page {
   .featured-video-content {
-    > .section-container {
-      background-image: url(image_path('cesar_ramirez.jpg'));
+    .section-container {
+      background-image: url(image_path('apply_top_feature.jpg'));
       background-position: top right;
     }
 
     blockquote {
-      position: absolute;
-      left: 3em;
-      top: 3em;
-      color: white;
+      margin-top: 3em;
       width: 40%;
     }
   }
 
   .what-to-expect-img {
-    height: 420px;
+    height: 430px;
     background-position: top left;
     background-repeat: no-repeat;
     background-image: url(image_path('what_to_expect.jpg'));
@@ -398,7 +395,7 @@ blockquote {
 
 
 .featured-video-content {
-  > .section-container {
+  .section-container {
 
     height: 565px; /* Give room for the background to show */
 
@@ -445,19 +442,6 @@ blockquote {
 
   ul {
     padding-left: 1em;
-  }
-
-  .pitch-holder {
-    .feature {
-      /* This will cause it to be small and centered on a large screen
-         while still using the space on a small screen (which padding wouldn't achieve) */
-      max-width: 40em;
-      margin: 0px auto;
-    }
-
-    .shoutout {
-      padding: 0.5em 1em;
-    }
   }
 }
 
