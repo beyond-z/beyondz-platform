@@ -20,33 +20,48 @@ module ApplicationHelper
   end
 
   def apply_button
-    html = '<div class="apply-button">'.html_safe
-    html += link_to('<div class="apply-icon"></div><div class="apply-text">JOIN US</div>'.html_safe, new_enrollment_path)
-    html += '</div>'.html_safe
+    '<div class="apply-button">'.html_safe +
+    link_to(
+      '<div class="apply-icon"></div><div class="apply-text">JOIN US</div>'.html_safe,
+      new_enrollment_path
+    ) +
+    '</div>'.html_safe
   end
 
   def apply_button_large
-    html = '<span class="apply-button-lg">'.html_safe
-    html += link_to('<div class="apply-icon"></div><br /><span class="apply-text">JOIN US</span>'.html_safe, new_enrollment_path)
-    html += '</span>'.html_safe
+    '<span class="apply-button-lg">'.html_safe +
+    link_to(
+      '<div class="apply-icon"></div><br /><span class="apply-text">JOIN US</span>'.html_safe,
+      new_enrollment_path
+    ) +
+    '</span>'.html_safe
   end
 
   def light_page_jump(label, anchor)
-    html = '<div class="page-jump">'.html_safe
-    html += link_to('<div class="jump-icon"></div><div class="jump-text">'.html_safe + label + '</div>'.html_safe, "##{anchor}")
-    html += '</div>'.html_safe
+    '<div class="page-jump">'.html_safe +
+    link_to(
+      '<div class="jump-icon"></div><div class="jump-text">'.html_safe +
+      label + '</div>'.html_safe, "##{anchor}"
+    ) +
+    '</div>'.html_safe
   end
 
   def learn_more_link(about, url)
-    html = '<div class="learn-more-link">'.html_safe
-    html += link_to('<div class="learn-more-icon"></div><div class="learn-more-text">Learn more about '.html_safe + about + '</div>'.html_safe, url)
-    html += '</div>'.html_safe
+    '<div class="learn-more-link">'.html_safe +
+    link_to(
+      '<div class="learn-more-icon"></div><div class="learn-more-text">Learn more about '.html_safe +
+      about + '</div>'.html_safe, url
+    ) +
+    '</div>'.html_safe
   end
 
   def sign_up_link
-    html = '<div class="sign-up-link">'.html_safe
-    html += link_to('<div class="sign-up-icon"></div><div class="sign-up-text">SIGN UP TO LEARN MORE</div>'.html_safe, new_enrollment_path)
-    html += '</div>'.html_safe
+    '<div class="sign-up-link">'.html_safe +
+    link_to(
+      '<div class="sign-up-icon"></div><div class="sign-up-text">SIGN UP TO LEARN MORE</div>'.html_safe,
+      new_enrollment_path
+    ) +
+    '</div>'.html_safe
   end
 
   # Generate standard-sized Bootstrap modal HTML
