@@ -385,6 +385,36 @@ blockquote {
   }
 }
 
+.volunteer-page {
+  .featured-video-content {
+    .section-container {
+      background-image: url(image_path('group_blue.jpg'));
+      background-position: top right;
+    }
+  }
+}
+
+.bz-large-icon {
+  width: 200px;
+  height: 200px;
+  background-image: url(image_path('bz_icons.svg'));
+  background-repeat: no-repeat;
+  margin: 0px auto; /* horizontally centered in the container by default */
+}
+
+.bz-icon-rocket {
+  @extend .bz-large-icon;
+  background-position: 0px -1470px;
+}
+.bz-icon-puzzle {
+  @extend .bz-large-icon;
+  background-position: 0px -630px;
+}
+.bz-icon-wand {
+  @extend .bz-large-icon;
+  background-position: 0px -1260px;
+}
+
 .right-side-bg-image {
   background-position: top right;
   background-repeat: no-repeat;
