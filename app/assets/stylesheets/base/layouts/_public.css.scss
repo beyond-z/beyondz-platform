@@ -376,6 +376,20 @@
   }
 }
 
+.partner-page {
+  .featured-video-content {
+    .section-container {
+      background-image: url(image_path('partners_blue.jpg'));
+      background-position: top right;
+
+      h1 {
+        margin-top: 300px;
+      }
+    }
+  }
+}
+
+
 .bz-large-icon {
   width: 200px;
   height: 200px;
@@ -396,6 +410,19 @@
   @extend .bz-large-icon;
   background-position: 0px -1260px;
 }
+.bz-icon-briefcase {
+  @extend .bz-large-icon;
+  background-position: 0px -420px;
+}
+.bz-icon-cap {
+  @extend .bz-large-icon;
+  background-position: 0px -0px;
+}
+.bz-icon-building {
+  @extend .bz-large-icon;
+  background-position: 0px -210px;
+}
+
 
 .right-side-bg-image {
   background-position: top right;
