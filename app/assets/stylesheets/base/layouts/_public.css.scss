@@ -51,6 +51,19 @@
 .plank {
   width: 100%;
 
+  &.under-logo {
+    /* underlap the z in the image. This percentage will have to change if the image dimensions change. */
+    /* The Z overlap I used here is 44 px. The image width right now is about 1160px. */
+    margin-top: -2.8%; /* This is the height of the Z that we want to overlap divided by the width of this element - all size percentages are based on the element width so using this ratio and assuming both images scale at the same rate (they do because they are also max width based on the browser size), this keeps the same Z overlap too, even as the size changes. */
+
+    /* If we're on a small screen, the bootstrap columns above will go vertical
+       instead of horizontal. In that case, we no longer want to overlap - if we
+       did, it would cover up the final nav menu item instead of the Z! */
+    @media screen and (max-width: $screen-sm-min) {
+      margin-top: 0px;
+    }
+  }
+
   .section-container {
     @extend .container;
 
@@ -217,6 +230,118 @@
   }
 }
 
+// define standard buttons/links
+.apply-button {
+  display: inline-block;
+
+  .apply-icon {
+    display: inline-block;
+    height: 48px;
+    width: 48px;
+    vertical-align: middle;
+    margin-right: 12px;
+    background: url(image_path('bz_icons.svg')) 0 -1989px;
+
+    &:hover {
+      background: url(image_path('bz_icons.svg')) -58px -1989px;
+    }
+  }
+
+  .apply-text {
+    vertical-align: middle;
+    display: inline-block;
+    color: $txt-lt;
+    font-weight: bold;
+    font-size: 1.5em;
+  }
+}
+
+.apply-button-lg {
+  text-align: center;
+
+  .apply-icon {
+    display: inline-block;
+    height: 89px;
+    width: 89px;
+    background: url(image_path('bz_icons.svg')) 0 -1890px;
+
+    &:hover {
+      background: url(image_path('bz_icons.svg')) -99px -1890px;
+    }
+  }
+
+  .apply-text {
+    color: $txt-lt;
+    font-weight: bold;
+    font-size: 2.4em;
+    line-height: 1.5em;
+  }
+}
+
+.page-jump {
+  display: inline-block;
+
+  .jump-icon {
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    vertical-align: middle;
+    margin-right: 6px;
+    background: url(image_path('bz_icons.svg')) -26px -2141px;
+  }
+
+  .jump-text {
+    vertical-align: middle;
+    display: inline-block;
+    color: $txt-lt;
+    font-weight: bold;
+    font-size: 1em;
+  }
+}
+
+.learn-more-link {
+  display: inline-block;
+
+  .learn-more-icon {
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+    vertical-align: middle;
+    margin-right: 6px;
+    background: url(image_path('bz_icons.svg')) 0 -2047px;
+  }
+
+  .learn-more-text {
+    vertical-align: middle;
+    display: inline-block;
+    //color: $cta;
+    font-weight: bold;
+    font-size: 1em;
+  }
+}
+
+.sign-up-link {
+  display: inline-block;
+
+  .sign-up-icon {
+    display: inline-block;
+    height: 25px;
+    width: 25px;
+    vertical-align: middle;
+    margin-right: 6px;
+    background: url(image_path('bz_icons.svg')) -136px -2047px;
+  }
+
+  .sign-up-text {
+    vertical-align: middle;
+    display: inline-block;
+    color: $cta;
+    font-weight: bold;
+    font-size: 1em;
+  }
+}
+
+// General header/banner
 #banner {
   padding-top: 0.5em;
   padding-bottom: 0.5em;
@@ -234,25 +359,14 @@
   }
 }
 
-.should-overlap-logo {
-  /* overlap the z in the image. This percentage will have to change if the image dimensions change. */
-  /* The Z overlap I used here is 44 px. The image width right now is about 1160px. */
-  margin-top: -2.8%; /* This is the height of the Z that we want to overlap divided by the width of this element - all size percentages are based on the element width so using this ratio and assuming both images scale at the same rate (they do because they are also max width based on the browser size), this keeps the same Z overlap too, even as the size changes. */
-
-  /* If we're on a small screen, the bootstrap columns above will go vertical
-     instead of horizontal. In that case, we no longer want to overlap - if we
-     did, it would cover up the final nav menu item instead of the Z! */
-  @media screen and (max-width: $screen-sm-min) {
-    margin-top: 0px;
-  }
-}
-
 #banner .navigation-holder {
   @extend .col-sm-8;
 }
 
 #top-navigation {
   margin-top: 24px;
+  font-weight: bold;
+  text-align: center;
 
   /* As we get smaller, the logo shrinks, so we move this up a bit too
      so they stay fairly aligned */
@@ -260,70 +374,6 @@
     margin-top: 10px;
   }
   /* Note that smaller than this and bootstrap will change it to vertical anyway */
-}
-
-.open-application-notification {
-  @extend .alert;
-  @extend .alert-info;
-}
-
-.infographic-column {
-  @extend .col-sm-4;
-  @extend .text-center;
-
-  h3 {
-    text-transform: uppercase;
-    font-weight: bold;
-  }
-
-  .discover-icon, .develop-icon, .connect-icon {
-    height: 200px;
-    width: 200px;
-    display: inline-block;
-  }
-
-  .discover-icon {
-    background: url(image_path('bz_icons.svg')) 0 -1050px;
-  }
-
-  .develop-icon {
-    background: url(image_path('bz_icons.svg')) 0 -840px;
-  }
-
-  .connect-icon {
-    background: url(image_path('bz_icons.svg')) 0 -1680px;
-  }
-}
-
-.mission-photo {
-  position: relative;
-  width: 100%;
-  padding-bottom: 75%;
-  background-image: url(image_path("bz_group_photo.jpg"));
-
-  p {
-    position: absolute;
-    left: 0px;
-    right: 0px;
-    top: 0px;
-    bottom: 0px;
-
-    padding: 10%;
-    font-size: 150%;
-
-    background-color: rgba(0, 0, 0, 0.4);
-    color: white;
-  }
-}
-
-.form-option-details {
-  display: none;
-  padding-left: 2em;
-}
-
-#top-navigation {
-  font-weight: bold;
-  text-align: center;
 
   /* On larger screens, where bootstrap hasn't made us vertical yet,
      we want to right align the nav so it is opposite the logo on
@@ -336,112 +386,16 @@
   }
 }
 
-
-/* The next block of code relates to the new Ehud designed pages */
-
-.home-page {
-  .featured-video-content {
-    .section-container {
-      background-image: url(image_path('home_top_feature.jpg'));
-      background-position: top right;
-    }
-
-    .video-quote {
-      margin-top: 3em;
-      width: 33%;
-    }
-  }
-}
-
-.apply-page {
-  .featured-video-content {
-    .section-container {
-      background-image: url(image_path('apply_top_feature.jpg'));
-      background-position: top right;
-    }
-
-    blockquote {
-      margin-top: 3em;
-      width: 40%;
-    }
-  }
-}
-
-.volunteer-page {
-  .featured-video-content {
-    .section-container {
-      background-image: url(image_path('group_blue.jpg'));
-      background-position: top right;
-    }
-  }
-}
-
-.partner-page {
-  .featured-video-content {
-    .section-container {
-      background-image: url(image_path('partners_blue.jpg'));
-      background-position: top right;
-
-      h1 {
-        margin-top: 300px;
-      }
-    }
-  }
-}
-
-
-.bz-large-icon {
-  width: 200px;
-  height: 200px;
-  background-image: url(image_path('bz_icons.svg'));
-  background-repeat: no-repeat;
-  margin: 0px auto; /* horizontally centered in the container by default */
-}
-
-.bz-icon-rocket {
-  @extend .bz-large-icon;
-  background-position: 0px -1470px;
-}
-.bz-icon-puzzle {
-  @extend .bz-large-icon;
-  background-position: 0px -630px;
-}
-.bz-icon-wand {
-  @extend .bz-large-icon;
-  background-position: 0px -1260px;
-}
-.bz-icon-briefcase {
-  @extend .bz-large-icon;
-  background-position: 0px -420px;
-}
-.bz-icon-cap {
-  @extend .bz-large-icon;
-  background-position: 0px -0px;
-}
-.bz-icon-building {
-  @extend .bz-large-icon;
-  background-position: 0px -210px;
-}
-
-
-.right-side-bg-image {
-  background-position: top right;
-  background-repeat: no-repeat;
-  background-size: 100%;
-  background-contain: cover;
-  background-image: url(image_path('who_can_apply.jpg'));
-}
-
-
-.featured-video-content {
+// setup style for main top feature of page
+.main-feature {
   .section-container {
-
     height: 565px; /* Give room for the background to show */
 
     /* Allows absolute positioning in them by height percentage */
     > section, > section > div { height: 100%; }
   }
 
+  // use when there is a video
   .intro-play-button {
     @extend .glyphicon;
     @extend .glyphicon-play-circle;
@@ -468,120 +422,11 @@
   }
 }
 
-.apply-page {
-  blockquote {
-    border: none;
-    font-style: normal;
-
-    footer {
-      color: inherit;
-      &::before { content: ''; }
-    }
-  }
-
-  ul {
-    padding-left: 1em;
-  }
+// base for large icons
+.large-icon {
+  width: 200px;
+  height: 200px;
+  background-image: url(image_path('bz_icons.svg'));
+  background-repeat: no-repeat;
+  margin: 0px auto; /* horizontally centered in the container by default */
 }
-
-/* The dl.timeline gives us a time and definition thing we can reuse */
-.timeline {
-  text-align: center;
-  dt {
-    margin-top: 1em;
-    font-weight: bold;
-  }
-
-  dd {
-    font-style: italic;
-  }
-}
-
-/* Below follows fonts-mod.css contents */
-
-
-body {
-	color: $txt-dk;
-
-	font-family: "Open Sans", sans-serif;
-	/* probably best to load from Google Fonts CDN, */
-	/* for now limit to following weights: */
-	/* light 300, Normal 400, italic 400, bold 700 */
-
-	font-size: 14px; /* or you can convert everything to ems/rems if you feel like it... */
-}
-h1, h2 {
-	text-transform: uppercase;
-}
-h1, h2, h3 {
-	font-weight: normal; /* fallback */
-	font-weight: 400;
-}
-h4, h5 {
-	font-weight: bold; /* fallback */
-	font-weight: 700;
-}
-h5 {
-	font-size: 14px;
-}
-h4 {
-	font-size: 18px; 
-}
-h3 {
-	font-size: 24px; 
-	margin-top: 16px;
-	margin-bottom: 8px;
-}
-h2 {
-	font-size: 36px; 
-	margin-top: 24px;
-	margin-bottom: 8px;
-}
-h1 {
-	font-size: 36px; /* (usually get different formatting anyway) */
-}
-b, strong {
-	font-weight: bold; /* fallback */
-	font-weight: 700;
-}
-i, em, blockquote {
-	font-weight: normal; /* fallback */
-	font-weight: 400;
-	font-style: italic;
-	/* I know, this precludes italics in bold text. Small price to pay for one less font to load... */
-}
-
-blockquote {
-  font-size: 1.5em;
-  border: none;
-  padding-left: 0px;
-
-  footer {
-    font-weight: light; /* fallback */
-    font-weight: 300;
-  }
-}
-
-.feature {
-	/* e.g. a div we to which we want draw some attention */
-	font-size: 18px; 
-}
-.callout {
-	/* more attention within something that's already a .feature */
-	font-size: 24px;
-}
-.shoutout {
-	/* need moar attentionz! */
-	font-size: 36px;
-  line-height: 42px;
-}
-.reverse {
-	/* when text is on dark background */
-	color: $plain-lt;
-}
-ul, ol, a, cite {
-	/* ...and others... more work probably needed, let's first see what they look like without tweaks. */
-}
-/* 
-Overall layout uses a basic three column grid. This allows combinations of 1+1+1, 1+2, 2+1 or a full-width 3. This can be done using Bootstrap's built in classes, using 4-column width (since they have a 12 col grid). That should also make small viewport responsive layout easier to implement straight out of the box.
-*/
