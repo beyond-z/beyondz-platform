@@ -18,9 +18,16 @@ class EnrollmentsController < ApplicationController
       :state,
       :keep_updated)
 
-    populate_user_details user
-
-    @new_user = User.create(user)
+    if !user[:applicant_type].nil?
+      populate_user_details user
+      @new_user = User.create(user)
+    else
+      # this is required when signing up through this controller,
+      # but is not necessarily required for all users - e.g. admin
+      # users aren't an applicant so we don't want this in the model
+      @new_user = User.new(user)
+      @new_user.errors[:applicant_type] = 'must be chosen from the list'
+    end
 
     if @new_user.errors.any?
       states

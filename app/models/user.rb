@@ -12,6 +12,18 @@ class User < ActiveRecord::Base
   validates :first_name, presence: true
   validates :last_name, presence: true
 
+  validates :anticipated_graduation, presence: true, if: :graduation_required?
+  validates :university_name, presence: true, if: :university_name_required?
+
+  def graduation_required?
+    applicant_type == 'grad_student' || applicant_type == 'undergrad_student' ||
+      applicant_type == 'school_student'
+  end
+
+  def university_name_required?
+    applicant_type == 'grad_student' || applicant_type == 'undergrad_student'
+  end
+
   after_create :create_child_skeleton_rows
 
   def name
