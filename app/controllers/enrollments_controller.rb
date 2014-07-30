@@ -4,6 +4,7 @@ class EnrollmentsController < ApplicationController
 
   def new
     states
+    @referrer = request.referrer
     @user = User.new
   end
 
@@ -18,6 +19,10 @@ class EnrollmentsController < ApplicationController
       :state,
       :keep_updated)
 
+    user[:external_referral_url] = session[:referrer] # the first referrer saw by the app
+    user[:internal_referral_url] = params[:referrer] # the one that led direct to sign up
+
+    @referrer = params[:referrer] # preserve the original one in case of error
     populate_user_details user
 
     @new_user = User.create(user)

@@ -3,8 +3,15 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   layout :default_layout
+  before_action :log_referrer
 
   private
+
+  def log_referrer
+    if session[:referrer].nil?
+      session[:referrer] = request.referrer
+    end
+  end
 
   # see: http://stackoverflow.com/questions/4982073/different-layout-for-sign-in-action-in-devise
   def default_layout
