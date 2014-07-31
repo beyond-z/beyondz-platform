@@ -39,7 +39,7 @@ class Assignment < ActiveRecord::Base
       after do
         update_attribute :submitted_at, Time.now
       end
-      
+
       transitions :from => [:started, :pending_revision],
                   :to => :pending_approval, :guard => :ready_for_submit?
     end

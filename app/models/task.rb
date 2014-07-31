@@ -141,7 +141,7 @@ class Task < ActiveRecord::Base
   end
 
   def update(task_params)
-    success = false 
+    success = false
 
     ActiveRecord::Base.transaction do
 
