@@ -107,17 +107,12 @@
 
     .previous {
       @extend .btn;
-      @extend .btn-warning;
-    }
-
-    .complete {
-      @extend .btn;
       @extend .btn-primary;
     }
 
-    .next {
+    .continue {
       @extend .btn;
-      @extend .btn-success;
+      @extend .button-primary;
     }
   }
 }

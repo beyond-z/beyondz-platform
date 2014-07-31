@@ -11,6 +11,7 @@ class Task < ActiveRecord::Base
     where(assignment_id: assignment_id)
   }
   scope :submitted, -> { where.not(state: :new) }
+  scope :not_submitted, -> { where(state: [:new, :started]) }
   scope :incomplete, -> { where.not(tasks: { state: :complete }) }
   scope :required, -> {
     joins(:task_definition)\
@@ -49,6 +50,9 @@ class Task < ActiveRecord::Base
     state :complete, :after_enter => :post_completion_check
 
     event :submit do
+      after do
+        update_attribute :submitted_at, Time.now
+      end
       transitions :from => :new, :to => :complete,
                   :guard => :does_not_require_approval?
       transitions :from => [:new, :pending_revision], :to => :pending_approval
@@ -101,14 +105,6 @@ class Task < ActiveRecord::Base
     assignment.in_progress? && (new? || pending_revision?)
   end
 
-  # Used to autosubmit tasks that don't have task modules
-  def submit_previous_task!
-    last_task = previous
-    if last_task && last_task.submittable? && !last_task.needs_responses?
-      last_task.submit!
-    end
-  end
-
   def requires_approval?
     task_definition.requires_approval?
   end
@@ -140,7 +136,13 @@ class Task < ActiveRecord::Base
     )
   end
 
+  def last?
+    task_definition.position == assignment.tasks.count
+  end
+
   def update(task_params)
+    success = false 
+
     ActiveRecord::Base.transaction do
 
       self.updated_at = Time.now
@@ -173,10 +175,13 @@ class Task < ActiveRecord::Base
       end
 
       if save!
+        success = true
         submit!
       end
 
     end
+
+    success
   end
 
 end

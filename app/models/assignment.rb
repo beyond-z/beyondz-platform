@@ -36,6 +36,10 @@ class Assignment < ActiveRecord::Base
     end
 
     event :submit, :after => :send_to_approver do
+      after do
+        update_attribute :submitted_at, Time.now
+      end
+      
       transitions :from => [:started, :pending_revision],
                   :to => :pending_approval, :guard => :ready_for_submit?
     end
@@ -84,6 +88,10 @@ class Assignment < ActiveRecord::Base
     [:started, :pending_revision].include?(state.to_sym) && ready_for_submit?
   end
 
+  def tasks_submitted?
+    tasks.required.not_submitted.count < 1
+  end
+
   def tasks_completed?
     tasks.required.incomplete.count < 1
   end
@@ -94,7 +102,7 @@ class Assignment < ActiveRecord::Base
 
   def ready_for_submit?
     # define conditions that allow an assignment to be submittable
-    tasks_complete?
+    tasks_submitted?
   end
 
   def requires_files?

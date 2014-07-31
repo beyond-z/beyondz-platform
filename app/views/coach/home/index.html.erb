@@ -40,10 +40,10 @@
         <%= link_to task.user.name, coach_student_path(task.user.id) %>
         <span class="task-action"><%= task.pending_approval? ? "submitted" : "commented upon" %></span>
         <%= link_to task.task_definition.name.html_safe, coach_student_task_path(task.user_id, task.id), class: "task-name" %>
-      <% if task.files.any? %>
+   <!--    <%# if task.files.any? %>
       by uploading
-        <a href="<%= task.files.first.url %>"><%= task.files.first["#{task.file_type}_file_name"] %></a>
-      <% end %>
+        <a href="<%#= task.files.first.url %>"><%#= task.files.first["#{task.file_type}_file_name"] %></a>
+      <%# end %> -->
       at
         <%= task.updated_at.strftime("%B %d, %Y") %>
       </li>

@@ -36,12 +36,8 @@
         <% end %>
       </div>
       <div class="col-sm-6 text-right">
-        <%= f.submit "Submit", class: 'complete' %>
-        <% if @next_task %>
-          <button type="button" class="next disabled" disabled="disabled">Next</button>
-        <% else %>
-          <button type="button" class="next disabled" disabled="disabled">Finish</button>
-        <% end %>
+        <% submit_label = @next_task ? 'Continue' : 'Finish' %>
+        <%= f.submit submit_label, class: 'continue' %>
       </div>
     </section>
 
