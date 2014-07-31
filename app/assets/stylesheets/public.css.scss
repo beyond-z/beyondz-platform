@@ -7,144 +7,161 @@
 @import "./public/*";
 
 
-.large-picture-section {
-  background-size: 100%;
-  background-repeat: no-repeat;
-  background-position: center center;
-}
+// Index (home) page styles
+#home-page {
+  .main-feature {
+    .section-container {
+      background-image: url(image_path('home_top_feature.jpg'));
+      background-position: top right;
+    }
 
-.volunteer-image-section {
-  @extend .large-picture-section;
-  background-image: url(image_path('volunteer_header.jpg'));
-  padding-bottom: 37.5%; /* the image is 1200 x 450 so we want height to be this percent of the width */
-}
-
-#join-us-button, #join-us-button-lg {
-  font-weight: bold;
-}
-
-.apply-button {
-  display: inline-block;
-
-  .apply-icon {
-    display: inline-block;
-    height: 48px;
-    width: 48px;
-    vertical-align: middle;
-    margin-right: 12px;
-    background: url(image_path('bz_icons.svg')) 0 -1989px;
-
-    &:hover {
-      background: url(image_path('bz_icons.svg')) -58px -1989px;
+    .video-quote {
+      margin-top: 3em;
+      width: 33%;
     }
   }
 
-  .apply-text {
-    vertical-align: middle;
-    display: inline-block;
-    color: $txt-lt;
-    font-weight: bold;
-    font-size: 1.5em;
+  .infographic-column {
+    @extend .col-sm-4;
+    @extend .text-center;
+
+    h3 {
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    .discover-icon, .develop-icon, .connect-icon {
+      height: 200px;
+      width: 200px;
+      display: inline-block;
+    }
+
+    .discover-icon {
+      background: url(image_path('bz_icons.svg')) 0 -1050px;
+    }
+
+    .develop-icon {
+      background: url(image_path('bz_icons.svg')) 0 -840px;
+    }
+
+    .connect-icon {
+      background: url(image_path('bz_icons.svg')) 0 -1680px;
+    }
   }
 }
 
-.apply-button-lg {
-  text-align: center;
+// Apply page styles
+#apply-page {
+  .main-feature {
+    .section-container {
+      background-image: url(image_path('apply_top_feature.jpg'));
+      background-position: top right;
+    }
 
-  .apply-icon {
-    display: inline-block;
-    height: 89px;
-    width: 89px;
-    background: url(image_path('bz_icons.svg')) 0 -1890px;
+    blockquote {
+      margin-top: 3em;
+      width: 40%;
+      border: none;
+      font-style: normal;
 
-    &:hover {
-      background: url(image_path('bz_icons.svg')) -99px -1890px;
+      footer {
+        color: inherit;
+        &::before { content: ''; }
+      }
     }
   }
 
-  .apply-text {
-    color: $txt-lt;
-    font-weight: bold;
-    font-size: 2.4em;
-    line-height: 1.5em;
+  .open-application-notification {
+    @extend .alert;
+    @extend .alert-info;
+  }
+
+  ul {
+    padding-left: 1em;
+  }
+
+  .timeline {
+    text-align: center;
+    dt {
+      margin-top: 1em;
+      font-weight: bold;
+    }
+
+    dd {
+      font-style: italic;
+    }
+  }
+
+  .right-side-bg-image {
+    background-position: top right;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-contain: cover;
+    background-image: url(image_path('who_can_apply.jpg'));
   }
 }
 
-.page-jump {
-  display: inline-block;
-
-  .jump-icon {
-    display: inline-block;
-    height: 16px;
-    width: 16px;
-    vertical-align: middle;
-    margin-right: 6px;
-    background: url(image_path('bz_icons.svg')) -26px -2141px;
+// Volunteer page styles
+#volunteer-page {
+  .main-feature {
+    .section-container {
+      background-image: url(image_path('group_blue.jpg'));
+      background-position: top right;
+    }
   }
 
-  .jump-text {
-    vertical-align: middle;
-    display: inline-block;
-    color: $txt-lt;
-    font-weight: bold;
-    font-size: 1em;
+  .large-icon-rocket {
+    @extend .large-icon;
+    background-position: 0px -1470px;
   }
-}
-
-.learn-more-link {
-  display: inline-block;
-
-  .learn-more-icon {
-    display: inline-block;
-    height: 24px;
-    width: 24px;
-    vertical-align: middle;
-    margin-right: 6px;
-    background: url(image_path('bz_icons.svg')) 0 -2047px;
+  .large-icon-puzzle {
+    @extend .large-icon;
+    background-position: 0px -630px;
   }
-
-  .learn-more-text {
-    vertical-align: middle;
-    display: inline-block;
-    //color: $cta;
-    font-weight: bold;
-    font-size: 1em;
+  .large-icon-wand {
+    @extend .large-icon;
+    background-position: 0px -1260px;
   }
 }
 
-.sign-up-link {
-  display: inline-block;
+// Partner page styles
+#partner-page {
+  .main-feature {
+    .section-container {
+      background-image: url(image_path('partners_blue.jpg'));
+      background-position: top right;
 
-  .sign-up-icon {
-    display: inline-block;
-    height: 25px;
-    width: 25px;
-    vertical-align: middle;
-    margin-right: 6px;
-    background: url(image_path('bz_icons.svg')) -136px -2047px;
+      h1 {
+        margin-top: 300px;
+      }
+    }
   }
 
-  .sign-up-text {
-    vertical-align: middle;
-    display: inline-block;
-    color: $cta;
-    font-weight: bold;
-    font-size: 1em;
+  .large-icon-briefcase {
+    @extend .large-icon;
+    background-position: 0px -420px;
+  }
+  .large-icon-cap {
+    @extend .large-icon;
+    background-position: 0px -0px;
+  }
+  .large-icon-building {
+    @extend .large-icon;
+    background-position: 0px -210px;
   }
 }
 
-.well-light {
-  background-color: $bzwhite;
-}
+// Enrollment form styles
+#new-enrollment-page {
+  .form-option-details {
+    display: none;
+    padding-left: 2em;
+  }
 
-.bz-infographic {
-  @extend .img-rounded;
-  width: 50em;
-}
-
-#sign-up-form {
-  #other_type {
-    width: 20em;
-    display: inline-block;
+  #sign-up-form {
+    #other_type {
+      width: 20em;
+      display: inline-block;
+    }
   }
 }

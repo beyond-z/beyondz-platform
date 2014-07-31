@@ -2,11 +2,6 @@
   clear: both;
 }
 
-
-// Customize the primary, warning, and danger colors here to be our own.  E.g.
-//$brand-primary: $bzblue;
-//$brand-warning: $bzorange;
-
 $font-size-base: 14px;
 $font-size-large: ceil($font-size-base * 1.25); // ~18px
 $font-size-small: ceil($font-size-base * 0.85); // ~12px
@@ -105,14 +100,6 @@ section {
   background-color: transparent;
 }
 
-.btn-primary {
-  @include button-variant(white, $greyBackground, $bzgrey10);
-}
-
-.btn-warning {
-  @include button-variant(white, $bzorange, $bzgrey6);
-}
-
 .lead {
   font-size: $font-size-large;
 }
@@ -138,7 +125,7 @@ section {
 // Text indicating the type of session for the week, peer led vs coach led.
 .session-type {
   font-style: italic;
-  color: $bzblue;
+  color: $secondary-lt;
 }
 
 // The general panel for assignments.
@@ -149,13 +136,13 @@ section {
 // The header row for assignments
 .assignment-header {
   @extend .assignment-col;
-  background-color: $greyBackground;
-  color: white;
+  background-color: $knockout-md;
+  color: $plain-lt;
 }
 
 // Lead text for assignments
 .assignment-text-lead {
-  color: $bzorange;
+  color: $primary-lt;
   font-size: 110%;
  } 
 
@@ -164,11 +151,11 @@ section {
   @extend .col-sm-10;
   @extend .col-sm-offset-1;
   @extend .jumbotron;
-  background-color: $bzblue;
-  color: $bzgrey11;
+  background-color: $secondary-lt;
+  color: $txt-dk;
 
   h1, h2, h3 {
-     color: white;
+     color: $plain-lt;
   }
 } 
 
@@ -201,23 +188,23 @@ section {
   }
   
   .assignment-submittable {
-    background-color: #E6F5EB;
+    background-color: $tertiary-lt;
     .status-message {
-      color: #197519;
+      color: $tertiary-dk;
     }
   }
 
   .assignment-complete {
-    background-color: #eee;
+    background-color: $plain-md;
     .status-message {
-      color: #aaa;
+      color: $txt-dk;
     }
   }
 }
 
 .assignment-date {
   @extend .assignment-col;
-  color: $bzorange;
+  color: $primary-lt;
   font-size: $font-size-large;
   font-weight: bold;
   
@@ -230,14 +217,14 @@ section {
   @extend .col-sm-8;
 
   h3 {
-     color: black;
+     color: $txt-dk;
     }
   }
 
 .assignment-summary-checklist {
   @extend .col-sm-4;
-  color: $bzorange;
-  border: 5px solid $bzgrey4;
+  color: $primary-lt;
+  border: 5px solid $knockout-lt;
   margin-right: 10px;
   width: 32%;
 
@@ -283,12 +270,12 @@ section {
   }
   
   a {
-    color: $bzorange;
+    color: $primary-lt;
     text-decoration: underline;
   }
   
   a:hover, a:focus {
-    color: darken($bzorange, 15%);
+    color: darken($primary-lt, 15%);
     text-decoration: underline;
   }
 }
@@ -351,10 +338,6 @@ section {
 .assignment-details-sidebar {
   @extend .col-sm-2;
   margin-top: 10px;
-  
-  // BTODO: not able to get the column to stretch and match the height of the main div.
-  //background-color: $greyBackground;
-  //min-height: 100%;
 }
 
 .assignment-details-summary {
@@ -369,18 +352,18 @@ section {
 
   h3 {
     text-align: center;
-    border-bottom: 4px solid white;
+    border-bottom: 4px solid $txt-lt;
     padding-bottom: 5px;
     margin: 5px 0px;
   }
 
   a {
-    color: white;
+    color: $txt-lt;
     text-decoration: none;
   }
 
   a:hover, a:focus {
-    color: $bzgrey1;
+    color: $plain-md;
     text-decoration: underline;
   }
 }

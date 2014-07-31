@@ -9,10 +9,10 @@
 $(document).ready(function() {
 
   // automatically stop video when modal is closed
-  $('#intro-video').on('hidden.bs.modal', function(e) {
-    var iframe = $('#intro-video').find('iframe');
+  var intro_video = $('#intro-video');
+  intro_video.on('hidden.bs.modal', function(e) {
+    var iframe = intro_video.find('iframe');
     var vidsrc = iframe.attr('src');
-    console.log(vidsrc);
     // sets the source to nothing, stopping the video
     iframe.attr('src',''); 
 
@@ -22,8 +22,8 @@ $(document).ready(function() {
     iframe.attr('src', vidsrc);
   });
 
-  $('#intro-video').on('shown.bs.modal', function(e) {
-    var iframe = $('#intro-video').find('iframe');
+  intro_video.on('shown.bs.modal', function(e) {
+    var iframe = intro_video.find('iframe');
     var vidsrc = iframe.attr('src');
 
     // cause it to autoplay when it shows

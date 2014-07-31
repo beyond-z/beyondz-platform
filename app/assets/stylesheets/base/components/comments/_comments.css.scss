@@ -4,7 +4,7 @@
   }
 
   .comment {
-    border: solid 0.2em $subtle_border;
+    border: solid 0.2em $knockout-lt;
     padding: 0em;
     margin-bottom: 1em;
     // Add border radius as mixin
@@ -25,7 +25,7 @@
 
     .by {
       font-size: 0.9em;
-      border-bottom: solid 0.1em $subtle_border;
+      border-bottom: solid 0.1em $knockout-lt;
       padding: 0.25em;
     }
 
