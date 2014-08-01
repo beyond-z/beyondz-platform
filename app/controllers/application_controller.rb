@@ -3,11 +3,11 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   layout :default_layout
-  before_action :log_referrer
+  before_action :save_external_referrer
 
   private
 
-  def log_referrer
+  def save_external_referrer
     if session[:referrer].nil?
       session[:referrer] = request.referrer
     end
