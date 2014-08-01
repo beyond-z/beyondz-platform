@@ -39,6 +39,8 @@ class Admin::UsersController < Admin::ApplicationController
       header << 'University Name'
       header << 'Signup Date'
       header << 'Subscribed to Email'
+      header << 'Came from to reach site'
+      header << 'Came from to reach sign up form'
       csv << header
       @users.each do |user|
         exportable = Array.new
@@ -51,6 +53,8 @@ class Admin::UsersController < Admin::ApplicationController
         exportable << user.university_name
         exportable << user.created_at.to_s
         exportable << user.keep_updated
+        exportable << user.external_referral_url
+        exportable << user.internal_referral_url
         csv << exportable
       end
     end
