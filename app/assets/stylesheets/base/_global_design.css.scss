@@ -55,10 +55,12 @@ header {
 
 main {
   @extend .container-fluid;
-  background-color: white;
+
   width: 100%;
   padding-left: 0em;
   padding-right: 0em;
+  padding-bottom: 50px;
+  min-height: 700px;
 }
 
 #footer {
@@ -240,19 +242,17 @@ section {
       display: block;
       position: relative;
     }
-    .submittable, .pending-approval, .complete, .incomplete {
+    .submittable, .complete, .incomplete {
       top: 3px;
       float:left;
       width: 6%;
     }
-    .pending-approval, .complete, .incomplete {
+    .complete, .incomplete {
       @extend .glyphicon;
     }
     .submittable {
     }
-    .pending-approval {
-      @extend .glyphicon-random;
-    }
+
     .complete {
       @extend .glyphicon-check;
     }

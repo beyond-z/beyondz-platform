@@ -37,9 +37,7 @@
               <% assignment.tasks.for_display.each do |task| %>
                 <%
                   task_indicator_class = 'incomplete'
-                  if task.pending_approval?
-                    task_indicator_class = 'pending-approval'
-                  elsif task.complete?
+                  if task.submitted?
                     task_indicator_class = 'complete'
                   end
                 %>
