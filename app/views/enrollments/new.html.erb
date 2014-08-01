@@ -16,6 +16,7 @@
           <div id="sign-up-form" class="well well-default">
             <div class="panel-body">
               <%= form_for :user, url: enrollments_path, role: 'form' do |f| %>
+                <%= hidden_field_tag 'referrer', @referrer %>
                 <%= render :partial => 'shared/form_errors', locals: { object: @user } %>
                 <div class="form-group">
                   <%= f.label :first_name, 'Name' %>
