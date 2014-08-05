@@ -7,62 +7,63 @@ $(document).ready(function() {
     trigger: 'hover'
   })
 
-  var task_action_box = $('.task-container .action-box');
-  var task_update_submit = '#task-update-student .edit_task input[type=submit]';
+  //// Don't AJAX task submittal for now until after workflow is re-assessed 
+  // var task_action_box = $('.task-container .action-box');
+  // var task_update_submit = '#task-update-student .edit_task input[type=submit]';
 
   // update task
-  task_action_box.on('click', task_update_submit, function(e){
-    e.preventDefault();
-    try
-    {
-      var el = $(this);
-      var form = el.closest('form');
-      var formData = new FormData(form[0]);
+  // task_action_box.on('click', task_update_submit, function(e){
+  //   e.preventDefault();
+  //   try
+  //   {
+  //     var el = $(this);
+  //     var form = el.closest('form');
+  //     var formData = new FormData(form[0]);
 
-      $.ajax({
-        url: form.attr('action'),
-        data: formData,
-        type: 'PATCH',
-        beforeSend: function() {},
-        error: function() {},
-        success: function(data, status, xhr) {
-          task_action_box.html(data);
-        },
-        cache: false,
-        contentType: false,
-        processData: false,
-        xhr: function() {  // Custom XMLHttpRequest
-          var myXhr = $.ajaxSettings.xhr();
-          // only update progress for files uploads
-          if(form.find('.task-file').length)
-          {
-            if(myXhr.upload) // Check if upload property exists
-            {
-              var progress_bar = $('.file-upload-progress');
-              progress_bar.removeClass('invisible');
-              // For handling the progress of the upload
-              myXhr.upload.addEventListener(
-                'progress',
-                function(e) {
-                  if(e.lengthComputable){
-                    update_progress_bar(progress_bar, e);
-                  }
-                },
-                false
-              );
-            }
-          }
-          return myXhr;
-        }
-      });
-    }
-    catch(e)
-    {
-      alert('Unable to update task.');
-    }
+  //     $.ajax({
+  //       url: form.attr('action'),
+  //       data: formData,
+  //       type: 'PATCH',
+  //       beforeSend: function() {},
+  //       error: function() {},
+  //       success: function(data, status, xhr) {
+  //         task_action_box.html(data);
+  //       },
+  //       cache: false,
+  //       contentType: false,
+  //       processData: false,
+  //       xhr: function() {  // Custom XMLHttpRequest
+  //         var myXhr = $.ajaxSettings.xhr();
+  //         // only update progress for files uploads
+  //         if(form.find('.task-file').length)
+  //         {
+  //           if(myXhr.upload) // Check if upload property exists
+  //           {
+  //             var progress_bar = $('.file-upload-progress');
+  //             progress_bar.removeClass('invisible');
+  //             // For handling the progress of the upload
+  //             myXhr.upload.addEventListener(
+  //               'progress',
+  //               function(e) {
+  //                 if(e.lengthComputable){
+  //                   update_progress_bar(progress_bar, e);
+  //                 }
+  //               },
+  //               false
+  //             );
+  //           }
+  //         }
+  //         return myXhr;
+  //       }
+  //     });
+  //   }
+  //   catch(e)
+  //   {
+  //     alert('Unable to update task.');
+  //   }
 
-    return false;
-  });
+  //   return false;
+  // });
 
 
   // coach set status on task

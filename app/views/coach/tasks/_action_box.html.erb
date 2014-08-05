@@ -1,6 +1,6 @@
 <div class="completion-status">
   <% if @task.pending_approval? %>
-    <div class="status-coach-pending-approval">This task needs approval from you.</div>
+    <div class="status-coach-pending-approval">This task needs your review.</div>
   <% elsif @task.pending_revision? %>
     <div class="status-coach-pending-revision">This task is pending revision from the student.</div>
   <% elsif @task.complete? %>

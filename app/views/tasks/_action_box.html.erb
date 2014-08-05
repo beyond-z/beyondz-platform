@@ -8,21 +8,5 @@
   <% end %>
 </div>
 
-<% if @task.submittable? && @task.task_definition.sections.any? %>
-  <%= render "tasks/form", { task: @task } %>
-<% else %>
-  <section class="task-navigation-buttons">
-    <div class="col-sm-6">
-      <% if @previous_task %>
-        <%= link_to "Previous", assignment_task_path(@previous_task.assignment, @previous_task), class: "previous" %>
-      <% end %>
-    </div>
-    <div class="col-sm-6 text-right">
-      <% if @next_task %>
-        <%= link_to "Next", assignment_task_path(@next_task.assignment, @next_task), class: "next" %>
-      <% else %>
-        <%= link_to "Finish", assignments_path, class: "next" %>
-      <% end %>
-    </div>
-  </section>
-<% end %>
+
+<%= render "tasks/form", { task: @task } %>

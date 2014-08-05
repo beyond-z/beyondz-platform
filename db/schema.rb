@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140702172713) do
+ActiveRecord::Schema.define(version: 20140730164622) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20140702172713) do
     t.string   "state"
     t.datetime "completed_at"
     t.boolean  "tasks_complete",           default: false
+    t.datetime "submitted_at"
   end
 
   add_index "assignments", ["assignment_definition_id"], name: "index_assignments_on_assignment_definition_id", using: :btree
@@ -105,7 +106,6 @@ ActiveRecord::Schema.define(version: 20140702172713) do
     t.integer  "position"
     t.text     "summary"
     t.boolean  "requires_approval",        default: false
-    t.integer  "kind",                     default: 0
   end
 
   add_index "task_definitions", ["assignment_definition_id"], name: "index_task_definitions_on_assignment_definition_id", using: :btree
@@ -178,7 +178,7 @@ ActiveRecord::Schema.define(version: 20140702172713) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "state"
-    t.integer  "kind",               default: 0
+    t.datetime "submitted_at"
   end
 
   add_index "tasks", ["assignment_id"], name: "index_tasks_on_assignment_id", using: :btree
@@ -218,6 +218,9 @@ ActiveRecord::Schema.define(version: 20140702172713) do
     t.string   "city"
     t.string   "state"
     t.string   "applicant_details"
+    t.string   "university_name"
+    t.string   "external_referral_url"
+    t.string   "internal_referral_url"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

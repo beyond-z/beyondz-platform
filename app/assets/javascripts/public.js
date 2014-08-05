@@ -9,14 +9,24 @@
 $(document).ready(function() {
 
   // automatically stop video when modal is closed
-  $('#intro-video').on('hidden.bs.modal', function(e) {
-    var iframe = $('#intro-video').find('iframe');
+  var intro_video = $('#intro-video');
+  intro_video.on('hidden.bs.modal', function(e) {
+    var iframe = intro_video.find('iframe');
     var vidsrc = iframe.attr('src');
-    console.log(vidsrc);
     // sets the source to nothing, stopping the video
     iframe.attr('src',''); 
 
+    vidsrc = vidsrc.replace('?autoplay=1', ''); // don't want it to autoplay in background when hidden
+
     // sets it back to the correct link so that it reloads immediately on the next window open
     iframe.attr('src', vidsrc);
+  });
+
+  intro_video.on('shown.bs.modal', function(e) {
+    var iframe = intro_video.find('iframe');
+    var vidsrc = iframe.attr('src');
+
+    // cause it to autoplay when it shows
+    iframe.attr('src', vidsrc + '?autoplay=1');
   });
 });

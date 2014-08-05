@@ -36,8 +36,11 @@ class Admin::UsersController < Admin::ApplicationController
       header << 'Type'
       header << 'Details'
       header << 'Anticipated Graduation'
+      header << 'University Name'
       header << 'Signup Date'
       header << 'Subscribed to Email'
+      header << 'Came from to reach site'
+      header << 'Came from to reach sign up form'
       csv << header
       @users.each do |user|
         exportable = Array.new
@@ -47,8 +50,11 @@ class Admin::UsersController < Admin::ApplicationController
         exportable << user.applicant_type
         exportable << user.applicant_details
         exportable << user.anticipated_graduation
+        exportable << user.university_name
         exportable << user.created_at.to_s
         exportable << user.keep_updated
+        exportable << user.external_referral_url
+        exportable << user.internal_referral_url
         csv << exportable
       end
     end

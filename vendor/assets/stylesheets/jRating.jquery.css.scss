@@ -4,7 +4,7 @@
 
 /**Div containing the color of the stars */
 .jRatingAverage {
-  background-color: $bzorange;
+  background-color: $primary-lt;
   position: relative;
   top: 0;
   left: 0;
@@ -13,7 +13,7 @@
 }
 
 .jRatingColor {
-  background-color: $bzblue; /* bgcolor of the stars*/
+  background-color: $secondary-lt; /* bgcolor of the stars*/
   position: relative;
   top: 0;
   left: 0;
@@ -33,7 +33,7 @@ p.jRatingInfos {
   position: absolute;
   z-index: 9999;
   background: transparent url('/images/jRating/bg_jRatingInfos.png') no-repeat;
-  color: $bzgrey1;
+  color: $txt-lt;
   display: none;
   width: 91px;
   height: 29px; 
@@ -43,6 +43,6 @@ p.jRatingInfos {
 }
 
 p.jRatingInfos span.maxRate {
-  color: $bzgrey7;
+  color: $plain-dk;
   font-size: 14px;
 }

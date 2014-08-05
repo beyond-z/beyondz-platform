@@ -6,56 +6,162 @@
 
 @import "./public/*";
 
-.big-picture {
-  padding: 8em;
-  .join-us-button-container {
-    margin-top: -25%;
-    width: 100%;
 
-    .join-us-text-overlay {
-     margin-top: -45%;
+// Index (home) page styles
+#home-page {
+  .main-feature {
+    .section-container {
+      background-image: url(image_path('home_top_feature.jpg'));
+      background-position: top right;
+    }
+
+    .video-quote {
+      margin-top: 3em;
+      width: 33%;
+    }
+  }
+
+  .infographic-column {
+    @extend .col-sm-4;
+    @extend .text-center;
+
+    h3 {
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    .discover-icon, .develop-icon, .connect-icon {
+      height: 200px;
+      width: 200px;
+      display: inline-block;
+    }
+
+    .discover-icon {
+      background: url(image_path('bz_icons.svg')) 0 -1050px;
+    }
+
+    .develop-icon {
+      background: url(image_path('bz_icons.svg')) 0 -840px;
+    }
+
+    .connect-icon {
+      background: url(image_path('bz_icons.svg')) 0 -1680px;
     }
   }
 }
 
-.large-picture-section {
-  background-size: 100%;
-  background-repeat: no-repeat;
-  background-position: center center;
+// Apply page styles
+#apply-page {
+  .main-feature {
+    .section-container {
+      background-image: url(image_path('apply_top_feature.jpg'));
+      background-position: top right;
+    }
 
-  .image-pads {
-    height: 4em;
-    @extend .hidden-xs; /* On very small screens this gives excessive whitespace because the photo aspect ratio leads to there being some white already */
+    blockquote {
+      margin-top: 3em;
+      width: 40%;
+      border: none;
+      font-style: normal;
+
+      footer {
+        color: inherit;
+        &::before { content: ''; }
+      }
+    }
+  }
+
+  .open-application-notification {
+    @extend .alert;
+    @extend .alert-info;
+  }
+
+  ul {
+    padding-left: 1em;
+  }
+
+  .timeline {
+    text-align: center;
+    dt {
+      margin-top: 1em;
+      font-weight: bold;
+    }
+
+    dd {
+      font-style: italic;
+    }
+  }
+
+  .right-side-bg-image {
+    background-position: top right;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-contain: cover;
+    background-image: url(image_path('who_can_apply.jpg'));
   }
 }
 
-.sign-up-anchor-section {
-  @extend .large-picture-section;
-  background-image: url(image_path('sign_up_anchor.jpg'));
+// Volunteer page styles
+#volunteer-page {
+  .main-feature {
+    .section-container {
+      background-image: url(image_path('group_blue.jpg'));
+      background-position: top right;
+    }
+  }
+
+  .large-icon-rocket {
+    @extend .large-icon;
+    background-position: 0px -1470px;
+  }
+  .large-icon-puzzle {
+    @extend .large-icon;
+    background-position: 0px -630px;
+  }
+  .large-icon-wand {
+    @extend .large-icon;
+    background-position: 0px -1260px;
+  }
 }
 
-.volunteer-image-section {
-  @extend .large-picture-section;
-  background-image: url(image_path('volunteer_header.jpg'));
-  padding-bottom: 37.5%; /* the image is 1200 x 450 so we want height to be this percent of the width */
+// Partner page styles
+#partner-page {
+  .main-feature {
+    .section-container {
+      background-image: url(image_path('partners_blue.jpg'));
+      background-position: top right;
+
+      h1 {
+        margin-top: 300px;
+      }
+    }
+  }
+
+  .large-icon-briefcase {
+    @extend .large-icon;
+    background-position: 0px -420px;
+  }
+  .large-icon-cap {
+    @extend .large-icon;
+    background-position: 0px -0px;
+  }
+  .large-icon-building {
+    @extend .large-icon;
+    background-position: 0px -210px;
+  }
 }
 
- #join-us-button {
-   font-weight: bold;
- }
+// Enrollment form styles
+#new-enrollment-page {
+  .form-option-details {
+    display: none;
+    padding-left: 2em;
+  }
 
-.well-light {
-  background-color: $bzwhite;
-}
-
-.bz-infographic {
-  @extend .img-rounded;
-  width: 50em;
-}
-
-#sign-up-form {
-  #other_type {
-    width: 20em;
-    display: inline-block;
+  #sign-up-form {
+    #other_type {
+      width: 20em;
+      display: inline-block;
+    }
   }
 }
