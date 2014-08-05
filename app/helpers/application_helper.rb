@@ -19,9 +19,49 @@ module ApplicationHelper
     ('<li>' + (link_to text, path, :class => c) + '</li>').html_safe
   end
 
-  def apply_now_button
-    (link_to '<button id="join-us-button" type="button" class="button-primary">JOIN US!</button>'
-      .html_safe, new_enrollment_path).html_safe
+  def apply_button
+    '<div class="apply-button">'.html_safe +
+    link_to(
+      '<div class="apply-icon"></div><div class="apply-text">JOIN US</div>'.html_safe,
+      new_enrollment_path
+    ) +
+    '</div>'.html_safe
+  end
+
+  def apply_button_large
+    '<span class="apply-button-lg">'.html_safe +
+    link_to(
+      '<div class="apply-icon"></div><br /><span class="apply-text">JOIN US</span>'.html_safe,
+      new_enrollment_path
+    ) +
+    '</span>'.html_safe
+  end
+
+  def light_page_jump(label, anchor)
+    '<div class="page-jump">'.html_safe +
+    link_to(
+      '<div class="jump-icon"></div><div class="jump-text">'.html_safe +
+      label + '</div>'.html_safe, "##{anchor}"
+    ) +
+    '</div>'.html_safe
+  end
+
+  def learn_more_link(about, url)
+    '<div class="learn-more-link">'.html_safe +
+    link_to(
+      '<div class="learn-more-icon"></div><div class="learn-more-text">Learn more about '.html_safe +
+      about + '</div>'.html_safe, url
+    ) +
+    '</div>'.html_safe
+  end
+
+  def sign_up_link
+    '<div class="sign-up-link">'.html_safe +
+    link_to(
+      '<div class="sign-up-icon"></div><div class="sign-up-text">SIGN UP TO LEARN MORE</div>'.html_safe,
+      new_enrollment_path
+    ) +
+    '</div>'.html_safe
   end
 
   # Generate standard-sized Bootstrap modal HTML

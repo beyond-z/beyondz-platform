@@ -15,7 +15,7 @@
       height: 58px;
 
       background-color: white; /* This ensures it has a sane bg as it starts to be on top of random content. */
-      border-bottom: solid 1px #f0f0f0; /* And just gives gives a very subtle separation that doesn't visually stand out, but does help to keep partially obscured text underneath as you scroll through a half-line look less sloppy. */
+      border-bottom: solid 1px $plain-md; /* And just gives gives a very subtle separation that doesn't visually stand out, but does help to keep partially obscured text underneath as you scroll through a half-line look less sloppy. */
     }
 
     .top-left {
@@ -47,25 +47,301 @@
   padding: 0px;
 }
 
-.wide-section {
+// define general plank/container sizes
+.plank {
   width: 100%;
+
+  &.under-logo {
+    /* underlap the z in the image. This percentage will have to change if the image dimensions change. */
+    /* The Z overlap I used here is 44 px. The image width right now is about 1160px. */
+    margin-top: -2.8%; /* This is the height of the Z that we want to overlap divided by the width of this element - all size percentages are based on the element width so using this ratio and assuming both images scale at the same rate (they do because they are also max width based on the browser size), this keeps the same Z overlap too, even as the size changes. */
+
+    /* If we're on a small screen, the bootstrap columns above will go vertical
+       instead of horizontal. In that case, we no longer want to overlap - if we
+       did, it would cover up the final nav menu item instead of the Z! */
+    @media screen and (max-width: $screen-sm-min) {
+      margin-top: 0px;
+    }
+  }
 
   .section-container {
     @extend .container;
 
     max-width: 1440px;
     padding: 0px;
+
+    // set default padding around section column content
+    & > section > div:not(.no-pad) {
+      padding: 2.25em 0.938em 1.5em 0.938em;
+
+      &:first-child {
+        padding-left: 1.8em;
+      }
+
+      &:last-child {
+        padding-right: 1.8em;
+      }
+    }
+
+    & > section > div.no-pad {
+      padding-top: 0em;
+      padding-bottom: 0em;
+
+      &:not(:first-child):not(:last-child) {
+        padding: 0em;
+      }
+    }
   }
 }
 
-.header-section {
-  background-color: $bzgrey9;
+// define plank color sets
+.plank {
+  // set default font color to dark incase default isn't set
+  color: $txt-dk;
+
+  &.primary-lt {
+    background-color: $primary-md;
+    color: $txt-lt;
+    a {
+      color: $link-exlt;
+    }
+
+    .section-container {
+      background-color: $primary-lt;
+    }
+  }
+
+  &.primary-md {
+    background-color: $primary-dk;
+    color: $txt-lt;
+
+    a {
+      color: $link-lt;
+    }
+    
+    .section-container {
+      background-color: $primary-md;
+    }
+  }
+
+  &.secondary-lt {
+    background-color: $secondary-md;
+
+    a {
+      color: $link-dk;
+    }
+    .section-container {
+      background-color: $secondary-lt;
+    }
+  }
+
+  &.secondary-md {
+    background-color: $secondary-dk;
+    color: $txt-lt;
+
+    a {
+      color: $link-dk;
+    }
+
+    .section-container {
+      background-color: $secondary-md;
+    }
+  }
+
+  &.tertiary-lt {
+    background-color: $tertiary-md;
+    a {
+      color: $link-dk;
+    }
+
+    .section-container {
+      background-color: $tertiary-lt;
+    }
+  }
+
+  &.tertiary-md {
+    background-color: $tertiary-dk;
+    color: $txt-lt;
+
+    a {
+      color: $link-dk;
+    }
+    
+    .section-container {
+      background-color: $tertiary-md;
+    }
+  }
+
+  &.plain-lt {
+    background-color: $plain-md;
+    a {
+      color: $link-dk;
+    }
+
+    .section-container {
+      background-color: $plain-lt;
+    }
+  }
+
+  &.plain-md {
+    background-color: $plain-dk;
+    a {
+      color: $link-dk;
+    }
+    
+    .section-container {
+      background-color: $plain-md;
+    }
+  }
+
+  &.knockout-lt {
+    background-color: $knockout-md;
+    color: $txt-lt;
+
+    a {
+      color: $link-dk;
+    }
+    
+    .section-container {
+      background-color: $knockout-lt;
+    }
+  }
+
+  &.knockout-md {
+    background-color: $knockout-dk;
+    color: $txt-lt;
+
+    a {
+      color: $link-dk;
+    }
+    
+    .section-container {
+      background-color: $knockout-md;
+    }
+  }
+
+  // set light/dark font overrides
+  &.light {
+    color: $txt-lt;
+  }
+
+  &.dark {
+    color: $txt-dk;
+  }
 }
 
-.footer-section {
-  background-color: $bzgrey9;
+// define standard buttons/links
+.apply-button {
+  display: inline-block;
+
+  .apply-icon {
+    display: inline-block;
+    height: 49px;
+    width: 49px;
+    vertical-align: middle;
+    margin-right: 12px;
+    background: url(image_path('bz_icons.svg')) 0 -1988px;
+
+    &:hover {
+      background: url(image_path('bz_icons.svg')) -58px -1988px;
+    }
+  }
+
+  .apply-text {
+    vertical-align: middle;
+    display: inline-block;
+    color: $txt-lt;
+    font-weight: bold;
+    font-size: 1.5em;
+  }
 }
 
+.apply-button-lg {
+  text-align: center;
+
+  .apply-icon {
+    display: inline-block;
+    height: 90px;
+    width: 90px;
+    background: url(image_path('bz_icons.svg')) 0 -1889px;
+
+    &:hover {
+      background: url(image_path('bz_icons.svg')) -99px -1889px;
+    }
+  }
+
+  .apply-text {
+    color: $txt-lt;
+    font-weight: bold;
+    font-size: 2.4em;
+    line-height: 1.5em;
+  }
+}
+
+.page-jump {
+  display: inline-block;
+
+  .jump-icon {
+    display: inline-block;
+    height: 17px;
+    width: 17px;
+    vertical-align: middle;
+    margin-right: 6px;
+    background: url(image_path('bz_icons.svg')) -26px -2140px;
+  }
+
+  .jump-text {
+    vertical-align: middle;
+    display: inline-block;
+    color: $txt-lt;
+    font-weight: bold;
+    font-size: 1em;
+  }
+}
+
+.learn-more-link {
+  display: inline-block;
+
+  .learn-more-icon {
+    display: inline-block;
+    height: 25px;
+    width: 25px;
+    vertical-align: middle;
+    margin-right: 6px;
+    background: url(image_path('bz_icons.svg')) 0 -2046px;
+  }
+
+  .learn-more-text {
+    vertical-align: middle;
+    display: inline-block;
+    //color: $cta;
+    font-weight: bold;
+    font-size: 1em;
+  }
+}
+
+.sign-up-link {
+  display: inline-block;
+
+  .sign-up-icon {
+    display: inline-block;
+    height: 25px;
+    width: 25px;
+    vertical-align: middle;
+    margin-right: 6px;
+    background: url(image_path('bz_icons.svg')) -136px -2046px;
+  }
+
+  .sign-up-text {
+    vertical-align: middle;
+    display: inline-block;
+    color: $cta;
+    font-weight: bold;
+    font-size: 1em;
+  }
+}
+
+// General header/banner
 #banner {
   padding-top: 0.5em;
   padding-bottom: 0.5em;
@@ -83,25 +359,14 @@
   }
 }
 
-.should-overlap-logo {
-  /* overlap the z in the image. This percentage will have to change if the image dimensions change. */
-  /* The Z overlap I used here is 44 px. The image width right now is about 1160px. */
-  margin-top: -2.8%; /* This is the height of the Z that we want to overlap divided by the width of this element - all size percentages are based on the element width so using this ratio and assuming both images scale at the same rate (they do because they are also max width based on the browser size), this keeps the same Z overlap too, even as the size changes. */
-
-  /* If we're on a small screen, the bootstrap columns above will go vertical
-     instead of horizontal. In that case, we no longer want to overlap - if we
-     did, it would cover up the final nav menu item instead of the Z! */
-  @media screen and (max-width: $screen-sm-min) {
-    margin-top: 0px;
-  }
-}
-
 #banner .navigation-holder {
   @extend .col-sm-8;
 }
 
 #top-navigation {
   margin-top: 24px;
+  font-weight: bold;
+  text-align: center;
 
   /* As we get smaller, the logo shrinks, so we move this up a bit too
      so they stay fairly aligned */
@@ -109,89 +374,6 @@
     margin-top: 10px;
   }
   /* Note that smaller than this and bootstrap will change it to vertical anyway */
-}
-
-.open-application-notification {
-  @extend .alert;
-  @extend .alert-info;
-}
-
-.infographic-column {
-  @extend .col-sm-4;
-  @extend .text-center;
-
-  p {
-    font-size: 1.5em;
-  }
-
-  h3 {
-    color: $bzred;
-    text-transform: uppercase;
-    font-size: 2.5em;
-  }
-}
-
-.mission-photo {
-  position: relative;
-  width: 100%;
-  padding-bottom: 75%;
-  background-image: url(image_path("bz_group_photo.jpg"));
-
-  p {
-    position: absolute;
-    left: 0px;
-    right: 0px;
-    top: 0px;
-    bottom: 0px;
-
-    padding: 10%;
-    font-size: 150%;
-
-    background-color: rgba(0, 0, 0, 0.4);
-    color: white;
-  }
-}
-
-.large-quotes {
-  font-size: 3em;
-  line-height: 0.5em;
-  vertical-align: text-top;
-  font-family: 'Times New Roman';
-  color: $bzorange;
-  font-style: italic;
-  padding: 0 0.03em 0 0.03em;
-}
-
-.sunk-quote {
-  @extend .well;
-  @extend .well-lg;
-
-  font-size: 1.2em;
-
-  p {
-    font-style: italic;
-  }
-
-  footer {
-    margin-top: 10px;
-    font-weight: bold;
-    text-align: right;
-    font-size: 1.1em;
-  }
-}
-
-blockquote {
-  border-left-color: $accent_blue;
-}
-
-.form-option-details {
-  display: none;
-  padding-left: 2em;
-}
-
-#top-navigation {
-  font-weight: bold;
-  text-align: center;
 
   /* On larger screens, where bootstrap hasn't made us vertical yet,
      we want to right align the nav so it is opposite the logo on
@@ -204,85 +386,16 @@ blockquote {
   }
 }
 
-.big-video-box {
-  text-align: center;
-  max-width: 980px;
-  margin: 0px auto;
-}
-
-/* The next block of code relates to the new Ehud designed pages */
-
-.apply-page {
-  .featured-video-content {
-    > .section-container {
-      background-image: url(image_path('cesar_ramirez.jpg'));
-      background-position: top right;
-    }
-
-    blockquote {
-      position: absolute;
-      left: 3em;
-      top: 3em;
-      color: white;
-      width: 40%;
-    }
-  }
-}
-
-.green-plank {
-  background-color: #009345;
-
+// setup style for main top feature of page
+.main-feature {
   .section-container {
-    background-color: #3ab54a;
-    color: white;
-    text-align: center;
-  }
-}
-
-.gray-plank {
-  background-color: #e6e6e6;
-
-  .section-container {
-    background-color: #ffffff;
-  }
-}
-
-.white-plank {
-  background-color: #f2f2f2;
-
-  .section-container {
-    background-color: #ffffff;
-  }
-}
-
-
-.red-plank {
-  background-color: #c2272d;
-
-  .section-container {
-    background-color: #ffffff;
-  }
-}
-
-.right-side-bg-image {
-  background-position: top right;
-  background-repeat: no-repeat;
-  background-size: 100%;
-  background-contain: cover;
-}
-
-
-.featured-video-content {
-  background-color: #0071bd;
-  > .section-container {
-    background-color: blue; /* FIXME */
-
     height: 565px; /* Give room for the background to show */
 
     /* Allows absolute positioning in them by height percentage */
     > section, > section > div { height: 100%; }
   }
 
+  // use when there is a video
   .intro-play-button {
     @extend .glyphicon;
     @extend .glyphicon-play-circle;
@@ -304,130 +417,16 @@ blockquote {
     cursor: pointer;
 
     &:hover {
-      color: #ccc;
+      color: #BAE3FF;
     }
   }
 }
 
-.apply-page-content-holder {
-  padding: 1em;
+// base for large icons
+.large-icon {
+  width: 200px;
+  height: 200px;
+  background-image: url(image_path('bz_icons.svg'));
+  background-repeat: no-repeat;
+  margin: 0px auto; /* horizontally centered in the container by default */
 }
-
-.apply-page {
-  blockquote {
-    border: none;
-    font-style: normal;
-
-    footer {
-      color: inherit;
-      &::before { content: ''; }
-    }
-  }
-
-  ul {
-    padding-left: 1em;
-  }
-
-  .pitch-holder {
-    .feature {
-      /* This will cause it to be small and centered on a large screen
-         while still using the space on a small screen (which padding wouldn't achieve) */
-      max-width: 40em;
-      margin: 0px auto;
-    }
-
-    .shoutout {
-      padding: 0.5em 1em;
-    }
-  }
-}
-
-/* The dl.timeline gives us a time and definition thing we can reuse */
-.timeline {
-  text-align: center;
-  dt {
-    margin-top: 1em;
-    font-weight: bold;
-  }
-
-  dd {
-    font-style: italic;
-  }
-}
-
-/* Below follows fonts-mod.css contents */
-
-
-body {
-	color: #333;
-
-	font-family: "Open Sans", sans-serif;
-	/* probably best to load from Google Fonts CDN, */
-	/* for now limit to following weights: */
-	/* light 300, Normal 400, italic 400, bold 700 */
-
-	font-size: 14px; /* or you can convert everything to ems/rems if you feel like it... */
-}
-h1, h2 {
-	text-transform: uppercase;
-}
-h1, h2, h3 {
-	font-weight: normal; /* fallback */
-	font-weight: 400;
-}
-h4, h5 {
-	font-weight: bold; /* fallback */
-	font-weight: 700;
-}
-h5 {
-	font-size: 14px;
-}
-h4 {
-	font-size: 18px; 
-}
-h3 {
-	font-size: 24px; 
-	margin-top: 16px;
-	margin-bottom: 8px;
-}
-h2 {
-	font-size: 36px; 
-	margin-top: 24px;
-	margin-bottom: 8px;
-}
-h1 {
-	font-size: 36px; /* (usually get different formatting anyway) */
-}
-b, strong {
-	font-weight: bold; /* fallback */
-	font-weight: 700;
-}
-i, em, blockquote {
-	font-weight: normal; /* fallback */
-	font-weight: 400;
-	font-style: italic;
-	/* I know, this precludes italics in bold text. Small price to pay for one less font to load... */
-}
-.feature {
-	/* e.g. a div we to which we want draw some attention */
-	font-size: 18px; 
-}
-.callout {
-	/* more attention within something that's already a .feature */
-	font-size: 24px;
-}
-.shoutout {
-	/* need moar attentionz! */
-	font-size: 36px;
-        line-height: 42px;
-}
-.reverse {
-	/* when text is on dark background */
-	color: #fff;
-}
-ul, ol, a, cite {
-	/* ...and others... more work probably needed, let's first see what they look like without tweaks. */
-}
-/* 
-Overall layout uses a basic three column grid. This allows combinations of 1+1+1, 1+2, 2+1 or a full-width 3. This can be done using Bootstrap's built in classes, using 4-column width (since they have a 12 col grid). That should also make small viewport responsive layout easier to implement straight out of the box.
-*/

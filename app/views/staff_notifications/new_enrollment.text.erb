@@ -1,0 +1,18 @@
+There was just a new person who signed up on the Beyond Z website.
+
+First name: <%= @user.first_name %>
+ Last name: <%= @user.last_name %>
+     Email: <%= @user.email %>
+  Location: <%= @user.city %>, <%= @user.state %>
+    I am a: <% case @user.applicant_type
+    when 'other'
+      %> Other: <%= @user.applicant_details %><%
+    when 'professional'
+      %> Professional: <%= @user.applicant_details %><%
+    when 'grad_student'
+      %> Grad student: <%= @user.university_name %>, anticipated graduation in <%= @user.anticipated_graduation %><%
+    when 'undergrad_student'
+      %> Undergrad student: <%= @user.university_name %>, anticipated graduation in <%= @user.anticipated_graduation %><%
+    when 'school_student'
+      %> Student: <%= @user.anticipated_graduation %><%
+    end %>

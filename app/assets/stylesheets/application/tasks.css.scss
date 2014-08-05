@@ -14,8 +14,8 @@
   @extend .container-fluid;
 
   h4 {
-    background-color: $bzgrey1;
-    color: black;
+    background-color: $plain-md;
+    color: $txt-dk;
     font-weight: bold;
     padding: 0.5em;
   }
@@ -61,12 +61,12 @@
       @extend .glyphicon;
       @extend .glyphicon-info-sign;
       
-      color: $bzgrey7;
+      color: $plain-dk;
       padding-right: 3px;
     }
 
     &:hover {
-      background-color: $bzgrey1;
+      background-color: $plain-md;
     }
   }
 
@@ -77,8 +77,8 @@
     @extend .table-hover;
 
     thead {
-      background-color: $bzorange;
-      color: $bzwhite;
+      background-color: $primary-lt;
+      color: $txt-lt;
       font-weight: bold;
 
       th {
@@ -107,17 +107,12 @@
 
     .previous {
       @extend .btn;
-      @extend .btn-warning;
-    }
-
-    .complete {
-      @extend .btn;
       @extend .btn-primary;
     }
 
-    .next {
+    .continue {
       @extend .btn;
-      @extend .btn-success;
+      @extend .button-primary;
     }
   }
 }

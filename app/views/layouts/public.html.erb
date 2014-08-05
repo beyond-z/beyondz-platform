@@ -5,8 +5,6 @@
     <title><%= content_for?(:title) ? yield(:title) : "Beyond Z" %></title>
     <meta name="description" content="<%= yield(:description) || "Beyond Z" %>">
     
-    <!-- Until we add a landing page and login, keep our site out of search engines -->
-    <meta name="robots" content="noindex">
     <%= render 'shared/asset_stylesheet_includes' %>
     <%= csrf_meta_tags %>
   </head>
@@ -18,13 +16,13 @@
 
       <div class="header">
         <div class="floating-header">
-          <div class="wide-section">
+          <div class="plank">
             <div class="section-container">
               <section id="banner" role="banner">
-                <div class="top-left">
+                <div class="top-left no-pad">
                   <%= link_to image_tag('bz_logo_338.png'), root_path %>
                 </div>
-                <div class="navigation-holder">
+                <div class="navigation-holder no-pad">
                   <div id="top-navigation" role="navigation">
                     <ul class="nav navbar-nav">
                       <%= nav_button 'Home', root_path %>
@@ -50,21 +48,8 @@
         <%= yield %>
       </main>
 
-      <div class="wide-section">
-        <%= content_for :footer do %>
-          <div class="section-container">
-            <section>
-              <div class="col-sm-6">
-                <%= link_to 'Jobs', jobs_path %>
-              </div>
-              <div class="col-sm-6 text-right">
-                Contact us: <a href="mailto:info@beyondz.org">info@beyondz.org</a><br />
-              </div>
-            </section>
-          </div>
-        <% end %>
-        <%= render 'shared/footer' %>
-      </div>
+      <%= render 'shared/footer' %>
+       
     </div> <!-- .public-container -->
 
     <%= render 'shared/asset_javascript_includes' %>

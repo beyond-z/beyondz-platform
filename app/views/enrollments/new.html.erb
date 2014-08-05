@@ -1,156 +1,174 @@
- <div class="wide-section">
-  <div class="section-container">
-    <section>
-      <div class="col-sm-6">
-        <h1>
-          Join Us
-        </h1>
-        <p class="lead">
-        Whether you're interested in participating as a fellow, volunteering as a speaker or coach, or becoming a partner organization, you're in the right place.  
-        </p>
-        <h3>
-          Tell us who you are and we'll contact you to follow up!
-        </h3>
+<div id="new-enrollment-page">
+  <div class="plank plain-lt">
+    <div class="section-container">
+      <section>
+        <div class="col-sm-6">
+          <h1>
+            Join Us
+          </h1>
+          <p class="lead">
+          Whether you're interested in participating as a fellow, volunteering as a speaker or coach, or becoming a partner organization, you're in the right place.  
+          </p>
+          <h3>
+            Tell us who you are and we'll contact you to follow up!
+          </h3>
 
-        <div id="sign-up-form" class="well well-default">
-          <div class="panel-body">
-            <%= form_for :user, url: enrollments_path, role: 'form' do |f| %>
-              <%= render :partial => 'shared/form_errors', locals: { object: @user } %>
-              <div class="form-group">
-                <%= f.label :first_name, 'Name' %>
-                <section>
-                  <div class="col-sm-6">
-                    <%= f.text_field :first_name, :class => 'form-control', required: 'required', placeholder: 'First Name', style: 'float: left;' %>
-                  </div>
-                  <div class="col-sm-6">
-                    <%= f.text_field :last_name, :class => 'form-control', required: 'required', placeholder: 'Last Name', style: 'float: left;'  %>
+          <div id="sign-up-form" class="well well-default">
+            <div class="panel-body">
+              <%= form_for :user, url: enrollments_path, role: 'form' do |f| %>
+                <%= hidden_field_tag 'referrer', @referrer %>
+                <%= render :partial => 'shared/form_errors', locals: { object: @user } %>
+                <div class="form-group">
+                  <%= f.label :first_name, 'Name' %>
+                  <section>
+                    <div class="col-sm-6">
+                      <%= f.text_field :first_name, :class => 'form-control', required: 'required', placeholder: 'First Name', style: 'float: left;' %>
+                    </div>
+                    <div class="col-sm-6">
+                      <%= f.text_field :last_name, :class => 'form-control', required: 'required', placeholder: 'Last Name', style: 'float: left;'  %>
+                    <div>
+                  </section>
+                </div>
+                <div class="form-group">
+                  <%= f.label :email %>
+                  <%= f.text_field :email, :type => 'email', :required => 'required', :class => 'form-control', placeholder: 'Email'%>
+                </div>
+
+                <div class="form-group">
+                  <%= f.label  :password %>
+                  <%= f.password_field :password, :class => 'form-control', required: 'required', placeholder: 'Create a password', pattern: '.{4,}', title: 'make a password at least four characters long' %>
+                  <!-- <p class="help-block">Enter a password so you can log in later.</p> -->
+                </div>
+
+                <div class="form-group">
+                  <label style="display: block;">Where do you live?</label>
+                  <section>
+                    <div class="col-sm-6">
+                      <%= f.text_field :city, :class => 'form-control', required: 'required', placeholder: 'City' %>
+                    </div>
+                    <div class="col-sm-6">
+                      <%= f.select :state, options_for_select(@states, @user.state), {}, :class => 'form-control', required: 'required', placeholder: 'State' %>
+                    </div>
+                  </section>
+                </div>
+
+                <div class="form-group">
+                  <label>I am a...</label>
                   <div>
-                </section>
-              </div>
-              <div class="form-group">
-                <%= f.label :email %>
-                <%= f.text_field :email, :type => 'email', :required => 'required', :class => 'form-control', placeholder: 'Email'%>
-              </div>
+                    <%= f.radio_button :applicant_type, 'undergrad_student', required: 'required' %>
+                    <%= f.label :applicant_type_undergrad_student, 'Undergraduate student' %>
+                    <div class="form-option-details">
+                      <section>
+                        <div class="col-sm-6 text-right">
+                          Anticipated graduation:
+                        </div>
+                        <div class="col-sm-6">
+                          <%= select_tag :anticipated_undergrad_graduation, options_for_select(graduation_years, params[:anticipated_undergrad_graduation]), :class => 'form-control', include_blank: true %>
+                        </div>
+                      </section>
+                      <br />
+                      <section>
+                        <div class="col-sm-6 text-right">
+                          University name:
+                        </div>
+                        <div class="col-sm-6">
+                          <%= text_field_tag :undergrad_university_name, nil, :class => 'form-control', :value => params[:undergrad_university_name] %>
+                        </div>
+                      </section>
 
-              <div class="form-group">
-                <%= f.label  :password %>
-                <%= f.password_field :password, :class => 'form-control', required: 'required', placeholder: 'Create a password', pattern: '.{4,}', title: 'make a password at least four characters long' %>
-                <!-- <p class="help-block">Enter a password so you can log in later.</p> -->
-              </div>
+                    </div>                  
+                  </div>
+                  <div>
+                    <%= f.radio_button :applicant_type, 'grad_student', required: 'required' %>
+                    <%= f.label :applicant_type_grad_student, 'Graduate student' %>
+                    <div class="form-option-details">
+                      <section>
+                        <div class="col-sm-6 text-right">
+                          Anticipated graduation:
+                        </div>
+                        <div class="col-sm-6">
+                          <%= select_tag :anticipated_grad_graduation, options_for_select(graduation_years, params[:anticipated_grad_graduation]), :class => 'form-control', include_blank: true %>
+                        </div>
+                      </section>
+                      <br />
+                      <section>
+                        <div class="col-sm-6 text-right">
+                          University name:
+                        </div>
+                        <div class="col-sm-6">
+                          <%= text_field_tag :grad_university_name, nil, :class => 'form-control', :value => params[:grad_university_name] %>
+                        </div>
+                      </section>
 
-              <div class="form-group">
-                <label style="display: block;">Where do you live?</label>
-                <section>
-                  <div class="col-sm-6">
-                    <%= f.text_field :city, :class => 'form-control', required: 'required', placeholder: 'City' %>
+                    </div>
                   </div>
-                  <div class="col-sm-6">
-                    <%= f.select :state, options_for_select(@states, @user.state), {}, :class => 'form-control', required: 'required', placeholder: 'State' %>
+                  <div>
+                    <%= f.radio_button :applicant_type, 'school_student' %>
+                    <%= f.label :applicant_type_school_student, 'Middle school or high school student', required: 'required' %>
+                    <div class="form-option-details">
+                      <section>
+                        <div class="col-sm-6 text-right">
+                          Grade:
+                        </div>
+                        <div class="col-sm-6">
+                          <%= select_tag :grade, options_for_select([12, 11, 10, 9, 8, 7, 6], params[:grade]), :class => 'form-control', include_blank: true %>
+                        </div>
+                      </section>
+                    </div>
                   </div>
-                </section>
-              </div>
+                  <div>
 
-              <div class="form-group">
-                <label>I am a...</label>
-                <div>
-                  <%= f.radio_button :applicant_type, 'undergrad_student', required: 'required' %>
-                  <%= f.label :applicant_type_undergrad_student, 'Undergraduate student' %>
-                  <div class="form-option-details">
-                    <section>
-                      <div class="col-sm-6 text-right">
-                        Anticipated graduation:
-                      </div>
-                      <div class="col-sm-6">
-                        <%= select_tag :anticipated_undergrad_graduation, options_for_select(graduation_years, params[:anticipated_undergrad_graduation]), :class => 'form-control', include_blank: true %>
-                      </div>
-                    </section>
-                  </div>                  
-                </div>
-                <div>
-                  <%= f.radio_button :applicant_type, 'grad_student', required: 'required' %>
-                  <%= f.label :applicant_type_grad_student, 'Graduate student' %>
-                  <div class="form-option-details">
-                    <section>
-                      <div class="col-sm-6 text-right">
-                        Anticipated graduation:
-                      </div>
-                      <div class="col-sm-6">
-                        <%= select_tag :anticipated_grad_graduation, options_for_select(graduation_years, params[:anticipated_grad_graduation]), :class => 'form-control', include_blank: true %>
-                      </div>
-                    </section>
+                    <%= f.radio_button :applicant_type, 'professional', required: 'required' %>
+                    <%= f.label :applicant_type_professional, 'Local Professional' %>
+                    <div class="form-option-details">
+                      <%= text_field_tag :professional_details, nil, :class => 'form-control', :placeholder => 'What do you do?', :value => params[:professional_details] %>
+                    </div>
+                  </div>
+                  <!--
+                  <div>
+                    <%= f.radio_button :applicant_type, 'supporter', required: 'required' %>
+                    <%= f.label :applicant_type_supporter, 'Supporter' %>
+                  </div>
+                  -->
+                  <div>
+                    <%= f.radio_button :applicant_type, 'family_member', required: 'required' %>
+                    <%= f.label :applicant_type_family_member, 'Family member of a Beyond Z Participant' %>
+                  </div>
+                  <div>
+                    <%= f.radio_button :applicant_type, 'other', required: 'required' %>
+                    <%= f.label :applicant_type_other, 'Other?' %>
+                    <div class="form-option-details">
+                      <%= text_field_tag :other_details, nil, :class => 'form-control', :placeholder => 'Who?', :value => params[:other_details] %>
+                    </div>
                   </div>
                 </div>
-                <div>
-                  <%= f.radio_button :applicant_type, 'school_student' %>
-                  <%= f.label :applicant_type_school_student, 'Middle school or high school student', required: 'required' %>
-                  <div class="form-option-details">
-                    <section>
-                      <div class="col-sm-6 text-right">
-                        Grade:
-                      </div>
-                      <div class="col-sm-6">
-                        <%= select_tag :grade, options_for_select([12, 11, 10, 9, 8, 7, 6], params[:grade]), :class => 'form-control', include_blank: true %>
-                      </div>
-                    </section>
-                  </div>
-                </div>
-                <div>
 
-                  <%= f.radio_button :applicant_type, 'professional', required: 'required' %>
-                  <%= f.label :applicant_type_professional, 'Local Professional' %>
-                  <div class="form-option-details">
-                    <%= text_field_tag :professional_details, nil, :class => 'form-control', :placeholder => 'What do you do?', :value => params[:professional_details] %>
-                  </div>
-                </div>
                 <!--
-                <div>
-                  <%= f.radio_button :applicant_type, 'supporter', required: 'required' %>
-                  <%= f.label :applicant_type_supporter, 'Supporter' %>
+                <div class="form-group">
+                  <%= f.check_box :keep_updated, checked: true %>
+                  <%= f.label :keep_updated, 'Keep me updated about the BZ 2014-2015 Program' %>
                 </div>
-                -->
-                <div>
-                  <%= f.radio_button :applicant_type, 'family_member', required: 'required' %>
-                  <%= f.label :applicant_type_family_member, 'Family member of a Beyond Z Participant' %>
+               -->
+                <div class="form-group">
+                  <button type="submit" class="button-primary">Submit</button>
                 </div>
-                <div>
-                  <%= f.radio_button :applicant_type, 'other', required: 'required' %>
-                  <%= f.label :applicant_type_other, 'Other?' %>
-                  <div class="form-option-details">
-                    <%= text_field_tag :other_details, nil, :class => 'form-control', :placeholder => 'Who?', :value => params[:other_details] %>
-                  </div>
-                </div>
-              </div>
-
-              <!--
-              <div class="form-group">
-                <%= f.check_box :keep_updated, checked: true %>
-                <%= f.label :keep_updated, 'Keep me updated about the BZ 2014-2015 Program' %>
-              </div>
-             -->
-              <div class="form-group">
-                <button type="submit" class="button-primary">Submit</button>
-              </div>
-            <% end %>
+              <% end %>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="col-sm-4 col-sm-offset-2">
-        <h2>Why Join?</h2>
-        <blockquote>
-          <p>&ldquo;You become part of a team that could actually make a difference. You learn that you have a story and how to tell it. You meet lots of highly motivated, inspiring people.&rdquo;</p>
-          <footer>Andy Yitalo, Stanford University, class of 2017</footer>
-        </blockquote>
-        <blockquote>
-          <p>&ldquo;Beyond Z had provided me with innumerable opportunities for personal and professional growth, but the Capstone project took our learning experiences beyond that of our own and empowered me to give back to my community. I really appreciated this opportunity, it was a great learning experience in regards to leadership for me as a project manager.&rdquo;</p>
-          <footer>Kelly Hernandez, Stanford University, class of 2016</footer>
-        </blockquote>
-      </div>
-    </section>
+        <div class="col-sm-4 col-sm-offset-2">
+          <h2>Why Join?</h2>
+          <blockquote>
+            <p>&ldquo;You become part of a team that could actually make a difference. You learn that you have a story and how to tell it. You meet lots of highly motivated, inspiring people.&rdquo;</p>
+            <footer>Andy Yitalo, Stanford University, class of 2017</footer>
+          </blockquote>
+          <blockquote>
+            <p>&ldquo;Beyond Z had provided me with innumerable opportunities for personal and professional growth, but the Capstone project took our learning experiences beyond that of our own and empowered me to give back to my community. I really appreciated this opportunity, it was a great learning experience in regards to leadership for me as a project manager.&rdquo;</p>
+            <footer>Kelly Hernandez, Stanford University, class of 2016</footer>
+          </blockquote>
+        </div>
+      </section>
+    </div>
   </div>
 </div>
-
-
-  
-  
-

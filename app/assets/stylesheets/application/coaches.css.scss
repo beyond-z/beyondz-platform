@@ -7,7 +7,7 @@
 
   .coaching-activity {
     margin-left: 15em;
-    border-left: solid 1px $subtle_border;
+    border-left: solid 1px $knockout-lt;
     padding-left: 1em;
   }
 
@@ -20,11 +20,11 @@
   }
 
   .approve-task {
-    background-color: $bzgreen;
+    background-color: $tertiary-lt;
   }
 
   .request-task-revisions {
-    background-color: $bzorange;
+    background-color: $primary-lt;
   }
 
   .comments-holder {

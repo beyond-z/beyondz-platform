@@ -1,34 +1,38 @@
-//////////////////////////////
 //PRIMARY PALETTE
-$bzorange: #f26522;
-$bzblue:   #43b5e9;
+$primary-lt:  #f26522;
+$primary-md:  #d93833;
+$primary-dk:  #ab1c24;
 
 //SECONDARY PALETTE
-$bzgreen:  #abd044;
-$bzred:    #f37344;
-$primary_button_highlight: #f37440;
-$primary_button_lowlight: #b5541e;
+$secondary-lt:  #69c4eb;
+$secondary-md:  #29abe2;
+$secondary-dk:  #0071bc;
+
+//TERTIARY PALETTE
+$tertiary-lt:  #88d392;
+$tertiary-md:  #39b54a;
+$tertiary-dk:  #009245;
 
 //NEUTRAL PALETTE (light to dark)
-$bzwhite:  #fff;
-$bzgrey1:  #e2e1dd;
-$bzgrey2:  #d6d6d4;
-$bzgrey3:  #cacac8;
-$bzgrey4:  #bdbdbd;
-$bzgrey5:  #b3b3b3;
-$bzgrey6:  #afafaf;
-$bzgrey7:  #9a9b9d;
-$bzgrey8:  #8c8d8e;
-$bzgrey9:  #747679;
-$bzgrey10: #616265;
-$bzgrey11: #4d4e53;
+$plain-lt:  #fff;
+$plain-md:  #f2f2f2;
+$plain-dk:  #e6e6e6;
+$knockout-lt:  #999;
+$knockout-md:  #666;
+$knockout-dk:  #333;
 
-// list:f7a333, 43b5e9, abd044, f37344, e2e1dd, d6d6d4, cacac8, bdbdbd, b3b3b3, afafaf, 9a9b9d, 8c8d8e,747679,616265,4d4e53 
-/////////////////////////////
+// FONT COLORS
+$txt-dk: #333;
+$txt-lt: $plain-lt;
 
-$greyBackground: $bzgrey11;
+// LINK COLORS
+$link-exlt:  #f0ad4e;
+$link-lt:  #69c4eb;
+$link-md:  #29abe2;
+$link-dk:  #0071bc;
 
-
-$subtle_border: $bzgrey3;
-
-$accent_blue: #428bca;
+//////////////////////////////
+//IMPLEMENTATION
+$cta:  $primary-lt;
+$cta-highlight: #f0ad4e;
+$cta-lowlight: #b5541e;
