@@ -12,7 +12,7 @@ BeyondzPlatform::Application.routes.draw do
   resources :feedback
   resources :comments
   resources :users, only: [:new, :create], :path => :signup
-  resources :enrollments, only: [:new, :create], :path => :signup
+  resources :enrollments, only: [:new, :create]
 
   resources :assignments, only: [:index, :update, :show] do
     resources :tasks, only: [:update, :show]
