@@ -5,7 +5,7 @@ class EnrollmentsController < ApplicationController
   layout 'public'
 
   def new
-     @enrollment = Enrollment.new
+    @enrollment = Enrollment.new
   end
 
   def create
