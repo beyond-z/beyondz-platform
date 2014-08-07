@@ -1,4 +1,6 @@
 $(document).ready(function() {
+  
+  // replace programming languages (testing only) with actual majors
   var majors = [
     'ActionScript',
     'AppleScript',
