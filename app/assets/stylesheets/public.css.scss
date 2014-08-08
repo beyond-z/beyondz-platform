@@ -21,6 +21,26 @@
     }
   }
 
+  .for-students {
+    @extend .col-img-left;
+
+    background-image: url(image_path('for_students.jpg'));
+
+    @media (min-width: $screen-lg-min) {
+      height: 398px;
+    }
+  }
+
+  .for-volunteers {
+    @extend .col-img-right;
+
+    background-image: url(image_path('for_volunteers.jpg'));
+
+    @media (min-width: $screen-lg-min) {
+      height: 398px;
+    }
+  }
+
   .infographic-column {
     @extend .col-sm-4;
     @extend .text-center;
@@ -89,6 +109,16 @@
 
     dd {
       font-style: italic;
+    }
+  }
+
+  .what-to-expect-image {
+    @extend .col-img-left;
+
+    background-image: url(image_path('what_to_expect.jpg'));
+
+    @media (min-width: $screen-lg-min) {
+      height: 430px;
     }
   }
 
