@@ -92,12 +92,21 @@
     }
   }
 
-  .right-side-bg-image {
+  .who-can-apply-image-col {
+    visibility: visible;
+    @media (min-width: $screen-md-min) {
+      visibility: hidden;
+    }
+  }
+
+  .who-can-apply-image-section-container {
     background-position: top right;
     background-repeat: no-repeat;
     background-size: 100%;
-    background-contain: cover;
-    background-image: url(image_path('who_can_apply.jpg'));
+    
+    @media (min-width: $screen-md-min) {
+      background-image: url(image_path('who_can_apply.jpg'));
+    }
   }
 }
 
