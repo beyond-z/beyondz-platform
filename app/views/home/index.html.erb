@@ -82,10 +82,10 @@
   <div class="plank plain-lt">
     <div class="section-container">
       <section>
-        <div class="col-md-4 no-pad">
+        <div class="col-lg-4 no-pad">
           <%= image_tag 'for_students.jpg' %>
         </div>
-        <div class="col-md-8">
+        <div class="col-lg-8">
           <h2>
             For Students
           </h2>
@@ -104,7 +104,10 @@
   <div class="plank plain-md">
     <div class="section-container">
       <section>
-        <div class="col-md-8">
+         <div class="col-lg-4 col-lg-push-8 no-pad">
+          <%= image_tag 'for_volunteers.jpg' %>
+        </div>
+        <div class="col-lg-8 col-lg-pull-4">
           <h2>
             For Volunteers
           </h2>
@@ -114,9 +117,6 @@
             <footer>Aly Mejia<br />Leadership Coach</footer>
           </blockquote>
           <%= learn_more_link 'volunteering', volunteer_path %>
-        </div>
-        <div class="col-md-4 no-pad">
-          <%= image_tag 'for_volunteers.jpg' %>
         </div>
       </section>
     </div>
