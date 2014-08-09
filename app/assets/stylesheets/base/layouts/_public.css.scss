@@ -420,3 +420,48 @@
   background-repeat: no-repeat;
   margin: 0px auto; /* horizontally centered in the container by default */
 }
+
+
+// col-img and it's friends can be used for grid columns that have images that
+// need to go from being a single narrow column, to being the entire width when
+// the screen is smaller. This is important because a squarish image in a column
+// in high resolution doesn't make a good full-width column image in lower
+// resolution. To get around this, either the col-img-left or col-img-right class
+// is extended to a custom class like .my-image-column below:
+// .my-image-column {
+//   @extend .col-img-left;
+//
+//   // notice the custom image for this specific column
+//   background-image: url(image_path('what_to_expect.jpg'));
+//
+//   // Force the height for when the column is narrow based on surrounding content
+//   // When in lower resolutions the full-width column will scale to the image in the div
+//   @media (min-width: $screen-lg-min) {
+//     height: 430px;
+//   }
+// }
+//
+// You must also place the same image in the div container as well. It will
+// automatically be hidden, but will aid the div in the scaling of the proper size.
+.col-img {
+  background-size: 100%;
+  @media (min-width: $screen-lg-min) {
+    background-size: auto;
+  }
+
+  background-repeat: no-repeat;
+
+  img {
+    visibility: hidden;
+  }
+}
+
+.col-img-left {
+  @extend .col-img;
+  background-position: top left;
+}
+
+.col-img-right {
+  @extend .col-img;
+  background-position: top right;
+}
