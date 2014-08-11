@@ -21,6 +21,26 @@
     }
   }
 
+  .for-students {
+    @extend .col-img-left;
+
+    background-image: url(image_path('for_students.jpg'));
+
+    @media (min-width: $screen-lg-min) {
+      height: 398px;
+    }
+  }
+
+  .for-volunteers {
+    @extend .col-img-right;
+
+    background-image: url(image_path('for_volunteers.jpg'));
+
+    @media (min-width: $screen-lg-min) {
+      height: 398px;
+    }
+  }
+
   .infographic-column {
     @extend .col-sm-4;
     @extend .text-center;
@@ -92,12 +112,31 @@
     }
   }
 
-  .right-side-bg-image {
+  .what-to-expect-image {
+    @extend .col-img-left;
+
+    background-image: url(image_path('what_to_expect.jpg'));
+
+    @media (min-width: $screen-lg-min) {
+      height: 430px;
+    }
+  }
+
+  .who-can-apply-image-col {
+    visibility: visible;
+    @media (min-width: $screen-md-min) {
+      visibility: hidden;
+    }
+  }
+
+  .who-can-apply-image-section-container {
     background-position: top right;
     background-repeat: no-repeat;
     background-size: 100%;
-    background-contain: cover;
-    background-image: url(image_path('who_can_apply.jpg'));
+    
+    @media (min-width: $screen-md-min) {
+      background-image: url(image_path('who_can_apply.jpg'));
+    }
   }
 }
 
@@ -151,8 +190,8 @@
   }
 }
 
-// Enrollment form styles
-#new-enrollment-page {
+// User/signup form styles
+#new-user-page {
   .form-option-details {
     display: none;
     padding-left: 2em;

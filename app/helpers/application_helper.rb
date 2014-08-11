@@ -23,7 +23,7 @@ module ApplicationHelper
     '<div class="apply-button">'.html_safe +
     link_to(
       '<div class="apply-icon"></div><div class="apply-text">JOIN US</div>'.html_safe,
-      new_enrollment_path
+      new_user_path
     ) +
     '</div>'.html_safe
   end
@@ -32,7 +32,7 @@ module ApplicationHelper
     '<span class="apply-button-lg">'.html_safe +
     link_to(
       '<div class="apply-icon"></div><br /><span class="apply-text">JOIN US</span>'.html_safe,
-      new_enrollment_path
+      new_user_path
     ) +
     '</span>'.html_safe
   end
@@ -59,7 +59,7 @@ module ApplicationHelper
     '<div class="sign-up-link">'.html_safe +
     link_to(
       '<div class="sign-up-icon"></div><div class="sign-up-text">SIGN UP TO LEARN MORE</div>'.html_safe,
-      new_enrollment_path
+      new_user_path
     ) +
     '</div>'.html_safe
   end

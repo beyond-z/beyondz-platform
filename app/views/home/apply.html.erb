@@ -61,14 +61,13 @@
   </div>
 
   <a id="what-to-expect"></a>
-  <div class="plank plain-md">
+  <div class="plank plain-lt">
     <div class="section-container">
       <section>
-        <div class="col-md-6 no-pad">
-         <!--  <div class="what-to-expect-img"></div> -->
+        <div class="col-lg-6 no-pad what-to-expect-image">
          <%= image_tag 'what_to_expect.jpg' %>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-6">
             <h2>What to expect</h2>
             <p>As a Beyond Z Leader, you will join a community that will help you explore your authentic leadership, develop 21st Century skills, and accelerate you into your career. Specifically, you’ll: </p>
             <ul>
@@ -85,10 +84,13 @@
   </div>
 
   <a id="who-can-apply"></a>
-  <div class="plank primary-lt dark">
-    <div class="section-container right-side-bg-image">
+  <div class="plank plain-md">
+    <div class="section-container who-can-apply-image-section-container">
       <section>
-        <div class="col-md-4">
+        <div class="col-md-8 col-md-push-4 no-pad who-can-apply-image-col">
+          <%= image_tag 'who_can_apply.jpg' %>
+        </div>
+        <div class="col-md-4 col-md-pull-8">
           <h2>Who can apply</h2>
           <p>We’re looking for students who want to accelerate their leadership and career, care about bettering their community, and believe in the importance of diversifying our nation’s leadership force.</p>
 
@@ -114,7 +116,7 @@
           <h2>Application and program timeline</h2>
           <dl class="timeline">
             <dt>Now</dt>
-              <dd><%= link_to 'Sign Up', new_enrollment_path %> to Stay in Touch</dd>
+              <dd><%= link_to 'Sign Up', new_user_path %> to Stay in Touch</dd>
             <dt>Early August</dt>
               <dd>Application Opens</dd>
             <dt>Mid September</dt>
