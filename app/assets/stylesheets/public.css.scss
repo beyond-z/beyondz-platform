@@ -23,7 +23,7 @@
 
   .for-students {
     @extend .col-img-left;
-
+    background-position: center center;
     background-image: url(image_path('for_students.jpg'));
 
     @media (min-width: $screen-lg-min) {
