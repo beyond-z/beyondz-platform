@@ -33,7 +33,7 @@
 
   .for-volunteers {
     @extend .col-img-right;
-
+    background-position: center center;
     background-image: url(image_path('for_volunteers.jpg'));
 
     @media (min-width: $screen-lg-min) {
