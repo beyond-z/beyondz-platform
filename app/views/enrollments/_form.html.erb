@@ -1,0 +1,16 @@
+<div class="container-fluid">
+  <%= form_for @enrollment, role: 'form' do |f| %>
+    <%= render :partial => "shared/form_errors", locals: { object: @enrollment } %>
+
+    <h2>Application</h2>
+
+    <%= f.hidden_field :user_id, value: current_user.id %>
+
+    <div class="form-group">
+      <%= f.label :major %>
+      <%= text_field_tag :major %>
+    </div>
+
+    <%= f.submit "Apply", :class => 'button-primary'%>
+  <% end %>
+</div>
