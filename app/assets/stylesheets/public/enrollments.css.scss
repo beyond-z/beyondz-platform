@@ -1,0 +1,27 @@
+.page-jump {
+  display: block;
+}
+.plank.tertiary-md .page-jump a, .plank.knockout-md .page-jump a {
+  color: #fff;
+}
+
+.form-control,
+textarea.form-control,
+.input-group {
+  width: 370px;
+}
+.form-control.medium {
+  width: 250px;
+}
+.form-control.short,
+.input-group.short {
+  width: 150px;
+}
+
+label.radio, label.checkbox {
+  font-weight: normal;
+  margin-left: 21px;
+}
+.radio input[type="radio"], .radio-inline input[type="radio"], .checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"] {
+  margin-right: 5px;
+}
