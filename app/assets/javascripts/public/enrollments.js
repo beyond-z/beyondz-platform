@@ -42,13 +42,6 @@ $(document).ready(function() {
     // Hide "other" checkbox/radio detail inputs 
     //$('input.other').hide();
     
-    // Fake send button:
-    $('#form-end').click(function(){
-      alert('This will lead to a confirmation screen. The next steps take place by email and phone, with admin-facing forms to sum up each step.');
-    });
-      
-  });
-  
   // replace programming languages (testing only) with actual majors
   var majors = [
     'ActionScript',
