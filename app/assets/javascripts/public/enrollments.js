@@ -1,6 +1,4 @@
 $(document).ready(function() {
-
-  jQuery(document).ready(function($) { 
     // update the charater counter on textareas that have a maxlength property:
     function updateCountdown(el) {
       var maxlength = $(el).prop('maxlength')
@@ -22,6 +20,13 @@ $(document).ready(function() {
       $(parent).siblings('.expandable').children('.extra').slideUp('fast')
       $(parent).children('.extra').slideDown('fast');
     });
+
+
+    // hide all other fields until one of the applying as is selected
+    if(!$('#position_coach').prop('checked'))
+      $('.coach').fadeOut('fast');
+    if(!$('#position_student').prop('checked'))
+      $('.student').fadeOut('fast');
     
     // Show or hide questions based on user type and program:
     $('[value=student]').click(function(){

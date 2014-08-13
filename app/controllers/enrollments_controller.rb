@@ -23,6 +23,14 @@ class EnrollmentsController < ApplicationController
     # FIXME: permission check
   end
 
+  def update
+    @enrollment = Enrollment.find(params[:id])
+    @enrollment.update_attributes(enrollment_params)
+    @enrollment.save!
+
+    redirect_to enrollment_path(@enrollment.id)
+  end
+
   def create
 
     @enrollment = Enrollment.create(enrollment_params)
@@ -31,7 +39,7 @@ class EnrollmentsController < ApplicationController
       render 'new'
       return
     else
-      redirect_to root_path
+      redirect_to enrollment_path(@enrollment.id)
     end
   end
 
