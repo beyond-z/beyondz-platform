@@ -31,12 +31,14 @@ h3 {
   margin-bottom: 8px;
 }
 h2 {
-  font-size: 36px; 
   margin-top: 24px;
   margin-bottom: 8px;
 }
-h1 {
-  font-size: 36px; /* (usually get different formatting anyway) */
+h1, h2 {
+  font-size: 36px; /* (h1 usually gets different formatting anyway) */
+  @media (max-width: $screen-sm-max) {
+    font-size: 24px;
+  }
 }
 b, strong {
   font-weight: bold; /* fallback */
