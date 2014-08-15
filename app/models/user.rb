@@ -51,6 +51,10 @@ class User < ActiveRecord::Base
     applicant_type.nil? || applicant_type.empty?
   end
 
+  def admin?
+    is_administrator
+  end
+
   # This will create the skeletons for assignments, tasks,
   # and submissions based on the definitions. We should run
   # this whenever a user is created or a definition is added.

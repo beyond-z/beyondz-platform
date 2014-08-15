@@ -1,16 +1,374 @@
-<div class="container-fluid">
+<!DOCTYPE html>
+<div id="enrollment-form-holder">
   <%= form_for @enrollment, role: 'form' do |f| %>
     <%= render :partial => "shared/form_errors", locals: { object: @enrollment } %>
-
-    <h2>Application</h2>
-
     <%= f.hidden_field :user_id, value: current_user.id %>
 
-    <div class="form-group">
-      <%= f.label :major %>
-      <%= text_field_tag :major %>
-    </div>
-
-    <%= f.submit "Apply", :class => 'button-primary'%>
+      <div class="plank tertiary-md light">
+        <div class="section-container">
+          <header id="prototype-header">
+            <h1>BZ Universal Application</h1>
+          </header>
+        </div>
+        <!--.section-container--> 
+      </div>
+      <div class="plank knockout-md">
+        <div class="section-container">
+          <ul id="jumplinks">
+          </ul>
+        </div>
+        <!--.section-container--> 
+      </div>
+      <div class="plank plain-md">
+        <div class="section-container">
+          <section>
+            <div id="form-basics">
+              <h2 class="form-section-header">Basic Information</h2>
+              <div id="form-name">
+                <h4>Your Name</h4>
+                <div class="form-group has-success">
+                  <%= f.label :first_name %>
+                  <%= f.text_field :first_name, :class => 'form-control short', :tabindex => '1' %>
+                </div>
+                <div class="form-group has-success">
+                  <%= f.label :middle_name %>
+                  <%= f.text_field :middle_name, :class => 'form-control short', :tabindex => '2' %>
+                </div>
+                <div class="form-group has-success">
+                  <%= f.label :last_name %>
+                  <%= f.text_field :last_name, :class => 'form-control short', :tabindex => '3' %>
+                </div>
+              </div>
+              <!-- #form-name -->
+              <div id="form-contact">
+                <h4>Your Contact Info</h4>
+                <div class="form-group has-success">
+                  <label>Primary Email</label>
+                  <%= f.text_field :email, 'class' => 'form-control medium', 'tabindex' => '4', 'type' => 'email' %>
+                </div>
+                <div class="form-group">
+                  <label>Primary Phone</label>
+                  <%= f.text_field :phone, 'class' => 'form-control short', 'tabindex' => '5', 'autofocus' => 'autofocus', 'type' => 'tel' %>
+                </div>
+                <div class="form-group">
+                  <label class="checkbox">
+                    <%= f.check_box :accepts_txt, 'tabindex' => '6' %>
+                    I can accept text messages on this phone </label>
+                </div>
+              </div>
+              <!-- #form-contact -->
+              
+              <div class="form-group" id="form-user-type">
+                <h5>Applying as</h5>
+                <input tabindex="7" value="" type="hidden" name="position" />
+                <label class="radio"><%= f.radio_button :position, 'coach', 'value' => 'coach', 'tabindex' => '8', 'id' => 'position_coach' %>Leadership Coach</label><label class="radio"><%= f.radio_button :position, 'student', 'value' => 'student', 'tabindex' => '9', 'id' => 'position_student' %>Participant (student)</label>              </div>
+              <div id="form-track">
+                <h4>Applying for</h4>
+                <p class="help coach">Please check all that apply</p>
+                <div class="form-group both">
+                  <h5>Beyond Z Leadership and Career Accelerator &#8211; College Program</h5>
+                  <input tabindex="10" value="" type="hidden" name="program_col" />
+                  <label class="checkbox"><%= f.check_box :program_col_col_sjsu, 'value' => 'col-sjsu', 'tabindex' => '11', 'id' => 'program-col_col-sjsu' %>San Jose State University, Oct 2014 &#8211; April 2015</label>                </div>
+                <div class="form-group coach">
+                  <h5>Beyond Z Overdrive &#8211; Middle School Program</h5>
+                  <input tabindex="12" value="" type="hidden" name="program_ms" />
+                  <label class="checkbox"><%= f.check_box :program_ms_ms_epa, 'value' => 'ms-epa', 'tabindex' => '13', 'id' => 'program-ms_ms-epa' %>East Palo Alto, Oct 2014 &#8211; June 2015</label><label class="checkbox"><%= f.check_box :program_ms_ms_brk, 'value' => 'ms-brk', 'tabindex' => '14', 'id' => 'program-ms_ms-brk' %>Brooklyn, October 2014 &#8211; June 2015</label><label class="checkbox"><%= f.check_box :program_ms_ms_rlm, 'value' => 'ms-rlm', 'tabindex' => '15', 'id' => 'program-ms_ms-rlm' %>Harlem, October 2014 &#8211; June 2015</label>                </div>
+              </div>
+              <!-- #form-track --> 
+            </div>
+            <!-- #form-basics --> 
+          </section>
+        </div>
+        <!-- .section-container --></div>
+      <div class="plank plain-lt both">
+        <div class="section-container">
+          <section>
+            <div id="form-academics">
+              <h2 class="form-section-header">Academic Background</h2>
+              <div id="form-degree">
+                <div class="form-group student">
+                  <h5>Status as Student</h5>
+                  <label class="checkbox">
+                    <%= f.check_box :will_be_student, 'tabindex' => '16' %>
+                    I will be a student at [university name] during [start date] &#8211; [end date] </label>
+                </div>
+                <div class="form-group coach">
+                  <label>Undergraduate College/University</label>
+                  <%= f.text_field :university, 'class' => 'form-control', 'tabindex' => '17', 'type' => 'text', 'placeholder' => 'Example: San Jose State University, CA' %>
+                </div>
+                <div class="form-group both">
+                  <label>Graduation year (or expected graduation)</label>
+                  <%= f.text_field :anticipated_graduation, 'class' => 'form-control short', 'step' => '1', 'tabindex' => '18', 'value' => '2017', 'type' => 'number', 'min' => '1900' %>
+                </div>
+                <p class="help student">Note: We are asking the following questions in order to gain a fuller understanding of your academic background. Your answers will not directly affect your chances of being accepted.</p>
+                <div class="form-group student">
+                  <label>Major/Concentration or intended major, if you have one (or leave empty if none)</label>
+                  <%= f.text_field :major, 'class' => 'form-control', 'tabindex' => '19', 'type' => 'text' %>
+                </div>
+                <div class="form-group student">
+                  <label>Previous college/university</label>
+                  <p class="help">Leave blank if none</p>
+                  <%= f.text_field :previous_university, 'class' => 'form-control', 'tabindex' => '20', 'type' => 'text' %>
+                </div>
+                <div class="form-group student">
+                  <label>What is your cumulative GPA?</label>
+                  <%= f.text_field :gpa, 'class' => 'form-control short', 'max' => '10', 'step' => '0.1', 'tabindex' => '21', 'type' => 'number', 'min' => '0' %>
+                </div>
+                <div class="form-group student">
+                  <label>Is there anything you'd like us to know about circumstances affecting your GPA?</label>
+                  <%= f.text_area :gpa_circumstances, 'class' => 'form-control', 'tabindex' => '22', 'maxlength' => '150' %>
+                </div>
+                <div class="form-group coach">
+                  <label>Please describe any academic work you've completed since undergrad</label>
+                  <%= f.text_area :academic_work_since_undergrad, 'class' => 'form-control', 'tabindex' => '23', 'maxlength' => '300' %>
+                </div>
+              </div>
+              <!-- #form-degree --> 
+            </div>
+            <!-- #form-academics --> 
+          </section>
+        </div>
+        <!-- .section-container --></div>
+      <div class="plank plain-md">
+        <div class="section-container">
+          <section>
+            <div id="form-prof-bkg">
+              <h2>Professional and Volunteer Background</h2>
+              <div class="form-group coach">
+                <label>Please provide a link to your online r&#233;sum&#233; or LinkedIn profile (if you have one)</label>
+                <p class="help">Please make sure the r&#233;sum&#233; is detailed, comprehensive and up to date, and that the link you are sharing is publicly viewable.</p>
+                <div class="input-group"> <span class="input-group-addon">http://</span>
+                  <%= f.text_field :online_resume, 'class' => 'form-control medium', 'tabindex' => '24', 'type' => 'url', 'placeholder' => 'Paste URL here' %>
+                </div>
+              </div>
+              <div class="form-group coach">
+                <label>Or upload a .doc or .pdf file (max size: [max upload size])</label>
+                <input tabindex="25" type="file" name="resume" />
+              </div>
+              <!-- #form-resume -->
+              <div class="form-group" id="form-leadership-exp">
+                <label>What is a professional, volunteer or extracurricular role that was/is very important to you, and why?</label>
+                <p class="help">While we are interested in seeing the diversity of activities in which you're involved, we are also curious what has been particularly meaningful among those activities.</p>
+                <textarea class="form-control" tabindex="26" maxlength="300"></textarea>
+              </div>
+              <!-- #form-leadership-exp -->
+              <div class="form-group">
+                <label>Past volunteer activities</label>
+                <p class="help">Please describe any other volunteer activities <span style="text-decoration:line-through">with</span> which you <span style="text-decoration:line-through">are <strong>NOT</strong> currently involved, but</span> feel have been meaningful in fulfilling your interest in community involvement in the past.</p>
+                <textarea class="form-control" tabindex="27" maxlength="150"></textarea>
+              </div>
+              <div class="form-group student">
+                <label>How are you connected to your community?</label>
+                <p class="help">What has your community done to help you succeed so far, what have you done to give back to your community, and what do you want to do to help your community in the future? (Your community may be determined by geography, such as a neighborhood or city, or by a shared experience or shared values.</p>
+                <%= f.text_area :community_connection, 'class' => 'form-control', 'tabindex' => '28', 'maxlength' => '300' %>
+              </div>
+              <div class="form-group student">
+                <label>How did you spend last summer?</label>
+                <p class="help">Whether working, studying, providing care for family, training, or traveling, please describe your responsibilities or activities.</p>
+                <%= f.text_area :last_summer, 'class' => 'form-control', 'tabindex' => '29', 'maxlength' => '150' %>
+              </div>
+              <div class="form-group">
+                <label>If you're currently in college, what are your plans post-graduation?</label>
+                <p class="help">Even if you aren't quite sure yet, please let us know what you are hoping to do, or options you are seriously considering.</p>
+                <%= f.text_area :post_graduation_plans, 'class' => 'form-control', 'tabindex' => '30', 'maxlength' => '150' %>
+              </div>
+              <div class="form-group coach">
+                <label>How would you describe your experience with teaching and/or coaching?</label>
+                <p class="help">Please think expansively. Examples include years leading a classroom, summers coaching a youth sports team, time leading or participating in a work-based mentoring or onboarding program, etc.&quot;</p>
+                <%= f.text_area :teaching_experience, 'class' => 'form-control', 'tabindex' => '31', 'maxlength' => '150' %>
+              </div>
+              <div class="form-group coach">
+                <label>What areas of personal expertise or passion are you particularly excited to share with participants?</label>
+                <%= f.text_area :personal_passion, 'class' => 'form-control', 'tabindex' => '32', 'maxlength' => '300' %>
+              </div>
+            </div>
+            <!-- #form-prof-bkg --> 
+          </section>
+        </div>
+        <!-- .section-container --></div>
+      <div class="plank plain-lt both">
+        <div class="section-container">
+          <section>
+            <div id="form-personal-bkg">
+              <h2>Personal Background</h2>
+              <h5>Please check all that apply about your identity, to the extent you feel comfortable</h5>
+              <div class="form-group">
+                <label class="checkbox"><%= f.check_box :bkg_african_americanblack, 'value' => 'african-americanblack', 'tabindex' => '33', 'id' => 'bkg_african-americanblack' %>African American/Black</label><label class="checkbox"><%= f.check_box :bkg_asian_american, 'value' => 'asian-american', 'tabindex' => '34', 'id' => 'bkg_asian-american' %>Asian American</label><label class="checkbox"><%= f.check_box :bkg_latino_or_hispanic, 'value' => 'latino-or-hispanic', 'tabindex' => '35', 'id' => 'bkg_latino-or-hispanic' %>Latino or Hispanic</label><label class="checkbox"><%= f.check_box :bkg_native_alaskan, 'value' => 'native-alaskan', 'tabindex' => '36', 'id' => 'bkg_native-alaskan' %>Native Alaskan</label><label class="checkbox"><%= f.check_box :bkg_native_american_american_indian, 'value' => 'native-american-american-indian', 'tabindex' => '37', 'id' => 'bkg_native-american-american-indian' %>Native American / American Indian</label><label class="checkbox"><%= f.check_box :bkg_native_hawaiian, 'value' => 'native-hawaiian', 'tabindex' => '38', 'id' => 'bkg_native-hawaiian' %>Native Hawaiian</label><label class="checkbox"><%= f.check_box :bkg_pacific_islander, 'value' => 'pacific-islander', 'tabindex' => '39', 'id' => 'bkg_pacific-islander' %>Pacific Islander</label><label class="checkbox"><%= f.check_box :bkg_whitecaucasian, 'value' => 'whitecaucasian', 'tabindex' => '40', 'id' => 'bkg_whitecaucasian' %>White/Caucasian</label><label class="checkbox"><%= f.check_box :bkg_multi_ethnicmulti_racial, 'value' => 'multi-ethnicmulti-racial', 'tabindex' => '41', 'id' => 'bkg_multi-ethnicmulti-racial' %>Multi-Ethnic/Multi-Racial</label>              </div>
+              <div class="form-group">
+                <label class="checkbox">
+                  <%= f.check_box :identify_poc, 'tabindex' => '42' %>
+                  I identify as a person of color</label>
+                <label class="checkbox">
+                  <%= f.check_box :identify_low_income, 'tabindex' => '43' %>
+                  I identify as having grown up in a low-income community</label>
+                <label class="checkbox">
+                  <%= f.check_box :identify_first_gen, 'tabindex' => '44' %>
+                  I identify as a first-generation college student <span class="help"><br />(E.g., your parents do not have a college degree)</span></label>
+              </div>
+              <div class="form-group">
+                <label>And/or describe your identity in your own words</label>
+                <p class="help">E.g. &quot;Navajo&quot;, &quot;Afro-Caribbean&quot;, &quot;Sephardic Jewish Latino&quot;, etc.</p>
+                <%= f.text_field :personal_identity, 'class' => 'form-control', 'tabindex' => '45', 'type' => 'text' %>
+              </div>
+              <div class="form-group">
+                <label>What city do you identify as your hometown?</label>
+                <%= f.text_field :hometown, 'class' => 'form-control short', 'tabindex' => '46', 'type' => 'text', 'placeholder' => 'City, ST' %>
+              </div>
+              <div class="form-group coach">
+                <label>Twitter handle</label>
+                <div class="input-group"> <span class="input-group-addon">@</span>
+                  <%= f.text_field :twitter_handle, 'class' => 'form-control short', 'tabindex' => '47', 'type' => 'text' %>
+                </div>
+              </div>
+              <div class="form-group coach">
+                <label>Do you have a personal website or blog you'd like to share with us?</label>
+                <div class="input-group"> <span class="input-group-addon">http://</span>
+                  <%= f.text_field :personal_website, 'class' => 'form-control', 'tabindex' => '48', 'type' => 'text' %>
+                </div>
+              </div>
+            </div>
+            <!-- #form-personal-bkg --> 
+          </section>
+        </div>
+        <!-- .section-container --></div>
+      <div class="plank plain-md student">
+        <div class="section-container">
+          <section>
+            <div id="form-references">
+              <h2>References</h2>
+              <p class="help">Please list people we could contact as references, e.g. a teacher, manager, advisor, mentor, or a peer who knows you well.</p>
+              <div>
+                                <div class="form-refernce">
+                  <div class="form-group">
+                    <label>Reference Name</label>
+                    <%= f.text_field :reference_name, 'class' => 'form-control medium', 'tabindex' => '49', 'type' => 'text', 'placeholder' => 'First and last name' %>
+                  </div>
+                  <div class="form-group">
+                    <label>How do you know this person?</label>
+                    <%= f.text_field :reference_how_known, 'class' => 'form-control', 'tabindex' => '50', 'type' => 'text' %>
+                  </div>
+                  <div class="form-group">
+                    <label>How long have you known this person?</label>
+                    <p class="help">E.g: &quot;2 years&quot;</p>
+                    <%= f.text_field :reference_how_long_known, 'class' => 'form-control short', 'tabindex' => '51', 'type' => 'text' %>
+                  </div>
+                  <div class="form-group">
+                    <label>Email</label>
+                    <%= f.text_field :reference_email, 'class' => 'form-control medium', 'tabindex' => '52', 'type' => 'email' %>
+                  </div>
+                  <div class="form-group">
+                    <label>Phone Number</label>
+                    <%= f.text_field :reference_phone, 'class' => 'form-control short', 'tabindex' => '53', 'type' => 'tel' %>
+                  </div>
+                </div>
+                <!-- .form-reference -->
+                                <div class="form-refernce">
+                  <div class="form-group">
+                    <label>Reference Name</label>
+                    <%= f.text_field :reference2_name, 'class' => 'form-control medium', 'tabindex' => '49', 'type' => 'text', 'placeholder' => 'First and last name' %>
+                  </div>
+                  <div class="form-group">
+                    <label>How do you know this person?</label>
+                    <%= f.text_field :reference2_how_known, 'class' => 'form-control', 'tabindex' => '50', 'type' => 'text' %>
+                  </div>
+                  <div class="form-group">
+                    <label>How long have you known this person?</label>
+                    <p class="help">E.g: &quot;2 years&quot;</p>
+                    <%= f.text_field :reference2_how_long_known, 'class' => 'form-control short', 'tabindex' => '51', 'type' => 'text' %>
+                  </div>
+                  <div class="form-group">
+                    <label>Email</label>
+                    <%= f.text_field :reference2_email, 'class' => 'form-control medium', 'tabindex' => '52', 'type' => 'email' %>
+                  </div>
+                  <div class="form-group">
+                    <label>Phone Number</label>
+                    <%= f.text_field :reference2_phone, 'class' => 'form-control short', 'tabindex' => '53', 'type' => 'tel' %>
+                  </div>
+                </div>
+                <!-- .form-reference -->
+                              </div>
+            </div>
+            <!-- #form-references --> 
+          </section>
+        </div>
+        <!-- .section-container --> 
+      </div>
+      <div class="plank plain-lt">
+        <div class="section-container">
+          <section>
+            <div id="form-commitment">
+              <h2>Commitment and Availability</h2>
+              <div class="form-group">
+                <label>Why do you want to join Beyond Z?</label>
+                <%= f.text_area :why_bz, 'class' => 'form-control', 'tabindex' => '59', 'maxlength' => '150' %>
+              </div>
+              <div class="form-group student">
+                <label>With what other campus or volunteer activities are you <em>currently</em> involved in your community?</label>
+                <p class="help">Please list any community-based organizations with which you currently share a significant part of your time, and the approximate hours per month you commit to each.</p>
+                <%= f.text_area :community_organization_commitment, 'class' => 'form-control', 'tabindex' => '60', 'maxlength' => '150' %>
+              </div>
+              <div class="form-group student">
+                <label>What are your top commitments this upcoming year?</label>
+                <p class="help">Please explain either why each of these activities (academic or other) is important to you, or what aspect of your active involvement makes you most proud.</p>
+                <%= f.text_area :commitments, 'class' => 'form-control', 'tabindex' => '61', 'maxlength' => '150' %>
+              </div>
+              <div class="form-group coach">
+                <h5>Availability during program</h5>
+                <p class="help">As a Leadership Coach (LC), we anticipate that you'll facilitate a [session length] leadership session every [frequency] from [start date] until [end date].</p>
+                <label class="coach">Please list any Beyond Z meetings that you currently know you won't be able attend</label>
+                <p class="help">We may have already discussed dates for which you anticipate a conflict due to travel or other competing priorities. Knowing your schedule may have changed since, I'll assume this form overrides anything we discussed. We understand this might evolve over the course of the 20 weeks, and just ask you to keep us updated as you get more clarity over your schedule</p>
+                <%= f.text_area :cannot_attend, 'class' => 'form-control', 'tabindex' => '62', 'maxlength' => '150' %>
+              </div>
+              <div class="form-group student">
+                <label class="checkbox">
+                  <%= f.check_box :affirm_qualified, 'tabindex' => '63' %>
+                  I affirm that I am qualified to participate in Beyond Z ([criteria listed here]), and that I can fulfill my commitment of [approximately 2 hours weekly] to Beyond Z. </label>
+              </div>
+              <div class="form-group student">
+                <label class="checkbox">
+                  <%= f.check_box :affirm_commit, 'tabindex' => '64' %>
+                  I affirm that, if accepted and enrolled, I commit to participate fully in the program by coming to all cohort sessions prepared to engage in conversations and to support and challenge my peers. </label>
+              </div>
+            </div>
+            <!-- #form-commitment --> 
+          </section>
+        </div>
+        <!-- .section-container -->
+      </div>
+      <div class="plank plain-md">
+        <div class="section-container">
+          <section>
+            <div id="form-almost-done">
+              <h2>Almost Done</h2>
+              <div class="form-group">
+                <label>Anything else you'd like to share?</label>
+                <p class="help">Please let us know any additional information you wish to share about your interest in Beyond Z.</p>
+                <%= f.text_area :comments, 'class' => 'form-control', 'tabindex' => '65', 'maxlength' => '300' %>
+              </div>
+              <div class="form-group">
+                <label>Last but not least</label>
+                <p class="help">Please help us continuously improve our requests of you &#8211; Approximately how long (in minutes) did this survey take you to complete?</p>
+                <div class="input-group short">
+                  <%= f.text_field :time_taken, 'class' => 'form-control', 'step' => '5', 'tabindex' => '66', 'type' => 'number', 'min' => '0' %>
+                  <span class="input-group-addon">minutes</span> </div>
+              </div>
+            </div>
+            <!-- #form-almost-done --> 
+          </section>
+        </div>
+      </div>
+      <div class="plank tertiary-md">
+        <div class="section-container">
+          <section>
+            <div id="form-end">
+              <div class="apply-button form-submit">
+                <div class="apply-icon"></div>
+                <%= f.submit 'SEND' %>
+                </div>
+            </div>
+            <!-- #form-almost-done --> 
+          </section>
+        </div>
+      </div>
   <% end %>
 </div>
