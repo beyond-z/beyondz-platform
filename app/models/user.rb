@@ -52,7 +52,7 @@ class User < ActiveRecord::Base
   end
 
   def admin?
-    self.is_administrator
+    is_administrator
   end
 
   # This will create the skeletons for assignments, tasks,

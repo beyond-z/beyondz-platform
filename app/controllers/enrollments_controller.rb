@@ -11,7 +11,7 @@ class EnrollmentsController < ApplicationController
     # We need to redirect them to edit their current application
     # if one exists. Otherwise, they can make a new one.
     existing_enrollment = Enrollment.find_by(:user_id => current_user.id)
-    if !existing_enrollment.nil?
+    unless existing_enrollment.nil?
       redirect_to enrollment_path(existing_enrollment.id)
     end
 
