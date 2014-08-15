@@ -484,14 +484,14 @@ task_definition.sections.push(
               <section>
                 <div class="col-sm-12 text-center">
                   <strong>Louis Smith</strong><br />
-                  Louis17@sjsu.edu<br />
-                  (805) 555-7777
+                  Louissmith@berkeley.edu<br />
+                  (805) 555-0000
                 </div>
               </section>
               <section>
                 <div class="col-sm-12">
-                  3268 Andora Drive<br />
-                  San Jose, CA 95148
+                  1200 Channing Drive<br />
+                  Berkeley, CA
                 </div>
               </section>
               <section>
