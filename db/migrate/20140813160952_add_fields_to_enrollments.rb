@@ -42,6 +42,7 @@ class AddFieldsToEnrollments < ActiveRecord::Migration
     add_column :enrollments, :reference_how_long_known, :string
     add_column :enrollments, :reference_email, :string
     add_column :enrollments, :reference_phone, :string
+    add_column :enrollments, :reference2_name, :string
     add_column :enrollments, :reference2_how_known, :string
     add_column :enrollments, :reference2_how_long_known, :string
     add_column :enrollments, :reference2_email, :string
