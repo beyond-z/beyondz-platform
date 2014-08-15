@@ -8,7 +8,14 @@ class EnrollmentsController < ApplicationController
   def new
     @enrollment = Enrollment.new
 
-    # pre-fill fields that are available from the user
+    # We need to redirect them to edit their current application
+    # if one exists. Otherwise, they can make a new one.
+    existing_enrollment = Enrollment.find_by(:user_id => current_user.id)
+    if !existing_enrollment.nil?
+      redirect_to enrollment_path(existing_enrollment.id)
+    end
+
+    # pre-fill any fields that are available from the user model
     @enrollment.first_name = current_user.first_name
     @enrollment.last_name = current_user.last_name
     @enrollment.email = current_user.email
@@ -18,9 +25,12 @@ class EnrollmentsController < ApplicationController
     # We'll show it by just displaying the pre-filled form
     # as that's the fastest thing that can possibly work for MVP
     @enrollment = Enrollment.find(params[:id])
-    render 'new'
 
-    # FIXME: permission check
+    if @enrollment.user_id != current_user.id && !current_user.admin?
+      redirect_to new_enrollment_path
+    end
+
+    render 'new'
   end
 
   def update
@@ -28,6 +38,7 @@ class EnrollmentsController < ApplicationController
     @enrollment.update_attributes(enrollment_params)
     @enrollment.save!
 
+    flash[:message] = 'Your application has been updated'
     redirect_to enrollment_path(@enrollment.id)
   end
 
@@ -39,6 +50,7 @@ class EnrollmentsController < ApplicationController
       render 'new'
       return
     else
+      flash[:message] = 'Your application has been saved'
       redirect_to enrollment_path(@enrollment.id)
     end
   end

@@ -1,27 +1,46 @@
-.page-jump {
-  display: block;
-}
-.plank.tertiary-md .page-jump a, .plank.knockout-md .page-jump a {
-  color: $txt-lt;
-}
+#enrollment-form-holder {
+  .page-jump {
+    display: block;
+  }
 
-.form-control,
-textarea.form-control,
-.input-group {
-  width: 370px;
-}
-.form-control.medium {
-  width: 250px;
-}
-.form-control.short,
-.input-group.short {
-  width: 150px;
-}
+  .plank.tertiary-md .page-jump a, .plank.knockout-md .page-jump a {
+    color: $txt-lt;
+  }
 
-label.radio, label.checkbox {
-  font-weight: normal;
-  margin-left: 21px;
-}
-.radio input[type="radio"], .radio-inline input[type="radio"], .checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"] {
-  margin-right: 5px;
+  .form-control, textarea.form-control, .input-group {
+    width: 370px;
+  }
+
+  .form-control.medium {
+    width: 250px;
+  }
+
+  .form-control.short, .input-group.short {
+    width: 150px;
+  }
+
+  label.radio, label.checkbox {
+    font-weight: normal;
+    margin-left: 21px;
+  }
+
+  .radio input[type="radio"], .radio-inline input[type="radio"], .checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"] {
+    margin-right: 5px;
+  }
+
+  .form-submit {
+    display: block;
+    text-align: center;
+    width: 50%;
+    margin: 0px auto;
+
+    input[type=submit] {
+      border: none;
+      background: transparent;
+      color: $txt-lt;
+      vertical-align: middle;
+      font-weight: bold;
+      font-size: 1.5em;
+    }
+  }
 }

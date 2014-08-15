@@ -265,7 +265,7 @@
                                 <div class="form-refernce">
                   <div class="form-group">
                     <label>Reference Name</label>
-                    <%= f.text_field :reference_name, 'class' => 'form-control medium', 'tabindex' => '49', 'type' => 'text', 'placeholder' => 'First and last name' %>
+                    <%= f.text_field :reference2_name, 'class' => 'form-control medium', 'tabindex' => '49', 'type' => 'text', 'placeholder' => 'First and last name' %>
                   </div>
                   <div class="form-group">
                     <label>How do you know this person?</label>
@@ -356,18 +356,18 @@
             <!-- #form-almost-done --> 
           </section>
         </div>
-        <div class="plank tertiary-md">
-          <div class="section-container">
-            <section>
-              <div id="form-end">
-                <div class="apply-button form-submit">
-                  <div class="apply-icon"></div>
-                  <%= f.submit 'SEND' %>
-                  </div>
-              </div>
-              <!-- #form-almost-done --> 
-            </section>
-          </div>
+      </div>
+      <div class="plank tertiary-md">
+        <div class="section-container">
+          <section>
+            <div id="form-end">
+              <div class="apply-button form-submit">
+                <div class="apply-icon"></div>
+                <%= f.submit 'SEND' %>
+                </div>
+            </div>
+            <!-- #form-almost-done --> 
+          </section>
         </div>
       </div>
   <% end %>
