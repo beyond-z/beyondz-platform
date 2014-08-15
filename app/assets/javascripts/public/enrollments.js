@@ -46,6 +46,24 @@ $(document).ready(function() {
 
     // Hide "other" checkbox/radio detail inputs 
     //$('input.other').hide();
+
+
+    // Sets a timer whenever data is changed which updates the server
+    // to ensure the user's data are transparently saved if they stop
+    // and come back later
+
+    var saveTimer = null;
+    $('input, textarea').change(function() {
+      if(saveTimer === null) {
+        // the timer keeps it from pounding the server too hard
+        // if someone does rapid changes
+        saveTimer = setTimeout(function() {
+          var form = $('#enrollment-form-holder form');
+          $.post(form.action, form.serialize());
+          saveTimer = null;
+        }, 5000);
+      }
+    });
     
   // replace programming languages (testing only) with actual majors
   var majors = [
