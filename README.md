@@ -37,7 +37,7 @@ createuser -s beyondz-platform
 
 After your prerequisites are installed and setup, fork the `beyondz-platform` repository into your own Github account.
 
-![Select Branch](docs/fork-repo.png)
+![Fork Repo](docs/fork-repo.png)
 
 Then in the location you want the local code to live on your development
 machine, run:
@@ -146,15 +146,13 @@ Select the feature branch from your Github page using the drop down selector.
 
 Then click the green pull request button to the left hand side of the drop down.
 
-On the next screen, click "Edit" near the right-hand side of the screen.
-
-![Edit location](docs/edit-branch.png)
-
-Write a meaningful title and summary so it is well documented what this "feature" 
+On the next screen, write a meaningful title and summary so it is well documented what this "feature" 
 is when looking back or at a glance.  Your pull request will be rejected if the 
 title and  summary is cryptic for other readers.
 
-Once the pull is merged, do some cleanup on your local branch:
+![Submit Pull](docs/submit-pull.png)
+
+Once the pull request is merged by the upstream repo owner, do some cleanup on your local branch:
 
 * Stay up to date by merging the staging repository back to your
 local branch.
