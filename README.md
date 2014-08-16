@@ -6,11 +6,11 @@ This is where Beyond Z participants login and access their leadership developmen
 Make sure you have Ruby 2.1.1 and Rails 4.0 installed and configured.  You can
 check by running:
  ```Shell
-    ruby -v 
+ruby -v 
 ```
 and
 ```Shell
-    rails -v
+rails -v
 ```
 If you don't,
 [this guide](http://guides.rubyonrails.org/getting_started.html#installing-rails)
@@ -24,13 +24,12 @@ Check to see that you have Postgres 9.3.2 installed
 psql -V
 ```
 
-If not, [install it](http://postgresapp.com/) and make sure to  
-and set your PATH in your ~/.bashrc, for example:
+If not, [install it](http://postgresapp.com/) and make sure to and set your PATH in your ~/.bashrc, for example:
 ```Shell
 	export PATH="/Applications/Postgres93.app/Contents/MacOS/bin:$PATH"
 ```
 
-Create a user for the BZ application:
+Create a database user for the BZ application:
 ```Shell
 createuser -s beyondz-platform
 ```
@@ -42,11 +41,11 @@ After your prerequisites are installed and setup, fork the `beyondz-platform` re
 Then in the location you want the local code to live on your development
 machine, run:
 ```Shell
-	git clone <your_forked_url>
+git clone <your_forked_url>
 ```
 Get all your gems installed by running:
 ```Shell
-	bundle install
+bundle install
 ```
 ## Configuration
 
@@ -55,12 +54,12 @@ There are a handful of environment variables that store sensitive information th
 One easy way to manage your ENV variables is using Foreman (or Pow).  If
 you install Foreman using:
 ```Shell
-    gem install foreman
+gem install foreman
 ```
 Then you can setup your ENV variables by copying env.sample to .env and editing
 the values that you need.
 ```Shell
-    cp env.sample .env
+cp env.sample .env
 ```
 When you run
 ```Shell
@@ -70,23 +69,23 @@ it reads the `.env` file and sets those environment variables for your
 session.
 
 The minimum list of variables needed to make the basic application work are:
-1. `RAILS\_SECRET\_TOKEN`
-2. `DATABASE\_USERNAME`
-3. `DATABASE\_PASSWORD` 
-4. `DEVISE\_SECRET\_KEY` 
-5. `DEVISE\_PEPPER`
+`RAILS_SECRET_TOKEN`
+`DATABASE_USERNAME`
+`DATABASE_PASSWORD` 
+`DEVISE_SECRET_KEY` 
+`DEVISE_PEPPER`
 
 For the secret and pepper variables above, you can generate them using
 ```Shell
-	rake secret
+rake secret
 ```
 
 ## Running the Application 
 From the directory you cloned your repo to run:
 ```Shell
-	rake db:create
-	rake db:migrate
-  rake db:seed
+rake db:create
+rake db:migrate
+rake db:seed
 ```
 Finally, start the application by running
 ```Shell
@@ -113,7 +112,7 @@ Here is a [nice overview](http://nathanhoad.net/git-workflow-forks-remotes-and-p
 ### Setup
 Make the upstream (the original) repo available for merging into your local fork so that you always can get the most up-to-date code:
 ```Shell
-	git remote add upstream https://github.com/beyond-z/beyondz-platform.git
+git remote add upstream https://github.com/beyond-z/beyondz-platform.git
 ```
 
 ### Flow
@@ -121,20 +120,20 @@ Make the upstream (the original) repo available for merging into your local fork
 We work on new development in the `staging` branch.  For each new
 feature or change you want to make, always begin by making a new branch:
 ```Shell
-  git checkout staging
-	git checkout -b <feature_name>
+git checkout staging
+git checkout -b <feature_name>
 ```
 Once you've made all your changes, commit using:
 ```Shell
-	git commit -am 'a brief message saying what you did. think about future readers.'
+git commit -am 'a brief message saying what you did. think about future readers.'
 ```
 You can commit multiple times to your branch before you are ready to have your changes merged into the upstream repo.
 
 To get ready to submit a pull request to the upstream repo, you need to push your local changes to your Github fork.  Please run the static code analysis and tests before doing so, like this:
 ```Shell
-	rubocop .
-	rake test
-	git push origin <feature_name>
+rubocop .
+rake test
+git push origin <feature_name>
 ```
 To submit a pull request and integrate your changes back to the upstream 
 repository do the following:
@@ -157,15 +156,15 @@ Once the pull request is merged by the upstream repo owner, do some cleanup on y
 * Stay up to date by merging the staging repository back to your
 local branch.
 ```Shell
-	git pull upstream staging
+git pull upstream staging
 ```
 
 * Switch back to staging (or some other branch) and delete the feature
 branch (locally and remotely)
 ```
-  git checkout staging
-  git branch -d <feature_name>
-  git push origin :<feature_name>
+git checkout staging
+git branch -d <feature_name>
+git push origin :<feature_name>
 ```
 
 ### Continuous Integration
