@@ -3,73 +3,140 @@ This is where Beyond Z participants login and access their leadership developmen
 
 # Getting Started
 
+Make sure you have Ruby 2.1.1 and Rails 4.0 installed and configured.  You can
+check by running:
+ ```Shell
+    ruby -v 
+```
+and
+```Shell
+    rails -v
+```
+If you don't,
+[this guide](http://guides.rubyonrails.org/getting_started.html#installing-rails)
+is a good start to get you going (or please link to a better tutorial in this readme once you find one)
 
-Follow this tutorial to get Rails setup for Heroku:
-https://devcenter.heroku.com/articles/getting-started-with-rails4
+Note: in production this site runs on Heroku.  It was setup using [this
+tutorial](https://devcenter.heroku.com/articles/getting-started-with-rails4)
 
-You must install Postgres (http://postgresapp.com/)
-and set your PATH in your ~/.bashrc:
+Check to see that you have Postgres 9.3.2 installed
+```Shell
+psql -V
+```
 
+If not, [install it](http://postgresapp.com/) and make sure to  
+and set your PATH in your ~/.bashrc, for example:
+```Shell
 	export PATH="/Applications/Postgres93.app/Contents/MacOS/bin:$PATH"
+```
 
-After your environment is setup, fork this repository on Github. Then in the location you want the local copy, run:
+Create a user for the BZ application:
+```Shell
+createuser -s beyondz-platform
+```
 
+After your prerequisites are installed and setup, fork the `beyondz-platform` repository into your own Github account.
+
+![Fork Repo](docs/fork-repo.png)
+
+Then in the location you want the local code to live on your development
+machine, run:
+```Shell
 	git clone <your_forked_url>
-
-To get all your gems, run:
-
+```
+Get all your gems installed by running:
+```Shell
 	bundle install
-
+```
 ## Configuration
 
-In the "/env.sample" file is a list of environment variables that must be set for your database, SMTP, etc... to function properly. Copy this file to ".env"  and be sure these values are set for your Rails environment using your Foreman, Pow or preferred server setup.
+There are a handful of environment variables that store sensitive information that this application uses to run.  The list can be found in the `/env.sample` file. 
 
-### Creating a new Secret Token
+One easy way to manage your ENV variables is using Foreman (or Pow).  If
+you install Foreman using:
+```Shell
+    gem install foreman
+```
+Then you can setup your ENV variables by copying env.sample to .env and editing
+the values that you need.
+```Shell
+    cp env.sample .env
+```
+When you run
+```Shell
+foreman start
+```
+it reads the `.env` file and sets those environment variables for your
+session.
 
+The minimum list of variables needed to make the basic application work are:
+1. `RAILS\_SECRET\_TOKEN`
+2. `DATABASE\_USERNAME`
+3. `DATABASE\_PASSWORD` 
+4. `DEVISE\_SECRET\_KEY` 
+5. `DEVISE\_PEPPER`
+
+For the secret and pepper variables above, you can generate them using
+```Shell
 	rake secret
-	
-Take the results of the above command and put this in your ".env" file for RAILS\_SECRET\_TOKEN.
+```
 
 ## Running the Application 
-From your repo directory:
-
+From the directory you cloned your repo to run:
+```Shell
 	rake db:create
 	rake db:migrate
+  rake db:seed
+```
+Finally, start the application by running
+```Shell
+foreman start
+```
+The app will be available at [http://localhost:5000](http://localhost:5000) by default
 
-And to start website on local machine, run: $foreman start and the app will be available at http://localhost:3000
+## Testing
+We have created a few test users that you can login to the platform with.  They are populated using the `rake db:seed` task.
 
-## Code Management
+    username: test+student1@beyondz.org
+    password: test
 
-Here is a nice description of the workflow we follow, which is also
-detailed below:
-http://nathanhoad.net/git-workflow-forks-remotes-and-pull-requests 
+    username: test+coach1@beyondz.org
+    password: test
+
+    username: test+admin@beyondz.org
+    password: test
+
+## Developmnet Process
+
+Here is a [nice overview](http://nathanhoad.net/git-workflow-forks-remotes-and-pull-requests) of the workflow we follow, which is also detailed below.
 
 ### Setup
-To move on with development, run:
-
+Make the upstream (the original) repo available for merging into your local fork so that you always can get the most up-to-date code:
+```Shell
 	git remote add upstream https://github.com/beyond-z/beyondz-platform.git
-	
-	
-This makes the upstream (original repo) code available for merging into your local fork.
+```
 
 ### Flow
 
-Always create a new branch when working on a new feature. From your local master branch:
-
+We work on new development in the `staging` branch.  For each new
+feature or change you want to make, always begin by making a new branch:
+```Shell
+  git checkout staging
 	git checkout -b <feature_name>
-
-To commit all changes:
-
+```
+Once you've made all your changes, commit using:
+```Shell
 	git commit -am 'a brief message saying what you did. think about future readers.'
+```
+You can commit multiple times to your branch before you are ready to have your changes merged into the upstream repo.
 
-To push your local changes to your Github fork, run the static code analysis lint tool 
-and the tests like this:
-
+To get ready to submit a pull request to the upstream repo, you need to push your local changes to your Github fork.  Please run the static code analysis and tests before doing so, like this:
+```Shell
 	rubocop .
 	rake test
 	git push origin <feature_name>
-
-To submit a pull request and integrate your changes back to the main
+```
+To submit a pull request and integrate your changes back to the upstream 
 repository do the following:
 
 Select the feature branch from your Github page using the drop down selector. 
@@ -79,23 +146,17 @@ Select the feature branch from your Github page using the drop down selector.
 
 Then click the green pull request button to the left hand side of the drop down.
 
-On the next screen, click "Edit" near the right-hand side of the screen.
-
-![Edit location](docs/edit-branch.png)
-
-Then choose the 'staging' branch of the beyondz-platform. 
-
-![Switch to staging](docs/staging-pull.png)
-
-Write a meaningful title and summary so it is well documented what this "feature" 
+On the next screen, write a meaningful title and summary so it is well documented what this "feature" 
 is when looking back or at a glance.  Your pull request will be rejected if the 
 title and  summary is cryptic for other readers.
 
-Once the pull is merged, do some cleanup on your local branch:
+![Submit Pull](docs/submit-pull.png)
+
+Once the pull request is merged by the upstream repo owner, do some cleanup on your local branch:
 
 * Stay up to date by merging the staging repository back to your
 local branch.
-```
+```Shell
 	git pull upstream staging
 ```
 
@@ -114,7 +175,7 @@ on GitHub in the form of a checkbox or an X mark.
 
 The current integration runs the test suite as well as rubocop. Any errors resulting from either will show as a failure.
 
-You can see the details here: https://travis-ci.org/beyond-z/beyondz-platform
+You can see the details [here](https://travis-ci.org/beyond-z/beyondz-platform)
 
 # Coding Conventions
 
