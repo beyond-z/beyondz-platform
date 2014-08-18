@@ -8,10 +8,10 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-user = User.new(email: "test+student1@beyondz.org", password: "test", first_name: "BeyondZ", last_name: "Test")
-user2 = User.new(email: "test+student2@beyondz.org", password: "test", first_name: "Second", last_name: "Student")
-coach = User.new(email: "test+coach1@beyondz.org", password: "test", first_name: "BeyondZ", last_name: "Coach")
-admin_user = User.new(email: "test+admin@beyondz.org", password: "test", first_name: "BeyondZ", last_name: "Admin", is_administrator: true)
+user = User.new(email: 'test+student1@beyondz.org', password: 'test', first_name: 'BeyondZ', last_name: 'Test')
+user2 = User.new(email: 'test+student2@beyondz.org', password: 'test', first_name: 'Second', last_name: 'Student')
+coach = User.new(email: 'test+coach1@beyondz.org', password: 'test', first_name: 'BeyondZ', last_name: 'Coach')
+admin_user = User.new(email: 'test+admin@beyondz.org', password: 'test', first_name: 'BeyondZ', last_name: 'Admin', is_administrator: true)
 
 user.skip_confirmation!
 user2.skip_confirmation!
@@ -45,12 +45,12 @@ item.front_page_info = "
             <li><strong>Organization &amp; Prioritization:</strong> Explore Beyond Z platform. Set-up Google Drive Account for assignments.</li>
           </ul>
         "
-item.title = "Weekend 0 Launch: The Story of Self and Us"
-item.led_by = "Staff"
-item.assignment_download_url = "https://docs.google.com/a/beyondz.org/forms/d/1cgwwrGn3ZMNkrKvL-Uj4FNz1Qf27xPc6usqse7fTWBg/viewform"
-item.start_date = Time.parse("Feb 28")
-item.end_date = Time.parse("Mar 1")
-item.seo_name = "story-of-self"
+item.title = 'Weekend 0 Launch: The Story of Self and Us'
+item.led_by = 'Staff'
+item.assignment_download_url = 'https://docs.google.com/a/beyondz.org/forms/d/1cgwwrGn3ZMNkrKvL-Uj4FNz1Qf27xPc6usqse7fTWBg/viewform'
+item.start_date = Time.parse('Feb 28')
+item.end_date = Time.parse('Mar 1')
+item.seo_name = 'story-of-self'
 item.save
 item.task_definitions.push(
   TaskDefinition.create(
@@ -207,12 +207,12 @@ item.front_page_info = "
             <li><strong>NOTE: This is a 2-part module that asks you to write a Résumé and a Cover Letter, spending a total of 3 hours across both assignments.</strong></li>
           </ul>
         "
-item.title = "Week 2(a): Cover Letter"
-item.led_by = "Peer"
-item.assignment_download_url = "assignments/cover-letter/submissions/new"
-item.start_date = Time.parse("Mar 10")
-item.end_date = Time.parse("Mar 16")
-item.seo_name = "cover-letter"
+item.title = 'Week 2(a): Cover Letter'
+item.led_by = 'Peer'
+item.assignment_download_url = 'assignments/cover-letter/submissions/new'
+item.start_date = Time.parse('Mar 10')
+item.end_date = Time.parse('Mar 16')
+item.seo_name = 'cover-letter'
 item.save
 item.task_definitions.push(
   TaskDefinition.create(
@@ -254,12 +254,12 @@ item.front_page_info = "
       <li><strong>NOTE: This is a 2-part module that asks you to write a résumé and a Cover Letter, spending a total of 3 hours across both artifacts.</strong></li>
     </ul>
   "
-item.title = "Week 2(b): Résumé"
-item.led_by = "Peer"
-item.assignment_download_url = "assignments/resume/submissions/new"
-item.start_date = Time.parse("Mar 10")
-item.end_date = Time.parse("Mar 16")
-item.seo_name = "resume"
+item.title = 'Week 2(b): Résumé'
+item.led_by = 'Peer'
+item.assignment_download_url = 'assignments/resume/submissions/new'
+item.start_date = Time.parse('Mar 10')
+item.end_date = Time.parse('Mar 16')
+item.seo_name = 'resume'
 item.save
 
 item.task_definitions.push(
@@ -1875,9 +1875,9 @@ item.front_page_info = "
             <li>Seeing our successes in new and different ways.</li> 
           </ul>
         "
-item.title = "Week 4: Spring Break!"
-item.led_by = "Peer"
-item.assignment_download_url = "assignments/best-self/submissions/new"
+item.title = 'Week 4: Spring Break!'
+item.led_by = 'Peer'
+item.assignment_download_url = 'assignments/best-self/submissions/new'
 item.start_date = Time.parse("Mar 24")
 item.end_date = Time.parse("Mar 30")
 item.seo_name = "best-self"
@@ -1915,9 +1915,9 @@ item.front_page_info = "
             <li><strong>Self-Discipline:</strong> Learn to successfully cope with disappointment and discuss what changes have you made in how you approach challenges or deal with disappointment.</li>
           </ul>
         "
-item.title = "Week 5: Failing & Asking for Help"
-item.led_by = "Coach"
-item.assignment_download_url = "assignments/asking-for-help/submissions/new"
+item.title = 'Week 5: Failing & Asking for Help'
+item.led_by = 'Coach'
+item.assignment_download_url = 'assignments/asking-for-help/submissions/new'
 item.start_date = Time.parse("Mar 31")
 item.end_date = Time.parse("Apr 6")
 item.seo_name = "asking-for-help"
@@ -1969,9 +1969,9 @@ item.front_page_info = "
             <li>Following up after an interview with a thank you email or card.</li>
           </ul>
         "
-item.title = "Week 6: Perfecting Your Interviewing Skills"
-item.led_by = "Peer"
-item.assignment_download_url = "assignments/interview-simulations/submissions/new"
+item.title = 'Week 6: Perfecting Your Interviewing Skills'
+item.led_by = 'Peer'
+item.assignment_download_url = 'assignments/interview-simulations/submissions/new'
 item.start_date = Time.parse("Apr 7")
 item.end_date = Time.parse("13")
 item.seo_name = "interview-simulations"
@@ -2129,4 +2129,4 @@ task_definition.sections.push(
 item.task_definitions.push(task_definition)
 item.save
 
-User.all.each do |u| u.create_child_skeleton_rows ; end
+User.all.each { |u| u.create_child_skeleton_rows }
