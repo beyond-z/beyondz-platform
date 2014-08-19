@@ -6,6 +6,7 @@ class Admin::UsersController < Admin::ApplicationController
     respond_to do |format|
       format.html { render }
       format.csv { render text: csv_export }
+      format.xls { send_data(@users.to_xls) }
     end
   end
 
