@@ -144,10 +144,8 @@
 #volunteer-page {
   .main-feature {
     .section-container {
-      @media (min-width: $screen-md-min){
-        background-image: url(image_path('group_blue.jpg'));
-        background-position: top right;
-      }  
+      background-image: url(image_path('group_blue.jpg'));
+      background-position: top right;
     }
   }
 
