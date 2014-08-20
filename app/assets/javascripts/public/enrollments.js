@@ -24,9 +24,9 @@ $(document).ready(function() {
 
     // hide all other fields until one of the applying as is selected
     if(!$('#position_coach').prop('checked'))
-      $('.coach').fadeOut('fast');
+      $('.coach:not(.student)').fadeOut('fast');
     if(!$('#position_student').prop('checked'))
-      $('.student').fadeOut('fast');
+      $('.student:not(.coach)').fadeOut('fast');
     
     // Show or hide questions based on user type and program:
     $('[value=student]').click(function(){

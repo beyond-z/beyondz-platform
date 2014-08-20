@@ -17,6 +17,7 @@ class EnrollmentsController < ApplicationController
       @enrollment.first_name = current_user.first_name
       @enrollment.last_name = current_user.last_name
       @enrollment.email = current_user.email
+      @enrollment.accepts_txt = true # to pre-check the box
 
       @enrollment.save!
 
