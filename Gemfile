@@ -16,7 +16,7 @@ gem 'bootstrap-sass'
 group :development do
   gem 'rails_layout'
   # Use debugger
-  gem 'debugger'
+  gem 'byebug'
   gem 'better_errors'
   # used with 'better_errors'
   gem 'binding_of_caller'
