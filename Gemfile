@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby "2.1.1"
+ruby "2.1.2"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.0'
@@ -16,7 +16,7 @@ gem 'bootstrap-sass'
 group :development do
   gem 'rails_layout'
   # Use debugger
-  gem 'debugger'
+  gem 'byebug'
   gem 'better_errors'
   # used with 'better_errors'
   gem 'binding_of_caller'
