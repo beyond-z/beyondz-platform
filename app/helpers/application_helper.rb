@@ -87,7 +87,7 @@ module ApplicationHelper
     modal_html(id, opts)
   end
 
-  class PermissionDenied < Exception
+  class PermissionDenied < StandardError
   end
 
   private
