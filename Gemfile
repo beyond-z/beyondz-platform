@@ -75,6 +75,9 @@ gem 'aws-sdk', '~> 1.5.8'
 # Rubocop code checker
 gem 'rubocop'
 
+# export to excel (xls)
+gem 'to_xls-rails'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
 
