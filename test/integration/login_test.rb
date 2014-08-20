@@ -1,13 +1,12 @@
 require 'test_helper'
 
 describe 'Login' do
-  # Logged in students should end up at the assignments path
-  it 'should succeed' do
-    user = FactoryGirl::create(:user)
+  it 'should bring students to the assignments path upon success' do
+    user = FactoryGirl.create(:user)
     user.confirm!
     visit(new_user_session_path)
-    fill_in('Email', :with => user.email)
-    fill_in('Password', :with => user.password)
+    fill_in('Email', with: user.email)
+    fill_in('Password', with: user.password)
     click_on 'Log in'
 
     current_path.must_equal(assignments_path)
@@ -18,15 +17,14 @@ describe 'Login' do
     user.destroy!
   end
 
-  it 'should fail' do
-    user = FactoryGirl::create(:user)
+  it 'should redirect you to the login page upon failure' do
+    user = FactoryGirl.create(:user)
     user.confirm!
-    visit(new_user_session_path)
-    fill_in('Email', :with => user.email)
-    fill_in('Password', :with => 'wrong')
+    visit new_user_session_path
+    fill_in('Email', with: user.email)
+    fill_in('Password', with: 'wrong')
     click_on 'Log in'
 
-    # We should still be on the page
     current_path.must_equal(new_user_session_path)
 
     user.destroy!
