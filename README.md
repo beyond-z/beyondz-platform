@@ -105,7 +105,7 @@ We have created a few test users that you can login to the platform with.  They 
     username: test+admin@beyondz.org
     password: test
 
-## Developmnet Process
+## Development Process
 
 Here is a [nice overview](http://nathanhoad.net/git-workflow-forks-remotes-and-pull-requests) of the workflow we follow, which is also detailed below.
 

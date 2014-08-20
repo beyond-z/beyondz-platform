@@ -132,6 +132,7 @@ ActiveRecord::Schema.define(version: 20140813160952) do
     t.string   "reference_how_long_known"
     t.string   "reference_email"
     t.string   "reference_phone"
+    t.string   "reference2_name"
     t.string   "reference2_how_known"
     t.string   "reference2_how_long_known"
     t.string   "reference2_email"
