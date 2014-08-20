@@ -127,7 +127,7 @@ class User < ActiveRecord::Base
   end
 end
 
-class LoginException < Exception
+class LoginException < StandardError
   def initialize(message)
     @message = message
   end
