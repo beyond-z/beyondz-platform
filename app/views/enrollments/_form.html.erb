@@ -189,6 +189,50 @@
           </section>
         </div>
         <!-- .section-container --></div>
+
+      <div class="plank plain-lt coach student">
+        <div class="section-container">
+          <section>
+            <div id="form-commitment">
+              <h2>Commitment and Availability</h2>
+              <div class="form-group">
+                <label>Why do you want to join Beyond Z?</label>
+                <%= f.text_area :why_bz, 'class' => 'form-control', 'tabindex' => '59', 'maxlength' => '150' %>
+              </div>
+              <div class="form-group student">
+                <label>With what other campus or volunteer activities are you <em>currently</em> involved in your community?</label>
+                <p class="help">Please list any community-based organizations with which you currently share a significant part of your time, and the approximate hours per month you commit to each.</p>
+                <%= f.text_area :community_organization_commitment, 'class' => 'form-control', 'tabindex' => '60', 'maxlength' => '150' %>
+              </div>
+              <div class="form-group student">
+                <label>What are your top commitments this upcoming year?</label>
+                <p class="help">Please explain either why each of these activities (academic or other) is important to you, or what aspect of your active involvement makes you most proud.</p>
+                <%= f.text_area :commitments, 'class' => 'form-control', 'tabindex' => '61', 'maxlength' => '150' %>
+              </div>
+              <div class="form-group coach">
+                <h5>Availability during program</h5>
+                <p class="help">As a Leadership Coach (LC), we anticipate that you'll facilitate a 2 hour leadership session every 3-4 weeks from October 20 until May 1.</p>
+                <label class="coach">Please let us know any weeks you know you will not be available</label>
+                <p class="help">We may have already discussed dates for which you anticipate a conflict due to travel or other competing priorities. Knowing your schedule may have changed since, I'll assume this form overrides anything we discussed. We understand this might evolve over the course of the 20 weeks, and just ask you to keep us updated as you get more clarity over your schedule</p>
+                <%= f.text_area :cannot_attend, 'class' => 'form-control', 'tabindex' => '62', 'maxlength' => '150' %>
+              </div>
+              <div class="form-group student">
+                <label class="checkbox">
+                  <%= f.check_box :affirm_qualified, 'tabindex' => '63' %>
+                  I affirm that I am qualified to participate in Beyond Z ([criteria listed here]), and that I can fulfill my commitment of [approximately 2 hours weekly] to Beyond Z. </label>
+              </div>
+              <div class="form-group student">
+                <label class="checkbox">
+                  <%= f.check_box :affirm_commit, 'tabindex' => '64' %>
+                  I affirm that, if accepted and enrolled, I commit to participate fully in the program by coming to all cohort sessions prepared to engage in conversations and to support and challenge my peers. </label>
+              </div>
+            </div>
+            <!-- #form-commitment --> 
+          </section>
+        </div>
+        <!-- .section-container -->
+      </div>
+
       <div class="plank plain-md student">
         <div class="section-container">
           <section>
@@ -250,49 +294,6 @@
           </section>
         </div>
         <!-- .section-container --> 
-      </div>
-
-      <div class="plank plain-lt coach student">
-        <div class="section-container">
-          <section>
-            <div id="form-commitment">
-              <h2>Commitment and Availability</h2>
-              <div class="form-group">
-                <label>Why do you want to join Beyond Z?</label>
-                <%= f.text_area :why_bz, 'class' => 'form-control', 'tabindex' => '59', 'maxlength' => '150' %>
-              </div>
-              <div class="form-group student">
-                <label>With what other campus or volunteer activities are you <em>currently</em> involved in your community?</label>
-                <p class="help">Please list any community-based organizations with which you currently share a significant part of your time, and the approximate hours per month you commit to each.</p>
-                <%= f.text_area :community_organization_commitment, 'class' => 'form-control', 'tabindex' => '60', 'maxlength' => '150' %>
-              </div>
-              <div class="form-group student">
-                <label>What are your top commitments this upcoming year?</label>
-                <p class="help">Please explain either why each of these activities (academic or other) is important to you, or what aspect of your active involvement makes you most proud.</p>
-                <%= f.text_area :commitments, 'class' => 'form-control', 'tabindex' => '61', 'maxlength' => '150' %>
-              </div>
-              <div class="form-group coach">
-                <h5>Availability during program</h5>
-                <p class="help">As a Leadership Coach (LC), we anticipate that you'll facilitate a 2 hour leadership session every 3-4 weeks from October 20 until May 1.</p>
-                <label class="coach">Please let us know any weeks you know you will not be available</label>
-                <p class="help">We may have already discussed dates for which you anticipate a conflict due to travel or other competing priorities. Knowing your schedule may have changed since, I'll assume this form overrides anything we discussed. We understand this might evolve over the course of the 20 weeks, and just ask you to keep us updated as you get more clarity over your schedule</p>
-                <%= f.text_area :cannot_attend, 'class' => 'form-control', 'tabindex' => '62', 'maxlength' => '150' %>
-              </div>
-              <div class="form-group student">
-                <label class="checkbox">
-                  <%= f.check_box :affirm_qualified, 'tabindex' => '63' %>
-                  I affirm that I am qualified to participate in Beyond Z ([criteria listed here]), and that I can fulfill my commitment of [approximately 2 hours weekly] to Beyond Z. </label>
-              </div>
-              <div class="form-group student">
-                <label class="checkbox">
-                  <%= f.check_box :affirm_commit, 'tabindex' => '64' %>
-                  I affirm that, if accepted and enrolled, I commit to participate fully in the program by coming to all cohort sessions prepared to engage in conversations and to support and challenge my peers. </label>
-              </div>
-            </div>
-            <!-- #form-commitment --> 
-          </section>
-        </div>
-        <!-- .section-container -->
       </div>
 
       <div class="plank plain-lt both coach student">
