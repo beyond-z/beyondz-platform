@@ -23,14 +23,18 @@ $(document).ready(function() {
 
 
     // hide all other fields until one of the applying as is selected
-    if(!$('#position_coach').prop('checked'))
-      $('.coach:not(.student)').fadeOut('fast');
-    if(!$('#position_student').prop('checked'))
-      $('.student:not(.coach)').fadeOut('fast');
+    if(!$('#position_coach').prop('checked') && !$('#position_student').prop('checked'))
+      $('.coach, .student').hide(); // none are selected, hide everything
+    else {
+      // one is selected but not the other, so need to be more careful about what we hide
+      if(!$('#position_coach').prop('checked'))
+        $('.coach:not(.student)').fadeOut('fast');
+      if(!$('#position_student').prop('checked'))
+        $('.student:not(.coach)').fadeOut('fast');
+    }
     
-    // Show or hide questions based on user type and program:
+    // Show or hide questions based on user type and program upon selection change:
     $('[value=student]').click(function(){
-      console.log('student');
       $('.coach').fadeOut('fast');
       $('.student').fadeIn('fast');
     });

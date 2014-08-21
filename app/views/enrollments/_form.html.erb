@@ -28,7 +28,7 @@
                 <h5>Applying as</h5>
                 <input tabindex="7" value="" type="hidden" name="position" />
                 <label class="radio"><%= f.radio_button :position, 'coach', 'value' => 'coach', 'tabindex' => '8', 'id' => 'position_coach' %>Leadership Coach</label><label class="radio"><%= f.radio_button :position, 'student', 'value' => 'student', 'tabindex' => '9', 'id' => 'position_student' %>Participant (student)</label>              </div>
-              <div id="form-track">
+              <div class="coach student" id="form-track">
                 <h4>Applying for</h4>
                 <p class="help coach">Please check all that apply</p>
                 <div class="form-group both">
