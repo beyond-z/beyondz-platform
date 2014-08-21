@@ -93,7 +93,7 @@
                   <h5>Status as Student</h5>
                   <label class="checkbox">
                     <%= f.check_box :will_be_student, 'tabindex' => '16' %>
-                    I will be a student at <span class="university-name">San Jose State University</span> during <span class="start-date">Oct 2014</span> &#8211; <span class="end-date">April 2015</span> </label>
+                    I will be a student in good academic standing, enrolled at <span class="university-name">San Jose State University</span> during <span class="start-date">Oct 2014</span> &#8211; <span class="end-date">April 2015</span></label>
                 </div>
                 <div class="form-group coach">
                   <label>Undergraduate College/University</label>
@@ -136,12 +136,11 @@
         <div class="section-container">
           <section>
             <div id="form-prof-bkg">
-              <h2>Professional and Volunteer Background</h2>
-              <!--div class="form-group student">
-                <label>involved in your community?</label>
-                <p class="help">Please list any community-based organizations with which you currently share a significant part of your time, and the approximate hours per month you commit to each.</p>
-                <%= f.text_area :community_organization_commitment, 'class' => 'form-control', 'tabindex' => '60', 'maxlength' => '150' %>
-              </div-->
+              <h2>Professional and Volunteer Background and Commitment</h2>
+              <div class="form-group student">
+                <label>What are your current volunteer or professional activities?</label>
+                <p class="help">Please include approximate hours committed per month</p>
+                <textarea maxlength="300" class="form-control"></textarea>
               <div class="form-group">
                 <label>Please provide a link to your LinkedIn profile (if you have one)</label>
                 <p class="help">Please make sure the resume is detailed, comprehensive and up to date, and that the link you are sharing is publicly viewable.</p>
@@ -169,21 +168,8 @@
                 <p class="help">Even if you aren't quite sure yet, please let us know what you are hoping to do, or options you are seriously considering.</p>
                 <%= f.text_area :post_graduation_plans, 'class' => 'form-control', 'tabindex' => '30', 'maxlength' => '150' %>
               </div>
-              
-              
-            </div>
-            <!-- #form-prof-bkg --> 
-          </section>
-        </div>
-        <!-- .section-container --></div>
-
-      <div class="plank plain-lt coach student">
-        <div class="section-container">
-          <section>
-            <div id="form-commitment">
-              <h2>Commitment and Availability</h2>
               <div class="form-group">
-                <label>Why do you want to join Beyond Z?</label>
+                <label>Why do you want to join Beyond Z<span class="coach"> as a Leadership Coach</span>?</label>
                 <%= f.text_area :why_bz, 'class' => 'form-control', 'tabindex' => '59', 'maxlength' => '500' %>
               </div>
               <div class="form-group coach">
@@ -201,36 +187,33 @@
                 <p class="help">While we are interested in seeing the diversity of activities in which you're involved, we are also curious what has been particularly meaningful among those activities.</p>
                 <textarea class="form-control" tabindex="26" maxlength="300"></textarea>
               </div>
-
-
               <div class="form-group coach">
-                <label>How would you describe your experience with teaching and/or coaching, especially in low income communities?</label>
+                <label>Share about one of your experiences teaching, coaching, and/or working with young people from low income communities. Describe your role, experience, and impact</label>
                 <p class="help">Please think expansively. Examples include years leading a classroom, summers coaching a youth sports team, time leading or participating in a work-based mentoring or onboarding program, etc.</p>
                 <%= f.text_area :teaching_experience, 'class' => 'form-control', 'tabindex' => '31', 'maxlength' => '150' %>
               </div>
-
               <div class="form-group student">
                 <label>Upcoming commitments</label>
                 <p class="help">In the year ahead, what are your 1-2 commitments that make you the most proud or that you consider most important? Why?</p>
                 <%= f.text_area :commitments, 'class' => 'form-control', 'tabindex' => '61', 'maxlength' => '150' %>
               </div>
-              <!--div class="form-group coach">
+              <div class="form-group coach">
                 <h5>Availability during program</h5>
                 <p class="help">As a Leadership Coach (LC), we anticipate that you'll facilitate a 2 hour leadership session every 3-4 weeks from October 20 until May 1.</p>
                 <label class="coach">Please let us know any weeks you know you will not be available</label>
-                <p class="help">We may have already discussed dates for which you anticipate a conflict due to travel or other competing priorities. Knowing your schedule may have changed since, I'll assume this form overrides anything we discussed. We understand this might evolve over the course of the 20 weeks, and just ask you to keep us updated as you get more clarity over your schedule</p>
-                <%= f.text_area :cannot_attend, 'class' => 'form-control', 'tabindex' => '62', 'maxlength' => '150' %>
-              </div-->
-              <!--div class="form-group student">
+                <p class="help">We may have already discussed dates for which you anticipate a conflict due to travel or other competing priorities. Knowing your schedule may have changed since, we'll assume this form overrides anything we discussed. We understand this might evolve over the course of the 20 weeks, and just ask you to keep us updated as you get more clarity over your schedule</p>
+                <%= f.text_area :cannot_attend, 'class' => 'form-control', 'tabindex' => '62', 'maxlength' => '300' %>
+              </div>
+              <div class="form-group student">
                 <label class="checkbox">
                   <%= f.check_box :affirm_qualified, 'tabindex' => '63' %>
-                  I affirm that I am qualified to participate in Beyond Z ([criteria listed here]), and that I can fulfill my commitment of [approximately 2 hours weekly] to Beyond Z. </label>
-              </div-->
-              <!--div class="form-group student">
+                  I affirm that I am qualified to participate in Beyond Z, and that I can fulfill my commitment of up to approximately 10 hours per month to Beyond Z. </label>
+              </div>
+              <div class="form-group student">
                 <label class="checkbox">
                   <%= f.check_box :affirm_commit, 'tabindex' => '64' %>
                   I affirm that, if accepted and enrolled, I commit to participate fully in the program by coming to all cohort sessions prepared to engage in conversations and to support and challenge my peers. </label>
-              </div-->
+              </div>
             </div>
             <!-- #form-commitment --> 
           </section>
@@ -330,12 +313,16 @@
                 <label>What city do you identify as your hometown?</label>
                 <%= f.text_field :hometown, 'class' => 'form-control short', 'tabindex' => '46', 'type' => 'text', 'placeholder' => 'City, ST' %>
               </div>
-              <!--div class="form-group coach">
-                <label>Twitter handle</label>
+              <div class="form-group">
+                <label>What languages other than English do you speak fluently?</label>
+                <input class="form-control" type="text" placeholder="Example: Spanish, Cantonese"></input>
+              </div>
+              <div class="form-group coach">
+                <label>Twitter handle, if you have one</label>
                 <div class="input-group"> <span class="input-group-addon">@</span>
                   <%= f.text_field :twitter_handle, 'class' => 'form-control short', 'tabindex' => '47', 'type' => 'text' %>
                 </div>
-              </div-->
+              </div>
               <div class="form-group coach">
                 <label>Do you have a personal website or blog you'd like to share with us?</label>
                 <div class="input-group"> <span class="input-group-addon">http://</span>
