@@ -7,5 +7,6 @@
   <li><%= link_to 'Create new user', new_admin_user_path %></li>
 
   <li><%= link_to 'Enrollment Applications', admin_enrollments_path %></li>
-  <li><%= link_to 'Applications Export', admin_enrollments_path(:format => 'csv') %></li>
+  <li><%= link_to 'Applications Export (csv)', admin_enrollments_path(:format => 'csv') %></li>
+  <li><%= link_to 'Applications Export (xls)', admin_enrollments_path(:format => 'xls') %></li>
 </ul>
