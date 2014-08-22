@@ -1,7 +1,6 @@
 $(document).ready(function() {
-    // don't allow submissions
+    // make the readonly form actually readonly by prohibiting submissions and restricting edits
     $('#enrollment-form-holder.readonly form').submit(function() { return false; });
-    // don't allow edits
     $('#enrollment-form-holder.readonly input, #enrollment-form-holder.readonly textarea').attr('readonly', 'readonly');
 
 
