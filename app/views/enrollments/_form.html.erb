@@ -1,4 +1,8 @@
+<% if @enrollment_read_only %>
+<div id="enrollment-form-holder" class="readonly">
+<% else %>
 <div id="enrollment-form-holder">
+<% end %>
   <%= form_for @enrollment, role: 'form' do |f| %>
     <%= render :partial => "shared/form_errors", locals: { object: @enrollment } %>
     <%= f.hidden_field :user_id, value: current_user.id %>
@@ -40,18 +44,23 @@
 
 
 
+                  <div class="coach student">
                   <h5>Beyond Z Bay Area</h5>
                     <label class="checkbox"><%= f.check_box :program_col_col_sjsu, 'value' => 'col-sjsu', 'id' => 'program-col_col-sjsu' %> BZ Leadership and Career Accelerator (College Program) at San Jose State University, Oct 2014 - April 2015</label>
-                    <label class="checkbox"><%= f.check_box :program_ms_ms_epa, 'value' => 'ms-epa', 'id' => 'program-ms_ms-epa' %> BZ Overdrive (Middle School Program) in East Palo Alto, Oct 2014 - June 2015</label>
-                    <label class="checkbox"><%= f.check_box :program_ms_ms_mp, 'value' => 'ms-mp', 'id' => 'program-ms_ms-mp' %> BZ Overdrive (Middle School Program) in Menlo Park, Oct 2014 - June 2015</label>
+                    <div class="coach">
+                      <label class="checkbox"><%= f.check_box :program_ms_ms_epa, 'value' => 'ms-epa', 'id' => 'program-ms_ms-epa' %> BZ Overdrive (Middle School Program) in East Palo Alto, Oct 2014 - June 2015</label>
+                      <label class="checkbox"><%= f.check_box :program_ms_ms_mp, 'value' => 'ms-mp', 'id' => 'program-ms_ms-mp' %> BZ Overdrive (Middle School Program) in Menlo Park, Oct 2014 - June 2015</label>
+                    </div>
 
-                  <h5>Beyond Z New York City</h5>
-                    <label class="checkbox"><%= f.check_box :program_ms_ms_brk, 'value' => 'ms-brk', 'id' => 'program-ms_ms-brk' %> BZ Overdrive (Middle School Program) in Brooklyn, October 2014 - June 2015</label>
-                    <label class="checkbox"><%= f.check_box :program_ms_ms_rlm, 'id' => "program-ms_ms-rlm", 'value'=>"ms-rlm" %> BZ Overdrive (Middle School Program) in Harlem, October 2014 - June 2015</label>
-                    <label class="checkbox"><%= f.check_box :program_ms_ms_brx, 'id' => "program-ms_ms-brx", 'value'=>"ms-brx" %> BZ Overdrive (Middle School Program) in Bronx, October 2014 - June 2015</label>
+                  <div class="coach">
+                    <h5>Beyond Z New York City</h5>
+                      <label class="checkbox"><%= f.check_box :program_ms_ms_brk, 'value' => 'ms-brk', 'id' => 'program-ms_ms-brk' %> BZ Overdrive (Middle School Program) in Brooklyn, October 2014 - June 2015</label>
+                      <label class="checkbox"><%= f.check_box :program_ms_ms_rlm, 'id' => "program-ms_ms-rlm", 'value'=>"ms-rlm" %> BZ Overdrive (Middle School Program) in Harlem, October 2014 - June 2015</label>
+                      <label class="checkbox"><%= f.check_box :program_ms_ms_brx, 'id' => "program-ms_ms-brx", 'value'=>"ms-brx" %> BZ Overdrive (Middle School Program) in Bronx, October 2014 - June 2015</label>
 
-                  <h5>Beyond Z DC Area</h5>
-                    <label class="checkbox"><%= f.check_box :program_ms_ms_dc, 'id' => "program-ms_ms-dc", 'value'=>"ms-dc" %> BZ Overdrive (Middle School Program) in Washington, DC, dates tbc</label>
+                    <h5>Beyond Z DC Area</h5>
+                      <label class="checkbox"><%= f.check_box :program_ms_ms_dc, 'id' => "program-ms_ms-dc", 'value'=>"ms-dc" %> BZ Overdrive (Middle School Program) in Washington, DC, dates tbc</label>
+                  </div>
 
 
               </div>
@@ -157,7 +166,8 @@
                 <label>What are your current volunteer or professional activities?</label>
                 <p class="help">Please include approximate hours committed per month</p>
                 <%= f.text_area :current_volunteer_activities, 'class' => 'form-control', 'maxlength' => '300' %>
-              <div class="form-group">
+              </div>
+              <div class="form-group coach student">
                 <label>Please provide a link to your LinkedIn profile (if you have one)</label>
                 <p class="help">Please make sure the resume is detailed, comprehensive and up to date, and that the link you are sharing is publicly viewable.</p>
                 <div class="input-group"> <span class="input-group-addon">http://</span>
@@ -174,12 +184,12 @@
                 <p class="help">Please briefly describe your responsibilities or activities.</p>
                 <%= f.text_area :last_summer, 'class' => 'form-control', 'maxlength' => '150' %>
               </div>
-             <div class="form-group ">
+             <div class="form-group coach student">
                 <label><span class="coach">If still in college, w</span><span class="student">W</span>hat do you hope to do post-graduation?</label>
                 <p class="help">Even if you aren't quite sure yet, please let us know what you are hoping to do, or options you are seriously considering.</p>
                 <%= f.text_area :post_graduation_plans, 'class' => 'form-control', 'maxlength' => '300' %>
               </div>
-              <div class="form-group">
+              <div class="form-group coach student">
                 <label>Why do you want to join Beyond Z<span class="coach"> as a Leadership Coach</span>?</label>
                 <%= f.text_area :why_bz, 'class' => 'form-control', 'maxlength' => '500' %>
               </div>
@@ -199,7 +209,7 @@
                 <%= f.text_area :meaningful_experience, 'class' => 'form-control', 'maxlength' => '300' %>
               </div>
               <div class="form-group coach">
-                <label>Share about one of your experiences teaching, coaching, and/or working with young people from low income communities. Describe your role, experience, and impact</label>
+                <label>Share about one of your experiences teaching, coaching, and/or working with young people from low income communities. Describe your role, experience, and impact.</label>
                 <p class="help">Please think expansively. Examples include years leading a classroom, summers coaching a youth sports team, time leading or participating in a work-based mentoring or onboarding program, etc.</p>
                 <%= f.text_area :teaching_experience, 'class' => 'form-control', 'maxlength' => '500' %>
               </div>
@@ -212,7 +222,7 @@
                 <h5>Availability during program</h5>
                 <p class="help">As a Leadership Coach (LC), we anticipate that you'll facilitate a 2 hour leadership session every 3-4 weeks from October 20 until May 1.</p>
                 <label class="coach">Please let us know any weeks you know you will not be available</label>
-                <p class="help">We may have already discussed dates for which you anticipate a conflict due to travel or other competing priorities. Knowing your schedule may have changed since, we'll assume this form overrides anything we discussed. We understand this might evolve over the course of the 20 weeks, and just ask you to keep us updated as you get more clarity over your schedule</p>
+                <p class="help">We may have already discussed dates for which you anticipate a conflict due to travel or other competing priorities. Knowing your schedule may have changed since, we'll assume this form overrides anything we discussed. We understand this might evolve over the course of the 20 weeks, and just ask you to keep us updated as you get more clarity over your schedule.</p>
                 <%= f.text_area :cannot_attend, 'class' => 'form-control', 'maxlength' => '300' %>
               </div>
               <div class="form-group student">
@@ -235,7 +245,7 @@
       <div class="plank plain-md student">
         <div class="section-container">
           <section>
-            <div id="form-references">
+            <div id="form-references" class="student">
               <h2>References</h2>
               <p class="help">Please list TWO people we could contact as references, e.g. a teacher, manager, advisor, mentor, or a peer who knows you well.</p>
               <div>
@@ -371,10 +381,15 @@
         <div class="section-container">
           <section>
             <div id="form-end">
-              <div class="apply-button form-submit">
-                <div class="apply-icon"></div>
-                <%= f.submit 'SEND' %>
+              <% if @enrollment_read_only %>
+                <div class="apply-button">Your application has been received!</div>
+              <% else %>
+                <div class="apply-button form-submit">
+                  <div class="apply-icon"></div>
+                  <%= f.submit 'SEND', 'name'=>'user_submit' %>
+                  </div>
                 </div>
+              <% end %>
             </div>
             <!-- #form-almost-done --> 
           </section>

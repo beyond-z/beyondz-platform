@@ -39,6 +39,14 @@ class EnrollmentsController < ApplicationController
       redirect_to new_enrollment_path
     end
 
+    if @enrollment.explicitly_submitted
+      # the user has hit the send button, so they finalized
+      # their end. Since it may be in review already, we make
+      # it read only.
+
+      @enrollment_read_only = true
+    end
+
     render 'new'
   end
 
@@ -47,12 +55,30 @@ class EnrollmentsController < ApplicationController
     @enrollment.update_attributes(enrollment_params)
     @enrollment.save!
 
-    flash[:message] = 'Your application has been updated'
-    redirect_to enrollment_path(@enrollment.id)
+    if @enrollment.errors.any?
+      # errors will be displayed with the form btw
+      render 'new'
+      return
+    else
+      if params[:user_submit].nil?
+        # the user didn't explicitly submit, update it and allow
+        # them to continue editing
+        # (this can happen if they do an intermediate save of work in progress)
+        flash[:message] = 'Your application has been updated'
+        redirect_to enrollment_path(@enrollment.id)
+      else
+        # they did explicitly submit, finalize the application and show them the
+        # modified welcome message so they know to wait for us to contact them
+
+        @enrollment.explicitly_submitted = true
+        @enrollment.save!
+
+        redirect_to welcome_path
+      end
+    end
   end
 
   def create
-
     @enrollment = Enrollment.create(enrollment_params)
 
     if @enrollment.errors.any?

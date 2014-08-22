@@ -1,4 +1,10 @@
 $(document).ready(function() {
+    // don't allow submissions
+    $('#enrollment-form-holder.readonly form').submit(function() { return false; });
+    // don't allow edits
+    $('#enrollment-form-holder.readonly input, #enrollment-form-holder.readonly textarea').attr('readonly', 'readonly');
+
+
     // update the charater counter on textareas that have a maxlength property:
     function updateCountdown(el) {
       var maxlength = $(el).prop('maxlength')
@@ -19,6 +25,11 @@ $(document).ready(function() {
       var parent = $(this).closest('.expandable');
       $(parent).siblings('.expandable').children('.extra').slideUp('fast')
       $(parent).children('.extra').slideDown('fast');
+    });
+    
+    // Generate TOC:
+    $('h2').not('.sr-only, #form-almost-done h2').each(function() {
+      $('#jumplinks').append('<li class="page-jump '+$(this).closest('div').prop('class')+'"><a href="#'+$(this).closest('div').prop('id')+'"><div class="jump-icon"></div>'+$(this).text()+'</a></li>');
     });
 
 
@@ -41,11 +52,6 @@ $(document).ready(function() {
     $('[value=coach]').click(function(){
       $('.student').fadeOut('fast');
       $('.coach').fadeIn('fast');
-    });
-    
-    // Generate TOC:
-    $('h2').not('.sr-only, #form-almost-done h2').each(function() {
-      $('#jumplinks').append('<li class="page-jump"><a href="#'+$(this).closest('div').prop('id')+'"><div class="jump-icon"></div>'+$(this).text()+'</a></li>');
     });
 
     // Hide "other" checkbox/radio detail inputs 
