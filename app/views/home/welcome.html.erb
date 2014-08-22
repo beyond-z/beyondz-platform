@@ -6,11 +6,16 @@
           <p class="shoutout">Welcome <%= @new_user.name %>!</p>
           <p class="feature">Please check your email at <%= @new_user.email %> and follow the instructions to complete your account activation.</p>
         <% else %>
-          <p class="shoutout">Your account was successfully activated.</p>
-          <p>
-            Congratulations, you've just become part of a growing community devoted to making sure more talented young people fulfill their potential to become leaders, no matter where they come from.
-          </p>
-          <p class="feature">We'll be in touch personally via email soon!</p>
+          <% if @application_received %>
+            <h2>Thank you for applying to Beyond Z.</h2>
+            <p>We will contact you as soon as we've made our decision. If you have any further questions please feel free to <a href="mailto:tech@beyondz.org">contact us</a></p>
+          <% else %>
+            <p class="shoutout">Your account was successfully activated.</p>
+            <p>
+              Congratulations, you've just become part of a growing community devoted to making sure more talented young people fulfill their potential to become leaders, no matter where they come from.
+            </p>
+            <p class="feature">We'll be in touch personally via email soon!</p>
+          <% end %>
         <% end %>
       </div>
     </section>
@@ -37,9 +42,14 @@
     <section>
       <div class="col-sm-4 col-sm-offset-4">
         <h2>Looking for what to do next?</h2>
-        <div class="apply-button">
-          <%= link_to '<div class="apply-icon"></div><div class="apply-text">Apply now!</div>'.html_safe, new_enrollment_path %><br />
-        </div>
+
+        <% if @application_received %>
+          <!-- no need for the apply button again though we could show it for them to review -->
+        <% else %>
+          <div class="apply-button">
+            <%= link_to '<div class="apply-icon"></div><div class="apply-text">Apply now!</div>'.html_safe, new_enrollment_path %><br />
+          </div>
+        <% end %>
         <p>
           You can also check out the following links to discover all the great reasons people are joining BeyondZ:<br />
           <%= link_to 'Become a fellow', apply_path %><br />
