@@ -4,8 +4,17 @@ class ChangeFieldsOnEnrollment < ActiveRecord::Migration
     add_column :enrollments, :current_volunteer_activities, :text
     add_column :enrollments, :meaningful_experience, :text
     add_column :enrollments, :languages, :string
-    add_column :enrollments, :program_ms_ms_brx, :boolean
-    add_column :enrollments, :program_ms_ms_dc, :boolean
+
+    # per Sheila and Abby, we just want NYC right now, not specific boroughs
+
+    add_column :enrollments, :program_ms_ms_nyc, :boolean
+    #add_column :enrollments, :program_ms_ms_brx, :boolean
+    remove_column :enrollments, :program_ms_ms_brk, :boolean
+    remove_column :enrollments, :program_ms_ms_rlm, :boolean
+
+    # DC is not yet live
+    #add_column :enrollments, :program_ms_ms_dc, :boolean
+
     add_column :enrollments, :program_ms_ms_mp, :boolean
 
     add_column :enrollments, :grad_school, :string
