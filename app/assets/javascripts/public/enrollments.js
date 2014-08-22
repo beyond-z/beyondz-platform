@@ -1,4 +1,9 @@
 $(document).ready(function() {
+    // make the readonly form actually readonly by prohibiting submissions and restricting edits
+    $('#enrollment-form-holder.readonly form').submit(function() { return false; });
+    $('#enrollment-form-holder.readonly input, #enrollment-form-holder.readonly textarea').attr('readonly', 'readonly');
+
+
     // update the charater counter on textareas that have a maxlength property:
     function updateCountdown(el) {
       var maxlength = $(el).prop('maxlength')
@@ -20,28 +25,32 @@ $(document).ready(function() {
       $(parent).siblings('.expandable').children('.extra').slideUp('fast')
       $(parent).children('.extra').slideDown('fast');
     });
+    
+    // Generate TOC:
+    $('h2').not('.sr-only, #form-almost-done h2').each(function() {
+      $('#jumplinks').append('<li class="page-jump '+$(this).closest('div').prop('class')+'"><a href="#'+$(this).closest('div').prop('id')+'"><div class="jump-icon"></div>'+$(this).text()+'</a></li>');
+    });
 
 
     // hide all other fields until one of the applying as is selected
-    if(!$('#position_coach').prop('checked'))
-      $('.coach').fadeOut('fast');
-    if(!$('#position_student').prop('checked'))
-      $('.student').fadeOut('fast');
+    if(!$('#position_coach').prop('checked') && !$('#position_student').prop('checked'))
+      $('.coach, .student').hide(); // none are selected, hide everything
+    else {
+      // one is selected but not the other, so need to be more careful about what we hide
+      if(!$('#position_coach').prop('checked'))
+        $('.coach:not(.student)').fadeOut('fast');
+      if(!$('#position_student').prop('checked'))
+        $('.student:not(.coach)').fadeOut('fast');
+    }
     
-    // Show or hide questions based on user type and program:
+    // Show or hide questions based on user type and program upon selection change:
     $('[value=student]').click(function(){
-      console.log('student');
       $('.coach').fadeOut('fast');
       $('.student').fadeIn('fast');
     });
     $('[value=coach]').click(function(){
       $('.student').fadeOut('fast');
       $('.coach').fadeIn('fast');
-    });
-    
-    // Generate TOC:
-    $('h2').not('.sr-only, #form-almost-done h2').each(function() {
-      $('#jumplinks').append('<li class="page-jump"><a href="#'+$(this).closest('div').prop('id')+'"><div class="jump-icon"></div>'+$(this).text()+'</a></li>');
     });
 
     // Hide "other" checkbox/radio detail inputs 

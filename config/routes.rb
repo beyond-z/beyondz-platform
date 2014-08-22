@@ -39,6 +39,8 @@ BeyondzPlatform::Application.routes.draw do
     end
 
     resources :students, controller: 'users'
+
+    resources :enrollments
   end
 
   get '/assignments/:action', controller: 'assignments' # For the hard-coded assignment details

@@ -25,6 +25,14 @@ class HomeController < ApplicationController
   end
 
   def welcome
+    if user_signed_in?
+      existing_enrollment = Enrollment.find_by(:user_id => current_user.id)
+      unless existing_enrollment.nil?
+        if existing_enrollment.explicitly_submitted
+          @application_received = true
+        end
+      end
+    end
   end
 
   def volunteer

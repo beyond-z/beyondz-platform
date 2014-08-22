@@ -1,0 +1,8 @@
+<table>
+<% @enrollments.each do |e| %>
+<tr>
+  <td><%= link_to e.user.name, enrollment_path(e) %>
+  </td>
+</tr>
+<% end %>
+</table>

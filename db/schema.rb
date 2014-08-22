@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140813160952) do
+ActiveRecord::Schema.define(version: 20140822161716) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -101,8 +101,6 @@ ActiveRecord::Schema.define(version: 20140813160952) do
     t.boolean  "program_col_col_sjsu"
     t.string   "program_ms"
     t.boolean  "program_ms_ms_epa"
-    t.boolean  "program_ms_ms_brk"
-    t.boolean  "program_ms_ms_rlm"
     t.boolean  "will_be_student"
     t.string   "university"
     t.string   "anticipated_graduation"
@@ -132,7 +130,6 @@ ActiveRecord::Schema.define(version: 20140813160952) do
     t.string   "reference_how_long_known"
     t.string   "reference_email"
     t.string   "reference_phone"
-    t.string   "reference2_name"
     t.string   "reference2_how_known"
     t.string   "reference2_how_long_known"
     t.string   "reference2_email"
@@ -141,17 +138,26 @@ ActiveRecord::Schema.define(version: 20140813160952) do
     t.boolean  "affirm_commit"
     t.string   "time_taken"
     t.text     "gpa_circumstances"
-    t.text     "academic_work_since_undergrad"
     t.text     "community_connection"
     t.text     "last_summer"
     t.text     "post_graduation_plans"
     t.text     "teaching_experience"
     t.text     "personal_passion"
     t.text     "why_bz"
-    t.text     "community_organization_commitment"
     t.text     "commitments"
     t.text     "cannot_attend"
     t.text     "comments"
+    t.string   "reference2_name",                       limit: 180
+    t.text     "other_meaningful_volunteer_activities"
+    t.text     "current_volunteer_activities"
+    t.text     "meaningful_experience"
+    t.string   "languages"
+    t.boolean  "program_ms_ms_nyc"
+    t.boolean  "program_ms_ms_mp"
+    t.string   "grad_school"
+    t.string   "grad_degree"
+    t.string   "anticipated_grad_school_graduation"
+    t.boolean  "explicitly_submitted"
   end
 
   add_index "enrollments", ["user_id"], name: "index_enrollments_on_user_id", using: :btree
