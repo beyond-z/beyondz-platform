@@ -3,6 +3,8 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
+
+  has_one :enrollment, dependent: :destroy
   has_many :assignments, dependent: :destroy
   has_many :tasks
 
@@ -12,8 +14,8 @@ class User < ActiveRecord::Base
   validates :first_name, presence: true
   validates :last_name, presence: true
 
-  #validates :anticipated_graduation, presence: true, if: :graduation_required?
-  #validates :university_name, presence: true, if: :university_name_required?
+  # validates :anticipated_graduation, presence: true, if: :graduation_required?
+  # validates :university_name, presence: true, if: :university_name_required?
 
   def graduation_required?
     applicant_type == 'grad_student' || applicant_type == 'undergrad_student' ||
@@ -47,6 +49,10 @@ class User < ActiveRecord::Base
 
   def student?
     applicant_type.nil? || applicant_type.empty?
+  end
+
+  def admin?
+    is_administrator
   end
 
   # This will create the skeletons for assignments, tasks,
@@ -121,7 +127,7 @@ class User < ActiveRecord::Base
   end
 end
 
-class LoginException < Exception
+class LoginException < StandardError
   def initialize(message)
     @message = message
   end

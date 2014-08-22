@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140730164622) do
+ActiveRecord::Schema.define(version: 20140822161716) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,82 @@ ActiveRecord::Schema.define(version: 20140730164622) do
 
   add_index "comments", ["task_id"], name: "index_comments_on_task_id", using: :btree
   add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
+
+  create_table "enrollments", force: true do |t|
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "first_name"
+    t.string   "middle_name"
+    t.string   "last_name"
+    t.string   "email"
+    t.string   "phone"
+    t.boolean  "accepts_txt"
+    t.string   "position"
+    t.string   "program_col"
+    t.boolean  "program_col_col_sjsu"
+    t.string   "program_ms"
+    t.boolean  "program_ms_ms_epa"
+    t.boolean  "will_be_student"
+    t.string   "university"
+    t.string   "anticipated_graduation"
+    t.string   "major"
+    t.string   "previous_university"
+    t.string   "gpa"
+    t.string   "online_resume"
+    t.string   "resume"
+    t.boolean  "bkg_african_americanblack"
+    t.boolean  "bkg_asian_american"
+    t.boolean  "bkg_latino_or_hispanic"
+    t.boolean  "bkg_native_alaskan"
+    t.boolean  "bkg_native_american_american_indian"
+    t.boolean  "bkg_native_hawaiian"
+    t.boolean  "bkg_pacific_islander"
+    t.boolean  "bkg_whitecaucasian"
+    t.boolean  "bkg_multi_ethnicmulti_racial"
+    t.boolean  "identify_poc"
+    t.boolean  "identify_low_income"
+    t.boolean  "identify_first_gen"
+    t.string   "personal_identity"
+    t.string   "hometown"
+    t.string   "twitter_handle"
+    t.string   "personal_website"
+    t.string   "reference_name"
+    t.string   "reference_how_known"
+    t.string   "reference_how_long_known"
+    t.string   "reference_email"
+    t.string   "reference_phone"
+    t.string   "reference2_how_known"
+    t.string   "reference2_how_long_known"
+    t.string   "reference2_email"
+    t.string   "reference2_phone"
+    t.boolean  "affirm_qualified"
+    t.boolean  "affirm_commit"
+    t.string   "time_taken"
+    t.text     "gpa_circumstances"
+    t.text     "community_connection"
+    t.text     "last_summer"
+    t.text     "post_graduation_plans"
+    t.text     "teaching_experience"
+    t.text     "personal_passion"
+    t.text     "why_bz"
+    t.text     "commitments"
+    t.text     "cannot_attend"
+    t.text     "comments"
+    t.string   "reference2_name",                       limit: 180
+    t.text     "other_meaningful_volunteer_activities"
+    t.text     "current_volunteer_activities"
+    t.text     "meaningful_experience"
+    t.string   "languages"
+    t.boolean  "program_ms_ms_nyc"
+    t.boolean  "program_ms_ms_mp"
+    t.string   "grad_school"
+    t.string   "grad_degree"
+    t.string   "anticipated_grad_school_graduation"
+    t.boolean  "explicitly_submitted"
+  end
+
+  add_index "enrollments", ["user_id"], name: "index_enrollments_on_user_id", using: :btree
 
   create_table "resources", force: true do |t|
     t.string   "url"

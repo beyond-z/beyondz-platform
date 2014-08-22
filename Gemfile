@@ -16,7 +16,7 @@ gem 'bootstrap-sass'
 group :development do
   gem 'rails_layout'
   # Use debugger
-  gem 'debugger'
+  gem 'byebug'
   gem 'better_errors'
   # used with 'better_errors'
   gem 'binding_of_caller'
@@ -40,6 +40,7 @@ gem 'therubyracer', platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
@@ -73,6 +74,9 @@ gem 'aws-sdk', '~> 1.5.8'
 
 # Rubocop code checker
 gem 'rubocop'
+
+# export to excel (xls)
+gem 'to_xls-rails'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'

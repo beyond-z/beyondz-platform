@@ -10,7 +10,7 @@
                           </div>'
             ) %>
             <blockquote>
-              <p>&ldquo;I joined <b>Beyond Z</b> because I wanted to be a part of a <b>community</b> that would help me develop my <b>career skills</b>...one particular thing that I&rsquo;ve learned is to <b>work together</b> with other people and have <b>confidence</b> in myself&rdquo;</p>
+              <p>&ldquo;I joined <b>Beyond Z</b> because I wanted to be a part of a <b>community</b> that would help me develop my <b>career skills</b> &hellip;One particular thing that I&rsquo;ve learned is to <b>work together</b> with other people and have <b>confidence</b> in myself&rdquo;</p>
               <footer>
                 Cesar Ramirez, UC Berkeley, class of 2017
               </footer>
@@ -27,17 +27,17 @@
         <div class="col-sm-12 text-center">
           <section>
             <div class="col-sm-6 col-sm-offset-3">
-              <p class="feature">You got into college. You figured out how to pay for it.<br />You study hard. But you know it takes more than that to reach your full potential.</p>
+              <p class="feature">You know it takes more than studying hard to reach your full potential.</p>
             </div>
           </section>
           <section>
             <div class="col-sm-10 col-sm-offset-1">
-              <p class="shoutout">You want to develop your leadership and career skills so you can get a job after you graduate.<br />Beyond Z is here to help.</p>
+              <p class="shoutout">You want to develop your leadership skills so you can access the best academic and career opportunities.<br />Beyond Z is here to help.</p>
             </div>
           </section>
           <section>
             <div class="col-sm-6 col-sm-offset-3">
-              <p class="feature">Beyond Z discovers, develops, and connects diverse talent <b>like you</b> to ensure that our next generation of leaders can emerge from everywhere.</p>
+              <p class="feature">Beyond Z discovers, develops, and connects diverse young talent <b>like you</b> to ensure that our next generation of leaders can emerge from everywhere.</p>
             </div>
           </section>
           <section>
@@ -61,18 +61,17 @@
   </div>
 
   <a id="what-to-expect"></a>
-  <div class="plank plain-md">
+  <div class="plank plain-lt">
     <div class="section-container">
       <section>
-        <div class="col-md-6 no-pad">
-         <!--  <div class="what-to-expect-img"></div> -->
+        <div class="col-lg-6 no-pad what-to-expect-image">
          <%= image_tag 'what_to_expect.jpg' %>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-6">
             <h2>What to expect</h2>
             <p>As a Beyond Z Leader, you will join a community that will help you explore your authentic leadership, develop 21st Century skills, and accelerate you into your career. Specifically, you’ll: </p>
             <ul>
-              <li><b>Meet</b> with a small cohort of your peers led by a Leadership Coach, a local professional who will act as your coach and champion </li>
+              <li><b>Meet</b> with a small cohort of your peers led by a Leadership Coach, a local professional who will act as your mentor and champion </li>
               <li><b>Reflect</b> on your identity, strengths, skills, and passions and direct those towards a career</li>
               <li><b>Master</b> key career readiness skills like networking, interviewing, and creating an online brand</li>
               <li><b>Create</b> your own products, programs, and presentations, just like you would in a real job </li>
@@ -85,19 +84,25 @@
   </div>
 
   <a id="who-can-apply"></a>
-  <div class="plank primary-lt dark">
-    <div class="section-container right-side-bg-image">
+  <div class="plank plain-md">
+    <div class="section-container who-can-apply-image-section-container">
       <section>
-        <div class="col-md-4">
+        <div class="col-md-8 col-md-push-4 no-pad who-can-apply-image-col">
+          <%= image_tag 'who_can_apply.jpg' %>
+        </div>
+        <div class="col-md-4 col-md-pull-8">
           <h2>Who can apply</h2>
           <p>We’re looking for students who want to accelerate their leadership and career, care about bettering their community, and believe in the importance of diversifying our nation’s leadership force.</p>
-
-          <h3>Qualifications: </h3>
+          <h3>Coaches and Speakers</h3>
+          <%= learn_more_link 'volunteering', volunteer_path %>
+          <h3>BZ Overdrive Program (K-12 Students)</h3>
+          <%= learn_more_link 'bringing Beyond Z Overdrive to your school', partner_path %>
+          <h3>BZ Accelerator Program (College Students)</h3>
           <ul>
             <li>Must be in sophomore standing at your college or university </li>
             <li>Must have a 2.5 cumulative GPA or higher </li>
-            <li>Must be able to commit an average of 2 hours a week to Beyond Z from mid October to late April (excluding all holidays and breaks) </li>
-            <li>Spots for our 2014-2015 class are limited and we may not be able to accept all qualified applicants at this time.  </li>
+            <li>Must be able to commit an average of 2 hours a week to Beyond Z from mid October to late April (except on holidays and breaks) </li>
+            <li>Spots for our 2014-2015 class are limited and we may not be able to accept all qualified applicants at this time.</li>
           </ul>
 
           <%= sign_up_link %>
@@ -111,10 +116,10 @@
     <div class="section-container">
       <section>
         <div class="col-md-12 text-center">
-          <h2>Application and program timeline</h2>
+          <h2>BZ Accelerator college program timeline</h2>
           <dl class="timeline">
             <dt>Now</dt>
-              <dd><%= link_to 'Sign Up', new_enrollment_path %> to Stay in Touch</dd>
+              <dd><%= link_to 'Sign Up', new_user_path %> to Stay in Touch</dd>
             <dt>Early August</dt>
               <dd>Application Opens</dd>
             <dt>Mid September</dt>

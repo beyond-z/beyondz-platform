@@ -82,12 +82,12 @@
   <div class="plank plain-lt">
     <div class="section-container">
       <section>
-        <div class="col-md-4 no-pad">
+        <div class="col-lg-4 no-pad for-students">
           <%= image_tag 'for_students.jpg' %>
         </div>
-        <div class="col-md-8">
+        <div class="col-lg-8">
           <h2>
-            For Students
+            For K-12 and College Students
           </h2>
           <blockquote>
             <p>"Beyond Z introduced me into the real world outside of academics! My interviewing and networking skills have definitely grown - I have met some incredible people and stayed in touch with many of them. My decision to enter the Education field has been reinforced through my time at BZ as well!"
@@ -104,7 +104,10 @@
   <div class="plank plain-md">
     <div class="section-container">
       <section>
-        <div class="col-md-8">
+         <div class="col-lg-4 col-lg-push-8 no-pad for-volunteers">
+          <%= image_tag 'for_volunteers.jpg' %>
+        </div>
+        <div class="col-lg-8 col-lg-pull-4">
           <h2>
             For Volunteers
           </h2>
@@ -114,9 +117,6 @@
             <footer>Aly Mejia<br />Leadership Coach</footer>
           </blockquote>
           <%= learn_more_link 'volunteering', volunteer_path %>
-        </div>
-        <div class="col-md-4 no-pad">
-          <%= image_tag 'for_volunteers.jpg' %>
         </div>
       </section>
     </div>
@@ -159,7 +159,7 @@
     <div class="section-container text-center">
       <section>
         <div class="col-md-12">
-          <p class="shoutout">Ready to jumpstart your career and leadership path today?</p>
+          <p class="shoutout">Ready to jumpstart your leadership path today?</p>
           <br />
           <%= apply_button %>
         </div>

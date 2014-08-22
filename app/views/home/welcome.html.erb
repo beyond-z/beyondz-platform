@@ -6,11 +6,16 @@
           <p class="shoutout">Welcome <%= @new_user.name %>!</p>
           <p class="feature">Please check your email at <%= @new_user.email %> and follow the instructions to complete your account activation.</p>
         <% else %>
-          <p class="shoutout">Your account was successfully activated.</p>
-          <p>
-            Congratulations, you've just become part of a growing community devoted to making sure more talented young people fulfill their potential to become leaders, no matter where they come from.
-          </p>
-          <p class="feature">We'll be in touch personally via email soon!</p>
+          <% if @application_received %>
+            <h2>Thank you for applying to Beyond Z.</h2>
+            <p>We will contact you as soon as we've made our decision. If you have any further questions please feel free to <a href="mailto:tech@beyondz.org">contact us</a></p>
+          <% else %>
+            <p class="shoutout">Your account was successfully activated.</p>
+            <p>
+              Congratulations, you've just become part of a growing community devoted to making sure more talented young people fulfill their potential to become leaders, no matter where they come from.
+            </p>
+            <p class="feature">We'll be in touch personally via email soon!</p>
+          <% end %>
         <% end %>
       </div>
     </section>
@@ -24,7 +29,7 @@
         <h2>Why stop here?</h2>
         <p>Help spread the word so we can discover more leaders and expand the network that supports them:</p>
 
-        <a href="https://twitter.com/intent/tweet?button_hashtag=BeyondZ&text=I%20just%20signed%20up%20for" class="twitter-hashtag-button" data-size="large" data-related="destructionator" data-url="http://beyondz.org/">Tweet #BeyondZ</a>
+        <a href="https://twitter.com/intent/tweet?button_hashtag=BeyondZ&text=I%20just%20signed%20up%20for" class="twitter-hashtag-button" data-size="large" data-url="http://beyondz.org/">Tweet #BeyondZ</a>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
       </div>
@@ -37,8 +42,16 @@
     <section>
       <div class="col-sm-4 col-sm-offset-4">
         <h2>Looking for what to do next?</h2>
+
+        <% if @application_received %>
+          <!-- no need for the apply button again though we could show it for them to review -->
+        <% else %>
+          <div class="apply-button">
+            <%= link_to '<div class="apply-icon"></div><div class="apply-text">Apply now!</div>'.html_safe, new_enrollment_path %><br />
+          </div>
+        <% end %>
         <p>
-          Check out the following links to discover all the great reasons people are joining BeyondZ:<br />
+          You can also check out the following links to discover all the great reasons people are joining BeyondZ:<br />
           <%= link_to 'Become a fellow', apply_path %><br />
           <%= link_to 'Volunteer with Beyond Z', volunteer_path %><br />
           <%= link_to 'Partner with Beyond Z', partner_path %>

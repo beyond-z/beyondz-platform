@@ -11,7 +11,8 @@ BeyondzPlatform::Application.routes.draw do
 
   resources :feedback
   resources :comments
-  resources :enrollments, only: [:new, :create], :path => :signup
+  resources :users, only: [:new, :create], :path => :signup
+  resources :enrollments, only: [:new, :create, :show, :update]
 
   resources :assignments, only: [:index, :update, :show] do
     resources :tasks, only: [:update, :show]
@@ -38,6 +39,8 @@ BeyondzPlatform::Application.routes.draw do
     end
 
     resources :students, controller: 'users'
+
+    resources :enrollments
   end
 
   get '/assignments/:action', controller: 'assignments' # For the hard-coded assignment details

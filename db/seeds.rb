@@ -8,10 +8,10 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-user = User.new(email: "test+student1@beyondz.org", password: "test", first_name: "BeyondZ", last_name: "Test")
-user2 = User.new(email: "test+student2@beyondz.org", password: "test", first_name: "Second", last_name: "Student")
-coach = User.new(email: "test+coach1@beyondz.org", password: "test", first_name: "BeyondZ", last_name: "Coach")
-admin_user = User.new(email: "test+admin@beyondz.org", password: "test", first_name: "BeyondZ", last_name: "Admin", is_administrator: true)
+user = User.new(email: 'test+student1@beyondz.org', password: 'test', first_name: 'BeyondZ', last_name: 'Test')
+user2 = User.new(email: 'test+student2@beyondz.org', password: 'test', first_name: 'Second', last_name: 'Student')
+coach = User.new(email: 'test+coach1@beyondz.org', password: 'test', first_name: 'BeyondZ', last_name: 'Coach')
+admin_user = User.new(email: 'test+admin@beyondz.org', password: 'test', first_name: 'BeyondZ', last_name: 'Admin', is_administrator: true)
 
 user.skip_confirmation!
 user2.skip_confirmation!
@@ -29,7 +29,7 @@ CoachStudent.create(coach_id: coach.id, student_id: user2.id)
 # Task Modules
 text_module = TaskModule.create(name: 'Text', code: 'text')
 compare_module = TaskModule.create(name: 'Compare and Rank', code: 'compare_and_rank')
-resume_builder_module = TaskModule.create(name: 'Resumé Builder', code: 'resume_builder')
+resume_builder_module = TaskModule.create(name: 'Résumé Builder', code: 'resume_builder')
 video_quiz_module = TaskModule.create(name: 'Video Quiz', code: 'video_quiz')
 file_upload_module = TaskModule.create(name: 'File Upload', code: 'file_upload')
 
@@ -45,12 +45,12 @@ item.front_page_info = "
             <li><strong>Organization &amp; Prioritization:</strong> Explore Beyond Z platform. Set-up Google Drive Account for assignments.</li>
           </ul>
         "
-item.title = "Weekend 0 Launch: The Story of Self and Us"
-item.led_by = "Staff"
-item.assignment_download_url = "https://docs.google.com/a/beyondz.org/forms/d/1cgwwrGn3ZMNkrKvL-Uj4FNz1Qf27xPc6usqse7fTWBg/viewform"
-item.start_date = Time.parse("Feb 28")
-item.end_date = Time.parse("Mar 1")
-item.seo_name = "story-of-self"
+item.title = 'Weekend 0 Launch: The Story of Self and Us'
+item.led_by = 'Staff'
+item.assignment_download_url = 'https://docs.google.com/a/beyondz.org/forms/d/1cgwwrGn3ZMNkrKvL-Uj4FNz1Qf27xPc6usqse7fTWBg/viewform'
+item.start_date = Time.parse('Feb 28')
+item.end_date = Time.parse('Mar 1')
+item.seo_name = 'story-of-self'
 item.save
 item.task_definitions.push(
   TaskDefinition.create(
@@ -204,15 +204,15 @@ item.front_page_info = "
           <h3>You will get practice this week:</h3>
           <ul>
             <li>Researching &amp; writing cover letters that connect with potential internship supervisors.</li>
-            <li><strong>NOTE: This is a 2-part module that asks you to write a Resume and a Cover Letter, spending a total of 3 hours across both assignments.</strong></li>
+            <li><strong>NOTE: This is a 2-part module that asks you to write a Résumé and a Cover Letter, spending a total of 3 hours across both assignments.</strong></li>
           </ul>
         "
-item.title = "Week 2(a): Cover Letter"
-item.led_by = "Peer"
-item.assignment_download_url = "assignments/cover-letter/submissions/new"
-item.start_date = Time.parse("Mar 10")
-item.end_date = Time.parse("Mar 16")
-item.seo_name = "cover-letter"
+item.title = 'Week 2(a): Cover Letter'
+item.led_by = 'Peer'
+item.assignment_download_url = 'assignments/cover-letter/submissions/new'
+item.start_date = Time.parse('Mar 10')
+item.end_date = Time.parse('Mar 16')
+item.seo_name = 'cover-letter'
 item.save
 item.task_definitions.push(
   TaskDefinition.create(
@@ -248,36 +248,209 @@ item = AssignmentDefinition.new
 item.front_page_info = "
     <h3>You will get practice this week:</h3>
     <ul>
-      <li>Emphasizing your assets as you write your resume.</li>
-      <li>Practice giving feedback on another college participant&#8217;s resume.</li>
-      <li>Finding summer internships and tailoring your resume to different opportunities that you identify.</li>
-      <li><strong>NOTE: This is a 2-part module that asks you to write a Resume and a Cover Letter, spending a total of 3 hours across both artifacts.</strong></li>
+      <li>Emphasizing your assets as you write your résumé.</li>
+      <li>Practice giving feedback on another college participant&#8217;s résumé.</li>
+      <li>Finding summer internships and tailoring your résumé to different opportunities that you identify.</li>
+      <li><strong>NOTE: This is a 2-part module that asks you to write a résumé and a Cover Letter, spending a total of 3 hours across both artifacts.</strong></li>
     </ul>
   "
-item.title = "Week 2(b): Resume"
-item.led_by = "Peer"
-item.assignment_download_url = "assignments/resume/submissions/new"
-item.start_date = Time.parse("Mar 10")
-item.end_date = Time.parse("Mar 16")
-item.seo_name = "resume"
+item.title = 'Week 2(b): Résumé'
+item.led_by = 'Peer'
+item.assignment_download_url = 'assignments/resume/submissions/new'
+item.start_date = Time.parse('Mar 10')
+item.end_date = Time.parse('Mar 16')
+item.seo_name = 'resume'
 item.save
+
 item.task_definitions.push(
   TaskDefinition.create(
     required: true, position: 1,
-    name: 'Your resumé',
-    details: '<p>Your resumé is the crown jewel of your career portfolio. Just
+    name: 'Parts of a résumé',
+    details: '<p>But before you rank résumés, we go to unpack the basic
+      building blocks of a résumé and discuss what makes a good résumé.</p>
+
+      <object width="560" height="315">
+        <param name="movie" value="' + ("/videos/Interactive_Resume_Parts_Video.swf") + '" />
+        <embed src="' + ("/videos/Interactive_Resume_Parts_Video.swf") + '" width="560" height="315"></embed>
+      </object>
+    '
+  )
+)
+
+item.task_definitions.push(
+  TaskDefinition.create(
+    required: true, position: 2,
+    name: 'Ranking Matrix',
+    details: '
+      <p>
+        Take a look at the components of an effective resume and check out this
+        rubric to assess resume quality along the 4 different parts. After you
+        finish reviewing this rubric, you\'ll review 3 actual student resumes
+        and rank them based on how well you think they did.
+      </p>
+      <table class="matrix-table">
+        <thead>
+          <th style="font-size: 2em;">Category</th>
+          <th>
+            <span style="font-size: 1.5em;">1</span><br />
+            Goes into trash
+          </th>
+          <th>
+            <span style="font-size: 1.5em;">2</span><br />
+            Middle of the stack
+          </th>
+          <th>
+            <span style="font-size: 1.5em;">3</span><br />
+            Scores interview or callback
+          </th>
+        </thead>
+        <tr>
+          <td style="font-weight: bold;">Format</td>
+          <td>
+            <ul>
+              <li>This résumé is either one-half page or 2-3 pgs.</li>
+              <li>Font is too big or hard to read.</li>
+              <li>More white space than words.</li>
+              <li>Multiple spelling and/or grammar errors.</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li>The font and spacing of this résumé are not appealing and
+                cannot be easily scanned.</li>
+              <li>There are a few spelling errors and grammatical mistakes.</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li>This résumé fills the page but is not overcrowded.</li>
+              <li>There are no grammar or spelling errors.</li>
+              <li>Easily scanned.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold;">Education Section</td>
+          <td>
+            <ul>
+              <li>This section is missing crucial information. Ex: Institution
+                is listed, but not its location and graduation.</li>
+              <li>Major is included, but not degree.</li>
+              <li>No GPA.</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li>Information such as institution and its location, graduation
+                date, and major are included, but degree and GPA are not listed.</li>
+              <li>This section is not well organized and there is no order to how
+                information is formatted.</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li>Section is organized, clear, and well defined.</li>
+              <li>It includes: institution and its location, graduation date,
+                major, degree, GPA, study abroad (as appropriate), and any
+                relevant course work.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold;">Experience Section</td>
+          <td>
+            <ul>
+              <li>There is no order to the position descriptions.</li>
+              <li>Descriptions are not detailed and don\'t illustrate the
+                experience.</li>
+              <li>No locations and dates of employment are listed.</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li>Descriptions are not presented in bulleted lists that begin with
+                strong action verbs.</li>
+              <li>Passive voice structure is used instead of active voice.</li>
+              <li>Specific details and numbers are missing describe
+                achievements.</li>
+              <li>Places of work are included for each position, but not
+                locations, dates, and titles.</li>
+            </ul> 
+          </td>
+          <td>
+            <ul>
+              <li>This section is well defined, and information relates to the
+                intended career field.</li>
+              <li>Strong action verbs used along with concrete details.</li>
+              <li>Places of work, location, titles, and dates are included for
+                each position.</li>
+              <li>Descriptions are clear and formatted as bullets beginning
+                with action verbs.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold;">Leadership Section</td>
+          <td>
+            <ul>
+              <li>This section is missing—or contains very little—information.</li>
+              <li>Organization titles or dates of involvement are not included,
+                and there are no descriptions.</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li>This section is missing key information such as leadership
+                positions held or dates of involvement.</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li>This section lists clearly leadership skills and date of
+                involvement.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold;">Skills and Interests Section</div>
+          <td>
+            <ul>
+              <li>Does not include any skills, courses or experiences.</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li>Some events are listed, but not clear and missing gaps.</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li>Skills and honors listed clearly with bulleted details provided.</li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+      '
+  )
+)
+
+item.task_definitions.push(
+  TaskDefinition.create(
+    required: true, position: 3,
+    name: 'Your résumé',
+    details: '<p>Your résumé is the crown jewel of your career portfolio. Just
       like companies have logos and "brand reputations" where they are publicly
-      known for certain things, a resumé reflects your own personal brand and
+      known for certain things, a résumé reflects your own personal brand and
       represents what you stand for as a leader and as a professional. It\'s one
       of the most important professional documents that represents you.</p>
-      <p>A good resumé will help you to open doors to interviews for competitive
-      internships and job opportunities. Your objective in crafting a resumé is
+      <p>A good résumé will help you to open doors to interviews for competitive
+      internships and job opportunities. Your objective in crafting a résumé is
       to set yourself apart from hundreds or thousands of other candidates and
       position yourself as a unique candidate.</p>
       <p>We’re going to meet Alex, Eric, and Amanda. They are all sophomore
       students at UC Berkeley and are competing for the same summer internship
-      in education in DC over the summer and have all created their resumés.
-      Based on their resumés, we\'re going to have you predict which one has the
+      in education in DC over the summer and have all created their résumés.
+      Based on their résumés, we\'re going to have you predict which one has the
       best shot and scoring an interview.</p>
       
       <object width="560" height="315">
@@ -287,47 +460,38 @@ item.task_definitions.push(
       '
   )
 )
-item.task_definitions.push(
-  TaskDefinition.create(
-    required: true, position: 2,
-    name: 'Parts of a resumé',
-    details: '<p>But before you rank resumes, we go to unpack the basic
-      building blocks of a resume and discuss what makes a good resume.</p>
 
-      <object width="560" height="315">
-        <param name="movie" value="' + ("/videos/Interactive_Resume_Parts_Video.swf") + '" />
-        <embed src="' + ("/videos/Interactive_Resume_Parts_Video.swf") + '" width="560" height="315"></embed>
-      </object>
-    '
-  )
-)
 task_definition = TaskDefinition.create(
-  required: true, position: 3, name: 'Rank the resumés',
-  summary: 'Determine which resumés are the strongest and weakest.',
-  details: '<p>As you are writing your resume, don\'t forget to refer to the <a target="_BLANK" href="/docs/action-verbs.html">list of action verbs</a>.</p>'
+  required: true, position: 4, name: 'Rank the résumés',
+  summary: 'Determine which résumés are the strongest and weakest.',
+  details: '<p>Take a look at Louis\', Eric\'s and Amanda\'s resumes and consider
+    their impact. How well do they do in terms of overall formatting? What
+    details do they include in their education? Do they use strong action verbs
+    to describe their experience and leadership? Do they include skills and
+    interests that round them out? Refer back to the resume rubric!</p>'
   )
 task_definition.sections.push(
   TaskSection.create(
     task_module_id: compare_module.id,
-    introduction: 'View each resume and rate them below.',
+    introduction: 'View each résumé and rate them below.',
     configuration: {
-      item_label: 'Resumé',
+      item_label: 'Résumé',
       items: [
         {
-          label: "Louis' Resumé",
+          label: "Louis' Résumé",
           content: '
             <div style="font-family: georgia; padding: 5em;">
               <section>
                 <div class="col-sm-12 text-center">
                   <strong>Louis Smith</strong><br />
-                  Louis17@sjsu.edu<br />
-                  (805) 555-7777
+                  Louissmith@berkeley.edu<br />
+                  (805) 555-0000
                 </div>
               </section>
               <section>
                 <div class="col-sm-12">
-                  3268 Andora Drive<br />
-                  San Jose, CA 95148
+                  1200 Channing Drive<br />
+                  Berkeley, CA
                 </div>
               </section>
               <section>
@@ -389,7 +553,7 @@ task_definition.sections.push(
             </div>'
         },
         {
-          label: "Eric's Resumé",
+          label: "Eric's Résumé",
           content: '
              <div style="font-family: georgia; padding: 5em;">
               <section>
@@ -531,7 +695,7 @@ task_definition.sections.push(
             </div>'
         },
         {
-          label: "Amanda's Resumé",
+          label: "Amanda's Résumé",
           content: '
             <div style="font-family: georgia; padding: 5em;">
               <section>
@@ -666,162 +830,12 @@ task_definition.sections.push(
   )
 )
 item.task_definitions.push(task_definition)
-item.task_definitions.push(
-  TaskDefinition.create(
-    required: true, position: 4,
-    name: 'Ranking Matrix',
-    details: '
-      <table class="matrix-table">
-        <thead>
-          <th style="font-size: 2em;">Category</th>
-          <th>
-            Resume will likely be discarded during screening
-          </th>
-          <th>
-            Resume is average - needs improvement to bring you to "top of the
-            stack"
-          </th>
-          <th>
-            Resume will likely land you an interview or call-back
-          </th>
-        </thead>
-        <tr>
-          <td style="font-weight: bold;">Format</td>
-          <td>
-            <ul>
-              <li>This resume is either one-half page or two to three pages long.</li>
-              <li>The font is too big or may be hard to read.</li>
-              <li>There is more white space than words on the page.</li>
-              <li>There are multiple spelling and/or grammar errors.</li>
-            </ul>
-          </td>
-          <td>
-            <ul>
-              <li>The font and spacing of this resume are not appealing and cannot be
-                easily scanned.</li>
-              <li>There are a few spelling errors and grammatical mistakes.</li>
-            </ul>
-          </td>
-          <td>
-            <ul>
-              <li>This resume fills the page but is not overcrowded.</li>
-              <li>There are no grammar or spelling errors.</li>
-              <li>It can be easily scanned.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td style="font-weight: bold;">Education Section</td>
-          <td>
-            <ul>
-              <li>This section is missing the most crucial information. Institution is
-                listed, but not its location and graduation date is missing.</li>
-              <li>The major is included, but not degree.</li>
-              <li>No GPA is stated.</li>
-            </ul>
-          </td>
-          <td>
-            <ul>
-              <li>Information such as institution and its location, graduation date,
-                and major are included, but degree and GPA are not listed.</li>
-              <li>This section is not well organized and there is no order to how
-                information is formatted.</li>
-            </ul>
-          </td>
-          <td>
-            <ul>
-              <li>This section is organized, clear, and well defined.</li>
-              <li>It highlights the most pertinent information and includes:
-                institution and its location, graduation date, major, degree,
-                GPA, study abroad (as appropriate), and any relevant course work.</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td style="font-weight: bold;">Experience Section</td>
-          <td>
-            <ul>
-              <li>There is no order to the descriptions of each position.</li>
-              <li>Descriptions are not detailed and don\'t illustrate the
-                experience.</li>
-              <li>No locations and dates of employment are listed.</li>
-            </ul>
-          </td>
-          <td>
-            <ul>
-              <li>Descriptions are not presented in bulleted lists that begin with
-                strong action verbs.</li>
-              <li>Passive voice structure is used instead of active voice.</li>
-              <li>Specific details and numbers are missing describe
-                accomplishments.</li>
-              <li>Places of work are included for each position, but not
-                locations, dates, and titles.</li>
-            </ul> 
-          </td>
-          <td>
-            <ul>
-              <li>This section is well defined, and information relates to the
-                intended career field.</li>
-              <li>Strong action verbs used along with concrete details.</li>
-              <li>Places of work, location, titles, and dates are included for
-                each position.</li>
-              <li>Descriptions are clear and formatted as bullets beginning
-                with action verbs. (This section could be split into leadership
-                experience as well)</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td style="font-weight: bold;">Leadership Section</td>
-          <td>
-            <ul>
-              <li>This section is missing—or contains very little—information.</li>
-              <li>Organization titles or dates of involvement are not included,
-                and there are no descriptions.</li>
-            </ul>
-          </td>
-          <td>
-            <ul>
-              <li>This section is missing key information such as leaderships
-                positions held or dates of involvement.</li>
-              <li>Organizations are listed; the organization, not Individual
-                involvement in each, are described.</li>
-            </ul>
-          </td>
-          <td>
-            <ul>
-              <li>This section lists clearly leadership skills and date of
-                involvement</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td style="font-weight: bold;">Skills and Interests Section</div>
-          <td>
-            <ul>
-              <li>Does not include any skills, courses, experiences</li>
-            </ul>
-          </td>
-          <td>
-            <ul>
-              <li>Some events are listed, but not clear and missing gaps</li>
-            </ul>
-          </td>
-          <td>
-            <ul>
-              <li>Skills and honors listed clearly with bulleted details provided</li>
-            </ul>
-          </td>
-        </tr>
-      </table>
-      '
-  )
-)
+
 task_definition = TaskDefinition.create(
   required: true, position: 5, name: 'Formatting',
-  details: '<p>Your resume in college should fill 1 page. Overall, Louis\'
-    resume is too short (only fills up a half page) and looks underwhelming
-    because there is more white space than words. The header of the resume does
+  details: '<p>Your résumé in college should fill 1 page. Overall, Louis\'
+    résumé is too short (only fills up a half page) and looks underwhelming
+    because there is more white space than words. The header of the résumé does
     not stand out and there are also some grammar errors and typos.</p>
 
     <div class="html-document" style="font-family: georgia; padding: 5em;">
@@ -829,7 +843,7 @@ task_definition = TaskDefinition.create(
         <div class="col-sm-12 text-center">
           <strong class="context-notes" data-placement="top"
             data-content="Font size should be at least 20+ to feature more
-            prominently as header. Overall, this resume is too short – it needs
+            prominently as header. Overall, this résumé is too short – it needs
             to fill 1 page">Louis Smith
           </strong><br />
           Louis17@sjsu.edu<br />
@@ -853,7 +867,7 @@ task_definition = TaskDefinition.create(
           <strong class="context-notes" data-placement="top"
             data-content="Font size is larger here and the font looks different.
             Formatting should be consistent throughout to make it a professional
-            resume." style="font-size: 1.2em;">
+            résumé." style="font-size: 1.2em;">
             University of California, Berkeley
           </strong><br />
           First-year student studying Computer Science, GPA 4.0
@@ -868,7 +882,7 @@ task_definition = TaskDefinition.create(
         <div class="col-sm-12">
           <strong>INDEPENDENCE HIGH SCHOOL</strong><br />
           <span class="context-notes" data-placement="top" data-content="Clear
-            and easy to read formatting is crucial in a resume. Under the
+            and easy to read formatting is crucial in a résumé. Under the
             headers, Louis should put his descriptors in bullets below.">
             Magna cum Laude, Honor Roll, Electronics Academy Award, STRUT
             Computer Competition Bronze Medal, Robotics club, Greenhouse club,
@@ -909,7 +923,7 @@ task_definition = TaskDefinition.create(
           2013-Present</em>
         </div>
       </section>
-      <div class="context-notes" data-placement="top" data-content="The Leadership section is missing on this resume. Louis is forgetting to put in leadership roles in clubs, involvement in extra-curricular activities, awards, and research">&nbsp;</div>
+      <div class="context-notes" data-placement="top" data-content="The Leadership section is missing on this résumé. Louis is forgetting to put in leadership roles in clubs, involvement in extra-curricular activities, awards, and research">&nbsp;</div>
       <section>
         <div class="col-sm-12 text-center"><h5><strong>Skills & Interests</strong></h5></div>
       </section>
@@ -924,7 +938,7 @@ task_definition = TaskDefinition.create(
     <br />
     <br />
 
-    <p>Although Eric\'s resume fills the 1 page, overall, this resume
+    <p>Although Eric\'s résumé fills the 1 page, overall, this résumé
     is mediocre, bordering on poor quality. The name in the header does not
     stand out and an email address is missing. There are also spelling errors
     and some variation in bullet formatting and font sizes, which make it look
@@ -1075,21 +1089,21 @@ task_definition = TaskDefinition.create(
     <br />
     <br />
 
-    <p>Overall, this resume is formatted well. It fills the 1 page but is
+    <p>Overall, this résumé is formatted well. It fills the 1 page but is
     not overcrowded. There are no grammatical or spelling errors. The name on
     the header at the top is bold and stands out in a larger size font,
-    attracting attention. This resume could be improved – Amanda left out her
+    attracting attention. This résumé could be improved – Amanda left out her
     phone number, which is important for contacting purposes.</p>
 
     <div class="html-document" style="font-family: georgia; padding: 5em;">
       <section>
         <div class="col-sm-12 text-center">
           <span style="font-size: 2.5em; font-weight: bold;">AMANDA SMITH</span><br />
-          <span class="context-notes" data-placement="top" data-content="Kimberly\'s resume is missing a phone number. A simple but very crucial mistake to avoid – you want to make it as easy for an employer to reach out to you in case they are interested in inviting you for an interview.">2732 Channing Way, Berkeley, CA 94704 | Amanda_smith@berkeley.edu</span>
+          <span class="context-notes" data-placement="top" data-content="Kimberly\'s résumé is missing a phone number. A simple but very crucial mistake to avoid – you want to make it as easy for an employer to reach out to you in case they are interested in inviting you for an interview.">2732 Channing Way, Berkeley, CA 94704 | Amanda_smith@berkeley.edu</span>
         </div>
       </section>
       <section>
-        <div class="col-sm-12"><h5 style="padding-bottom: 1px; border-bottom: solid 1px #000;" class="context-notes" data-placement="top" data-content="While this resume is well formatted, Amanda can improve her resume by increasing the font size of the headers or bolding them to differentiate the different sections of her resume. As it stands, the sections (Education, Experience, Leadership, Skills and Experiences) blend in together too much."><strong>EDUCATION</strong></h5></div>
+        <div class="col-sm-12"><h5 style="padding-bottom: 1px; border-bottom: solid 1px #000;" class="context-notes" data-placement="top" data-content="While this résumé is well formatted, Amanda can improve her résumé by increasing the font size of the headers or bolding them to differentiate the different sections of her résumé. As it stands, the sections (Education, Experience, Leadership, Skills and Experiences) blend in together too much."><strong>EDUCATION</strong></h5></div>
       </section>
       <section>
         <div class="col-sm-6">
@@ -1212,10 +1226,10 @@ task_definition = TaskDefinition.create(
 item.task_definitions.push(task_definition)
 task_definition = TaskDefinition.create(
   required: true, position: 6, name: 'Education section',
-  details: '<p>This resume does a fairly good job to state the basics and
+  details: '<p>This résumé does a fairly good job to state the basics and
     includes: university name, location, major and even shows off an impressive
     GPA – 4.0! If you have a strong GPA (3.0 or higher) include that on your
-    resume.  Louis could improve this resume by adding in relevant college
+    résumé.  Louis could improve this résumé by adding in relevant college
     classes taken or academic honors he has received at school and his expected
     graduation date. Louis also includes his high school experience and does a
     good job to cite the honors he has received. However, his high school
@@ -1244,7 +1258,7 @@ task_definition = TaskDefinition.create(
           <strong>INDEPENDENCE HIGH SCHOOL</strong><br />
           <span class="context-notes" data-placement="top" data-content="If
             Louis has a strong high school GPA (3.5 or higher) – he should
-            include it here and type into his resume. Right after honor roll
+            include it here and type into his résumé. Right after honor roll
             and state 3.6 GPA for example.">
             Magna cum Laude, Honor Roll, Electronics Academy Award, STRUT
             Computer Competition Bronze Medal, Robotics club, Greenhouse club,
@@ -1336,7 +1350,7 @@ item.task_definitions.push(task_definition)
 task_definition = TaskDefinition.create(
   required: true, position: 7, name: 'Experience section',
   details: '<p>The experience section is the most important section on a
-    resume and showcases your potential for accomplishment. Louis’ descriptions
+    résumé and showcases your potential for accomplishment. Louis’ descriptions
     are not detailed and don’t illustrate the experience with concrete examples.
     He also needs to write about more experiences – at least 3-4 experiences would
     flesh this section out and give a more complete picture of Louis.</p>
@@ -1384,11 +1398,11 @@ task_definition = TaskDefinition.create(
 
     Eric’s experience section does an OK job to list out bulleted
     descriptions. However, Eric does 2 things that stand in the way of
-    super-charging his resume. First, he uses passive voice (i.e., " Feedback was
+    super-charging his résumé. First, he uses passive voice (i.e., " Feedback was
     collected and organized in a Committee I lead") versus active action verbs
-    "Organized and coordinated a feedback process" that give his resume a
+    "Organized and coordinated a feedback process" that give his résumé a
     stronger, leadership stance. Second, he doesn\'t include enough specific and
-    concrete details/numbers in his descriptions of his resume. For example, he
+    concrete details/numbers in his descriptions of his résumé. For example, he
     could include the number of residents he helped to organize to strengthen the
     impact of this section.</p>
     <br />
@@ -1510,7 +1524,7 @@ task_definition = TaskDefinition.create(
     <p>Amanda\'s experience section is solid. Her accomplishment statements
     lead with strong action verbs and she included specific and concrete details
     that elaborate on her achievements and the impact she has. She could improve
-    her resume by including more numbers as details for her achievements. For
+    her résumé by including more numbers as details for her achievements. For
     instance, she writes, "Developed and coordinated events with local Berkeley
     City businesses" and she could strengthen this instead with "Developed and
     coordinated 10 outreach events with 3 local Berkeley businesses to highlight
@@ -1597,8 +1611,8 @@ task_definition = TaskDefinition.create(
 item.task_definitions.push(task_definition)
 task_definition = TaskDefinition.create(
   required: true, position: 8, name: 'Leadership section',
-  details: '<p>The leadership section in Louis\' resume is missing. He is
-    not taking advantage of an opportunity through his resume to showcase
+  details: '<p>The leadership section in Louis\' résumé is missing. He is
+    not taking advantage of an opportunity through his résumé to showcase
     critical experiences and skills that might give him an edge in securing an
     internship or job interview.</p>
 
@@ -1675,7 +1689,7 @@ task_definition = TaskDefinition.create(
     <p>Eric\'s skills and interest section is listed clearly with
     bulleted details provided. His listed interests flesh out his activities
     outside of school and showcase his athletic and culinary pursuits that don\'t
-    necessarily come through any other section until the end of the resume. He
+    necessarily come through any other section until the end of the résumé. He
     could improve this section by relabeling "Other" to "Languages Spoken" and
     removing the sentence "very detailed-oriented and organized" which is too
     generic to fit into this section, which is really about highlighting unique
@@ -1734,33 +1748,76 @@ task_definition = TaskDefinition.create(
 item.task_definitions.push(task_definition)
 task_definition = TaskDefinition.create(
   required: true, position: 10, requires_approval: true,
-  name: "Compose your Resumé",
-  summary: 'A solid resume is key to getting into the door of the job you want.',
-  details: '<p>
-      Download the Word document below and use it as a template to complete your
-      own resumé.
-    </p>
-    <p>
-      <a href="/docs/resume_template.docx">Resumé template (Word)</a>
-    </p>'
+  name: "Compose your Résumé",
+  summary: 'A solid résumé is key to getting into the door of the job you want.',
+  details: '<h3>Write your résumé - 3 steps</h3>
+      <h4>1) Brainstorm</h4>
+      <p>
+        Before writing your résumé, take some time to brainstorm your key
+        accomplishments using the following worksheet.
+      </p>
+      <p>
+        <a href="/docs/resume_brainstorming.docx">Résumé brainstorming worksheet (Word)</a>
+      </p>
+      <p>
+        Jot down the first answers that come to mind and don\'t worry about
+        them being exact or perfect. Take a look at the brainstorm questions
+        below to get you started: 
+      </p>
+      <ul>
+        <li>What 3-5 accomplishments and professional skills do you want to
+          make sure your internship supervisor/job employer sees on your
+          résumé? What roles have you held that have allowed you to develop
+          these skills?</li>
+        <li>If there was 1 message that you want to convey to an employer
+          through your résumé, what’s the point you want to make?</li>
+      </ul>
+
+      <h4>2) Next, research the internship, job or opportunity</h4>
+      <ul>
+        <li>
+          Research the internship. Go to the company\'s website and see what
+          language they use to describe the ideal candidates. Do a Google
+          search for the company. Make sure your resume address each of the
+          things they are asking for on their website.</li>
+      </ul>
+
+      <h4>3) Write a first draft of your résumé</h4>
+      <ul>
+        <li>Write out accomplishment statements. Makesure your statements are
+          positive and proud, but don\'t overstate to the pointof falsely
+          representing yourself or being untrue to your actual experience.</li>
+        <li>Scan the Action Verb list to phrase your achievements so that you
+          are the hero of your own resume.
+          <p><a target="_BLANK" href="/docs/action-verbs.html">list of action verbs</a>.
+          </p></li>
+        <li>Jump-start the writing process by entering your accomplishments into
+          the résumé template here.
+          <p>
+            <a href="/docs/resume_template.docx">Résumé template (Word)</a>
+          </p>
+        </li>
+      </ul>
+  '
+  
 )
 # task_definition.sections.push(
 #   TaskSection.create(
 #     task_module_id: resume_builder_module.id,
-#     introduction: 'Use the form below to complete your resumé.'
+#     introduction: 'Use the form below to complete your résumé.'
 #   )
 # )
 item.task_definitions.push(task_definition)
 
 task_definition = TaskDefinition.create(
   required: true, position: 11,
-  requires_approval: true, name: 'Resumé',
+  requires_approval: true, name: 'Résumé',
 )
 task_definition.sections.push(
   TaskSection.create(
     task_module_id: file_upload_module.id,
     file_type: 'document',
-    introduction: 'Please upload your new resumé once you have it finished. Your
+    introduction: 'Please upload your new résumé once you have it finished. Your
      coach will provide feedback to you.'
   )
 )
@@ -1818,9 +1875,9 @@ item.front_page_info = "
             <li>Seeing our successes in new and different ways.</li> 
           </ul>
         "
-item.title = "Week 4: Spring Break!"
-item.led_by = "Peer"
-item.assignment_download_url = "assignments/best-self/submissions/new"
+item.title = 'Week 4: Spring Break!'
+item.led_by = 'Peer'
+item.assignment_download_url = 'assignments/best-self/submissions/new'
 item.start_date = Time.parse("Mar 24")
 item.end_date = Time.parse("Mar 30")
 item.seo_name = "best-self"
@@ -1858,9 +1915,9 @@ item.front_page_info = "
             <li><strong>Self-Discipline:</strong> Learn to successfully cope with disappointment and discuss what changes have you made in how you approach challenges or deal with disappointment.</li>
           </ul>
         "
-item.title = "Week 5: Failing & Asking for Help"
-item.led_by = "Coach"
-item.assignment_download_url = "assignments/asking-for-help/submissions/new"
+item.title = 'Week 5: Failing & Asking for Help'
+item.led_by = 'Coach'
+item.assignment_download_url = 'assignments/asking-for-help/submissions/new'
 item.start_date = Time.parse("Mar 31")
 item.end_date = Time.parse("Apr 6")
 item.seo_name = "asking-for-help"
@@ -1912,9 +1969,9 @@ item.front_page_info = "
             <li>Following up after an interview with a thank you email or card.</li>
           </ul>
         "
-item.title = "Week 6: Perfecting Your Interviewing Skills"
-item.led_by = "Peer"
-item.assignment_download_url = "assignments/interview-simulations/submissions/new"
+item.title = 'Week 6: Perfecting Your Interviewing Skills'
+item.led_by = 'Peer'
+item.assignment_download_url = 'assignments/interview-simulations/submissions/new'
 item.start_date = Time.parse("Apr 7")
 item.end_date = Time.parse("13")
 item.seo_name = "interview-simulations"
@@ -1964,8 +2021,8 @@ item.save
 item.task_definitions.push(
   TaskDefinition.create(
     required: true, position: 1,
-    name: 'Copies of your resume and cover letter',
-    details: 'Make 10 copies of your resume and cover letter for distribution.'
+    name: 'Copies of your résumé and cover letter',
+    details: 'Make 10 copies of your résumé and cover letter for distribution.'
   )
 )
 item.task_definitions.push(
@@ -2072,4 +2129,4 @@ task_definition.sections.push(
 item.task_definitions.push(task_definition)
 item.save
 
-User.all.each do |u| u.create_child_skeleton_rows ; end
+User.all.each { |u| u.create_child_skeleton_rows }
