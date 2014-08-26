@@ -465,3 +465,11 @@
   @extend .col-img;
   background-position: top right;
 }
+
+button.no-decoration {
+  border: none;
+  background: transparent;
+  font-size: inherit;
+  color: inherit;
+  font-weight: inherit;
+}
