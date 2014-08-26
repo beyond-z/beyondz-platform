@@ -175,6 +175,9 @@
               <div class="form-group student coach">
                 <label>Or upload a .doc or .pdf file</label>
                 <%= f.file_field :resume %>
+                <% if @enrollment.resume.present? %>
+                  <%= link_to 'Download previously uploaded resume', @enrollment.resume.url %>
+                <% end %>
               </div>
               <!-- #form-resume -->
               <div class="form-group student">
