@@ -15,9 +15,9 @@
         </div>
         <!--.section-container--> 
       </div>
-      <div class="plank knockout-md">
+      <div class="plank knockout-md coach student">
         <div class="section-container">
-          <ul id="jumplinks">
+          <ul id="jumplinks" style="padding: 20px 0;">
           </ul>
         </div>
         <!--.section-container--> 
@@ -26,6 +26,9 @@
         <div class="section-container">
           <section>
             <div id="form-basics">
+              <p class="help">
+              Your answers will be automatically saved as you move between questions, so you can safely leave this page and log back in at any time to resume your work. Don’t forget to click SEND at the bottom of the form when you are done.
+              </p>
               <h2 class="form-section-header">Basic Information</h2>
 
               <div class="form-group" id="form-user-type">
@@ -171,7 +174,10 @@
               </div>
               <div class="form-group student coach">
                 <label>Or upload a .doc or .pdf file</label>
-                <input type="file" name="resume" />
+                <%= f.file_field :resume %>
+                <% if @enrollment.resume.present? %>
+                  <%= link_to 'Download previously uploaded resume', @enrollment.resume.url %>
+                <% end %>
               </div>
               <!-- #form-resume -->
               <div class="form-group student">
@@ -379,8 +385,7 @@
                 <div class="apply-button">Your application has been received!</div>
               <% else %>
                 <div class="apply-button form-submit">
-                  <div class="apply-icon"></div>
-                  <%= f.submit 'SEND', 'name'=>'user_submit' %>
+                  <button class="no-decoration" type="submit" name="user_submit"><span class="apply-icon"></span><span class="apply-text">SEND</span></button>
                   </div>
                 </div>
               <% end %>

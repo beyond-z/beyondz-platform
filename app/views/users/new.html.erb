@@ -9,9 +9,6 @@
           <p class="lead">
           Whether you're interested in participating as a fellow, volunteering as a speaker or coach, or becoming a partner organization, you're in the right place.  
           </p>
-          <h3>
-            Tell us who you are and we'll contact you to follow up!
-          </h3>
 
           <div id="sign-up-form" class="well well-default">
             <div class="panel-body">
@@ -50,6 +47,15 @@
                       <%= f.select :state, options_for_select(@states, @user.state), {}, :class => 'form-control', required: 'required', placeholder: 'State' %>
                     </div>
                   </section>
+                </div>
+
+                <div class="form-group">
+                  <label>I am interested in (check all that apply)...</label>
+                  <div>
+                    <label for="user_interested_joining"><%= f.check_box :interested_joining %> Joining Beyond Z as a participant or a volunteer coach</label>
+                    <label for="user_interested_partnering"><%= f.check_box :interested_partnering %> Partnering with Beyond Z in other ways (ex: hiring our alumni, speaking at an event, etc.)</label>
+                    <label for="user_interested_receiving"><%= f.check_box :interested_receiving %> Receiving Beyond Z updates</label>
+                  </div>
                 </div>
 
                 <div class="form-group">

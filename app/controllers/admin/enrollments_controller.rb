@@ -21,12 +21,16 @@ class Admin::EnrollmentsController < Admin::ApplicationController
 
   def csv_export
     CSV.generate do |csv|
-      header = Array.new
-      header << Enrollment.column_names
+      header = *Enrollment.column_names
+      header << 'Uploaded Resume'
       csv << header
       @enrollments.each do |e|
-        exportable = Array.new
-        exportable << e.attributes.values_at(*Enrollment.column_names)
+        exportable = e.attributes.values_at(*Enrollment.column_names)
+        if e.resume.present?
+          exportable << e.resume.url
+        else
+          exportable << '<none uploaded>'
+        end
         csv << exportable
       end
     end

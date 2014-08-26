@@ -22,13 +22,22 @@ module ApplicationHelper
   def apply_button
     '<div class="apply-button">'.html_safe +
     link_to(
+      '<div class="apply-icon"></div><div class="apply-text">SIGN UP TO START YOUR APPLICATION PROCESS</div>'.html_safe,
+      new_user_path
+    ) +
+    '</div>'.html_safe
+  end
+
+  def join_us_button
+    '<div class="apply-button">'.html_safe +
+    link_to(
       '<div class="apply-icon"></div><div class="apply-text">JOIN US</div>'.html_safe,
       new_user_path
     ) +
     '</div>'.html_safe
   end
 
-  def apply_button_large
+  def join_us_button_large
     '<span class="apply-button-lg">'.html_safe +
     link_to(
       '<div class="apply-icon"></div><br /><span class="apply-text">JOIN US</span>'.html_safe,

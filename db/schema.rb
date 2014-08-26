@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140822161716) do
+ActiveRecord::Schema.define(version: 20140826160947) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,7 +108,6 @@ ActiveRecord::Schema.define(version: 20140822161716) do
     t.string   "previous_university"
     t.string   "gpa"
     t.string   "online_resume"
-    t.string   "resume"
     t.boolean  "bkg_african_americanblack"
     t.boolean  "bkg_asian_american"
     t.boolean  "bkg_latino_or_hispanic"
@@ -158,6 +157,10 @@ ActiveRecord::Schema.define(version: 20140822161716) do
     t.string   "grad_degree"
     t.string   "anticipated_grad_school_graduation"
     t.boolean  "explicitly_submitted"
+    t.string   "resume_file_name"
+    t.string   "resume_content_type"
+    t.integer  "resume_file_size"
+    t.datetime "resume_updated_at"
   end
 
   add_index "enrollments", ["user_id"], name: "index_enrollments_on_user_id", using: :btree
@@ -297,6 +300,9 @@ ActiveRecord::Schema.define(version: 20140822161716) do
     t.string   "university_name"
     t.string   "external_referral_url"
     t.string   "internal_referral_url"
+    t.boolean  "interested_joining"
+    t.boolean  "interested_partnering"
+    t.boolean  "interested_receiving"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
