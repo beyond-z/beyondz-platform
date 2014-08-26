@@ -17,6 +17,9 @@ class UsersController < ApplicationController
       :applicant_type,
       :city,
       :state,
+      :interested_joining,
+      :interested_receiving,
+      :interested_partnering,
       :keep_updated)
 
     user[:external_referral_url] = session[:referrer] # the first referrer saw by the app

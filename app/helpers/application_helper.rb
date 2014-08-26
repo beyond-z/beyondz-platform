@@ -37,7 +37,7 @@ module ApplicationHelper
     '</div>'.html_safe
   end
 
-   def join_us_button_large
+  def join_us_button_large
     '<span class="apply-button-lg">'.html_safe +
     link_to(
       '<div class="apply-icon"></div><br /><span class="apply-text">JOIN US</span>'.html_safe,
