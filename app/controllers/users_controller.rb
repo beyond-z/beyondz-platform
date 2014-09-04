@@ -2,6 +2,20 @@ class UsersController < ApplicationController
 
   layout 'public'
 
+  before_filter :authenticate_user!, :only => :reset
+
+  def reset
+    u = current_user
+
+    # only want this to happen on test users
+    # via the web interface to protect production data
+    if u.email.starts_with?('test+')
+      u.reset_assignments!
+    end
+
+    redirect_to root_path
+  end
+
   def new
     states
     @referrer = request.referrer
