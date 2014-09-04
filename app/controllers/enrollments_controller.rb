@@ -19,7 +19,9 @@ class EnrollmentsController < ApplicationController
       @enrollment.email = current_user.email
       @enrollment.accepts_txt = true # to pre-check the box
 
-      @enrollment.save!
+      # we know this is incomplete data, the user will be able
+      # to save as they enter more so we don't validate until the end
+      @enrollment.save(validate: false)
 
       # Sending them to the edit path ASAP means we can update the existing
       # row at any time as they input data, ensuring the AJAX thing doesn't
@@ -53,7 +55,11 @@ class EnrollmentsController < ApplicationController
   def update
     @enrollment = Enrollment.find(params[:id])
     @enrollment.update_attributes(enrollment_params)
-    @enrollment.save!
+
+    # Only validate on the explicit click of the submit button
+    # because otherwise, they are probably just saving incomplete
+    # data to finish later
+    @enrollment.save(validate: !params[:user_submit].nil?)
 
     if @enrollment.errors.any?
       # errors will be displayed with the form btw
@@ -71,7 +77,7 @@ class EnrollmentsController < ApplicationController
         # modified welcome message so they know to wait for us to contact them
 
         @enrollment.explicitly_submitted = true
-        @enrollment.save!
+        @enrollment.save! # it should still validate successfully
 
         redirect_to welcome_path
       end

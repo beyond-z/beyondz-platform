@@ -21,3 +21,17 @@
 
 en:
   hello: "Hello world"
+
+  # error message info per http://stackoverflow.com/questions/808547/fully-custom-validation-error-message-with-rails
+  activerecord:
+    attributes:
+      enrollment:
+        why_bz: "Why do you want to join Beyond Z"
+        current_volunteer_activities: "Significant commitments for this coming school year"
+        last_summer: "How did you spend the summer of 2014"
+        meaningful_experience: "One particularly meaningful experience"
+        commitments: "What activity is most important to you"
+        affirm_qualified: "I affirm that I am qualified to participate in Beyond Z"
+        affirm_commit: "I affirm to commit to participate fully in the program"
+        reference_name: "Your first reference"
+        reference2_name: "Your second reference"

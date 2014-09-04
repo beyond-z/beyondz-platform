@@ -473,3 +473,9 @@ button.no-decoration {
   color: inherit;
   font-weight: inherit;
 }
+
+.field_with_errors {
+  input, textarea {
+    border: solid 1px red;
+  }
+}
