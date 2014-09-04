@@ -14,6 +14,8 @@ BeyondzPlatform::Application.routes.draw do
   resources :users, only: [:new, :create], :path => :signup
   resources :enrollments, only: [:new, :create, :show, :update]
 
+  get '/users/check_credentials', to: 'users#check_credentials'
+
   resources :assignments, only: [:index, :update, :show] do
     resources :tasks, only: [:update, :show]
   end

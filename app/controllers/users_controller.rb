@@ -2,6 +2,19 @@ class UsersController < ApplicationController
 
   layout 'public'
 
+  def check_credentials
+    user = User.find_for_database_authentication(:email=>params[:username])
+    if user.nil?
+      valid = false
+    else
+      valid = user.valid_password?(params[:password])
+    end
+
+    respond_to do |format|
+      format.json { render json: valid }
+    end
+  end
+
   def new
     states
     @referrer = request.referrer
