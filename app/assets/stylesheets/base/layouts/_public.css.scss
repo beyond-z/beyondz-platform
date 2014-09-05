@@ -475,7 +475,5 @@ button.no-decoration {
 }
 
 .field_with_errors {
-  input, textarea {
-    border: solid 1px red;
-  }
+  @extend .has-error;
 }
