@@ -335,10 +335,16 @@
 #banner {
   padding-top: 0.5em;
   padding-bottom: 0.5em;
+
+  // Override default navbar style so it matches intended design
+  .navbar {
+    border: none;
+    background-color: transparent;
+  }
 }
 
 #banner .top-left {
-  @extend .col-sm-4;
+  @extend .col-xs-4;
 }
 
 #banner .top-left img {
@@ -350,7 +356,7 @@
 }
 
 #banner .navigation-holder {
-  @extend .col-sm-8;
+  @extend .col-xs-8;
 }
 
 #top-navigation {
