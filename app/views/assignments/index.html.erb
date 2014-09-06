@@ -1,4 +1,12 @@
 <div class="container-fluid">
+  <% if current_user.email.starts_with?('test+') %>
+  <section>
+    <div class="col-4 col-offset-4 text-right">
+      <%= link_to 'Reset All Assignments', user_reset_path, :method => 'POST' %>
+    </div>
+  </section>
+  <% end %>
+
   <section>
     <div class="program-intro">
       <h1>Leadership and Career Prep Academy<br/>Portal</h1>
