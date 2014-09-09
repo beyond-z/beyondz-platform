@@ -42,13 +42,7 @@
           </section>
           <section>
             <div class="col-sm-12">
-              <% if user_signed_in? %>
-                <div class="open-application-notification">
-                  <p>You will be notified when applications are open.</p>
-                </div>
-              <% else %>
-                <%= apply_button %>
-              <% end %>
+              <%= apply_button %>
               <br /><br />
               <%= light_page_jump 'What to expect', 'what-to-expect' %> |
               <%= light_page_jump 'Who can apply', 'who-can-apply' %> |

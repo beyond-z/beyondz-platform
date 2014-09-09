@@ -246,6 +246,11 @@
   }
 }
 
+.plain-md .apply-button .apply-text,
+.plain-lt .apply-button .apply-text {
+  color: $txt-dk;
+}
+
 .apply-button-lg {
   text-align: center;
 
