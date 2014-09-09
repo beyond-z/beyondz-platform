@@ -485,6 +485,15 @@ button.no-decoration {
   font-weight: inherit;
 }
 
+/* Rails -> Bootstrap error connection */
 .field_with_errors {
+  @extend .has-error;
+}
+
+/* Bootstrap's error class applies to child elements
+   and our checkboxes are done as sibling elements due
+   to Rails helper interacting with our label, so this applies
+   it to our labels too. */
+.field_with_errors + .bs-wrapper {
   @extend .has-error;
 }
