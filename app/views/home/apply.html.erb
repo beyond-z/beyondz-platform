@@ -43,8 +43,8 @@
           <section>
             <div class="col-sm-12">
               <% if user_signed_in? %>
-                <div class="open-application-notification">
-                  <p>You will be notified when applications are open.</p>
+                <div class="apply-button">
+                  <%= link_to '<div class="apply-icon"></div><div class="apply-text">Apply now!</div>'.html_safe, new_enrollment_path %><br />
                 </div>
               <% else %>
                 <%= apply_button %>
