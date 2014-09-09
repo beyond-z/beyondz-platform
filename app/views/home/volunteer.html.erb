@@ -18,7 +18,13 @@
           <p class="shoutout">Whatever the time you have to give, we have a role ready to be filled.  Whatever the passions you wish to share, we know a future leader ready to be inspired.</p>
 
           <br />
-            <%= apply_button %>
+            <% if user_signed_in? %>
+              <div class="apply-button">
+                <%= link_to '<div class="apply-icon"></div><div class="apply-text">Apply now!</div>'.html_safe, new_enrollment_path %><br />
+              </div>
+            <% else %>
+              <%= apply_button %>
+            <% end %>
         </div>
       </section>
     </div>
@@ -72,7 +78,13 @@
         <div class="col-md-12">
           <p class="shoutout">Ready to make a real difference?</p>
           <br />
-          <%= apply_button %>
+          <% if user_signed_in? %>
+            <div class="apply-button">
+              <%= link_to '<div class="apply-icon"></div><div class="apply-text">Apply now!</div>'.html_safe, new_enrollment_path %><br />
+            </div>
+          <% else %>
+            <%= apply_button %>
+          <% end %>
         </div>
       </section>
     </div>
