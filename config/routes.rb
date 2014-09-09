@@ -12,6 +12,9 @@ BeyondzPlatform::Application.routes.draw do
   resources :feedback
   resources :comments
   resources :users, only: [:new, :create], :path => :signup
+
+  post '/users/reset', to: 'users#reset', as: 'user_reset'
+
   resources :enrollments, only: [:new, :create, :show, :update]
 
   resources :assignments, only: [:index, :update, :show] do

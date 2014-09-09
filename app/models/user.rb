@@ -55,6 +55,20 @@ class User < ActiveRecord::Base
     is_administrator
   end
 
+  # Resets all assignments and tasks to an initial, unfinished
+  # state.
+  def reset_assignments!
+    assignments.each do |a|
+      a.destroy!
+    end
+    tasks.each do |t|
+      t.destroy!
+    end
+
+    # re-recreate them after destroying to get fresh data
+    create_child_skeleton_rows
+  end
+
   # This will create the skeletons for assignments, tasks,
   # and submissions based on the definitions. We should run
   # this whenever a user is created or a definition is added.
