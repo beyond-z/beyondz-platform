@@ -8,8 +8,7 @@ class Enrollment < ActiveRecord::Base
                          content_type: [
                            'application/pdf',
                            'application/msword',
-                           'application/vnd.openxmlformats-officedocument.wordpr
-ocessingml.document'
+                           'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
                          ]
                        },
                        size: { in: 0..2.megabytes }
