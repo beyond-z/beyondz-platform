@@ -62,17 +62,23 @@ $(document).ready(function() {
     // and come back later
 
     var saveTimer = null;
-    $('input, textarea').change(function() {
+    function saveEnrollment() {
       if(saveTimer === null) {
         // the timer keeps it from pounding the server too hard
         // if someone does rapid changes
         saveTimer = setTimeout(function() {
           var form = $('#enrollment-form-holder form');
-          $.post(form.action, form.serialize());
+          $.post(form[0].action, form.serialize());
           saveTimer = null;
-        }, 5000);
+        }, 1000);
       }
-    });
+    }
+
+    $('input, textarea').change(saveEnrollment);
+
+    // We'll also do it on keydown to save more frequently
+    // on the long answer portions
+    $('input, textarea').keydown(saveEnrollment);
     
   // replace programming languages (testing only) with actual majors
   var majors = [
