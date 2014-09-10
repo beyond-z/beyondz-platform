@@ -56,10 +56,18 @@ class EnrollmentsController < ApplicationController
     @enrollment = Enrollment.find(params[:id])
     @enrollment.update_attributes(enrollment_params)
 
+    # Always save without validating, this ensures the partial
+    # data is not lost and allows resume upload to proceed even
+    # if there are missing fields (which saves hassle for the user
+    # having to re-upload it)
+    @enrollment.save(validate: false)
+    
     # Only validate on the explicit click of the submit button
     # because otherwise, they are probably just saving incomplete
     # data to finish later
-    @enrollment.save(validate: !params[:user_submit].nil?)
+    unless params[:user_submit].nil?
+      @enrollment.save(validate: true)
+    end
 
     if @enrollment.errors.any?
       # errors will be displayed with the form btw
