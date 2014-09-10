@@ -18,6 +18,12 @@ class Admin::UsersController < Admin::ApplicationController
     @user = User.find(params[:id])
   end
 
+  def destroy
+    @user = User.find(params[:id])
+    @user.destroy!
+    redirect_to '/admin/users'
+  end
+
   def create
     @user = User.new(params[:user].permit(
       :first_name, :last_name, :email, :password))
