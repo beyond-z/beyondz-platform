@@ -61,7 +61,7 @@ class EnrollmentsController < ApplicationController
     # if there are missing fields (which saves hassle for the user
     # having to re-upload it)
     @enrollment.save(validate: false)
-    
+
     # Only validate on the explicit click of the submit button
     # because otherwise, they are probably just saving incomplete
     # data to finish later
