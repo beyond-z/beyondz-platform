@@ -49,15 +49,15 @@
 
                   <div class="coach student">
                   <h5>Beyond Z Bay Area</h5>
-                    <label class="checkbox"><%= f.check_box :program_col_col_sjsu, 'value' => 'col-sjsu', 'id' => 'program-col_col-sjsu' %> BZ Leadership and Career Accelerator (College Program) at San Jose State University, Oct 2014 - April 2015</label>
+                    <label class="checkbox"><%= f.check_box :program_col_col_sjsu, 'value' => 'col-sjsu', 'id' => 'program-col_col-sjsu' %> <span class="bs-wrapper"><span class="control-label">BZ Leadership and Career Accelerator (College Program) at San Jose State University, Oct 2014 - April 2015</span></span></label>
                     <div class="coach">
-                      <label class="checkbox"><%= f.check_box :program_ms_ms_epa, 'value' => 'ms-epa', 'id' => 'program-ms_ms-epa' %> BZ Overdrive (Middle School Program) in East Palo Alto, Oct 2014 - June 2015</label>
-                      <label class="checkbox"><%= f.check_box :program_ms_ms_mp, 'value' => 'ms-mp', 'id' => 'program-ms_ms-mp' %> BZ Overdrive (Middle School Program) in Menlo Park, Oct 2014 - June 2015</label>
+                      <label class="checkbox"><%= f.check_box :program_ms_ms_epa, 'value' => 'ms-epa', 'id' => 'program-ms_ms-epa' %> <span class="bs-wrapper"><span class="control-label">BZ Overdrive (Middle School Program) in East Palo Alto, Oct 2014 - June 2015</span></span></label>
+                      <label class="checkbox"><%= f.check_box :program_ms_ms_mp, 'value' => 'ms-mp', 'id' => 'program-ms_ms-mp' %> <span class="bs-wrapper"><span class="control-label">BZ Overdrive (Middle School Program) in Menlo Park, Oct 2014 - June 2015</span></span></label>
                     </div>
 
                   <div class="coach">
                     <h5>Beyond Z New York City</h5>
-                      <label class="checkbox"><%= f.check_box :program_ms_ms_nyc, 'value' => 'ms-nyc', 'id' => 'program-ms_ms-nyc' %> BZ Overdrive (Middle School Program) in New York City, October 2014 - June 2015</label>
+                      <label class="checkbox"><%= f.check_box :program_ms_ms_nyc, 'value' => 'ms-nyc', 'id' => 'program-ms_ms-nyc' %> <span class="bs-wrapper"><span class="control-label">BZ Overdrive (Middle School Program) in New York City, October 2014 - June 2015</span></span></label>
                   </div>
 
 
@@ -92,7 +92,7 @@
                 <div class="form-group">
                   <label class="checkbox">
                     <%= f.check_box :accepts_txt %>
-                    I can accept text messages on this phone </label>
+                    <span class="bs-wrapper"><span class="control-label">I can accept text messages on this phone</span> </span></label>
                 </div>
               </div>
               <!-- #form-contact -->
@@ -112,7 +112,7 @@
                   <h5>Status as Student</h5>
                   <label class="checkbox">
                     <%= f.check_box :will_be_student %>
-                    I will be a student in good academic standing, enrolled at <span class="university-name">San Jose State University</span> during <span class="start-date">Oct 2014</span> &#8211; <span class="end-date">April 2015</span></label>
+                    <span class="bs-wrapper"><span class="control-label">I will be a student in good academic standing, enrolled at <span class="university-name">San Jose State University</span> during <span class="start-date">Oct 2014</span> &#8211; <span class="end-date">April 2015</span></span></span></label>
                 </div>
                 <div class="form-group coach">
                   <label>Undergraduate College/University</label>
@@ -228,12 +228,12 @@
               <div class="form-group student">
                 <label class="checkbox">
                   <%= f.check_box :affirm_qualified %>
-                  I affirm that I am qualified to participate in Beyond Z, and that I can fulfill my commitment of up to approximately 10 hours per month to Beyond Z. </label>
+                  <span class="bs-wrapper"><span class="control-label">I affirm that I am qualified to participate in Beyond Z, and that I can fulfill my commitment of up to approximately 10 hours per month to Beyond Z.</span></span> </label>
               </div>
               <div class="form-group student">
                 <label class="checkbox">
                   <%= f.check_box :affirm_commit %>
-                  I affirm that, if accepted and enrolled, I commit to participate fully in the program by coming to all cohort sessions prepared to engage in conversations and to support and challenge my peers. </label>
+                  <span class="bs-wrapper"><span class="control-label">I affirm that, if accepted and enrolled, I commit to participate fully in the program by coming to all cohort sessions prepared to engage in conversations and to support and challenge my peers.</span></span> </label>
               </div>
             </div>
             <!-- #form-commitment --> 
