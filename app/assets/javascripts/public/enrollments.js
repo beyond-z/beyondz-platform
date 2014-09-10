@@ -68,7 +68,7 @@ $(document).ready(function() {
         // if someone does rapid changes
         saveTimer = setTimeout(function() {
           var form = $('#enrollment-form-holder form');
-          $.post(form.action, form.serialize());
+          $.post(form[0].action, form.serialize());
           saveTimer = null;
         }, 1000);
       }
