@@ -1,0 +1,21 @@
+Dear <%= @user.first_name %>,
+
+We're happy to let you know you've made it to the next step toward joining the Beyond Z program in San Jose.
+
+The next step requires you to follow the link below and confirm your availability to attend the program.
+
+<% unless @user.fast_tracked %>
+After confirming, you will also be asked to pick a time for an interview between START and END. This interview is required for us to get to know you better and offers you a chance to ask any questions you may have.
+<% end %>
+
+Please note: you must complete this step before September 25th.
+
+Click here to confirm your availability<% unless @user.fast_tracked %> and set up an interview<% end %>.
+
+<%= @confirm_link %>
+
+Thanks,
+
+The Beyond Z Team.
+
+PS - if you have any questions, you may contact us at this email: info@beyondz.org

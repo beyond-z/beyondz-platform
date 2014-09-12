@@ -14,6 +14,8 @@ BeyondzPlatform::Application.routes.draw do
   resources :users, only: [:new, :create], :path => :signup
 
   post '/users/reset', to: 'users#reset', as: 'user_reset'
+  get '/users/confirm', to: 'users#confirm', as: 'user_confirm'
+  post '/users/confirm', to: 'users#save_confirm', as: 'user_save_confirm'
 
   resources :enrollments, only: [:new, :create, :show, :update]
 

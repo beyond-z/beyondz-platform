@@ -2,7 +2,17 @@ class UsersController < ApplicationController
 
   layout 'public'
 
-  before_filter :authenticate_user!, :only => :reset
+  before_filter :authenticate_user!, :only => [:reset, :confirm, :save_confirm]
+
+  def confirm
+    # renders a view
+  end
+
+  def save_confirm
+    current_user.program_attendance_confirmed = true
+    current_user.save!
+    redirect_to user_confirm_path
+  end
 
   def reset
     u = current_user
