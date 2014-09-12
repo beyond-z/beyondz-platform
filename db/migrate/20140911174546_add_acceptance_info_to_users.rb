@@ -4,7 +4,7 @@ class AddAcceptanceInfoToUsers < ActiveRecord::Migration
     add_column :users, :declined_from_program, :boolean
     add_column :users, :fast_tracked, :boolean
     add_column :users, :program_attendance_confirmed, :boolean
-    add_column :users, :doodle_interview_scheduled, :boolean
-    add_column :users, :acceptance_requested, :boolean
+    add_column :users, :interview_scheduled, :boolean
+    add_column :users, :availability_confirmation_requested, :boolean
   end
 end

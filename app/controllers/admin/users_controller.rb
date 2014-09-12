@@ -15,9 +15,9 @@ class Admin::UsersController < Admin::ApplicationController
     unless params[:user][:fast_tracked].nil?
       @user.fast_tracked = params[:user][:fast_tracked]
     end
-    unless params[:user][:acceptance_requested].nil?
-      @user.acceptance_requested = params[:user][:acceptance_requested]
-      AcceptanceFlow.request_availability_confirmation(@user).deliver
+    unless params[:user][:availability_confirmation_requested].nil?
+      @user.availability_confirmation_requested = params[:user][:availability_confirmation_requested]
+      AcceptanceMailer.request_availability_confirmation(@user).deliver
     end
     unless params[:user][:accepted_into_program].nil?
       @user.accepted_into_program = params[:user][:accepted_into_program]

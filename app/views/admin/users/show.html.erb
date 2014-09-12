@@ -1,11 +1,9 @@
-<h1><a href="/admin/users">Users</a> &raquo; User Details</h1>
+<h1><%= link_to 'Users', [:admin, :users] %> &raquo; User Details</h1>
 
 <div style="float: right; padding: 2em;">
-  <form action="/admin/users/<%=@user.id%>" method="POST">
-    <input type="hidden" name="_method" value="DELETE" />
-    <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+  <%= form_for [:admin, @user], :method => 'DELETE' do %>
     <input value="Delete User Permanently" type="submit" onclick="return confirm('Are you sure you want to completely delete this user?');" />
-  </form>
+  <% end %>
 </div>
 
 <table class="fields">
@@ -21,20 +19,16 @@
     <th>Fast tracked</th>
     <td><% if @user.fast_tracked %>
       Yes, interview waived
-        <form action="/admin/users/<%=@user.id%>" method="POST">
-          <input type="hidden" name="_method" value="PATCH" />
+        <%= form_for [:admin, @user] do %>
           <input type="hidden" name="user[fast_tracked]" value="false" />
-          <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
           <button>Undo</button>
-        </form>
+        <% end %>
       <% else %>
       No
-        <form action="/admin/users/<%=@user.id%>" method="POST">
-          <input type="hidden" name="_method" value="PATCH" />
+        <%= form_for [:admin, @user] do %>
           <input type="hidden" name="user[fast_tracked]" value="true" />
-          <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
           <button>Fast track user</button>
-        </form>
+        <% end %>
     <% end %></td>
   </tr>
 
@@ -44,15 +38,13 @@
       Yes
     <% else %>
       No
-      <% if @user.acceptance_requested %>
+      <% if @user.availability_confirmation_requested %>
         (waiting for user to confirm)
       <% end %>
-      <form action="/admin/users/<%=@user.id%>" method="POST">
-        <input type="hidden" name="_method" value="PATCH" />
-        <input type="hidden" name="user[acceptance_requested]" value="true" />
-        <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
-        <button>Request confirmation of availability now by email</button>
-      </form>
+      <%= form_for [:admin, @user] do %>
+        <input type="hidden" name="user[availability_confirmation_requested]" value="true" />
+        <button>Request confirmation of availability <% if @user.availability_confirmation_requested %>again<%else%>now<%end%> by email</button>
+      <% end %>
       <!-- reminders will be sent based on an outside timer when we get closer to the deadline -->
     <% end %>
   </tr>
@@ -66,19 +58,15 @@
       <% else %>
       Not yet
         <% if @user.program_attendance_confirmed %>
-          <form action="/admin/users/<%=@user.id%>" method="POST">
-            <input type="hidden" name="_method" value="PATCH" />
+          <%= form_for [:admin, @user] do %>
             <input type="hidden" name="user[accepted_into_program]" value="true" />
-            <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
             <button>Accept now</button>
-          </form>
+          <% end %>
 
-          <form action="/admin/users/<%=@user.id%>" method="POST">
-            <input type="hidden" name="_method" value="PATCH" />
+          <%= form_for [:admin, @user] do %>
             <input type="hidden" name="user[declined_from_program]" value="true" />
-            <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
             <button>Decline</button>
-          </form>
+          <% end %>
         <% else %>
           (Pending user confirmation)
         <% end %>
