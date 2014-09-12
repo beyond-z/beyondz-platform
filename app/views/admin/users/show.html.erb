@@ -1,7 +1,4 @@
-<h1>User Details</h1>
-
-<h2><%= @user.name %></h3>
-<tt><%= @user.email %></tt>
+<h1><a href="/admin/users">Users</a> &raquo; User Details</h1>
 
 <div style="float: right; padding: 2em;">
   <form action="/admin/users/<%=@user.id%>" method="POST">
@@ -11,9 +8,43 @@
   </form>
 </div>
 
-<br />
+<table class="fields">
+  <tr>
+    <th>Name</th>
+    <td><%= @user.name %></td>
+  </tr>
+  <tr>
+    <th>Email</th>
+    <td><%= @user.email %></td>
+  </tr>
+  <tr>
+    <th>Fast tracked</th>
+    <td><% if @user.fast_tracked %>
+      Yes, interview waived
+        <form action="/admin/users/<%=@user.id%>" method="POST">
+          <input type="hidden" name="_method" value="PATCH" />
+          <input type="hidden" name="user[fast_tracked]" value="false" />
+          <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+          <button>Undo</button>
+        </form>
+      <% else %>
+      No
+        <form action="/admin/users/<%=@user.id%>" method="POST">
+          <input type="hidden" name="_method" value="PATCH" />
+          <input type="hidden" name="user[fast_tracked]" value="true" />
+          <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+          <button>Fast track user</button>
+        </form?
+    <% end %></td>
+  </tr>
+  <tr>
+    <th>Acceptance state</th>
+    <td>Pending</td>
+  </tr>
+</table>
+
 <% if @user.coach %>
-  Coached by: <a href="/admin/users/<%=@user.coach.id%>"><%= @user.coach.name %></a>
+  Coached by: <a href="/admin/users/<%=@user.coach.id%>"><%= @user.coach.name %></a><br />
 <% end %>
 
-<br /><a href="/admin/users/<%=@user.id%>/students">Students this user is Coaching...</a>
+<a href="/admin/users/<%=@user.id%>/students">Students this user is Coaching...</a>

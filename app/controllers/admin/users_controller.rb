@@ -10,6 +10,13 @@ class Admin::UsersController < Admin::ApplicationController
     end
   end
 
+  def update
+    @user = User.find(params[:id])
+    @user.fast_tracked = params[:user][:fast_tracked]
+    @user.save!
+    redirect_to "/admin/users/#{@user.id}"
+  end
+
   def new
     @user = User.new
   end
