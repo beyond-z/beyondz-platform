@@ -1,4 +1,9 @@
 table.fields {
   border-collapse: separate;
   border-spacing: 6px;
+
+  /* so the buttons go right in the cell next to the text */
+  form {
+    display: inline;
+  }
 }

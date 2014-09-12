@@ -39,17 +39,50 @@
   </tr>
 
   <tr>
+    <th>Confirmed availability</th>
+    <td><% if @user.program_attendance_confirmed %>
+      Yes
+    <% else %>
+      No
+      <% if @user.acceptance_requested %>
+        (waiting for user to confirm)
+      <% end %>
+      <form action="/admin/users/<%=@user.id%>" method="POST">
+        <input type="hidden" name="_method" value="PATCH" />
+        <input type="hidden" name="user[acceptance_requested]" value="true" />
+        <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+        <button>Request confirmation of availability now by email</button>
+      </form>
+      <!-- reminders will be sent based on an outside timer when we get closer to the deadline -->
+    <% end %>
+  </tr>
+
+  <tr>
     <th>Accepted</th>
     <td><% if @user.accepted_into_program %>
       Yes
+      <% elsif @user.declined_from_program %>
+      Declined
       <% else %>
-      No
-        <form action="/admin/users/<%=@user.id%>" method="POST">
-          <input type="hidden" name="_method" value="PATCH" />
-          <input type="hidden" name="user[accepted_into_program]" value="true" />
-          <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
-          <button>Accept now</button>
-        </form>
+      Not yet
+        <% if @user.program_attendance_confirmed %>
+          <form action="/admin/users/<%=@user.id%>" method="POST">
+            <input type="hidden" name="_method" value="PATCH" />
+            <input type="hidden" name="user[accepted_into_program]" value="true" />
+            <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+            <button>Accept now</button>
+          </form>
+
+          <form action="/admin/users/<%=@user.id%>" method="POST">
+            <input type="hidden" name="_method" value="PATCH" />
+            <input type="hidden" name="user[declined_from_program]" value="true" />
+            <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+            <button>Decline</button>
+          </form>
+        <% else %>
+          (Pending user confirmation)
+        <% end %>
+
     <% end %></td>
   </tr>
 </table>

@@ -304,9 +304,11 @@ ActiveRecord::Schema.define(version: 20140911174546) do
     t.boolean  "interested_partnering"
     t.boolean  "interested_receiving"
     t.boolean  "accepted_into_program"
+    t.boolean  "declined_from_program"
     t.boolean  "fast_tracked"
     t.boolean  "program_attendance_confirmed"
-    t.boolean  "doodle_scheduling_confirmed"
+    t.boolean  "doodle_interview_scheduled"
+    t.boolean  "acceptance_requested"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
