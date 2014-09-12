@@ -12,7 +12,13 @@ class Admin::UsersController < Admin::ApplicationController
 
   def update
     @user = User.find(params[:id])
-    @user.fast_tracked = params[:user][:fast_tracked]
+    unless params[:user][:fast_tracked].nil?
+      @user.fast_tracked = params[:user][:fast_tracked]
+    end
+    unless params[:user][:accepted_into_program].nil?
+      @user.accepted_into_program = params[:user][:accepted_into_program]
+      # what else should we do here?
+    end
     @user.save!
     redirect_to "/admin/users/#{@user.id}"
   end

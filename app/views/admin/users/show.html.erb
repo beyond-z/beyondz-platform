@@ -34,12 +34,23 @@
           <input type="hidden" name="user[fast_tracked]" value="true" />
           <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
           <button>Fast track user</button>
-        </form?
+        </form>
     <% end %></td>
   </tr>
+
   <tr>
-    <th>Acceptance state</th>
-    <td>Pending</td>
+    <th>Accepted</th>
+    <td><% if @user.accepted_into_program %>
+      Yes
+      <% else %>
+      No
+        <form action="/admin/users/<%=@user.id%>" method="POST">
+          <input type="hidden" name="_method" value="PATCH" />
+          <input type="hidden" name="user[accepted_into_program]" value="true" />
+          <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+          <button>Accept now</button>
+        </form>
+    <% end %></td>
   </tr>
 </table>
 
