@@ -19,7 +19,7 @@ class Admin::UsersController < Admin::ApplicationController
       @user.availability_confirmation_requested = params[:user][:availability_confirmation_requested]
       # Commented mailer right now because the team is doing this manually
       # via mail merge.
-      #AcceptanceMailer.request_availability_confirmation(@user).deliver
+      # AcceptanceMailer.request_availability_confirmation(@user).deliver
     end
     unless params[:user][:accepted_into_program].nil?
       @user.accepted_into_program = params[:user][:accepted_into_program]
