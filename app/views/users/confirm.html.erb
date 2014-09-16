@@ -25,12 +25,7 @@
       <section>
         <div class="col-sm-4 col-sm-offset-4">
           <% if current_user.program_attendance_confirmed %>
-            <% if current_user.fast_tracked %>
-              <p>We will contact you soon with our final decision. Good luck!</p>
-            <% else %>
-              <p>Now, please take a moment to schedule a time for an interview by following the link below:</p>
-              <a href="#real-doodle-link-here">Select a time slot</a>
-            <% end %>
+            <p>We will contact you soon with our final decision. Good luck!</p>
           <% else %>
             <table><tr>
               <td style="padding-right: 6px; vertical-align: top;">
