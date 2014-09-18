@@ -6,7 +6,7 @@ class Admin::EnrollmentsController < Admin::ApplicationController
     respond_to do |format|
       format.html { render }
       format.csv { render text: csv_export }
-      format.xls { render text: @enrollments.to_xls }
+      format.xls { send_data(@enrollments.to_xls) }
     end
   end
 

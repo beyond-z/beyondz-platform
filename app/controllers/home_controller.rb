@@ -53,7 +53,9 @@ class HomeController < ApplicationController
   private
 
   def new_user
-    if params[:new_user_id]
+    if user_signed_in?
+      @new_user = current_user
+    elsif params[:new_user_id]
       @new_user = User.find(params[:new_user_id])
     end
   end

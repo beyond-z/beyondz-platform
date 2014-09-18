@@ -1,0 +1,57 @@
+<form method="POST" action="<%= user_save_confirm_path %>" onsubmit="
+  if(!this.elements['confirmed'].checked) {
+    alert('Please confirm your commitment by checking the box.');
+    return false;
+  }
+  return true;
+">
+  <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+  <div class="plank tertiary-md">
+    <div class="section-container">
+      <section>
+        <div class="col-sm-6 col-sm-offset-3 text-center">
+          <% if current_user.program_attendance_confirmed %>
+            <p>Thank you for confirming. You are in the final stages of the process.</p>
+          <% else %>
+            <p class="shoutout"><%= current_user.first_name %>, please confirm the following:</p>
+          <% end %>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="plank plain-lt">
+    <div class="section-container">
+      <section>
+        <div class="col-sm-4 col-sm-offset-4">
+          <% if current_user.program_attendance_confirmed %>
+            <p>We will contact you soon with our final decision. Good luck!</p>
+          <% else %>
+            <table><tr>
+              <td style="padding-right: 6px; vertical-align: top;">
+                <input id="confirmation" type="checkbox" name="confirmed" />
+              </td>
+              <td>
+                <label for="confirmation">I will be attending the Beyond Z program at SJSU between October 2014 and May 2015, which includes a minimum of 10 hours a week on average.</label>
+              </td>
+            </tr></table>
+          <% end %>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="plank plain-md">
+    <div class="section-container">
+      <section>
+        <div class="col-sm-4 col-sm-offset-4 text-center">
+          <% unless current_user.program_attendance_confirmed %>
+          <div class="apply-button">
+            <button type="submit" class="no-decoration"><div class="apply-icon"></div><div class="apply-text">Confirm</div>
+          </div>
+          <% end %>
+        </div>
+      </section>
+    </div>
+  </div>
+</form>

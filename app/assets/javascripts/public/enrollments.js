@@ -62,17 +62,48 @@ $(document).ready(function() {
     // and come back later
 
     var saveTimer = null;
-    $('input, textarea').change(function() {
+    function saveEnrollment() {
       if(saveTimer === null) {
         // the timer keeps it from pounding the server too hard
         // if someone does rapid changes
         saveTimer = setTimeout(function() {
           var form = $('#enrollment-form-holder form');
-          $.post(form.action, form.serialize());
+          $.post(form[0].action, form.serialize());
           saveTimer = null;
-        }, 5000);
+        }, 1000);
       }
-    });
+    }
+
+    // see: http://stackoverflow.com/questions/166221/how-can-i-upload-files-asynchronously-with-jquery
+    function saveEnrollmentwithFile() {
+      if(!FormData) return; // old browsers don't support ajax file upload, in their case we'll just use the other code as a graceful fallback, even when the file is changed, so they can submit normally w/o JS errors
+      if(saveTimer) {
+        // cancel any pending non-file save
+        clearTimeout(saveTimer);
+	saveTimer = null;
+      }
+
+      // save including the file
+      var form = $('#enrollment-form-holder form');
+      $.ajax({
+        url: form[0].action,
+        type: 'POST',
+        data: new FormData(form[0]),
+        cache: false,
+        contentType: false,
+        processData: false
+      });
+    }
+
+    $('input, textarea').change(saveEnrollment);
+
+    // We'll also do it on keydown to save more frequently
+    // on the long answer portions
+    $('input, textarea').keydown(saveEnrollment);
+
+    // upload the file only when it changes to save bandwidth - don't
+    // want the file to re-upload each time they hit a key!
+    $('input[type=file]').change(saveEnrollmentwithFile);
     
   // replace programming languages (testing only) with actual majors
   var majors = [

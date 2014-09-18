@@ -2,6 +2,8 @@ class UsersController < ApplicationController
 
   layout 'public'
 
+  before_filter :authenticate_user!, :only => [:reset, :confirm, :save_confirm]
+
   def check_credentials
     user = User.find_for_database_authentication(:email=>params[:username])
     if user.nil?
@@ -13,6 +15,28 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.json { render json: valid }
     end
+  end
+
+  def confirm
+    # renders a view
+  end
+
+  def save_confirm
+    current_user.program_attendance_confirmed = true
+    current_user.save!
+    redirect_to user_confirm_path
+  end
+
+  def reset
+    u = current_user
+
+    # only want this to happen on test users
+    # via the web interface to protect production data
+    if u.email.starts_with?('test+')
+      u.reset_assignments!
+    end
+
+    redirect_to root_path
   end
 
   def new

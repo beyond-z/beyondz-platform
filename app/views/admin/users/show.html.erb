@@ -1,14 +1,82 @@
-<h1>User Details</h1>
+<h1><%= link_to 'Users', [:admin, :users] %> &raquo; User Details</h1>
 
-<table>
-<%= @user.name %>
-<%= @user.email %>
-<%= @user.first_name %>
-<%= @user.last_name %>
+<div style="float: right; padding: 2em;">
+  <%= form_for [:admin, @user], :method => 'DELETE' do %>
+    <input value="Delete User Permanently" type="submit" onclick="return confirm('Are you sure you want to completely delete this user?');" />
+  <% end %>
+</div>
 
-<br />
+<table class="fields">
+  <tr>
+    <th>Name</th>
+    <td><%= @user.name %></td>
+  </tr>
+  <tr>
+    <th>Email</th>
+    <td><%= @user.email %></td>
+  </tr>
+  <tr>
+    <th>Fast tracked</th>
+    <td><% if @user.fast_tracked %>
+      Yes, interview waived
+        <%= form_for [:admin, @user] do %>
+          <input type="hidden" name="user[fast_tracked]" value="false" />
+          <button>Undo</button>
+        <% end %>
+      <% else %>
+      No
+        <%= form_for [:admin, @user] do %>
+          <input type="hidden" name="user[fast_tracked]" value="true" />
+          <button>Fast track user</button>
+        <% end %>
+    <% end %></td>
+  </tr>
+
+  <tr>
+    <th>Confirmed availability</th>
+    <td><% if @user.program_attendance_confirmed %>
+      Yes
+    <% else %>
+      No
+      <% if @user.availability_confirmation_requested %>
+        (waiting for user to confirm)
+      <% end %>
+      <%= form_for [:admin, @user] do %>
+        <input type="hidden" name="user[availability_confirmation_requested]" value="true" />
+        <button>Request confirmation of availability <% if @user.availability_confirmation_requested %>again<%else%>now<%end%> by email</button>
+      <% end %>
+      <!-- reminders will be sent based on an outside timer when we get closer to the deadline -->
+    <% end %>
+  </tr>
+
+  <tr>
+    <th>Accepted</th>
+    <td><% if @user.accepted_into_program %>
+      Yes
+      <% elsif @user.declined_from_program %>
+      Declined
+      <% else %>
+      Not yet
+        <% if @user.program_attendance_confirmed %>
+          <%= form_for [:admin, @user] do %>
+            <input type="hidden" name="user[accepted_into_program]" value="true" />
+            <button>Accept now</button>
+          <% end %>
+
+          <%= form_for [:admin, @user] do %>
+            <input type="hidden" name="user[declined_from_program]" value="true" />
+            <button>Decline</button>
+          <% end %>
+        <% else %>
+          (Pending user confirmation)
+        <% end %>
+
+    <% end %></td>
+  </tr>
+</table>
+
 <% if @user.coach %>
-  Coached by: <a href="/admin/users/<%=@user.coach.id%>"><%= @user.coach.name %></a>
+  Coached by: <a href="/admin/users/<%=@user.coach.id%>"><%= @user.coach.name %></a><br />
 <% end %>
 
-<br /><a href="/admin/users/<%=@user.id%>/students">Students this user is Coaching...</a>
+<a href="/admin/users/<%=@user.id%>/students">Students this user is Coaching...</a>
