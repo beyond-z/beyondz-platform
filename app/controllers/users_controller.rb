@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   before_filter :authenticate_user!, :only => [:reset, :confirm, :save_confirm]
 
   def check_credentials
-    user = User.find_for_database_authentication(:email=>params[:username])
+    user = User.find_for_database_authentication(:email => params[:username])
     if user.nil?
       valid = false
     else

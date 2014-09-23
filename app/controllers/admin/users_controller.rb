@@ -25,49 +25,22 @@ class Admin::UsersController < Admin::ApplicationController
       @user.accepted_into_program = params[:user][:accepted_into_program]
 
       # Create the canvas user
-      http = Net::HTTP.new(Rails.application.secrets.canvas_server, Rails.application.secrets.canvas_port)
-      if Rails.application.secrets.canvas_use_ssl
-        http.use_ssl = true
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE # self-signed cert would fail
-      end
+      open_canvas_http
 
       if @user.canvas_user_id.nil?
-        request = Net::HTTP::Post.new('/api/v1/accounts/1/users')
-        request.set_form_data({
-          'access_token' => Rails.application.secrets.canvas_access_token,
-          'user[name]' => @user.name,
-          'user[short_name]' => @user.first_name,
-          'user[sortable_name]' => @user.last_name,
-          'user[terms_of_use]' => true,
-          'pseudonym[unique_id]' => @user.email,
-          'pseudonym[send_confirmation]' => false
-        })
-        response = http.request(request)
-
-        new_canvas_user = JSON.parse response.body
-
-        # this will be set if we actually created a new user
-        # reasons why it might fail would include existing user
-        # already having the email address
-
-        # Not necessarily an error but for now i'll just make it throw
-        if new_canvas_user["id"].nil?
-          raise "Couldn't create user in canvas"
-        end
-
-        @user.canvas_user_id = new_canvas_user["id"]
+        create_canvas_user
       end
 
       # and enroll me in the proper course (#2 is bz test right now)
-      request = Net::HTTP::Post.new('/api/v1/courses/2/enrollments') # FIXME hard code number
-      request.set_form_data({
+      request = Net::HTTP::Post.new('/api/v1/courses/2/enrollments') # FIXME: hard coded course number
+      request.set_form_data(
         'access_token' => Rails.application.secrets.canvas_access_token,
         'enrollment[user_id]' => @user.canvas_user_id,
         'enrollment[type]' => 'StudentEnrollment',
         'enrollment[enrollment_state]' => 'active',
         'enrollment[notify]' => false
-      })
-      response = http.request(request)
+      )
+      @canvas_http.request(request)
 
       @user.save!
     end
@@ -134,5 +107,55 @@ class Admin::UsersController < Admin::ApplicationController
         csv << exportable
       end
     end
+  end
+
+  # Creates a user in canvas based on the currently loaded @user,
+  # storing the new canvas user id in the object.
+  #
+  # Be sure to call @user.save at some point after using this.
+  def create_canvas_user
+    open_canvas_http
+
+    request = Net::HTTP::Post.new('/api/v1/accounts/1/users')
+    request.set_form_data(
+      'access_token' => Rails.application.secrets.canvas_access_token,
+      'user[name]' => @user.name,
+      'user[short_name]' => @user.first_name,
+      'user[sortable_name]' => "#{@user.last_name}, #{@user.first_name}",
+      'user[terms_of_use]' => true,
+      'pseudonym[unique_id]' => @user.email,
+      'pseudonym[send_confirmation]' => false
+    )
+    response = @canvas_http.request(request)
+
+    new_canvas_user = JSON.parse response.body
+
+    # this will be set if we actually created a new user
+    # reasons why it might fail would include existing user
+    # already having the email address
+
+    # Not necessarily an error but for now i'll just make it throw
+    if new_canvas_user['id'].nil?
+      raise 'Couldn\'t create user in canvas'
+    end
+
+    @user.canvas_user_id = new_canvas_user['id']
+  end
+
+  # Opens a connection to the canvas http api (the address of the
+  # server is pulled from environment variables).
+  #
+  # This is a separate method that opens a member @canvas_http so
+  # we can reuse the connection across several requests for performance.
+  def open_canvas_http
+    if @canvas_http.nil?
+      @canvas_http = Net::HTTP.new(Rails.application.secrets.canvas_server, Rails.application.secrets.canvas_port)
+      if Rails.application.secrets.canvas_use_ssl
+        @canvas_http.use_ssl = true
+        @canvas_http.verify_mode = OpenSSL::SSL::VERIFY_NONE # self-signed cert would fail
+      end
+    end
+
+    @canvas_http
   end
 end
