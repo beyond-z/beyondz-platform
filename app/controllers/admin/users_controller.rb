@@ -24,8 +24,52 @@ class Admin::UsersController < Admin::ApplicationController
     unless params[:user][:accepted_into_program].nil?
       @user.accepted_into_program = params[:user][:accepted_into_program]
 
-      # The canvas user should be created at this time. After that is done,
-      # we can email them. Right now this is manual, but I think we can automate it.
+      # Create the canvas user
+      http = Net::HTTP.new(Rails.application.secrets.canvas_server, Rails.application.secrets.canvas_port)
+      if Rails.application.secrets.canvas_use_ssl
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE # self-signed cert would fail
+      end
+
+      if @user.canvas_user_id.nil?
+        request = Net::HTTP::Post.new('/api/v1/accounts/1/users')
+        request.set_form_data({
+          'access_token' => Rails.application.secrets.canvas_access_token,
+          'user[name]' => @user.name,
+          'user[short_name]' => @user.first_name,
+          'user[sortable_name]' => @user.last_name,
+          'user[terms_of_use]' => true,
+          'pseudonym[unique_id]' => @user.email,
+          'pseudonym[send_confirmation]' => false
+        })
+        response = http.request(request)
+
+        new_canvas_user = JSON.parse response.body
+
+        # this will be set if we actually created a new user
+        # reasons why it might fail would include existing user
+        # already having the email address
+
+        # Not necessarily an error but for now i'll just make it throw
+        if new_canvas_user["id"].nil?
+          raise "Couldn't create user in canvas"
+        end
+
+        @user.canvas_user_id = new_canvas_user["id"]
+      end
+
+      # and enroll me in the proper course (#2 is bz test right now)
+      request = Net::HTTP::Post.new('/api/v1/courses/2/enrollments') # FIXME hard code number
+      request.set_form_data({
+        'access_token' => Rails.application.secrets.canvas_access_token,
+        'enrollment[user_id]' => @user.canvas_user_id,
+        'enrollment[type]' => 'StudentEnrollment',
+        'enrollment[enrollment_state]' => 'active',
+        'enrollment[notify]' => false
+      })
+      response = http.request(request)
+
+      @user.save!
     end
     unless params[:user][:declined_from_program].nil?
       @user.fast_tracked = params[:user][:declined_from_program]
