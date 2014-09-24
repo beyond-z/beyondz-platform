@@ -80,6 +80,17 @@ For the secret and pepper variables above, you can generate them using
 rake secret
 ```
 
+## Integrating with Canvas
+Five environment variables relate to using the Canvas LMS through its REST API:
+
+CANVAS_ACCESS_TOKEN=<token created in canvas admin for app integration>
+CANVAS_SERVER=<domain of canvas server>
+CANVAS_PORT=<port of canvas server>
+CANVAS_USE_SSL=<true or false>
+CANVAS_ALLOW_SELF_SIGNED_SSL=<true or false>
+
+These are self explanatory except for the canvas access token. To create one of these, log into Canvas as the admin user and click settings (upper right corner of the screen). Scroll down to "Approved Integrations" and generate a new access token. That is the value needed for CANVAS_ACCESS_TOKEN.
+
 ## Running the Application 
 From the directory you cloned your repo to run:
 ```Shell
