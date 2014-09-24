@@ -31,17 +31,17 @@ class Admin::UsersController < Admin::ApplicationController
       # open_canvas_http
 
       # if @user.canvas_user_id.nil?
-        # create_canvas_user
+      #   create_canvas_user
       # end
 
       # and enroll me in the proper course (#2 is bz test right now)
       # request = Net::HTTP::Post.new('/api/v1/courses/2/enrollments') # FIXME: hard coded course number
       # request.set_form_data(
-        # 'access_token' => Rails.application.secrets.canvas_access_token,
-        # 'enrollment[user_id]' => @user.canvas_user_id,
-        # 'enrollment[type]' => 'StudentEnrollment',
-        # 'enrollment[enrollment_state]' => 'active',
-        # 'enrollment[notify]' => false
+      #   'access_token' => Rails.application.secrets.canvas_access_token,
+      #   'enrollment[user_id]' => @user.canvas_user_id,
+      #   'enrollment[type]' => 'StudentEnrollment',
+      #   'enrollment[enrollment_state]' => 'active',
+      #   'enrollment[notify]' => false
       # )
       # @canvas_http.request(request)
 
