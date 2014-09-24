@@ -24,23 +24,26 @@ class Admin::UsersController < Admin::ApplicationController
     unless params[:user][:accepted_into_program].nil?
       @user.accepted_into_program = params[:user][:accepted_into_program]
 
-      # Create the canvas user
-      open_canvas_http
+      # This is commented pending finalization of the design
+      # from the team.
 
-      if @user.canvas_user_id.nil?
-        create_canvas_user
-      end
+      # Create the canvas user
+      # open_canvas_http
+
+      # if @user.canvas_user_id.nil?
+        # create_canvas_user
+      # end
 
       # and enroll me in the proper course (#2 is bz test right now)
-      request = Net::HTTP::Post.new('/api/v1/courses/2/enrollments') # FIXME: hard coded course number
-      request.set_form_data(
-        'access_token' => Rails.application.secrets.canvas_access_token,
-        'enrollment[user_id]' => @user.canvas_user_id,
-        'enrollment[type]' => 'StudentEnrollment',
-        'enrollment[enrollment_state]' => 'active',
-        'enrollment[notify]' => false
-      )
-      @canvas_http.request(request)
+      # request = Net::HTTP::Post.new('/api/v1/courses/2/enrollments') # FIXME: hard coded course number
+      # request.set_form_data(
+        # 'access_token' => Rails.application.secrets.canvas_access_token,
+        # 'enrollment[user_id]' => @user.canvas_user_id,
+        # 'enrollment[type]' => 'StudentEnrollment',
+        # 'enrollment[enrollment_state]' => 'active',
+        # 'enrollment[notify]' => false
+      # )
+      # @canvas_http.request(request)
 
       @user.save!
     end
@@ -116,6 +119,9 @@ class Admin::UsersController < Admin::ApplicationController
   def create_canvas_user
     open_canvas_http
 
+    # the v1 is API version, only one option available in Canvas right now
+    # accounts/1 refers to the Beyond Z account, which is the only one
+    # we use since it is a custom installation.
     request = Net::HTTP::Post.new('/api/v1/accounts/1/users')
     request.set_form_data(
       'access_token' => Rails.application.secrets.canvas_access_token,
@@ -152,7 +158,9 @@ class Admin::UsersController < Admin::ApplicationController
       @canvas_http = Net::HTTP.new(Rails.application.secrets.canvas_server, Rails.application.secrets.canvas_port)
       if Rails.application.secrets.canvas_use_ssl
         @canvas_http.use_ssl = true
-        @canvas_http.verify_mode = OpenSSL::SSL::VERIFY_NONE # self-signed cert would fail
+        if Rails.application.secrets.canvas_allow_self_signed_ssl
+          @canvas_http.verify_mode = OpenSSL::SSL::VERIFY_NONE # self-signed cert would fail
+        end
       end
     end
 

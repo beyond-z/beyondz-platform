@@ -4,6 +4,9 @@ class UsersController < ApplicationController
 
   before_filter :authenticate_user!, :only => [:reset, :confirm, :save_confirm]
 
+  # This is present to allow an external single sign on server to
+  # authenticate users against our main database. Allows better
+  # integration with the Canvas LMS via RubyCAS at present.
   def check_credentials
     user = User.find_for_database_authentication(:email => params[:username])
     if user.nil?
