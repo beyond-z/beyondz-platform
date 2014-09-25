@@ -37,6 +37,9 @@ BeyondzPlatform::Application.routes.draw do
   namespace :admin do
     root "home#index"
 
+    get '/users/csv_import', to: 'users#csv_import'
+    post '/users/csv_import', to: 'users#do_csv_import'
+
     resources :users do
       resources :students
     end
