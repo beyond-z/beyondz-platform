@@ -87,6 +87,9 @@ class EnrollmentsController < ApplicationController
         @enrollment.explicitly_submitted = true
         @enrollment.save! # it should still validate successfully
 
+        # Email Abby
+        StaffNotifications.new_application(@enrollment).deliver
+
         redirect_to welcome_path
       end
     end
