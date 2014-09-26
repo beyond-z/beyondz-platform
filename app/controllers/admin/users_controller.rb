@@ -73,129 +73,84 @@ class Admin::UsersController < Admin::ApplicationController
   def do_csv_import
     file = CSV.parse(params[:import][:csv].read)
     row_number = 0
-    reading_k12 = false
-    reading_college = false
+    open_canvas_http
     file.each do |row|
-      row_number = row_number + 1
+      row_number += 1
       if row_number == 1
         next # skip header
       end
-      if row[1] == 'K-12 TALENT'
-        reading_k12 = true
-        reading_college = false
-        next
-      end
-      if row[1] == 'COLLEGE TALENT'
-        reading_k12 = false
-        reading_college = true
-        next
-      end
 
-      is_coach = false
-      is_student = false
-
-      email = row[2]
+      email = row[0]
       if email.empty?
         next
       end
 
-      if row[3] == 'coach'
-        is_coach = true
-      elsif row[3] == 'student'
-        is_student = true
-      else
-        next # other - skip it, we'll do it manually
-      end
-
-      cohort = row[4]
-
-      coaching_beyond = nil
-      overdrive = nil
-      accelerator = nil
-      beyondz101 = nil
-
-      section_coaching_beyond = nil
-      section_overdrive = nil
-      section_accelerator = nil
-      section_beyondz101 = nil
-
-      group_coaching_beyond = nil
-      group_overdrive = nil
-      group_accelerator = nil
-      group_beyondz101 = nil
-
-      if is_coach
-        coaching_beyond = 'STUDENT'
-      end
-
-      if reading_k12
-        if is_coach
-          overdrive = 'TA'
-        end
-        if is_student
-          overdrive = 'STUDENT'
-        end
-      end
-      if reading_college
-        if is_coach
-          accelerator = 'TA'
-        end
-        if is_student
-          accelerator = 'STUDENT'
-        end
-      end
-
-      # I CAN figure these out automatically btw
-      section_coaching_beyond = row[9]
-      section_overdrive = row[10]
-      section_accelerator = row[11]
-      section_beyondz101 = row[12]
-
-      # group_coaching_beyond = row[9]
-      # group_overdrive = row[10]
-      # group_accelerator = row[11]
-      # group_beyondz101 = row[12]
-
-
-      open_canvas_http
-      @user = User.find_by(:email => email)
-      if @user.nil?
-        # We need to create the user here
-
-        # This should never be needed in production because they
-        # applied through this system!
-        @user = User.new(
-          :first_name => row[1],
-          :last_name => 'Test', # FIXME
-          :email => email,
-          :password => 'test'
-        )
-        @user.skip_confirmation!
-        @user.save!
-      end
-
-      if @user.canvas_user_id.nil?
-        create_canvas_user
-      end
-
-      unless beyondz101.nil?
-        enroll_user_in_course(6, beyondz101, section_beyondz101)
-      end
-      unless coaching_beyond.nil?
-        enroll_user_in_course(7, coaching_beyond, section_coaching_beyond)
-      end
-      unless overdrive.nil?
-        enroll_user_in_course(3, overdrive, section_overdrive)
-      end
-      unless accelerator.nil?
-        enroll_user_in_course(2, accelerator, section_accelerator)
-      end
-
-      @user.save!
+      process_imported_row(row)
     end
   end
 
   private
+
+  def process_imported_row(row)
+    epapa_role = row[1]
+    epapa_cohort = row[2]
+    sjsu_role = row[3]
+    sjsu_cohort = row[4]
+
+    coaching_beyond = nil
+    overdrive = nil
+    accelerator = nil
+
+    section_coaching_beyond = nil
+    section_overdrive = nil
+    section_accelerator = nil
+
+    # This is K-12
+    if epapa_role == 'student' || epapa_role == 'peeradvisor'
+      overdrive = 'STUDENT'
+      section_overdrive = epapa_cohort
+    elsif epapa_role == 'coach'
+      overdrive = 'TA'
+      section_overdrive = epapa_cohort
+
+      coaching_beyond = 'STUDENT'
+      section_coaching_beyond = 'overdrivebayarea'
+    end
+
+    if sjsu_role == 'student' || sjsu_role == 'peeradvisor'
+      accelerator = 'STUDENT'
+      section_accelerator = sjsu_cohort
+    elsif sjsu_role == 'coach'
+      accelerator = 'TA'
+      section_accelerator = sjsu_cohort
+
+      coaching_beyond = 'STUDENT'
+      section_coaching_beyond = 'acceleratorlc'
+    end
+
+    @user = User.find_by(:email => email)
+    # This should never be needed in production because they applied through this system!
+    create_imported_user(email) if @user.nil?
+
+    create_canvas_user if @user.canvas_user_id.nil?
+
+    enroll_user_in_course(7, coaching_beyond, section_coaching_beyond)
+    enroll_user_in_course(3, overdrive, section_overdrive)
+    enroll_user_in_course(2, accelerator, section_accelerator)
+
+    @user.save!
+  end
+
+  def create_imported_user(email)
+    @user = User.new(
+      :first_name => email,
+      :last_name => 'Imported',
+      :email => email,
+      :password => 'test'
+    )
+    @user.skip_confirmation!
+    @user.save!
+  end
 
   def csv_export
     CSV.generate do |csv|
@@ -267,6 +222,10 @@ class Admin::UsersController < Admin::ApplicationController
   end
 
   def enroll_user_in_course(course_id, role, section)
+    if role.nil?
+      return
+    end
+
     open_canvas_http
 
     role = role.capitalize
@@ -280,38 +239,38 @@ class Admin::UsersController < Admin::ApplicationController
       'enrollment[notify]' => false
     }
     unless section.nil?
-      data['enrollment[course_section_id]'] = get_section_by_name(course_id, section, true)["id"]
+      data['enrollment[course_section_id]'] = get_section_by_name(course_id, section, true)['id']
     end
     request.set_form_data(data)
     @canvas_http.request(request)
   end
 
   def get_section_by_name(course_id, section_name, create_if_not_there = true)
-      section_info = read_sections(course_id)
-      if section_info[section_name].nil? && create_if_not_there
-        request = Net::HTTP::Post.new("/api/v1/courses/#{course_id}/sections")
-        request.set_form_data(
-          'access_token' => Rails.application.secrets.canvas_access_token,
-          'course_section[name]' => section_name
-        )
-        response = @canvas_http.request(request)
+    section_info = read_sections(course_id)
+    if section_info[section_name].nil? && create_if_not_there
+      request = Net::HTTP::Post.new("/api/v1/courses/#{course_id}/sections")
+      request.set_form_data(
+        'access_token' => Rails.application.secrets.canvas_access_token,
+        'course_section[name]' => section_name
+      )
+      response = @canvas_http.request(request)
 
-        new_section = JSON.parse response.body
+      new_section = JSON.parse response.body
 
-        section_info[section_name] = new_section
+      section_info[section_name] = new_section
 
-      end
+    end
 
-      section_info[section_name]
+    section_info[section_name]
   end
 
   def read_sections(course_id)
     if @section_info.nil?
-      @section_info = Hash.new
+      @section_info = {}
     end
 
     if @section_info[course_id].nil?
-      @section_info[course_id] = Hash.new
+      @section_info[course_id] = {}
 
       open_canvas_http
 
@@ -320,7 +279,7 @@ class Admin::UsersController < Admin::ApplicationController
       info = JSON.parse response.body
 
       info.each do |section|
-        @section_info[course_id][info["name"]] = info
+        @section_info[course_id][section['name']] = info
       end
     end
 
