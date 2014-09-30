@@ -276,12 +276,12 @@ class Admin::UsersController < Admin::ApplicationController
 
       open_canvas_http
 
-      request = Net::HTTP::Get.new("/api/v1/courses/#{course_id}/sections")
+      request = Net::HTTP::Get.new("/api/v1/courses/#{course_id}/sections?access_token=#{Rails.application.secrets.canvas_access_token}")
       response = @canvas_http.request(request)
       info = JSON.parse response.body
 
       info.each do |section|
-        @section_info[course_id][section['name']] = info
+        @section_info[course_id][section['name']] = section
       end
     end
 
