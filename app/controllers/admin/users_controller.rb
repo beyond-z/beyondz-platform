@@ -81,7 +81,7 @@ class Admin::UsersController < Admin::ApplicationController
       end
 
       email = row[0]
-      if email.nil? || email.empty? || email = 'Email' # skip header too
+      if email.nil? || email.empty? || email == 'Email' # skip header too
         next
       end
 
