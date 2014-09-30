@@ -81,17 +81,17 @@ class Admin::UsersController < Admin::ApplicationController
       end
 
       email = row[0]
-      if email.empty?
+      if email.nil? || email.empty? || email = 'Email' # skip header too
         next
       end
 
-      process_imported_row(row)
+      process_imported_row(row, email)
     end
   end
 
   private
 
-  def process_imported_row(row)
+  def process_imported_row(row, email)
     epapa_role = row[1]
     epapa_cohort = row[2]
     sjsu_role = row[3]
@@ -132,7 +132,9 @@ class Admin::UsersController < Admin::ApplicationController
     # This should never be needed in production because they applied through this system!
     create_imported_user(email) if @user.nil?
 
-    create_canvas_user if @user.canvas_user_id.nil?
+    # Commented for demo purposes - we always want to create since we're resetting
+    # the canvas db in between tests. Will delete comment # character afterward.
+    create_canvas_user # if @user.canvas_user_id.nil?
 
     enroll_user_in_course(7, coaching_beyond, section_coaching_beyond)
     enroll_user_in_course(3, overdrive, section_overdrive)
