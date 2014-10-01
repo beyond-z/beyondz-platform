@@ -8,7 +8,7 @@ ClassAndModuleChildren:
   Enabled: false # without this, it complains about the namespaced classes
 
 CyclomaticComplexity:
-  Max: 10
+  Max: 15
 
 ClassLength:
   Max: 250
@@ -29,7 +29,7 @@ LineLength:
   Max: 125 # largest line in here currently
 
 MethodLength:
-  Max: 35 # largest method in here currently
+  Max: 45 # largest method in here currently
 
 IfUnlessModifier:
   Enabled: false # I think the cure is worse than the disease here

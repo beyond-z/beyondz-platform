@@ -92,8 +92,9 @@ class Admin::UsersController < Admin::ApplicationController
   private
 
   def process_imported_row(row, email)
-    epapa_role = row[1]
-    epapa_cohort = row[2]
+    is_nyc = (row[1].nil? || row[1] == 'none') # If not assigned in epapa, use NYC as K-12 column
+    k12_role = is_nyc ? row[5] : row[1]
+    k12_cohort = is_nyc ? row[6] : row[2]
     sjsu_role = row[3]
     sjsu_cohort = row[4]
 
@@ -101,20 +102,20 @@ class Admin::UsersController < Admin::ApplicationController
     overdrive = nil
     accelerator = nil
 
-    section_coaching_beyond = nil
     section_overdrive = nil
     section_accelerator = nil
 
     # This is K-12
-    if epapa_role == 'student' || epapa_role == 'peeradvisor'
+    if k12_role == 'student' || k12_role == 'peeradvisor'
       overdrive = 'STUDENT'
-      section_overdrive = epapa_cohort
-    elsif epapa_role == 'coach'
+      section_overdrive = k12_cohort
+
+      section_coaching_beyond = is_nyc ? 'overdrivenyc' : 'overdrivebayarea'
+    elsif k12_role == 'coach'
       overdrive = 'TA'
-      section_overdrive = epapa_cohort
+      section_overdrive = k12_cohort
 
       coaching_beyond = 'STUDENT'
-      section_coaching_beyond = 'overdrivebayarea'
     end
 
     if sjsu_role == 'student' || sjsu_role == 'peeradvisor'
