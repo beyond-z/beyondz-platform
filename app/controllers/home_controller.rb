@@ -11,7 +11,7 @@ class HomeController < ApplicationController
       elsif current_user.coach?
         redirect_to coach_root_path
       elsif current_user.student?
-        redirect_to assignments_path
+        redirect_to "//#{Rails.application.secrets.canvas_server}/"
       else
         # This is a logged in user who is not yet
         # accepted into the program - we'll give them
