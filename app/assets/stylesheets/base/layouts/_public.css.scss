@@ -404,17 +404,27 @@
     position: absolute;
     left: 50%;
     top: 50%;
+    width: 3em;
+    height: 3em;
+    font-size: 10em;
+
+    @media (max-width: $screen-sm-min) {
+      top: 10%;
+      left: 100%;
+      width: 1em;
+      height: 1em;
+      font-size: 5em;
+    }
+    
     text-align: center;
     vertical-align: middle;
     line-height: 3em;
     margin-top: -1.5em;
     margin-left: -1.5em;
-    font-size: 10em;
+    
     color: white;
      // border: solid 5px currentColor;
      // border-radius: 100%;
-    width: 3em;
-    height: 3em;
     cursor: pointer;
 
     &:hover {
