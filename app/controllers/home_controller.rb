@@ -11,7 +11,7 @@ class HomeController < ApplicationController
       elsif current_user.in_lms?
         redirect_to "//#{Rails.application.secrets.canvas_server}/"
       elsif current_user.coach?
-        redirect_to coaches_path
+        redirect_to coaches_root_path
       elsif current_user.student?
         redirect_to assignments_path
       else
