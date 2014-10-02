@@ -83,11 +83,18 @@ class User < ActiveRecord::Base
   # thus telling us they aren't a full student yet. (This realistically
   # only separates our seed data from real data - which is fine until
   # we start actually accepting people.)
+  #
+  # This method may be obsolete given the shift to Canvas - a coach
+  # is now a TA in that system rather than a special user here.
   def coach?
     students.any?
   end
 
   def student?
+    applicant_type == 'student'
+  end
+
+  def in_lms?
     !canvas_user_id.nil?
   end
 

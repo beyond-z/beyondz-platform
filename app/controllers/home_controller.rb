@@ -8,10 +8,12 @@ class HomeController < ApplicationController
     if current_user
       if current_user.is_administrator?
         redirect_to admin_root_path
+      elsif current_user.in_lms?
+        redirect_to "//#{Rails.application.secrets.canvas_server}/"
       elsif current_user.coach?
-        redirect_to "//#{Rails.application.secrets.canvas_server}/"
+        redirect_to coaches_path
       elsif current_user.student?
-        redirect_to "//#{Rails.application.secrets.canvas_server}/"
+        redirect_to assignments_path
       else
         # This is a logged in user who is not yet
         # accepted into the program - we'll give them
