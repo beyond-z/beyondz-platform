@@ -8,10 +8,10 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-user = User.new(email: 'test+student1@beyondz.org', password: 'test', first_name: 'BeyondZ', last_name: 'Test')
-user2 = User.new(email: 'test+student2@beyondz.org', password: 'test', first_name: 'Second', last_name: 'Student')
-coach = User.new(email: 'test+coach1@beyondz.org', password: 'test', first_name: 'BeyondZ', last_name: 'Coach')
-admin_user = User.new(email: 'test+admin@beyondz.org', password: 'test', first_name: 'BeyondZ', last_name: 'Admin', is_administrator: true)
+user = User.new(email: 'test+student1@beyondz.org', password: 'test1234', first_name: 'BeyondZ', last_name: 'Test')
+user2 = User.new(email: 'test+student2@beyondz.org', password: 'test1234', first_name: 'Second', last_name: 'Student')
+coach = User.new(email: 'test+coach1@beyondz.org', password: 'test1234', first_name: 'BeyondZ', last_name: 'Coach')
+admin_user = User.new(email: 'test+admin@beyondz.org', password: 'test1234', first_name: 'BeyondZ', last_name: 'Admin', is_administrator: true)
 
 user.skip_confirmation!
 user2.skip_confirmation!
@@ -22,6 +22,53 @@ user.save!
 user2.save!
 coach.save!
 admin_user.save!
+
+# These are for SSO integration with Canvas
+def make_canvas_interop_user(email)
+  # The canvas user id ought not be nil since the user does exist,
+  # but the exact ID isn't important on staging since this is just
+  # for sign on which is based on matching email addresses instead of
+  # canvas API actions which would need the ID.
+  #
+  # So since we don't need it and staging is subject to change frequently,
+  # it isn't worth the maintenance hassle to actually sync those up.
+  #
+  # But zero instead of nil at least tells the system that they *are*
+  # users in canvas, and thus it is safe to redirect them there upon logging in.
+  canvas_user = User.new(email: email, password: 'test1234', first_name: email, last_name: 'Canvas', canvas_user_id: 0)
+  canvas_user.skip_confirmation!
+  canvas_user.save!
+end
+
+make_canvas_interop_user('college-lms@beyondz.org')
+make_canvas_interop_user('coaches-lms@beyondz.org')
+make_canvas_interop_user('admin@beyondz.org')
+
+make_canvas_interop_user('lc-epapa-1a@beyondz.org')
+make_canvas_interop_user('lc-epapa-2a@beyondz.org')
+make_canvas_interop_user('lc-epapa-2b@beyondz.org')
+make_canvas_interop_user('lc-epapa-2c@beyondz.org')
+make_canvas_interop_user('lc-nyc-1a@beyondz.org')
+make_canvas_interop_user('tl-nyc@beyondz.org')
+make_canvas_interop_user('tl-epapa@beyondz.org')
+make_canvas_interop_user('pm-nyc@beyondz.org')
+make_canvas_interop_user('pm-epapa@beyondz.org')
+
+make_canvas_interop_user('lc-sjsu-1a@beyondz.org')
+make_canvas_interop_user('lc-sjsu-1b@beyondz.org')
+make_canvas_interop_user('lc-sjsu-1c@beyondz.org')
+make_canvas_interop_user('peer-lc-sjsu-1a@beyondz.org')
+make_canvas_interop_user('student-sjsu-1a@beyondz.org')
+make_canvas_interop_user('student-sjsu-1b@beyondz.org')
+make_canvas_interop_user('student-sjsu-1c@beyondz.org')
+
+make_canvas_interop_user('student-sjsu-2a@beyondz.org')
+make_canvas_interop_user('student-sjsu-2b@beyondz.org')
+make_canvas_interop_user('student-sjsu-2c@beyondz.org')
+make_canvas_interop_user('student-sjsu-2d@beyondz.org')
+make_canvas_interop_user('lc-sjsu-2a@beyondz.org')
+make_canvas_interop_user('lc-sjsu-2b@beyondz.org')
+make_canvas_interop_user('peer-lc-sjsu-2a@beyondz.org')
 
 CoachStudent.create(coach_id: coach.id, student_id: user.id)
 CoachStudent.create(coach_id: coach.id, student_id: user2.id)
