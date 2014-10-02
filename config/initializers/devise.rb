@@ -12,7 +12,7 @@ Devise.setup do |config|
   # with default "from" parameter.
   config.mailer_sender = '"Beyond Z" <no-reply@beyondz.org>'
 
-  config.cas_base_url = "http://login.beyondz.org.arsdnet.net"
+  config.cas_base_url = Rails.application.secrets.sso_url
   config.cas_create_user = false
   config.cas_enable_single_sign_out = true
 

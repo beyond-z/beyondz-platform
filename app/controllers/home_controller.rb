@@ -9,7 +9,7 @@ class HomeController < ApplicationController
       if current_user.is_administrator?
         redirect_to admin_root_path
       elsif current_user.coach?
-        redirect_to coach_root_path
+        redirect_to "//#{Rails.application.secrets.canvas_server}/"
       elsif current_user.student?
         redirect_to "//#{Rails.application.secrets.canvas_server}/"
       else
