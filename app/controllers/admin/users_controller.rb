@@ -92,11 +92,11 @@ class Admin::UsersController < Admin::ApplicationController
   private
 
   def process_imported_row(row, email)
-    is_nyc = (row[1].nil? || row[1] == 'none') # If not assigned in epapa, use NYC as K-12 column
-    k12_role = is_nyc ? row[5] : row[1]
-    k12_cohort = is_nyc ? row[6] : row[2]
-    sjsu_role = row[3]
-    sjsu_cohort = row[4]
+    is_nyc = (row[3].nil? || row[3] == 'none') # If not assigned in epapa, use NYC as K-12 column
+    k12_role = is_nyc ? row[1] : row[3]
+    k12_cohort = is_nyc ? row[2] : row[4]
+    sjsu_role = row[5]
+    sjsu_cohort = row[6]
 
     coaching_beyond = nil
     overdrive = nil
