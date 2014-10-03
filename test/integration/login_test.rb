@@ -9,7 +9,7 @@ describe 'Login' do
     fill_in('Password', with: user.password)
     click_on 'Log in'
 
-    current_path.must_equal(assignments_path)
+    current_path.must_equal(welcome_path)
 
     # I was randomly getting "email already taken" with the spec
     # syntax so I'm explicitly destroying the user when we're done

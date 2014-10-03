@@ -403,3 +403,19 @@ section {
 .assignment-details-half-screen {
   @extend .col-sm-6;
 }
+
+
+/* This puts a gap before an element linked to via #some-id to leave room
+   for the floating header, thus ensuring that the beyond Z logo doesn't
+   overlap content the user is trying to get to.
+
+   If they go to such a link then scroll back up, the gap will still be
+   there and can then be visible, but I think that's an acceptable trade
+   off - it is just a bit of white space in the relatively rare event
+   of anchor link then scroll up vs the hassle of anchors seemingly
+   going too far and making content illegible without scrolling up. */
+*:target::before {
+        height: 45px;
+        display: block;
+        content: '\a0';
+}

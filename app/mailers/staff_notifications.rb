@@ -3,13 +3,11 @@ class StaffNotifications < ActionMailer::Base
 
   def new_user(new_user)
     @user = new_user
+    mail(to: Rails.application.secrets.staff_email, subject: 'New user sign up')
+  end
 
-    if Rails.env.production?
-      to = 'signup-notification@beyondz.org'
-    else
-      to = 'tech@beyondz.org'
-    end
-
-    mail(to: to, subject: 'New user sign up')
+  def new_application(new_application)
+    @enrollment = new_application
+    mail(to: Rails.application.secrets.staff_email, subject: 'Application submitted')
   end
 end
