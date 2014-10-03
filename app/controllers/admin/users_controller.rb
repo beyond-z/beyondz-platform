@@ -122,7 +122,7 @@ class Admin::UsersController < Admin::ApplicationController
       accelerator = 'STUDENT'
       section_accelerator = sjsu_cohort
     elsif sjsu_role == 'coach'
-      accelerator = 'TA'
+      # accelerator = 'TA'
       section_accelerator = sjsu_cohort
 
       coaching_beyond = 'STUDENT'
@@ -139,7 +139,7 @@ class Admin::UsersController < Admin::ApplicationController
 
     enroll_user_in_course(7, coaching_beyond, section_coaching_beyond)
     enroll_user_in_course(3, overdrive, section_overdrive)
-    # enroll_user_in_course(2, accelerator, section_accelerator)
+    enroll_user_in_course(2, accelerator, section_accelerator)
 
     @user.save!
   end
