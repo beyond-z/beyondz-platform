@@ -85,6 +85,10 @@ class Admin::UsersController < Admin::ApplicationController
         next
       end
 
+      # The find_by seems to be case-sensitive, and we want to ignore case
+      # easiest way is to just standardize the search by using lower case everywhere
+      email = email.downcase
+
       process_imported_row(row, email)
     end
   end
