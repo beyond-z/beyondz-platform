@@ -48,7 +48,7 @@ module BeyondZ
     def sync_user(user)
       canvas_user = find_user(user.email)
       if canvas_user.nil?
-        create_user
+        create_user(user)
       else
         user.canvas_user_id = canvas_user['id']
       end
