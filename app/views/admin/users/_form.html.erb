@@ -1,0 +1,27 @@
+<%= form_for [:admin, @user] do |f| %>
+  <%= f.label :first_name %>:<br />
+  <%= f.text_field :first_name %><br />
+
+  <%= f.label :last_name %>:<br />
+  <%= f.text_field :last_name %><br />
+
+  <% if !@user.email %>
+    <!-- since email is a key field for looking up accounts and logging in, we don't allow editing. -->
+    <%= f.label :email %>:<br />
+    <%= f.text_field :email %><br />
+  <% end %>
+
+  <%= f.label :password %>:<br />
+  <%= f.text_field :password %><br />
+
+  <br />
+  <label>
+    <input type="checkbox" name="sync_with_canvas" />
+    Ensure user is in canvas?
+  </label>
+    <br /><small>&nbsp; &nbsp; This will create the user in Canvas if the email address isn't already there. If checked, it will ensure logging in to the main site sends them to Canvas too.</small>
+  <br />
+
+  <br />
+  <%= f.submit %>
+<% end %>

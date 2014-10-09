@@ -40,6 +40,13 @@ class Admin::UsersController < Admin::ApplicationController
       @user.fast_tracked = params[:user][:declined_from_program]
       # send email here saying try again next time
     end
+
+    @user.first_name = params[:user][:first_name] unless params[:user][:first_name].nil?
+    @user.last_name = params[:user][:last_name] unless params[:user][:last_name].nil?
+    @user.password = params[:user][:password] unless params[:user][:password].nil? || params[:user][:password].empty?
+
+    sync_user_with_canvas
+
     @user.save!
     redirect_to "/admin/users/#{@user.id}"
   end
@@ -49,6 +56,10 @@ class Admin::UsersController < Admin::ApplicationController
   end
 
   def show
+    @user = User.find(params[:id])
+  end
+
+  def edit
     @user = User.find(params[:id])
   end
 
@@ -62,7 +73,12 @@ class Admin::UsersController < Admin::ApplicationController
     @user = User.new(params[:user].permit(
       :first_name, :last_name, :email, :password))
     @user.skip_confirmation! # admins don't need to confirm new accounts
+    raise @user.errors.to_json unless @user.valid?
+
+    sync_user_with_canvas
+
     @user.save!
+
     redirect_to admin_users_path
   end
 
@@ -81,9 +97,7 @@ class Admin::UsersController < Admin::ApplicationController
       end
 
       email = row[0]
-      if email.nil? || email.empty? || email == 'Email' # skip header too
-        next
-      end
+      next if email.nil? || email.empty? || email == 'Email' # skip header too
 
       # The find_by seems to be case-sensitive, and we want to ignore case
       # easiest way is to just standardize the search by using lower case everywhere
@@ -221,17 +235,28 @@ class Admin::UsersController < Admin::ApplicationController
     # already having the email address
 
     # Not necessarily an error but for now i'll just make it throw
-    if new_canvas_user['id'].nil?
-      raise "Couldn't create user #{@user.email} in canvas #{response.body}"
-    end
+    raise "Couldn't create user #{@user.email} in canvas #{response.body}" if new_canvas_user['id'].nil?
 
     @user.canvas_user_id = new_canvas_user['id']
   end
 
+  def find_canvas_user(email)
+    open_canvas_http
+
+    request = Net::HTTP::Get.new(
+      '/api/v1/accounts/1/users?' \
+      "access_token=#{Rails.application.secrets.canvas_access_token}&" \
+      "search_term=#{URI.encode_www_form_component(email)}"
+    )
+    response = @canvas_http.request(request)
+
+    users = JSON.parse response.body
+
+    users.length == 1 ? users[0] : nil
+  end
+
   def enroll_user_in_course(course_id, role, section)
-    if role.nil?
-      return
-    end
+    return if role.nil?
 
     open_canvas_http
 
@@ -312,5 +337,18 @@ class Admin::UsersController < Admin::ApplicationController
     end
 
     @canvas_http
+  end
+
+  # Looks up the current @user in canvas, setting the ID locally if found,
+  # and creating the user on Canvas if not. Controlled by the sync_with_canvas param.
+  def sync_user_with_canvas
+    if params[:sync_with_canvas]
+      canvas_user = find_canvas_user(@user.email)
+      if canvas_user.nil?
+        create_canvas_user
+      else
+        @user.canvas_user_id = canvas_user['id']
+      end
+    end
   end
 end
