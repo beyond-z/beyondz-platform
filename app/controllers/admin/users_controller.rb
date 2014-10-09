@@ -1,5 +1,7 @@
 require 'csv'
 
+require 'lms'
+
 class Admin::UsersController < Admin::ApplicationController
   def index
     @users = User.all
@@ -11,6 +13,9 @@ class Admin::UsersController < Admin::ApplicationController
   end
 
   def update
+
+    initialize_lms_interop
+
     @user = User.find(params[:id])
     unless params[:user][:fast_tracked].nil?
       @user.fast_tracked = params[:user][:fast_tracked]
@@ -28,10 +33,9 @@ class Admin::UsersController < Admin::ApplicationController
       # from the team.
 
       # Create the canvas user
-      # open_canvas_http
 
       # if @user.canvas_user_id.nil?
-      #   create_canvas_user
+      #   @lms.create_user(@user)
       # end
 
       @user.save!
@@ -45,7 +49,9 @@ class Admin::UsersController < Admin::ApplicationController
     @user.last_name = params[:user][:last_name] unless params[:user][:last_name].nil?
     @user.password = params[:user][:password] unless params[:user][:password].nil? || params[:user][:password].empty?
 
-    sync_user_with_canvas
+    if params[:sync_with_canvas]
+      @lms.sync_user(@user)
+    end
 
     @user.save!
     redirect_to "/admin/users/#{@user.id}"
@@ -70,12 +76,17 @@ class Admin::UsersController < Admin::ApplicationController
   end
 
   def create
+    initialize_lms_interop
+
     @user = User.new(params[:user].permit(
       :first_name, :last_name, :email, :password))
     @user.skip_confirmation! # admins don't need to confirm new accounts
     raise @user.errors.to_json unless @user.valid?
 
-    sync_user_with_canvas
+
+    if params[:sync_with_canvas]
+      @lms.sync_user(@user)
+    end
 
     @user.save!
 
@@ -87,9 +98,10 @@ class Admin::UsersController < Admin::ApplicationController
   end
 
   def do_csv_import
+    initialize_lms_interop
+
     file = CSV.parse(params[:import][:csv].read)
     row_number = 0
-    open_canvas_http
     file.each do |row|
       row_number += 1
       if row_number == 1
@@ -108,6 +120,14 @@ class Admin::UsersController < Admin::ApplicationController
   end
 
   private
+
+  # Creates @lms, a wrapper class for communicating with and caching results
+  # from the Canvas LMS
+  def initialize_lms_interop
+    if @lms.nil?
+      @lms = BeyondZ::LMS.new
+    end
+  end
 
   def process_imported_row(row, email)
     is_nyc = (row[3].nil? || row[3] == 'none') # If not assigned in epapa, use NYC as K-12 column
@@ -151,13 +171,13 @@ class Admin::UsersController < Admin::ApplicationController
     # This should never be needed in production because they applied through this system!
     create_imported_user(email) if @user.nil?
 
-    # Commented for demo purposes - we always want to create since we're resetting
-    # the canvas db in between tests. Will delete comment # character afterward.
-    create_canvas_user # if @user.canvas_user_id.nil?
+    initialize_lms_interop
 
-    enroll_user_in_course(7, coaching_beyond, section_coaching_beyond)
-    enroll_user_in_course(3, overdrive, section_overdrive)
-    enroll_user_in_course(2, accelerator, section_accelerator)
+    @lms.sync_user(@user)
+
+    @lms.enroll_user_in_course(@user, 7, coaching_beyond, section_coaching_beyond)
+    @lms.enroll_user_in_course(@user, 3, overdrive, section_overdrive)
+    @lms.enroll_user_in_course(@user, 2, accelerator, section_accelerator)
 
     @user.save!
   end
@@ -202,152 +222,6 @@ class Admin::UsersController < Admin::ApplicationController
         exportable << user.external_referral_url
         exportable << user.internal_referral_url
         csv << exportable
-      end
-    end
-  end
-
-  # Creates a user in canvas based on the currently loaded @user,
-  # storing the new canvas user id in the object.
-  #
-  # Be sure to call @user.save at some point after using this.
-  def create_canvas_user
-    open_canvas_http
-
-    # the v1 is API version, only one option available in Canvas right now
-    # accounts/1 refers to the Beyond Z account, which is the only one
-    # we use since it is a custom installation.
-    request = Net::HTTP::Post.new('/api/v1/accounts/1/users')
-    request.set_form_data(
-      'access_token' => Rails.application.secrets.canvas_access_token,
-      'user[name]' => @user.name,
-      'user[short_name]' => @user.first_name,
-      'user[sortable_name]' => "#{@user.last_name}, #{@user.first_name}",
-      'user[terms_of_use]' => true,
-      'pseudonym[unique_id]' => @user.email,
-      'pseudonym[send_confirmation]' => false
-    )
-    response = @canvas_http.request(request)
-
-    new_canvas_user = JSON.parse response.body
-
-    # this will be set if we actually created a new user
-    # reasons why it might fail would include existing user
-    # already having the email address
-
-    # Not necessarily an error but for now i'll just make it throw
-    raise "Couldn't create user #{@user.email} in canvas #{response.body}" if new_canvas_user['id'].nil?
-
-    @user.canvas_user_id = new_canvas_user['id']
-  end
-
-  def find_canvas_user(email)
-    open_canvas_http
-
-    request = Net::HTTP::Get.new(
-      '/api/v1/accounts/1/users?' \
-      "access_token=#{Rails.application.secrets.canvas_access_token}&" \
-      "search_term=#{URI.encode_www_form_component(email)}"
-    )
-    response = @canvas_http.request(request)
-
-    users = JSON.parse response.body
-
-    users.length == 1 ? users[0] : nil
-  end
-
-  def enroll_user_in_course(course_id, role, section)
-    return if role.nil?
-
-    open_canvas_http
-
-    role = role.capitalize
-
-    request = Net::HTTP::Post.new("/api/v1/courses/#{course_id}/enrollments")
-    data = {
-      'access_token' => Rails.application.secrets.canvas_access_token,
-      'enrollment[user_id]' => @user.canvas_user_id,
-      'enrollment[type]' => "#{role}Enrollment",
-      'enrollment[enrollment_state]' => 'active',
-      'enrollment[notify]' => false
-    }
-    unless section.nil?
-      data['enrollment[course_section_id]'] = get_section_by_name(course_id, section, true)['id']
-    end
-    request.set_form_data(data)
-    @canvas_http.request(request)
-  end
-
-  def get_section_by_name(course_id, section_name, create_if_not_there = true)
-    section_info = read_sections(course_id)
-    if section_info[section_name].nil? && create_if_not_there
-      request = Net::HTTP::Post.new("/api/v1/courses/#{course_id}/sections")
-      request.set_form_data(
-        'access_token' => Rails.application.secrets.canvas_access_token,
-        'course_section[name]' => section_name
-      )
-      response = @canvas_http.request(request)
-
-      new_section = JSON.parse response.body
-
-      section_info[section_name] = new_section
-
-    end
-
-    section_info[section_name]
-  end
-
-  def read_sections(course_id)
-    if @section_info.nil?
-      @section_info = {}
-    end
-
-    if @section_info[course_id].nil?
-      @section_info[course_id] = {}
-
-      open_canvas_http
-
-      request = Net::HTTP::Get.new(
-        "/api/v1/courses/#{course_id}/sections?access_token=#{Rails.application.secrets.canvas_access_token}"
-      )
-      response = @canvas_http.request(request)
-      info = JSON.parse response.body
-
-      info.each do |section|
-        @section_info[course_id][section['name']] = section
-      end
-    end
-
-    @section_info[course_id]
-  end
-
-  # Opens a connection to the canvas http api (the address of the
-  # server is pulled from environment variables).
-  #
-  # This is a separate method that opens a member @canvas_http so
-  # we can reuse the connection across several requests for performance.
-  def open_canvas_http
-    if @canvas_http.nil?
-      @canvas_http = Net::HTTP.new(Rails.application.secrets.canvas_server, Rails.application.secrets.canvas_port)
-      if Rails.application.secrets.canvas_use_ssl
-        @canvas_http.use_ssl = true
-        if Rails.application.secrets.canvas_allow_self_signed_ssl
-          @canvas_http.verify_mode = OpenSSL::SSL::VERIFY_NONE # self-signed cert would fail
-        end
-      end
-    end
-
-    @canvas_http
-  end
-
-  # Looks up the current @user in canvas, setting the ID locally if found,
-  # and creating the user on Canvas if not. Controlled by the sync_with_canvas param.
-  def sync_user_with_canvas
-    if params[:sync_with_canvas]
-      canvas_user = find_canvas_user(@user.email)
-      if canvas_user.nil?
-        create_canvas_user
-      else
-        @user.canvas_user_id = canvas_user['id']
       end
     end
   end
