@@ -189,7 +189,7 @@ class Admin::UsersController < Admin::ApplicationController
 
   def csv_export
     CSV.generate do |csv|
-      header = Array.new
+      header = []
       header << 'First Name'
       header << 'Last Name'
       header << 'Email'
