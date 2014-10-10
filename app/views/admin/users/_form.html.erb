@@ -13,15 +13,7 @@
 
   <%= f.label :password %>:<br />
   <%= f.text_field :password %><br />
-
   <br />
-  <label>
-    <input type="checkbox" name="sync_with_canvas" />
-    Ensure user is in canvas?
-  </label>
-    <br /><small>&nbsp; &nbsp; This will create the user in Canvas if the email address isn't already there. If checked, it will ensure logging in to the main site sends them to Canvas too.</small>
-  <br />
-
-  <br />
+  <input type="hidden" value="true" name="sync_with_canvas" />
   <%= f.submit %>
 <% end %>
