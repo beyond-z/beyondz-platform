@@ -100,6 +100,8 @@ class Admin::UsersController < Admin::ApplicationController
   def do_csv_import
     initialize_lms_interop
 
+    @failed_imports = Array.new
+
     file = CSV.parse(params[:import][:csv].read)
     row_number = 0
     file.each do |row|
@@ -168,8 +170,11 @@ class Admin::UsersController < Admin::ApplicationController
     end
 
     @user = User.find_by(:email => email)
-    # This should never be needed in production because they applied through this system!
-    create_imported_user(email) if @user.nil?
+
+    if @user.nil?
+      @failed_imports << email
+      return
+    end
 
     initialize_lms_interop
 
@@ -179,17 +184,6 @@ class Admin::UsersController < Admin::ApplicationController
     @lms.enroll_user_in_course(@user, 3, overdrive, section_overdrive)
     @lms.enroll_user_in_course(@user, 2, accelerator, section_accelerator)
 
-    @user.save!
-  end
-
-  def create_imported_user(email)
-    @user = User.new(
-      :first_name => email,
-      :last_name => 'Imported',
-      :email => email,
-      :password => 'test'
-    )
-    @user.skip_confirmation!
     @user.save!
   end
 
