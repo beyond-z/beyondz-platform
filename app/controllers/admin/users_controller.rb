@@ -100,7 +100,7 @@ class Admin::UsersController < Admin::ApplicationController
   def do_csv_import
     initialize_lms_interop
 
-    @failed_imports = Array.new
+    @failed_imports = []
 
     file = CSV.parse(params[:import][:csv].read)
     row_number = 0
@@ -203,7 +203,7 @@ class Admin::UsersController < Admin::ApplicationController
       header << 'Came from to reach sign up form'
       csv << header
       @users.each do |user|
-        exportable = Array.new
+        exportable = []
         exportable << user.first_name
         exportable << user.last_name
         exportable << user.email
