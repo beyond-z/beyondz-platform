@@ -1,0 +1,9 @@
+<h1>Edit User</h1>
+
+<%= form_for [:admin, @user] do |f| %>
+  <%= f.label :password %>:<br />
+  <%= f.text_field :password %><br />
+
+  <br />
+  <%= f.submit %>
+<% end %>

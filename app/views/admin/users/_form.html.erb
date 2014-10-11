@@ -1,0 +1,19 @@
+<%= form_for [:admin, @user] do |f| %>
+  <%= f.label :first_name %>:<br />
+  <%= f.text_field :first_name %><br />
+
+  <%= f.label :last_name %>:<br />
+  <%= f.text_field :last_name %><br />
+
+  <% if !@user.email %>
+    <!-- since email is a key field for looking up accounts and logging in, we don't allow editing. -->
+    <%= f.label :email %>:<br />
+    <%= f.text_field :email %><br />
+  <% end %>
+
+  <%= f.label :password %>:<br />
+  <%= f.text_field :password %><br />
+  <br />
+  <input type="hidden" value="true" name="sync_with_canvas" />
+  <%= f.submit %>
+<% end %>

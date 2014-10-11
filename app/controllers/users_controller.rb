@@ -42,6 +42,26 @@ class UsersController < ApplicationController
     redirect_to root_path
   end
 
+  # This is meant to enable a forced logout from the SSO server, to keep
+  # users sane across different applications. Without something like this,
+  # logging out of say, Canvas, will do it and SSO... but won't clear the
+  # bz.org cookie, so if the user goes back there, they'll show up possible
+  # as a different user, confusing them.
+  #
+  # This has the potential risk of denial-of-service. The check of the referrer
+  # coming from the SSO domain is meant to provide some protection against
+  # random image tags (for example) on other sites logging you out, but it
+  # isn't a perfect solution. Alas, I'm not sure there can be a perfect
+  # solution. Maybe a complex cryptographically signed thing, but meh, I don't
+  # think the risk is that big. The referrer check should foil any pranks
+  # in practice.
+  def clear_session_cookie
+    if request.referer.starts_with?(Rails.application.secrets.sso_url)
+      reset_session
+    end
+    render nothing: true
+  end
+
   def new
     states
     @referrer = request.referrer
