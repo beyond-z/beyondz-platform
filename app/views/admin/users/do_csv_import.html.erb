@@ -1,1 +1,12 @@
-Import successful.
+<h1>Import successful.</h1>
+
+<% if @failed_imports.any? %>
+  <h2>These users were NOT imported because they did not sign up</h2>
+  <p>To fix this, sign up with the email address on the site first, then re-run that row.</p>
+
+  <ol>
+  <% @failed_imports.each do |email| %>
+    <li><%= email %></li>
+  <% end %>
+  </ol>
+<% end %>
