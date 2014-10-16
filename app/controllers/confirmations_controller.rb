@@ -6,7 +6,7 @@ class ConfirmationsController < Devise::ConfirmationsController
     user = User.find_for_database_authentication(:email => params[:user][:email])
     if !user.nil? && user.confirmed?
       path = after_resending_confirmation_instructions_path_for(resource_name)
-      path += "?email=#{URI::encode_www_form_component(params[:user][:email])}"
+      path += "?email=#{URI.encode_www_form_component(params[:user][:email])}"
       flash[:notice] = 'You are already confirmed. Please try signing in'
       respond_with({}, :location => path)
     else
