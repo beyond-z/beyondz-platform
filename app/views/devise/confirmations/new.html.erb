@@ -6,6 +6,9 @@
 
         <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
           <%= render :partial => 'shared/form_errors', locals: { object: resource } %>
+          <% if resource.errors.any? %>
+            <p>Please enter the email address you used when signing up so we can fix this:</p>
+          <% end %>
 
           <div><%= f.label :email %><br />
           <%= f.email_field :email, autofocus: true, :class => 'form-control' %></div>
