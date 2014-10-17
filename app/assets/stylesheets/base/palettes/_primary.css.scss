@@ -1,3 +1,4 @@
+// See: https://www.dropbox.com/s/hzy0mt1jeh4ns4t/bz-colors-02.pdf
 //PRIMARY PALETTE
 $primary-lt:  #f26522;
 $primary-md:  #d93833;
@@ -33,6 +34,8 @@ $link-dk:  #0071bc;
 
 //////////////////////////////
 //IMPLEMENTATION
+
+// call to action brand orange
 $cta:  $primary-lt;
 $cta-highlight: #f0ad4e;
 $cta-lowlight: #b5541e;
