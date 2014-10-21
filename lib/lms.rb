@@ -45,7 +45,7 @@ module BeyondZ
     # and creating the user on Canvas if not.
     #
     # Don't forget to call user.save after using this.
-    def sync_user(user)
+    def sync_user_logins(user)
       canvas_user = find_user(user.email)
       if canvas_user.nil?
         create_user(user)
@@ -71,6 +71,8 @@ module BeyondZ
       users.length == 1 ? users[0] : nil
     end
 
+    # Enrolls the user in the new course, without modifying any
+    # existing data
     def enroll_user_in_course(user, course_id, role, section)
       return if role.nil?
 
@@ -89,6 +91,100 @@ module BeyondZ
       unless section.nil?
         data['enrollment[course_section_id]'] = get_section_by_name(course_id, section, true)['id']
       end
+      request.set_form_data(data)
+      @canvas_http.request(request)
+    end
+
+    # Syncs the user enrollments with the given data, by unenrolling
+    # from existing courses, if necessary, and enrolling them in the
+    # new course+section.
+    #
+    # The goal of this method is to make Canvas's internal data match
+    # the spreadsheet data, allowing for bulk fixes via csv import.
+    def sync_user_course_enrollment(user, course_id, role, section)
+      @course_enrollment_cache = {} if @course_enrollment_cache.nil?
+
+      if @course_enrollment_cache[course_id].nil?
+        @course_enrollment_cache[course_id] = get_course_enrollments(course_id)
+      end
+
+      existing_enrollment = nil
+      @course_enrollment_cache[course_id].each do |enrollment|
+        if enrollment['user_id'] == user.canvas_user_id
+          existing_enrollment = enrollment
+          break
+        end
+      end
+
+      if role.nil?
+        cancel_enrollment(existing_enrollment)
+        return
+      end
+
+      role = role.capitalize
+      section_id = get_section_by_name(course_id, section, true)['id']
+      type = "#{role}Enrollment"
+
+      if !existing_enrollment.nil? && existing_enrollment['course_section_id'] != section_id
+        # The user is being moved to a new section/cohort - cancel the old one and re-enroll
+        cancel_enrollment(existing_enrollment)
+        existing_enrollment = nil
+      end
+
+      if !existing_enrollment.nil? && existing_enrollment['type'] != type
+        # User role changed, need to cancel and reenroll
+        cancel_enrollment(existing_enrollment)
+        existing_enrollment = nil
+      end
+
+      if existing_enrollment.nil?
+        # They aren't enrolled properly, enroll them now
+        enroll_user_in_course(user, course_id, role, section)
+      end
+
+      # Otherwise, the existing_enrollment passed all tests, we don't need to do anything
+    end
+
+    # Returns an array of enrollments objects for the user.
+    # https://canvas.instructure.com/doc/api/enrollments.html
+    def get_user_enrollments(user_id)
+      open_canvas_http
+
+      request = Net::HTTP::Get.new(
+        "/api/v1/users/#{user_id}/enrollments?access_token=#{Rails.application.secrets.canvas_access_token}"
+      )
+      response = @canvas_http.request(request)
+      info = JSON.parse response.body
+
+      info
+    end
+
+    # Returns an array of enrollments objects for the course.
+    # https://canvas.instructure.com/doc/api/enrollments.html
+    def get_course_enrollments(course_id)
+      open_canvas_http
+
+      request = Net::HTTP::Get.new(
+        "/api/v1/courses/#{course_id}/enrollments?access_token=#{Rails.application.secrets.canvas_access_token}"
+      )
+      response = @canvas_http.request(request)
+      info = JSON.parse response.body
+
+      info
+    end
+
+
+    # Get the enrollment object from the get_user_enrollments method
+    def cancel_enrollment(enrollment)
+      return if enrollment.nil?
+
+      open_canvas_http
+
+      request = Net::HTTP::Delete.new("/api/v1/courses/#{enrollment['course_id']}/enrollments/#{enrollment['id']}")
+      data = {
+        'access_token' => Rails.application.secrets.canvas_access_token,
+        'task' => 'delete'
+      }
       request.set_form_data(data)
       @canvas_http.request(request)
     end

@@ -50,7 +50,7 @@ class Admin::UsersController < Admin::ApplicationController
     @user.password = params[:user][:password] unless params[:user][:password].nil? || params[:user][:password].empty?
 
     if params[:sync_with_canvas]
-      @lms.sync_user(@user)
+      @lms.sync_user_logins(@user)
     end
 
     @user.save!
@@ -85,7 +85,7 @@ class Admin::UsersController < Admin::ApplicationController
 
 
     if params[:sync_with_canvas]
-      @lms.sync_user(@user)
+      @lms.sync_user_logins(@user)
     end
 
     @user.save!
@@ -147,15 +147,10 @@ class Admin::UsersController < Admin::ApplicationController
 
     # This is K-12
     if k12_role == 'student' || k12_role == 'peeradvisor'
+      # Nothing - K-12 students aren't imported
+    elsif k12_role == 'coach'
       overdrive = 'STUDENT'
       section_overdrive = k12_cohort
-
-      section_coaching_beyond = is_nyc ? 'overdrivenyc' : 'overdrivebayarea'
-    elsif k12_role == 'coach'
-      overdrive = 'TA'
-      section_overdrive = k12_cohort
-
-      coaching_beyond = 'STUDENT'
     end
 
     if sjsu_role == 'student' || sjsu_role == 'peeradvisor'
@@ -178,11 +173,11 @@ class Admin::UsersController < Admin::ApplicationController
 
     initialize_lms_interop
 
-    @lms.sync_user(@user)
+    @lms.sync_user_logins(@user)
 
-    @lms.enroll_user_in_course(@user, 7, coaching_beyond, section_coaching_beyond)
-    @lms.enroll_user_in_course(@user, 3, overdrive, section_overdrive)
-    @lms.enroll_user_in_course(@user, 2, accelerator, section_accelerator)
+    @lms.sync_user_course_enrollment(@user, 7, coaching_beyond, section_coaching_beyond)
+    @lms.sync_user_course_enrollment(@user, 3, overdrive, section_overdrive)
+    @lms.sync_user_course_enrollment(@user, 2, accelerator, section_accelerator)
 
     @user.save!
   end
