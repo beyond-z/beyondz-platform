@@ -401,6 +401,9 @@ Structure CSS files according to the ![asset management guide](app/assets/asset_
 	}
   	```
   
+  * See https://www.dropbox.com/s/hzy0mt1jeh4ns4t/bz-colors-02.pdf for our color palette documentation. The palette code is found in app/assets/stylesheet/base/palettes/_primary.css.scss
+
+  * Body text will use only white or dark gray (or extra dark): see txt-dk and txt-lt in code. Links will only use shades of blue. link-* in code. Brand orange is reserved primarily for CTA (call to action) buttons/areas. Three colors and grays give a total of 15 swatches (+2 for extra light/dark text). cta* in code.
 
 ## JavaScript
 

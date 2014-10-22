@@ -24,7 +24,7 @@ coach.save!
 admin_user.save!
 
 # These are for SSO integration with Canvas
-def make_canvas_interop_user(email)
+def make_canvas_interop_user(email, canvas_user_id = nil)
   # The canvas user id ought not be nil since the user does exist,
   # but the exact ID isn't important on staging since this is just
   # for sign on which is based on matching email addresses instead of
@@ -35,14 +35,14 @@ def make_canvas_interop_user(email)
   #
   # But zero instead of nil at least tells the system that they *are*
   # users in canvas, and thus it is safe to redirect them there upon logging in.
-  canvas_user = User.new(email: email, password: 'test1234', first_name: email, last_name: 'Canvas')
+  canvas_user = User.new(email: email, password: 'test1234', first_name: email, last_name: 'Canvas', canvas_user_id: canvas_user_id)
   canvas_user.skip_confirmation!
   canvas_user.save!
 end
 
-make_canvas_interop_user('college-lms@beyondz.org')
-make_canvas_interop_user('coaches-lms@beyondz.org')
-make_canvas_interop_user('admin@beyondz.org')
+make_canvas_interop_user('college-lms@beyondz.org', 4)
+make_canvas_interop_user('coaches-lms@beyondz.org', 3)
+make_canvas_interop_user('admin@beyondz.org', 1)
 
 make_canvas_interop_user('lc-epapa-1a@beyondz.org')
 make_canvas_interop_user('lc-epapa-2a@beyondz.org')
