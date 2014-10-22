@@ -35,7 +35,7 @@ def make_canvas_interop_user(email)
   #
   # But zero instead of nil at least tells the system that they *are*
   # users in canvas, and thus it is safe to redirect them there upon logging in.
-  canvas_user = User.new(email: email, password: 'test1234', first_name: email, last_name: 'Canvas')
+  canvas_user = User.new(email: email, password: 'test1234', first_name: email, last_name: 'Canvas', canvas_user_id: 0)
   canvas_user.skip_confirmation!
   canvas_user.save!
 end
