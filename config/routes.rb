@@ -4,6 +4,7 @@ BeyondzPlatform::Application.routes.draw do
   root "home#index"
   get '/welcome', to: 'home#welcome'
   get '/apply', to: 'home#apply'
+  get '/donate', to: 'home#donate'
   get '/volunteer', to: 'home#volunteer'
   get '/partner', to: 'home#partner'
   get '/supporter_info', to: 'home#supporter_info'

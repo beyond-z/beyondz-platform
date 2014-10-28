@@ -10,10 +10,10 @@ module ApplicationHelper
     end
   end
 
-  def nav_button(text, path)
-    c = ''
+  def nav_button(text, path, className = '')
+    c = className
     if request.path == path
-      c = 'active'
+      c += ' active'
     end
 
     ('<li>' + (link_to text, path, :class => c) + '</li>').html_safe

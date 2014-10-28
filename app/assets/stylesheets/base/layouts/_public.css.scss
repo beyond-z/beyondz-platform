@@ -507,3 +507,41 @@ button.no-decoration {
 .field_with_errors + .bs-wrapper {
   @extend .has-error;
 }
+
+#banner .nav .donate-link {
+  color: $cta !important;
+}
+
+#c-donate {
+  h2 {
+    background-color: rgb(0, 175, 237);
+    color: white;
+    font-size: 19px;
+    font-weight: bold;
+    height: 36px;
+    line-height: 36px;
+    margin: 0px;
+    padding: 0px 20px;
+    text-align: center;
+  }
+
+  .header {
+    img { margin: 0.5em auto; }
+    text-align: center;
+    height: 300px;
+    color: $txt-dk;
+  }
+
+  .footer {
+    text-align: center;
+  }
+
+  a {
+    background-color: $cta;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    padding: 0.25em 1em;
+    margin: 0.5em;
+  }
+}
