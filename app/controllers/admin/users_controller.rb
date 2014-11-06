@@ -196,6 +196,11 @@ class Admin::UsersController < Admin::ApplicationController
       header << 'Subscribed to Email'
       header << 'Came from to reach site'
       header << 'Came from to reach sign up form'
+
+      Enrollment.column_names.each do |cn|
+        header << cn
+      end
+
       csv << header
       @users.each do |user|
         exportable = []
@@ -210,6 +215,20 @@ class Admin::UsersController < Admin::ApplicationController
         exportable << user.keep_updated
         exportable << user.external_referral_url
         exportable << user.internal_referral_url
+
+        if user.enrollment
+          e = user.enrollment
+          e.attributes.values_at(*Enrollment.column_names).each do |v|
+            exportable << v
+          end
+
+          if e.resume.present?
+            exportable << e.resume.url
+          else
+            exportable << '<none uploaded>'
+          end
+        end
+
         csv << exportable
       end
     end
