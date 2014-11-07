@@ -188,14 +188,20 @@ class Admin::UsersController < Admin::ApplicationController
       header << 'First Name'
       header << 'Last Name'
       header << 'Email'
-      header << 'Type'
-      header << 'Details'
+      header << 'Applicant type'
       header << 'Anticipated Graduation'
+      header << 'City'
+      header << 'State'
+      header << 'Applicant details'
       header << 'University Name'
       header << 'Signup Date'
+      header << 'Last sign in at'
       header << 'Subscribed to Email'
       header << 'Came from to reach site'
       header << 'Came from to reach sign up form'
+      header << 'Interested joining'
+      header << 'Interested partnering'
+      header << 'Interested receiving'
 
       Enrollment.column_names.each do |cn|
         header << cn
@@ -208,13 +214,19 @@ class Admin::UsersController < Admin::ApplicationController
         exportable << user.last_name
         exportable << user.email
         exportable << user.applicant_type
-        exportable << user.applicant_details
         exportable << user.anticipated_graduation
+        exportable << user.city
+        exportable << user.state
+        exportable << user.applicant_details
         exportable << user.university_name
         exportable << user.created_at.to_s
+        exportable << user.last_sign_in_at.to_s
         exportable << user.keep_updated
         exportable << user.external_referral_url
         exportable << user.internal_referral_url
+        exportable << user.interested_joining
+        exportable << user.interested_partnering
+        exportable << user.interested_receiving
 
         if user.enrollment
           e = user.enrollment
