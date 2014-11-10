@@ -72,6 +72,21 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
+  def has_owner?
+    !owner.nil?
+  end
+
+  def days_since_last_appeared
+    # this is descending order of the latest thing, using || to fallback
+    # if the value is nil.
+    #
+    # It would be nice if we can also fetch the Canvas time somehow but
+    # that isn't available in this model right now.
+    last_seen = current_sign_in_at || last_sign_in_at || created_at
+    difference = DateTime.now - last_seen.to_datetime
+    difference.floor # round to nearest day
+  end
+
   def coach
     CoachStudent.find_by(student_id: id).try(:coach)
   end

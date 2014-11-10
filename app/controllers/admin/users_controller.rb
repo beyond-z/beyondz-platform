@@ -188,6 +188,8 @@ class Admin::UsersController < Admin::ApplicationController
       header << 'First Name'
       header << 'Last Name'
       header << 'Email'
+      header << 'New Since Last'
+      header << 'Days Since Last'
       header << 'Applicant type'
       header << 'Anticipated Graduation'
       header << 'City'
@@ -213,6 +215,8 @@ class Admin::UsersController < Admin::ApplicationController
         exportable << user.first_name
         exportable << user.last_name
         exportable << user.email
+        exportable << !user.has_owner?
+        exportable << user.days_since_last_appeared
         exportable << user.applicant_type
         exportable << user.anticipated_graduation
         exportable << user.city
