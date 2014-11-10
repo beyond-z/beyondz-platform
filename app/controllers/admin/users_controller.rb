@@ -182,40 +182,44 @@ class Admin::UsersController < Admin::ApplicationController
     @user.save!
   end
 
+  def csv_export_header
+    header = []
+    header << 'First Name'
+    header << 'Last Name'
+    header << 'Email'
+    header << 'New Since Last'
+    header << 'Days Since Last'
+    header << 'Applicant type'
+    header << 'Anticipated Graduation'
+    header << 'City'
+    header << 'State'
+    header << 'Applicant details'
+    header << 'University Name'
+    header << 'Signup Date'
+    header << 'Last sign in at'
+    header << 'Subscribed to Email'
+    header << 'Came from to reach site'
+    header << 'Came from to reach sign up form'
+    header << 'Interested joining'
+    header << 'Interested partnering'
+    header << 'Interested receiving'
+
+    Enrollment.column_names.each do |cn|
+      header << cn
+    end
+
+    header
+  end
+
   def csv_export
     CSV.generate do |csv|
-      header = []
-      header << 'First Name'
-      header << 'Last Name'
-      header << 'Email'
-      header << 'New Since Last'
-      header << 'Days Since Last'
-      header << 'Applicant type'
-      header << 'Anticipated Graduation'
-      header << 'City'
-      header << 'State'
-      header << 'Applicant details'
-      header << 'University Name'
-      header << 'Signup Date'
-      header << 'Last sign in at'
-      header << 'Subscribed to Email'
-      header << 'Came from to reach site'
-      header << 'Came from to reach sign up form'
-      header << 'Interested joining'
-      header << 'Interested partnering'
-      header << 'Interested receiving'
-
-      Enrollment.column_names.each do |cn|
-        header << cn
-      end
-
-      csv << header
+      csv << csv_export_header
       @users.each do |user|
         exportable = []
         exportable << user.first_name
         exportable << user.last_name
         exportable << user.email
-        exportable << !user.has_owner?
+        exportable << !user.owner?
         exportable << user.days_since_last_appeared
         exportable << user.applicant_type
         exportable << user.anticipated_graduation

@@ -72,7 +72,7 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
-  def has_owner?
+  def owner?
     !owner.nil?
   end
 
