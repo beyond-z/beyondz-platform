@@ -304,17 +304,18 @@
   }
 }
 
+.sign-up-icon {
+  display: inline-block;
+  height: 25px;
+  width: 25px;
+  vertical-align: middle;
+  margin-right: 6px;
+  background: url(image_path('bz_icons.svg')) -136px -2046px;
+}
+
+
 .sign-up-link {
   display: inline-block;
-
-  .sign-up-icon {
-    display: inline-block;
-    height: 25px;
-    width: 25px;
-    vertical-align: middle;
-    margin-right: 6px;
-    background: url(image_path('bz_icons.svg')) -136px -2046px;
-  }
 
   .sign-up-text {
     vertical-align: middle;
@@ -512,36 +513,3 @@ button.no-decoration {
   color: $cta !important;
 }
 
-#c-donate {
-  h2 {
-    background-color: rgb(0, 175, 237);
-    color: white;
-    font-size: 19px;
-    font-weight: bold;
-    height: 36px;
-    line-height: 36px;
-    margin: 0px;
-    padding: 0px 20px;
-    text-align: center;
-  }
-
-  .header {
-    img { margin: 0.5em auto; }
-    text-align: center;
-    height: 300px;
-    color: $txt-dk;
-  }
-
-  .footer {
-    text-align: center;
-  }
-
-  a {
-    background-color: $cta;
-    color: white;
-    text-align: center;
-    display: inline-block;
-    padding: 0.25em 1em;
-    margin: 0.5em;
-  }
-}
