@@ -93,6 +93,29 @@ class Admin::UsersController < Admin::ApplicationController
     redirect_to admin_users_path
   end
 
+  def owner_csv_import
+    # form to accept a csv file that has user ids and assigned owner
+  end
+
+  # this little spreadsheet has user_id, muted, owner, program
+  # only rows present in the spreadsheet are modified when imported
+  def do_owner_csv_import
+    file = CSV.parse(params[:import][:csv].read)
+    file.each do |row|
+      user_id = row[0]
+      # If the user id isn't actually a number, skip this row
+      # because that means it is probably a header or a blank line
+      # http://stackoverflow.com/questions/10577783/ruby-checking-if-a-string-can-be-converted-to-an-integer
+      next if user_id.nil? || user_id.empty? || (Integer user_id rescue nil)
+
+      user = User.find(user_id)
+      user.muted = row[1]
+      user.owner = row[2]
+      user.associated_program = row[3]
+      user.save!
+    end
+  end
+
   def csv_import
     # renders a form
   end

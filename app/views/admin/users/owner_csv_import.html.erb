@@ -1,0 +1,11 @@
+<h1>CSV import for associating users with owners</h1>
+<p>The format for this is:<p>
+
+<table>
+  <tr><th>user_id</th><th>muted</th><th>owner</th><th>associated_program</th></tr>
+  <tr><td>1</td><td>TRUE</td><td>whatever</td><td>just be consistent</td></tr>
+</table>
+<%= form_for :import, :html => { :multipart => true } do |f| %>
+  <%= f.file_field :csv %>
+  <%= submit_tag 'Upload' %>
+<% end %>
