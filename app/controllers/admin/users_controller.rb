@@ -106,7 +106,11 @@ class Admin::UsersController < Admin::ApplicationController
       # If the user id isn't actually a number, skip this row
       # because that means it is probably a header or a blank line
       # http://stackoverflow.com/questions/10577783/ruby-checking-if-a-string-can-be-converted-to-an-integer
-      next if user_id.nil? || user_id.empty? || (Integer user_id rescue nil)
+      begin
+        user_id = Integer user_id
+      rescue
+        next
+      end
 
       user = User.find(user_id)
       user.muted = row[1]
@@ -210,8 +214,10 @@ class Admin::UsersController < Admin::ApplicationController
     header << 'First Name'
     header << 'Last Name'
     header << 'Email'
+    header << 'Owner'
     header << 'New Since Last'
     header << 'Days Since Last'
+    header << 'Muted'
     header << 'Applicant type'
     header << 'Anticipated Graduation'
     header << 'City'
@@ -242,8 +248,10 @@ class Admin::UsersController < Admin::ApplicationController
         exportable << user.first_name
         exportable << user.last_name
         exportable << user.email
+        exportable << user.owner
         exportable << !user.owner?
         exportable << user.days_since_last_appeared
+        exportable << user.muted
         exportable << user.applicant_type
         exportable << user.anticipated_graduation
         exportable << user.city
