@@ -232,6 +232,7 @@ class Admin::UsersController < Admin::ApplicationController
     header << 'Interested joining'
     header << 'Interested partnering'
     header << 'Interested receiving'
+    header << 'Associated Program'
 
     Enrollment.column_names.each do |cn|
       header << cn
@@ -266,6 +267,7 @@ class Admin::UsersController < Admin::ApplicationController
         exportable << user.interested_joining
         exportable << user.interested_partnering
         exportable << user.interested_receiving
+        exportable << user.associated_program
 
         if user.enrollment
           e = user.enrollment
