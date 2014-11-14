@@ -93,13 +93,13 @@ class Admin::UsersController < Admin::ApplicationController
     redirect_to admin_users_path
   end
 
-  def owner_csv_import
+  def user_status_csv_import
     # form to accept a csv file that has user ids and assigned owner
   end
 
   # this little spreadsheet has user_id, exclude_from_reporting, relationship_manager, program
   # only rows present in the spreadsheet are modified when imported
-  def do_owner_csv_import
+  def do_user_status_csv_import
     file = CSV.parse(params[:import][:csv].read)
     @failures = []
     file.each do |row|
