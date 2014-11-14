@@ -97,10 +97,11 @@ class Admin::UsersController < Admin::ApplicationController
     # form to accept a csv file that has user ids and assigned owner
   end
 
-  # this little spreadsheet has user_id, muted, owner, program
+  # this little spreadsheet has user_id, exclude_from_reporting, relationship_manager, program
   # only rows present in the spreadsheet are modified when imported
   def do_owner_csv_import
     file = CSV.parse(params[:import][:csv].read)
+    @failures = []
     file.each do |row|
       user_id = row[0]
       # If the user id isn't actually a number, skip this row
@@ -112,11 +113,15 @@ class Admin::UsersController < Admin::ApplicationController
         next
       end
 
-      user = User.find(user_id)
-      user.muted = row[1]
-      user.owner = row[2]
-      user.associated_program = row[3]
-      user.save!
+      begin
+        user = User.find(user_id)
+        user.exclude_from_reporting = row[1]
+        user.relationship_manager = row[2]
+        user.associated_program = row[3]
+        user.save!
+      rescue
+        @failures << user_id
+      end
     end
   end
 
@@ -214,10 +219,10 @@ class Admin::UsersController < Admin::ApplicationController
     header << 'First Name'
     header << 'Last Name'
     header << 'Email'
-    header << 'Owner'
-    header << 'New Since Last'
-    header << 'Days Since Last'
-    header << 'Muted'
+    header << 'Relationship Manager (owner)'
+    header << 'New User'
+    header << 'Days Since Last Activity'
+    header << 'Exclude from reporting'
     header << 'Applicant type'
     header << 'Anticipated Graduation'
     header << 'City'
@@ -249,10 +254,10 @@ class Admin::UsersController < Admin::ApplicationController
         exportable << user.first_name
         exportable << user.last_name
         exportable << user.email
-        exportable << user.owner
-        exportable << !user.owner?
-        exportable << user.days_since_last_appeared
-        exportable << user.muted
+        exportable << user.relationship_manager
+        exportable << !user.relationship_manager?
+        exportable << user.days_since_last_activity
+        exportable << user.exclude_from_reporting
         exportable << user.applicant_type
         exportable << user.anticipated_graduation
         exportable << user.city

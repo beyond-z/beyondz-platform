@@ -72,11 +72,11 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
-  def owner?
-    !owner.nil?
+  def relationship_manager?
+    !relationship_manager.nil?
   end
 
-  def days_since_last_appeared
+  def days_since_last_activity
     # this is descending order of the latest thing, using || to fallback
     # if the value is nil.
     #
