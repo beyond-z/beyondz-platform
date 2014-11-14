@@ -43,6 +43,9 @@ BeyondzPlatform::Application.routes.draw do
     get '/users/csv_import', to: 'users#csv_import', as: 'csv_import'
     post '/users/csv_import', to: 'users#do_csv_import'
 
+    get '/users/user_status_csv_import', to: 'users#user_status_csv_import', as: 'user_status_csv_import'
+    post '/users/user_status_csv_import', to: 'users#do_user_status_csv_import'
+
     resources :users do
       resources :students
     end

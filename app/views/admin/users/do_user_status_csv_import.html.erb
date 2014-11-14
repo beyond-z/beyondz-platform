@@ -1,0 +1,10 @@
+<p>The users database has been successfully updated.</p>
+
+<% if @failures.any? %>
+<h2> Except for these user IDs:</h2>
+<ul>
+  <% @failures.each do |uid| %>
+    <li><%= uid %></li>
+  <% end %>
+</ul>
+<% end %>
