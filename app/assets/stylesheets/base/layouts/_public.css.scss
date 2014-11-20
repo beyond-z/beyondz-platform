@@ -207,6 +207,12 @@
   &.dark {
     color: $txt-dk;
   }
+
+  &.light-lnk {
+    a {
+      color: $txt-lt;
+    }
+  }
 }
 
 // define standard buttons/links
