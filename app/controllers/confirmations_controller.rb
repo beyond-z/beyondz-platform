@@ -21,6 +21,8 @@ class ConfirmationsController < Devise::ConfirmationsController
   def after_confirmation_path_for(resource_name, resource)
     sign_in(resource_name, resource)
 
+    current_user.create_on_salesforce
+
     StaffNotifications.new_user(current_user).deliver
 
     flash[:notice] = nil
