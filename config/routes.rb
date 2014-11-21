@@ -1,5 +1,5 @@
 BeyondzPlatform::Application.routes.draw do
-  devise_for :users, controllers: { confirmations: 'confirmations' }
+  devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions' }
 
   root "home#index"
   get '/welcome', to: 'home#welcome'
@@ -16,6 +16,7 @@ BeyondzPlatform::Application.routes.draw do
 
   post '/users/reset', to: 'users#reset', as: 'user_reset'
   get '/users/clear_session_cookie', to: 'users#clear_session_cookie'
+  get '/users/not_on_lms', to: 'users#not_on_lms'
   get '/users/confirm', to: 'users#confirm', as: 'user_confirm'
   post '/users/confirm', to: 'users#save_confirm', as: 'user_save_confirm'
 
@@ -41,6 +42,9 @@ BeyondzPlatform::Application.routes.draw do
 
     get '/users/csv_import', to: 'users#csv_import', as: 'csv_import'
     post '/users/csv_import', to: 'users#do_csv_import'
+
+    get '/users/user_status_csv_import', to: 'users#user_status_csv_import', as: 'user_status_csv_import'
+    post '/users/user_status_csv_import', to: 'users#do_user_status_csv_import'
 
     resources :users do
       resources :students

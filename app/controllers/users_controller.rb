@@ -2,7 +2,30 @@ class UsersController < ApplicationController
 
   layout 'public'
 
-  before_filter :authenticate_user!, :only => [:reset, :confirm, :save_confirm]
+  before_filter :authenticate_user!, :only => [:reset, :confirm, :save_confirm, :not_on_lms]
+
+  # Our LMS sends logged in, but non-existent (on that application) users
+  # back here for us to handle. We need to identify them and send them
+  # back to the right place
+  def not_on_lms
+    if current_user.is_administrator?
+      redirect_to admin_root_path
+    elsif current_user.in_lms?
+      # They came from the LMS as non-existent, but we think they're in it
+      # something is wrong, either our databases are out of sync or the
+      # user was deleted or something
+
+      # Let's notify the tech team of the strange situation, then send
+      # the user to the generic welcome path
+
+      StaffNotifications.lms_mismatch(current_user).deliver
+
+      redirect_to welcome_path
+    else
+      # everyone else can just go to welcome to get a generic hello
+      redirect_to welcome_path
+    end
+  end
 
   # This is present to allow an external single sign on server to
   # authenticate users against our main database. Allows better

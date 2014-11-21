@@ -39,6 +39,9 @@
                       <%= nav_button 'For Students', apply_path %>
                       <%= nav_button 'For Volunteers', volunteer_path %>
                       <%= nav_button 'For Partners', partner_path %>
+                      <% if Rails.application.secrets.blog_url %>
+                        <%= nav_button 'Blog', Rails.application.secrets.blog_url %>
+                      <% end %>
                       <%= nav_button 'Donate', donate_path, 'donate-link' %>
                       <li><%= render 'shared/login_button' %></li>
                     </ul>

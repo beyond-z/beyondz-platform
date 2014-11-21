@@ -223,3 +223,29 @@
     }
   }
 }
+
+#donate-page {
+  .main-feature {
+    .section-container {
+      background-image: url(image_path('donate_photo.jpg'));
+      background-position: top right;
+    }
+
+    .pinned-to-bottom {
+      position: absolute;
+      bottom: 6em;
+    }
+  }
+
+  .donate-button {
+    display: block;
+    color: $cta;
+    margin: 2em 0px;
+    font-weight: bold;
+
+    &::before {
+      content: '\a0';
+      @extend .sign-up-icon;
+    }
+  }
+}

@@ -93,6 +93,38 @@ class Admin::UsersController < Admin::ApplicationController
     redirect_to admin_users_path
   end
 
+  def user_status_csv_import
+    # form to accept a csv file that has user ids and assigned owner
+  end
+
+  # this little spreadsheet has user_id, exclude_from_reporting, relationship_manager, program
+  # only rows present in the spreadsheet are modified when imported
+  def do_user_status_csv_import
+    file = CSV.parse(params[:import][:csv].read)
+    @failures = []
+    file.each do |row|
+      user_id = row[0]
+      # If the user id isn't actually a number, skip this row
+      # because that means it is probably a header or a blank line
+      # http://stackoverflow.com/questions/10577783/ruby-checking-if-a-string-can-be-converted-to-an-integer
+      begin
+        user_id = Integer user_id
+      rescue
+        next
+      end
+
+      begin
+        user = User.find(user_id)
+        user.exclude_from_reporting = row[1]
+        user.relationship_manager = row[2]
+        user.associated_program = row[3]
+        user.save!
+      rescue
+        @failures << user_id
+      end
+    end
+  end
+
   def csv_import
     # renders a form
   end
@@ -182,34 +214,79 @@ class Admin::UsersController < Admin::ApplicationController
     @user.save!
   end
 
+  def csv_export_header
+    header = []
+    header << 'First Name'
+    header << 'Last Name'
+    header << 'Email'
+    header << 'Relationship Manager (owner)'
+    header << 'New User'
+    header << 'Days Since Last Activity'
+    header << 'Exclude from reporting'
+    header << 'Applicant type'
+    header << 'Anticipated Graduation'
+    header << 'City'
+    header << 'State'
+    header << 'Applicant details'
+    header << 'University Name'
+    header << 'Signup Date'
+    header << 'Last sign in at'
+    header << 'Subscribed to Email'
+    header << 'Came from to reach site'
+    header << 'Came from to reach sign up form'
+    header << 'Interested joining'
+    header << 'Interested partnering'
+    header << 'Interested receiving'
+    header << 'Associated Program'
+
+    Enrollment.column_names.each do |cn|
+      header << cn
+    end
+
+    header
+  end
+
   def csv_export
     CSV.generate do |csv|
-      header = []
-      header << 'First Name'
-      header << 'Last Name'
-      header << 'Email'
-      header << 'Type'
-      header << 'Details'
-      header << 'Anticipated Graduation'
-      header << 'University Name'
-      header << 'Signup Date'
-      header << 'Subscribed to Email'
-      header << 'Came from to reach site'
-      header << 'Came from to reach sign up form'
-      csv << header
+      csv << csv_export_header
       @users.each do |user|
         exportable = []
         exportable << user.first_name
         exportable << user.last_name
         exportable << user.email
+        exportable << user.relationship_manager
+        exportable << !user.relationship_manager?
+        exportable << user.days_since_last_activity
+        exportable << user.exclude_from_reporting
         exportable << user.applicant_type
-        exportable << user.applicant_details
         exportable << user.anticipated_graduation
+        exportable << user.city
+        exportable << user.state
+        exportable << user.applicant_details
         exportable << user.university_name
         exportable << user.created_at.to_s
+        exportable << user.last_sign_in_at.to_s
         exportable << user.keep_updated
         exportable << user.external_referral_url
         exportable << user.internal_referral_url
+        exportable << user.interested_joining
+        exportable << user.interested_partnering
+        exportable << user.interested_receiving
+        exportable << user.associated_program
+
+        if user.enrollment
+          e = user.enrollment
+          e.attributes.values_at(*Enrollment.column_names).each do |v|
+            exportable << v
+          end
+
+          if e.resume.present?
+            exportable << e.resume.url
+          else
+            exportable << '<none uploaded>'
+          end
+        end
+
         csv << exportable
       end
     end
