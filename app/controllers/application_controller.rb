@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
       port = ''
     end
 
-    response.headers["X-Frame-Options"] = "Allow-From http#{secure}://#{domain}#{port}"
+    response.headers['X-Frame-Options'] = "Allow-From http#{secure}://#{domain}#{port}"
   end
 
   def save_external_referrer

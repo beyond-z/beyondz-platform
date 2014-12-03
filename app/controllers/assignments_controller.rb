@@ -29,12 +29,12 @@ class AssignmentsController < ApplicationController
   def show
     # If not passed a numeric ID, we'll look it up by SEO name - these
     # form friendlier links for use from the LMS, etc. too.
-    if !(params[:id] =~ /^\d+$/)
+    unless params[:id] =~ /^\d+$/
       ad = AssignmentDefinition.find_by_seo_name(params[:id])
       assignment = current_user.assignments.where(:assignment_definition_id => ad.id)
       if assignment.any?
-          redirect_to assignment_path(assignment.first)
-          return
+        redirect_to assignment_path(assignment.first)
+        return
       end
     end
 
