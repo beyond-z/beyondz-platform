@@ -4,8 +4,22 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   layout :default_layout
   before_action :save_external_referrer
+  before_action :permit_lms_iframe
 
   private
+
+  def permit_lms_iframe
+    secure = Rails.application.secrets.canvas_use_ssl ? 's' : ''
+    domain = Rails.application.secrets.canvas_server
+    port   = Rails.application.secrets.canvas_port
+    if (secure && port != 443) || (!secure && port != 80)
+      port = ":#{port}"
+    else
+      port = ''
+    end
+
+    response.headers["X-Frame-Options"] = "Allow-From http#{secure}://#{domain}#{port}"
+  end
 
   def save_external_referrer
     if session[:referrer].nil?

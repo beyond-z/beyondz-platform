@@ -73,3 +73,7 @@
   @extend .table;
   @extend .table-bordered;
 }
+
+.in-iframe .hide-on-iframe {
+  display: none;
+}
