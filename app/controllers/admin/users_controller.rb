@@ -118,6 +118,7 @@ class Admin::UsersController < Admin::ApplicationController
         user.exclude_from_reporting = row[1]
         user.relationship_manager = row[2]
         user.associated_program = row[3]
+        user.active_status = row[4]
         user.save!
       rescue
         @failures << user_id
@@ -223,6 +224,7 @@ class Admin::UsersController < Admin::ApplicationController
     header << 'New User'
     header << 'Days Since Last Activity'
     header << 'Exclude from reporting'
+    header << 'Active Status'
     header << 'Applicant type'
     header << 'Anticipated Graduation'
     header << 'City'
@@ -243,6 +245,8 @@ class Admin::UsersController < Admin::ApplicationController
       header << cn
     end
 
+    header << 'Resume URL'
+
     header
   end
 
@@ -258,6 +262,7 @@ class Admin::UsersController < Admin::ApplicationController
         exportable << !user.relationship_manager?
         exportable << user.days_since_last_activity
         exportable << user.exclude_from_reporting
+        exportable << user.active_status
         exportable << user.applicant_type
         exportable << user.anticipated_graduation
         exportable << user.city
