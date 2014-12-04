@@ -217,6 +217,7 @@ class Admin::UsersController < Admin::ApplicationController
 
   def csv_export_header
     header = []
+    header << 'User ID'
     header << 'First Name'
     header << 'Last Name'
     header << 'Email'
@@ -255,6 +256,7 @@ class Admin::UsersController < Admin::ApplicationController
       csv << csv_export_header
       @users.each do |user|
         exportable = []
+        exportable << user.id
         exportable << user.first_name
         exportable << user.last_name
         exportable << user.email
