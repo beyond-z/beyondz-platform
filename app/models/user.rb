@@ -57,8 +57,8 @@ class User < ActiveRecord::Base
   def create_on_salesforce
     client = Databasedotcom::Client.new
     client.authenticate(
-      :username => Rails.applications.secrets.salesforce_username,
-      :password => "#{Rails.applications.secrets.salesforce_password}#{Rails.applications.secrets.salesforce_security_token}"
+      :username => Rails.application.secrets.salesforce_username,
+      :password => "#{Rails.application.secrets.salesforce_password}#{Rails.application.secrets.salesforce_security_token}"
     )
 
     client.materialize('Contact')
@@ -70,6 +70,9 @@ class User < ActiveRecord::Base
     contact.Email = email
     contact.OwnerId = client.user_id # this is the user id we're logged into Salesforce as
     contact.save
+
+    salesforce_id = contact.Id
+    save!
   end
 
   # validates :anticipated_graduation, presence: true, if: :graduation_required?

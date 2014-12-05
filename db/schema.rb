@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140918172949) do
+ActiveRecord::Schema.define(version: 20141205163155) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -311,6 +311,11 @@ ActiveRecord::Schema.define(version: 20140918172949) do
     t.boolean  "interview_scheduled"
     t.boolean  "availability_confirmation_requested"
     t.integer  "canvas_user_id"
+    t.string   "relationship_manager"
+    t.boolean  "exclude_from_reporting"
+    t.string   "associated_program"
+    t.string   "active_status"
+    t.string   "salesforce_id"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

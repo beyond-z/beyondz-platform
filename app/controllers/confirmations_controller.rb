@@ -21,7 +21,9 @@ class ConfirmationsController < Devise::ConfirmationsController
   def after_confirmation_path_for(resource_name, resource)
     sign_in(resource_name, resource)
 
-    current_user.create_on_salesforce
+    if Rails.application.secrets.salesforce_username
+      current_user.create_on_salesforce
+    end
 
     StaffNotifications.new_user(current_user).deliver
 
