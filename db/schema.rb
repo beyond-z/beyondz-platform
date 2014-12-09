@@ -313,7 +313,7 @@ ActiveRecord::Schema.define(version: 20141104184559) do
     t.integer  "canvas_user_id"
     t.string   "relationship_manager"
     t.boolean  "exclude_from_reporting"
-    t.string   "associated_program"
+    t.string   "active_status"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
