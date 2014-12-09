@@ -98,6 +98,8 @@ On the site, go to Setup -> Build on left hand side -> Create -> Apps. There, yo
 DATABASEDOTCOM_CLIENT_ID=<from salesforce>
 DATABASEDOTCOM_CLIENT_SECRET=<from salesforce>
 
+Those two variables are managed by the gem and thus must be present, but are not used explicitly in any of our code.
+
 
 Click Your Name -> Settings (upper right). Go to Personal -> Reset My Security Token (same menu as change password). It emails you the token
 This, along with your username and password, will be used by the app to log in as you and create the new contacts.

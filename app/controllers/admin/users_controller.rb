@@ -62,12 +62,12 @@ class Admin::UsersController < Admin::ApplicationController
   end
 
   def show
-    if params[:id] =~ /^\d+$/
-      @user = User.find(params[:id])
-    else
-      raise params[:id]
-      @user = User.find_by_email(params[:id])
-    end
+    @user = User.find(params[:id])
+  end
+
+  def find_by_email
+    @user = User.find_by_email(params[:id])
+    render 'show'
   end
 
   def edit

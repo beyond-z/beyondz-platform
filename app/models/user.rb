@@ -61,6 +61,8 @@ class User < ActiveRecord::Base
       :password => "#{Rails.application.secrets.salesforce_password}#{Rails.application.secrets.salesforce_security_token}"
     )
 
+    # This creates the Contact class from the salesforce API
+    # which is used on the following line
     client.materialize('Contact')
 
     contact = Contact.new
