@@ -65,6 +65,11 @@ class Admin::UsersController < Admin::ApplicationController
     @user = User.find(params[:id])
   end
 
+  def find_by_email
+    @user = User.find_by_email(params[:id])
+    render 'show'
+  end
+
   def edit
     @user = User.find(params[:id])
   end
