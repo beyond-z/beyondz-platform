@@ -1,10 +1,6 @@
 <div class="assignment-summary">
   <section>
-    <h2><%= assignment.assignment_definition.title %>
-      <% if assignment.assignment_definition.led_by != nil %>
-        <span class="session-type">(<%=assignment.assignment_definition.led_by.capitalize%> Led)</span>
-      <% end %>
-    </h2>
+    <h2><%= assignment.assignment_definition.title %></h2>
 
   </section>
   <%
@@ -17,16 +13,4 @@
       wrapper_class = 'assignment-complete'
     end
   %>
-  <div class="assignment-summary-wrapper <%= wrapper_class %>">
-    <section>
-      <div class="assignment-date">
-        <p><%= assignment.assignment_definition.start_date.strftime("%b %e") %>
-          <% if assignment.assignment_definition.end_date != nil %>
-            -
-            <%= assignment.assignment_definition.end_date.strftime("%b %e") %>
-          <% end %>
-        </p>
-      </div>
-    </section>
-  </div>
 </div>
