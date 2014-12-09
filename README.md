@@ -91,6 +91,24 @@ CANVAS_ALLOW_SELF_SIGNED_SSL=<true or false>
 
 These are self explanatory except for the canvas access token. To create one of these, log into Canvas as the admin user and click settings (upper right corner of the screen). Scroll down to "Approved Integrations" and generate a new access token. That is the value needed for CANVAS_ACCESS_TOKEN.
 
+## Integrating with Salesforce.com
+
+On the site, go to Setup -> Build on left hand side -> Create -> Apps. There, you can make an app. Enable OAuth and put in the site as the callback URL. It will then make the ID and Secret available to you.
+
+DATABASEDOTCOM_CLIENT_ID=<from salesforce>
+DATABASEDOTCOM_CLIENT_SECRET=<from salesforce>
+
+Those two variables are managed by the gem and thus must be present, but are not used explicitly in any of our code.
+
+
+Click Your Name -> Settings (upper right). Go to Personal -> Reset My Security Token (same menu as change password). It emails you the token
+This, along with your username and password, will be used by the app to log in as you and create the new contacts.
+
+SALESFORCE_USERNAME=<email address to log into salesforce>
+SALESFORCE_PASSWORD=<password log into salesforce>
+SALESFORCE_SECURITY_TOKEN=<token gotten from salesforce email>
+
+
 ## Running the Application 
 From the directory you cloned your repo to run:
 ```Shell

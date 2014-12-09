@@ -314,6 +314,7 @@ ActiveRecord::Schema.define(version: 20141205232811) do
     t.integer  "canvas_user_id"
     t.string   "relationship_manager"
     t.boolean  "exclude_from_reporting"
+    t.string   "associated_program"
     t.string   "active_status"
     t.string   "salesforce_id"
   end
