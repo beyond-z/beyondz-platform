@@ -73,7 +73,7 @@ class User < ActiveRecord::Base
     contact.OwnerId = client.user_id # this is the user id we're logged into Salesforce as
     contact.save
 
-    salesforce_id = contact.Id
+    self.salesforce_id = contact.Id
     save!
   end
 
