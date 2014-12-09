@@ -3,9 +3,9 @@
 
 <table width="600">
   <caption>SAMPLE</caption>
-  <tr><th>user_id</th><th>muted (exclude from reporting)</th><th>owner (relationship manager)</th><th>associated_program</th></tr>
-  <tr><td>1</td><td>TRUE</td><td>whatever</td><td>just be consistent</td></tr>
-  <tr><td>2</td><td>FALSE</td><td>whatever</td><td>just be consistent</td></tr>
+  <tr><th>user_id</th><th>muted (exclude from reporting)</th><th>owner (relationship manager)</th><th>associated_program</th><th>active_status</th></tr>
+  <tr><td>1</td><td>TRUE</td><td>whatever</td><td>just be consistent</td><td>whatever</td></tr>
+  <tr><td>2</td><td>FALSE</td><td>whatever</td><td>just be consistent</td><td>whatever</td></tr>
 </table>
 <%= form_for :import, :html => { :multipart => true } do |f| %>
   <%= f.file_field :csv %>
