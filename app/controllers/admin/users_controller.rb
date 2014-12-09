@@ -105,6 +105,11 @@ class Admin::UsersController < Admin::ApplicationController
   # this little spreadsheet has user_id, exclude_from_reporting, relationship_manager, program
   # only rows present in the spreadsheet are modified when imported
   def do_user_status_csv_import
+    if params[:import].nil?
+      flash[:message] = 'Please upload a csv file'
+      redirect_to admin_user_status_csv_import_path
+      return
+    end
     file = CSV.parse(params[:import][:csv].read)
     @failures = []
     file.each do |row|
