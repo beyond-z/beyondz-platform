@@ -9,6 +9,11 @@
     <meta name="robots" content="noindex">
     <%= render 'shared/asset_stylesheet_includes' %>
     <%= csrf_meta_tags %>
+    <script>
+        // set this as soon as possible to avoid flash of content in an iframe
+        if(window != window.top)
+          document.documentElement.className += ' in-iframe';
+    </script>
   </head>
   <body>
 
@@ -16,7 +21,7 @@
     <%= yield :modals %>
 
     <div id="content">
-      <header>
+      <header class="hide-on-iframe">
         <%= render 'shared/header' %>
         <%= render 'shared/navigation' %>
       </header>

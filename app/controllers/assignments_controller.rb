@@ -1,6 +1,6 @@
 class AssignmentsController < ApplicationController
 
-  before_action :require_student
+  before_filter :authenticate_user!
   before_action :use_controller_js
 
   def index
@@ -27,6 +27,17 @@ class AssignmentsController < ApplicationController
   end
 
   def show
+    # If not passed a numeric ID, we'll look it up by SEO name - these
+    # form friendlier links for use from the LMS, etc. too.
+    unless params[:id] =~ /^\d+$/
+      ad = AssignmentDefinition.find_by_seo_name(params[:id])
+      assignment = current_user.assignments.where(:assignment_definition_id => ad.id)
+      if assignment.any?
+        redirect_to assignment_path(assignment.first)
+        return
+      end
+    end
+
     @coaches_comments = Comment.need_student_attention(current_user.id)
     @assignment = Assignment.find(params[:id])
 
