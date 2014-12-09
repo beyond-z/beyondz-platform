@@ -165,11 +165,32 @@ class Admin::UsersController < Admin::ApplicationController
   end
 
   def process_imported_row(row, email)
-    is_nyc = (row[3].nil? || row[3] == 'none') # If not assigned in epapa, use NYC as K-12 column
-    k12_role = is_nyc ? row[1] : row[3]
-    k12_cohort = is_nyc ? row[2] : row[4]
-    sjsu_role = row[5]
-    sjsu_cohort = row[6]
+    # We have three K-12 columns: epapa (3), nyc (1), and DC (7)
+    # At this time, a person can only possibly be a participant in one
+    # city, so we look for the one that isn't nil. If all are nil, they
+    # aren't a K-12 participant at all.
+    possible_k12_columns = [1, 3, 7]
+
+    # we don't want it to be nil, so set it to the first possibility
+    k12_column = possible_k12_columns[0]
+    # then scan all columns until we hit one that is actually used
+    # (or if none are used, we'll use the first option of 'none' below
+    possible_k12_columns.each do |c|
+      unless row[c].nil? || row[c] == 'none'
+        k12_column = c
+        break
+      end
+    end
+    # at this time, we only have one college program: SJUS @ col 5
+    # If we did have more college programs, we could do the same as k12 generically
+    college_column = 5
+
+    # The column right next to the role is always the cohort
+    k12_role = row[k12_column]
+    k12_cohort = row[k12_column + 1]
+
+    college_role = row[college_column]
+    college_cohort = row[college_column + 1]
 
     coaching_beyond = nil
     overdrive = nil
@@ -186,12 +207,12 @@ class Admin::UsersController < Admin::ApplicationController
       section_overdrive = k12_cohort
     end
 
-    if sjsu_role == 'student' || sjsu_role == 'peeradvisor'
+    if college_role == 'student' || college_role == 'peeradvisor'
       accelerator = 'STUDENT'
-      section_accelerator = sjsu_cohort
-    elsif sjsu_role == 'coach'
+      section_accelerator = college_cohort
+    elsif college_role == 'coach'
       # accelerator = 'TA'
-      section_accelerator = sjsu_cohort
+      section_accelerator = college_cohort
 
       coaching_beyond = 'STUDENT'
       section_coaching_beyond = 'acceleratorlc'
