@@ -301,7 +301,7 @@ item.front_page_info = "
       <li><strong>NOTE: This is a 2-part module that asks you to write a résumé and a Cover Letter, spending a total of 3 hours across both artifacts.</strong></li>
     </ul>
   "
-item.title = 'Week 2(b): Résumé'
+item.title = 'Résumé'
 item.led_by = 'Peer'
 item.assignment_download_url = 'assignments/resume/submissions/new'
 item.start_date = Time.parse('Mar 10')
