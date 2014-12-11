@@ -20,7 +20,10 @@ class TasksController < ApplicationController
     if @task.update(params[:task])
       # succeeded, continue
       if @task.last?
-        redirect_to assignments_path
+        # two step redirect process - javascript is required to escape the iframe we're probably in
+        # so send to the home first, then it has JS to break out.
+        redirect_to assignments_path, :out_to_lms => 
+          "//#{Rails.application.secrets.canvas_server}/#{@task.assignment.assignment_definition.finished_url}"
       else
         redirect_to assignment_task_path(@next_task.assignment, @next_task)
       end
