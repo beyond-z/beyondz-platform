@@ -307,6 +307,7 @@ item.assignment_download_url = 'assignments/resume/submissions/new'
 item.start_date = Time.parse('Mar 10')
 item.end_date = Time.parse('Mar 16')
 item.seo_name = 'resume'
+item.finished_url = '/courses/2/quizzes/84?module_item_id=189'
 item.save
 
 item.task_definitions.push(
