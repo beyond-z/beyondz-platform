@@ -21,6 +21,14 @@ class ConfirmationsController < Devise::ConfirmationsController
   def after_confirmation_path_for(resource_name, resource)
     sign_in(resource_name, resource)
 
+    # If we set up a salesforce account, create the user/contact there
+    # too. If not, we'll skip that step so we don't get exceptions from
+    # the salesforce api about bad credentials and instead just keep it
+    # all locally.
+    if Rails.application.secrets.salesforce_username
+      current_user.create_on_salesforce
+    end
+
     StaffNotifications.new_user(current_user).deliver
 
     flash[:notice] = nil

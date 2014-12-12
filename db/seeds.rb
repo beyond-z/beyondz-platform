@@ -301,12 +301,13 @@ item.front_page_info = "
       <li><strong>NOTE: This is a 2-part module that asks you to write a résumé and a Cover Letter, spending a total of 3 hours across both artifacts.</strong></li>
     </ul>
   "
-item.title = 'Week 2(b): Résumé'
+item.title = 'Résumé'
 item.led_by = 'Peer'
 item.assignment_download_url = 'assignments/resume/submissions/new'
 item.start_date = Time.parse('Mar 10')
 item.end_date = Time.parse('Mar 16')
 item.seo_name = 'resume'
+item.finished_url = '/courses/2/quizzes/84?module_item_id=189'
 item.save
 
 item.task_definitions.push(
@@ -1791,85 +1792,6 @@ task_definition = TaskDefinition.create(
     <br />
     '
   )
-
-item.task_definitions.push(task_definition)
-task_definition = TaskDefinition.create(
-  required: true, position: 10, requires_approval: true,
-  name: "Compose your Résumé",
-  summary: 'A solid résumé is key to getting into the door of the job you want.',
-  details: '<h3>Write your résumé - 3 steps</h3>
-      <h4>1) Brainstorm</h4>
-      <p>
-        Before writing your résumé, take some time to brainstorm your key
-        accomplishments using the following worksheet.
-      </p>
-      <p>
-        <a href="/docs/resume_brainstorming.docx">Résumé brainstorming worksheet (Word)</a>
-      </p>
-      <p>
-        Jot down the first answers that come to mind and don\'t worry about
-        them being exact or perfect. Take a look at the brainstorm questions
-        below to get you started: 
-      </p>
-      <ul>
-        <li>What 3-5 accomplishments and professional skills do you want to
-          make sure your internship supervisor/job employer sees on your
-          résumé? What roles have you held that have allowed you to develop
-          these skills?</li>
-        <li>If there was 1 message that you want to convey to an employer
-          through your résumé, what’s the point you want to make?</li>
-      </ul>
-
-      <h4>2) Next, research the internship, job or opportunity</h4>
-      <ul>
-        <li>
-          Research the internship. Go to the company\'s website and see what
-          language they use to describe the ideal candidates. Do a Google
-          search for the company. Make sure your resume address each of the
-          things they are asking for on their website.</li>
-      </ul>
-
-      <h4>3) Write a first draft of your résumé</h4>
-      <ul>
-        <li>Write out accomplishment statements. Makesure your statements are
-          positive and proud, but don\'t overstate to the pointof falsely
-          representing yourself or being untrue to your actual experience.</li>
-        <li>Scan the Action Verb list to phrase your achievements so that you
-          are the hero of your own resume.
-          <p><a target="_BLANK" href="/docs/action-verbs.html">list of action verbs</a>.
-          </p></li>
-        <li>Jump-start the writing process by entering your accomplishments into
-          the résumé template here.
-          <p>
-            <a href="/docs/resume_template.docx">Résumé template (Word)</a>
-          </p>
-        </li>
-      </ul>
-  '
-  
-)
-# task_definition.sections.push(
-#   TaskSection.create(
-#     task_module_id: resume_builder_module.id,
-#     introduction: 'Use the form below to complete your résumé.'
-#   )
-# )
-item.task_definitions.push(task_definition)
-
-task_definition = TaskDefinition.create(
-  required: true, position: 11,
-  requires_approval: true, name: 'Résumé',
-)
-task_definition.sections.push(
-  TaskSection.create(
-    task_module_id: file_upload_module.id,
-    file_type: 'document',
-    introduction: 'Please upload your new résumé once you have it finished. Your
-     coach will provide feedback to you.'
-  )
-)
-item.task_definitions.push(task_definition)
-item.save
 
 item = AssignmentDefinition.new
 item.front_page_info = "

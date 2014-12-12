@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140918172949) do
+ActiveRecord::Schema.define(version: 20141211204521) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20140918172949) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "seo_name"
+    t.string   "finished_url"
   end
 
   create_table "assignments", force: true do |t|
@@ -161,6 +162,7 @@ ActiveRecord::Schema.define(version: 20140918172949) do
     t.string   "resume_content_type"
     t.integer  "resume_file_size"
     t.datetime "resume_updated_at"
+    t.boolean  "program_ms_ms_dc"
   end
 
   add_index "enrollments", ["user_id"], name: "index_enrollments_on_user_id", using: :btree
@@ -311,6 +313,11 @@ ActiveRecord::Schema.define(version: 20140918172949) do
     t.boolean  "interview_scheduled"
     t.boolean  "availability_confirmation_requested"
     t.integer  "canvas_user_id"
+    t.string   "relationship_manager"
+    t.boolean  "exclude_from_reporting"
+    t.string   "associated_program"
+    t.string   "active_status"
+    t.string   "salesforce_id"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
