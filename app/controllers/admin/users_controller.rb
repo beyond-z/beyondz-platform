@@ -70,6 +70,12 @@ class Admin::UsersController < Admin::ApplicationController
     render 'show'
   end
 
+  def enroll_by_email
+    @user = User.find_by_email(params[:id])
+    @action = 'Enroll the user as a student'
+    render 'confirm'
+  end
+
   def edit
     @user = User.find(params[:id])
   end
