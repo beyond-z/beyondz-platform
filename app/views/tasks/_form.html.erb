@@ -29,7 +29,7 @@
       </div> -->
     </div>
 
-    <section class="task-navigation-buttons">
+    <section class="task-navigation-buttons hide-on-iframe">
       <div class="col-sm-6">
         <% if @previous_task %>
           <%= link_to "Previous", assignment_task_path(@previous_task.assignment, @previous_task), class: "previous" %>
