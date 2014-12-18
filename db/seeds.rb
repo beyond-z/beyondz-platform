@@ -894,7 +894,7 @@ task_definition = TaskDefinition.create(
             prominently as header. Overall, this résumé is too short – it needs
             to fill 1 page">Louis Smith
           </strong><br />
-          Louis17@sjsu.edu<br />
+          Louis17@berkeley.edu<br />
           (805) 555-7777
         </div>
       </section>
