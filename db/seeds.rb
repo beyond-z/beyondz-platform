@@ -514,7 +514,7 @@ task_definition = TaskDefinition.create(
   summary: 'Determine which résumés are the strongest and weakest.',
   details: '<p>Take a look at Louis\', Eric\'s and Amanda\'s resumes and consider
     their impact. How well do they do in terms of overall formatting? What
-    details do they include in their education? Do they use strong <a href="https://s3.amazonaws.com/uploads.hipchat.com/81469/599635/MDQBb2EEgpjTxtz/Action%20Verb%20List_121714.docx">action verbs</a>
+    details do they include in their education? Do they use strong <a href="https://www.dropbox.com/s/71lrhj4p81rrwiy/Action%20Verb%20List_121714.docx?dl=0">action verbs</a>
     to describe their experience and leadership? Do they include skills and
     interests that round them out? Refer back to the resume rubric!</p>'
   )
