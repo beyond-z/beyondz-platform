@@ -495,7 +495,7 @@ item.task_definitions.push(
       internships and job opportunities. Your objective in crafting a résumé is
       to set yourself apart from hundreds or thousands of other candidates and
       position yourself as a unique candidate.</p>
-      <p>We’re going to meet Alex, Eric, and Amanda. They are all sophomore
+      <p>We’re going to meet Louis, Eric, and Amanda. They are all sophomore
       students at UC Berkeley and are competing for the same summer internship
       in education in DC over the summer and have all created their résumés.
       Based on their résumés, we\'re going to have you predict which one has the
@@ -514,7 +514,7 @@ task_definition = TaskDefinition.create(
   summary: 'Determine which résumés are the strongest and weakest.',
   details: '<p>Take a look at Louis\', Eric\'s and Amanda\'s resumes and consider
     their impact. How well do they do in terms of overall formatting? What
-    details do they include in their education? Do they use strong action verbs
+    details do they include in their education? Do they use strong <a href="https://www.dropbox.com/s/71lrhj4p81rrwiy/Action%20Verb%20List_121714.docx?dl=0">action verbs</a>
     to describe their experience and leadership? Do they include skills and
     interests that round them out? Refer back to the resume rubric!</p>'
   )
@@ -881,7 +881,7 @@ item.task_definitions.push(task_definition)
 
 task_definition = TaskDefinition.create(
   required: true, position: 5, name: 'Formatting',
-  details: '<p>Your résumé in college should fill 1 page. Overall, Louis\'
+  details: '<p>Instructions: Check out resumes for Louis, Amanda and Eric and take a close look at what they do well and where they could improve. You can hover over each of the (i) icons in gray to get a more detailed explanation on what they did and suggested tips and recommendations for improving your own resume.</p><p>Your résumé in college should fill 1 page. Overall, Louis\'
     résumé is too short (only fills up a half page) and looks underwhelming
     because there is more white space than words. The header of the résumé does
     not stand out and there are also some grammar errors and typos.</p>
@@ -894,7 +894,7 @@ task_definition = TaskDefinition.create(
             prominently as header. Overall, this résumé is too short – it needs
             to fill 1 page">Louis Smith
           </strong><br />
-          Louis17@sjsu.edu<br />
+          Louis17@berkeley.edu<br />
           (805) 555-7777
         </div>
       </section>
