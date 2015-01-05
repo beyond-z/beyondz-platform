@@ -495,7 +495,7 @@ item.task_definitions.push(
       internships and job opportunities. Your objective in crafting a résumé is
       to set yourself apart from hundreds or thousands of other candidates and
       position yourself as a unique candidate.</p>
-      <p>We’re going to meet Alex, Eric, and Amanda. They are all sophomore
+      <p>We’re going to meet Louis, Eric, and Amanda. They are all sophomore
       students at UC Berkeley and are competing for the same summer internship
       in education in DC over the summer and have all created their résumés.
       Based on their résumés, we\'re going to have you predict which one has the
@@ -514,7 +514,7 @@ task_definition = TaskDefinition.create(
   summary: 'Determine which résumés are the strongest and weakest.',
   details: '<p>Take a look at Louis\', Eric\'s and Amanda\'s resumes and consider
     their impact. How well do they do in terms of overall formatting? What
-    details do they include in their education? Do they use strong action verbs
+    details do they include in their education? Do they use strong <a href="https://www.dropbox.com/s/71lrhj4p81rrwiy/Action%20Verb%20List_121714.docx?dl=0">action verbs</a>
     to describe their experience and leadership? Do they include skills and
     interests that round them out? Refer back to the resume rubric!</p>'
   )
@@ -881,7 +881,7 @@ item.task_definitions.push(task_definition)
 
 task_definition = TaskDefinition.create(
   required: true, position: 5, name: 'Formatting',
-  details: '<p>Your résumé in college should fill 1 page. Overall, Louis\'
+  details: '<p>Instructions: Check out resumes for Louis, Amanda and Eric and take a close look at what they do well and where they could improve. You can hover over each of the (i) icons in gray to get a more detailed explanation on what they did and suggested tips and recommendations for improving your own resume.</p><p>Your résumé in college should fill 1 page. Overall, Louis\'
     résumé is too short (only fills up a half page) and looks underwhelming
     because there is more white space than words. The header of the résumé does
     not stand out and there are also some grammar errors and typos.</p>
@@ -894,7 +894,7 @@ task_definition = TaskDefinition.create(
             prominently as header. Overall, this résumé is too short – it needs
             to fill 1 page">Louis Smith
           </strong><br />
-          Louis17@sjsu.edu<br />
+          Louis17@berkeley.edu<br />
           (805) 555-7777
         </div>
       </section>
@@ -1792,85 +1792,6 @@ task_definition = TaskDefinition.create(
     <br />
     '
   )
-
-item.task_definitions.push(task_definition)
-task_definition = TaskDefinition.create(
-  required: true, position: 10, requires_approval: true,
-  name: "Compose your Résumé",
-  summary: 'A solid résumé is key to getting into the door of the job you want.',
-  details: '<h3>Write your résumé - 3 steps</h3>
-      <h4>1) Brainstorm</h4>
-      <p>
-        Before writing your résumé, take some time to brainstorm your key
-        accomplishments using the following worksheet.
-      </p>
-      <p>
-        <a href="/docs/resume_brainstorming.docx">Résumé brainstorming worksheet (Word)</a>
-      </p>
-      <p>
-        Jot down the first answers that come to mind and don\'t worry about
-        them being exact or perfect. Take a look at the brainstorm questions
-        below to get you started: 
-      </p>
-      <ul>
-        <li>What 3-5 accomplishments and professional skills do you want to
-          make sure your internship supervisor/job employer sees on your
-          résumé? What roles have you held that have allowed you to develop
-          these skills?</li>
-        <li>If there was 1 message that you want to convey to an employer
-          through your résumé, what’s the point you want to make?</li>
-      </ul>
-
-      <h4>2) Next, research the internship, job or opportunity</h4>
-      <ul>
-        <li>
-          Research the internship. Go to the company\'s website and see what
-          language they use to describe the ideal candidates. Do a Google
-          search for the company. Make sure your resume address each of the
-          things they are asking for on their website.</li>
-      </ul>
-
-      <h4>3) Write a first draft of your résumé</h4>
-      <ul>
-        <li>Write out accomplishment statements. Makesure your statements are
-          positive and proud, but don\'t overstate to the pointof falsely
-          representing yourself or being untrue to your actual experience.</li>
-        <li>Scan the Action Verb list to phrase your achievements so that you
-          are the hero of your own resume.
-          <p><a target="_BLANK" href="/docs/action-verbs.html">list of action verbs</a>.
-          </p></li>
-        <li>Jump-start the writing process by entering your accomplishments into
-          the résumé template here.
-          <p>
-            <a href="/docs/resume_template.docx">Résumé template (Word)</a>
-          </p>
-        </li>
-      </ul>
-  '
-  
-)
-# task_definition.sections.push(
-#   TaskSection.create(
-#     task_module_id: resume_builder_module.id,
-#     introduction: 'Use the form below to complete your résumé.'
-#   )
-# )
-item.task_definitions.push(task_definition)
-
-task_definition = TaskDefinition.create(
-  required: true, position: 11,
-  requires_approval: true, name: 'Résumé',
-)
-task_definition.sections.push(
-  TaskSection.create(
-    task_module_id: file_upload_module.id,
-    file_type: 'document',
-    introduction: 'Please upload your new résumé once you have it finished. Your
-     coach will provide feedback to you.'
-  )
-)
-item.task_definitions.push(task_definition)
-item.save
 
 item = AssignmentDefinition.new
 item.front_page_info = "
