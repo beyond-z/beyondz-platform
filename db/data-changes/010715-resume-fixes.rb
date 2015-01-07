@@ -1,3 +1,6 @@
+# Run the contents of this file in the Rails console to bring the resume
+# database content up to date as of January 7.
+
 ad = AssignmentDefinition.find_by_seo_name('resume')
 tasks = TaskDefinition.where('assignment_definition_id' => ad.id)
 intro = TaskDefinition.find(12)
