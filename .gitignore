@@ -45,3 +45,7 @@
 
 # this is my server starting shell script that loads the environment vars, nothing anyone else needs to care about
 start.sh
+
+# and i disable ssl because it kept breaking on salesforce
+# obviously don't want that committed but i want it to stay for my testing
+config/initializers/disable_ssl.rb

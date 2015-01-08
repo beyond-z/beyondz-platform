@@ -63,9 +63,9 @@ class User < ActiveRecord::Base
 
     # This creates the Contact class from the salesforce API
     # which is used on the following line
-    client.materialize('Contact')
+    client.materialize('Lead')
 
-    contact = Contact.new
+    contact = Lead.new
     contact.Name = name
     contact.FirstName = first_name
     contact.LastName = last_name
