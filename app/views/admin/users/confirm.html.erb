@@ -1,0 +1,13 @@
+<h1>Confirm you want to <%=@action%></h1>
+<p>User: <%=@user.name %></p>
+<p>Email: <%=@user.email %></p>
+
+<%= form_for [:admin, @user] do |f| %>
+
+  <div style="text-align: center;">
+    <button style="font-size: 200%;" type="submit">Confirm</button>
+  </div>
+
+<% end %>
+
+<button onclick="window.close();">Cancel</button>

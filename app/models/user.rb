@@ -61,20 +61,40 @@ class User < ActiveRecord::Base
       :password => "#{Rails.application.secrets.salesforce_password}#{Rails.application.secrets.salesforce_security_token}"
     )
 
-    # This creates the Contact class from the salesforce API
+    # This creates the necessary class from the salesforce API
     # which is used on the following line
-    client.materialize('Lead')
+    #client.materialize('Contact')
 
-    contact = Lead.new
-    contact.Name = name
-    contact.FirstName = first_name
-    contact.LastName = last_name
-    contact.Email = email
-    contact.OwnerId = client.user_id # this is the user id we're logged into Salesforce as
-    contact.save
+    #contact = Contact.new
 
-    self.salesforce_id = contact.Id
+    contact = Hash.new
+    #contact["Name"] = name
+    contact["FirstName"] = first_name
+    contact["LastName"] = last_name
+    contact["Email"] = email
+    contact["OwnerId"] = client.user_id # this is the user id we're logged into Salesforce as
+
+    contact["IsUnreadByOwner"] = false
+
+    contact["Company"] = "#{name} (individual)"
+
+    # The Lead class provided by the gem is buggy so we do it with this call instead
+    # which is what Lead.save calls anyway
+    client.create("Lead", contact)
+
+    self.salesforce_id = contact["Id"]
     save!
+
+    client.materialize("Task")
+    task = Task.new
+    task.Priority = "high"
+    task.Status = "Not Started"
+    task.Subject = "Initial contact"
+    task.WhoId = contact["Id"]
+    task.OwnerId = client.user_id # FIXME this is the assigned to id
+    task.IsReminderSet = false
+    #task.Type = "Email"
+    task.save
   end
 
   # validates :anticipated_graduation, presence: true, if: :graduation_required?

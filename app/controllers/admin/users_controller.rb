@@ -65,13 +65,13 @@ class Admin::UsersController < Admin::ApplicationController
     @user = User.find(params[:id])
   end
 
-  def find_by_email
-    @user = User.find_by_email(params[:id])
+  def find_by_salesforce_id
+    @user = User.find_by_salesforce_id(params[:id])
     render 'show'
   end
 
-  def enroll_by_email
-    @user = User.find_by_email(params[:id])
+  def enroll_by_salesforce_id
+    @user = User.find_by_salesforce_id(params[:id])
     @action = 'Enroll the user as a student'
     render 'confirm'
   end
