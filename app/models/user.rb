@@ -1,3 +1,5 @@
+require 'salesforce'
+
 # Monkey-patch the CAS gem so we can use it without losing the database
 # features we use for SSO - we still manage the users here, including
 # their passwords in this database, but we want to use the CAS server
@@ -55,11 +57,8 @@ class User < ActiveRecord::Base
   validates :last_name, presence: true
 
   def create_on_salesforce
-    client = Databasedotcom::Client.new
-    client.authenticate(
-      :username => Rails.application.secrets.salesforce_username,
-      :password => "#{Rails.application.secrets.salesforce_password}#{Rails.application.secrets.salesforce_security_token}"
-    )
+    salesforce = BeyondZ::Salesforce.new
+    client = salesforce.get_client
 
     # This creates the necessary class from the salesforce API
     # which is used on the following line
@@ -78,6 +77,11 @@ class User < ActiveRecord::Base
 
     contact["Company"] = "#{name} (individual)"
 
+    contact["City"] = city
+    contact["State"] = state
+
+    contact["LeadSource"] = 'Website Signup'
+
     # The Lead class provided by the gem is buggy so we do it with this call instead
     # which is what Lead.save calls anyway
     client.create("Lead", contact)
@@ -85,15 +89,15 @@ class User < ActiveRecord::Base
     self.salesforce_id = contact["Id"]
     save!
 
-    client.materialize("Task")
+    client.materialize('Task')
     task = Task.new
-    task.Priority = "high"
-    task.Status = "Not Started"
-    task.Subject = "Initial contact"
-    task.WhoId = contact["Id"]
-    task.OwnerId = client.user_id # FIXME this is the assigned to id
+    task.Status = 'Not Started'
+    task.Subject = 'Initial contact'
+    task.WhoId = contact['Id']
+    task.OwnerId = contact['OwnerId']
     task.IsReminderSet = false
-    #task.Type = "Email"
+    task.Type = "Email"
+    task.Description = 'Send the welcome email to the new user and initiate one-on-one contact.'
     task.save
   end
 

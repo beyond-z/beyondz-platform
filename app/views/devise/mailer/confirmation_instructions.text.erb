@@ -1,0 +1,11 @@
+<% 
+# The purpose here is to pull a Salesforce template and do the variable replacements
+# for us.
+
+require 'salesforce'
+sf = BeyondZ::Salesforce.new
+%><%= sf.get_welcome_email.
+  sub('{!Contact.FirstName}', @user.first_name).
+  sub('{!Contact.LastName}', @user.last_name).
+  sub('{!Contact.ConfirmationURL}', confirmation_url(@resource, confirmation_token: @token))
+%>
