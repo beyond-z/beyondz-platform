@@ -60,33 +60,26 @@ class User < ActiveRecord::Base
     salesforce = BeyondZ::Salesforce.new
     client = salesforce.get_client
 
-    # This creates the necessary class from the salesforce API
-    # which is used on the following line
-    #client.materialize('Contact')
+    contact = {}
+    contact['FirstName'] = first_name
+    contact['LastName'] = last_name
+    contact['Email'] = email
+    contact['OwnerId'] = client.user_id # this is the user id we're logged into Salesforce as
 
-    #contact = Contact.new
+    contact['IsUnreadByOwner'] = false
 
-    contact = Hash.new
-    #contact["Name"] = name
-    contact["FirstName"] = first_name
-    contact["LastName"] = last_name
-    contact["Email"] = email
-    contact["OwnerId"] = client.user_id # this is the user id we're logged into Salesforce as
+    contact['Company'] = "#{name} (individual)"
 
-    contact["IsUnreadByOwner"] = false
+    contact['City'] = city
+    contact['State'] = state
 
-    contact["Company"] = "#{name} (individual)"
-
-    contact["City"] = city
-    contact["State"] = state
-
-    contact["LeadSource"] = 'Website Signup'
+    contact['LeadSource'] = 'Website Signup'
 
     # The Lead class provided by the gem is buggy so we do it with this call instead
     # which is what Lead.save calls anyway
-    client.create("Lead", contact)
+    client.create('Lead', contact)
 
-    self.salesforce_id = contact["Id"]
+    self.salesforce_id = contact['Id']
     save!
 
     client.materialize('Task')
@@ -96,7 +89,7 @@ class User < ActiveRecord::Base
     task.WhoId = contact['Id']
     task.OwnerId = contact['OwnerId']
     task.IsReminderSet = false
-    task.Type = "Email"
+    task.Type = 'Email'
     task.Description = 'Send the welcome email to the new user and initiate one-on-one contact.'
     task.save
   end
