@@ -1,9 +1,15 @@
+# Namespacing for the salesforce modules, see:
+# https://developer.salesforce.com/page/Accessing_Salesforce_Data_From_Ruby
+module SFDC_Models
+end
+
 module BeyondZ
   class Salesforce
     public
 
     def get_client
       client = Databasedotcom::Client.new
+      client.sobject_module = 'SFDC_Models'
       client.authenticate(
         :username => Rails.application.secrets.salesforce_username,
         :password => "#{Rails.application.secrets.salesforce_password}#{Rails.application.secrets.salesforce_security_token}"
@@ -42,7 +48,7 @@ module BeyondZ
         client = get_client
         client.materialize('EmailTemplate')
 
-        template = EmailTemplate.find_by_DeveloperName('New_Signup_Welcome_and_Confirm_Email_Html')
+        template = SFDC_Models::EmailTemplate.find_by_DeveloperName('New_Signup_Welcome_and_Confirm_Email_Html')
 
         cache = set_cached_value(cache_key, template.HtmlValue)
       end
@@ -58,7 +64,7 @@ module BeyondZ
         client = get_client
         client.materialize('EmailTemplate')
 
-        template = EmailTemplate.find_by_DeveloperName('New_Signup_Welcome_and_Confirm_Email_Html')
+        template = SFDC_Models::EmailTemplate.find_by_DeveloperName('New_Signup_Welcome_and_Confirm_Email_Html')
 
         cache = set_cached_value(cache_key, template.Body)
       end

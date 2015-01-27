@@ -56,6 +56,20 @@ class User < ActiveRecord::Base
   validates :first_name, presence: true
   validates :last_name, presence: true
 
+  # Finds the lead owner from the uploaded spreadsheet mapping, or returns
+  # a default if it doesn't exist for our combination of fields.
+  #
+  # Returns a user's email address.
+  def lead_owner
+    # IF all else fails, assign it to Abby and she'll handle it manually
+    mapping = LeadOwnerMapping.where(:state => state, :interested_joining => interested_joining, :applicant_type => applicant_type)
+    if mapping.empty?
+      return 'abby.whitbeck@beyondz.org'
+    end
+
+    mapping.first.lead_owner
+  end
+
   def create_on_salesforce
     salesforce = BeyondZ::Salesforce.new
     client = salesforce.get_client
@@ -64,7 +78,17 @@ class User < ActiveRecord::Base
     contact['FirstName'] = first_name
     contact['LastName'] = last_name
     contact['Email'] = email
-    contact['OwnerId'] = client.user_id # this is the user id we're logged into Salesforce as
+
+    client.materialize('User')
+    salesforce_lead_owner = SFDC_Models::User.find_by_Email(lead_owner)
+
+    if salesforce_lead_owner
+      contact['OwnerId'] = salesforce_lead_owner.Id
+    else
+      # this is the user id we're logged into Salesforce as to use as
+      # a last-resort owner if the other one fails
+      contact['OwnerId'] = client.user_id
+    end
 
     contact['IsUnreadByOwner'] = false
 
@@ -83,7 +107,7 @@ class User < ActiveRecord::Base
     save!
 
     client.materialize('Task')
-    task = Task.new
+    task = SFDC_Models::Task.new
     task.Status = 'Not Started'
     task.Subject = 'Initial contact'
     task.WhoId = contact['Id']
