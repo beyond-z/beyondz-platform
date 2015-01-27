@@ -12,6 +12,13 @@ class Admin::UsersController < Admin::ApplicationController
     end
   end
 
+  # The lead owner mapping is a user-configurable setup that maps
+  # new leads (people who just signed up on the website) to an owner -
+  # a staff member who is responsible for contacting that person and
+  # guiding them through any next steps.
+  #
+  # It is used on Salesforce and could also be used for other customer
+  # relationship management tasks
   def lead_owner_mapping
     respond_to do |format|
       format.csv { render text: csv_lead_owner_export }

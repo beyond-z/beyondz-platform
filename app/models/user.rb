@@ -111,16 +111,24 @@ class User < ActiveRecord::Base
     self.salesforce_id = contact['Id']
     save!
 
-    client.materialize('Task')
-    task = SFDC_Models::Task.new
-    task.Status = 'Not Started'
-    task.Subject = 'Initial contact'
-    task.WhoId = contact['Id']
-    task.OwnerId = contact['OwnerId']
-    task.IsReminderSet = false
-    task.Type = 'Email'
-    task.Description = 'Send the welcome email to the new user and initiate one-on-one contact.'
-    task.save
+    # This code is probably obsolete, but kept as an example
+    # of how to do it in case we want it back later. It creates
+    # a Task on Salesforce, assigned to the contact owner, telling
+    # them to make initial contact.
+    #
+    # It is obsolete because the new design uses a salesforce
+    # workflow instead.
+    #
+    # client.materialize('Task')
+    # task = SFDC_Models::Task.new
+    # task.Status = 'Not Started'
+    # task.Subject = 'Initial contact'
+    # task.WhoId = contact['Id']
+    # task.OwnerId = contact['OwnerId']
+    # task.IsReminderSet = false
+    # task.Type = 'Email'
+    # task.Description = 'Send the welcome email to the new user and initiate one-on-one contact.'
+    # task.save
   end
 
   # validates :anticipated_graduation, presence: true, if: :graduation_required?
