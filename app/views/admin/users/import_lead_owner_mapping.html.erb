@@ -1,0 +1,27 @@
+<h1>Lead Owner Mapping</h1>
+
+<p>This mapping sets lead relationship owner for new sign ups based on the fields they enter.</p>
+
+<table width="600"><caption>Expected format</caption>
+  <thead><tr>
+      <th>Lead_owner</th><th>Applicant type</th><th>State</th><th>Interested joining</th>
+  </tr></thead>
+  <tbody>
+    <tr>
+      <td>abby.whitbeck@beyondz.org</td><td>family_member</td><td>AK</td><td>FALSE</td>
+    </tr>
+    <tr>
+      <td>abby.whitbeck@beyondz.org</td><td>school_student</td><td>NY</td><td>FALSE</td>
+    </tr>
+    <tr>
+      <td>abby.whitbeck@beyondz.org</td><td>other</td><td>MN</td><td>TRUE</td>
+    </tr>
+  </tbody>
+</table>
+
+<p style="margin: 2em;"><b>Important note:</b> uploading a spreadsheet will delete all current mappings and replace them with what's in the sheet. Be sure that your upload includes ALL the mappings you want kept.</p>
+
+<%= form_for :import, :html => { :multipart => true } do |f| %>
+  <%= f.file_field :csv %>
+  <%= submit_tag 'Upload CSV' %>
+<% end %>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150126173753) do
+ActiveRecord::Schema.define(version: 20150126232154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -166,6 +166,15 @@ ActiveRecord::Schema.define(version: 20150126173753) do
   end
 
   add_index "enrollments", ["user_id"], name: "index_enrollments_on_user_id", using: :btree
+
+  create_table "lead_owner_mappings", force: true do |t|
+    t.string   "lead_owner"
+    t.string   "applicant_type"
+    t.string   "state"
+    t.string   "interested_joining"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "resources", force: true do |t|
     t.string   "url"

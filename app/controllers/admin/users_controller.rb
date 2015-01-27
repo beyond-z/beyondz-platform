@@ -12,6 +12,57 @@ class Admin::UsersController < Admin::ApplicationController
     end
   end
 
+  def lead_owner_mapping
+    respond_to do |format|
+      format.csv { render text: csv_lead_owner_export }
+    end
+  end
+
+  def csv_lead_owner_export
+    CSV.generate do |csv|
+      header = []
+      header << 'Lead_owner'
+      header << 'Applicant type'
+      header << 'State'
+      header << 'Interested joining'
+
+      csv << header
+
+      LeadOwnerMapping.all.each do |m|
+        exportable = []
+        exportable << m.lead_owner
+        exportable << m.applicant_type
+        exportable << m.state
+        exportable << m.interested_joining
+
+        csv << exportable
+      end
+    end
+  end
+
+  def import_lead_owner_mapping
+    # just rendering a view...
+  end
+
+  def do_import_lead_owner_mapping
+    if params[:import].nil?
+      flash[:message] = 'Please upload a csv file'
+      redirect_to admin_import_lead_owner_mapping_path
+      return
+    end
+
+    file = CSV.parse(params[:import][:csv].read)
+    LeadOwnerMapping.destroy_all
+    file.each do |row|
+      LeadOwnerMapping.create(
+        :lead_owner => row[0],
+        :applicant_type => row[1],
+        :state => row[2],
+        :interested_joining => row[3]
+      )
+    end
+  end
+
   def update
 
     initialize_lms_interop
