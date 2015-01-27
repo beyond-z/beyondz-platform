@@ -50,7 +50,11 @@ module BeyondZ
 
         template = SFDC_Models::EmailTemplate.find_by_DeveloperName('New_Signup_Welcome_and_Confirm_Email_Html')
 
-        cache = set_cached_value(cache_key, template.HtmlValue)
+        if template
+          cache = set_cached_value(cache_key, template.HtmlValue)
+        else
+          cache = ''
+        end
       end
 
       cache
@@ -66,7 +70,11 @@ module BeyondZ
 
         template = SFDC_Models::EmailTemplate.find_by_DeveloperName('New_Signup_Welcome_and_Confirm_Email_Html')
 
-        cache = set_cached_value(cache_key, template.Body)
+        if template
+          cache = set_cached_value(cache_key, template.Body)
+        else
+          cache = ''
+        end
       end
 
       cache

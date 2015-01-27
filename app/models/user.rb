@@ -61,8 +61,13 @@ class User < ActiveRecord::Base
   #
   # Returns a user's email address.
   def lead_owner
+    mapping = LeadOwnerMapping.where(
+      :state => state,
+      :interested_joining => interested_joining,
+      :applicant_type => applicant_type
+    )
+
     # IF all else fails, assign it to Abby and she'll handle it manually
-    mapping = LeadOwnerMapping.where(:state => state, :interested_joining => interested_joining, :applicant_type => applicant_type)
     if mapping.empty?
       return 'abby.whitbeck@beyondz.org'
     end
