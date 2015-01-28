@@ -69,7 +69,7 @@ class User < ActiveRecord::Base
 
     # IF all else fails, assign it to Abby and she'll handle it manually
     if mapping.empty?
-      return 'abby.whitbeck@beyondz.org'
+      return Rails.application.secrets.default_lead_owner
     end
 
     mapping.first.lead_owner
