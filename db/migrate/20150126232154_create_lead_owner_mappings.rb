@@ -4,7 +4,7 @@ class CreateLeadOwnerMappings < ActiveRecord::Migration
       t.string :lead_owner
       t.string :applicant_type
       t.string :state
-      t.string :interested_joining
+      t.boolean :interested_joining
 
       t.timestamps
     end

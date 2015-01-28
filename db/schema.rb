@@ -171,7 +171,7 @@ ActiveRecord::Schema.define(version: 20150126232154) do
     t.string   "lead_owner"
     t.string   "applicant_type"
     t.string   "state"
-    t.string   "interested_joining"
+    t.boolean  "interested_joining"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

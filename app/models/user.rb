@@ -84,8 +84,15 @@ class User < ActiveRecord::Base
     contact['LastName'] = last_name
     contact['Email'] = email
 
-    client.materialize('User')
-    salesforce_lead_owner = SFDC_Models::User.find_by_Email(lead_owner)
+    # SFDC_Models::User.find_by_Email(lead_owner)
+    # the model didn't work though because the materialize call
+    # conflicted their User with our User (the namespace wasn't used
+    # properly!) So doing SOQL instead. The sub call is to escape the quotes
+    # to mitigate SQL injection (of course, this comes from our code anyway,
+    # so there should be no security risk, but I just prefer to be a bit
+    # defensive.)
+    salesforce_lead_owner = client.query("SELECT Id FROM User WHERE Email = '#{lead_owner.sub('\'', '\'\'')}'")
+    salesforce_lead_owner = salesforce_lead_owner.empty? ? nil : salesforce_lead_owner.first
 
     if salesforce_lead_owner
       contact['OwnerId'] = salesforce_lead_owner.Id
