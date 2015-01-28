@@ -8,7 +8,7 @@ module BeyondZ
     public
 
     def get_client
-      client = Databasedotcom::Client.new
+      client = Databasedotcom::Client.new :host => Rails.application.secrets.salesforce_host
       client.sobject_module = 'SFDC_Models'
       client.authenticate(
         :username => Rails.application.secrets.salesforce_username,
