@@ -43,10 +43,15 @@ BeyondzPlatform::Application.routes.draw do
     get '/users/csv_import', to: 'users#csv_import', as: 'csv_import'
     post '/users/csv_import', to: 'users#do_csv_import'
 
+    get '/users/lead_owner_mapping', to: 'users#lead_owner_mapping', as: 'lead_owner_mapping'
+    get '/users/import_lead_owner_mapping', to: 'users#import_lead_owner_mapping', as: 'import_lead_owner_mapping'
+    post '/users/import_lead_owner_mapping', to: 'users#do_import_lead_owner_mapping'
+
     get '/users/user_status_csv_import', to: 'users#user_status_csv_import', as: 'user_status_csv_import'
     post '/users/user_status_csv_import', to: 'users#do_user_status_csv_import'
 
-    get '/users/find_by_email', to: 'users#find_by_email', as: 'user_find_by_email'
+    get '/users/:id/find_by_salesforce_id', to: 'users#find_by_salesforce_id', as: 'user_find_by_salesforce_id'
+    get '/users/:id/enroll_by_salesforce_id', to: 'users#enroll_by_salesforce_id', as: 'user_enroll_by_salesforce_id'
 
     resources :users do
       resources :students

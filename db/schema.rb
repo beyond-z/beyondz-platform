@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141211204521) do
+ActiveRecord::Schema.define(version: 20150126232154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -130,6 +130,7 @@ ActiveRecord::Schema.define(version: 20141211204521) do
     t.string   "reference_how_long_known"
     t.string   "reference_email"
     t.string   "reference_phone"
+    t.string   "reference2_name"
     t.string   "reference2_how_known"
     t.string   "reference2_how_long_known"
     t.string   "reference2_email"
@@ -147,7 +148,6 @@ ActiveRecord::Schema.define(version: 20141211204521) do
     t.text     "commitments"
     t.text     "cannot_attend"
     t.text     "comments"
-    t.string   "reference2_name",                       limit: 180
     t.text     "other_meaningful_volunteer_activities"
     t.text     "current_volunteer_activities"
     t.text     "meaningful_experience"
@@ -167,12 +167,28 @@ ActiveRecord::Schema.define(version: 20141211204521) do
 
   add_index "enrollments", ["user_id"], name: "index_enrollments_on_user_id", using: :btree
 
+  create_table "lead_owner_mappings", force: true do |t|
+    t.string   "lead_owner"
+    t.string   "applicant_type"
+    t.string   "state"
+    t.boolean  "interested_joining"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "resources", force: true do |t|
     t.string   "url"
     t.string   "title"
     t.text     "note"
     t.boolean  "optional"
     t.integer  "resource_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "salesforce_caches", force: true do |t|
+    t.string   "key"
+    t.text     "value"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -305,7 +321,6 @@ ActiveRecord::Schema.define(version: 20141211204521) do
     t.boolean  "interested_joining"
     t.boolean  "interested_partnering"
     t.boolean  "interested_receiving"
-    t.boolean  "acceptance_requested"
     t.boolean  "accepted_into_program"
     t.boolean  "declined_from_program"
     t.boolean  "fast_tracked"
