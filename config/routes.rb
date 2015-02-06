@@ -10,6 +10,8 @@ BeyondzPlatform::Application.routes.draw do
   get '/supporter_info', to: 'home#supporter_info'
   get '/jobs', to: 'home#jobs'
 
+  get '/salesforce/change_apply_now', to: 'salesforce#change_apply_now'
+
   resources :feedback
   resources :comments
   resources :users, only: [:new, :create], :path => :signup
