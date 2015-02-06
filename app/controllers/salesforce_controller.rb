@@ -8,13 +8,17 @@ class SalesforceController < ApplicationController
     if params[:magic_token] == 'test'
       params[:yes_list].split(',').each do |id|
         u = User.find_by_salesforce_id(id)
-        u.apply_now_enabled = true
-        u.save!
+        if u
+          u.apply_now_enabled = true
+          u.save!
+        end
       end
       params[:no_list].split(',').each do |id|
         u = User.find_by_salesforce_id(id)
-        u.apply_now_enabled = false
-        u.save!
+        if u
+          u.apply_now_enabled = false
+          u.save!
+        end
       end
     end
 
