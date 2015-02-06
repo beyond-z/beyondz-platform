@@ -18,6 +18,6 @@ class SalesforceController < ApplicationController
       end
     end
 
-    render :plain ''
+    render plain: ''
   end
 end
