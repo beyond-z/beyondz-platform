@@ -41,14 +41,14 @@ module BeyondZ
     end
 
     def get_welcome_email_html
-      cache_key = 'New_Signup_Welcome_and_Confirm_Email_Html.html'
+      cache_key = 'BZ_New_Signup_Welcome_and_Confirm_Email_Html.html'
 
       cache = get_cached_value(cache_key)
       if cache.nil?
         client = get_client
         client.materialize('EmailTemplate')
 
-        template = SFDC_Models::EmailTemplate.find_by_DeveloperName('New_Signup_Welcome_and_Confirm_Email_Html')
+        template = SFDC_Models::EmailTemplate.find_by_DeveloperName('BZ_New_Signup_Welcome_and_Confirm_Email_Html')
 
         if template
           cache = set_cached_value(cache_key, template.HtmlValue)
@@ -61,14 +61,14 @@ module BeyondZ
     end
 
     def get_welcome_email_text
-      cache_key = 'New_Signup_Welcome_and_Confirm_Email_Html.text'
+      cache_key = 'BZ_New_Signup_Welcome_and_Confirm_Email_Html.text'
 
       cache = get_cached_value(cache_key)
       if cache.nil?
         client = get_client
         client.materialize('EmailTemplate')
 
-        template = SFDC_Models::EmailTemplate.find_by_DeveloperName('New_Signup_Welcome_and_Confirm_Email_Html')
+        template = SFDC_Models::EmailTemplate.find_by_DeveloperName('BZ_New_Signup_Welcome_and_Confirm_Email_Html')
 
         if template
           cache = set_cached_value(cache_key, template.Body)
