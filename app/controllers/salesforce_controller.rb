@@ -3,9 +3,7 @@
 # this controller which will take appropriate action.
 class SalesforceController < ApplicationController
   def change_apply_now
-    # a simple filter to keep web crawlers from triggering this
-    # needlessly
-    if params[:magic_token] == 'test'
+    if check_magic_token
       params[:yes_list].split(',').each do |id|
         u = User.find_by_salesforce_id(id)
         if u
@@ -22,6 +20,27 @@ class SalesforceController < ApplicationController
       end
     end
 
-    render plain: ''
+    render plain: 'OK'
+  end
+
+  def record_converted_leads
+    if check_magic_token
+      params[:changes].split(',').each do |change|
+        parts = change.split(':')
+        u = User.find_by_salesforce_id(parts[0])
+        if u
+          u.salesforce_id = parts[1]
+          u.save!
+        end
+      end
+    end
+
+    render plain: 'OK'
+  end
+
+  # a simple filter to keep web crawlers from triggering this
+  # needlessly
+  def check_magic_token
+    params[:magic_token] == Rails.application.secrets.salesforce_magic_token
   end
 end

@@ -11,6 +11,7 @@ BeyondzPlatform::Application.routes.draw do
   get '/jobs', to: 'home#jobs'
 
   get '/salesforce/change_apply_now', to: 'salesforce#change_apply_now'
+  get '/salesforce/record_converted_leads', to: 'salesforce#record_converted_leads'
 
   resources :feedback
   resources :comments
