@@ -11,10 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150126232154) do
+ActiveRecord::Schema.define(version: 20150206172421) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "applications", force: true do |t|
+    t.boolean  "active"
+    t.string   "associated_campaign"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "assignment_definitions", force: true do |t|
     t.string   "title"
@@ -333,6 +340,7 @@ ActiveRecord::Schema.define(version: 20150126232154) do
     t.string   "associated_program"
     t.string   "active_status"
     t.string   "salesforce_id"
+    t.boolean  "apply_now_enabled"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

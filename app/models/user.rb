@@ -113,7 +113,7 @@ class User < ActiveRecord::Base
 
     # The Lead class provided by the gem is buggy so we do it with this call instead
     # which is what Lead.save calls anyway
-    client.create('Lead', contact)
+    contact = client.create('Lead', contact)
 
     self.salesforce_id = contact['Id']
     save!
