@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150206172421) do
+ActiveRecord::Schema.define(version: 20150218151350) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -170,6 +170,8 @@ ActiveRecord::Schema.define(version: 20150206172421) do
     t.integer  "resume_file_size"
     t.datetime "resume_updated_at"
     t.boolean  "program_ms_ms_dc"
+    t.boolean  "program_col_col_dc"
+    t.boolean  "program_col_col_nyc"
   end
 
   add_index "enrollments", ["user_id"], name: "index_enrollments_on_user_id", using: :btree

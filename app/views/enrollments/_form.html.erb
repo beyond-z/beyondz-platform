@@ -48,21 +48,20 @@
 
 
                   <div class="coach student">
-                  <h5>Beyond Z Bay Area</h5>
-                    <label class="checkbox"><%= f.check_box :program_col_col_sjsu, 'value' => 'col-sjsu', 'id' => 'program-col_col-sjsu' %> <span class="bs-wrapper"><span class="control-label">BZ Leadership and Career Accelerator (College Program) at San Jose State University, Oct 2014 - May 2015</span></span></label>
-                    <div class="coach">
-                      <label class="checkbox"><%= f.check_box :program_ms_ms_epa, 'value' => 'ms-epa', 'id' => 'program-ms_ms-epa' %> <span class="bs-wrapper"><span class="control-label">BZ Overdrive (Middle School Program) in East Palo Alto, Oct 2014 - June 2015</span></span></label>
-                      <label class="checkbox"><%= f.check_box :program_ms_ms_mp, 'value' => 'ms-mp', 'id' => 'program-ms_ms-mp' %> <span class="bs-wrapper"><span class="control-label">BZ Overdrive (Middle School Program) in Menlo Park, Oct 2014 - June 2015</span></span></label>
-                    </div>
+                  <h5 class="coach">Beyond Z Bay Area</h5>
+                  <label class="coach checkbox"><%= f.check_box :program_col_col_sjsu, 'value' => 'col-sjsu', 'disabled' => 'disabled', 'id' => 'program-col_col-sjsu' %> <span class="bs-wrapper"><span class="control-label">No programs open at this time. We will notify you when applications open.</span></span></label>
+                    <label class="coach checkbox"><%= f.check_box :program_col_col_sjsu, 'value' => 'col-sjsu', 'id' => 'program-col_col-sjsu' %> <span class="bs-wrapper"><span class="control-label">BZ Leadership and Career Accelerator (College Program) at San Jose State University, Oct 2014 - May 2015</span></span></label>
+                    <label class="student checkbox"><%= f.check_box :program_col_col_dc, 'value' => 'col-dc', 'id' => 'program-col_col-dc' %> <span class="bs-wrapper"><span class="control-label">DC Leadership and Career Accelerator (College Program)</span></span></label>
+                    <label class="student checkbox"><%= f.check_box :program_col_col_nyc, 'value' => 'col-nyc', 'id' => 'program-col_col-nyc' %> <span class="bs-wrapper"><span class="control-label">NYC Leadership and Career Accelerator (College Program)</span></span></label>
 
                   <div class="coach">
                     <h5>Beyond Z New York City</h5>
-                      <label class="checkbox"><%= f.check_box :program_ms_ms_nyc, 'value' => 'ms-nyc', 'id' => 'program-ms_ms-nyc' %> <span class="bs-wrapper"><span class="control-label">BZ Overdrive (Middle School Program) in New York City, October 2014 - May 2015</span></span></label>
+                    <label class="checkbox"><%= f.check_box :program_col_col_nyc, 'value' => 'col-nyc', 'id' => 'program-col_col-nyc' %> <span class="bs-wrapper"><span class="control-label">NYC Leadership and Career Accelerator (College Program)</span></span></label>
                   </div>
 
                   <div class="coach">
                     <h5>Beyond Z Washington DC</h5>
-                      <label class="checkbox"><%= f.check_box :program_ms_ms_dc, 'value' => 'ms-dc', 'id' => 'program-ms_ms-dc' %> <span class="bs-wrapper"><span class="control-label">BZ Overdrive (Middle School Program) in Southeast DC, January 2015 - May 2015</span></span></label>
+                    <label class="checkbox"><%= f.check_box :program_col_col_dc, 'value' => 'col-dc', 'id' => 'program-col_col-dc' %> <span class="bs-wrapper"><span class="control-label">DC Leadership and Career Accelerator (College Program)</span></span></label>
                   </div>
 
 
@@ -117,9 +116,9 @@
                   <h5>Status as Student</h5>
                   <label class="checkbox">
                     <%= f.check_box :will_be_student %>
-                    <span class="bs-wrapper"><span class="control-label">I will be a student in good academic standing, enrolled at <span class="university-name">San Jose State University</span> during <span class="start-date">Oct 2014</span> &#8211; <span class="end-date">April 2015</span></span></span></label>
+                    <span class="bs-wrapper"><span class="control-label">I will be a student in good academic standing</span></span></label>
                 </div>
-                <div class="form-group coach">
+                <div class="form-group both">
                   <label>Undergraduate College/University</label>
                   <%= f.text_field :university, 'class' => 'form-control', 'type' => 'text', 'placeholder' => 'Example: San Jose State University, CA' %>
                 </div>
@@ -166,8 +165,8 @@
             <div id="form-prof-bkg">
               <h2>Professional and Volunteer Background and Commitment</h2>
               <div class="form-group student">
-                <label>Please list your significant extracurricular, volunteer, or professional commitments for this coming school year (2014-15).</label>
-                <p class="help">Please include approximate hours committed per month. Ex: Student worker at the library, 25 hours/month. If the commitment is limited to a specific time in the year, please indicate that as well. Ex: During basketball season; or, Fall semester, only.</p>
+                <label>Please list your significant extracurricular, volunteer, or professional commitments for this coming spring (2015).</label>
+                <p class="help">Please include approximate hours committed per month. Ex: Student worker at the library, 25 hours/month.</p>
                 <%= f.text_area :current_volunteer_activities, 'class' => 'form-control', 'maxlength' => '300' %>
               </div>
               <div class="form-group coach student">
@@ -205,7 +204,7 @@
               </div>
               <div class="form-group student">
                 <label>How do you connect to your community?</label>
-                <p class="help">What has your community done to help you succeed so far, what have you done to give back to your community, and what do you want to do to help your community in the future? (Your community may be determined by geography, such as a neighborhood or city, or by a shared experience or shared values.)</p>
+                <p class="help">What has your community done to help you succeed so far, what have you done to give back to your community, and what do you want to do to help your community in the future? (Your community is yours to define, and may be determined by geography, such as a neighborhood or city, or by a shared experience or shared values.)</p>
                 <%= f.text_area :community_connection, 'class' => 'form-control', 'maxlength' => '300' %>
               </div>
 
@@ -219,15 +218,15 @@
                 <p class="help">Please think expansively. Examples include years leading a classroom, summers coaching a youth sports team, time leading or participating in a work-based mentoring or onboarding program, etc.</p>
                 <%= f.text_area :teaching_experience, 'class' => 'form-control', 'maxlength' => '500' %>
               </div>
+              <!--
               <div class="form-group student">
                 <label>What activity (extracurricular, academic, professional, or personal) is most important to you and why?</label>
                 <%= f.text_area :commitments, 'class' => 'form-control', 'maxlength' => '300' %>
               </div>
+              -->
               <div class="form-group coach">
                 <h5>Availability during program</h5>
-                <p class="help">As a Leadership Coach (LC), we anticipate that you'll facilitate a 2 hour leadership session every 3-4 weeks from October 20 until May 1.</p>
-                <label class="coach">Please let us know any weeks you know you will not be available</label>
-                <p class="help">We may have already discussed dates for which you anticipate a conflict due to travel or other competing priorities. Knowing your schedule may have changed since, we'll assume this form overrides anything we discussed. We understand this might evolve over the course of the 20 weeks, and just ask you to keep us updated as you get more clarity over your schedule.</p>
+                <label class="coach">If any, please let us know any weeks or weekends you know you will not be available during the spring (2015).</label>
                 <%= f.text_area :cannot_attend, 'class' => 'form-control', 'maxlength' => '300' %>
               </div>
               <div class="form-group student">
@@ -252,7 +251,7 @@
           <section>
             <div id="form-references" class="student">
               <h2>References</h2>
-              <p class="help">Please list TWO people we could contact as references, e.g. a teacher, manager, advisor, mentor, or a peer who knows you well.</p>
+              <p class="help">Please list TWO people we could contact as references, e.g. a teacher, manager, advisor, colleague, mentor, or a peer who knows you well.</p>
               <div>
                                 <div class="form-refernce">
                   <div class="form-group">
