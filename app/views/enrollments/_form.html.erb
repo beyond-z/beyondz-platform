@@ -50,7 +50,6 @@
                   <div class="coach student">
                   <h5 class="coach">Beyond Z Bay Area</h5>
                   <label class="coach checkbox"><%= f.check_box :program_col_col_sjsu, 'value' => 'col-sjsu', 'disabled' => 'disabled', 'id' => 'program-col_col-sjsu' %> <span class="bs-wrapper"><span class="control-label">No programs open at this time. We will notify you when applications open.</span></span></label>
-                    <label class="coach checkbox"><%= f.check_box :program_col_col_sjsu, 'value' => 'col-sjsu', 'id' => 'program-col_col-sjsu' %> <span class="bs-wrapper"><span class="control-label">BZ Leadership and Career Accelerator (College Program) at San Jose State University, Oct 2014 - May 2015</span></span></label>
                     <label class="student checkbox"><%= f.check_box :program_col_col_dc, 'value' => 'col-dc', 'id' => 'program-col_col-dc' %> <span class="bs-wrapper"><span class="control-label">DC Leadership and Career Accelerator (College Program)</span></span></label>
                     <label class="student checkbox"><%= f.check_box :program_col_col_nyc, 'value' => 'col-nyc', 'id' => 'program-col_col-nyc' %> <span class="bs-wrapper"><span class="control-label">NYC Leadership and Career Accelerator (College Program)</span></span></label>
 
@@ -116,7 +115,7 @@
                   <h5>Status as Student</h5>
                   <label class="checkbox">
                     <%= f.check_box :will_be_student %>
-                    <span class="bs-wrapper"><span class="control-label">I will be a student in good academic standing</span></span></label>
+                    <span class="bs-wrapper"><span class="control-label">I am a student in good academic standing</span></span></label>
                 </div>
                 <div class="form-group both">
                   <label>Undergraduate College/University</label>
@@ -226,7 +225,7 @@
               -->
               <div class="form-group coach">
                 <h5>Availability during program</h5>
-                <label class="coach">If any, please let us know any weeks or weekends you know you will not be available during the spring (2015).</label>
+                <span class="coach">If any, please let us know any weeks or weekends you know you will not be available during the spring (2015).</span>
                 <%= f.text_area :cannot_attend, 'class' => 'form-control', 'maxlength' => '300' %>
               </div>
               <div class="form-group student">
