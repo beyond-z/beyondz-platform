@@ -30,15 +30,15 @@ class Enrollment < ActiveRecord::Base
   validates :why_bz, presence: true, if: "position == 'student'"
   validates :community_connection, presence: true, if: "position == 'student'"
   validates :meaningful_experience, presence: true, if: "position == 'student'"
-  validates :commitments, presence: true, if: "position == 'student'"
   validates :affirm_qualified, presence: true, if: "position == 'student'"
   validates :affirm_commit, presence: true, if: "position == 'student'"
   validates :will_be_student, presence: true, if: "position == 'student'"
 
   # at least one "applying for" needs to be checked. For students, there's only
-  # one option, so we require it
-  validates :program_col_col_sjsu, presence: true, if: "position == 'student'"
+  # two option, so we require one or the other
+  validates :program_col_col_dc, presence: true, unless: ->(e){e.program_col_col_nyc.present?}
+  validates :program_col_col_nyc, presence: true, unless: ->(e){e.program_col_col_dc.present?}
 
-  validates :reference_name, presence: true, if: "position == 'student'"
-  validates :reference2_name, presence: true, if: "position == 'student'"
+  validates :reference_name, presence: true
+  validates :reference2_name, presence: true
 end

@@ -70,7 +70,7 @@
                 <h4>Your Name</h4>
                 <div class="form-group has-success">
                   <%= f.label :first_name %>
-                  <%= f.text_field :first_name, :class => 'form-control short' %>
+                  <%= f.text_field :first_name, :class => 'form-control short', :required => 'required' %>
                 </div>
                 <div class="form-group has-success">
                   <%= f.label :middle_name %>
@@ -78,7 +78,7 @@
                 </div>
                 <div class="form-group has-success">
                   <%= f.label :last_name %>
-                  <%= f.text_field :last_name, :class => 'form-control short' %>
+                  <%= f.text_field :last_name, :class => 'form-control short', :required => 'required' %>
                 </div>
               </div>
               <!-- #form-name -->
@@ -86,7 +86,7 @@
                 <h4>Your Contact Info</h4>
                 <div class="form-group has-success">
                   <label>Primary Email</label>
-                  <%= f.text_field :email, 'class' => 'form-control medium', 'type' => 'email' %>
+                  <%= f.text_field :email, 'class' => 'form-control medium', 'type' => 'email', :required => 'required' %>
                 </div>
                 <div class="form-group">
                   <label>Primary Phone</label>
@@ -208,8 +208,8 @@
               </div>
 
               <div class="form-group" id="form-leadership-exp">
-                <label>What is one professional, extracurricular, or volunteer experience that has been particularly meaningful for you? Why?</label>
-                <p class="help">While we are interested in seeing the diversity of activities in which you're involved, we are also curious what has been particularly meaningful among those activities.</p>
+                <label>What is one professional, extracurricular, or volunteer experience that has been particularly meaningful to you? Why?</label>
+                <p class="help">While we are interested in seeing the diversity of activities in which you're involved, we are also curious about what has been particularly meaningful among those activities.</p>
                 <%= f.text_area :meaningful_experience, 'class' => 'form-control', 'maxlength' => '300' %>
               </div>
               <div class="form-group coach">
@@ -248,7 +248,7 @@
       <div class="plank plain-md student">
         <div class="section-container">
           <section>
-            <div id="form-references" class="student">
+            <div id="form-references" class="coach student">
               <h2>References</h2>
               <p class="help">Please list TWO people we could contact as references, e.g. a teacher, manager, advisor, colleague, mentor, or a peer who knows you well.</p>
               <div>
