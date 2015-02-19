@@ -49,18 +49,16 @@
 
                   <div class="coach student">
                   <h5 class="coach">Beyond Z Bay Area</h5>
-                  <label class="coach checkbox"><%= f.check_box :program_col_col_sjsu, 'value' => 'col-sjsu', 'disabled' => 'disabled', 'id' => 'program-col_col-sjsu' %> <span class="bs-wrapper"><span class="control-label">No programs open at this time. We will notify you when applications open.</span></span></label>
-                    <label class="student checkbox"><%= f.check_box :program_col_col_dc, 'value' => 'col-dc', 'id' => 'program-col_col-dc' %> <span class="bs-wrapper"><span class="control-label">DC Leadership and Career Accelerator (College Program)</span></span></label>
-                    <label class="student checkbox"><%= f.check_box :program_col_col_nyc, 'value' => 'col-nyc', 'id' => 'program-col_col-nyc' %> <span class="bs-wrapper"><span class="control-label">NYC Leadership and Career Accelerator (College Program)</span></span></label>
+                  <label class="coach checkbox"><%= f.radio_button :program_col, 'col-sjsu', 'disabled' => 'disabled', 'id' => 'program-col_col-sjsu' %> <span class="bs-wrapper"><span class="control-label">No programs open at this time. We will notify you when applications open.</span></span></label>
 
-                  <div class="coach">
-                    <h5>Beyond Z New York City</h5>
-                    <label class="checkbox"><%= f.check_box :program_col_col_nyc, 'value' => 'col-nyc', 'id' => 'program-col_col-nyc' %> <span class="bs-wrapper"><span class="control-label">NYC Leadership and Career Accelerator (College Program)</span></span></label>
+                  <div class="coach student">
+                    <h5 class="coach">Beyond Z New York City</h5>
+                    <label class="checkbox"><%= f.radio_button :program_col, 'col-nyc', 'id' => 'program-col_col-nyc' %> <span class="bs-wrapper"><span class="control-label">NYC Leadership and Career Accelerator (College Program)</span></span></label>
                   </div>
 
-                  <div class="coach">
-                    <h5>Beyond Z Washington DC</h5>
-                    <label class="checkbox"><%= f.check_box :program_col_col_dc, 'value' => 'col-dc', 'id' => 'program-col_col-dc' %> <span class="bs-wrapper"><span class="control-label">DC Leadership and Career Accelerator (College Program)</span></span></label>
+                  <div class="coach student">
+                    <h5 class="coach">Beyond Z Washington DC</h5>
+                    <label class="checkbox"><%= f.radio_button :program_col, 'col-dc', 'id' => 'program-col_col-dc' %> <span class="bs-wrapper"><span class="control-label">DC Leadership and Career Accelerator (College Program)</span></span></label>
                   </div>
 
 
@@ -245,7 +243,7 @@
         <!-- .section-container -->
       </div>
 
-      <div class="plank plain-md student">
+      <div class="plank plain-md student coach">
         <div class="section-container">
           <section>
             <div id="form-references" class="coach student">
