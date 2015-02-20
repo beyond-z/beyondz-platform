@@ -25,16 +25,7 @@ class EnrollmentsController < ApplicationController
         # this user is a member of and use that to fetch the associated
         # application out of our system.
 
-        sf = BeyondZ::Salesforce.new
-        client = sf.get_client
-        client.materialize('CampaignMember')
-        cm = SFDC_Models::CampaignMember.find_by_ContactId(current_user.salesforce_id)
-        unless cm.nil?
-          application = Application.find_by_associated_campaign(cm.CampaignId)
-          unless application.nil?
-            @enrollment.position = application.form
-          end
-        end
+        set_application_from_salesforce_campaign
       end
 
       # we know this is incomplete data, the user will be able
@@ -49,6 +40,20 @@ class EnrollmentsController < ApplicationController
       redirect_to enrollment_path(existing_enrollment.id)
     end
   end
+
+  def set_application_from_salesforce_campaign
+    sf = BeyondZ::Salesforce.new
+    client = sf.get_client
+    client.materialize('CampaignMember')
+    cm = SFDC_Models::CampaignMember.find_by_ContactId(current_user.salesforce_id)
+    unless cm.nil?
+      application = Application.find_by_associated_campaign(cm.CampaignId)
+      unless application.nil?
+        @enrollment.position = application.form
+      end
+    end
+  end
+
 
   def show
     # We'll show it by just displaying the pre-filled form

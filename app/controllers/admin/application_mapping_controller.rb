@@ -16,8 +16,8 @@ class Admin::ApplicationMappingController < Admin::ApplicationController
     campaigns = SFDC_Models::Campaign.all
 
     # For prettifying so users can read it
-    @campaign_names = Hash.new
-    
+    @campaign_names = {}
+
     campaigns.each do |campaign|
       found = false
       @campaign_names[campaign.Id] = campaign.Name
@@ -28,7 +28,7 @@ class Admin::ApplicationMappingController < Admin::ApplicationController
         end
       end
 
-      if !found
+      unless found
         Application.create(:associated_campaign => campaign.Id, :form => '')
       end
     end
