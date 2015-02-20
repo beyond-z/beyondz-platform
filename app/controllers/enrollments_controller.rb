@@ -20,6 +20,23 @@ class EnrollmentsController < ApplicationController
       @enrollment.university = current_user.university_name
       @enrollment.accepts_txt = true # to pre-check the box
 
+      if Rails.application.secrets.salesforce_username && current_user.salesforce_id
+        # If Salesforce is enabled, we'll query it to see which campaign
+        # this user is a member of and use that to fetch the associated
+        # application out of our system.
+
+        sf = BeyondZ::Salesforce.new
+        client = sf.get_client
+        client.materialize('CampaignMember')
+        cm = SFDC_Models::CampaignMember.find_by_ContactId(current_user.salesforce_id)
+        unless cm.nil?
+          application = Application.find_by_associated_campaign(cm.CampaignId)
+          unless application.nil?
+            @enrollment.position = application.form
+          end
+        end
+      end
+
       # we know this is incomplete data, the user will be able
       # to save as they enter more so we don't validate until the end
       @enrollment.save(validate: false)
@@ -48,6 +65,10 @@ class EnrollmentsController < ApplicationController
       # it read only.
 
       @enrollment_read_only = true
+    end
+
+    if @enrollment.position
+      @position_is_set = true
     end
 
     render 'new'
