@@ -31,12 +31,17 @@
               </p>
               <h2 class="form-section-header">Basic Information</h2>
 
-              <div class="form-group" id="form-user-type">
+              <div class="form-group" id="form-user-type" <%= (@position_is_set ? 'style="display: none;"'.html_safe : '') %>>
                 <h5>Applying as</h5>
                 <input value="" type="hidden" name="position" />
-                <label class="radio"><%= f.radio_button :position, 'coach', 'value' => 'coach', 'id' => 'position_coach' %>Leadership Coach</label><label class="radio"><%= f.radio_button :position, 'student', 'value' => 'student', 'id' => 'position_student' %>Participant (student)</label>              </div>
+                <label class="radio"><%= f.radio_button :position, 'coach', 'value' => 'coach', 'id' => 'position_coach' %>Leadership Coach</label><label class="radio"><%= f.radio_button :position, 'student', 'value' => 'student', 'id' => 'position_student' %>Participant (student)</label>
+              </div>
               <div class="coach student" id="form-track">
-                <h4>Applying for</h4>
+                <h4>Applying for <%
+                  if @position_is_set
+                    %>(as <%= @enrollment.position %>)<%
+                  end
+                %></h4>
                 <p class="help coach">Please check all that apply</p>
                 <div class="form-group both">
                   <input value="" type="hidden" name="program_col" />
