@@ -1,3 +1,5 @@
+require 'salesforce'
+
 # Monkey-patch the CAS gem so we can use it without losing the database
 # features we use for SSO - we still manage the users here, including
 # their passwords in this database, but we want to use the CAS server
@@ -54,27 +56,86 @@ class User < ActiveRecord::Base
   validates :first_name, presence: true
   validates :last_name, presence: true
 
-  def create_on_salesforce
-    client = Databasedotcom::Client.new
-    client.authenticate(
-      :username => Rails.application.secrets.salesforce_username,
-      :password => "#{Rails.application.secrets.salesforce_password}#{Rails.application.secrets.salesforce_security_token}"
+  # Finds the lead owner from the uploaded spreadsheet mapping, or returns
+  # a default if it doesn't exist for our combination of fields.
+  #
+  # Returns a user's email address.
+  def lead_owner
+    mapping = LeadOwnerMapping.where(
+      :state => state,
+      :interested_joining => interested_joining,
+      :applicant_type => applicant_type
     )
 
-    # This creates the Contact class from the salesforce API
-    # which is used on the following line
-    client.materialize('Contact')
+    # IF all else fails, assign it to Abby and she'll handle it manually
+    if mapping.empty?
+      return Rails.application.secrets.default_lead_owner
+    end
 
-    contact = Contact.new
-    contact.Name = name
-    contact.FirstName = first_name
-    contact.LastName = last_name
-    contact.Email = email
-    contact.OwnerId = client.user_id # this is the user id we're logged into Salesforce as
-    contact.save
+    mapping.first.lead_owner
+  end
 
-    self.salesforce_id = contact.Id
+  def create_on_salesforce
+    salesforce = BeyondZ::Salesforce.new
+    client = salesforce.get_client
+
+    contact = {}
+    contact['FirstName'] = first_name
+    contact['LastName'] = last_name
+    contact['Email'] = email
+
+    # SFDC_Models::User.find_by_Email(lead_owner)
+    # the model didn't work though because the materialize call
+    # conflicted their User with our User (the namespace wasn't used
+    # properly!) So doing SOQL instead. The sub call is to escape the quotes
+    # to mitigate SQL injection (of course, this comes from our code anyway,
+    # so there should be no security risk, but I just prefer to be a bit
+    # defensive.)
+    salesforce_lead_owner = client.query("SELECT Id FROM User WHERE Email = '#{lead_owner.sub('\'', '\'\'')}'")
+    salesforce_lead_owner = salesforce_lead_owner.empty? ? nil : salesforce_lead_owner.first
+
+    if salesforce_lead_owner
+      contact['OwnerId'] = salesforce_lead_owner.Id
+    else
+      # this is the user id we're logged into Salesforce as to use as
+      # a last-resort owner if the other one fails
+      contact['OwnerId'] = client.user_id
+    end
+
+    contact['IsUnreadByOwner'] = false
+
+    contact['Company'] = "#{name} (individual)"
+
+    contact['City'] = city
+    contact['State'] = state
+
+    contact['LeadSource'] = 'Website Signup'
+
+    # The Lead class provided by the gem is buggy so we do it with this call instead
+    # which is what Lead.save calls anyway
+    contact = client.create('Lead', contact)
+
+    self.salesforce_id = contact['Id']
     save!
+
+    # This code is probably obsolete, but kept as an example
+    # of how to do it in case we want it back later. It creates
+    # a Task on Salesforce, assigned to the contact owner, telling
+    # them to make initial contact.
+    #
+    # It is obsolete because the new design uses a salesforce
+    # workflow instead.
+    #
+    # client.materialize('Task')
+    # task = SFDC_Models::Task.new
+    # task.Status = 'Not Started'
+    # task.Subject = 'Initial contact'
+    # task.WhoId = contact['Id']
+    # task.OwnerId = contact['OwnerId']
+    # task.IsReminderSet = false
+    # task.Type = 'Email'
+    # task.Description = 'Send the welcome email to the new user and initiate one-on-one contact.'
+    # task.save
   end
 
   # validates :anticipated_graduation, presence: true, if: :graduation_required?

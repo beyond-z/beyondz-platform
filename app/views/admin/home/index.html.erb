@@ -12,4 +12,7 @@
 
   <li><%= link_to 'Users Export (xls) - raw data', admin_users_path(:format => 'xls') %></li>
   <li><%= link_to 'Applications Export (xls) - raw data', admin_enrollments_path(:format => 'xls') %></li>
+
+  <li><%= link_to 'Export Lead Owner Mapping', admin_lead_owner_mapping_path(:format => 'csv') %></li>
+  <li><%= link_to 'Import Lead Owner Mapping', admin_import_lead_owner_mapping_path %></li>
 </ul>

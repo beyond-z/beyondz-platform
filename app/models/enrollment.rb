@@ -18,7 +18,7 @@ class Enrollment < ActiveRecord::Base
   validates :email, presence: true
   validates :phone, presence: true
 
-  validates :university, presence: true, if: "position == 'coach'"
+  validates :university, presence: true
   validates :why_bz, presence: true, if: "position == 'coach'"
   validates :personal_passion, presence: true, if: "position == 'coach'"
   validates :meaningful_experience, presence: true, if: "position == 'coach'"
@@ -30,15 +30,12 @@ class Enrollment < ActiveRecord::Base
   validates :why_bz, presence: true, if: "position == 'student'"
   validates :community_connection, presence: true, if: "position == 'student'"
   validates :meaningful_experience, presence: true, if: "position == 'student'"
-  validates :commitments, presence: true, if: "position == 'student'"
   validates :affirm_qualified, presence: true, if: "position == 'student'"
   validates :affirm_commit, presence: true, if: "position == 'student'"
   validates :will_be_student, presence: true, if: "position == 'student'"
 
-  # at least one "applying for" needs to be checked. For students, there's only
-  # one option, so we require it
-  validates :program_col_col_sjsu, presence: true, if: "position == 'student'"
+  validates :program_col, presence: true
 
-  validates :reference_name, presence: true, if: "position == 'student'"
-  validates :reference2_name, presence: true, if: "position == 'student'"
+  validates :reference_name, presence: true
+  validates :reference2_name, presence: true
 end

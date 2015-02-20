@@ -12,6 +12,64 @@ class Admin::UsersController < Admin::ApplicationController
     end
   end
 
+  # The lead owner mapping is a user-configurable setup that maps
+  # new leads (people who just signed up on the website) to an owner -
+  # a staff member who is responsible for contacting that person and
+  # guiding them through any next steps.
+  #
+  # It is used on Salesforce and could also be used for other customer
+  # relationship management tasks
+  def lead_owner_mapping
+    respond_to do |format|
+      format.csv { render text: csv_lead_owner_export }
+    end
+  end
+
+  def csv_lead_owner_export
+    CSV.generate do |csv|
+      header = []
+      header << 'Lead_owner'
+      header << 'Applicant type'
+      header << 'State'
+      header << 'Interested joining'
+
+      csv << header
+
+      LeadOwnerMapping.all.each do |m|
+        exportable = []
+        exportable << m.lead_owner
+        exportable << m.applicant_type
+        exportable << m.state
+        exportable << m.interested_joining
+
+        csv << exportable
+      end
+    end
+  end
+
+  def import_lead_owner_mapping
+    # just rendering a view...
+  end
+
+  def do_import_lead_owner_mapping
+    if params[:import].nil?
+      flash[:message] = 'Please upload a csv file'
+      redirect_to admin_import_lead_owner_mapping_path
+      return
+    end
+
+    file = CSV.parse(params[:import][:csv].read)
+    LeadOwnerMapping.destroy_all
+    file.each do |row|
+      LeadOwnerMapping.create(
+        :lead_owner => row[0],
+        :applicant_type => row[1],
+        :state => row[2],
+        :interested_joining => row[3]
+      )
+    end
+  end
+
   def update
 
     initialize_lms_interop
@@ -65,9 +123,15 @@ class Admin::UsersController < Admin::ApplicationController
     @user = User.find(params[:id])
   end
 
-  def find_by_email
-    @user = User.find_by_email(params[:id])
+  def find_by_salesforce_id
+    @user = User.find_by_salesforce_id(params[:id])
     render 'show'
+  end
+
+  def enroll_by_salesforce_id
+    @user = User.find_by_salesforce_id(params[:id])
+    @action = 'Enroll the user as a student'
+    render 'confirm'
   end
 
   def edit

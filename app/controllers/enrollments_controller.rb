@@ -17,6 +17,7 @@ class EnrollmentsController < ApplicationController
       @enrollment.first_name = current_user.first_name
       @enrollment.last_name = current_user.last_name
       @enrollment.email = current_user.email
+      @enrollment.university = current_user.university_name
       @enrollment.accepts_txt = true # to pre-check the box
 
       # we know this is incomplete data, the user will be able
