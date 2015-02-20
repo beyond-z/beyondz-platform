@@ -67,6 +67,9 @@ class EnrollmentsController < ApplicationController
       @enrollment_read_only = true
     end
 
+    # We no longer allow easy changing from student to coach once
+    # the initial selection is made. This allows us to separate the
+    # forms better and tie them to salesforce campaigns.
     if @enrollment.position
       @position_is_set = true
     end
