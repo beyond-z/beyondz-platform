@@ -120,6 +120,20 @@ class EnrollmentsController < ApplicationController
         # Email Abby
         StaffNotifications.new_application(@enrollment).deliver
 
+        # Update application status on Salesforce, if configured
+        if Rails.application.secrets.salesforce_username
+          sf = BeyondZ::Salesforce.new
+          client = sf.get_client
+          client.materialize('CampaignMember')
+          cm = SFDC_Models::CampaignMember.find_by_ContactId(@enrollment.user.salesforce_id)
+          if cm
+            cm.Application_Status__c = 'Submitted'
+            cm.Apply_Button_Enabled__c = false
+            cm.save
+          end
+
+        end
+
         redirect_to welcome_path
       end
     end
