@@ -122,22 +122,43 @@ class EnrollmentsController < ApplicationController
 
         # Update application status on Salesforce, if configured
         if Rails.application.secrets.salesforce_username
-          sf = BeyondZ::Salesforce.new
-          client = sf.get_client
-          client.materialize('CampaignMember')
-          cm = SFDC_Models::CampaignMember.find_by_ContactId(@enrollment.user.salesforce_id)
-          if cm
-            cm.Application_Status__c = 'Submitted'
-            cm.Apply_Button_Enabled__c = false
-            cm.save
-          end
-
+          enrollment_submitted_crm_actions
         end
 
         redirect_to welcome_path
       end
     end
   end
+
+  def enrollment_submitted_crm_actions
+    sf = BeyondZ::Salesforce.new
+    client = sf.get_client
+    client.materialize('CampaignMember')
+    cm = SFDC_Models::CampaignMember.find_by_ContactId(@enrollment.user.salesforce_id)
+    if cm
+      cm.Application_Status__c = 'Submitted'
+      cm.Apply_Button_Enabled__c = false
+      cm.save
+    end
+
+    client.materialize('Contact')
+
+    contact = SFDC_Models::Contact.find(@enrollment.user.salesforce_id)
+
+    if contact
+      client.materialize('Task')
+      task = SFDC_Models::Task.new
+      task.Status = 'Not Started'
+      task.Subject = 'Review the application'
+      task.WhoId = contact.Id
+      task.OwnerId = contact.OwnerId
+      task.IsReminderSet = false
+      task.Description = 'Review the application or assign it to someone else to handle'
+      task.save
+    end
+  end
+
+
 
   def create
     @enrollment = Enrollment.create(enrollment_params)
