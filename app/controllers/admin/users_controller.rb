@@ -311,7 +311,7 @@ class Admin::UsersController < Admin::ApplicationController
 
     @lms.sync_user_course_enrollment(@user, 7, coaching_beyond, section_coaching_beyond)
     @lms.sync_user_course_enrollment(@user, 3, overdrive, section_overdrive)
-    @lms.sync_user_course_enrollment(@user, 2, accelerator, section_accelerator)
+    @lms.sync_user_course_enrollment(@user, 9, accelerator, section_accelerator)
 
     @user.save!
   end
