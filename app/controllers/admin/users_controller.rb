@@ -239,11 +239,11 @@ class Admin::UsersController < Admin::ApplicationController
   end
 
   def process_imported_row(row, email)
-    # We have three K-12 columns: epapa (3), nyc (1), and DC (7)
+    # We have three K-12 columns: epapa (3), and nyc (1)
     # At this time, a person can only possibly be a participant in one
     # city, so we look for the one that isn't nil. If all are nil, they
     # aren't a K-12 participant at all.
-    possible_k12_columns = [1, 3, 7]
+    possible_k12_columns = [1, 3]
 
     # we don't want it to be nil, so set it to the first possibility
     k12_column = possible_k12_columns[0]
@@ -255,9 +255,15 @@ class Admin::UsersController < Admin::ApplicationController
         break
       end
     end
-    # at this time, we only have one college program: SJUS @ col 5
-    # If we did have more college programs, we could do the same as k12 generically
-    college_column = 5
+    # There's three college programs now: sjsu, nyc, and dc
+    possible_college_columns = [5, 7, 9]
+    college_column = possible_college_columns[0]
+    possible_college_columns.each do |c|
+      unless row[c].nil? || row[c] == 'none'
+        college_column = c
+        break
+      end
+    end
 
     # The column right next to the role is always the cohort
     k12_role = row[k12_column]
