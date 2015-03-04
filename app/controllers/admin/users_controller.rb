@@ -265,6 +265,10 @@ class Admin::UsersController < Admin::ApplicationController
       end
     end
 
+    # This really needs refactoring. Column 5 is SJSU. It gets
+    # the course #2. The others, NYC and DC, get the 4 week course.
+    college_course = college_column == 5 ? 2 : 9
+
     # The column right next to the role is always the cohort
     k12_role = row[k12_column]
     k12_cohort = row[k12_column + 1]
@@ -311,7 +315,7 @@ class Admin::UsersController < Admin::ApplicationController
 
     @lms.sync_user_course_enrollment(@user, 7, coaching_beyond, section_coaching_beyond)
     @lms.sync_user_course_enrollment(@user, 3, overdrive, section_overdrive)
-    @lms.sync_user_course_enrollment(@user, 9, accelerator, section_accelerator)
+    @lms.sync_user_course_enrollment(@user, college_course, accelerator, section_accelerator)
 
     @user.save!
   end
