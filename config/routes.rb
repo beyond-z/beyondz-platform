@@ -56,6 +56,8 @@ BeyondzPlatform::Application.routes.draw do
     get '/users/:id/find_by_salesforce_id', to: 'users#find_by_salesforce_id', as: 'user_find_by_salesforce_id'
     get '/users/:id/enroll_by_salesforce_id', to: 'users#enroll_by_salesforce_id', as: 'user_enroll_by_salesforce_id'
 
+    resources :applications, controller: 'application_mapping'
+
     resources :users do
       resources :students
     end

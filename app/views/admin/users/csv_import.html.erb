@@ -1,3 +1,20 @@
+<p>The expected format of the uploaded spreadsheet is:<p>
+
+<table class="sample-csv">
+  <caption>SAMPLE</caption>
+  <tr>
+    <th>Email</th>
+    <th>nyc_overdrive_role</th><th>nyc_overdrive_cohort</th>
+    <th>epapa_overdrive_role</th><th>epapa_overdrive_cohort</th>
+    <th>sjsu_accelerator_role</th><th>sjsu_accelerator_cohort</th>
+    <th>nyc_accelerator_role</th><th>nyc_accelerator_cohort</th>
+    <th>dc_accelerator_role</th> <th>dc_accelerator_cohort</th>
+  </tr>
+  <tr>
+    <td>student@beyondz.org</td><td>student</td><td>any cohort name</td>
+  </tr>
+</table>
+<br /><br><br>
 <%= form_for :import, :html => { :multipart => true } do |f| %>
   <%= f.file_field :csv %>
   <%= submit_tag 'Upload' %>
