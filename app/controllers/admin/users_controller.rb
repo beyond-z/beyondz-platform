@@ -295,7 +295,7 @@ class Admin::UsersController < Admin::ApplicationController
       accelerator = 'STUDENT'
       section_accelerator = college_cohort
     elsif college_role == 'coach'
-      # accelerator = 'TA'
+      accelerator = 'TA'
       section_accelerator = college_cohort
 
       coaching_beyond = 'STUDENT'
