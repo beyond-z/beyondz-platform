@@ -27,6 +27,11 @@ class UsersController < ApplicationController
     end
   end
 
+  # We need to exempt this from csrf checking so the CAS server can
+  # POST to it. While the operation is theoretically suitable for GET,
+  # POST keeps information from appearing in the server logs.
+  skip_before_filter :verify_authenticity_token, :only => [:check_credentials]
+
   # This is present to allow an external single sign on server to
   # authenticate users against our main database. Allows better
   # integration with the Canvas LMS via RubyCAS at present.
