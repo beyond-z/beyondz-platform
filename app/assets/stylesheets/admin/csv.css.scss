@@ -1,0 +1,8 @@
+table.sample-csv {
+  border: solid 1px black;
+  empty-cells: show;
+  td, th {
+    border: solid 1px #ccc;
+    padding: 4px;
+  }
+}
