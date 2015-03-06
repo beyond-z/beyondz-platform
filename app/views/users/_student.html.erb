@@ -1,0 +1,58 @@
+<div class="form-option-details">
+  <section>
+    <div class="col-sm-6 text-right">
+      University name:
+    </div>
+    <div class="col-sm-6 form-group">
+      <% ['SJSU', 'CUNY'].each do |school| %>
+        <div>
+          <%= f.radio_button :university_name, school %>
+          <%= f.label "university_name_#{school}".to_sym, school %>
+          <div class="form-option-details"></div>
+        </div>
+      <% end %>
+      <div>
+        <%= f.radio_button :university_name, 'other' %>
+        <%= f.label :university_name_other, "None of the above" %>
+        <div class="form-option-details">
+          <%= text_field_tag :undergrad_university_name, nil, :class => 'form-control', :value => params[:undergrad_university_name], :placeholder => 'Your college name and state' %>
+          <%= f.check_box :like_to_know_when_program_starts %>
+          <%= f.label :like_to_know_when_program_starts, 'I\'d like to know when BZ starts a program at my college' %>
+          <br />
+          <%= f.check_box :like_to_help_set_up_program %>
+          <%= f.label :like_to_help_set_up_program, 'I\'d like to help BZ set up a program in my area' %>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <section>
+    <div class="col-sm-6 text-right">
+      Started college in:
+    </div>
+    <div class="col-sm-6">
+      <%= select_tag :started_college_in, options_for_select(started_college_years, params[:started_college_in]), :class => 'form-control', include_blank: true %>
+    </div>
+  </section>
+  <section>
+    <div class="col-sm-6 text-right">
+      Anticipated graduation:
+    </div>
+    <div class="col-sm-6">
+      <%= select_tag :anticipated_undergrad_graduation, options_for_select(graduation_years, params[:anticipated_undergrad_graduation]), :class => 'form-control', include_blank: true %>
+    </div>
+  </section>
+
+
+  <section>
+    <div class="col-sm-12">
+      Please create a password to protect any personal information you may provide us.
+    </div>
+    <div class="col-sm-12">
+      <%= f.password_field :password, :class => 'form-control', placeholder: 'Create a password', pattern: '.{4,}', title: 'make a password at least four characters long' %>
+    </div>
+  </section>
+</div>
+
