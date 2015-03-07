@@ -102,20 +102,31 @@ class UsersController < ApplicationController
       :last_name,
       :email,
       :password,
+
+      :sf_san_jose,
+      :sf_east_bay,
+      :dc_area,
+      :nyc_area,
+
       :applicant_type,
+      :applicant_details,
+      :university_name,
+      :like_to_know_when_program_starts,
+      :like_to_help_set_up_program,
+      :started_college_in,
+      :anticipated_graduation,
+      :profession,
+      :company,
       :city,
-      :state,
-      :interested_joining,
-      :interested_receiving,
-      :interested_partnering,
-      :keep_updated)
+      :state)
 
     user[:external_referral_url] = session[:referrer] # the first referrer saw by the app
     user[:internal_referral_url] = params[:referrer] # the one that led direct to sign up
     @referrer = params[:referrer] # preserve the original one in case of error
 
+    user[:university_name] = params[:undergrad_university_name] if user[:university_name] == 'other'
+
     if !user[:applicant_type].nil?
-      populate_user_details user
       @new_user = User.create(user)
     else
       # this is required when signing up through this controller,
@@ -143,27 +154,6 @@ class UsersController < ApplicationController
   end
 
   private
-
-  def populate_user_details(user)
-    case user[:applicant_type]
-    when 'other'
-      user[:applicant_details] = params[:other_details]
-    when 'professional'
-      user[:applicant_details] = params[:professional_details]
-    when 'grad_student'
-      # Each of these has different names in the form to ensure no data
-      # conflict as the user explores the bullets, but they all map to
-      # the same database field since it is really the same data
-      user[:anticipated_graduation] = params[:anticipated_grad_graduation]
-      user[:university_name] = params[:grad_university_name]
-    when 'undergrad_student'
-      user[:anticipated_graduation] = params[:anticipated_undergrad_graduation]
-      user[:university_name] = params[:undergrad_university_name]
-    when 'school_student'
-      user[:anticipated_graduation] = 'Grade ' + params[:grade]
-    end
-
-  end
 
   def states
     @states = {

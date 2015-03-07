@@ -26,8 +26,21 @@ $(document).ready(function() {
       if(!descend && $(child).hasClass("form-option-details"))
         continue;
       // we need to stop descending if we're into another form group
-      onChildNamedElements(child, operation, !$(child).hasClass("form-group"));
+      onChildNamedElements(child, operation, descend && !$(child).hasClass("form-group"));
     }
+  }
+
+  // Show everything under the currently checked thing, recursively
+  function showCurrentCheckedChildren(ctx) {
+      var showing = $("input[type=radio]:checked ~ .form-option-details, .controls-details:checked ~ .form-option-details", ctx);
+      showing.show();
+
+      // we also need to enable the fields that are showing
+      var elements = showing.get();
+      for(var idx = 0; idx < elements.length; idx++) {
+        var ctx = elements[idx];
+        onChildNamedElements(ctx, function(e) { e.removeAttribute("disabled"); }, true);
+      }
   }
 
   $("input[type=radio], .controls-details").change(function() {
@@ -36,22 +49,19 @@ $(document).ready(function() {
     // disable all hidden elements too
     $("[name]", ctx).prop('disabled', 'disabled');
     if(this.checked) {
+      // show and enable the top level items
       ctx = $("~ .form-option-details", this).filter(":first");
       ctx.show();
       onChildNamedElements(ctx[0], function(e) { e.removeAttribute("disabled"); }, true);
+
+      // then descend recursively
+      showCurrentCheckedChildren(ctx[0]);
     }
   });
 
-  // also showing the current selection details, if there is one
-  var showing = $("input[type=radio]:checked ~ .form-option-details, .controls-details:checked ~ .form-option-details");
-  showing.show();
-
   // disable all sub-options by default so they don't get sent to the controller
   $(".form-option-details [name]").prop('disabled', 'disabled');
-  // but enable the ones under checked items
-  var elements = showing.get();
-  for(var idx = 0; idx < elements.length; idx++) {
-    var ctx = elements[idx];
-    onChildNamedElements(ctx, function(e) { e.removeAttribute("disabled"); }, true);
-  }
+
+  // also showing the current selection details, if there is one
+  showCurrentCheckedChildren(null); // null context == whole page
 });

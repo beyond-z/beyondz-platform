@@ -30,7 +30,7 @@
       Please create a password to protect any personal information you may provide us.
     </div>
     <div class="col-sm-12">
-      <%= f.password_field :password, :class => 'form-control', placeholder: 'Create a password', pattern: '.{4,}', title: 'make a password at least four characters long' %>
+      <%= f.password_field :password, :class => 'form-control', placeholder: 'Create a password', pattern: '.{4,}', title: 'make a password at least four characters long', :required => 'required' %>
     </div>
   </section>
 </div>
