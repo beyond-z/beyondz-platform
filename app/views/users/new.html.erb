@@ -46,24 +46,13 @@
                   <div>
                     <%= f.radio_button :applicant_type, 'employer' %>
                     <%= f.label :applicant_type_employer, 'Interested in offering employment opportunities to BZ alumni', required: 'required' %>
-                    <div class="form-option-details">
-                      <section>
-                        <div class="col-sm-6 text-right">
-                          Grade:
-                        </div>
-                        <div class="col-sm-6">
-                          <%= select_tag :grade, options_for_select([12, 11, 10, 9, 8, 7, 6], params[:grade]), :class => 'form-control', include_blank: true %>
-                        </div>
-                      </section>
-                    </div>
+                    <%= render :partial => 'employer', :locals => { :f => f} %>
                   </div>
                   <div>
 
                     <%= f.radio_button :applicant_type, 'partner', required: 'required' %>
                     <%= f.label :applicant_type_partner, 'working in higher education and am interested in partnering with Beyond Z' %>
-                    <div class="form-option-details">
-                      <%= text_field_tag :professional_details, nil, :class => 'form-control', :placeholder => 'What do you do?', :value => params[:professional_details] %>
-                    </div>
+                    <%= render :partial => 'partner', :locals => { :f => f} %>
                   </div>
                   <div>
                     <%= f.radio_button :applicant_type, 'other', required: 'required' %>

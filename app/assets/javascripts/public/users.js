@@ -2,6 +2,7 @@
 // box is checked. Lets us easily ask for details for the various options
 // on the sign up form.
 $(document).ready(function() {
+  // Get the parent element with the form-group class, which holds the various mutex options
   function getGroup(e) {
     while( !$(e).hasClass("form-group"))
       e = e.parentNode;
@@ -29,7 +30,7 @@ $(document).ready(function() {
     }
   }
 
-  $("input[type=radio]").change(function() {
+  $("input[type=radio], .controls-details").change(function() {
     var ctx = $(".form-option-details", getGroup(this));
     ctx.hide();
     // disable all hidden elements too
@@ -42,11 +43,11 @@ $(document).ready(function() {
   });
 
   // also showing the current selection details, if there is one
-  var showing = $("input[type=radio]:checked ~ .form-option-details");
+  var showing = $("input[type=radio]:checked ~ .form-option-details, .controls-details:checked ~ .form-option-details");
   showing.show();
 
   // disable all sub-options by default so they don't get sent to the controller
-  $("input[type=radio] ~ .form-option-details [name]").prop('disabled', 'disabled');
+  $(".form-option-details [name]").prop('disabled', 'disabled');
   // but enable the ones under checked items
   var elements = showing.get();
   for(var idx = 0; idx < elements.length; idx++) {

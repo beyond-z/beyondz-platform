@@ -3,41 +3,7 @@
     <div class="col-sm-12">
       I can coach a cohort of students at:
       <br />
-
-      <%= f.check_box :sf_east_bay %>
-      <%= f.label :sf_east_bay, 'SF Bay Area, East Bay' %>
-      <br />
-      <%= f.check_box :sf_san_jose %>
-      <%= f.label :sf_san_jose, 'SF Bay Area, San Jose' %>
-      <br />
-      <%= f.check_box :nyc_area %>
-      <%= f.label :nyc_area, 'New York City area' %>
-      <br />
-      <%= f.check_box :dc_area %>
-      <%= f.label :dc_area, 'Metro DC Area' %>
-      <br />
-
-      <div class="form-group">
-      <%= f.check_box :applicant_details %>
-      <%= f.label :applicant_details, 'Other: ' %>
-
-      <div class="form-option-details">
-
-      <section>
-        <div class="col-sm-6">
-          <%= f.text_field :city, :class => 'form-control', required: 'required', placeholder: 'City' %>
-        </div>
-        <div class="col-sm-6">
-          <%= f.select :state, options_for_select(@states, @user.state), {}, :class => 'form-control', required: 'required', placeholder: 'State' %>
-        </div>
-      </section>
-
-          <%= f.check_box :like_to_know_when_program_starts %>
-          <%= f.label :like_to_know_when_program_starts, 'I\'d like to know when BZ starts a program in my area' %>
-          <br />
-          <%= f.check_box :like_to_help_set_up_program %>
-          <%= f.label :like_to_help_set_up_program, 'I\'d like to help BZ set up a program in my area' %>
-        </div>
+      <%= render :partial => 'areas', :locals => { :f => f } %>
     </div>
   </section>
 
