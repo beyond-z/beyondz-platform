@@ -216,6 +216,17 @@
     padding-left: 2em;
   }
 
+  /* We want regular options to appear dark */
+  option {
+    color: #333;
+  }
+
+  /* But invalid options (blank ones on this form) to be greyed out,
+     so they look like the placeholder that they are */
+  option[value=''] {
+    color: #999;
+  }
+
   #sign-up-form {
     #other_type {
       width: 20em;

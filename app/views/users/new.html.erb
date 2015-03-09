@@ -64,7 +64,15 @@
                           <%= f.text_field :city, :class => 'form-control', required: 'required', placeholder: 'City' %>
                         </div>
                         <div class="col-sm-5">
-                          <%= f.select :state, options_for_select(@states, @user.state), {}, :class => 'form-control', required: 'required', placeholder: 'State' %>
+                          <%= f.select :state, options_for_select(@states, @user.state),
+                            # The following add a placeholder for State and
+                            # color the form appropriately when it is selected
+                            # or not selected
+                            {prompt: 'State'},
+                            :class => 'form-control', required: 'required',
+                            onchange: 'this.style.color = this.selectedIndex == 0 ? "#999":"";',
+                            style:'color:#999;'
+                          %>
                         </div>
                     </div>
                   </div>
