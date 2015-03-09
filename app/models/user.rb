@@ -134,10 +134,10 @@ class User < ActiveRecord::Base
     contact['BZ_User_Id__c'] = id
     contact['Signup_Date__c'] = created_at
     contact['Came_From_to_Visit_Site__c'] = external_referral_url
-    contact['User_Type__c'] = sf_user_type
+    contact['User_Type__c'] = applicant_type
     contact['University_Name__c'] = university_name
     contact['Anticipated_Graduation__c'] = anticipated_graduation
-    contact['Profession_Title'] = applicant_details
+    contact['Profession_Title'] = profession
 
     # The Lead class provided by the gem is buggy so we do it with this call instead
     # which is what Lead.save calls anyway
@@ -145,26 +145,6 @@ class User < ActiveRecord::Base
 
     self.salesforce_id = contact['Id']
     save!
-  end
-
-  def sf_user_type
-    case applicant_type
-      when 'undergrad_student'
-        'Undergrad'
-      when 'grad_student'
-        'Volunteer'
-      when 'school_student'
-        'Other' # middle school isn't in the picklist anymore
-      when 'professional'
-        'Volunteer'
-      when 'family_member'
-        'Other'
-      when 'other'
-        'Other' # other_details ??
-      else
-        'Other'
-        # other options: Volunteer,Employer,University,Other
-    end
   end
 
   # validates :anticipated_graduation, presence: true, if: :graduation_required?
