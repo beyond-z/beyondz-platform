@@ -9,5 +9,6 @@ class AddSignupFieldsToUsers < ActiveRecord::Migration
     add_column :users, :sf_san_jose, :boolean
     add_column :users, :nyc_area, :boolean
     add_column :users, :dc_area, :boolean
+    add_column :users, :applicant_comments, :text
   end
 end

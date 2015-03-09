@@ -353,6 +353,7 @@ ActiveRecord::Schema.define(version: 20150306020513) do
     t.boolean  "sf_san_jose"
     t.boolean  "nyc_area"
     t.boolean  "dc_area"
+    t.text     "applicant_comments"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

@@ -222,6 +222,36 @@
       display: inline-block;
     }
   }
+
+  .clickable-option {
+    white-space: nowrap; /* want the label on the same line as the button */
+
+    > * {
+      /* but all sub elements can wrap as needed... */
+      white-space: normal;
+      /* ...as long as they are at the top */
+      vertical-align: top;
+    }
+  }
+
+  .clickable-option.with-text-field {
+    > .form-control {
+      /* We want these to appear inline without hogging too much space */
+      max-width: 50%;
+      display: inline-block;
+    }
+
+    > input[type=checkbox],
+    > input[type=radio] {
+      /* the button should be with the text... */
+      vertical-align: baseline;
+    }
+
+    > * {
+      /* And the text field should all be nice and vertically centered */
+      vertical-align: middle;
+    }
+  }
 }
 
 #donate-page {

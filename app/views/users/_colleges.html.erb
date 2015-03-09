@@ -10,11 +10,14 @@
         <%= f.label :university_name_other, "None of the above" %>
         <div class="form-option-details">
           <%= text_field_tag :undergrad_university_name, nil, :required => 'required', :class => 'form-control', :value => params[:undergrad_university_name], :placeholder => 'Your college name and state' %>
-          <%= f.check_box :like_to_know_when_program_starts %>
-          <%= f.label :like_to_know_when_program_starts, 'I\'d like to know when BZ starts a program at my college' %>
-          <br />
-          <%= f.check_box :like_to_help_set_up_program %>
-          <%= f.label :like_to_help_set_up_program, 'I\'d like to help BZ set up a program in my area' %>
+          <div class="clickable-option">
+            <%= f.check_box :like_to_know_when_program_starts %>
+            <%= f.label :like_to_know_when_program_starts, 'I\'d like to know when BZ starts a program at my college' %>
+          </div>
+          <div class="clickable-option">
+            <%= f.check_box :like_to_help_set_up_program %>
+            <%= f.label :like_to_help_set_up_program, 'I\'d like to help BZ set up a program in my area' %>
+          </div>
         </div>
       </div>
 

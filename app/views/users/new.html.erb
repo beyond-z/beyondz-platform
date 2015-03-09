@@ -33,37 +33,45 @@
 
                 <div class="form-group">
                   <label>I am...</label>
-                  <div>
+                  <div class="clickable-option">
                     <%= f.radio_button :applicant_type, 'undergrad_student', required: 'required' %>
                     <%= f.label :applicant_type_undergrad_student, 'An undergraduate student' %>
                     <%= render :partial => 'student', :locals => { :f => f} %>
                   </div>
-                  <div>
+                  <div class="clickable-option">
                     <%= f.radio_button :applicant_type, 'volunteer', required: 'required' %>
                     <%= f.label :applicant_type_volunteer, 'Interested in volunteering as a coach in the BZ Accelerator' %>
                     <%= render :partial => 'volunteer', :locals => { :f => f} %>
                   </div>
-                  <div>
+                  <div class="clickable-option">
                     <%= f.radio_button :applicant_type, 'employer' %>
                     <%= f.label :applicant_type_employer, 'Interested in offering employment opportunities to BZ alumni', required: 'required' %>
                     <%= render :partial => 'employer', :locals => { :f => f} %>
                   </div>
-                  <div>
-
+                  <div class="clickable-option">
                     <%= f.radio_button :applicant_type, 'partner', required: 'required' %>
-                    <%= f.label :applicant_type_partner, 'working in higher education and am interested in partnering with Beyond Z' %>
+                    <%= f.label :applicant_type_partner, 'Working in higher education and am interested in partnering with Beyond Z' %>
                     <%= render :partial => 'partner', :locals => { :f => f} %>
                   </div>
-                  <div>
+                  <div class="clickable-option with-text-field">
                     <%= f.radio_button :applicant_type, 'other', required: 'required' %>
                     <%= f.label :applicant_type_other, 'Other?' %>
+                    <%= f.text_field :applicant_details, :class => 'form-control', :required => 'required', :placeholder => 'What are you interested in?', :onclick => '$("#user_applicant_type_other").click();' %>
                     <div class="form-option-details">
-
-                      <%= f.text_field :city, :class => 'form-control', required: 'required', placeholder: 'City' %>
-                      <%= f.select :state, options_for_select(@states, @user.state), {}, :class => 'form-control', required: 'required', placeholder: 'State' %>
-                      <%= f.text_area :applicant_details, :class => 'form-control', :placeholder => 'Comments, thoughts, or questions?' %>
+                      <br />
+                      <section>
+                        <div class="col-sm-5">
+                          <%= f.text_field :city, :class => 'form-control', required: 'required', placeholder: 'City' %>
+                        </div>
+                        <div class="col-sm-5">
+                          <%= f.select :state, options_for_select(@states, @user.state), {}, :class => 'form-control', required: 'required', placeholder: 'State' %>
+                        </div>
                     </div>
                   </div>
+                </div>
+
+                <div class="form-group">
+                  <%= f.text_area :applicant_comments, :class => 'form-control', :placeholder => 'Comments, thoughts, or questions?' %>
                 </div>
 
                 <div class="form-group">
