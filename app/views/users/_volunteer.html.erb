@@ -1,0 +1,37 @@
+<div class="form-option-details">
+  <section>
+    <div class="col-sm-12">
+      I can coach a cohort of students at:
+      <br />
+      <%= render :partial => 'areas', :locals => { :f => f } %>
+    </div>
+  </section>
+
+
+  <section>
+    <div class="col-sm-6 text-right">
+      Profession / job title:
+    </div>
+    <div class="col-sm-6">
+      <%= f.text_field :profession, :class => 'form-control' %>
+    </div>
+  </section>
+  <section>
+    <div class="col-sm-6 text-right">
+      Company:
+    </div>
+    <div class="col-sm-6">
+      <%= f.text_field :company, :class => 'form-control' %>
+    </div>
+  </section>
+
+  <section>
+    <div class="col-sm-12">
+      Please create a password to protect any personal information you may provide us.
+    </div>
+    <div class="col-sm-12">
+      <%= f.password_field :password, :class => 'form-control', placeholder: 'Create a password', pattern: '.{4,}', title: 'make a password at least four characters long', :required => 'required' %>
+    </div>
+  </section>
+</div>
+

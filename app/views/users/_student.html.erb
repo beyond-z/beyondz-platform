@@ -1,0 +1,38 @@
+<div class="form-option-details">
+  <section>
+    <div class="col-sm-6 text-right">
+      University name:
+    </div>
+    <div class="col-sm-6 form-group">
+      <%= render :partial => 'colleges', :locals => { :f => f} %>
+    </div>
+  </section>
+
+
+  <section>
+    <div class="col-sm-6 text-right">
+      Started college in:
+    </div>
+    <div class="col-sm-6">
+      <%= select_tag :started_college_in, options_for_select(started_college_years, params[:started_college_in]), :class => 'form-control', include_blank: true, :required => 'required' %>
+    </div>
+  </section>
+  <section>
+    <div class="col-sm-6 text-right">
+      Anticipated graduation:
+    </div>
+    <div class="col-sm-6">
+      <%= select_tag :anticipated_undergrad_graduation, options_for_select(graduation_years, params[:anticipated_undergrad_graduation]), :class => 'form-control', include_blank: true, :required => 'required' %>
+    </div>
+  </section>
+
+  <section>
+    <div class="col-sm-12">
+      Please create a password to protect any personal information you may provide us.
+    </div>
+    <div class="col-sm-12">
+      <%= f.password_field :password, :class => 'form-control', placeholder: 'Create a password', pattern: '.{4,}', title: 'make a password at least four characters long', required: 'required' %>
+    </div>
+  </section>
+</div>
+

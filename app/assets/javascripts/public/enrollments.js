@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    if(!document.getElementById("enrollment-form-holder"))
+      return; // no need to run this if we aren't actually on the enrollment page
     // make the readonly form actually readonly by prohibiting submissions and restricting edits
     $('#enrollment-form-holder.readonly form').submit(function() { return false; });
     $('#enrollment-form-holder.readonly input, #enrollment-form-holder.readonly textarea').attr('readonly', 'readonly');

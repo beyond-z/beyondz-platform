@@ -32,129 +32,40 @@
                 </div>
 
                 <div class="form-group">
-                  <%= f.label  :password %>
-                  <%= f.password_field :password, :class => 'form-control', required: 'required', placeholder: 'Create a password', pattern: '.{4,}', title: 'make a password at least four characters long' %>
-                  <!-- <p class="help-block">Enter a password so you can log in later.</p> -->
-                </div>
-
-                <div class="form-group">
-                  <label style="display: block;">Where do you live?</label>
-                  <section>
-                    <div class="col-sm-6">
-                      <%= f.text_field :city, :class => 'form-control', required: 'required', placeholder: 'City' %>
-                    </div>
-                    <div class="col-sm-6">
-                      <%= f.select :state, options_for_select(@states, @user.state), {}, :class => 'form-control', required: 'required', placeholder: 'State' %>
-                    </div>
-                  </section>
-                </div>
-
-                <div class="form-group">
-                  <label>I am interested in (check all that apply)...</label>
-                  <div>
-                    <label for="user_interested_joining"><%= f.check_box :interested_joining %> Joining Beyond Z as a participant or a volunteer coach</label>
-                    <label for="user_interested_partnering"><%= f.check_box :interested_partnering %> Partnering with Beyond Z in other ways (ex: hiring our alumni, speaking at an event, etc.)</label>
-                    <label for="user_interested_receiving"><%= f.check_box :interested_receiving %> Receiving Beyond Z updates</label>
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label>I am a...</label>
+                  <label>I am...</label>
                   <div>
                     <%= f.radio_button :applicant_type, 'undergrad_student', required: 'required' %>
-                    <%= f.label :applicant_type_undergrad_student, 'Undergraduate student' %>
-                    <div class="form-option-details">
-                      <section>
-                        <div class="col-sm-6 text-right">
-                          Anticipated graduation:
-                        </div>
-                        <div class="col-sm-6">
-                          <%= select_tag :anticipated_undergrad_graduation, options_for_select(graduation_years, params[:anticipated_undergrad_graduation]), :class => 'form-control', include_blank: true %>
-                        </div>
-                      </section>
-                      <br />
-                      <section>
-                        <div class="col-sm-6 text-right">
-                          University name:
-                        </div>
-                        <div class="col-sm-6">
-                          <%= text_field_tag :undergrad_university_name, nil, :class => 'form-control', :value => params[:undergrad_university_name] %>
-                        </div>
-                      </section>
-
-                    </div>                  
+                    <%= f.label :applicant_type_undergrad_student, 'An undergraduate student' %>
+                    <%= render :partial => 'student', :locals => { :f => f} %>
                   </div>
                   <div>
-                    <%= f.radio_button :applicant_type, 'grad_student', required: 'required' %>
-                    <%= f.label :applicant_type_grad_student, 'Graduate student' %>
-                    <div class="form-option-details">
-                      <section>
-                        <div class="col-sm-6 text-right">
-                          Anticipated graduation:
-                        </div>
-                        <div class="col-sm-6">
-                          <%= select_tag :anticipated_grad_graduation, options_for_select(graduation_years, params[:anticipated_grad_graduation]), :class => 'form-control', include_blank: true %>
-                        </div>
-                      </section>
-                      <br />
-                      <section>
-                        <div class="col-sm-6 text-right">
-                          University name:
-                        </div>
-                        <div class="col-sm-6">
-                          <%= text_field_tag :grad_university_name, nil, :class => 'form-control', :value => params[:grad_university_name] %>
-                        </div>
-                      </section>
-
-                    </div>
+                    <%= f.radio_button :applicant_type, 'volunteer', required: 'required' %>
+                    <%= f.label :applicant_type_volunteer, 'Interested in volunteering as a coach in the BZ Accelerator' %>
+                    <%= render :partial => 'volunteer', :locals => { :f => f} %>
                   </div>
                   <div>
-                    <%= f.radio_button :applicant_type, 'school_student' %>
-                    <%= f.label :applicant_type_school_student, 'Middle school or high school student', required: 'required' %>
-                    <div class="form-option-details">
-                      <section>
-                        <div class="col-sm-6 text-right">
-                          Grade:
-                        </div>
-                        <div class="col-sm-6">
-                          <%= select_tag :grade, options_for_select([12, 11, 10, 9, 8, 7, 6], params[:grade]), :class => 'form-control', include_blank: true %>
-                        </div>
-                      </section>
-                    </div>
+                    <%= f.radio_button :applicant_type, 'employer' %>
+                    <%= f.label :applicant_type_employer, 'Interested in offering employment opportunities to BZ alumni', required: 'required' %>
+                    <%= render :partial => 'employer', :locals => { :f => f} %>
                   </div>
                   <div>
 
-                    <%= f.radio_button :applicant_type, 'professional', required: 'required' %>
-                    <%= f.label :applicant_type_professional, 'Local Professional' %>
-                    <div class="form-option-details">
-                      <%= text_field_tag :professional_details, nil, :class => 'form-control', :placeholder => 'What do you do?', :value => params[:professional_details] %>
-                    </div>
-                  </div>
-                  <!--
-                  <div>
-                    <%= f.radio_button :applicant_type, 'supporter', required: 'required' %>
-                    <%= f.label :applicant_type_supporter, 'Supporter' %>
-                  </div>
-                  -->
-                  <div>
-                    <%= f.radio_button :applicant_type, 'family_member', required: 'required' %>
-                    <%= f.label :applicant_type_family_member, 'Family member of a Beyond Z Participant' %>
+                    <%= f.radio_button :applicant_type, 'partner', required: 'required' %>
+                    <%= f.label :applicant_type_partner, 'working in higher education and am interested in partnering with Beyond Z' %>
+                    <%= render :partial => 'partner', :locals => { :f => f} %>
                   </div>
                   <div>
                     <%= f.radio_button :applicant_type, 'other', required: 'required' %>
                     <%= f.label :applicant_type_other, 'Other?' %>
                     <div class="form-option-details">
-                      <%= text_field_tag :other_details, nil, :class => 'form-control', :placeholder => 'Who?', :value => params[:other_details] %>
+
+                      <%= f.text_field :city, :class => 'form-control', required: 'required', placeholder: 'City' %>
+                      <%= f.select :state, options_for_select(@states, @user.state), {}, :class => 'form-control', required: 'required', placeholder: 'State' %>
+                      <%= f.text_area :applicant_details, :class => 'form-control', :placeholder => 'Comments, thoughts, or questions?' %>
                     </div>
                   </div>
                 </div>
 
-                <!--
-                <div class="form-group">
-                  <%= f.check_box :keep_updated, checked: true %>
-                  <%= f.label :keep_updated, 'Keep me updated about the BZ 2014-2015 Program' %>
-                </div>
-               -->
                 <div class="form-group">
                   <button type="submit" class="button-primary">Submit</button>
                 </div>

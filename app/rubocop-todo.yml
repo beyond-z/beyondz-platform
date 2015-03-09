@@ -29,7 +29,7 @@ LineLength:
   Max: 125 # largest line in here currently
 
 MethodLength:
-  Max: 45 # largest method in here currently
+  Max: 55 # largest method in here currently
 
 IfUnlessModifier:
   Enabled: false # I think the cure is worse than the disease here

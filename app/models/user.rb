@@ -75,6 +75,26 @@ class User < ActiveRecord::Base
     mapping.first.lead_owner
   end
 
+  # We allow empty passwords for certain account types
+  # so this enforces that. Otherwise, fall back on devise's
+  # default validation for the password.
+  def password_required?
+    false
+    # password.empty? || super(password)
+  end
+
+  # Gotta override devise's method for this too because while we
+  # allow accounts to be stored with empty passwords, that is not
+  # considered valid to log in - such an account should be saved
+  # but not usable as an end user login.
+  def valid_password?(password)
+    if password.nil? || password == ''
+      false # never allow login with an empty password
+    else
+      super(password) # otherwise, let devise check it from the database
+    end
+  end
+
   def create_on_salesforce
     salesforce = BeyondZ::Salesforce.new
     client = salesforce.get_client
