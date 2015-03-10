@@ -117,7 +117,8 @@ class User < ActiveRecord::Base
     # conflicts with our User class too! So the query function is unusable :(
     # Instead, I'll go one level lower and use their http method, just like the
     # implementation (line 182 of databasedotcom/client.rb)
-    salesforce_lead_owner = client.http_get("/services/data/v#{client.version}/query?q=SELECT Id FROM User WHERE Email = '#{lead_owner.sub('\'', '\'\'')}'")
+    salesforce_lead_owner = client.http_get("/services/data/v#{client.version}/query?q=" \
+      "SELECT Id FROM User WHERE Email = '#{lead_owner.sub('\'', '\'\'')}'")
     sf_answer = JSON.parse(salesforce_lead_owner.body)
     salesforce_lead_owner = sf_answer['records']
     salesforce_lead_owner = salesforce_lead_owner.empty? ? nil : salesforce_lead_owner.first
@@ -149,7 +150,8 @@ class User < ActiveRecord::Base
     contact['Company'] = company
     contact['Started_College__c'] = started_college_in
     contact['Interested_in_opening_BZ__c'] = like_to_help_set_up_program ? true : false
-    contact['BZ_Region__c'] = bz_region
+    # we store the string and SF needs a string, but the library expects an array so we split it back up here
+    contact['BZ_Region__c'] = bz_region.split(';')
 
     # The Lead class provided by the gem is buggy so we do it with this call instead
     # which is what Lead.save calls anyway
