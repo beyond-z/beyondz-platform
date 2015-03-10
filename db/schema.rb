@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150220162640) do
+ActiveRecord::Schema.define(version: 20150306020513) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -344,6 +344,16 @@ ActiveRecord::Schema.define(version: 20150220162640) do
     t.string   "active_status"
     t.string   "salesforce_id"
     t.boolean  "apply_now_enabled"
+    t.integer  "started_college_in"
+    t.boolean  "like_to_know_when_program_starts"
+    t.boolean  "like_to_help_set_up_program"
+    t.string   "profession"
+    t.string   "company"
+    t.boolean  "sf_east_bay"
+    t.boolean  "sf_san_jose"
+    t.boolean  "nyc_area"
+    t.boolean  "dc_area"
+    t.text     "applicant_comments"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

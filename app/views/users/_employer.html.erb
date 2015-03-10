@@ -1,0 +1,29 @@
+<div class="form-option-details">
+  <section>
+    <div class="col-sm-12">
+      In the following areas:
+      <br />
+      <%= render :partial => 'areas', :locals => { :f => f } %>
+    </div>
+  </section>
+
+  <section>
+    <div class="col-sm-6 text-right">
+      Industry:
+    </div>
+    <div class="col-sm-6">
+      <%= f.text_field :profession, :class => 'form-control' %>
+    </div>
+  </section>
+  <section>
+    <div class="col-sm-6 text-right">
+      Company:
+    </div>
+    <div class="col-sm-6">
+      <%= f.text_field :company, :class => 'form-control' %>
+    </div>
+  </section>
+
+
+</div>
+
