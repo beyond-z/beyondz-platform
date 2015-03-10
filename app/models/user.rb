@@ -138,6 +138,13 @@ class User < ActiveRecord::Base
     contact['University_Name__c'] = university_name
     contact['Anticipated_Graduation__c'] = anticipated_graduation
     contact['Profession_Title'] = profession
+    contact['Company'] = company
+    contact['Started_College__c'] = started_college_in
+    contact['Interested_in_opening_BZ'] = like_to_help_set_up_program
+    contact['SF_East_Bay_Area__c'] = sf_east_bay
+    contact['SF_San_Jose_Area__c'] = sf_san_jose
+    contact['NYC_Area__c'] = nyc_area
+    contact['Metro_DC_Area__c'] = dc_area
 
     # The Lead class provided by the gem is buggy so we do it with this call instead
     # which is what Lead.save calls anyway
