@@ -56,7 +56,7 @@
                   <div class="clickable-option with-text-field">
                     <%= f.radio_button :applicant_type, 'other', required: 'required' %>
                     <%= f.label :applicant_type_other, 'Other?' %>
-                    <%= f.text_field :applicant_details, :class => 'form-control', :required => 'required', :placeholder => 'What are you interested in?', :onclick => '$("#user_applicant_type_other").click();' %>
+                    <%= f.text_field :applicant_details, :class => 'form-control', :placeholder => 'What are you interested in?', :onclick => '$("#user_applicant_type_other").click();' %>
                     <div class="form-option-details">
                       <br />
                       <section>
