@@ -1,28 +1,28 @@
 <div class="form-option-details">
   <section>
-    <div class="col-sm-6 text-right">
+    <div class="col-sm-4 text-right">
       University name:
     </div>
-    <div class="col-sm-6 form-group">
+    <div class="col-sm-8 form-group">
       <%= render :partial => 'colleges', :locals => { :f => f} %>
     </div>
   </section>
 
 
   <section>
-    <div class="col-sm-6 text-right">
+    <div class="col-sm-5 text-right">
       Started college in:
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-7">
       <%= select_tag :started_college_in, options_for_select(started_college_years, params[:started_college_in]), :class => 'form-control', include_blank: true, :required => 'required' %>
     </div>
   </section>
   <section>
-    <div class="col-sm-6 text-right">
+    <div class="col-sm-5 text-right">
       Anticipated graduation:
     </div>
-    <div class="col-sm-6">
-      <%= select_tag :anticipated_undergrad_graduation, options_for_select(graduation_years, params[:anticipated_undergrad_graduation]), :class => 'form-control', include_blank: true, :required => 'required' %>
+    <div class="col-sm-7">
+      <%= select_tag :anticipated_graduation, options_for_select(graduation_years, params[:anticipated_graduation]), :class => 'form-control', include_blank: true, :required => 'required' %>
     </div>
   </section>
 
