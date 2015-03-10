@@ -349,10 +349,7 @@ ActiveRecord::Schema.define(version: 20150306020513) do
     t.boolean  "like_to_help_set_up_program"
     t.string   "profession"
     t.string   "company"
-    t.boolean  "sf_east_bay"
-    t.boolean  "sf_san_jose"
-    t.boolean  "nyc_area"
-    t.boolean  "dc_area"
+    t.string   "bz_region"
     t.text     "applicant_comments"
   end
 

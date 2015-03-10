@@ -111,11 +111,19 @@ class User < ActiveRecord::Base
     # to mitigate SQL injection (of course, this comes from our code anyway,
     # so there should be no security risk, but I just prefer to be a bit
     # defensive.)
-    salesforce_lead_owner = client.query("SELECT Id FROM User WHERE Email = '#{lead_owner.sub('\'', '\'\'')}'")
+    #
+    # Moreover, since the databasedotcom gem tries to materialize objects... and
+    # has a bug where it ignores the module if it finds a class in global... it
+    # conflicts with our User class too! So the query function is unusable :(
+    # Instead, I'll go one level lower and use their http method, just like the
+    # implementation (line 182 of databasedotcom/client.rb)
+    salesforce_lead_owner = client.http_get("/services/data/v#{client.version}/query?q=SELECT Id FROM User WHERE Email = '#{lead_owner.sub('\'', '\'\'')}'")
+    sf_answer = JSON.parse(salesforce_lead_owner.body)
+    salesforce_lead_owner = sf_answer['records']
     salesforce_lead_owner = salesforce_lead_owner.empty? ? nil : salesforce_lead_owner.first
 
     if salesforce_lead_owner
-      contact['OwnerId'] = salesforce_lead_owner.Id
+      contact['OwnerId'] = salesforce_lead_owner['Id']
     else
       # this is the user id we're logged into Salesforce as to use as
       # a last-resort owner if the other one fails
@@ -137,14 +145,11 @@ class User < ActiveRecord::Base
     contact['User_Type__c'] = applicant_type
     contact['University_Name__c'] = university_name
     contact['Anticipated_Graduation__c'] = anticipated_graduation
-    contact['Profession_Title'] = profession
+    contact['Profession_Title__c'] = profession
     contact['Company'] = company
     contact['Started_College__c'] = started_college_in
-    contact['Interested_in_opening_BZ'] = like_to_help_set_up_program
-    contact['SF_East_Bay_Area__c'] = sf_east_bay
-    contact['SF_San_Jose_Area__c'] = sf_san_jose
-    contact['NYC_Area__c'] = nyc_area
-    contact['Metro_DC_Area__c'] = dc_area
+    contact['Interested_in_opening_BZ__c'] = like_to_help_set_up_program ? true : false
+    contact['BZ_Region__c'] = bz_region
 
     # The Lead class provided by the gem is buggy so we do it with this call instead
     # which is what Lead.save calls anyway

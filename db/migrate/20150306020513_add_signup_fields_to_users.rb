@@ -5,10 +5,7 @@ class AddSignupFieldsToUsers < ActiveRecord::Migration
     add_column :users, :like_to_help_set_up_program, :boolean
     add_column :users, :profession, :string
     add_column :users, :company, :string
-    add_column :users, :sf_east_bay, :boolean
-    add_column :users, :sf_san_jose, :boolean
-    add_column :users, :nyc_area, :boolean
-    add_column :users, :dc_area, :boolean
+    add_column :users, :bz_region, :string
     add_column :users, :applicant_comments, :text
   end
 end
