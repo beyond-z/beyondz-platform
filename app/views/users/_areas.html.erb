@@ -1,4 +1,4 @@
-    <% ['San Francisco Bay Area, East Bay', 'San Francisco Bay Area, San Jose', 'New York City Area', 'Metro DC Area'].each do |region, idx| %>
+    <% List.find_by_friendly_name('bz_regions').items.each do |region, idx| %>
       <%
         param = params[:BZ_Region]
         param = param.nil? ? false : param[idx]

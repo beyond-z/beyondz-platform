@@ -58,6 +58,8 @@ BeyondzPlatform::Application.routes.draw do
 
     resources :applications, controller: 'application_mapping'
 
+    resources :lists
+
     resources :users do
       resources :students
     end
