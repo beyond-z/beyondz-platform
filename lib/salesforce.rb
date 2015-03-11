@@ -10,12 +10,16 @@ module BeyondZ
     def get_client
       client = Databasedotcom::Client.new :host => Rails.application.secrets.salesforce_host
       client.sobject_module = SFDC_Models
+      authenticate(client)
+
+      client
+    end
+
+    def authenticate(client)
       client.authenticate(
         :username => Rails.application.secrets.salesforce_username,
         :password => "#{Rails.application.secrets.salesforce_password}#{Rails.application.secrets.salesforce_security_token}"
       )
-
-      client
     end
 
     def get_cached_value(key, max_age = 8.hours)
@@ -33,6 +37,7 @@ module BeyondZ
         SalesforceCache.create(:key => key, :value => value)
       else
         obj = cached.first
+        obj.updated_at = DateTime.now
         obj.value = value
         obj.save!
       end
@@ -40,44 +45,42 @@ module BeyondZ
       value
     end
 
-    def get_welcome_email_html
-      cache_key = 'BZ_New_Signup_Welcome_and_Confirm_Email_Html.html'
+    def update_email_caches
+      client = get_client
+      client.materialize('EmailTemplate')
 
+      template = SFDC_Models::EmailTemplate.find_by_DeveloperName('BZ_New_Signup_Welcome_and_Confirm_Email_Html')
+
+      if template
+        # We can also update the Subject on this request since we have it here anyway
+        set_cached_value('BZ_New_Signup_Welcome_and_Confirm_Email_Subject', template.Subject)
+        # ditto for the text version
+        set_cached_value('BZ_New_Signup_Welcome_and_Confirm_Email_Html.text', template.Body)
+        # And cache the HTML, of course
+        set_cached_value('BZ_New_Signup_Welcome_and_Confirm_Email_Html.html', template.HtmlValue)
+      end
+    end
+
+    def get_email_cache(cache_key)
       cache = get_cached_value(cache_key)
       if cache.nil?
-        client = get_client
-        client.materialize('EmailTemplate')
-
-        template = SFDC_Models::EmailTemplate.find_by_DeveloperName('BZ_New_Signup_Welcome_and_Confirm_Email_Html')
-
-        if template
-          cache = set_cached_value(cache_key, template.HtmlValue)
-        else
-          cache = ''
-        end
+        update_email_caches
+        cache = get_cached_value(cache_key)
       end
 
       cache
     end
 
+    def get_welcome_email_subject
+      get_email_cache('BZ_New_Signup_Welcome_and_Confirm_Email_Subject')
+    end
+
+    def get_welcome_email_html
+      get_email_cache('BZ_New_Signup_Welcome_and_Confirm_Email_Html.html')
+    end 
+
     def get_welcome_email_text
-      cache_key = 'BZ_New_Signup_Welcome_and_Confirm_Email_Html.text'
-
-      cache = get_cached_value(cache_key)
-      if cache.nil?
-        client = get_client
-        client.materialize('EmailTemplate')
-
-        template = SFDC_Models::EmailTemplate.find_by_DeveloperName('BZ_New_Signup_Welcome_and_Confirm_Email_Html')
-
-        if template
-          cache = set_cached_value(cache_key, template.Body)
-        else
-          cache = ''
-        end
-      end
-
-      cache
+      get_email_cache('BZ_New_Signup_Welcome_and_Confirm_Email_Html.text')
     end
   end
 end

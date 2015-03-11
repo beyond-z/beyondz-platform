@@ -133,8 +133,6 @@ class User < ActiveRecord::Base
 
     contact['IsUnreadByOwner'] = false
 
-    contact['Company'] = "#{name} (individual)"
-
     contact['City'] = city
     contact['State'] = state
 
@@ -147,7 +145,7 @@ class User < ActiveRecord::Base
     contact['University_Name__c'] = university_name
     contact['Anticipated_Graduation__c'] = anticipated_graduation
     contact['Profession_Title__c'] = profession
-    contact['Company'] = company
+    contact['Company'] = (company.nil? || company.empty?) ? "#{name} (individual)" : company
     contact['Started_College__c'] = started_college_in
     contact['Interested_in_opening_BZ__c'] = like_to_help_set_up_program ? true : false
     # we store the string and SF needs a string, but the library expects an array so we split it back up here
