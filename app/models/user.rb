@@ -161,18 +161,18 @@ class User < ActiveRecord::Base
 
   def salesforce_applicant_type
     case applicant_type
-      when 'undergrad_student'
-        'Undergrad'
-      when 'volunteer'
-        'Volunteer'
-      when 'employer'
-        'Employer'
-      when 'partner'
-        'University'
-      when 'other'
-        'Other'
-      else
-        applicant_type
+    when 'undergrad_student'
+      'Undergrad'
+    when 'volunteer'
+      'Volunteer'
+    when 'employer'
+      'Employer'
+    when 'partner'
+      'University'
+    when 'other'
+      'Other'
+    else
+      applicant_type
     end
   end
 

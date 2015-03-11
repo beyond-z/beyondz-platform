@@ -1,5 +1,5 @@
 class DeviseMailer < Devise::Mailer
-  def confirmation_instructions(record, token, opts={})
+  def confirmation_instructions(record, token, opts = {})
     mail = super
     # your custom logic
     sf = BeyondZ::Salesforce.new
