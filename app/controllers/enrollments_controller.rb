@@ -167,7 +167,7 @@ class EnrollmentsController < ApplicationController
       cm.Identify_As_First_Gen__c = @enrollment.identify_first_gen
       cm.Hometown__c = @enrollment.hometown
       cm.Twitter__c = @enrollment.twitter_handle
-      cm.Website__c = @enrollment.website
+      cm.Website__c = @enrollment.personal_website
 
       cm.save
     end
