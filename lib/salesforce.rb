@@ -10,12 +10,16 @@ module BeyondZ
     def get_client
       client = Databasedotcom::Client.new :host => Rails.application.secrets.salesforce_host
       client.sobject_module = SFDC_Models
+      authenticate(client)
+
+      client
+    end
+
+    def authenticate(client)
       client.authenticate(
         :username => Rails.application.secrets.salesforce_username,
         :password => "#{Rails.application.secrets.salesforce_password}#{Rails.application.secrets.salesforce_security_token}"
       )
-
-      client
     end
 
     def get_cached_value(key, max_age = 8.hours)
@@ -33,6 +37,7 @@ module BeyondZ
         SalesforceCache.create(:key => key, :value => value)
       else
         obj = cached.first
+        obj.updated_at = DateTime.now
         obj.value = value
         obj.save!
       end
