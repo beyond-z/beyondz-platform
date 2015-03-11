@@ -1,4 +1,4 @@
-      <% ['SJSU', 'CUNY'].each do |school| %>
+      <% List.find_by_friendly_name('universities').items.each do |school| %>
         <div>
           <%= f.radio_button :university_name, school, :required => 'required' %>
           <%= f.label "university_name_#{school}".to_sym, school %>

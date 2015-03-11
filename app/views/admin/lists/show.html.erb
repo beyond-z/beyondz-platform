@@ -1,0 +1,9 @@
+<p>Enter all possible items for the list, with one item on each line.</p>
+<p>Please do not use any semicolons (<code>;</code>) in the list.</p>
+
+<%= form_for [:admin, @list] do |f| %>
+  <%= f.text_area :content, :size => '40x12' %>
+  <%= f.hidden_field :friendly_name %>
+  <br />
+  <%= f.submit %>
+<% end %>

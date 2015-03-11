@@ -1,16 +1,12 @@
-
-      <%= f.check_box :sf_east_bay %>
-      <%= f.label :sf_east_bay, 'SF Bay Area, East Bay' %>
+    <% List.find_by_friendly_name('bz_regions').items.each do |region, idx| %>
+      <%
+        param = params[:BZ_Region]
+        param = param.nil? ? false : param[idx]
+      %>
+      <%= check_box_tag region.to_sym, region, param, :name => 'BZ_Region[]' %>
+      <%= label_tag region.to_sym, region %>
       <br />
-      <%= f.check_box :sf_san_jose %>
-      <%= f.label :sf_san_jose, 'SF Bay Area, San Jose' %>
-      <br />
-      <%= f.check_box :nyc_area %>
-      <%= f.label :nyc_area, 'New York City area' %>
-      <br />
-      <%= f.check_box :dc_area %>
-      <%= f.label :dc_area, 'Metro DC Area' %>
-      <br />
+    <% end %>
 
       <div class="form-group">
         <%= f.check_box :applicant_details, "class" => 'controls-details' %>

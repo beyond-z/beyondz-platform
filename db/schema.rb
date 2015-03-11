@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150306020513) do
+ActiveRecord::Schema.define(version: 20150310220648) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -186,6 +186,13 @@ ActiveRecord::Schema.define(version: 20150306020513) do
     t.datetime "updated_at"
   end
 
+  create_table "lists", force: true do |t|
+    t.string   "friendly_name"
+    t.string   "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "resources", force: true do |t|
     t.string   "url"
     t.string   "title"
@@ -349,10 +356,7 @@ ActiveRecord::Schema.define(version: 20150306020513) do
     t.boolean  "like_to_help_set_up_program"
     t.string   "profession"
     t.string   "company"
-    t.boolean  "sf_east_bay"
-    t.boolean  "sf_san_jose"
-    t.boolean  "nyc_area"
-    t.boolean  "dc_area"
+    t.string   "bz_region"
     t.text     "applicant_comments"
   end
 
