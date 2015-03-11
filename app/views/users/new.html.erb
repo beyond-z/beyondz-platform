@@ -69,9 +69,8 @@
                             # color the form appropriately when it is selected
                             # or not selected
                             {prompt: 'State'},
-                            :class => 'form-control', required: 'required',
-                            onchange: 'this.style.color = this.selectedIndex == 0 ? "#999":"";',
-                            style:'color:#999;'
+                            :class => 'form-control placeholder-style', required: 'required',
+                            onchange: '$(this)[this.selectedIndex == 0 ? "addClass" : "removeClass"]("placeholder-style");'
                           %>
                         </div>
                     </div>

@@ -149,11 +149,12 @@ class EnrollmentsController < ApplicationController
       client.materialize('Task')
       task = SFDC_Models::Task.new
       task.Status = 'Not Started'
-      task.Subject = 'Review the application'
+      task.Subject = "Review the application for #{@enrollment.user.name}"
       task.WhoId = contact.Id
       task.OwnerId = contact.OwnerId
       task.IsReminderSet = false
-      task.Description = 'Review the application or assign it to someone else to handle'
+      task.Description = "Review the application for #{@enrollment.user.name} " \
+        'and change their Application Status or assign it to someone else to handle'
       task.save
     end
   end
