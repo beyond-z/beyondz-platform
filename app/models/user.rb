@@ -141,7 +141,7 @@ class User < ActiveRecord::Base
     contact['BZ_User_Id__c'] = id
     contact['Signup_Date__c'] = created_at
     contact['Came_From_to_Visit_Site__c'] = external_referral_url
-    contact['User_Type__c'] = applicant_type
+    contact['User_Type__c'] = salesforce_applicant_type
     contact['University_Name__c'] = university_name
     contact['Anticipated_Graduation__c'] = anticipated_graduation
     contact['Profession_Title__c'] = profession
@@ -157,6 +157,23 @@ class User < ActiveRecord::Base
 
     self.salesforce_id = contact['Id']
     save!
+  end
+
+  def salesforce_applicant_type
+    case applicant_type
+      when 'undergrad_student'
+        'Undergrad'
+      when 'volunteer'
+        'Volunteer'
+      when 'employer'
+        'Employer'
+      when 'partner'
+        'University'
+      when 'other'
+        'Other'
+      else
+        applicant_type
+    end
   end
 
   # validates :anticipated_graduation, presence: true, if: :graduation_required?
