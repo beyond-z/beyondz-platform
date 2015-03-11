@@ -138,6 +138,39 @@ class EnrollmentsController < ApplicationController
     if cm
       cm.Application_Status__c = 'Submitted'
       cm.Apply_Button_Enabled__c = false
+
+      cm.Middle_Name__c = @enrollment.middle_name
+      cm.City = @enrollment.city
+      cm.State = @enrollment.state
+      cm.Phone = @enrollment.phone
+      cm.Accepts_Text__c = @enrollment.accepts_txt
+      cm.Undergrad_University__c = @enrollment.university
+      cm.Undergraduate_Year__c = @enrollment.anticipated_graduation
+      cm.Major__c = @enrollment.major
+      cm.GPA__c = @enrollment.gpa
+      cm.Grad_University__c = @enrollment.grad_school
+      cm.Graduate_Year__c = @enrollment.anticipated_grad_school_graduation
+      cm.LinkedIn__c = @enrollment.online_resume
+      if @enrollment.resume.present?
+        cm.Resume__c = @enrollment.resume.url
+      end
+
+      cm.African_American__c = @enrollment.bkg_african_americanblack
+      cm.Asian_American__c = @enrollment.bkg_asian_american
+      cm.Latino__c = @enrollment.bkg_latino_or_hispanic
+      cm.Native_Alaskan__c = @enrollment.bkg_native_alaskan
+      cm.Native_American__c = @enrollment.bkg_native_american_american_indian
+      cm.Native_Hawaiian__c = @enrollment.bkg_native_hawaiian
+      cm.Pacific_Islander__c = @enrollment.bkg_pacific_islander
+      cm.White__c = @enrollment.bkg_whitecaucasian
+      cm.Multi_Ethnic__c = @enrollment.bkg_multi_ethnicmulti_racial
+      cm.Identify_As_Person_Of_Color__c = @enrollment.identify_poc
+      cm.Identify_As_Low_Income__c = @enrollment.identify_low_income
+      cm.Identify_As_First_Gen__c = @enrollment.identify_first_gen
+      cm.Hometown__c = @enrollment.hometown
+      cm.Twitter__c = @enrollment.twitter_handle
+      cm.Website__c = @enrollment.website
+
       cm.save
     end
 
