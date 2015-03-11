@@ -140,8 +140,6 @@ class EnrollmentsController < ApplicationController
       cm.Apply_Button_Enabled__c = false
 
       cm.Middle_Name__c = @enrollment.middle_name
-      cm.City = @enrollment.city
-      cm.State = @enrollment.state
       cm.Phone = @enrollment.phone
       cm.Accepts_Text__c = @enrollment.accepts_txt
       cm.Undergrad_University__c = @enrollment.university
