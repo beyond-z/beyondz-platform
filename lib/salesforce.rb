@@ -66,8 +66,6 @@ module BeyondZ
       if cache.nil?
         update_email_caches
         cache = get_cached_value(cache_key)
-      else
-        cache = ''
       end
 
       cache
