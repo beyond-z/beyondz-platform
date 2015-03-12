@@ -1,6 +1,6 @@
       <% List.find_by_friendly_name('universities').items.each do |school| %>
         <div>
-          <%= f.radio_button :university_name, school, :required => 'required' %>
+          <%= f.radio_button :university_name, school, :required => 'required', :checked => (params[:user].nil? ? false : params[:user][:university_name] == school) %>
           <%= f.label "university_name_#{school}".to_sym, school %>
           <div class="form-option-details"></div>
         </div>
