@@ -67,9 +67,12 @@ class EnrollmentsController < ApplicationController
     if @enrollment.explicitly_submitted
       # the user has hit the send button, so they finalized
       # their end. Since it may be in review already, we make
-      # it read only.
+      # it read only unless the apply now is explicitly reenabled
+      # (which is triggered through salesforce)
 
-      @enrollment_read_only = true
+      unless @enrollment.user.apply_now_enabled
+        @enrollment_read_only = true
+      end
     end
 
     # We no longer allow easy changing from student to coach once
