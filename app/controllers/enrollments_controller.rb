@@ -184,6 +184,7 @@ class EnrollmentsController < ApplicationController
       task.WhoId = contact.Id
       task.OwnerId = contact.OwnerId
       task.IsReminderSet = false
+      task.Priority = 'Normal'
       task.Description = "Review the application for #{@enrollment.user.name} " \
         'and change their Application Status or assign it to someone else to handle'
       task.save
