@@ -44,7 +44,7 @@
                     <%= render :partial => 'volunteer', :locals => { :f => f} %>
                   </div>
                   <div class="clickable-option">
-                    <%= f.radio_button :applicant_type, 'employer' %>
+                    <%= f.radio_button :applicant_type, 'employer', :required => 'required' %>
                     <%= f.label :applicant_type_employer, 'Interested in offering employment opportunities to BZ alumni', required: 'required' %>
                     <%= render :partial => 'employer', :locals => { :f => f} %>
                   </div>
