@@ -55,6 +55,38 @@ class UsersController < ApplicationController
   def save_confirm
     current_user.program_attendance_confirmed = true
     current_user.save!
+
+    sf = BeyondZ::Salesforce.new
+    client = sf.get_client
+    client.materialize('CampaignMember')
+    client.materialize('Contact')
+    cm = SFDC_Models::CampaignMember.find_by_ContactId(current_user.salesforce_id)
+    if cm
+      cm.Application_Status__c = 'Confirmed'
+      cm.Apply_Button_Enabled__c = false
+      cm.save
+    end
+
+    contact = SFDC_Models::Contact.find(current_user.salesforce_id)
+    if contact
+      case current_user.applicant_type
+      when 'undergrad_student'
+        contact.Participant_Information__c = 'Participant'
+      when 'volunteer'
+        contact.Volunteer_Information__c = 'Current LC'
+      else
+        # this space intentionally left blank
+        # because other shouldn't be confirmed through
+        # this controller anyway, but if they do link,
+        # we don't want to crash - we can still update
+        # our local database.
+      end
+
+      contact.save
+    end
+
+
+
     redirect_to user_confirm_path
   end
 
