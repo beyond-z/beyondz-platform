@@ -14,7 +14,7 @@
       Started college in:
     </div>
     <div class="col-sm-7">
-      <%= select_tag :started_college_in, options_for_select(started_college_years, params[:started_college_in]), :class => 'form-control', include_blank: true, :required => 'required' %>
+      <%= f.select :started_college_in, options_for_select(started_college_years, params[:user].nil? ? '' : params[:user][:started_college_in]), :class => 'form-control', include_blank: true, :required => 'required' %>
     </div>
   </section>
   <section>
@@ -22,7 +22,7 @@
       Anticipated graduation:
     </div>
     <div class="col-sm-7">
-      <%= select_tag :anticipated_graduation, options_for_select(graduation_years, params[:anticipated_graduation]), :class => 'form-control', include_blank: true, :required => 'required' %>
+      <%= f.select :anticipated_graduation, options_for_select(graduation_years, params[:user].nil? ? '' : params[:user][:anticipated_graduation]), :class => 'form-control', include_blank: true, :required => 'required' %>
     </div>
   </section>
 
