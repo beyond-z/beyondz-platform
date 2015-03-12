@@ -67,9 +67,12 @@ class EnrollmentsController < ApplicationController
     if @enrollment.explicitly_submitted
       # the user has hit the send button, so they finalized
       # their end. Since it may be in review already, we make
-      # it read only.
+      # it read only unless the apply now is explicitly reenabled
+      # (which is triggered through salesforce)
 
-      @enrollment_read_only = true
+      unless @enrollment.user.apply_now_enabled
+        @enrollment_read_only = true
+      end
     end
 
     # We no longer allow easy changing from student to coach once
@@ -140,7 +143,6 @@ class EnrollmentsController < ApplicationController
       cm.Apply_Button_Enabled__c = false
 
       cm.Middle_Name__c = @enrollment.middle_name
-      #cm.Phone = @enrollment.phone
       cm.Accepts_Text__c = @enrollment.accepts_txt
       cm.Undergrad_University__c = @enrollment.university
       cm.Undergraduate_Year__c = @enrollment.anticipated_graduation
@@ -183,7 +185,8 @@ class EnrollmentsController < ApplicationController
       task.Subject = "Review the application for #{@enrollment.user.name}"
       task.WhoId = contact.Id
       task.OwnerId = contact.OwnerId
-      task.IsReminderSet = false
+      task.IsReminderSet = true
+      task.Priority = 'Normal'
       task.Description = "Review the application for #{@enrollment.user.name} " \
         'and change their Application Status or assign it to someone else to handle'
       task.save

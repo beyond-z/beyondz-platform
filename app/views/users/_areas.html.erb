@@ -1,4 +1,4 @@
-    <% List.find_by_friendly_name('bz_regions').items.each do |region, idx| %>
+    <% List.find_by_friendly_name('bz_regions').items.each_with_index do |region, idx| %>
       <%
         param = params[:BZ_Region]
         param = param.nil? ? false : param[idx]

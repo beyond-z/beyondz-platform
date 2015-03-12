@@ -7,7 +7,8 @@
           <p class="feature">Please check your email at <%= @new_user.email %> and follow the instructions to complete your account activation.</p>
         <% elsif @new_user %>
           <% if @new_user.applicant_type == 'volunteer' || @new_user.applicant_type == 'undergrad_student' %>
-            <% if @application_received %>
+            <!-- We should be able to re-enable apply now in Salesforce, overriding applicatio_received. The second clause here allows that. -->
+            <% if @application_received && !(@new_user.apply_now_enabled || !Rails.application.secrets.salesforce_username) %>
               <h2>Thank you for applying to Beyond Z.</h2>
               <p>We will contact you as soon as we've made our decision. If you have any further questions please feel free to <a href="mailto:info@beyondz.org">contact us</a></p>
             <% else %>
