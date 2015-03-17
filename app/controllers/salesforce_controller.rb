@@ -38,6 +38,35 @@ class SalesforceController < ApplicationController
     render plain: 'OK'
   end
 
+  def sync_to_lms
+    if check_magic_token
+      sf = BeyondZ::Salesforce.new
+      client = sf.get_client
+      client.materialize('Campaign')
+      client.materialize('CampaignMember')
+      campaign = SFDC_Models::Campaign.find(params[:campaignId])
+
+      lms = BeyondZ::LMS.new
+
+      members = SFDC_Models::CampaignMember.find_by_CampaignId(campaign.Id)
+      members.each do |member|
+        member.Section_Name_In_LMS__c
+
+        user = User.find_by_salesforce_id(member.ContactId)
+        lms.sync_user_logins(user)
+        type = 'STUDENT'
+        if campaign.Type == 'Leadership Coaches'
+          type = 'TA'
+        end
+        lms.sync_user_course_enrollment(user, campaign.Target_Course_ID_In_LMS__c, type, member.Section_Name_In_LMS__c)
+
+        user.save!
+      end
+    end
+
+    render plain: 'OK'
+  end
+
   # a simple filter to keep web crawlers from triggering this
   # needlessly
   def check_magic_token
