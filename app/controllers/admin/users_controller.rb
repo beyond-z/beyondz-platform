@@ -348,6 +348,7 @@ class Admin::UsersController < Admin::ApplicationController
     header << 'Last sign in at'
     header << 'Came from to reach site'
     header << 'Came from to reach sign up form'
+    header << 'Associated Program'
 
     Enrollment.column_names.each do |cn|
       header << cn
@@ -390,6 +391,7 @@ class Admin::UsersController < Admin::ApplicationController
         exportable << user.last_sign_in_at.to_s
         exportable << user.external_referral_url
         exportable << user.internal_referral_url
+        exportable << user.associated_program
 
         if user.enrollment
           e = user.enrollment
