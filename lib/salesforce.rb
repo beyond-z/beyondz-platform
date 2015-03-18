@@ -3,6 +3,45 @@
 module SFDC_Models
 end
 
+# I'm monkeypatching the databasedotcom gem to fix a major bug
+Databasedotcom::Client.class_eval do
+  # This method is copy/pasted from the gem source with one
+  # change: the const_defined is told not to search inherited
+  # members. Without this change, we're stuck with heisenbugs
+  # because Rails autoloads our models. If ours is used, it is
+  # autoloaded and then Databasedotcom thinks it is the Salesforce
+  # model because the share the name, and the const_defined will
+  # look at inherited members... which includes the global Object
+  # where the ActiveRecord models are found.
+  #
+  # The bug doesn't manifest itself if our class was not used in
+  # that server session, making this a bit hard to test: you can't
+  # go direct to it. You must first exercise a code path that instantiates
+  # our object, then try the SF one.
+  #
+  # Easiest way to do that is in the console: create an object of our
+  # class first, then try the SF class. Without this patch, it will
+  # "succeed" by instantiating our class both times, leading to MethodMissing
+  # errors. With this patch, it does the right thing.
+  def materialize(classnames)
+    classes = (classnames.is_a?(Array) ? classnames : [classnames]).collect do |clazz|
+      original_classname = clazz
+      clazz = original_classname[0,1].capitalize + original_classname[1..-1]
+      unless module_namespace.const_defined?(clazz, false)
+        new_class = module_namespace.const_set(clazz, Class.new(Databasedotcom::Sobject::Sobject))
+        new_class.client = self
+        new_class.materialize(original_classname)
+        new_class
+      else
+        module_namespace.const_get(clazz)
+      end
+    end
+
+    classes.length == 1 ? classes.first : classes
+  end
+
+end
+
 module BeyondZ
   class Salesforce
     public
