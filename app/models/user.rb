@@ -150,7 +150,7 @@ class User < ActiveRecord::Base
     contact['Interested_in_opening_BZ__c'] = like_to_help_set_up_program ? true : false
     # we store the string and SF needs a string, but the library expects an array so we split it back up here
     if bz_region
-      contact['BZ_Region__c'] = bz_region.split(';')
+      contact['BZ_Region__c'] = bz_region
     else
       contact['BZ_Region__c'] = ''
     end
