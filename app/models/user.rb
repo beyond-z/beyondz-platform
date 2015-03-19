@@ -149,7 +149,11 @@ class User < ActiveRecord::Base
     contact['Started_College__c'] = started_college_in
     contact['Interested_in_opening_BZ__c'] = like_to_help_set_up_program ? true : false
     # we store the string and SF needs a string, but the library expects an array so we split it back up here
-    contact['BZ_Region__c'] = bz_region.split(';')
+    if bz_region
+      contact['BZ_Region__c'] = bz_region.split(';')
+    else
+      contact['BZ_Region__c'] = ''
+    end
 
     # The Lead class provided by the gem is buggy so we do it with this call instead
     # which is what Lead.save calls anyway
