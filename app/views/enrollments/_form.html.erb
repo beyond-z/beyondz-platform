@@ -42,7 +42,6 @@
                     %>(as <%= @enrollment.position %>)<%
                   end
                 %></h4>
-                <p class="help coach">Please check all that apply</p>
                 <div class="form-group both">
                   <input value="" type="hidden" name="program_col" />
                   <input value="" type="hidden" name="program_ms" />
@@ -174,7 +173,7 @@
               <div class="form-group coach student">
                 <label>Please provide a link to your LinkedIn profile (if you have one)</label>
                 <p class="help">Please make sure the resume is detailed, comprehensive and up to date, and that the link you are sharing is publicly viewable.</p>
-                <div class="input-group"> <span class="input-group-addon">http://</span>
+                <div class="input-group">
                   <%= f.text_field :online_resume, 'class' => 'form-control medium', 'type' => 'url', 'placeholder' => 'Paste URL here' %>
                 </div>
               </div>
@@ -375,7 +374,7 @@
                 <label>Last but not least</label>
                 <p class="help">Please help us continuously improve our requests of you &#8211; Approximately how long (in minutes) did it take you to complete this application?</p>
                 <div class="input-group short">
-                  <%= f.text_field :time_taken, 'class' => 'form-control', 'step' => '5', 'type' => 'number', 'min' => '0' %>
+                  <%= f.text_field :time_taken, 'class' => 'form-control', 'step' => '1', 'type' => 'number', 'min' => '0' %>
                   <span class="input-group-addon">minutes</span> </div>
               </div>
             </div>
