@@ -25,13 +25,15 @@ class Admin::UsersController < Admin::ApplicationController
     end
   end
 
+  # It should change to Lead_owner, applicant_type, university_name, bz_region
+  # and allow blanks on them.
   def csv_lead_owner_export
     CSV.generate do |csv|
       header = []
       header << 'Lead_owner'
       header << 'Applicant type'
-      header << 'State'
-      header << 'Interested joining'
+      header << 'University Name'
+      header << 'BZ Region'
 
       csv << header
 
@@ -39,8 +41,8 @@ class Admin::UsersController < Admin::ApplicationController
         exportable = []
         exportable << m.lead_owner
         exportable << m.applicant_type
-        exportable << m.state
-        exportable << m.interested_joining
+        exportable << m.university_name
+        exportable << m.bz_region
 
         csv << exportable
       end
@@ -64,8 +66,8 @@ class Admin::UsersController < Admin::ApplicationController
       LeadOwnerMapping.create(
         :lead_owner => row[0],
         :applicant_type => row[1],
-        :state => row[2],
-        :interested_joining => row[3]
+        :university_name => row[2],
+        :bz_region => row[3]
       )
     end
   end

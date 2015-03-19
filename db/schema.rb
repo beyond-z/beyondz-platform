@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150310220648) do
+ActiveRecord::Schema.define(version: 20150319153255) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -180,10 +180,10 @@ ActiveRecord::Schema.define(version: 20150310220648) do
   create_table "lead_owner_mappings", force: true do |t|
     t.string   "lead_owner"
     t.string   "applicant_type"
-    t.string   "state"
-    t.boolean  "interested_joining"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "university_name"
+    t.string   "bz_region"
   end
 
   create_table "lists", force: true do |t|

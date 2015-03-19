@@ -62,8 +62,8 @@ class User < ActiveRecord::Base
   # Returns a user's email address.
   def lead_owner
     mapping = LeadOwnerMapping.where(
-      :state => state,
-      :interested_joining => interested_joining,
+      :university_name => university_name,
+      :bz_region => bz_region,
       :applicant_type => applicant_type
     )
 
