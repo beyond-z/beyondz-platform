@@ -137,6 +137,7 @@ class UsersController < ApplicationController
 
       :applicant_type,
       :applicant_details,
+      :bz_region,
       :university_name,
       :like_to_know_when_program_starts,
       :like_to_help_set_up_program,
@@ -152,15 +153,6 @@ class UsersController < ApplicationController
     @referrer = params[:referrer] # preserve the original one in case of error
 
     user[:university_name] = params[:undergrad_university_name] if user[:university_name] == 'other'
-
-    bz_region = ''
-    unless params[:BZ_Region].nil?
-      params[:BZ_Region].each do |region|
-        bz_region += ';' unless bz_region.empty?
-        bz_region += region
-      end
-    end
-    user[:bz_region] = bz_region
 
     if !user[:applicant_type].nil?
       @new_user = User.create(user)

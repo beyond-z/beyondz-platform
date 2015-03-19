@@ -10,6 +10,8 @@
 # to handle that case gracefully when you use it.
 class List < ActiveRecord::Base
   def items
-    content.split("\n")
+    # We need to chomp it too to ensure any Windows-style linebreaks
+    # ("\r\n") don't leave behind carriage returns which will break stuff.
+    content.lines.map(&:chomp)
   end
 end
