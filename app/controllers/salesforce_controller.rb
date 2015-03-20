@@ -48,10 +48,8 @@ class SalesforceController < ApplicationController
 
       lms = BeyondZ::LMS.new
 
-      members = SFDC_Models::CampaignMember.find_by_CampaignId(campaign.Id)
+      members = client.query("SELECT ContactId, Section_Name_In_LMS__c FROM CampaignMember WHERE CampaignId = '#{campaign.Id}'")
       members.each do |member|
-        member.Section_Name_In_LMS__c
-
         user = User.find_by_salesforce_id(member.ContactId)
         lms.sync_user_logins(user)
         type = 'STUDENT'
