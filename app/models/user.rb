@@ -144,7 +144,7 @@ class User < ActiveRecord::Base
     contact['User_Type__c'] = salesforce_applicant_type
     contact['University_Name__c'] = university_name
     contact['Anticipated_Graduation__c'] = anticipated_graduation
-    contact['Profession_Title__c'] = profession
+    contact['Title'] = profession
     contact['Company'] = (company.nil? || company.empty?) ? "#{name} (individual)" : company
     contact['Started_College__c'] = started_college_in
     contact['Interested_in_opening_BZ__c'] = like_to_help_set_up_program ? true : false
