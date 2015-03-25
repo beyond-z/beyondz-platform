@@ -143,14 +143,9 @@ class EnrollmentsController < ApplicationController
     contact = SFDC_Models::Contact.find(@enrollment.user.salesforce_id)
 
     if contact
-      contact.University_Name__c = @enrollment.university
       contact.Middle_Name__c = @enrollment.middle_name
       contact.Phone = @enrollment.phone
       contact.Accepts_Text__c = @enrollment.accepts_txt
-      contact.LinkedIn__c = @enrollment.online_resume
-      contact.Grad_University__c = @enrollment.grad_school
-      contact.Graduate_Year__c = @enrollment.anticipated_grad_school_graduation
-      contact.Grad_Degree__c = @enrollment.grad_degree
       contact.save
     end
 
@@ -203,22 +198,22 @@ class EnrollmentsController < ApplicationController
       cm.save
     end
 
-    if contact
-      client.materialize('Task')
-      task = SFDC_Models::Task.new
-      task.Status = 'Not Started'
-      task.Subject = "Review the application for #{@enrollment.user.name}"
-      task.WhoId = contact.Id
-      task.OwnerId = contact.OwnerId
-      task.IsReminderSet = true
-      task.Priority = 'Normal'
-      task.Description = "Review the application for #{@enrollment.user.name} " \
-        'and change their Application Status or assign it to someone else to handle'
-      task.save
-    end
+    make_salesforce_task(contact) if contact
   end
 
-
+  def make_salesforce_task(contact)
+    client.materialize('Task')
+    task = SFDC_Models::Task.new
+    task.Status = 'Not Started'
+    task.Subject = "Review the application for #{@enrollment.user.name}"
+    task.WhoId = contact.Id
+    task.OwnerId = contact.OwnerId
+    task.IsReminderSet = true
+    task.Priority = 'Normal'
+    task.Description = "Review the application for #{@enrollment.user.name} " \
+      'and change their Application Status or assign it to someone else to handle'
+    task.save
+  end
 
   def create
     @enrollment = Enrollment.create(enrollment_params)
