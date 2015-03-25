@@ -138,12 +138,41 @@ class EnrollmentsController < ApplicationController
     client = sf.get_client
     client.materialize('CampaignMember')
     cm = SFDC_Models::CampaignMember.find_by_ContactId(@enrollment.user.salesforce_id)
+
+    client.materialize('Contact')
+    contact = SFDC_Models::Contact.find(@enrollment.user.salesforce_id)
+
+    if contact
+      contact.University_Name__c = @enrollment.university
+      contact.Middle_Name__c = @enrollment.middle_name
+      contact.Phone = @enrollment.phone
+      contact.Accepts_Text__c = @enrollment.accepts_txt
+      contact.LinkedIn__c = @enrollment.online_resume
+      contact.Grad_University__c = @enrollment.grad_school
+      contact.Graduate_Year__c = @enrollment.anticipated_grad_school_graduation
+      contact.Grad_Degree__c = @enrollment.grad_degree
+      contact.save
+    end
+
     if cm
       cm.Application_Status__c = 'Submitted'
       cm.Apply_Button_Enabled__c = false
 
-      cm.Middle_Name__c = @enrollment.middle_name
-      cm.Accepts_Text__c = @enrollment.accepts_txt
+      cm.Eligible__c = @enrollment.will_be_student
+      cm.GPA_Circumstances__c = @enrollment.gpa_circumstances
+      cm.Other_Commitments__c = @enrollment.current_volunteer_activities
+
+      cm.Grad_Degree__c = @enrollment.grad_degree
+
+      cm.Summer__c = @enrollment.last_summer
+      cm.Post_Grad__c = @enrollment.post_graduation_plans
+      cm.Why_BZ__c = @enrollment.why_bz
+      cm.Community_Connection__c = @enrollment.community_connection
+      cm.Passions_Expertise__c = @enrollment.personal_passion
+      cm.Meaningful_Activity__c = @enrollment.meaningful_experience
+      cm.Experience_LICs__c = @enrollment.teaching_experience
+
+      cm.Other_Commitments = @enrollment.other_
       cm.Undergrad_University__c = @enrollment.university
       cm.Undergraduate_Year__c = @enrollment.anticipated_graduation
       cm.Major__c = @enrollment.major
@@ -173,10 +202,6 @@ class EnrollmentsController < ApplicationController
 
       cm.save
     end
-
-    client.materialize('Contact')
-
-    contact = SFDC_Models::Contact.find(@enrollment.user.salesforce_id)
 
     if contact
       client.materialize('Task')
