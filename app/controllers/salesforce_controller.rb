@@ -66,7 +66,12 @@ class SalesforceController < ApplicationController
         if campaign.Type == 'Leadership Coaches'
           type = 'TA'
         end
-        lms.sync_user_course_enrollment(user, campaign.Target_Course_ID_In_LMS__c[0].to_i, type, member.Section_Name_In_LMS__c)
+        lms.sync_user_course_enrollment(
+          user,
+          campaign.Target_Course_ID_In_LMS__c[0].to_i,
+          type,
+          member.Section_Name_In_LMS__c
+        )
 
         user.save!
       end

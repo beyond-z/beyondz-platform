@@ -167,7 +167,6 @@ class EnrollmentsController < ApplicationController
       cm.Meaningful_Activity__c = @enrollment.meaningful_experience
       cm.Experience_LICs__c = @enrollment.teaching_experience
 
-      cm.Other_Commitments = @enrollment.other_
       cm.Undergrad_University__c = @enrollment.university
       cm.Undergraduate_Year__c = @enrollment.anticipated_graduation
       cm.Major__c = @enrollment.major
@@ -198,10 +197,10 @@ class EnrollmentsController < ApplicationController
       cm.save
     end
 
-    make_salesforce_task(contact) if contact
+    make_salesforce_task(client, contact) if contact
   end
 
-  def make_salesforce_task(contact)
+  def make_salesforce_task(client, contact)
     client.materialize('Task')
     task = SFDC_Models::Task.new
     task.Status = 'Not Started'
