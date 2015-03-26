@@ -174,7 +174,7 @@
                 <label>Please provide a link to your LinkedIn profile (if you have one)</label>
                 <p class="help">Please make sure the resume is detailed, comprehensive and up to date, and that the link you are sharing is publicly viewable.</p>
                 <div class="input-group">
-                  <%= f.text_field :online_resume, 'class' => 'form-control medium', 'type' => 'url', 'placeholder' => 'Paste URL here' %>
+                  <%= f.text_field :online_resume, 'class' => 'form-control medium', 'type' => 'url', 'placeholder' => 'Paste URL here', 'onblur' => 'if(this.value.indexOf("http") != 0) this.value = "http://"+this.value;' %>
                 </div>
               </div>
               <div class="form-group student coach">
