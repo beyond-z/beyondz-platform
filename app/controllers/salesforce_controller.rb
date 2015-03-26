@@ -1,3 +1,5 @@
+require 'lms'
+
 # The purpose of this controller is to centralize the endpoints for Salesforce triggers.
 # Popup windows from SF buttons are still done in the admin area, but triggers notify
 # this controller which will take appropriate action.
@@ -58,12 +60,13 @@ class SalesforceController < ApplicationController
       ")
       members.each do |member|
         user = User.find_by_salesforce_id(member.ContactId)
+        next if user.nil?
         lms.sync_user_logins(user)
         type = 'STUDENT'
         if campaign.Type == 'Leadership Coaches'
           type = 'TA'
         end
-        lms.sync_user_course_enrollment(user, campaign.Target_Course_ID_In_LMS__c, type, member.Section_Name_In_LMS__c)
+        lms.sync_user_course_enrollment(user, campaign.Target_Course_ID_In_LMS__c[0].to_i, type, member.Section_Name_In_LMS__c)
 
         user.save!
       end
