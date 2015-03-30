@@ -207,6 +207,8 @@ class EnrollmentsController < ApplicationController
     task.Subject = "Review the application for #{@enrollment.user.name}"
     task.WhoId = contact.Id
     task.OwnerId = contact.OwnerId
+    task.WhatId = @enrollment.associated_campaign
+    task.ActivityDate = Date.today
     task.IsReminderSet = true
     task.Priority = 'Normal'
     task.Description = "Review the application for #{@enrollment.user.name} " \
