@@ -11,18 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150319153255) do
+ActiveRecord::Schema.define(version: 20150401172225) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "applications", force: true do |t|
-    t.boolean  "active"
-    t.string   "associated_campaign"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "form"
-  end
 
   create_table "assignment_definitions", force: true do |t|
     t.string   "title"
@@ -173,6 +165,19 @@ ActiveRecord::Schema.define(version: 20150319153255) do
     t.boolean  "program_ms_ms_dc"
     t.boolean  "program_col_col_dc"
     t.boolean  "program_col_col_nyc"
+    t.string   "campaign_id"
+    t.string   "city"
+    t.string   "state"
+    t.string   "student_id"
+    t.string   "hs_gpa"
+    t.string   "sat_score"
+    t.string   "act_score"
+    t.string   "online_resume2"
+    t.text     "conquered_challenge"
+    t.string   "bkg_other"
+    t.string   "lead_sources"
+    t.boolean  "pell_grant"
+    t.string   "meeting_times"
   end
 
   add_index "enrollments", ["user_id"], name: "index_enrollments_on_user_id", using: :btree

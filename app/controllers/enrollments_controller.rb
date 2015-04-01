@@ -45,15 +45,16 @@ class EnrollmentsController < ApplicationController
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
     client.materialize('CampaignMember')
+    client.materialize('Campaign')
     cm = SFDC_Models::CampaignMember.find_by_ContactId(current_user.salesforce_id)
     unless cm.nil?
-      application = Application.find_by_associated_campaign(cm.CampaignId)
-      unless application.nil?
-        @enrollment.position = application.form
-      end
+      campaign = SFDC_Models::Campaign.find(cm.CampaignId)
+
+      @enrollment.campaign_id = campaign.Id
+      @enrollment.position = campaign.Which_Form__c
+      @enrollment.program_col = campaign.Which_Program__c
     end
   end
-
 
   def show
     # We'll show it by just displaying the pre-filled form
@@ -82,12 +83,40 @@ class EnrollmentsController < ApplicationController
       @position_is_set = true
     end
 
+
+    if @enrollment.campaign_id
+      sf = BeyondZ::Salesforce.new
+      client = sf.get_client
+      client.materialize('Campaign')
+      campaign = SFDC_Models::Campaign.find(@enrollment.campaign_id)
+
+      # It might be worth caching this at some point too.
+
+      if campaign
+        @program_title = campaign.Program_Title__c
+        @program_site = campaign.Program_Site__c
+        @request_availability = campaign.Request_Availability__c
+        @meeting_times = campaign.Meeting_Times__c
+      end
+    end
+
+    # HACK FOR TESTING WITHOUT SALESFORCE
+    # FIXME
+    if @program_title.nil?
+      @program_title = "Beyond Z"
+      @program_site = "your university"
+      @request_availability = true
+      @meeting_times = "10am\n12pm\n2pm"
+    end
     render 'new'
   end
 
   def update
     @enrollment = Enrollment.find(params[:id])
     @enrollment.update_attributes(enrollment_params)
+
+    @enrollment.meeting_times = params[:meeting_times].join(';')
+    @enrollment.lead_sources = params[:lead_sources].join(';')
 
     # Always save without validating, this ensures the partial
     # data is not lost and allows resume upload to proceed even
@@ -207,7 +236,7 @@ class EnrollmentsController < ApplicationController
     task.Subject = "Review the application for #{@enrollment.user.name}"
     task.WhoId = contact.Id
     task.OwnerId = contact.OwnerId
-    task.WhatId = @enrollment.associated_campaign
+    task.WhatId = @enrollment.campaign_id
     task.ActivityDate = Date.today
     task.IsReminderSet = true
     task.Priority = 'Normal'

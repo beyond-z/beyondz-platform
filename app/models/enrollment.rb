@@ -36,22 +36,6 @@ class Enrollment < ActiveRecord::Base
 
   validates :program_col, presence: true
 
-  validates :reference_name, presence: true
-  validates :reference2_name, presence: true
-
-  # This gets the salesforce campaign ID associated with this
-  # enrollment form so we can tie back into that from a submitted
-  # enrollment.
-  #
-  # As we do more campaigns with more specific applications, like
-  # adding regions, this needs to be updated too so everything matches
-  # both ways.
-  def associated_campaign
-    app = Application.where(:form => position)
-    if app.empty?
-      return nil
-    else
-      app.first.associated_campaign
-    end
-  end
+  validates :reference_name, presence: true, if: "position == 'coach'"
+  validates :reference2_name, presence: true, if: "position == 'coach'"
 end
