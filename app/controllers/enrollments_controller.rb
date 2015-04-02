@@ -100,14 +100,6 @@ class EnrollmentsController < ApplicationController
       end
     end
 
-    # HACK FOR TESTING WITHOUT SALESFORCE
-    # FIXME
-    if @program_title.nil?
-      @program_title = "Beyond Z"
-      @program_site = "your university"
-      @request_availability = true
-      @meeting_times = "10am\n12pm\n2pm"
-    end
     render 'new'
   end
 
@@ -171,16 +163,13 @@ class EnrollmentsController < ApplicationController
     client.materialize('Contact')
     contact = SFDC_Models::Contact.find(@enrollment.user.salesforce_id)
 
-    if contact
-      contact.Middle_Name__c = @enrollment.middle_name
-      contact.Phone = @enrollment.phone
-      contact.Accepts_Text__c = @enrollment.accepts_txt
-      contact.save
-    end
-
     if cm
       cm.Application_Status__c = 'Submitted'
       cm.Apply_Button_Enabled__c = false
+
+      cm.Middle_Name__c = @enrollment.middle_name
+      cm.Phone = @enrollment.phone
+      cm.Accepts_Text__c = @enrollment.accepts_txt
 
       cm.Eligible__c = @enrollment.will_be_student
       cm.GPA_Circumstances__c = @enrollment.gpa_circumstances
@@ -219,9 +208,11 @@ class EnrollmentsController < ApplicationController
       cm.Identify_As_Person_Of_Color__c = @enrollment.identify_poc
       cm.Identify_As_Low_Income__c = @enrollment.identify_low_income
       cm.Identify_As_First_Gen__c = @enrollment.identify_first_gen
+      cm.Other_Race__c = @enrollment.bkg_other
       cm.Hometown__c = @enrollment.hometown
       cm.Twitter__c = @enrollment.twitter_handle
       cm.Website__c = @enrollment.personal_website
+      cm.Pell_Grant_Recipient__c = @enrollment.pell_grant
 
       cm.save
     end

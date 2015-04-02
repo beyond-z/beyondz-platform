@@ -103,7 +103,7 @@
             <div class="form-group student">
               <label class="checkbox">
                 <%= f.check_box :will_be_student %>
-                <span class="bs-wrapper"><span class="control-label">I affirm that I am qualified to participate in Beyond Z as a student in good academic standing enrolled at <%= @program_site %>.</span></span>
+                <span class="bs-wrapper"><span class="control-label">I affirm that I am qualified to participate in <%= @program_title %> as a student in good academic standing enrolled at <%= @program_site %>.</span></span>
               </label>
             </div>
 
@@ -151,7 +151,7 @@
                 </div>
 
                 <div class="form-group student">
-                  <label>What is your college GPA?</label>
+                  <label>What is your all college GPA?</label>
                   <%= f.text_field :gpa, 'class' => 'form-control short', 'max' => '10', 'step' => '0.1', 'type' => 'number', 'min' => '0' %>
                 </div>
                 <div class="form-group student">
@@ -357,9 +357,7 @@
                 <label class="checkbox"><%= f.check_box :bkg_pacific_islander, 'value' => 'pacific-islander', 'id' => 'bkg_pacific-islander' %>Pacific Islander</label>
                 <label class="checkbox"><%= f.check_box :bkg_whitecaucasian, 'value' => 'whitecaucasian', 'id' => 'bkg_whitecaucasian' %>White/Caucasian</label>
                 <label class="checkbox"><%= f.check_box :bkg_multi_ethnicmulti_racial, 'value' => 'multi-ethnicmulti-racial', 'id' => 'bkg_multi-ethnicmulti-racial' %>Multi-Ethnic/Multi-Racial</label>
-                <label class="checkbox"><%= f.check_box :bkg_other %> Other: <%= f.text_field :bkg_other %></label>
-              
-                <!-- FIXME: add other, bkg_other -->
+                <div><input type="checkbox" id="bkg-other" /> Other: <%= f.text_field :bkg_other, :onfocus => 'document.getElementById("bkg-other").checked = true;' %></div>
               </div>
               <div class="form-group" style="margin-top: 30px; margin-bottom: 30px;">
                 <h5>Please check any of the following statements that you identify with:</h3>
