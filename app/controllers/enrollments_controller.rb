@@ -45,15 +45,16 @@ class EnrollmentsController < ApplicationController
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
     client.materialize('CampaignMember')
+    client.materialize('Campaign')
     cm = SFDC_Models::CampaignMember.find_by_ContactId(current_user.salesforce_id)
     unless cm.nil?
-      application = Application.find_by_associated_campaign(cm.CampaignId)
-      unless application.nil?
-        @enrollment.position = application.form
-      end
+      campaign = SFDC_Models::Campaign.find(cm.CampaignId)
+
+      @enrollment.campaign_id = campaign.Id
+      @enrollment.position = campaign.Which_Form__c
+      @enrollment.program_col = campaign.Which_Program__c
     end
   end
-
 
   def show
     # We'll show it by just displaying the pre-filled form
@@ -82,12 +83,32 @@ class EnrollmentsController < ApplicationController
       @position_is_set = true
     end
 
+
+    if @enrollment.campaign_id
+      sf = BeyondZ::Salesforce.new
+      client = sf.get_client
+      client.materialize('Campaign')
+      campaign = SFDC_Models::Campaign.find(@enrollment.campaign_id)
+
+      # It might be worth caching this at some point too.
+
+      if campaign
+        @program_title = campaign.Program_Title__c
+        @program_site = campaign.Program_Site__c
+        @request_availability = campaign.Request_Availability__c
+        @meeting_times = campaign.Meeting_Times__c
+      end
+    end
+
     render 'new'
   end
 
   def update
     @enrollment = Enrollment.find(params[:id])
     @enrollment.update_attributes(enrollment_params)
+
+    @enrollment.meeting_times = params[:meeting_times].join(';') if params[:meeting_times]
+    @enrollment.lead_sources = params[:lead_sources].join(';') if params[:lead_sources]
 
     # Always save without validating, this ensures the partial
     # data is not lost and allows resume upload to proceed even
@@ -142,16 +163,13 @@ class EnrollmentsController < ApplicationController
     client.materialize('Contact')
     contact = SFDC_Models::Contact.find(@enrollment.user.salesforce_id)
 
-    if contact
-      contact.Middle_Name__c = @enrollment.middle_name
-      contact.Phone = @enrollment.phone
-      contact.Accepts_Text__c = @enrollment.accepts_txt
-      contact.save
-    end
-
     if cm
       cm.Application_Status__c = 'Submitted'
       cm.Apply_Button_Enabled__c = false
+
+      cm.Middle_Name__c = @enrollment.middle_name
+      cm.Phone__c = @enrollment.phone
+      cm.Accepts_Text__c = @enrollment.accepts_txt
 
       cm.Eligible__c = @enrollment.will_be_student
       cm.GPA_Circumstances__c = @enrollment.gpa_circumstances
@@ -190,9 +208,11 @@ class EnrollmentsController < ApplicationController
       cm.Identify_As_Person_Of_Color__c = @enrollment.identify_poc
       cm.Identify_As_Low_Income__c = @enrollment.identify_low_income
       cm.Identify_As_First_Gen__c = @enrollment.identify_first_gen
+      cm.Other_Race__c = @enrollment.bkg_other
       cm.Hometown__c = @enrollment.hometown
       cm.Twitter__c = @enrollment.twitter_handle
       cm.Website__c = @enrollment.personal_website
+      cm.Pell_Grant_Recipient__c = @enrollment.pell_grant
 
       cm.save
     end
@@ -207,7 +227,7 @@ class EnrollmentsController < ApplicationController
     task.Subject = "Review the application for #{@enrollment.user.name}"
     task.WhoId = contact.Id
     task.OwnerId = contact.OwnerId
-    task.WhatId = @enrollment.associated_campaign
+    task.WhatId = @enrollment.campaign_id
     task.ActivityDate = Date.today
     task.IsReminderSet = true
     task.Priority = 'Normal'
