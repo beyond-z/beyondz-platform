@@ -168,6 +168,8 @@ class EnrollmentsController < ApplicationController
 
       cm.Middle_Name__c = @enrollment.middle_name
       cm.Phone__c = @enrollment.phone
+      cm.City__c = @enrollment.city
+      cm.State__c = @enrollment.state
       cm.Accepts_Text__c = @enrollment.accepts_txt
 
       cm.Eligible__c = @enrollment.will_be_student
@@ -191,6 +193,7 @@ class EnrollmentsController < ApplicationController
       cm.Grad_University__c = @enrollment.grad_school
       cm.Graduate_Year__c = @enrollment.anticipated_grad_school_graduation
       cm.LinkedIn__c = @enrollment.online_resume
+      cm.Digital_Footprint_2__c = @enrollment.online_resume2
       if @enrollment.resume.present?
         cm.Resume__c = @enrollment.resume.url
       end
