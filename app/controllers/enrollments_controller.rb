@@ -195,9 +195,7 @@ class EnrollmentsController < ApplicationController
       cm.Graduate_Year__c = @enrollment.anticipated_grad_school_graduation
       cm.LinkedIn__c = @enrollment.online_resume
       cm.Digital_Footprint_2__c = @enrollment.online_resume2
-      if @enrollment.resume.present?
-        cm.Resume__c = @enrollment.resume.url
-      end
+      cm.Resume__c = @enrollment.resume.url if @enrollment.resume.present?
 
       cm.African_American__c = @enrollment.bkg_african_americanblack
       cm.Asian_American__c = @enrollment.bkg_asian_american
