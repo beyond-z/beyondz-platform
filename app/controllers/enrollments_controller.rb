@@ -18,6 +18,7 @@ class EnrollmentsController < ApplicationController
       @enrollment.last_name = current_user.last_name
       @enrollment.email = current_user.email
       @enrollment.university = current_user.university_name
+      @enrollment.anticipated_graduation = current_user.anticipated_graduation
       @enrollment.accepts_txt = true # to pre-check the box
 
       if Rails.application.secrets.salesforce_username && current_user.salesforce_id
