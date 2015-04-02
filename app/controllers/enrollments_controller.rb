@@ -52,7 +52,6 @@ class EnrollmentsController < ApplicationController
 
       @enrollment.campaign_id = campaign.Id
       @enrollment.position = campaign.Which_Form__c
-      @enrollment.program_col = campaign.Which_Program__c
     end
   end
 
