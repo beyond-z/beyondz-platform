@@ -107,8 +107,8 @@ class EnrollmentsController < ApplicationController
     @enrollment = Enrollment.find(params[:id])
     @enrollment.update_attributes(enrollment_params)
 
-    @enrollment.meeting_times = params[:meeting_times].join(';')
-    @enrollment.lead_sources = params[:lead_sources].join(';')
+    @enrollment.meeting_times = params[:meeting_times].join(';') if params[:meeting_times]
+    @enrollment.lead_sources = params[:lead_sources].join(';') if params[:lead_sources]
 
     # Always save without validating, this ensures the partial
     # data is not lost and allows resume upload to proceed even
@@ -168,7 +168,7 @@ class EnrollmentsController < ApplicationController
       cm.Apply_Button_Enabled__c = false
 
       cm.Middle_Name__c = @enrollment.middle_name
-      cm.Phone = @enrollment.phone
+      cm.Phone__c = @enrollment.phone
       cm.Accepts_Text__c = @enrollment.accepts_txt
 
       cm.Eligible__c = @enrollment.will_be_student
