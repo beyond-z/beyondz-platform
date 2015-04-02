@@ -18,6 +18,7 @@ class EnrollmentsController < ApplicationController
       @enrollment.last_name = current_user.last_name
       @enrollment.email = current_user.email
       @enrollment.university = current_user.university_name
+      @enrollment.anticipated_graduation = current_user.anticipated_graduation
       @enrollment.accepts_txt = true # to pre-check the box
 
       if Rails.application.secrets.salesforce_username && current_user.salesforce_id
@@ -168,6 +169,8 @@ class EnrollmentsController < ApplicationController
 
       cm.Middle_Name__c = @enrollment.middle_name
       cm.Phone__c = @enrollment.phone
+      cm.City__c = @enrollment.city
+      cm.State__c = @enrollment.state
       cm.Accepts_Text__c = @enrollment.accepts_txt
 
       cm.Eligible__c = @enrollment.will_be_student
@@ -191,9 +194,8 @@ class EnrollmentsController < ApplicationController
       cm.Grad_University__c = @enrollment.grad_school
       cm.Graduate_Year__c = @enrollment.anticipated_grad_school_graduation
       cm.LinkedIn__c = @enrollment.online_resume
-      if @enrollment.resume.present?
-        cm.Resume__c = @enrollment.resume.url
-      end
+      cm.Digital_Footprint_2__c = @enrollment.online_resume2
+      cm.Resume__c = @enrollment.resume.url if @enrollment.resume.present?
 
       cm.African_American__c = @enrollment.bkg_african_americanblack
       cm.Asian_American__c = @enrollment.bkg_asian_american
