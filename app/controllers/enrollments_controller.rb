@@ -213,7 +213,9 @@ class EnrollmentsController < ApplicationController
         cm.Digital_Footprint__c = @enrollment.online_resume
         cm.Digital_Footprint_2__c = @enrollment.online_resume2
       else
-        cm.Digital_Footprint__c = "https://twitter.com/#{@enrollment.twitter_handle}" if @enrollment.twitter_handle && @enrollment.twitter_handle != ''
+        if @enrollment.twitter_handle && @enrollment.twitter_handle != ''
+          cm.Digital_Footprint__c = "https://twitter.com/#{@enrollment.twitter_handle}"
+        end
         cm.Digital_Footprint_2__c = @enrollment.personal_website
       end
 
