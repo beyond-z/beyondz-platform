@@ -52,7 +52,7 @@ class EnrollmentsController < ApplicationController
       campaign = SFDC_Models::Campaign.find(cm.CampaignId)
 
       @enrollment.campaign_id = campaign.Id
-      @enrollment.position = campaign.Which_Form__c
+      @enrollment.position = campaign.Application_Type__c
     end
   end
 
@@ -154,6 +154,11 @@ class EnrollmentsController < ApplicationController
     end
   end
 
+  # Since this method is long but not complex (it is just a list of field mapping)
+  # it is expedient to disable the rubocop thing here instead of trying to appease
+  # it by making a simple thing complex.
+  #
+  # rubocop:disable MethodLength
   def enrollment_submitted_crm_actions
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
@@ -163,14 +168,22 @@ class EnrollmentsController < ApplicationController
     client.materialize('Contact')
     contact = SFDC_Models::Contact.find(@enrollment.user.salesforce_id)
 
+    if contact
+      # These need to be saved direct to contact because while
+      # Salesforce claims to have them on CampaignMember, they are
+      # actually pulled from the Contact and the API won't let us
+      # access or update them through the CampaignMember.
+      cm.Phone = @enrollment.phone
+      cm.City = @enrollment.city
+      cm.State = @enrollment.state
+      contact.save!
+    end
+
     if cm
       cm.Application_Status__c = 'Submitted'
       cm.Apply_Button_Enabled__c = false
 
       cm.Middle_Name__c = @enrollment.middle_name
-      cm.Phone__c = @enrollment.phone
-      cm.City__c = @enrollment.city
-      cm.State__c = @enrollment.state
       cm.Accepts_Text__c = @enrollment.accepts_txt
 
       cm.Eligible__c = @enrollment.will_be_student
@@ -185,7 +198,7 @@ class EnrollmentsController < ApplicationController
       cm.Community_Connection__c = @enrollment.community_connection
       cm.Passions_Expertise__c = @enrollment.personal_passion
       cm.Meaningful_Activity__c = @enrollment.meaningful_experience
-      cm.Experience_LICs__c = @enrollment.teaching_experience
+      cm.Relevant_Experience__c = @enrollment.teaching_experience
 
       cm.Undergrad_University__c = @enrollment.university
       cm.Undergraduate_Year__c = @enrollment.anticipated_graduation
@@ -193,7 +206,7 @@ class EnrollmentsController < ApplicationController
       cm.GPA__c = @enrollment.gpa
       cm.Grad_University__c = @enrollment.grad_school
       cm.Graduate_Year__c = @enrollment.anticipated_grad_school_graduation
-      cm.LinkedIn__c = @enrollment.online_resume
+      cm.Digital_Footprint__c = @enrollment.online_resume
       cm.Digital_Footprint_2__c = @enrollment.online_resume2
       cm.Resume__c = @enrollment.resume.url if @enrollment.resume.present?
 
@@ -220,6 +233,7 @@ class EnrollmentsController < ApplicationController
 
     make_salesforce_task(client, contact) if contact
   end
+  # rubocop: enable Metrics/MethodLength
 
   def make_salesforce_task(client, contact)
     client.materialize('Task')
