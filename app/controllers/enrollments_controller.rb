@@ -208,8 +208,15 @@ class EnrollmentsController < ApplicationController
       cm.GPA__c = @enrollment.gpa
       cm.Grad_University__c = @enrollment.grad_school
       cm.Graduate_Year__c = @enrollment.anticipated_grad_school_graduation
-      cm.Digital_Footprint__c = @enrollment.online_resume
-      cm.Digital_Footprint_2__c = @enrollment.online_resume2
+
+      if @enrollment.position == 'student'
+        cm.Digital_Footprint__c = @enrollment.online_resume
+        cm.Digital_Footprint_2__c = @enrollment.online_resume2
+      else
+        cm.Digital_Footprint__c = "https://twitter.com/#{@enrollment.twitter_handle}" if @enrollment.twitter_handle && @enrollment.twitter_handle != ''
+        cm.Digital_Footprint_2__c = @enrollment.personal_website
+      end
+
       cm.Resume__c = @enrollment.resume.url if @enrollment.resume.present?
 
       cm.African_American__c = @enrollment.bkg_african_americanblack
@@ -226,8 +233,6 @@ class EnrollmentsController < ApplicationController
       cm.Identify_As_First_Gen__c = @enrollment.identify_first_gen
       cm.Other_Race__c = @enrollment.bkg_other
       cm.Hometown__c = @enrollment.hometown
-      cm.Twitter__c = @enrollment.twitter_handle
-      cm.Website__c = @enrollment.personal_website
       cm.Pell_Grant_Recipient__c = @enrollment.pell_grant
 
       cm.save
