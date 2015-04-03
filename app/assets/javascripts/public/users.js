@@ -23,9 +23,18 @@ $(document).ready(function() {
       // we only want to affect [name] - stuff submitted to the server.
       if(child.hasAttribute && child.hasAttribute("name"))
         operation(child);
+
+      // The browser doesn't like two things with the same name actually
+      // being checked, and jQuery's [checked] looks for the checked property
+      // rather than the html attribute, so it skips us too. We check it again -
+      // if we're showing something and the html says check it, we check it!
+      if(child.hasAttribute && child.hasAttribute("checked") && !child.checked) {
+        child.checked = true;
+        showCurrentCheckedChildren(child.parentNode);
+      }
+      // we need to stop descending if we're into another form group
       if(!descend && $(child).hasClass("form-option-details"))
         continue;
-      // we need to stop descending if we're into another form group
       onChildNamedElements(child, operation, descend && !$(child).hasClass("form-group"));
     }
   }

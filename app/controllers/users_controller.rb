@@ -49,6 +49,12 @@ class UsersController < ApplicationController
   end
 
   def confirm
+    # If they are already confirmed and accepted, here refreshing the page
+    # to watch for updates perhaps, we want to send them to where they want
+    # to be - canvas - ASAP.
+    if current_user.in_lms?
+      redirect_to "//#{Rails.application.secrets.canvas_server}/"
+    end
     # renders a view
   end
 
