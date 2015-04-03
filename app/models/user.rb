@@ -61,9 +61,28 @@ class User < ActiveRecord::Base
   #
   # Returns a user's email address.
   def lead_owner
+    # The 'other' option on the signup form should be accessible here too.
+    # So if we see the keyword 'other' in the mapping, we match that to anything
+    # except the item on the list we have.
+    university_name_lookup = university_name
+    # Blank doesn't count as other - it just means they didn't fill in this field at all
+    # (they are probably the wrong applicant_type for it to be applicable)
+    if !university_name_lookup.nil? && university_name_lookup != ''
+      unless List.find_by_friendly_name('universities').items.include? university_name_lookup
+        university_name_lookup = 'other'
+      end
+    end
+    # Ditto, just other for bz_region.
+    bz_region_lookup = bz_region
+    if !bz_region_lookup.nil? && bz_region_lookup != ''
+      unless List.find_by_friendly_name('bz_regions').items.include? bz_region_lookup
+        bz_region_lookup = 'other'
+      end
+    end
+
     mapping = LeadOwnerMapping.where(
-      :university_name => university_name,
-      :bz_region => bz_region,
+      :university_name => university_name_lookup,
+      :bz_region => bz_region_lookup,
       :applicant_type => applicant_type
     )
 
