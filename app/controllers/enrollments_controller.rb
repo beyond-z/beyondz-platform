@@ -192,6 +192,8 @@ class EnrollmentsController < ApplicationController
 
       cm.Grad_Degree__c = @enrollment.grad_degree
 
+      cm.Birthdate__c = @enrollment.birthdate
+
       cm.Summer__c = @enrollment.last_summer
       cm.Post_Grad__c = @enrollment.post_graduation_plans
       cm.Why_BZ__c = @enrollment.why_bz
