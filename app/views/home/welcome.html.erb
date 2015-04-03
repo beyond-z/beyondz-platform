@@ -23,11 +23,15 @@
                 <p class="shoutout">Your account was successfully activated. We will contact you when the application is opened.</p>
               <% end %>
             <% end %>
+
+            <p>
+              Congratulations, you've just become part of a growing community devoted to making sure more talented young people fulfill their potential to become leaders, no matter where they come from.
+            </p>
+          <% else %>
+            <h2>Thank you for your interest in Beyond Z.</h2>
+            <p>We'll get back to you at <%= @new_user.email %> very soon!</p>
           <% end %>
         <% end %>
-        <p>
-          Congratulations, you've just become part of a growing community devoted to making sure more talented young people fulfill their potential to become leaders, no matter where they come from.
-        </p>
       </div>
     </section>
   </div>
