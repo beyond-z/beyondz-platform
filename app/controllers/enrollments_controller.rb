@@ -176,9 +176,9 @@ class EnrollmentsController < ApplicationController
       # Salesforce claims to have them on CampaignMember, they are
       # actually pulled from the Contact and the API won't let us
       # access or update them through the CampaignMember.
-      cm.Phone = @enrollment.phone
-      cm.City = @enrollment.city
-      cm.State = @enrollment.state
+      contact.Phone = @enrollment.phone
+      contact.City = @enrollment.city
+      contact.State = @enrollment.state
       contact.save!
     end
 
