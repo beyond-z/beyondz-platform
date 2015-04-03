@@ -164,6 +164,9 @@ class EnrollmentsController < ApplicationController
     client = sf.get_client
     client.materialize('CampaignMember')
     cm = SFDC_Models::CampaignMember.find_by_ContactId(@enrollment.user.salesforce_id)
+    if cm.nil?
+      return
+    end
 
     client.materialize('Contact')
     contact = SFDC_Models::Contact.find(@enrollment.user.salesforce_id)
@@ -179,70 +182,68 @@ class EnrollmentsController < ApplicationController
       contact.save!
     end
 
-    if cm
-      cm.Application_Status__c = 'Submitted'
-      cm.Apply_Button_Enabled__c = false
+    cm.Application_Status__c = 'Submitted'
+    cm.Apply_Button_Enabled__c = false
 
-      cm.Middle_Name__c = @enrollment.middle_name
-      cm.Accepts_Text__c = @enrollment.accepts_txt
+    cm.Middle_Name__c = @enrollment.middle_name
+    cm.Accepts_Text__c = @enrollment.accepts_txt
 
-      cm.Eligible__c = @enrollment.will_be_student
-      cm.GPA_Circumstances__c = @enrollment.gpa_circumstances
-      cm.Other_Commitments__c = @enrollment.current_volunteer_activities
+    cm.Eligible__c = @enrollment.will_be_student
+    cm.GPA_Circumstances__c = @enrollment.gpa_circumstances
+    cm.Other_Commitments__c = @enrollment.current_volunteer_activities
 
-      cm.Grad_Degree__c = @enrollment.grad_degree
+    cm.Grad_Degree__c = @enrollment.grad_degree
 
-      cm.Birthdate__c = @enrollment.birthdate
+    cm.Birthdate__c = @enrollment.birthdate
 
-      cm.Summer__c = @enrollment.last_summer
-      cm.Post_Grad__c = @enrollment.post_graduation_plans
-      cm.Why_BZ__c = @enrollment.why_bz
-      cm.Community_Connection__c = @enrollment.community_connection
-      cm.Passions_Expertise__c = @enrollment.personal_passion
-      cm.Meaningful_Activity__c = @enrollment.meaningful_experience
-      cm.Relevant_Experience__c = @enrollment.teaching_experience
+    cm.Summer__c = @enrollment.last_summer
+    cm.Post_Grad__c = @enrollment.post_graduation_plans
+    cm.Why_BZ__c = @enrollment.why_bz
+    cm.Community_Connection__c = @enrollment.community_connection
+    cm.Passions_Expertise__c = @enrollment.personal_passion
+    cm.Meaningful_Activity__c = @enrollment.meaningful_experience
+    cm.Relevant_Experience__c = @enrollment.teaching_experience
 
-      cm.Undergrad_University__c = @enrollment.university
-      cm.Undergraduate_Year__c = @enrollment.anticipated_graduation
-      cm.Major__c = @enrollment.major
-      cm.GPA__c = @enrollment.gpa
-      cm.Grad_University__c = @enrollment.grad_school
-      cm.Graduate_Year__c = @enrollment.anticipated_grad_school_graduation
+    cm.Undergrad_University__c = @enrollment.university
+    cm.Undergraduate_Year__c = @enrollment.anticipated_graduation
+    cm.Major__c = @enrollment.major
+    cm.GPA__c = @enrollment.gpa
+    cm.Grad_University__c = @enrollment.grad_school
+    cm.Graduate_Year__c = @enrollment.anticipated_grad_school_graduation
 
-      if @enrollment.position == 'student'
-        cm.Digital_Footprint__c = @enrollment.online_resume
-        cm.Digital_Footprint_2__c = @enrollment.online_resume2
-      else
-        cm.Digital_Footprint__c = @enrollment.personal_website
-        if @enrollment.twitter_handle && @enrollment.twitter_handle != ''
-          if @enrollment.twitter_handle.starts_with? 'http'
-            cm.Digital_Footprint_2__c = @enrollment.twitter_handle;
-          else
-            cm.Digital_Footprint_2__c = "https://twitter.com/#{@enrollment.twitter_handle}"
-          else
+    if @enrollment.position == 'student'
+      cm.Digital_Footprint__c = @enrollment.online_resume
+      cm.Digital_Footprint_2__c = @enrollment.online_resume2
+    else
+      cm.Digital_Footprint__c = @enrollment.personal_website
+      if @enrollment.twitter_handle && @enrollment.twitter_handle != ''
+        if @enrollment.twitter_handle.starts_with? 'http'
+          cm.Digital_Footprint_2__c = @enrollment.twitter_handle
+        else
+          cm.Digital_Footprint_2__c = "https://twitter.com/#{@enrollment.twitter_handle}"
         end
       end
-
-      cm.Resume__c = @enrollment.resume.url if @enrollment.resume.present?
-
-      cm.African_American__c = @enrollment.bkg_african_americanblack
-      cm.Asian_American__c = @enrollment.bkg_asian_american
-      cm.Latino__c = @enrollment.bkg_latino_or_hispanic
-      cm.Native_Alaskan__c = @enrollment.bkg_native_alaskan
-      cm.Native_American__c = @enrollment.bkg_native_american_american_indian
-      cm.Native_Hawaiian__c = @enrollment.bkg_native_hawaiian
-      cm.Pacific_Islander__c = @enrollment.bkg_pacific_islander
-      cm.White__c = @enrollment.bkg_whitecaucasian
-      cm.Multi_Ethnic__c = @enrollment.bkg_multi_ethnicmulti_racial
-      cm.Identify_As_Person_Of_Color__c = @enrollment.identify_poc
-      cm.Identify_As_Low_Income__c = @enrollment.identify_low_income
-      cm.Identify_As_First_Gen__c = @enrollment.identify_first_gen
-      cm.Other_Race__c = @enrollment.bkg_other
-      cm.Hometown__c = @enrollment.hometown
-      cm.Pell_Grant_Recipient__c = @enrollment.pell_grant
-
-      cm.save
     end
+
+    cm.Resume__c = @enrollment.resume.url if @enrollment.resume.present?
+
+    cm.African_American__c = @enrollment.bkg_african_americanblack
+    cm.Asian_American__c = @enrollment.bkg_asian_american
+    cm.Latino__c = @enrollment.bkg_latino_or_hispanic
+    cm.Native_Alaskan__c = @enrollment.bkg_native_alaskan
+    cm.Native_American__c = @enrollment.bkg_native_american_american_indian
+    cm.Native_Hawaiian__c = @enrollment.bkg_native_hawaiian
+    cm.Pacific_Islander__c = @enrollment.bkg_pacific_islander
+    cm.White__c = @enrollment.bkg_whitecaucasian
+    cm.Multi_Ethnic__c = @enrollment.bkg_multi_ethnicmulti_racial
+    cm.Identify_As_Person_Of_Color__c = @enrollment.identify_poc
+    cm.Identify_As_Low_Income__c = @enrollment.identify_low_income
+    cm.Identify_As_First_Gen__c = @enrollment.identify_first_gen
+    cm.Other_Race__c = @enrollment.bkg_other
+    cm.Hometown__c = @enrollment.hometown
+    cm.Pell_Grant_Recipient__c = @enrollment.pell_grant
+
+    cm.save
 
     make_salesforce_task(client, contact) if contact
   end
