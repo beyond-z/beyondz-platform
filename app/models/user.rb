@@ -139,6 +139,7 @@ class User < ActiveRecord::Base
     contact['LeadSource'] = 'Website Signup'
 
     contact['BZ_User_Id__c'] = id
+    contact['Interested_In__c'] = applicant_details
     contact['Signup_Date__c'] = created_at
     contact['Came_From_to_Visit_Site__c'] = external_referral_url
     contact['User_Type__c'] = salesforce_applicant_type
@@ -148,6 +149,7 @@ class User < ActiveRecord::Base
     contact['Company'] = (company.nil? || company.empty?) ? "#{name} (individual)" : company
     contact['Started_College__c'] = started_college_in
     contact['Interested_in_opening_BZ__c'] = like_to_help_set_up_program ? true : false
+    contact['Keep_Informed__c'] = like_to_know_when_program_starts ? true : false
     # we store the string and SF needs a string, but the library expects an array so we split it back up here
     if bz_region
       contact['BZ_Region__c'] = bz_region
