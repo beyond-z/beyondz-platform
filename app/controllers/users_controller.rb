@@ -40,7 +40,12 @@ class UsersController < ApplicationController
     if user.nil?
       valid = false
     else
-      valid = user.valid_password?(params[:password])
+      # Without checking user.confirmed, this would allow SSO to authenticate,
+      # but Devise would still kick them back to SSO as they are inactive and
+      # should try a different account... leading to an infinite loop.
+      #
+      # Unconfirmed accounts are never able to log in until they confirm.
+      valid = user.confirmed? && user.valid_password?(params[:password])
     end
 
     respond_to do |format|
@@ -143,6 +148,7 @@ class UsersController < ApplicationController
 
       :applicant_type,
       :applicant_details,
+      :applicant_comments,
       :bz_region,
       :university_name,
       :like_to_know_when_program_starts,

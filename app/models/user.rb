@@ -157,6 +157,8 @@ class User < ActiveRecord::Base
 
     contact['LeadSource'] = 'Website Signup'
 
+    contact['Comments_Or_Questions__c'] = applicant_comments
+
     contact['BZ_User_Id__c'] = id
     contact['Interested_In__c'] = applicant_details
     contact['Signup_Date__c'] = created_at
