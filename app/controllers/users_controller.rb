@@ -73,7 +73,7 @@ class UsersController < ApplicationController
     client.materialize('Contact')
     cm = SFDC_Models::CampaignMember.find_by_ContactId(current_user.salesforce_id)
     if cm
-      cm.Application_Status__c = 'Confirmed'
+      cm.Candidate_Status__c = 'Confirmed'
       cm.Apply_Button_Enabled__c = false
       cm.save
     end

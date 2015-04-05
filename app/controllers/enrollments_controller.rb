@@ -26,7 +26,7 @@ class EnrollmentsController < ApplicationController
         # this user is a member of and use that to fetch the associated
         # application out of our system.
 
-        set_application_from_salesforce_campaign
+        start_application_from_salesforce_campaign
       end
 
       # we know this is incomplete data, the user will be able
@@ -42,7 +42,7 @@ class EnrollmentsController < ApplicationController
     end
   end
 
-  def set_application_from_salesforce_campaign
+  def start_application_from_salesforce_campaign
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
     client.materialize('CampaignMember')
@@ -51,8 +51,13 @@ class EnrollmentsController < ApplicationController
     unless cm.nil?
       campaign = SFDC_Models::Campaign.find(cm.CampaignId)
 
+      # Set the data from the campaign so we can tie back to it
       @enrollment.campaign_id = campaign.Id
       @enrollment.position = campaign.Application_Type__c
+
+      # And set on Salesforce that it has been started
+      cm.Application_Status__c = 'started'
+      cm.save
     end
   end
 
