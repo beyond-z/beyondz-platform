@@ -269,7 +269,7 @@ class EnrollmentsController < ApplicationController
     task.IsReminderSet = true
     task.Priority = 'Normal'
     task.Description = "Review the application for #{@enrollment.user.name} " \
-      'and change their Application Status or assign it to someone else to handle'
+      'and change their Candidate Status or assign it to someone else to handle'
     task.save
   end
 
