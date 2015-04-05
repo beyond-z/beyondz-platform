@@ -81,14 +81,16 @@
                   <%= f.text_field :state, 'class' => 'form-control short', 'placeholder' => 'State', 'style' => 'display: inline' %>
                 </div>
                 <div class="form-group student">
-                  <label>Your date of birth</label>
-                  <%= f.text_field :birthdate, 'class' => 'form-control short', 'placeholder' => '2/28/1994' %>
+                  <label>Your date of birth (MM/DD/YYYY)</label>
+                  <%= f.text_field :birthdate, 'class' => 'form-control short', 'placeholder' => '2/28/1994', 'pattern' => '[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}' %>
                 </div>
 
+                <% if @student_id_required %>
                 <div class="form-group student">
                   <label>Your <%= @program_site %> Student ID</label>
-                  <%= f.text_field :student_id, 'class' => 'form-control short', 'title' => 'Student ID' %>
+                  <%= f.text_field :student_id, 'class' => 'form-control short', 'title' => 'Student ID', 'required' => 'required' %>
                 </div>
+                <% end %>
               </div>
               <!-- #form-contact -->
               <!-- #form-track --> 
@@ -98,11 +100,11 @@
         </div>
         <!-- .section-container --></div>
 
-      <div class="plank plain-lt both coach student">
+      <div class="plank plain-lt student">
         <div class="section-container">
           <section>
-            <div id="form-affirmations">
-              <h2 class="form-section-header">Affirmations</h2>
+            <div id="form-affirmations" class="student">
+              <h2 class="form-section-header student">Affirmations</h2>
 
               <div class="form-group student">
                 <label class="checkbox">
@@ -140,7 +142,7 @@
                 <div class="form-group both">
                   <label class="student">Year of expected graduation</label>
                   <label class="coach">Graduation year (or expected graduation)</label>
-                  <%= f.text_field :anticipated_graduation, 'class' => 'form-control short', 'step' => '1', 'value' => '2017', 'type' => 'number', 'min' => '1900' %>
+                  <%= f.text_field :anticipated_graduation, 'class' => 'form-control short', 'step' => '1', 'type' => 'number', 'min' => '1900' %>
                 </div>
                 <div class="form-group student">
                   <label>Previous college/university, if any (leave blank if none)</label>
@@ -208,7 +210,7 @@
                 <%= f.text_area :meaningful_experience, 'class' => 'form-control', 'maxlength' => '300' %>
               </div>
 
-              <div class="form-group coach student">
+              <div class="form-group student">
                 <label>Please provide a link to at least one "digital footprint" (or two if you like!) that will help us understand you better.</label>
                 <p class="help">Good examples include: your LinkedIn profile, your blog, an article you wrote, the website of an organization particularly meaningful to you, etc. (Less helpful are links to your Facebook, Instagram, or Twitter accounts.) Please make sure the link is public.</p>
                 <div class="input-group">

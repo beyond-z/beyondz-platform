@@ -97,6 +97,7 @@ class EnrollmentsController < ApplicationController
         @program_site = campaign.Program_Site__c
         @request_availability = campaign.Request_Availability__c
         @meeting_times = campaign.Meeting_Times__c
+        @student_id_required = campaign.Request_Student_Id__c
       end
     end
 
@@ -177,9 +178,9 @@ class EnrollmentsController < ApplicationController
       # actually pulled from the Contact and the API won't let us
       # access or update them through the CampaignMember.
       contact.Phone = @enrollment.phone
-      contact.City = @enrollment.city
-      contact.State = @enrollment.state
-      contact.save!
+      contact.OtherCity = @enrollment.city
+      contact.OtherState = @enrollment.state
+      contact.save
     end
 
     cm.Application_Status__c = 'Submitted'
@@ -187,6 +188,8 @@ class EnrollmentsController < ApplicationController
 
     cm.Middle_Name__c = @enrollment.middle_name
     cm.Accepts_Text__c = @enrollment.accepts_txt
+
+    cm.Student_Id__c = @enrollment.student_id
 
     cm.Eligible__c = @enrollment.will_be_student
     cm.GPA_Circumstances__c = @enrollment.gpa_circumstances

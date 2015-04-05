@@ -51,6 +51,11 @@ module BeyondZ
       client.sobject_module = SFDC_Models
       authenticate(client)
 
+      # We need to update this too so the SFDC_Models don't try to use
+      # an old client between server restarts - this will avoid the session
+      # expired problem as we reauthorize and fix the global too.
+      Databasedotcom::Sobject::Sobject.client = client
+
       client
     end
 
