@@ -88,7 +88,11 @@ class EnrollmentsController < ApplicationController
       @position_is_set = true
     end
 
+    load_salesforce_campaign
+    render 'new'
+  end
 
+  def load_salesforce_campaign
     if @enrollment.campaign_id
       sf = BeyondZ::Salesforce.new
       client = sf.get_client
@@ -105,8 +109,6 @@ class EnrollmentsController < ApplicationController
         @student_id_required = campaign.Request_Student_Id__c
       end
     end
-
-    render 'new'
   end
 
   def update
@@ -131,6 +133,7 @@ class EnrollmentsController < ApplicationController
 
     if @enrollment.errors.any?
       # errors will be displayed with the form btw
+      load_salesforce_campaign
       render 'new'
       return
     else
@@ -216,6 +219,15 @@ class EnrollmentsController < ApplicationController
     cm.Undergraduate_Year__c = @enrollment.anticipated_graduation
     cm.Major__c = @enrollment.major
     cm.GPA__c = @enrollment.gpa
+
+    cm.High_School_GPA__c = @enrollment.hs_gpa
+    cm.SAT_Score__c = @enrollment.sat_score
+    cm.ACT_Score__c = @enrollment.act_score
+    cm.Conquered_Challenge__c = @enrollment.conquered_challenge
+    cm.Languages__c = @enrollment.languages
+    cm.Lead_Sources__c = @enrollment.lead_sources
+    cm.Additional_Comments__c = @enrollment.comments
+
     cm.Grad_University__c = @enrollment.grad_school
     cm.Graduate_Year__c = @enrollment.anticipated_grad_school_graduation
 
