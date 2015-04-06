@@ -28,6 +28,9 @@ class HomeController < ApplicationController
 
   def welcome
     if user_signed_in?
+      if current_user.program_attendance_confirmed
+        redirect_to user_confirm_path
+      end
       existing_enrollment = Enrollment.find_by(:user_id => current_user.id)
       unless existing_enrollment.nil?
         if existing_enrollment.explicitly_submitted

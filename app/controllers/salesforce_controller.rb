@@ -1,3 +1,5 @@
+require 'lms'
+
 # The purpose of this controller is to centralize the endpoints for Salesforce triggers.
 # Popup windows from SF buttons are still done in the admin area, but triggers notify
 # this controller which will take appropriate action.
@@ -32,6 +34,46 @@ class SalesforceController < ApplicationController
           u.salesforce_id = parts[1]
           u.save!
         end
+      end
+    end
+
+    render plain: 'OK'
+  end
+
+  def sync_to_lms
+    if check_magic_token
+      sf = BeyondZ::Salesforce.new
+      client = sf.get_client
+      client.materialize('Campaign')
+      client.materialize('CampaignMember')
+      campaign = SFDC_Models::Campaign.find(params[:campaignId])
+
+      lms = BeyondZ::LMS.new
+
+      members = client.query("
+        SELECT
+          ContactId, Section_Name_In_LMS__c
+        FROM
+          CampaignMember
+        WHERE
+          CampaignId = '#{campaign.Id}'
+      ")
+      members.each do |member|
+        user = User.find_by_salesforce_id(member.ContactId)
+        next if user.nil?
+        lms.sync_user_logins(user)
+        type = 'STUDENT'
+        if campaign.Type == 'Leadership Coaches'
+          type = 'TA'
+        end
+        lms.sync_user_course_enrollment(
+          user,
+          campaign.Target_Course_ID_In_LMS__c[0].to_i,
+          type,
+          member.Section_Name_In_LMS__c
+        )
+
+        user.save!
       end
     end
 

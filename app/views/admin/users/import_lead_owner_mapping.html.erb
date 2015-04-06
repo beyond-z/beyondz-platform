@@ -2,22 +2,30 @@
 
 <p>This mapping sets lead relationship owner for new sign ups based on the fields they enter.</p>
 
+<p>University name is set on university partners and undergrad students. BZ region is set on employers and coaches. Thus, you should only use one or the other field.</p>
+
+<p>For example, a volunteer should have a blank university name. Only the region column should be filled. By contrast, a student should have a blank BZ Region, with a university name filled instead.</p>
+
+<p>Make sure you check the form for the spelling of the fields, as they need to match exactly.</p>
+
 <table class="csv-sample" width="600"><caption>Expected format</caption>
   <thead><tr>
-      <th>Lead_owner</th><th>Applicant type</th><th>State</th><th>Interested joining</th>
+      <th>Lead_owner</th><th>Applicant type</th><th>University Name</th><th>BZ Region</th>
   </tr></thead>
   <tbody>
     <tr>
-      <td>abby.whitbeck@beyondz.org</td><td>family_member</td><td>AK</td><td>FALSE</td>
+      <td>abby.whitbeck@beyondz.org</td><td>volunteer</td><td></td><td>San Francisco Bay Area, East Bay</td>
     </tr>
     <tr>
-      <td>abby.whitbeck@beyondz.org</td><td>school_student</td><td>NY</td><td>FALSE</td>
+      <td>abby.whitbeck@beyondz.org</td><td>undergrad_student</td><td>City College of New York</td><td></td>
     </tr>
     <tr>
-      <td>abby.whitbeck@beyondz.org</td><td>other</td><td>MN</td><td>TRUE</td>
+      <td>abby.whitbeck@beyondz.org</td><td>other</td><td></td><td></td>
     </tr>
   </tbody>
 </table>
+
+<p>You may enter 'other' in the university name or BZ region columns to match anything that isn't on those lists in the signup form.</p>
 
 <p style="margin: 2em;"><b>Important note:</b> uploading a spreadsheet will delete all current mappings and replace them with what's in the sheet. Be sure that your upload includes ALL the mappings you want kept.</p>
 

@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    if(!document.getElementById("enrollment-form-holder"))
+      return; // no need to run this if we aren't actually on the enrollment page
     // make the readonly form actually readonly by prohibiting submissions and restricting edits
     $('#enrollment-form-holder.readonly form').submit(function() { return false; });
     $('#enrollment-form-holder.readonly input, #enrollment-form-holder.readonly textarea').attr('readonly', 'readonly');
@@ -7,7 +9,15 @@ $(document).ready(function() {
     // update the charater counter on textareas that have a maxlength property:
     function updateCountdown(el) {
       var maxlength = $(el).prop('maxlength')
-      var currentlength =  $(el).val().length;
+      var currentlength =  el.value.length;
+
+      // Chrome's maxlength considers newlines to be two characters, so
+      // we need to as well to provide usable feedback to the user :(
+
+      // The other browsers, tested IE/Windows, Firefox/Windows, and Firefox/Linux
+      // all work without this hack.
+      if(navigator.userAgent.indexOf("Chrome") != -1)
+        currentlength = el.value.replace(/\n/g, "\r\n").length;
       $(el).next('.countdown').text(currentlength + '/' + maxlength);
     }
     // add a character counter textareas that have a maxlength property and make the count update as users type.

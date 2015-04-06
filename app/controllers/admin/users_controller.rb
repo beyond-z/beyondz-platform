@@ -25,13 +25,15 @@ class Admin::UsersController < Admin::ApplicationController
     end
   end
 
+  # It should change to Lead_owner, applicant_type, university_name, bz_region
+  # and allow blanks on them.
   def csv_lead_owner_export
     CSV.generate do |csv|
       header = []
       header << 'Lead_owner'
       header << 'Applicant type'
-      header << 'State'
-      header << 'Interested joining'
+      header << 'University Name'
+      header << 'BZ Region'
 
       csv << header
 
@@ -39,8 +41,8 @@ class Admin::UsersController < Admin::ApplicationController
         exportable = []
         exportable << m.lead_owner
         exportable << m.applicant_type
-        exportable << m.state
-        exportable << m.interested_joining
+        exportable << m.university_name
+        exportable << m.bz_region
 
         csv << exportable
       end
@@ -64,8 +66,8 @@ class Admin::UsersController < Admin::ApplicationController
       LeadOwnerMapping.create(
         :lead_owner => row[0],
         :applicant_type => row[1],
-        :state => row[2],
-        :interested_joining => row[3]
+        :university_name => row[2],
+        :bz_region => row[3]
       )
     end
   end
@@ -332,19 +334,22 @@ class Admin::UsersController < Admin::ApplicationController
     header << 'Exclude from reporting'
     header << 'Active Status'
     header << 'Applicant type'
+    header << 'Type = other'
     header << 'Anticipated Graduation'
+    header << 'Started College In'
+    header << 'University Name'
+    header << 'BZ Region(s)'
+    header << 'Profession/Title/Industry'
+    header << 'Company'
     header << 'City'
     header << 'State'
-    header << 'Applicant details'
-    header << 'University Name'
+    header << 'Like to know when BZ starts program'
+    header << 'Like to help BZ start'
+    header << 'User-provided comments'
     header << 'Signup Date'
     header << 'Last sign in at'
-    header << 'Subscribed to Email'
     header << 'Came from to reach site'
     header << 'Came from to reach sign up form'
-    header << 'Interested joining'
-    header << 'Interested partnering'
-    header << 'Interested receiving'
     header << 'Associated Program'
 
     Enrollment.column_names.each do |cn|
@@ -361,6 +366,7 @@ class Admin::UsersController < Admin::ApplicationController
       csv << csv_export_header
       @users.each do |user|
         exportable = []
+
         exportable << user.id
         exportable << user.first_name
         exportable << user.last_name
@@ -371,19 +377,22 @@ class Admin::UsersController < Admin::ApplicationController
         exportable << user.exclude_from_reporting
         exportable << user.active_status
         exportable << user.applicant_type
+        exportable << user.applicant_details
         exportable << user.anticipated_graduation
+        exportable << user.started_college_in
+        exportable << user.university_name
+        exportable << user.bz_region
+        exportable << user.profession
+        exportable << user.company
         exportable << user.city
         exportable << user.state
-        exportable << user.applicant_details
-        exportable << user.university_name
+        exportable << user.like_to_know_when_program_starts
+        exportable << user.like_to_help_set_up_program
+        exportable << user.applicant_comments
         exportable << user.created_at.to_s
         exportable << user.last_sign_in_at.to_s
-        exportable << user.keep_updated
         exportable << user.external_referral_url
         exportable << user.internal_referral_url
-        exportable << user.interested_joining
-        exportable << user.interested_partnering
-        exportable << user.interested_receiving
         exportable << user.associated_program
 
         if user.enrollment

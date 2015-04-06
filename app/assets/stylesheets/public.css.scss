@@ -216,10 +216,56 @@
     padding-left: 2em;
   }
 
+  /* We want regular options to appear dark */
+  option {
+    color: $knockout-dk;
+  }
+
+  /* But invalid options (blank ones on this form) to be greyed out,
+     so they look like the placeholder that they are */
+  option[value=''] {
+    color: $knockout-lt;
+  }
+
+  /* Also needs to be applicable to the outer <select> tag */
+  .placeholder-style {
+    color: $knockout-lt;
+  }
+
   #sign-up-form {
     #other_type {
       width: 20em;
       display: inline-block;
+    }
+  }
+
+  .clickable-option {
+    white-space: nowrap; /* want the label on the same line as the button */
+
+    > * {
+      /* but all sub elements can wrap as needed... */
+      white-space: normal;
+      /* ...as long as they are at the top */
+      vertical-align: top;
+    }
+  }
+
+  .clickable-option.with-text-field {
+    > .form-control {
+      /* We want these to appear inline without hogging too much space */
+      max-width: 50%;
+      display: inline-block;
+    }
+
+    > input[type=checkbox],
+    > input[type=radio] {
+      /* the button should be with the text... */
+      vertical-align: baseline;
+    }
+
+    > * {
+      /* And the text field should all be nice and vertically centered */
+      vertical-align: middle;
     }
   }
 }

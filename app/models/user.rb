@@ -61,9 +61,28 @@ class User < ActiveRecord::Base
   #
   # Returns a user's email address.
   def lead_owner
+    # The 'other' option on the signup form should be accessible here too.
+    # So if we see the keyword 'other' in the mapping, we match that to anything
+    # except the item on the list we have.
+    university_name_lookup = university_name
+    # Blank doesn't count as other - it just means they didn't fill in this field at all
+    # (they are probably the wrong applicant_type for it to be applicable)
+    if !university_name_lookup.nil? && university_name_lookup != ''
+      unless List.find_by_friendly_name('universities').items.include? university_name_lookup
+        university_name_lookup = 'other'
+      end
+    end
+    # Ditto, just other for bz_region.
+    bz_region_lookup = bz_region
+    if !bz_region_lookup.nil? && bz_region_lookup != ''
+      unless List.find_by_friendly_name('bz_regions').items.include? bz_region_lookup
+        bz_region_lookup = 'other'
+      end
+    end
+
     mapping = LeadOwnerMapping.where(
-      :state => state,
-      :interested_joining => interested_joining,
+      :university_name => university_name_lookup,
+      :bz_region => bz_region_lookup,
       :applicant_type => applicant_type
     )
 
@@ -73,6 +92,26 @@ class User < ActiveRecord::Base
     end
 
     mapping.first.lead_owner
+  end
+
+  # We allow empty passwords for certain account types
+  # so this enforces that. Otherwise, fall back on devise's
+  # default validation for the password.
+  def password_required?
+    false
+    # password.empty? || super(password)
+  end
+
+  # Gotta override devise's method for this too because while we
+  # allow accounts to be stored with empty passwords, that is not
+  # considered valid to log in - such an account should be saved
+  # but not usable as an end user login.
+  def valid_password?(password)
+    if password.nil? || password == ''
+      false # never allow login with an empty password
+    else
+      super(password) # otherwise, let devise check it from the database
+    end
   end
 
   def create_on_salesforce
@@ -91,11 +130,20 @@ class User < ActiveRecord::Base
     # to mitigate SQL injection (of course, this comes from our code anyway,
     # so there should be no security risk, but I just prefer to be a bit
     # defensive.)
-    salesforce_lead_owner = client.query("SELECT Id FROM User WHERE Email = '#{lead_owner.sub('\'', '\'\'')}'")
+    #
+    # Moreover, since the databasedotcom gem tries to materialize objects... and
+    # has a bug where it ignores the module if it finds a class in global... it
+    # conflicts with our User class too! So the query function is unusable :(
+    # Instead, I'll go one level lower and use their http method, just like the
+    # implementation (line 182 of databasedotcom/client.rb)
+    salesforce_lead_owner = client.http_get("/services/data/v#{client.version}/query?q=" \
+      "SELECT Id FROM User WHERE Email = '#{lead_owner.sub('\'', '\'\'')}'")
+    sf_answer = JSON.parse(salesforce_lead_owner.body)
+    salesforce_lead_owner = sf_answer['records']
     salesforce_lead_owner = salesforce_lead_owner.empty? ? nil : salesforce_lead_owner.first
 
     if salesforce_lead_owner
-      contact['OwnerId'] = salesforce_lead_owner.Id
+      contact['OwnerId'] = salesforce_lead_owner['Id']
     else
       # this is the user id we're logged into Salesforce as to use as
       # a last-resort owner if the other one fails
@@ -104,12 +152,31 @@ class User < ActiveRecord::Base
 
     contact['IsUnreadByOwner'] = false
 
-    contact['Company'] = "#{name} (individual)"
-
     contact['City'] = city
     contact['State'] = state
 
     contact['LeadSource'] = 'Website Signup'
+
+    contact['Comments_Or_Questions__c'] = applicant_comments
+
+    contact['BZ_User_Id__c'] = id
+    contact['Interested_In__c'] = applicant_details
+    contact['Signup_Date__c'] = created_at
+    contact['Came_From_to_Visit_Site__c'] = external_referral_url
+    contact['User_Type__c'] = salesforce_applicant_type
+    contact['University_Name__c'] = university_name
+    contact['Anticipated_Graduation__c'] = anticipated_graduation
+    contact['Title'] = profession
+    contact['Company'] = (company.nil? || company.empty?) ? "#{name} (individual)" : company
+    contact['Started_College__c'] = started_college_in
+    contact['Interested_in_opening_BZ__c'] = like_to_help_set_up_program ? true : false
+    contact['Keep_Informed__c'] = like_to_know_when_program_starts ? true : false
+    # we store the string and SF needs a string, but the library expects an array so we split it back up here
+    if bz_region
+      contact['BZ_Region__c'] = bz_region
+    else
+      contact['BZ_Region__c'] = ''
+    end
 
     # The Lead class provided by the gem is buggy so we do it with this call instead
     # which is what Lead.save calls anyway
@@ -117,25 +184,23 @@ class User < ActiveRecord::Base
 
     self.salesforce_id = contact['Id']
     save!
+  end
 
-    # This code is probably obsolete, but kept as an example
-    # of how to do it in case we want it back later. It creates
-    # a Task on Salesforce, assigned to the contact owner, telling
-    # them to make initial contact.
-    #
-    # It is obsolete because the new design uses a salesforce
-    # workflow instead.
-    #
-    # client.materialize('Task')
-    # task = SFDC_Models::Task.new
-    # task.Status = 'Not Started'
-    # task.Subject = 'Initial contact'
-    # task.WhoId = contact['Id']
-    # task.OwnerId = contact['OwnerId']
-    # task.IsReminderSet = false
-    # task.Type = 'Email'
-    # task.Description = 'Send the welcome email to the new user and initiate one-on-one contact.'
-    # task.save
+  def salesforce_applicant_type
+    case applicant_type
+    when 'undergrad_student'
+      'Undergrad'
+    when 'volunteer'
+      'Volunteer'
+    when 'employer'
+      'Employer'
+    when 'partner'
+      'University'
+    when 'other'
+      'Other'
+    else
+      applicant_type
+    end
   end
 
   # validates :anticipated_graduation, presence: true, if: :graduation_required?

@@ -1,0 +1,33 @@
+    <div class="form-group">
+      <% List.find_by_friendly_name('bz_regions').items.each_with_index do |region, idx| %>
+        <div>
+          <label>
+            <%= f.radio_button :bz_region, region, "required" => "required" %>
+            <span><%= region %></span>
+          </label>
+        </div>
+      <% end %>
+        <div>
+          <%= f.radio_button :bz_region, 'Other: ', "required" => "required", "class" => 'controls-details' %>
+            <label for="user_bz_region_other">Other:</label>
+
+          <div class="form-option-details">
+
+            <section>
+              <div class="col-sm-6">
+                <%= f.text_field :city, :class => 'form-control', required: 'required', placeholder: 'City' %>
+              </div>
+              <div class="col-sm-6">
+                <%= f.select :state, options_for_select(@states, @user.state), {}, :class => 'form-control', required: 'required', placeholder: 'State' %>
+              </div>
+            </section>
+
+            <%= f.check_box :like_to_know_when_program_starts %>
+            <%= f.label :like_to_know_when_program_starts, 'I\'d like to know when BZ starts a program in my area' %>
+            <br />
+            <%= f.check_box :like_to_help_set_up_program %>
+            <%= f.label :like_to_help_set_up_program, 'I\'d like to help BZ set up a program in my area' %>
+          </div>
+        </div>
+      </div>
+

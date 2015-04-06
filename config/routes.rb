@@ -12,6 +12,7 @@ BeyondzPlatform::Application.routes.draw do
 
   get '/salesforce/change_apply_now', to: 'salesforce#change_apply_now'
   get '/salesforce/record_converted_leads', to: 'salesforce#record_converted_leads'
+  get '/salesforce/sync_to_lms', to: 'salesforce#sync_to_lms'
 
   resources :feedback
   resources :comments
@@ -25,7 +26,7 @@ BeyondzPlatform::Application.routes.draw do
 
   resources :enrollments, only: [:new, :create, :show, :update]
 
-  get '/users/check_credentials', to: 'users#check_credentials'
+  post '/users/check_credentials', to: 'users#check_credentials'
 
   resources :assignments, only: [:index, :update, :show] do
     resources :tasks, only: [:update, :show]
@@ -56,7 +57,7 @@ BeyondzPlatform::Application.routes.draw do
     get '/users/:id/find_by_salesforce_id', to: 'users#find_by_salesforce_id', as: 'user_find_by_salesforce_id'
     get '/users/:id/enroll_by_salesforce_id', to: 'users#enroll_by_salesforce_id', as: 'user_enroll_by_salesforce_id'
 
-    resources :applications, controller: 'application_mapping'
+    resources :lists
 
     resources :users do
       resources :students

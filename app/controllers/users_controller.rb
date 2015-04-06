@@ -27,6 +27,11 @@ class UsersController < ApplicationController
     end
   end
 
+  # We need to exempt this from csrf checking so the CAS server can
+  # POST to it. While the operation is theoretically suitable for GET,
+  # POST keeps information from appearing in the server logs.
+  skip_before_filter :verify_authenticity_token, :only => [:check_credentials]
+
   # This is present to allow an external single sign on server to
   # authenticate users against our main database. Allows better
   # integration with the Canvas LMS via RubyCAS at present.
@@ -35,7 +40,12 @@ class UsersController < ApplicationController
     if user.nil?
       valid = false
     else
-      valid = user.valid_password?(params[:password])
+      # Without checking user.confirmed, this would allow SSO to authenticate,
+      # but Devise would still kick them back to SSO as they are inactive and
+      # should try a different account... leading to an infinite loop.
+      #
+      # Unconfirmed accounts are never able to log in until they confirm.
+      valid = user.confirmed? && user.valid_password?(params[:password])
     end
 
     respond_to do |format|
@@ -44,12 +54,50 @@ class UsersController < ApplicationController
   end
 
   def confirm
+    # If they are already confirmed and accepted, here refreshing the page
+    # to watch for updates perhaps, we want to send them to where they want
+    # to be - canvas - ASAP.
+    if current_user.in_lms?
+      redirect_to "//#{Rails.application.secrets.canvas_server}/"
+    end
     # renders a view
   end
 
   def save_confirm
     current_user.program_attendance_confirmed = true
     current_user.save!
+
+    sf = BeyondZ::Salesforce.new
+    client = sf.get_client
+    client.materialize('CampaignMember')
+    client.materialize('Contact')
+    cm = SFDC_Models::CampaignMember.find_by_ContactId(current_user.salesforce_id)
+    if cm
+      cm.Candidate_Status__c = 'Confirmed'
+      cm.Apply_Button_Enabled__c = false
+      cm.save
+    end
+
+    contact = SFDC_Models::Contact.find(current_user.salesforce_id)
+    if contact
+      case current_user.applicant_type
+      when 'undergrad_student'
+        contact.Participant_Information__c = 'Participant'
+      when 'volunteer'
+        contact.Volunteer_Information__c = 'Current LC'
+      else
+        # this space intentionally left blank
+        # because other shouldn't be confirmed through
+        # this controller anyway, but if they do link,
+        # we don't want to crash - we can still update
+        # our local database.
+      end
+
+      contact.save
+    end
+
+
+
     redirect_to user_confirm_path
   end
 
@@ -97,21 +145,39 @@ class UsersController < ApplicationController
       :last_name,
       :email,
       :password,
+
       :applicant_type,
+      :applicant_details,
+      :applicant_comments,
+      :bz_region,
+      :university_name,
+      :like_to_know_when_program_starts,
+      :like_to_help_set_up_program,
+      :started_college_in,
+      :anticipated_graduation,
+      :profession,
+      :company,
       :city,
-      :state,
-      :interested_joining,
-      :interested_receiving,
-      :interested_partnering,
-      :keep_updated)
+      :state)
 
     user[:external_referral_url] = session[:referrer] # the first referrer saw by the app
     user[:internal_referral_url] = params[:referrer] # the one that led direct to sign up
     @referrer = params[:referrer] # preserve the original one in case of error
 
+    user[:university_name] = params[:undergrad_university_name] if user[:university_name] == 'other'
+
+    make_on_salesforce_now = false
+
     if !user[:applicant_type].nil?
-      populate_user_details user
-      @new_user = User.create(user)
+      @new_user = User.new(user)
+      unless user[:applicant_type] == 'undergrad_student' || user[:applicant_type] == 'volunteer'
+        # Partners, employers, and others are reached out to manually instead of confirming
+        # their account. We immediate make on salesforce and don't require confirmation so
+        # we can contact them quickly and painlessly (to them!).
+        make_on_salesforce_now = true
+        @new_user.skip_confirmation!
+      end
+      @new_user.save
     else
       # this is required when signing up through this controller,
       # but is not necessarily required for all users - e.g. admin
@@ -134,31 +200,14 @@ class UsersController < ApplicationController
       return
     end
 
+    if make_on_salesforce_now
+      @new_user.create_on_salesforce
+    end
+
     redirect_to redirect_to_welcome_path(@new_user)
   end
 
   private
-
-  def populate_user_details(user)
-    case user[:applicant_type]
-    when 'other'
-      user[:applicant_details] = params[:other_details]
-    when 'professional'
-      user[:applicant_details] = params[:professional_details]
-    when 'grad_student'
-      # Each of these has different names in the form to ensure no data
-      # conflict as the user explores the bullets, but they all map to
-      # the same database field since it is really the same data
-      user[:anticipated_graduation] = params[:anticipated_grad_graduation]
-      user[:university_name] = params[:grad_university_name]
-    when 'undergrad_student'
-      user[:anticipated_graduation] = params[:anticipated_undergrad_graduation]
-      user[:university_name] = params[:undergrad_university_name]
-    when 'school_student'
-      user[:anticipated_graduation] = 'Grade ' + params[:grade]
-    end
-
-  end
 
   def states
     @states = {

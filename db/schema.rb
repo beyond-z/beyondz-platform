@@ -11,18 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150220162640) do
+ActiveRecord::Schema.define(version: 20150403161333) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "applications", force: true do |t|
-    t.boolean  "active"
-    t.string   "associated_campaign"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "form"
-  end
 
   create_table "assignment_definitions", force: true do |t|
     t.string   "title"
@@ -173,6 +165,20 @@ ActiveRecord::Schema.define(version: 20150220162640) do
     t.boolean  "program_ms_ms_dc"
     t.boolean  "program_col_col_dc"
     t.boolean  "program_col_col_nyc"
+    t.string   "campaign_id"
+    t.string   "city"
+    t.string   "state"
+    t.string   "student_id"
+    t.string   "hs_gpa"
+    t.string   "sat_score"
+    t.string   "act_score"
+    t.string   "online_resume2"
+    t.text     "conquered_challenge"
+    t.string   "bkg_other"
+    t.string   "lead_sources"
+    t.boolean  "pell_grant"
+    t.string   "meeting_times"
+    t.string   "birthdate"
   end
 
   add_index "enrollments", ["user_id"], name: "index_enrollments_on_user_id", using: :btree
@@ -180,8 +186,15 @@ ActiveRecord::Schema.define(version: 20150220162640) do
   create_table "lead_owner_mappings", force: true do |t|
     t.string   "lead_owner"
     t.string   "applicant_type"
-    t.string   "state"
-    t.boolean  "interested_joining"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "university_name"
+    t.string   "bz_region"
+  end
+
+  create_table "lists", force: true do |t|
+    t.string   "friendly_name"
+    t.string   "content"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -344,6 +357,13 @@ ActiveRecord::Schema.define(version: 20150220162640) do
     t.string   "active_status"
     t.string   "salesforce_id"
     t.boolean  "apply_now_enabled"
+    t.integer  "started_college_in"
+    t.boolean  "like_to_know_when_program_starts"
+    t.boolean  "like_to_help_set_up_program"
+    t.string   "profession"
+    t.string   "company"
+    t.string   "bz_region"
+    t.text     "applicant_comments"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

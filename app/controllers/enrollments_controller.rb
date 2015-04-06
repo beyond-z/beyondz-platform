@@ -18,6 +18,7 @@ class EnrollmentsController < ApplicationController
       @enrollment.last_name = current_user.last_name
       @enrollment.email = current_user.email
       @enrollment.university = current_user.university_name
+      @enrollment.anticipated_graduation = current_user.anticipated_graduation
       @enrollment.accepts_txt = true # to pre-check the box
 
       if Rails.application.secrets.salesforce_username && current_user.salesforce_id
@@ -25,7 +26,7 @@ class EnrollmentsController < ApplicationController
         # this user is a member of and use that to fetch the associated
         # application out of our system.
 
-        set_application_from_salesforce_campaign
+        start_application_from_salesforce_campaign
       end
 
       # we know this is incomplete data, the user will be able
@@ -41,19 +42,24 @@ class EnrollmentsController < ApplicationController
     end
   end
 
-  def set_application_from_salesforce_campaign
+  def start_application_from_salesforce_campaign
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
     client.materialize('CampaignMember')
+    client.materialize('Campaign')
     cm = SFDC_Models::CampaignMember.find_by_ContactId(current_user.salesforce_id)
     unless cm.nil?
-      application = Application.find_by_associated_campaign(cm.CampaignId)
-      unless application.nil?
-        @enrollment.position = application.form
-      end
+      campaign = SFDC_Models::Campaign.find(cm.CampaignId)
+
+      # Set the data from the campaign so we can tie back to it
+      @enrollment.campaign_id = campaign.Id
+      @enrollment.position = campaign.Application_Type__c
+
+      # And set on Salesforce that it has been started
+      cm.Application_Status__c = 'started'
+      cm.save
     end
   end
-
 
   def show
     # We'll show it by just displaying the pre-filled form
@@ -67,9 +73,12 @@ class EnrollmentsController < ApplicationController
     if @enrollment.explicitly_submitted
       # the user has hit the send button, so they finalized
       # their end. Since it may be in review already, we make
-      # it read only.
+      # it read only unless the apply now is explicitly reenabled
+      # (which is triggered through salesforce)
 
-      @enrollment_read_only = true
+      unless @enrollment.user.apply_now_enabled
+        @enrollment_read_only = true
+      end
     end
 
     # We no longer allow easy changing from student to coach once
@@ -79,12 +88,35 @@ class EnrollmentsController < ApplicationController
       @position_is_set = true
     end
 
+    load_salesforce_campaign
     render 'new'
+  end
+
+  def load_salesforce_campaign
+    if @enrollment.campaign_id
+      sf = BeyondZ::Salesforce.new
+      client = sf.get_client
+      client.materialize('Campaign')
+      campaign = SFDC_Models::Campaign.find(@enrollment.campaign_id)
+
+      # It might be worth caching this at some point too.
+
+      if campaign
+        @program_title = campaign.Program_Title__c
+        @program_site = campaign.Program_Site__c
+        @request_availability = campaign.Request_Availability__c
+        @meeting_times = campaign.Meeting_Times__c
+        @student_id_required = campaign.Request_Student_Id__c
+      end
+    end
   end
 
   def update
     @enrollment = Enrollment.find(params[:id])
     @enrollment.update_attributes(enrollment_params)
+
+    @enrollment.meeting_times = params[:meeting_times].join(';') if params[:meeting_times]
+    @enrollment.lead_sources = params[:lead_sources].join(';') if params[:lead_sources]
 
     # Always save without validating, this ensures the partial
     # data is not lost and allows resume upload to proceed even
@@ -101,6 +133,7 @@ class EnrollmentsController < ApplicationController
 
     if @enrollment.errors.any?
       # errors will be displayed with the form btw
+      load_salesforce_campaign
       render 'new'
       return
     else
@@ -120,9 +153,136 @@ class EnrollmentsController < ApplicationController
         # Email Abby
         StaffNotifications.new_application(@enrollment).deliver
 
+        # Update application status on Salesforce, if configured
+        if Rails.application.secrets.salesforce_username
+          enrollment_submitted_crm_actions
+        end
+
         redirect_to welcome_path
       end
     end
+  end
+
+  # Since this method is long but not complex (it is just a list of field mapping)
+  # it is expedient to disable the rubocop thing here instead of trying to appease
+  # it by making a simple thing complex.
+  #
+  # rubocop:disable MethodLength
+  def enrollment_submitted_crm_actions
+    sf = BeyondZ::Salesforce.new
+    client = sf.get_client
+    client.materialize('CampaignMember')
+    cm = SFDC_Models::CampaignMember.find_by_ContactId(@enrollment.user.salesforce_id)
+    if cm.nil?
+      return
+    end
+
+    client.materialize('Contact')
+    contact = SFDC_Models::Contact.find(@enrollment.user.salesforce_id)
+
+    if contact
+      # These need to be saved direct to contact because while
+      # Salesforce claims to have them on CampaignMember, they are
+      # actually pulled from the Contact and the API won't let us
+      # access or update them through the CampaignMember.
+      contact.Phone = @enrollment.phone
+      contact.OtherCity = @enrollment.city
+      contact.OtherState = @enrollment.state
+      contact.save
+    end
+
+    cm.Application_Status__c = 'Submitted'
+    cm.Apply_Button_Enabled__c = false
+
+    cm.Middle_Name__c = @enrollment.middle_name
+    cm.Accepts_Text__c = @enrollment.accepts_txt
+
+    cm.Student_Id__c = @enrollment.student_id
+
+    cm.Eligible__c = @enrollment.will_be_student
+    cm.GPA_Circumstances__c = @enrollment.gpa_circumstances
+    cm.Other_Commitments__c = @enrollment.current_volunteer_activities
+
+    cm.Grad_Degree__c = @enrollment.grad_degree
+
+    cm.Birthdate__c = @enrollment.birthdate
+
+    cm.Summer__c = @enrollment.last_summer
+    cm.Post_Grad__c = @enrollment.post_graduation_plans
+    cm.Why_BZ__c = @enrollment.why_bz
+    cm.Community_Connection__c = @enrollment.community_connection
+    cm.Passions_Expertise__c = @enrollment.personal_passion
+    cm.Meaningful_Activity__c = @enrollment.meaningful_experience
+    cm.Relevant_Experience__c = @enrollment.teaching_experience
+
+    cm.Undergrad_University__c = @enrollment.university
+    cm.Undergraduate_Year__c = @enrollment.anticipated_graduation
+    cm.Major__c = @enrollment.major
+    cm.GPA__c = @enrollment.gpa
+
+    cm.High_School_GPA__c = @enrollment.hs_gpa
+    cm.SAT_Score__c = @enrollment.sat_score
+    cm.ACT_Score__c = @enrollment.act_score
+    cm.Conquered_Challenge__c = @enrollment.conquered_challenge
+    cm.Languages__c = @enrollment.languages
+    cm.Lead_Sources__c = @enrollment.lead_sources
+    cm.Additional_Comments__c = @enrollment.comments
+
+    cm.Grad_University__c = @enrollment.grad_school
+    cm.Graduate_Year__c = @enrollment.anticipated_grad_school_graduation
+
+    if @enrollment.position == 'student'
+      cm.Digital_Footprint__c = @enrollment.online_resume
+      cm.Digital_Footprint_2__c = @enrollment.online_resume2
+    else
+      cm.Digital_Footprint__c = @enrollment.personal_website
+      if @enrollment.twitter_handle && @enrollment.twitter_handle != ''
+        if @enrollment.twitter_handle.starts_with? 'http'
+          cm.Digital_Footprint_2__c = @enrollment.twitter_handle
+        else
+          cm.Digital_Footprint_2__c = "https://twitter.com/#{@enrollment.twitter_handle}"
+        end
+      end
+    end
+
+    cm.Resume__c = @enrollment.resume.url if @enrollment.resume.present?
+
+    cm.African_American__c = @enrollment.bkg_african_americanblack
+    cm.Asian_American__c = @enrollment.bkg_asian_american
+    cm.Latino__c = @enrollment.bkg_latino_or_hispanic
+    cm.Native_Alaskan__c = @enrollment.bkg_native_alaskan
+    cm.Native_American__c = @enrollment.bkg_native_american_american_indian
+    cm.Native_Hawaiian__c = @enrollment.bkg_native_hawaiian
+    cm.Pacific_Islander__c = @enrollment.bkg_pacific_islander
+    cm.White__c = @enrollment.bkg_whitecaucasian
+    cm.Multi_Ethnic__c = @enrollment.bkg_multi_ethnicmulti_racial
+    cm.Identify_As_Person_Of_Color__c = @enrollment.identify_poc
+    cm.Identify_As_Low_Income__c = @enrollment.identify_low_income
+    cm.Identify_As_First_Gen__c = @enrollment.identify_first_gen
+    cm.Other_Race__c = @enrollment.bkg_other
+    cm.Hometown__c = @enrollment.hometown
+    cm.Pell_Grant_Recipient__c = @enrollment.pell_grant
+
+    cm.save
+
+    make_salesforce_task(client, contact) if contact
+  end
+  # rubocop: enable Metrics/MethodLength
+
+  def make_salesforce_task(client, contact)
+    client.materialize('Task')
+    task = SFDC_Models::Task.new
+    task.Status = 'Not Started'
+    task.Subject = "Review the application for #{@enrollment.user.name}"
+    task.WhoId = contact.Id
+    task.OwnerId = contact.OwnerId
+    task.WhatId = @enrollment.campaign_id
+    task.ActivityDate = Date.today
+    task.IsReminderSet = true
+    task.Priority = 'Normal'
+    task.Description = "Review the application for #{@enrollment.user.name} " \
+      'and change their Candidate Status or assign it to someone else to handle'
+    task.save
   end
 
   def create
