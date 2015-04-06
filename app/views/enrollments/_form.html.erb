@@ -441,10 +441,10 @@
               <div class="form-group student">
                 <label>How did you hear about <%= @program_title %> at <%= @program_site %>? Select all that apply from the following list:</label>
                 <table>
-                  <tr><td><input type="checkbox" value="Advisor" name="lead_sources[]" />&nbsp;</td><td>Academic Advisor</td></tr>
-                  <tr><td><input type="checkbox" value="Class" name="lead_sources[]" />&nbsp;</td><td>Class:</td><td> <input type="text" name="class_source" /></td></tr>
-                  <tr><td><input type="checkbox" value="Extracurricular" name="lead_sources[]" />&nbsp;</td><td>Student organization or other extracurricular:</td> <td><input type="text" name="extracurricular_source" /></td></tr>
-                  <tr><td><input type="checkbox" value="Other" name="lead_sources[]" />&nbsp;</td><td>Other:</td><td> <input type="text" name="other_source" /></td></tr>
+                  <tr><td><input type="checkbox" value="Advisor" name="lead_sources[]" />&nbsp;</td><td>Academic Advisor</td><td><input type="hidden" name="lead_sources[]" /> <!-- details unnecessary for this but nice consistency to have two inputs per row for simpler array processing code --></tr>
+                  <tr><td><input type="checkbox" value="Class:" name="lead_sources[]" />&nbsp;</td><td>Class:</td><td> <input type="text" name="lead_sources[]" /></td></tr>
+                  <tr><td><input type="checkbox" value="Extracurricular:" name="lead_sources[]" />&nbsp;</td><td>Student organization or other extracurricular:</td> <td><input type="text" name="lead_sources[]" /></td></tr>
+                  <tr><td><input type="checkbox" value="Other:" name="lead_sources[]" />&nbsp;</td><td>Other:</td><td> <input type="text" name="lead_sources[]" /></td></tr>
                 </table>
               </div>
               <div class="form-group">

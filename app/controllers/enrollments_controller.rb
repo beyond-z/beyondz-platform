@@ -116,7 +116,12 @@ class EnrollmentsController < ApplicationController
     @enrollment.update_attributes(enrollment_params)
 
     @enrollment.meeting_times = params[:meeting_times].join(';') if params[:meeting_times]
-    @enrollment.lead_sources = params[:lead_sources].join(';') if params[:lead_sources]
+    # Lead sources is input as an array of checkboxes and details. This can be user-configured
+    # easily later.
+    #
+    # Names with a colon in them expect details, so we remove excess semicolons there so the
+    # resulting string is more human readable without extra punctuation.
+    @enrollment.lead_sources = params[:lead_sources].join(';').gsub(':;', ': ').squeeze(';') if params[:lead_sources]
 
     # Always save without validating, this ensures the partial
     # data is not lost and allows resume upload to proceed even
