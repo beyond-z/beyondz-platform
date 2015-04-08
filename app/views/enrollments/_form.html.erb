@@ -15,7 +15,7 @@
           </header>
 
           <p class="help">
-            To apply to participate in the <%= @program_title %> at <%= @program_site %>, please complete and submit this application in its entirety. Your answers will be automatically saved as you move between questions, and you can safely leave this page and log back in at any time to resume your work. Your application won't be considered for evaluation until you click SUBMIT at the bottom of the form. As a reminder, unlike a typical course, this selective opportunity requires your participation in diverse activities intended to build your leadership and career skills, including: fifteen (15) 2-hour sessions; fourteen (14) 2-hour online modules, three (3) weekend or evening events (exact dates to be confirmed); and individual coaching sessions.
+            To apply to participate in the <%= @program_title %> at <%= @program_site %>, please complete and submit this application in its entirety. Your answers will be automatically saved as you move between questions, and you can safely leave this page and log back in at any time to resume your work. Your application won't be considered for evaluation until you click SEND at the bottom of the form. As a reminder, unlike a typical course, this selective opportunity requires your participation in diverse activities intended to build your leadership and career skills, including: fifteen (15) 2-hour sessions; fourteen (14) 2-hour online modules, three (3) weekend or evening events (exact dates to be confirmed); and individual coaching sessions.
           </p>
 
           <p class="help">The application should take approximately 20 minutes to complete and includes the following sections:</p>
@@ -268,16 +268,16 @@
             <div id="form-reflective">
               <h2 class="form-section-header">Short-answer reflective questions</h2>
               <p class="help">Please use complete sentences!</p>
-            </div>
 
-            <div class="form-group coach student">
-              <label>Why do you want to participate in <%= @program_title %>, accelerating your career and becoming part of a diverse network of leaders?</label>
-              <%= f.text_area :why_bz, 'class' => 'form-control', 'maxlength' => '500' %>
-            </div>
+              <div class="form-group coach student">
+                <label>Why do you want to participate in <%= @program_title %>, accelerating your career and becoming part of a diverse network of leaders?</label>
+                <%= f.text_area :why_bz, 'class' => 'form-control', 'maxlength' => '500' %>
+              </div>
 
-            <div class="form-group coach student">
-              <label>Please think of an important challenge you have conquered and the setbacks you overcame to do so. What did you discover about yourself as a result?</label>
-              <%= f.text_area :conquered_challenge, 'class' => 'form-control', 'maxlength' => '500' %>
+              <div class="form-group coach student">
+                <label>Please think of an important challenge you have conquered and the setbacks you overcame to do so. What did you discover about yourself as a result?</label>
+                <%= f.text_area :conquered_challenge, 'class' => 'form-control', 'maxlength' => '500' %>
+              </div>
             </div>
 
           </section>
@@ -352,7 +352,7 @@
           <section>
             <div id="form-personal-bkg">
               <h2>Personal Background</h2>
-              <p class="help">We strive to ensure our community is diverse. Please respond to the following questions about your background, identity and experiences to the extent you feel comfortable. All questions in this section are optional.</p>
+              <p class="help">We strive to ensure our community is diverse. Please respond to the following questions about your background, identity and experiences to the extent you feel comfortable. All questions in this section are optional and have no bearing on our selection decisions.</p>
               <h5>Which race(s)/ethnicity(-ies) do you identify with (check all that apply):</h5>
               <div class="form-group">
                 <label class="checkbox"><%= f.check_box :bkg_african_americanblack, 'value' => 'african-americanblack', 'id' => 'bkg_african-americanblack' %>African American/Black</label>
@@ -419,7 +419,7 @@
               <p>Please select from the list below ALL times during which you expect to be available for <%= @program_title %> sessions in the fall semester of the 2015-16 school-year. </p>
 
 
-              <p><i>Please be accurate:</i> You will be assigned to a group that meets weekly during one of these meeting times. Final invitations to join Beyond Z will include a specific day and timeslot, and it will be difficult to change that assignment once made. Note: It's important that you are as accurate as possible in this application, though we also understand your schedule may change after you’ve submitted. If that happens, or if you are currently very unsure of your fall schedule, please email us with details at info@beyondz.org. </p>
+              <p><i>Please be accurate:</i> You will be assigned to a group that meets weekly during one of these meeting times. Final invitations to join <%= @program_title %> will include a specific day and timeslot, and it will be difficult to change that assignment once made. Note: It's important that you are as accurate as possible in this application, though we also understand your schedule may change after you’ve submitted. If that happens, or if you are currently very unsure of your fall schedule, please email us with details at info@beyondz.org. </p>
 
               <p><i>Please be flexible:</i> The more options you select, the greater our opportunity to ensure all participants benefit from the great diversity of our community.</p>
 
@@ -438,15 +438,6 @@
           <section>
             <div id="form-almost-done">
               <h2>Almost Done</h2>
-              <div class="form-group student">
-                <label>How did you hear about <%= @program_title %> at <%= @program_site %>? Select all that apply from the following list:</label>
-                <table>
-                  <tr><td><input type="checkbox" value="Advisor" name="lead_sources[]" />&nbsp;</td><td>Academic Advisor</td><td><input type="hidden" name="lead_sources[]" /> <!-- details unnecessary for this but nice consistency to have two inputs per row for simpler array processing code --></tr>
-                  <tr><td><input type="checkbox" value="Class:" name="lead_sources[]" />&nbsp;</td><td>Class:</td><td> <input type="text" name="lead_sources[]" /></td></tr>
-                  <tr><td><input type="checkbox" value="Extracurricular:" name="lead_sources[]" />&nbsp;</td><td>Student organization or other extracurricular:</td> <td><input type="text" name="lead_sources[]" /></td></tr>
-                  <tr><td><input type="checkbox" value="Other:" name="lead_sources[]" />&nbsp;</td><td>Other:</td><td> <input type="text" name="lead_sources[]" /></td></tr>
-                </table>
-              </div>
               <div class="form-group">
                 <label>Anything else you'd like to share?</label>
                 <p class="help">Please let us know any additional information you wish to share about your interest in <%= @program_title %>.</p>
@@ -459,6 +450,17 @@
                   <%= f.text_field :time_taken, 'class' => 'form-control', 'step' => '1', 'type' => 'number', 'min' => '0' %>
                   <span class="input-group-addon">minutes</span> </div>
               </div>
+
+              <div class="form-group student">
+                <label>How did you hear about us? Please select all that apply.</label>
+                <table>
+                  <tr><td><input type="checkbox" value="Advisor" name="lead_sources[]" />&nbsp;</td><td>Academic Advisor</td><td><input type="hidden" name="lead_sources[]" /> <!-- details unnecessary for this but nice consistency to have two inputs per row for simpler array processing code --></tr>
+                  <tr><td><input type="checkbox" value="Class:" name="lead_sources[]" />&nbsp;</td><td>Class:</td><td> <input type="text" name="lead_sources[]" /></td></tr>
+                  <tr><td><input type="checkbox" value="Extracurricular:" name="lead_sources[]" />&nbsp;</td><td>Student organization or other extracurricular:</td> <td><input type="text" name="lead_sources[]" /></td></tr>
+                  <tr><td><input type="checkbox" value="Other:" name="lead_sources[]" />&nbsp;</td><td>Other:</td><td> <input type="text" name="lead_sources[]" /></td></tr>
+                </table>
+              </div>
+
             </div>
             <!-- #form-almost-done --> 
           </section>

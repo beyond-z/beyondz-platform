@@ -1,6 +1,19 @@
 class EnrollmentsController < ApplicationController
 
   before_filter :authenticate_user!
+  before_action :setup_defaults
+
+  # These defaults will show us what placeholders are supposed to
+  # be there in the event that they don't load. It is not meant
+  # to be seen by users - just to aid testing. If these appear in
+  # an end user page, it is a bug.
+  def setup_defaults
+    @program_title = 'PROGRAM TITLE'
+    @program_site = 'PROGRAM SITE'
+    @request_availability = false
+    @meeting_times = ''
+    @student_id_required = false
+  end
 
   layout 'public'
 
@@ -230,7 +243,7 @@ class EnrollmentsController < ApplicationController
     cm.ACT_Score__c = @enrollment.act_score
     cm.Conquered_Challenge__c = @enrollment.conquered_challenge
     cm.Languages__c = @enrollment.languages
-    cm.Lead_Sources__c = @enrollment.lead_sources
+    cm.Sourcing_Info__c = @enrollment.lead_sources
     cm.Additional_Comments__c = @enrollment.comments
 
     cm.Grad_University__c = @enrollment.grad_school
