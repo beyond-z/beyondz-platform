@@ -224,6 +224,8 @@ class EnrollmentsController < ApplicationController
     cm.Middle_Name__c = @enrollment.middle_name
     cm.Accepts_Text__c = @enrollment.accepts_txt
 
+    cm.Cannot_Attend__c = @enrollment.cannot_attend
+
     cm.Student_Id__c = @enrollment.student_id
 
     cm.Eligible__c = @enrollment.will_be_student

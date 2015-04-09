@@ -460,6 +460,14 @@
 
               <p>Finally, please help us to continuously improve.</p>
 
+              <!--
+                Sourcing_Options is a string: one option per line. If a line
+                ends with a colon, it displays a text box to get details.
+
+                Otherwise, we output a hidden control so the server side code
+                can handle the array uniformly (first entry is the checkbox, next
+                is the details) but the user doesn't have to see it.
+              -->
               <% if !@sourcing_options.empty? %>
               <div class="form-group">
                 <label>How did you hear about us? Please select all that apply.</label>
