@@ -5,7 +5,6 @@ $(document).ready(function() {
     $('#enrollment-form-holder.readonly form').submit(function() { return false; });
     $('#enrollment-form-holder.readonly input, #enrollment-form-holder.readonly textarea').attr('readonly', 'readonly');
 
-
     // update the charater counter on textareas that have a maxlength property:
     function updateCountdown(el) {
       var maxlength = $(el).prop('maxlength')
@@ -38,7 +37,7 @@ $(document).ready(function() {
     
     // Generate TOC:
     $('h2').not('.sr-only, #form-almost-done h2').each(function() {
-      $('#jumplinks').append('<li class="page-jump '+$(this).closest('div').prop('class')+'"><a href="#'+$(this).closest('div').prop('id')+'"><div class="jump-icon"></div>'+$(this).text()+'</a></li>');
+      $('#jumplinks').append('<li class="page-jump '+$(this).prop('class')+'"><a href="#'+$(this).closest('div').prop('id')+'"><div class="jump-icon"></div>'+$(this).text()+'</a></li>');
     });
 
 
