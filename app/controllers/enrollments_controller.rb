@@ -12,6 +12,7 @@ class EnrollmentsController < ApplicationController
     @program_site = 'PROGRAM SITE'
     @request_availability = false
     @meeting_times = ''
+    @sourcing_options = ''
     @student_id_required = false
   end
 
@@ -119,6 +120,11 @@ class EnrollmentsController < ApplicationController
         @program_site = campaign.Program_Site__c
         @request_availability = campaign.Request_Availability__c
         @meeting_times = campaign.Meeting_Times__c
+        @sourcing_options = campaign.Sourcing_Info_Options__c
+        # Empty string instead of nil is easier to test for in the view
+        # if this isn't filled in, we'll just skip the whole question
+        # instead of displaying nonsense to the user.
+        @sourcing_options = '' if @sourcing_options.nil?
         @student_id_required = campaign.Request_Student_Id__c
       end
     end
@@ -204,14 +210,17 @@ class EnrollmentsController < ApplicationController
       # actually pulled from the Contact and the API won't let us
       # access or update them through the CampaignMember.
       contact.Phone = @enrollment.phone
-      contact.OtherCity = @enrollment.city
-      contact.OtherState = @enrollment.state
+      contact.MailingCity = @enrollment.city
+      contact.MailingState = @enrollment.state
+      contact.Title = @enrollment.title
       contact.save
     end
 
     cm.Application_Status__c = 'Submitted'
     cm.Apply_Button_Enabled__c = false
 
+    cm.Industry__c = @enrollment.industry
+    cm.Company__c = @enrollment.company
     cm.Middle_Name__c = @enrollment.middle_name
     cm.Accepts_Text__c = @enrollment.accepts_txt
 
@@ -249,19 +258,8 @@ class EnrollmentsController < ApplicationController
     cm.Grad_University__c = @enrollment.grad_school
     cm.Graduate_Year__c = @enrollment.anticipated_grad_school_graduation
 
-    if @enrollment.position == 'student'
-      cm.Digital_Footprint__c = @enrollment.online_resume
-      cm.Digital_Footprint_2__c = @enrollment.online_resume2
-    else
-      cm.Digital_Footprint__c = @enrollment.personal_website
-      if @enrollment.twitter_handle && @enrollment.twitter_handle != ''
-        if @enrollment.twitter_handle.starts_with? 'http'
-          cm.Digital_Footprint_2__c = @enrollment.twitter_handle
-        else
-          cm.Digital_Footprint_2__c = "https://twitter.com/#{@enrollment.twitter_handle}"
-        end
-      end
-    end
+    cm.Digital_Footprint__c = @enrollment.online_resume
+    cm.Digital_Footprint_2__c = @enrollment.online_resume2
 
     cm.Resume__c = @enrollment.resume.url if @enrollment.resume.present?
 
