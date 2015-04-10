@@ -182,6 +182,13 @@ class EnrollmentsController < ApplicationController
           enrollment_submitted_crm_actions
         end
 
+        # Disable apply now early (Salesforce will do this too but it might take
+        # a second and then the user would see the button again and might be
+        # confused, so we do it locally too so they won't.)
+        u = @enrollment.user
+        u.apply_now_enabled = false
+        u.save
+
         redirect_to welcome_path
       end
     end
