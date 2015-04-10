@@ -203,10 +203,13 @@
               <h2 class="student">Professional and Volunteer Background and Commitment</h2>
               <h2 class="coach">Professional and Volunteer Experience</h2>
               <div class="form-group coach">
-                <label>Your current occupation:</label>
-                Industry: <%= f.text_field :industry %><br />
-                Company: <%= f.text_field :company %><br />
-                Title: <%= f.text_field :title %><br />
+                <h5>Your current occupation:</h5>
+                <label>Industry:</label>
+                  <%= f.text_field :industry, "class"=>'form-control' %><br />
+                <label>Company:</label>
+                  <%= f.text_field :company, "class"=>'form-control' %><br />
+                <label>Title:</label>
+                  <%= f.text_field :title, "class"=>'form-control' %><br />
               </div>
               <div class="form-group coach student">
                 <label class="student">Please list your significant extracurricular, volunteer, and professional commitments for the upcoming school year (2015-2016).</label>
