@@ -305,3 +305,18 @@
 .form-group .form-group input[type=text] {
   margin: 5px 0;
 }
+
+.required-block {
+  position: relative;
+}
+
+.required-block::after {
+  position: absolute;
+  right: -0.1em;
+  top: 2px;
+}
+
+.required::after {
+  content: "*";
+  color: red;
+}
