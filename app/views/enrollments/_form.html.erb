@@ -408,12 +408,13 @@
         <!-- .section-container --></div>
 
 
-      <% if @request_availability && @meeting_times %>
-      <div class="plank plain-lt both coach student">
+      <div class="plank plain-lt both coach <%= (@request_availability && @meeting_times) ? "student" : "" %>">
         <div class="section-container">
           <section>
             <div id="form-availability">
-              <h2 class="coach student">Availability</h2>
+              <h2 class="coach <%= (@request_availability && @meeting_times) ? "student" : "" %>">Availability</h2>
+
+              <% if @request_availability && @meeting_times %>
 
               <p class="student">Please select from the list below ALL times during which you expect to be available for <%= @program_title %> sessions in the fall semester of the 2015-16 school-year. </p>
 
@@ -429,26 +430,28 @@
 
 
               <% @meeting_times.lines.map(&:chomp).each do |time| %>
-                <label><input type="checkbox" name="meeting_times[]" value="<%=time%>" /> <%= time %></label><br />
+                <label style="padding-left: 4px;"><input type="checkbox" name="meeting_times[]" value="<%=time%>" /> <%= time %></label><br />
               <% end %>
-            </div>
 
-            <div class="form-group coach">
-              <%= f.check_box :affirm_commit_coach %>
-              <%= f.label :affirm_commit_coach, '
-                I affirm that to the best of my knowledge I can fulfill the commitment to participate in all Leadership Coach activities, which can include: facilitating weekly cohort sessions (a mix of in-person and virtual); leading virtual individual coaching sessions participants; and delivering feedback on selected artifacts (e.g., resumes) submitted by participants.  ', 'style' => 'display: inline' %>
-            </div>
+              <br />
 
-            <div class="form-group coach">
-              <span class="coach">If any, please let us know any weeks or weekends you know you will not be available during the spring (2015).</span>
-              <%= f.text_area :cannot_attend, 'class' => 'form-control', 'maxlength' => '300' %>
+              <% end %>
+              <div class="form-group coach">
+                <%= f.check_box :affirm_commit_coach %>
+                <%= f.label :affirm_commit_coach, '
+                  I affirm that to the best of my knowledge I can fulfill the commitment to participate in all Leadership Coach activities, which can include: facilitating weekly cohort sessions (a mix of in-person and virtual); leading virtual individual coaching sessions participants; and delivering feedback on selected artifacts (e.g., resumes) submitted by participants.  ', 'style' => 'display: inline' %>
+              </div>
+
+              <div class="form-group coach">
+                <span class="coach">If any, please let us know any weeks or weekends you know you will not be available during the spring (2015).</span>
+                <%= f.text_area :cannot_attend, 'class' => 'form-control', 'maxlength' => '300' %>
+              </div>
             </div>
           </div>
 
           </section>
         </div>
       </div>
-      <% end %>
 
       <div class="plank plain-md coach student">
         <div class="section-container">
@@ -476,7 +479,7 @@
                 <label>How did you hear about us? Please select all that apply.</label>
                 <table>
                   <% @sourcing_options.lines.each do |option| %>
-                    <tr><td><input type="checkbox" value="<%= option %>" name="lead_sources[]" />&nbsp;</td><td><%= option %> &nbsp;</td><td><input type="<%= option.ends_with? ':' ? 'text' : 'hidden' %>" class="form-control" name="lead_sources[]" /> <!-- details unnecessary for this but nice consistency to have two inputs per row for simpler array processing code --></tr>
+                    <tr><td><input type="checkbox" value="<%= option %>" name="lead_sources[]" />&nbsp;</td><td><%= option %> &nbsp;</td><td><input type="<%= (option.chomp.ends_with? ':') ? 'text' : 'hidden' %>" class="form-control" name="lead_sources[]" onchange="this.parentNode.parentNode.querySelector('input[type=checkbox]').checked = true;" /> <!-- details unnecessary for this but nice consistency to have two inputs per row for simpler array processing code --></tr>
                   <% end %>
                 </table>
               </div>
