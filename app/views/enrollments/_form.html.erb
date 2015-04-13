@@ -230,14 +230,14 @@
               <div class="form-group coach student">
                 <label class="student">Please provide a link to at least one "digital footprint" (or two if you like!) that will help us understand you better.</label>
                 <label class="coach">Please provide a link to two "digital fingerprints" that will help us understand you better.</label>
-                <p class="help">Good examples include: your LinkedIn profile, your blog, an article you wrote, the website of an organization particularly meaningful to you, etc. (Less helpful are links to your Facebook, Instagram, or Twitter accounts.) Please make sure the links are public.</p>
+                <p class="help">Good examples include: your LinkedIn profile, your blog, an article you wrote, the website of an organization particularly meaningful to you, etc. (Less helpful are links to your Facebook, Instagram, or Twitter accounts.) Please make sure the links are public. If you'd prefer to upload a document in lieu of submitting a second link, please click the "Choose File" button below.</p>
                 <div class="input-group">
                   <%= f.text_field :online_resume, 'class' => 'form-control medium', 'type' => 'url', 'placeholder' => 'Paste URL here', 'onblur' => 'if(this.value.length && this.value.indexOf("http") != 0) this.value = "http://"+this.value;' %>
                   <%= f.text_field :online_resume2, 'class' => 'form-control medium', 'type' => 'url', 'placeholder' => 'Paste URL here', 'onblur' => 'if(this.value.length && this.value.indexOf("http") != 0) this.value = "http://"+this.value;' %>
                 </div>
               </div>
               <div class="form-group coach">
-                <label>Or upload a .doc or .pdf file</label>
+                <label>Or upload a resume as a .doc or .pdf file</label>
                 <%= f.file_field :resume %>
                 <% if @enrollment.resume.present? %>
                   <%= link_to 'Download previously uploaded resume', @enrollment.resume.url %>
