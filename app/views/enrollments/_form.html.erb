@@ -11,7 +11,7 @@
       <div class="plank tertiary-md light">
         <div class="section-container">
           <header id="prototype-header">
-          <h1>Application for <%= @program_title %> at <%= @program_site %><br />Fall 2015</h1>
+          <h1>Application for <%= @program_title %> - <%= @program_site %><br />Fall 2015</h1>
           </header>
 
           <p class="help coach">
@@ -19,7 +19,7 @@
           </p>
 
           <p class="help student">
-            To apply to participate in the <%= @program_title %> at <%= @program_site %>, please complete and submit this application in its entirety. Your answers will be automatically saved as you move between questions, and you can safely leave this page and log back in at any time to resume your work. Your application won't be considered for evaluation until you click SEND at the bottom of the form. As a reminder, unlike a typical course, this selective opportunity requires your participation in diverse activities intended to build your leadership and career skills, including: fifteen (15) 2-hour sessions; fourteen (14) 2-hour online modules, three (3) weekend or evening events (exact dates to be confirmed); and individual coaching sessions.
+            To apply to participate in the <%= @program_title %> - <%= @program_site %>, please complete and submit this application in its entirety. Your answers will be automatically saved as you move between questions, and you can safely leave this page and log back in at any time to resume your work. Your application won't be considered for evaluation until you click SEND at the bottom of the form. As a reminder, unlike a typical course, this selective opportunity requires your participation in diverse activities intended to build your leadership and career skills, including: fifteen (15) 2-hour sessions; fourteen (14) 2-hour online modules, three (3) weekend or evening events (exact dates to be confirmed); and individual coaching sessions.
           </p>
 
           <p class="help">The application should take approximately 20 minutes to complete and includes the following sections:</p>
@@ -141,12 +141,12 @@
               <div id="form-degree">
                 <div class="form-group both">
                   <label>Undergraduate College/University</label>
-                  <%= f.text_field :university, 'class' => 'form-control', 'type' => 'text', 'placeholder' => 'Example: San Jose State University, CA' %>
+                  <%= f.text_field :university, 'class' => 'form-control', 'type' => 'text', 'placeholder' => 'Example: San Jose State University' %>
                 </div>
                 <div class="form-group both">
                   <label class="student">Year of expected graduation</label>
                   <label class="coach">Year of graduation</label>
-                  <%= f.text_field :anticipated_graduation, 'class' => 'form-control short', 'step' => '1', 'type' => 'number', 'min' => '1900' %>
+                  <%= f.text_field :anticipated_graduation, 'class' => 'form-control short', 'step' => '1', 'type' => 'number', 'min' => Date.today.year %>
                 </div>
                 <div class="form-group student">
                   <label>Previous college/university, if any (leave blank if none)</label>
@@ -157,7 +157,7 @@
                 <p class="help student">Note: We are asking the following questions in order to gain a fuller understanding of your academic background. Your answers will not directly affect your chances of being accepted.</p>
 
                 <div class="form-group both coach student">
-                  <label>Major<span class="student">/Concentration or intended major, if you have one. (Leave blank if none. Include all, if pursuing or completing multiple majors.)</span> <span class="coach">Include all, if multiple majors.</span></label>
+                  <label>Major<span class="student">/Concentration or intended major, if you have one. (Leave blank if none. Include all, if pursuing or completing multiple majors.)</span> <span class="coach"> (List all, if multiple)</span></label>
                   <%= f.text_field :major, 'class' => 'form-control', 'type' => 'text' %>
                 </div>
 
@@ -185,7 +185,7 @@
                   <label>Graduate degree</label>
                   <%= f.text_field :grad_degree, 'class' => 'form-control', 'type' => 'text' %>
                   <label>Graduation year (actual or expected)</label>
-                  <%= f.text_field :anticipated_grad_school_graduation, 'class' => 'form-control short', 'step' => '1', 'type' => 'number', 'min' => '1900' %>
+                  <%= f.text_field :anticipated_grad_school_graduation, 'class' => 'form-control short', 'step' => '1', 'type' => 'number', 'min' => Date.today.year %>
                 </div>
               </div>
               <!-- #form-degree --> 
@@ -203,7 +203,8 @@
               <h2 class="student">Professional and Volunteer Background and Commitment</h2>
               <h2 class="coach">Professional and Volunteer Experience</h2>
               <div class="form-group coach">
-                <h5>Your current occupation:</h5>
+                <h5>What is your current occupation?:</h5>
+                <p class="help">Please respond to at least one of the following questions about your occupation (industry, company, title).</p>
                 <label>Industry:</label>
                   <%= f.text_field :industry, "class"=>'form-control' %><br />
                 <label>Company:</label>
@@ -214,7 +215,8 @@
               <div class="form-group coach student">
                 <label class="student">Please list your significant extracurricular, volunteer, and professional commitments for the upcoming school year (2015-2016).</label>
                 <label class="coach">Please list any other significant volunteer commitments you've made for the upcoming year (2015-16), including Board commitments, pro bono work, coaching, and other volunteer roles (recurring or occasional).</label>
-                <p class="help">Please include approximate hours per month, and if it varies by semester, please note that too. Ex: Student worker at the library, 25 hours/month. Rugby captain, 30 hours/month, fall semester only.</p>
+                <p class="help student">Please include approximate hours per month, and if it varies by semester, please note that too. Ex: Student worker at the library, 25 hours/month. Rugby captain, 30 hours/month, fall semester only.</p>
+                <p class="help coach">Please include approximate hours per month, and if it varies by season, please note that too. Ex: AAU girls' coach, 10 hours/week, summer only. Board member, Carver Academy - East, 4 hours/month.</p>
                 <%= f.text_area :current_volunteer_activities, 'class' => 'form-control', 'maxlength' => '300' %>
               </div>
 
@@ -229,14 +231,14 @@
               <div class="form-group coach student">
                 <label class="student">Please provide a link to at least one "digital footprint" (or two if you like!) that will help us understand you better.</label>
                 <label class="coach">Please provide a link to two "digital fingerprints" that will help us understand you better.</label>
-                <p class="help">Good examples include: your LinkedIn profile, your blog, an article you wrote, the website of an organization particularly meaningful to you, etc. (Less helpful are links to your Facebook, Instagram, or Twitter accounts.) Please make sure the links are public.</p>
+                <p class="help">Good examples include: your LinkedIn profile, your blog, an article you wrote, the website of an organization particularly meaningful to you, etc. (Less helpful are links to your Facebook, Instagram, or Twitter accounts.) Please make sure the links are public.<span class="coach"> If you'd prefer to upload a document in lieu of submitting a second link, please click the "Choose File" button below.</span></p>
                 <div class="input-group">
                   <%= f.text_field :online_resume, 'class' => 'form-control medium', 'type' => 'url', 'placeholder' => 'Paste URL here', 'onblur' => 'if(this.value.length && this.value.indexOf("http") != 0) this.value = "http://"+this.value;' %>
                   <%= f.text_field :online_resume2, 'class' => 'form-control medium', 'type' => 'url', 'placeholder' => 'Paste URL here', 'onblur' => 'if(this.value.length && this.value.indexOf("http") != 0) this.value = "http://"+this.value;' %>
                 </div>
               </div>
               <div class="form-group coach">
-                <label>Or upload a .doc or .pdf file</label>
+                <label>Or upload a resume as a .doc or .pdf file</label>
                 <%= f.file_field :resume %>
                 <% if @enrollment.resume.present? %>
                   <%= link_to 'Download previously uploaded resume', @enrollment.resume.url %>
@@ -322,7 +324,7 @@
                   </div>
                   <div class="form-group">
                     <label>Phone Number</label>
-                    <%= f.text_field :reference_phone, 'class' => 'form-control short', 'type' => 'tel' %>
+                    <%= f.text_field :reference_phone, 'class' => 'form-control short', 'type' => 'tel', 'pattern' => '[0-9\-()]{10,15}', 'title' => 'phone number including area code' %>
                   </div>
                 </div>
                 <!-- .form-reference -->
@@ -346,7 +348,7 @@
                   </div>
                   <div class="form-group">
                     <label>Phone Number</label>
-                    <%= f.text_field :reference2_phone, 'class' => 'form-control short', 'type' => 'tel' %>
+                    <%= f.text_field :reference2_phone, 'class' => 'form-control short', 'type' => 'tel', 'pattern' => '[0-9\-() ]{10,15}', 'title' => 'phone number including area code' %>
                   </div>
                 </div>
                 <!-- .form-reference -->
@@ -375,7 +377,7 @@
                 <label class="checkbox"><%= f.check_box :bkg_pacific_islander, 'value' => 'pacific-islander', 'id' => 'bkg_pacific-islander' %>Pacific Islander</label>
                 <label class="checkbox"><%= f.check_box :bkg_whitecaucasian, 'value' => 'whitecaucasian', 'id' => 'bkg_whitecaucasian' %>White/Caucasian</label>
                 <label class="checkbox"><%= f.check_box :bkg_multi_ethnicmulti_racial, 'value' => 'multi-ethnicmulti-racial', 'id' => 'bkg_multi-ethnicmulti-racial' %>Multi-Ethnic/Multi-Racial</label>
-                <div><input type="checkbox" id="bkg-other" /> Other: <%= f.text_field :bkg_other, :onfocus => 'document.getElementById("bkg-other").checked = true;' %></div>
+                <div><input type="checkbox" id="bkg-other" /> Other: <%= f.text_field :bkg_other, :onfocus => 'document.getElementById("bkg-other").checked = true;', :maxlength => 40 %></div>
               </div>
               <div class="form-group" style="margin-top: 30px; margin-bottom: 30px;">
                 <h5>Please check any of the following statements that you identify with:</h3>
@@ -422,29 +424,30 @@
 
               <p class="student"><i>Please be flexible:</i> The more options you select, the greater our opportunity to ensure all participants benefit from the great diversity of our community.</p>
 
-              <p class="coach">Please select from the list below ALL <u>times</u> during which you expect to be available to lead cohort sessions in the fall, 2015.</p>
+              <p class="coach">Please select from the list below ALL <u>times</u> during which you expect to be available to lead cohort sessions in the fall (2015).</p>
 
-              <p class="coach"><i>Please be flexible</i>: the more option you select, the greater our opportunity to ensure all participants benefit from the great diversity of our coaching community.</p>
+              <p class="coach"><i>Please be flexible</i>: the more options you select, the greater our opportunity to ensure all participants benefit from the great diversity of our coaching community.</p>
 
-              <p class="coach">Your invitation to join <%= @program_title %> - <%= @program_site %> will include a specific campus location, day, and timeslot, at which point you'll be asked to officially confirm your role. It's important that you re as accurate as possible, so we can make reliable matches between coaches and participants. However, we also understand your schedule may change after you've submitted. If that happens, or if you are currently very unsure of your fall schedule, please email us with details at <a href="mailto:info@beyondz.org">info@beyondz.org</a>.</p>
+              <p class="coach"><i>Please note</i>: Your invitation to join <%= @program_title %> - <%= @program_site %> will include a specific campus location, day, and timeslot, at which point you'll be asked to officially confirm your role. It's important that you re as accurate as possible, so we can make reliable matches between coaches and participants. However, we also understand your schedule may change after you've submitted. <i>If that happens, or if you are currently very unsure of your fall schedule, please email us with details at <a href="mailto:info@beyondz.org">info@beyondz.org</a>.</i></p>
 
 
               <% @meeting_times.lines.map(&:chomp).each do |time| %>
-                <label style="padding-left: 4px;"><input type="checkbox" name="meeting_times[]" value="<%=time%>" /> <%= time %></label><br />
+                <label style="padding-left: 32px;"><input type="checkbox" name="meeting_times[]" value="<%=time%>" /> <%= time %></label><br />
               <% end %>
 
               <br />
 
               <% end %>
+              <h5>Please affirm your commitment:</h5>
               <div class="form-group coach">
                 <%= f.check_box :affirm_commit_coach %>
                 <%= f.label :affirm_commit_coach, '
-                  I affirm that to the best of my knowledge I can fulfill the commitment to participate in all Leadership Coach activities, which can include: facilitating weekly cohort sessions (a mix of in-person and virtual); leading virtual individual coaching sessions participants; and delivering feedback on selected artifacts (e.g., resumes) submitted by participants.  ', 'style' => 'display: inline' %>
+                  I affirm that to the best of my knowledge I can fulfill the commitment to participate in all Leadership Coach activities, which can include: facilitating weekly cohort sessions (a mix of in-person and virtual); leading virtual individual coaching sessions participants; and delivering feedback on selected artifacts (e.g., resumes) submitted by participants.  ', 'style' => 'display: inline; font-weight: normal;' %>
               </div>
 
               <div class="form-group coach">
-                <span class="coach">If any, please let us know any weeks or weekends you know you will not be available during the spring (2015).</span>
-                <%= f.text_area :cannot_attend, 'class' => 'form-control', 'maxlength' => '300' %>
+                <span class="coach">Please let us know of any dates that you anticipate you will not be available during the fall (2015).</span>
+                <%= f.text_area :cannot_attend, 'class' => 'form-control', 'maxlength' => '300', 'style'=>'height: 6em !important;' %>
               </div>
             </div>
           </div>
@@ -488,8 +491,8 @@
                 <label>Last but not least</label>
                 <p class="help">Approximately how long (in minutes) did it take you to complete this application?</p>
                 <div class="input-group short">
-                  <%= f.text_field :time_taken, 'class' => 'form-control', 'step' => '1', 'type' => 'number', 'min' => '0' %>
-                  <span class="input-group-addon">minutes</span> </div>
+                  <%= f.text_field :time_taken, 'class' => 'form-control short', 'step' => '1', 'type' => 'number', 'min' => '0', 'style' => 'display: inline; width: 150px;' %>
+                  <span class="input-group-addon" style="display: inline; position: relative; top: 6px;">minutes</span> </div>
               </div>
             </div>
             <!-- #form-almost-done --> 
@@ -504,7 +507,7 @@
                 <div class="apply-button">This application has been received!</div>
               <% else %>
                 <div class="apply-button form-submit">
-                  <button class="no-decoration" type="submit" name="user_submit"><span class="apply-icon"></span><span class="apply-text">SEND</span></button>
+                  <button class="no-decoration" type="submit" name="user_submit" onclick="return confirm('Are you sure you are ready to send your application?');"><span class="apply-icon"></span><span class="apply-text">SEND</span></button>
                   </div>
                 </div>
               <% end %>

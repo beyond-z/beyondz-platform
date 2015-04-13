@@ -158,6 +158,9 @@ class EnrollmentsController < ApplicationController
     if @enrollment.errors.any?
       # errors will be displayed with the form btw
       load_salesforce_campaign
+
+      @position_is_set = true if @enrollment.position
+
       render 'new'
       return
     else
@@ -165,7 +168,6 @@ class EnrollmentsController < ApplicationController
         # the user didn't explicitly submit, update it and allow
         # them to continue editing
         # (this can happen if they do an intermediate save of work in progress)
-        flash[:message] = 'Your application has been updated'
         redirect_to enrollment_path(@enrollment.id)
       else
         # they did explicitly submit, finalize the application and show them the
