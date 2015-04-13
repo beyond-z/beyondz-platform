@@ -36,7 +36,7 @@ $(document).ready(function() {
     });
     
     // Generate TOC:
-    $('h2').not('.sr-only, #form-almost-done h2').each(function() {
+    $('h2').not('.sr-only, #form-almost-done h2, #error-explanation h2').each(function() {
       $('#jumplinks').append('<li class="page-jump '+$(this).prop('class')+'"><a href="#'+$(this).closest('div').prop('id')+'"><div class="jump-icon"></div>'+$(this).text()+'</a></li>');
     });
 
