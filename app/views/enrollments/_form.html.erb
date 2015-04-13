@@ -506,7 +506,7 @@
                 <div class="apply-button">This application has been received!</div>
               <% else %>
                 <div class="apply-button form-submit">
-                  <button class="no-decoration" type="submit" name="user_submit"><span class="apply-icon"></span><span class="apply-text">SEND</span></button>
+                  <button class="no-decoration" type="submit" name="user_submit" onclick="return confirm('Are you sure you are ready to send your application?');"><span class="apply-icon"></span><span class="apply-text">SEND</span></button>
                   </div>
                 </div>
               <% end %>
