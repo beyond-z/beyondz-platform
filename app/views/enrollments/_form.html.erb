@@ -146,7 +146,7 @@
                 <div class="form-group both">
                   <label class="student">Year of expected graduation</label>
                   <label class="coach">Year of graduation</label>
-                  <%= f.text_field :anticipated_graduation, 'class' => 'form-control short', 'step' => '1', 'type' => 'number', 'min' => Date.today.year %>
+                  <%= f.text_field :anticipated_graduation, 'class' => 'form-control short', 'step' => '1', 'type' => 'number', 'min' => Date.today.year - 50 %>
                 </div>
                 <div class="form-group student">
                   <label>Previous college/university, if any (leave blank if none)</label>
@@ -185,7 +185,7 @@
                   <label>Graduate degree</label>
                   <%= f.text_field :grad_degree, 'class' => 'form-control', 'type' => 'text' %>
                   <label>Graduation year (actual or expected)</label>
-                  <%= f.text_field :anticipated_grad_school_graduation, 'class' => 'form-control short', 'step' => '1', 'type' => 'number', 'min' => Date.today.year %>
+                  <%= f.text_field :anticipated_grad_school_graduation, 'class' => 'form-control short', 'step' => '1', 'type' => 'number', 'min' => Date.today.year - 50 %>
                 </div>
               </div>
               <!-- #form-degree --> 
@@ -432,7 +432,7 @@
 
 
               <% @meeting_times.lines.map(&:chomp).each do |time| %>
-                <label style="padding-left: 32px;"><input type="checkbox" name="meeting_times[]" value="<%=time%>" /> <%= time %></label><br />
+                <label style="padding-left: 32px;"><input type="checkbox" name="meeting_times[]" value="<%=time%>" <%= checked_if_in_array(:meeting_times, time) %> /> <%= time %></label><br />
               <% end %>
 
               <br />
@@ -482,7 +482,7 @@
                 <label>How did you hear about us? Please select all that apply.</label>
                 <table>
                   <% @sourcing_options.lines.each do |option| %>
-                    <tr><td><input type="checkbox" value="<%= option %>" name="lead_sources[]" />&nbsp;</td><td><%= option %> &nbsp;</td><td><input type="<%= (option.chomp.ends_with? ':') ? 'text' : 'hidden' %>" class="form-control" name="lead_sources[]" onchange="this.parentNode.parentNode.querySelector('input[type=checkbox]').checked = true;" /> <!-- details unnecessary for this but nice consistency to have two inputs per row for simpler array processing code --></tr>
+                    <tr><td><input type="checkbox" value="<%= option %>" name="lead_sources[]" <%= checked_if_in_array(:lead_sources, option) %> />&nbsp;</td><td><%= option %> &nbsp;</td><td><input type="<%= (option.chomp.ends_with? ':') ? 'text' : 'hidden' %>" class="form-control" name="lead_sources[]" onchange="this.parentNode.parentNode.querySelector('input[type=checkbox]').checked = true;" /> <!-- details unnecessary for this but nice consistency to have two inputs per row for simpler array processing code --></tr>
                   <% end %>
                 </table>
               </div>
