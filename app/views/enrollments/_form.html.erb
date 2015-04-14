@@ -1,5 +1,4 @@
 <!-- This form is for <%= @enrollment.position %>. -->
-<% @sourcing_options="Boo:\nyaka\nLOL:" %>
 <% if @enrollment_read_only %>
 <div id="enrollment-form-holder" class="readonly">
 <% else %>
@@ -445,9 +444,11 @@
               <% end %>
               <h5>Please affirm your commitment:</h5>
               <div class="form-group coach" id="coach-affirm-holder">
-                <%= f.check_box :affirm_commit_coach %>
-                <%= f.label :affirm_commit_coach, '
-                  I affirm that to the best of my knowledge I can fulfill the commitment to participate in all Leadership Coach activities, which can include: facilitating weekly cohort sessions (a mix of in-person and virtual); leading virtual individual coaching sessions participants; and delivering feedback on selected artifacts (e.g., resumes) submitted by participants.  ', 'style' => 'display: inline; font-weight: normal;' %>
+                <label class="checkbox">
+                  <%= f.check_box :affirm_commit_coach %>
+                  <span class="bs-wrapper"><span class="control-label"> I affirm that to the best of my knowledge I can fulfill the commitment to participate in all Leadership Coach activities, which can include: facilitating weekly cohort sessions (a mix of in-person and virtual); leading virtual individual coaching sessions participants; and delivering feedback on selected artifacts (e.g., resumes) submitted by participants.</span></span>
+                </label>
+
               </div>
 
               <div class="form-group coach">
