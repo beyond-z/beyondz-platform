@@ -443,10 +443,12 @@
 
               <% end %>
               <h5>Please affirm your commitment:</h5>
-              <div class="form-group coach">
-                <%= f.check_box :affirm_commit_coach %>
-                <%= f.label :affirm_commit_coach, '
-                  I affirm that to the best of my knowledge I can fulfill the commitment to participate in all Leadership Coach activities, which can include: facilitating weekly cohort sessions (a mix of in-person and virtual); leading virtual individual coaching sessions participants; and delivering feedback on selected artifacts (e.g., resumes) submitted by participants.  ', 'style' => 'display: inline; font-weight: normal;' %>
+              <div class="form-group coach" id="coach-affirm-holder">
+                <label class="checkbox">
+                  <%= f.check_box :affirm_commit_coach %>
+                  <span class="bs-wrapper"><span class="control-label"> I affirm that to the best of my knowledge I can fulfill the commitment to participate in all Leadership Coach activities, which can include: facilitating weekly cohort sessions (a mix of in-person and virtual); leading virtual individual coaching sessions participants; and delivering feedback on selected artifacts (e.g., resumes) submitted by participants.</span></span>
+                </label>
+
               </div>
 
               <div class="form-group coach">
@@ -486,7 +488,9 @@
                 <label>How did you hear about us? Please select all that apply.</label>
                 <table>
                   <% @sourcing_options.lines.each do |option| %>
-                    <tr><td><input type="checkbox" value="<%= option %>" name="lead_sources[]" <%= checked_if_in_array(:lead_sources, option) %> />&nbsp;</td><td><%= option %> &nbsp;</td><td><input type="<%= (option.chomp.ends_with? ':') ? 'text' : 'hidden' %>" class="form-control" name="lead_sources[]" onchange="this.parentNode.parentNode.querySelector('input[type=checkbox]').checked = true;" /> <!-- details unnecessary for this but nice consistency to have two inputs per row for simpler array processing code --></tr>
+                  <% option = option.chomp %>
+                  <!-- visibility: none maintains the same spacing as if it was there... -->
+                    <tr><td><input type="checkbox" value="<%= option %>" name="lead_sources[]" <%= checked_if_in_array(:lead_sources, option) %> />&nbsp;</td><td><%= option %> &nbsp;</td><td><input type="text" style="visibility: <%= (option.chomp.ends_with? ':') ? 'visible' : 'hidden' %>" class="form-control" name="lead_sources[]" onchange="this.parentNode.parentNode.querySelector('input[type=checkbox]').checked = true;" value="<%= value_after_array(:lead_sources, option) %>" /> <!-- details unnecessary for this but nice consistency to have two inputs per row for simpler array processing code --></tr>
                   <% end %>
                 </table>
               </div>
