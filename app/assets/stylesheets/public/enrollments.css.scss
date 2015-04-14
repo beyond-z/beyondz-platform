@@ -55,3 +55,10 @@
   width: 75% !important;
   height: 150px !important;
 }
+
+#coach-affirm-holder {
+  .field_with_errors {
+    display: inline;
+    color: #a94442; /* oh the others, this is a bootstrap thing for a border, but that doesn't work on this checkbox (...for some reason) so using same color for the text) */
+  }
+}
