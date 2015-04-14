@@ -5,6 +5,13 @@ $(document).ready(function() {
     $('#enrollment-form-holder.readonly form').submit(function() { return false; });
     $('#enrollment-form-holder.readonly input, #enrollment-form-holder.readonly textarea').attr('readonly', 'readonly');
 
+    $('#enrollment-form-holder input').keypress(function(e) {
+      if(e.which == 13) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
     // update the charater counter on textareas that have a maxlength property:
     function updateCountdown(el) {
       var maxlength = $(el).prop('maxlength')
