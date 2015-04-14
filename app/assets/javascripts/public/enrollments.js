@@ -5,6 +5,15 @@ $(document).ready(function() {
     $('#enrollment-form-holder.readonly form').submit(function() { return false; });
     $('#enrollment-form-holder.readonly input, #enrollment-form-holder.readonly textarea').attr('readonly', 'readonly');
 
+    // This prevents the enter key on single line inputs from submitting
+    // the form. We want them to explicitly hit SEND at the bottom instead.
+    $('#enrollment-form-holder input').keypress(function(e) {
+      if(e.which == 13) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
     // update the charater counter on textareas that have a maxlength property:
     function updateCountdown(el) {
       var maxlength = $(el).prop('maxlength')

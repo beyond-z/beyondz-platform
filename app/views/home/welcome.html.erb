@@ -15,7 +15,11 @@
                 <!-- When Salesforce integration is enabled, the apply now button will be controlled
                      by a campaign on that end. Until then though, we want everyone to see it. -->
               <% if @new_user.apply_now_enabled || !Rails.application.secrets.salesforce_username %>
+                <% if Enrollment.find_by(:user_id => current_user.id).nil? %>
                 <p class="shoutout">Your account was successfully activated. Now you can complete your application.</p>
+                <% else %>
+                <p class="shoutout">Thanks for coming back to finish your application. Click here to pick up where you left off!</p>
+                <% end %>
                 <div class="apply-button">
                   <%= link_to '<div class="apply-icon"></div><div class="apply-text">Apply now!</div>'.html_safe, new_enrollment_path %><br />
                 </div>
