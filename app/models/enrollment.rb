@@ -51,9 +51,7 @@ class Enrollment < ActiveRecord::Base
 
   validates :industry, presence: true, if: "position == 'coach' && company.empty? && title.empty?"
 
-  validates :meeting_times, presence: true, if: "@meeting_times_needed"
+  validates :meeting_times, presence: true, if: '@check_meeting_times'
 
-  def check_meeting_times=(needed)
-    @meeting_times_needed = needed
-  end
+  attr_writer :check_meeting_times
 end
