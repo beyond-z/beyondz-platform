@@ -15,7 +15,7 @@
           </header>
 
           <p class="help coach">
-           To apply to volunteer as a <%= @program_title %> Leadership Coach in our <%= @program_site %> program, please complete and submit this application in its entirety. Your answers will be automatically saved as you move between questions, and you can safely leave this page and log back in at any time to resume your work. Your application won't be considered for evaluation until you click SEND at the bottom of the form.</p>
+           To apply to volunteer as a <%= @program_title %> Leadership Coach in our <%= @program_site %> program, please complete and submit this application in its entirety. Your answers will be automatically saved as you move between questions, and you can safely leave this page and log back in at any time to resume your work. Your application won't be considered for evaluation until you click SEND at the bottom of the form.
           </p>
 
           <p class="help student">
@@ -224,7 +224,7 @@
                 <%= f.text_area :current_volunteer_activities, 'class' => 'form-control', 'maxlength' => '300' %>
               </div>
 
-              <div class="form-group" class="coach student" id="form-leadership-exp">
+              <div class="form-group coach student" id="form-leadership-exp">
                 <label class="coach">What is <u>one</u> recent professional or volunteer experience that has been particularly meaningful to you? Why?</label>
                 <p class="coach help">While we are interested in the diversity of activities in which you're involved, we are also curious to learn more about a single experience that has been particularly meaningful to your development as a leader.</p>
                 <label class="student">What is <u>one</u> professional, extracurricular, or volunteer experience that has been particularly meaningful to you? Why?</label>
@@ -260,6 +260,7 @@
                 <%= f.text_area :post_graduation_plans, 'class' => 'form-control', 'maxlength' => '150' %>
               </div>
             <!-- #form-commitment --> 
+            </div>
           </section>
         </div>
         <!-- .section-container -->
@@ -462,7 +463,6 @@
                 <%= f.text_area :cannot_attend, 'class' => 'form-control', 'maxlength' => '300', 'style'=>'height: 6em !important;' %>
               </div>
             </div>
-          </div>
 
           </section>
         </div>
@@ -506,7 +506,8 @@
                 <p class="help">Approximately how long (in minutes) did it take you to complete this application?</p>
                 <div class="input-group short">
                   <%= f.text_field :time_taken, 'class' => 'form-control short', 'step' => '1', 'type' => 'number', 'min' => '0', 'style' => 'display: inline; width: 150px;' %>
-                  <span class="input-group-addon" style="display: inline; position: relative; top: 6px;">minutes</span> </div>
+                  <span class="input-group-addon" style="display: inline; position: relative; top: 6px;">minutes</span>
+                </div>
               </div>
             </div>
             <!-- #form-almost-done --> 
@@ -522,7 +523,6 @@
               <% else %>
                 <div class="apply-button form-submit">
                   <button class="no-decoration" type="submit" name="user_submit" onclick="return confirm('Are you sure you are ready to send your application?');"><span class="apply-icon"></span><span class="apply-text">SEND</span></button>
-                  </div>
                 </div>
               <% end %>
             </div>
