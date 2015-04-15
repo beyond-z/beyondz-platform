@@ -441,7 +441,7 @@
 
               <div class="availability-options">
               <% @meeting_times.lines.map(&:chomp).each do |time| %>
-                <label class="control-label" style="padding-left: 32px;"><input type="checkbox" name="meeting_times[]" value="<%=time%>" <%= checked_if_in_array(:meeting_times, time) %> /> <%= time %></label><br />
+                <label class="control-label" style="padding-left: 32px;"><input type="checkbox" name="meeting_times[]" value="<%=time%>" <%= checked_if_in_array(:meeting_times, time, @enrollment[:meeting_times]) %> /> <%= time %></label><br />
               <% end %>
               </div>
 
