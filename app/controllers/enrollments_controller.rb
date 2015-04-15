@@ -298,26 +298,8 @@ class EnrollmentsController < ApplicationController
     cm.Pell_Grant_Recipient__c = @enrollment.pell_grant
 
     cm.save
-
-    make_salesforce_task(client, contact) if contact
   end
   # rubocop: enable Metrics/MethodLength
-
-  def make_salesforce_task(client, contact)
-    client.materialize('Task')
-    task = SFDC_Models::Task.new
-    task.Status = 'Not Started'
-    task.Subject = "Review the application for #{@enrollment.user.name}"
-    task.WhoId = contact.Id
-    task.OwnerId = contact.OwnerId
-    task.WhatId = @enrollment.campaign_id
-    task.ActivityDate = Date.today
-    task.IsReminderSet = true
-    task.Priority = 'Normal'
-    task.Description = "Review the application for #{@enrollment.user.name} " \
-      'and change their Candidate Status or assign it to someone else to handle'
-    task.save
-  end
 
   def create
     @enrollment = Enrollment.create(enrollment_params)
