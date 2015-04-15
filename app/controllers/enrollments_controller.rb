@@ -147,7 +147,8 @@ class EnrollmentsController < ApplicationController
     #
     # Names with a colon in them expect details, so we remove excess semicolons there so the
     # resulting string is more human readable without extra punctuation.
-    @enrollment.lead_sources = params[:lead_sources].join(';').gsub(':;', ': ').squeeze(';') if params[:lead_sources]
+    @enrollment.lead_sources = ''
+    @enrollment.lead_sources = params[:lead_sources].join(';') if params[:lead_sources]
 
     # Always save without validating, this ensures the partial
     # data is not lost and allows resume upload to proceed even
@@ -159,6 +160,7 @@ class EnrollmentsController < ApplicationController
     # because otherwise, they are probably just saving incomplete
     # data to finish later
     unless params[:user_submit].nil?
+      @enrollment.lead_sources = @enrollment.lead_sources.gsub(':;', ': ').squeeze(';') if @enrollment.lead_sources
       @enrollment.save(validate: true)
     end
 

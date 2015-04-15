@@ -13,7 +13,7 @@ module EnrollmentsHelper
     ''
   end
 
-  def value_after_array(param, item)
+  def value_after_array(param, item, alternative_string)
     return_next = false
     if params[param]
       params[param].each do |p|
@@ -21,6 +21,13 @@ module EnrollmentsHelper
         return_next = true if p == item
       end
     end
+    if alternative_string
+      alternative_string.split(';').each do |p|
+        return p if return_next
+        return_next = true if p == item
+      end
+    end
+
     ''
   end
 end
