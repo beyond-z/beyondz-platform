@@ -13,7 +13,7 @@
       Profession / job title:
     </div>
     <div class="col-sm-7">
-      <%= f.text_field :profession, :class => 'form-control' %>
+      <%= f.text_field :profession, :class => 'form-control', :maxlength => '80' %>
     </div>
   </section>
   <section>
@@ -21,7 +21,7 @@
       Company:
     </div>
     <div class="col-sm-7">
-      <%= f.text_field :company, :class => 'form-control' %>
+      <%= f.text_field :company, :class => 'form-control', :maxlength => '70' %>
     </div>
   </section>
 

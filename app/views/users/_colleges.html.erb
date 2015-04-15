@@ -9,7 +9,7 @@
         <%= f.radio_button :university_name, 'other', :required => 'required', :checked => (params[:user].nil? ? false : (params[:user][:university_name] == 'other')) %>
         <%= f.label :university_name_other, "None of the above" %>
         <div class="form-option-details">
-          <%= text_field_tag :undergrad_university_name, nil, :required => 'required', :class => 'form-control', :value => params[:undergrad_university_name], :placeholder => 'Your college name and state', :style => 'max-width: 250px;' %>
+          <%= text_field_tag :undergrad_university_name, nil, :required => 'required', :class => 'form-control', :value => params[:undergrad_university_name], :placeholder => 'Your college name and state', :style => 'max-width: 250px;', :maxlength => '70' %>
           <div class="clickable-option">
             <%= f.check_box :like_to_know_when_program_starts %>
             <%= f.label :like_to_know_when_program_starts, 'I\'d like to know when BZ starts a program at my college' %>
