@@ -55,3 +55,7 @@
   width: 75% !important;
   height: 150px !important;
 }
+
+#form-availability .field_with_errors ~ .availability-options {
+  @extend .has-error;
+}

@@ -27,14 +27,24 @@ class HomeController < ApplicationController
   end
 
   def welcome
+    # just set here as a default so we can see it if it is improperly set below and
+    # also to handle the fallback case for legacy users who applied before the salesforce system was in place
+    @program_title = 'Beyond Z'
     if user_signed_in?
       if current_user.program_attendance_confirmed
         redirect_to user_confirm_path
       end
       existing_enrollment = Enrollment.find_by(:user_id => current_user.id)
-      unless existing_enrollment.nil?
-        if existing_enrollment.explicitly_submitted
-          @application_received = true
+      return if existing_enrollment.nil?
+
+      if existing_enrollment.explicitly_submitted
+        @application_received = true
+        if existing_enrollment.campaign_id
+          sf = BeyondZ::Salesforce.new
+          client = sf.get_client
+          client.materialize('Campaign')
+          campaign = SFDC_Models::Campaign.find(existing_enrollment.campaign_id)
+          @program_title = campaign.Program_Title__c
         end
       end
     end
