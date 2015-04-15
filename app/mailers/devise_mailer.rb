@@ -1,4 +1,7 @@
 class DeviseMailer < Devise::Mailer
+
+  default "Message-ID" => ->(v) {"<#{SecureRandom.uuid}@beyondz.org>"}
+
   def confirmation_instructions(record, token, opts = {})
     mail = super
     # your custom logic
