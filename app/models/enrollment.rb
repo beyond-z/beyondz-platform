@@ -50,4 +50,10 @@ class Enrollment < ActiveRecord::Base
   validates :reference2_email, presence: true, if: "position == 'coach' && reference2_phone.empty?"
 
   validates :industry, presence: true, if: "position == 'coach' && company.empty? && title.empty?"
+
+  validates :meeting_times, presence: true, if: "@meeting_times_needed"
+
+  def check_meeting_times=(needed)
+    @meeting_times_needed = needed
+  end
 end

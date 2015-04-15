@@ -135,7 +135,13 @@ class EnrollmentsController < ApplicationController
     @enrollment = Enrollment.find(params[:id])
     @enrollment.update_attributes(enrollment_params)
 
+    @enrollment.meeting_times = '' # need to clear out because if none are checked, the next line never runs
     @enrollment.meeting_times = params[:meeting_times].join(';') if params[:meeting_times]
+
+    if params[:meeting_times_required] && (@enrollment.meeting_times.nil? || @enrollment.meeting_times.empty?)
+      @enrollment.check_meeting_times = true
+    end
+
     # Lead sources is input as an array of checkboxes and details. This can be user-configured
     # easily later.
     #

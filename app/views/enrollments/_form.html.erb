@@ -1,4 +1,6 @@
 <!-- This form is for <%= @enrollment.position %>. -->
+<% @request_availability = true %>
+<% @meeting_times = "foo\nass" %>
 <% if @enrollment_read_only %>
 <div id="enrollment-form-holder" class="readonly">
 <% else %>
@@ -401,7 +403,7 @@
               </div>
               <div class="form-group">
                 <label>What city do you identify as your hometown?</label>
-                <%= f.text_field :hometown, 'class' => 'form-control short', 'type' => 'text' %>
+                <%= f.text_field :hometown, 'class' => 'form-control short', 'type' => 'text', 'maxlength' => '100' %>
               </div>
               <div class="form-group">
                 <label>What languages other than English do you speak fluently?</label>
@@ -421,23 +423,26 @@
               <h2 class="coach <%= (@request_availability && @meeting_times) ? "student" : "" %>">Availability</h2>
 
               <% if @request_availability && @meeting_times %>
+              <input type="hidden" name="meeting_times_required" value="1" />
 
-              <p class="student">Please select from the list below ALL times during which you expect to be available for <%= @program_title %> sessions in the fall semester of the 2015-16 school-year. </p>
+              <%= f.label :meeting_times, "Please select from the list below ALL times during which you expect to be available for #{@program_title} sessions in the fall semester of the 2015-16 school-year.", :class => 'student' %>
 
               <p class="student"><i>Please be accurate:</i> You will be assigned to a group that meets weekly during one of these meeting times. Final invitations to join <%= @program_title %> will include a specific day and timeslot, and it will be difficult to change that assignment once made. Note: It's important that you are as accurate as possible in this application, though we also understand your schedule may change after you’ve submitted. If that happens, or if you are currently very unsure of your fall schedule, please email us with details at info@beyondz.org. </p>
 
-              <p class="student"><i>Please be flexible:</i> The more options you select, the greater our opportunity to ensure all participants benefit from the great diversity of our community.</p>
+              <%= f.label :meeting_times, 'Please select from the list below ALL <u>times</u> during which you expect to be available to lead cohort sessions in the fall (2015).'.html_safe, :class => 'coach' %>
 
-              <p class="coach">Please select from the list below ALL <u>times</u> during which you expect to be available to lead cohort sessions in the fall (2015).</p>
+              <p class="coach"><i>Please be flexible:</i> The more options you select, the greater our opportunity to ensure all participants benefit from the great diversity of our community.'</p>
 
               <p class="coach"><i>Please be flexible</i>: the more options you select, the greater our opportunity to ensure all participants benefit from the great diversity of our coaching community.</p>
 
               <p class="coach"><i>Please note</i>: Your invitation to join <%= @program_title %> - <%= @program_site %> will include a specific campus location, day, and timeslot, at which point you'll be asked to officially confirm your role. It's important that you are as accurate as possible, so we can make reliable matches between coaches and participants. However, we also understand your schedule may change after you've submitted. <i>If that happens, or if you are currently very unsure of your fall schedule, please email us with details at <a href="mailto:info@beyondz.org">info@beyondz.org</a>.</i></p>
 
 
+              <div class="availability-options">
               <% @meeting_times.lines.map(&:chomp).each do |time| %>
-                <label style="padding-left: 32px;"><input type="checkbox" name="meeting_times[]" value="<%=time%>" <%= checked_if_in_array(:meeting_times, time) %> /> <%= time %></label><br />
+                <label class="control-label" style="padding-left: 32px;"><input type="checkbox" name="meeting_times[]" value="<%=time%>" <%= checked_if_in_array(:meeting_times, time) %> /> <%= time %></label><br />
               <% end %>
+              </div>
 
               <br />
 
