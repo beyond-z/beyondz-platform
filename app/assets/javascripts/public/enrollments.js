@@ -29,7 +29,7 @@ $(document).ready(function() {
       $(el).next('.countdown').text(currentlength + '/' + maxlength);
     }
     // add a character counter textareas that have a maxlength property and make the count update as users type.
-    $('[maxlength]').change(function(){updateCountdown(this)}).keyup(function(){updateCountdown(this)}).after('<span class="countdown"></span>').change();
+    $('textarea[maxlength]').change(function(){updateCountdown(this)}).keyup(function(){updateCountdown(this)}).after('<span class="countdown"></span>').change();
 
     // set autofocus in case browser doesn't support html5
       if (!('autofocus' in document.createElement('input'))) {

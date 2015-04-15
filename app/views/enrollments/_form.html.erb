@@ -51,15 +51,15 @@
                 <h4>Your Name</h4>
                 <div class="form-group has-success">
                   <%= f.label :first_name %>
-                  <%= f.text_field :first_name, :class => 'form-control short', :required => 'required' %>
+                  <%= f.text_field :first_name, :class => 'form-control short', :required => 'required', :maxlength => '35' %>
                 </div>
                 <div class="form-group has-success">
                   <%= f.label :middle_name %>
-                  <%= f.text_field :middle_name, :class => 'form-control short' %>
+                  <%= f.text_field :middle_name, :class => 'form-control short', :maxlength => '70' %>
                 </div>
                 <div class="form-group has-success">
                   <%= f.label :last_name %>
-                  <%= f.text_field :last_name, :class => 'form-control short', :required => 'required' %>
+                  <%= f.text_field :last_name, :class => 'form-control short', :required => 'required', :maxlength => '35' %>
                 </div>
               </div>
               <!-- #form-name -->
@@ -81,8 +81,8 @@
                 <div class="form-group">
                   <label>Where do you live?</label>
                   <br />
-                  <%= f.text_field :city, 'class' => 'form-control short', 'placeholder' => 'City', 'style' => 'display: inline' %>
-                  <%= f.text_field :state, 'class' => 'form-control short', 'placeholder' => 'State', 'style' => 'display: inline' %>
+                  <%= f.text_field :city, 'class' => 'form-control short', 'placeholder' => 'City', 'style' => 'display: inline', :maxlength => '35' %>
+                  <%= f.text_field :state, 'class' => 'form-control short', 'placeholder' => 'State', 'style' => 'display: inline', :maxlength => '35' %>
                 </div>
                 <div class="form-group student">
                   <label>Your date of birth (MM/DD/YYYY)</label>
@@ -92,7 +92,7 @@
                 <% if @student_id_required %>
                 <div class="form-group">
                   <label>Your <%= @program_site %> Student ID</label>
-                  <%= f.text_field :student_id, 'class' => 'form-control short', 'title' => 'Student ID', 'required' => 'required' %>
+                  <%= f.text_field :student_id, 'class' => 'form-control short', 'title' => 'Student ID', 'required' => 'required', :maxlength => '35' %>
                 </div>
                 <% end %>
               </div>
@@ -141,7 +141,7 @@
               <div id="form-degree">
                 <div class="form-group both">
                   <label>Undergraduate College/University</label>
-                  <%= f.text_field :university, 'class' => 'form-control', 'type' => 'text', 'placeholder' => 'Example: San Jose State University' %>
+                  <%= f.text_field :university, 'class' => 'form-control', 'type' => 'text', 'placeholder' => 'Example: San Jose State University', :maxlength => '45' %>
                 </div>
                 <div class="form-group both">
                   <label class="student">Year of expected graduation</label>
@@ -152,7 +152,7 @@
                 </div>
                 <div class="form-group student">
                   <label>Previous college/university, if any (leave blank if none)</label>
-                  <%= f.text_field :previous_university, 'class' => 'form-control', 'type' => 'text' %>
+                  <%= f.text_field :previous_university, 'class' => 'form-control', 'type' => 'text', :maxlength => '45' %>
                 </div>
 
 
@@ -160,7 +160,7 @@
 
                 <div class="form-group both coach student">
                   <label>Major<span class="student">/Concentration or intended major, if you have one. (Leave blank if none. Include all, if pursuing or completing multiple majors.)</span> <span class="coach"> (List all, if multiple)</span></label>
-                  <%= f.text_field :major, 'class' => 'form-control', 'type' => 'text' %>
+                  <%= f.text_field :major, 'class' => 'form-control', 'type' => 'text', :maxlength => '115' %>
                 </div>
 
                 <div class="form-group student">
@@ -176,16 +176,16 @@
                 <div class="form-group student">
                   <label>If you'd like, feel free to provide us with your high school GPA, SAT, and/or ACT scores:</label>
                   <br />
-                  High School GPA: <%= f.text_field :hs_gpa, 'class' => 'form-control short' %>
-                  Overall SAT: <%= f.text_field :sat_score, 'class' => 'form-control short' %>
-                  Overall ACT: <%= f.text_field :act_score, 'class' => 'form-control short' %>
+                  High School GPA: <%= f.text_field :hs_gpa, 'class' => 'form-control short', 'maxlength' => '12' %>
+                  Overall SAT: <%= f.text_field :sat_score, 'class' => 'form-control short', 'maxlength' => '12' %>
+                  Overall ACT: <%= f.text_field :act_score, 'class' => 'form-control short', 'maxlength' => '12' %>
                 </div>
 
                 <div class="form-group coach">
                   <label>Graduate school, if any</label>
-                  <%= f.text_field :grad_school, 'class' => 'form-control', 'type' => 'text' %>
+                  <%= f.text_field :grad_school, 'class' => 'form-control', 'type' => 'text', 'maxlength' => '45' %>
                   <label>Graduate degree</label>
-                  <%= f.text_field :grad_degree, 'class' => 'form-control', 'type' => 'text' %>
+                  <%= f.text_field :grad_degree, 'class' => 'form-control', 'type' => 'text', 'maxlength' => '75' %>
                   <label>Graduation year (actual or expected)</label>
                   <%= f.text_field :anticipated_grad_school_graduation, 'class' => 'form-control short', 'step' => '1', 'type' => 'number', 'min' => Date.today.year - 50 %>
                   <!-- the -50 there is an arbitrary amount to account for the coach case,
@@ -210,11 +210,11 @@
                 <h5>What is your current occupation?:</h5>
                 <p class="help">Please respond to at least one of the following questions about your occupation (industry, company, title).</p>
                 <label>Industry:</label>
-                  <%= f.text_field :industry, "class"=>'form-control' %><br />
+                  <%= f.text_field :industry, "class"=>'form-control', 'maxlength' => '75' %><br />
                 <label>Company:</label>
-                  <%= f.text_field :company, "class"=>'form-control' %><br />
+                  <%= f.text_field :company, "class"=>'form-control', 'maxlength' => '75' %><br />
                 <label>Title:</label>
-                  <%= f.text_field :title, "class"=>'form-control' %><br />
+                  <%= f.text_field :title, "class"=>'form-control', 'maxlength' => '75' %><br />
               </div>
               <div class="form-group coach student">
                 <label class="student">Please list your significant extracurricular, volunteer, and professional commitments for the upcoming school year (2015-2016).</label>
