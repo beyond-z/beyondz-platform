@@ -1,7 +1,11 @@
 # heroku addons:add scheduler
 
+require 'digest/sha2'
 class Reminders < ActionMailer::Base
   default from: 'no-reply@beyondz.org'
+
+  # needed because gmail was filtering some messages: http://blog.mailgun.com/tips-tricks-avoiding-gmail-spam-filtering-when-using-ruby-on-rails-action-mailer/
+  default "Message-ID" => ->(v){"<#{Digest::SHA2.hexdigest(Time.now.to_i.to_s)}@beyondz.org>"}
 
   def assignment_nearly_due(to, name, assignment_name, link)
     @name = name
