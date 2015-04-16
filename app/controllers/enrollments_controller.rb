@@ -273,6 +273,7 @@ class EnrollmentsController < ApplicationController
     cm.Conquered_Challenge__c = @enrollment.conquered_challenge
     cm.Languages__c = @enrollment.languages
     cm.Sourcing_Info__c = @enrollment.lead_sources
+    cm.Available_Meeting_Times__c = @enrollment.meeting_times
     cm.Additional_Comments__c = @enrollment.comments
 
     cm.Grad_University__c = @enrollment.grad_school
