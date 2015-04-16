@@ -77,33 +77,6 @@ class Admin::UsersController < Admin::ApplicationController
     initialize_lms_interop
 
     @user = User.find(params[:id])
-    unless params[:user][:fast_tracked].nil?
-      @user.fast_tracked = params[:user][:fast_tracked]
-    end
-    unless params[:user][:availability_confirmation_requested].nil?
-      @user.availability_confirmation_requested = params[:user][:availability_confirmation_requested]
-      # Commented mailer right now because the team is doing this manually
-      # via mail merge.
-      # AcceptanceMailer.request_availability_confirmation(@user).deliver
-    end
-    unless params[:user][:accepted_into_program].nil?
-      @user.accepted_into_program = params[:user][:accepted_into_program]
-
-      # This is commented pending finalization of the design
-      # from the team.
-
-      # Create the canvas user
-
-      # if @user.canvas_user_id.nil?
-      #   @lms.create_user(@user)
-      # end
-
-      @user.save!
-    end
-    unless params[:user][:declined_from_program].nil?
-      @user.fast_tracked = params[:user][:declined_from_program]
-      # send email here saying try again next time
-    end
 
     @user.first_name = params[:user][:first_name] unless params[:user][:first_name].nil?
     @user.last_name = params[:user][:last_name] unless params[:user][:last_name].nil?

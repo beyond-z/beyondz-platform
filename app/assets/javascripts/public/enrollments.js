@@ -5,6 +5,14 @@ $(document).ready(function() {
     $('#enrollment-form-holder.readonly form').submit(function() { return false; });
     $('#enrollment-form-holder.readonly input, #enrollment-form-holder.readonly textarea').attr('readonly', 'readonly');
 
+    // This prevents the enter key on single line inputs from submitting
+    // the form. We want them to explicitly hit SEND at the bottom instead.
+    $('#enrollment-form-holder input').keypress(function(e) {
+      if(e.which == 13) {
+        e.preventDefault();
+        return false;
+      }
+    });
 
     // update the charater counter on textareas that have a maxlength property:
     function updateCountdown(el) {
@@ -21,7 +29,7 @@ $(document).ready(function() {
       $(el).next('.countdown').text(currentlength + '/' + maxlength);
     }
     // add a character counter textareas that have a maxlength property and make the count update as users type.
-    $('[maxlength]').change(function(){updateCountdown(this)}).keyup(function(){updateCountdown(this)}).after('<span class="countdown"></span>').change();
+    $('textarea[maxlength]').change(function(){updateCountdown(this)}).keyup(function(){updateCountdown(this)}).after('<span class="countdown"></span>').change();
 
     // set autofocus in case browser doesn't support html5
       if (!('autofocus' in document.createElement('input'))) {
@@ -37,8 +45,8 @@ $(document).ready(function() {
     });
     
     // Generate TOC:
-    $('h2').not('.sr-only, #form-almost-done h2').each(function() {
-      $('#jumplinks').append('<li class="page-jump '+$(this).closest('div').prop('class')+'"><a href="#'+$(this).closest('div').prop('id')+'"><div class="jump-icon"></div>'+$(this).text()+'</a></li>');
+    $('h2').not('.sr-only, #form-almost-done h2, #error-explanation h2').each(function() {
+      $('#jumplinks').append('<li class="page-jump '+$(this).prop('class')+'"><a href="#'+$(this).closest('div').prop('id')+'"><div class="jump-icon"></div>'+$(this).text()+'</a></li>');
     });
 
 

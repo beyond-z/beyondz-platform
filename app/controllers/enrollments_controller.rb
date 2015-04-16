@@ -1,6 +1,20 @@
 class EnrollmentsController < ApplicationController
 
   before_filter :authenticate_user!
+  before_action :setup_defaults
+
+  # These defaults will show us what placeholders are supposed to
+  # be there in the event that they don't load. It is not meant
+  # to be seen by users - just to aid testing. If these appear in
+  # an end user page, it is a bug.
+  def setup_defaults
+    @program_title = 'PROGRAM TITLE'
+    @program_site = 'PROGRAM SITE'
+    @request_availability = false
+    @meeting_times = ''
+    @sourcing_options = ''
+    @student_id_required = false
+  end
 
   layout 'public'
 
@@ -17,6 +31,7 @@ class EnrollmentsController < ApplicationController
       @enrollment.first_name = current_user.first_name
       @enrollment.last_name = current_user.last_name
       @enrollment.email = current_user.email
+      @enrollment.company = current_user.company
       @enrollment.university = current_user.university_name
       @enrollment.anticipated_graduation = current_user.anticipated_graduation
       @enrollment.accepts_txt = true # to pre-check the box
@@ -106,6 +121,11 @@ class EnrollmentsController < ApplicationController
         @program_site = campaign.Program_Site__c
         @request_availability = campaign.Request_Availability__c
         @meeting_times = campaign.Meeting_Times__c
+        @sourcing_options = campaign.Sourcing_Info_Options__c
+        # Empty string instead of nil is easier to test for in the view
+        # if this isn't filled in, we'll just skip the whole question
+        # instead of displaying nonsense to the user.
+        @sourcing_options = '' if @sourcing_options.nil?
         @student_id_required = campaign.Request_Student_Id__c
       end
     end
@@ -115,7 +135,19 @@ class EnrollmentsController < ApplicationController
     @enrollment = Enrollment.find(params[:id])
     @enrollment.update_attributes(enrollment_params)
 
+    @enrollment.meeting_times = '' # need to clear out because if none are checked, the next line never runs
     @enrollment.meeting_times = params[:meeting_times].join(';') if params[:meeting_times]
+
+    if params[:meeting_times_required] && (@enrollment.meeting_times.nil? || @enrollment.meeting_times.empty?)
+      @enrollment.check_meeting_times = true
+    end
+
+    # Lead sources is input as an array of checkboxes and details. This can be user-configured
+    # easily later.
+    #
+    # Names with a colon in them expect details, so we remove excess semicolons there so the
+    # resulting string is more human readable without extra punctuation.
+    @enrollment.lead_sources = ''
     @enrollment.lead_sources = params[:lead_sources].join(';') if params[:lead_sources]
 
     # Always save without validating, this ensures the partial
@@ -128,12 +160,16 @@ class EnrollmentsController < ApplicationController
     # because otherwise, they are probably just saving incomplete
     # data to finish later
     unless params[:user_submit].nil?
+      @enrollment.lead_sources = @enrollment.lead_sources.gsub(':;', ': ').squeeze(';') if @enrollment.lead_sources
       @enrollment.save(validate: true)
     end
 
     if @enrollment.errors.any?
       # errors will be displayed with the form btw
       load_salesforce_campaign
+
+      @position_is_set = true if @enrollment.position
+
       render 'new'
       return
     else
@@ -141,7 +177,6 @@ class EnrollmentsController < ApplicationController
         # the user didn't explicitly submit, update it and allow
         # them to continue editing
         # (this can happen if they do an intermediate save of work in progress)
-        flash[:message] = 'Your application has been updated'
         redirect_to enrollment_path(@enrollment.id)
       else
         # they did explicitly submit, finalize the application and show them the
@@ -157,6 +192,13 @@ class EnrollmentsController < ApplicationController
         if Rails.application.secrets.salesforce_username
           enrollment_submitted_crm_actions
         end
+
+        # Disable apply now early (Salesforce will do this too but it might take
+        # a second and then the user would see the button again and might be
+        # confused, so we do it locally too so they won't.)
+        u = @enrollment.user
+        u.apply_now_enabled = false
+        u.save
 
         redirect_to welcome_path
       end
@@ -186,16 +228,21 @@ class EnrollmentsController < ApplicationController
       # actually pulled from the Contact and the API won't let us
       # access or update them through the CampaignMember.
       contact.Phone = @enrollment.phone
-      contact.OtherCity = @enrollment.city
-      contact.OtherState = @enrollment.state
+      contact.MailingCity = @enrollment.city
+      contact.MailingState = @enrollment.state
+      contact.Title = @enrollment.title
       contact.save
     end
 
     cm.Application_Status__c = 'Submitted'
     cm.Apply_Button_Enabled__c = false
 
+    cm.Industry__c = @enrollment.industry
+    cm.Company__c = @enrollment.company
     cm.Middle_Name__c = @enrollment.middle_name
     cm.Accepts_Text__c = @enrollment.accepts_txt
+
+    cm.Cannot_Attend__c = @enrollment.cannot_attend
 
     cm.Student_Id__c = @enrollment.student_id
 
@@ -225,25 +272,15 @@ class EnrollmentsController < ApplicationController
     cm.ACT_Score__c = @enrollment.act_score
     cm.Conquered_Challenge__c = @enrollment.conquered_challenge
     cm.Languages__c = @enrollment.languages
-    cm.Lead_Sources__c = @enrollment.lead_sources
+    cm.Sourcing_Info__c = @enrollment.lead_sources
+    cm.Available_Meeting_Times__c = @enrollment.meeting_times
     cm.Additional_Comments__c = @enrollment.comments
 
     cm.Grad_University__c = @enrollment.grad_school
     cm.Graduate_Year__c = @enrollment.anticipated_grad_school_graduation
 
-    if @enrollment.position == 'student'
-      cm.Digital_Footprint__c = @enrollment.online_resume
-      cm.Digital_Footprint_2__c = @enrollment.online_resume2
-    else
-      cm.Digital_Footprint__c = @enrollment.personal_website
-      if @enrollment.twitter_handle && @enrollment.twitter_handle != ''
-        if @enrollment.twitter_handle.starts_with? 'http'
-          cm.Digital_Footprint_2__c = @enrollment.twitter_handle
-        else
-          cm.Digital_Footprint_2__c = "https://twitter.com/#{@enrollment.twitter_handle}"
-        end
-      end
-    end
+    cm.Digital_Footprint__c = @enrollment.online_resume
+    cm.Digital_Footprint_2__c = @enrollment.online_resume2
 
     cm.Resume__c = @enrollment.resume.url if @enrollment.resume.present?
 
@@ -264,26 +301,8 @@ class EnrollmentsController < ApplicationController
     cm.Pell_Grant_Recipient__c = @enrollment.pell_grant
 
     cm.save
-
-    make_salesforce_task(client, contact) if contact
   end
   # rubocop: enable Metrics/MethodLength
-
-  def make_salesforce_task(client, contact)
-    client.materialize('Task')
-    task = SFDC_Models::Task.new
-    task.Status = 'Not Started'
-    task.Subject = "Review the application for #{@enrollment.user.name}"
-    task.WhoId = contact.Id
-    task.OwnerId = contact.OwnerId
-    task.WhatId = @enrollment.campaign_id
-    task.ActivityDate = Date.today
-    task.IsReminderSet = true
-    task.Priority = 'Normal'
-    task.Description = "Review the application for #{@enrollment.user.name} " \
-      'and change their Candidate Status or assign it to someone else to handle'
-    task.save
-  end
 
   def create
     @enrollment = Enrollment.create(enrollment_params)

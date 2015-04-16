@@ -16,7 +16,7 @@
                 <%= hidden_field_tag 'referrer', @referrer %>
                 <%= render :partial => 'shared/form_errors', locals: { object: @user } %>
                 <div class="form-group">
-                  <%= f.label :first_name, 'Name' %>
+                  <%= f.label :first_name, 'Name', :class => 'required' %>
                   <section>
                     <div class="col-sm-6">
                       <%= f.text_field :first_name, :class => 'form-control', required: 'required', placeholder: 'First Name', style: 'float: left;' %>
@@ -27,12 +27,16 @@
                   </section>
                 </div>
                 <div class="form-group">
-                  <%= f.label :email %>
-                  <%= f.text_field :email, :type => 'email', :required => 'required', :class => 'form-control', placeholder: 'Email'%>
+                  <section>
+                   <div class="col-sm-8">
+                      <%= f.label :email, :class => 'required' %>
+                      <%= f.text_field :email, :type => 'email', :required => 'required', :class => 'form-control', placeholder: 'Email'%>
+                    </div>
+                  </section>
                 </div>
 
                 <div class="form-group">
-                  <label>I am...</label>
+                  <label class="required">I am...</label>
                   <div class="clickable-option">
                     <%= f.radio_button :applicant_type, 'undergrad_student', required: 'required' %>
                     <%= f.label :applicant_type_undergrad_student, 'An undergraduate student' %>
@@ -56,12 +60,12 @@
                   <div class="clickable-option with-text-field">
                     <%= f.radio_button :applicant_type, 'other', required: 'required' %>
                     <%= f.label :applicant_type_other, 'Other?' %>
-                    <%= f.text_field :applicant_details, :class => 'form-control', :placeholder => 'What are you interested in?', :onclick => '$("#user_applicant_type_other").click();' %>
+                    <%= f.text_field :applicant_details, :class => 'form-control', :placeholder => 'What are you interested in?', :onclick => '$("#user_applicant_type_other").click();', :maxlength => '72' %>
                     <div class="form-option-details">
                       <br />
                       <section>
                         <div class="col-sm-5">
-                          <%= f.text_field :city, :class => 'form-control', placeholder: 'City' %>
+                          <%= f.text_field :city, :class => 'form-control', placeholder: 'City', maxlength: '60' %>
                         </div>
                         <div class="col-sm-5">
                           <%= f.select :state, options_for_select(@states, @user.state),

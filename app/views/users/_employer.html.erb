@@ -1,26 +1,26 @@
 <div class="form-option-details">
   <section>
-    <div class="col-sm-12">
-      In the following areas:
+    <div>
+      <span class="required">In the following areas:</span>
       <br />
       <%= render :partial => 'areas', :locals => { :f => f } %>
     </div>
   </section>
 
   <section>
-    <div class="col-sm-6 text-right">
+    <div>
       Industry:
     </div>
-    <div class="col-sm-6">
-      <%= f.text_field :profession, :class => 'form-control' %>
+    <div class="col-sm-7">
+      <%= f.text_field :profession, :class => 'form-control', :maxlength => '70' %>
     </div>
   </section>
   <section>
-    <div class="col-sm-6 text-right">
+    <div>
       Company:
     </div>
-    <div class="col-sm-6">
-      <%= f.text_field :company, :class => 'form-control' %>
+    <div class="col-sm-7">
+      <%= f.text_field :company, :class => 'form-control', :maxlength => '70' %>
     </div>
   </section>
 

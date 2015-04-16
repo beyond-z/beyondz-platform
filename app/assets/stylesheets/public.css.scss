@@ -213,7 +213,12 @@
 #new-user-page {
   .form-option-details {
     display: none;
-    padding-left: 2em;
+    padding-left: 1em;
+
+    > section {
+      margin-bottom: 15px;
+      margin-left: 0px;
+    }
   }
 
   /* We want regular options to appear dark */
@@ -294,4 +299,24 @@
       @extend .sign-up-icon;
     }
   }
+}
+
+.form-group .form-group .clickable-option,
+.form-group .form-group input[type=text] {
+  margin: 5px 0;
+}
+
+.required-block {
+  position: relative;
+}
+
+.required-block::after {
+  position: absolute;
+  right: -0.1em;
+  top: 2px;
+}
+
+.required::after {
+  content: "*";
+  color: red;
 }
