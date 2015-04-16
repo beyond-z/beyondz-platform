@@ -504,8 +504,8 @@
               <div class="form-group">
                 <label>Last but not least</label>
                 <p class="help">Approximately how long (in minutes) did it take you to complete this application?</p>
-                <div class="input-group">
-                  <%= f.text_field :time_taken, 'class' => 'form-control short', 'step' => '1', 'type' => 'number', 'min' => '0' %>
+                <div class="input-group short">
+                  <%= f.text_field :time_taken, 'class' => 'form-control', 'step' => '1', 'type' => 'number', 'min' => '0' %>
                   <span class="input-group-addon">minutes</span>
                 </div>
               </div>
