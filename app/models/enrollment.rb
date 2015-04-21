@@ -9,9 +9,13 @@ class Enrollment < ActiveRecord::Base
                            'application/pdf',
                            'application/msword',
                            'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-                         ]
+                         ],
+                         message: 'is invalid: please upload either a .doc or a .pdf file'
                        },
-                       size: { in: 0..2.megabytes }
+                       size: {
+                         in: 0..2.megabytes,
+                         message: 'is too large: please upload files no larger than 2 MB'
+                       }
 
   validates :first_name, presence: true
   validates :last_name, presence: true
