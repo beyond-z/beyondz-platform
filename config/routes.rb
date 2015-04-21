@@ -1,5 +1,5 @@
 BeyondzPlatform::Application.routes.draw do
-  devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions' }
+  devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions', passwords: 'passwords' }
 
   root "home#index"
   get '/welcome', to: 'home#welcome'
