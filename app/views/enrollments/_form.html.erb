@@ -242,7 +242,7 @@
                 </div>
               </div>
               <div class="form-group coach">
-                <label>Or upload a resume as a .doc or .pdf file</label>
+                <label>Or upload a resume as a .doc or .pdf file (2 MB or less)</label>
                 <%= f.file_field :resume %>
                 <% if @enrollment.resume.present? %>
                   <%= link_to 'Download previously uploaded resume', @enrollment.resume.url %>
