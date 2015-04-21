@@ -14,6 +14,7 @@ class Enrollment < ActiveRecord::Base
                        },
                        size: {
                          in: 0..2.megabytes,
+                         # If you change this size, don't forget to change enrollment/_form.html.erb too so the user sees it there
                          message: 'is too large: please upload files no larger than 2 MB'
                        }
 
