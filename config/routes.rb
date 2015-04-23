@@ -16,6 +16,7 @@ BeyondzPlatform::Application.routes.draw do
 
   resources :feedback
   resources :comments
+  get '/signup', to: 'users#new' # This is not really a proper REST path, but we don't have a show operation so this is for convenience (e.g. talking to someong at an event: "hey just go to bz.org/signup to signup!")
   resources :users, only: [:new, :create], :path => :signup
 
   post '/users/reset', to: 'users#reset', as: 'user_reset'
