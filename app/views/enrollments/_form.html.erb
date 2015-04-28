@@ -6,7 +6,6 @@
 <% end %>
   <%= form_for @enrollment, role: 'form' do |f| %>
     <%= render :partial => "shared/form_errors", locals: { object: @enrollment } %>
-    <%= f.hidden_field :user_id, value: current_user.id %>
 
       <div class="plank tertiary-md light">
         <div class="section-container">
