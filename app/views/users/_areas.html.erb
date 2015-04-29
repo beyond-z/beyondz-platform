@@ -1,11 +1,14 @@
     <div class="form-group">
-      <% List.find_by_friendly_name('bz_regions').items.each_with_index do |region, idx| %>
+      <% areas = List.find_by_friendly_name((defined? list) ? list : 'bz_regions')
+         unless areas.nil?
+         areas.items.each_with_index do |region, idx| %>
         <div>
           <label>
             <%= f.radio_button :bz_region, region, "required" => "required" %>
             <span><%= region %></span>
           </label>
         </div>
+      <% end %>
       <% end %>
         <div>
           <%= f.radio_button :bz_region, 'Other: ', "required" => "required", "class" => 'controls-details', "maxlength" => '60' %>

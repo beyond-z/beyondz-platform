@@ -137,6 +137,7 @@ class UsersController < ApplicationController
     states
     @referrer = request.referrer
     @user = User.new
+    @user.applicant_type = params[:applicant_type] if params[:applicant_type]
   end
 
   def create

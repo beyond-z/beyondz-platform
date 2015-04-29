@@ -1,4 +1,11 @@
 class ConfirmationsController < Devise::ConfirmationsController
+  def new
+    super
+    if params[:email]
+      @prefill_email = params[:email]
+    end
+    @auto_submit = params[:auto]
+  end
 
   def create
     # For user friendliness: if they are asking for a token to be sent to an email
