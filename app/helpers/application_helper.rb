@@ -84,7 +84,7 @@ module ApplicationHelper
     else
       '<div class="sign-up-link">'.html_safe +
       link_to(
-        '<div class="sign-up-text"><div class="sign-up-icon"></div>LEARN MORE</div>'.html_safe,
+        '<div class="sign-up-text"><div class="sign-up-icon"></div>SIGN UP TO LEARN MORE</div>'.html_safe,
         new_user_path
       ) +
       '</div>'.html_safe
