@@ -2,7 +2,7 @@ class ConfirmationsController < Devise::ConfirmationsController
   # See also: passwords_controller.rb for the same function, but
   # this one needs to be able to take a custom message too and
   # preserve the original behavior in some cases.
-  def set_flash_message(_key, kind, options = {}, message = nil)
+  def set_flash_message(key, kind, options = {}, message = nil)
     message = find_message(kind, options) if message.nil?
     cookies['login_flash'] = {
       :value => message,
@@ -14,7 +14,7 @@ class ConfirmationsController < Devise::ConfirmationsController
       :domain => '.beyondz.org'
     }
 
-    super(_key, kind, options) unless _key.nil?
+    super(key, kind, options) unless _key.nil?
   end
 
 
