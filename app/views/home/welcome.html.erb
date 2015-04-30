@@ -3,8 +3,9 @@
     <section>
       <div class="col-sm-6 col-sm-offset-3 text-center">
         <% if @new_user && @new_user.confirmed_at.nil? %>
-          <p class="shoutout">Welcome <%= @new_user.name %>!</p>
-          <p class="feature">Please check your email at <%= @new_user.email %> and follow the instructions to complete your account activation.</p>
+          <p>Welcome <%= @new_user.name %>!</p>
+          <p class="shoutout">Check your email at <br /> <%= @new_user.email %> <br /> to complete your sign-up.</p></p>
+          <p class="feature"><strong>Tip:</strong> if you don't see it in your inbox within a few minutes, please check your spam folder.</p>
         <% elsif @new_user %>
           <% if @new_user.applicant_type == 'volunteer' || @new_user.applicant_type == 'undergrad_student' %>
             <!-- We should be able to re-enable apply now in Salesforce, overriding applicatio_received. The second clause here allows that. -->

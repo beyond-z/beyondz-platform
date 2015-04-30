@@ -137,6 +137,7 @@ class UsersController < ApplicationController
     states
     @referrer = request.referrer
     @user = User.new
+    @user.applicant_type = params[:applicant_type] if params[:applicant_type]
   end
 
   def create
@@ -166,15 +167,12 @@ class UsersController < ApplicationController
 
     user[:university_name] = params[:undergrad_university_name] if user[:university_name] == 'other'
 
-    make_on_salesforce_now = false
-
     if !user[:applicant_type].nil?
       @new_user = User.new(user)
       unless user[:applicant_type] == 'undergrad_student' || user[:applicant_type] == 'volunteer'
         # Partners, employers, and others are reached out to manually instead of confirming
         # their account. We immediate make on salesforce and don't require confirmation so
         # we can contact them quickly and painlessly (to them!).
-        make_on_salesforce_now = true
         @new_user.skip_confirmation!
       end
       @new_user.save
@@ -200,9 +198,7 @@ class UsersController < ApplicationController
       return
     end
 
-    if make_on_salesforce_now
-      @new_user.create_on_salesforce
-    end
+    @new_user.create_on_salesforce
 
     redirect_to redirect_to_welcome_path(@new_user)
   end

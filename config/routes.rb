@@ -1,5 +1,5 @@
 BeyondzPlatform::Application.routes.draw do
-  devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions' }
+  devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions', passwords: 'passwords' }
 
   root "home#index"
   get '/welcome', to: 'home#welcome'
@@ -10,12 +10,23 @@ BeyondzPlatform::Application.routes.draw do
   get '/supporter_info', to: 'home#supporter_info'
   get '/jobs', to: 'home#jobs'
 
+  # These convenience routes are meant to be given to
+  # people during in-person recruitment efforts
+
+  get '/volunteer/signup', to: redirect('/signup/new?applicant_type=volunteer')
+  get '/student/signup', to: redirect('/signup/new?applicant_type=undergrad_student')
+  get '/employer/signup', to: redirect('/signup/new?applicant_type=employer')
+  get '/partner/signup', to: redirect('/signup/new?applicant_type=partner')
+
+  # and back to the application itself
+
   get '/salesforce/change_apply_now', to: 'salesforce#change_apply_now'
   get '/salesforce/record_converted_leads', to: 'salesforce#record_converted_leads'
   get '/salesforce/sync_to_lms', to: 'salesforce#sync_to_lms'
 
   resources :feedback
   resources :comments
+  get '/signup', to: 'users#new' # This is not really a proper REST path, but we don't have a show operation so this is for convenience (e.g. talking to someong at an event: "hey just go to bz.org/signup to signup!")
   resources :users, only: [:new, :create], :path => :signup
 
   post '/users/reset', to: 'users#reset', as: 'user_reset'

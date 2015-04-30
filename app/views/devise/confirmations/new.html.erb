@@ -11,11 +11,18 @@
           <% end %>
 
           <div><%= f.label :email %><br />
-          <%= f.email_field :email, autofocus: true, :class => 'form-control' %></div>
+          <%= f.email_field :email, autofocus: true, :class => 'form-control', :value => @prefill_email %></div>
           <br />
           <div><%= f.submit "Resend confirmation instructions", :class => 'button-primary' %></div>
         <% end %>
+        <br />
+        <%= render "devise/shared/links" %>
       </div>
     </section>
   </div>
 </div>
+<% if @auto_submit %>
+<script>
+  document.getElementById("new_user").submit();
+</script>
+<% end %>

@@ -77,6 +77,11 @@
                             onchange: '$(this)[this.selectedIndex == 0 ? "addClass" : "removeClass"]("placeholder-style");'
                           %>
                         </div>
+                      </section>
+
+                      <div class="form-group">
+                        <button type="submit" class="button-primary">Submit</button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -85,9 +90,6 @@
                   <%= f.text_area :applicant_comments, :class => 'form-control', :placeholder => 'Comments, thoughts, or questions?', :maxlength => '4000' %>
                 </div>
 
-                <div class="form-group">
-                  <button type="submit" class="button-primary">Submit</button>
-                </div>
               <% end %>
             </div>
           </div>

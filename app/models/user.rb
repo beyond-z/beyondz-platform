@@ -159,6 +159,8 @@ class User < ActiveRecord::Base
 
     contact['Comments_Or_Questions__c'] = applicant_comments
 
+    contact['Account_Activated__c'] = self.confirmed?
+
     contact['BZ_User_Id__c'] = id
     contact['Interested_In__c'] = applicant_details
     contact['Signup_Date__c'] = created_at
@@ -188,6 +190,17 @@ class User < ActiveRecord::Base
 
     self.salesforce_id = contact['Id']
     save!
+  end
+
+  def confirm_on_salesforce
+    salesforce = BeyondZ::Salesforce.new
+    client = salesforce.get_client
+    client.materialize('Lead')
+    lead = SFDC_Models::Lead.find(salesforce_id)
+    if lead
+      lead.Account_Activated__c = true
+      lead.save
+    end
   end
 
   def salesforce_applicant_type

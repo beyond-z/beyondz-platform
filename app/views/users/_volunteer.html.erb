@@ -1,7 +1,7 @@
 <div class="form-option-details">
   <section>
     <div>
-      <span class="required">I can coach a cohort of students at:</span>
+      <span class="required">I can coach a cohort of students in:</span>
       <br />
       <%= render :partial => 'areas', :locals => { :f => f } %>
     </div>
@@ -33,5 +33,10 @@
       <%= f.password_field :password, :class => 'form-control', placeholder: 'Create a password', pattern: '.{4,}', title: 'make a password at least four characters long', :required => 'required' %>
     </div>
   </section>
+
+
+  <div class="form-group">
+    <button type="submit" class="button-primary">Submit</button>
+  </div>
 </div>
 
