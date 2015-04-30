@@ -20,7 +20,10 @@ class ConfirmationsController < Devise::ConfirmationsController
   def new
     super
     if params[:email]
-      @prefill_email = params[:email]
+      # We undo the url encoding somewhat to conveniently allow
+      # the test+foo emails to be entered. Emails don't have spaces
+      # anyway so this is harmless.
+      @prefill_email = params[:email].gsub(' ', '+')
     end
     @auto_submit = params[:auto]
   end
@@ -46,12 +49,12 @@ class ConfirmationsController < Devise::ConfirmationsController
   def after_confirmation_path_for(resource_name, resource)
     sign_in(resource_name, resource)
 
-    # If we set up a salesforce account, create the user/contact there
+    # If we set up a salesforce account, update the user/contact there
     # too. If not, we'll skip that step so we don't get exceptions from
     # the salesforce api about bad credentials and instead just keep it
     # all locally.
     if Rails.application.secrets.salesforce_username
-      current_user.create_on_salesforce
+      current_user.confirm_on_salesforce
     end
 
     StaffNotifications.new_user(current_user).deliver
