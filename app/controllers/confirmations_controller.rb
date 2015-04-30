@@ -9,12 +9,11 @@ class ConfirmationsController < Devise::ConfirmationsController
       # We want this to be seen on the sso.beyondz.org (or stagingsso.beyondz.org)
       # but can't set the cookie directly there - best we can do is to set to
       # beyondz.org (note: staging.beyondz.org will NOT work as that won't
-      # include stagingsso.beyondz.org - where it needs to be. So no need to
-      # configure it - there is only one correct setting possible.
-      :domain => '.beyondz.org'
+      # include stagingsso.beyondz.org
+      :domain => Rails.application.secrets.cookie_domain
     }
 
-    super(key, kind, options) unless _key.nil?
+    super(key, kind, options) unless key.nil?
   end
 
 
