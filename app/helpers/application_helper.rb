@@ -19,7 +19,7 @@ module ApplicationHelper
     ('<li>' + (link_to text, path, :class => c) + '</li>').html_safe
   end
 
-  def apply_button
+  def apply_button(applicant_type = nil)
     if user_signed_in? && current_user.interested_joining
       '<div class="apply-button">'.html_safe +
         link_to(
@@ -31,7 +31,7 @@ module ApplicationHelper
       '<div class="apply-button">'.html_safe +
       link_to(
         '<div class="apply-icon"></div><div class="apply-text">SIGN UP TO START YOUR APPLICATION PROCESS</div>'.html_safe,
-        new_user_path
+        new_user_path(:applicant_type => applicant_type)
       ) +
       '</div>'.html_safe
     end
@@ -73,7 +73,7 @@ module ApplicationHelper
     '</div>'.html_safe
   end
 
-  def sign_up_link
+  def sign_up_link(applicant_type = nil)
     if user_signed_in? && current_user.interested_joining
       '<div class="apply-button">'.html_safe +
         link_to(
@@ -85,7 +85,7 @@ module ApplicationHelper
       '<div class="sign-up-link">'.html_safe +
       link_to(
         '<div class="sign-up-text"><div class="sign-up-icon"></div>SIGN UP TO LEARN MORE</div>'.html_safe,
-        new_user_path
+        new_user_path(:applicant_type => applicant_type)
       ) +
       '</div>'.html_safe
     end
