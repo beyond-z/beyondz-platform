@@ -10,7 +10,7 @@
       <div class="plank tertiary-md light">
         <div class="section-container">
           <header id="prototype-header">
-          <h1>Application for <%= @program_title %> - <%= @program_site %><br />Fall 2015</h1>
+          <h1>Application for <%= @program_title %> - <%= @program_site %><br /><%= Date.today.year %></h1>
           </header>
 
           <p class="help coach">
@@ -216,8 +216,8 @@
                   <%= f.text_field :title, "class"=>'form-control', 'maxlength' => '75' %><br />
               </div>
               <div class="form-group coach student">
-                <label class="student">Please list your significant extracurricular, volunteer, and professional commitments for the upcoming school year (2015-2016).</label>
-                <label class="coach">Please list any other significant volunteer commitments you've made for the upcoming year (2015-16), including Board commitments, pro bono work, coaching, and other volunteer roles (recurring or occasional).</label>
+                <label class="student">Please list your significant extracurricular, volunteer, and professional commitments for the upcoming school year (<%= Date.today.year %> - <%= Date.today.year+1 %>).</label>
+                <label class="coach">Please list any other significant volunteer commitments you've made for the upcoming year (<%= Date.today.year %> - <%= Date.today.year+1 %>), including Board commitments, pro bono work, coaching, and other volunteer roles (recurring or occasional).</label>
                 <p class="help student">Please include approximate hours per month, and if it varies by semester, please note that too. Ex: Student worker at the library, 25 hours/month. Rugby captain, 30 hours/month, fall semester only.</p>
                 <p class="help coach">Please include approximate hours per month, and if it varies by season, please note that too. Ex: AAU girls' coach, 10 hours/week, summer only. Board member, Carver Academy - East, 4 hours/month.</p>
                 <%= f.text_area :current_volunteer_activities, 'class' => 'form-control', 'maxlength' => '300' %>
@@ -249,7 +249,7 @@
               </div>
               <!-- #form-resume -->
               <div class="form-group student">
-                <label>How are you spending the summer (in advance of school-year 2015-16)?</label>
+                <label>How are you spending the summer (in advance of school-year <%= Date.today.year %> - <%= Date.today.year+1 %>)?</label>
                 <p class="help">Please briefly describe your responsibilities or activities.</p>
                 <%= f.text_area :last_summer, 'class' => 'form-control', 'maxlength' => '150' %>
               </div>
@@ -424,11 +424,11 @@
               <% if @request_availability && @meeting_times %>
               <input type="hidden" name="meeting_times_required" value="1" />
 
-              <%= f.label :meeting_times, "Please select from the list below ALL times during which you expect to be available for #{@program_title} sessions in the fall semester of the 2015-16 school-year.", :class => 'student' %>
+              <%= f.label :meeting_times, "Please select from the list below ALL times during which you expect to be available for #{@program_title} sessions.", :class => 'student' %>
 
               <p class="student"><i>Please be accurate:</i> You will be assigned to a group that meets weekly during one of these meeting times. Final invitations to join <%= @program_title %> will include a specific day and timeslot, and it will be difficult to change that assignment once made. Note: It's important that you are as accurate as possible in this application, though we also understand your schedule may change after you’ve submitted. If that happens, or if you are currently very unsure of your fall schedule, please email us with details at info@beyondz.org. </p>
 
-              <%= f.label :meeting_times, 'Please select from the list below ALL <u>times</u> during which you expect to be available to lead cohort sessions in the fall (2015).'.html_safe, :class => 'coach' %>
+              <%= f.label :meeting_times, 'Please select from the list below ALL <u>times</u> during which you expect to be available to lead cohort sessions through the end of #{Date.today.year}.'.html_safe, :class => 'coach' %>
 
               <p class="coach"><i>Please be flexible:</i> The more options you select, the greater our opportunity to ensure all participants benefit from the great diversity of our community.'</p>
 
@@ -458,7 +458,7 @@
               </div>
 
               <div class="form-group coach">
-                <span class="coach">Please let us know of any dates that you anticipate you will not be available during the fall (2015).</span>
+                <span class="coach">Please let us know of any dates that you anticipate you will not be available through the end of <%= Date.today.year %>.</span>
                 <%= f.text_area :cannot_attend, 'class' => 'form-control', 'maxlength' => '300', 'style'=>'height: 6em !important;' %>
               </div>
             </div>
