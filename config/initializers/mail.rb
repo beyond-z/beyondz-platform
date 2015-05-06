@@ -3,23 +3,27 @@ if Rails.env.production?
   ActionMailer::Base.smtp_settings = {
     :address => Rails.application.secrets.smtp_server,
     :port => 587,
-    :domain => "beyondz.org",
-    :authentication => :plain,
+    :domain => Rails.application.secrets.mailer_domain,
     :user_name => Rails.application.secrets.smtp_username,
     :password => Rails.application.secrets.smtp_password,
-    :enable_starttls_auto => true
-  }
+    :authentication => :login # plain, login, or cram_md5i
+    # gmail smtp server relay settings.  not for use on production.
+    #:authentication => :plain,
+    #:enable_starttls_auto => true
+ }
 
 else
 
   ActionMailer::Base.smtp_settings = {
     :address => Rails.application.secrets.smtp_server,
     :port => 587,
-    :domain => "beyondz.com",
-    :authentication => :plain,
+    :domain => Rails.application.secrets.mailer_domain,
     :user_name => Rails.application.secrets.smtp_username,
     :password => Rails.application.secrets.smtp_password,
-    :enable_starttls_auto => true
+    :authentication => :login # plain, login, or cram_md5i
+    # gmail smtp server relay settings.  not for use on production.
+    #:authentication => :plain,
+    #:enable_starttls_auto => true
   }
 
   # In a non-production environment, send all outgoing emails to a single email that can be used for
