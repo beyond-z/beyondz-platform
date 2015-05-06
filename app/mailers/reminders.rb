@@ -2,7 +2,7 @@
 
 require 'digest/sha2'
 class Reminders < ActionMailer::Base
-  default from: 'no-reply@beyondz.org'
+  default 'from' => '"Beyond Z" <' + Rails.application.secrets.mailer_from_email + '>'
 
   # needed because gmail was filtering some messages: http://blog.mailgun.com/tips-tricks-avoiding-gmail-spam-filtering-when-using-ruby-on-rails-action-mailer/
   default 'Message-ID' => ->(_v_) { "<#{SecureRandom.uuid}@beyondz.org>" }
