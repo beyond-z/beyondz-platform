@@ -428,11 +428,9 @@
 
               <p class="student"><i>Please be accurate:</i> You will be assigned to a group that meets weekly during one of these meeting times. Final invitations to join <%= @program_title %> will include a specific day and timeslot, and it will be difficult to change that assignment once made. Note: It's important that you are as accurate as possible in this application, though we also understand your schedule may change after you’ve submitted. If that happens, or if you are currently very unsure of your fall schedule, please email us with details at info@beyondz.org. </p>
 
-              <%= f.label :meeting_times, 'Please select from the list below ALL <u>times</u> during which you expect to be available to lead cohort sessions through the end of #{Date.today.year}.'.html_safe, :class => 'coach' %>
+              <%= f.label :meeting_times, "Please select from the list below ALL <u>times</u> during which you expect to be available to lead cohort sessions through the end of #{Date.today.year}.".html_safe, :class => 'coach' %>
 
-              <p class="coach"><i>Please be flexible:</i> The more options you select, the greater our opportunity to ensure all participants benefit from the great diversity of our community.'</p>
-
-              <p class="coach"><i>Please be flexible</i>: the more options you select, the greater our opportunity to ensure all participants benefit from the great diversity of our coaching community.</p>
+              <p class="coach"><i>Please be flexible:</i> The more options you select, the greater our opportunity to ensure all participants benefit from the great diversity of our community.</p>
 
               <p class="coach"><i>Please note</i>: Your invitation to join <%= @program_title %> - <%= @program_site %> will include a specific campus location, day, and timeslot, at which point you'll be asked to officially confirm your role. It's important that you are as accurate as possible, so we can make reliable matches between coaches and participants. However, we also understand your schedule may change after you've submitted. <i>If that happens, or if you are currently very unsure of your fall schedule, please email us with details at <a href="mailto:info@beyondz.org">info@beyondz.org</a>.</i></p>
 
