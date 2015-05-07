@@ -85,6 +85,6 @@ BeyondzPlatform::Application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 
-  config.action_mailer.default_url_options = { host: ENV['MAILER_HOST'] }
+  config.action_mailer.default_url_options = { host: Rails.application.secrets.mailer_domain }
 
 end
