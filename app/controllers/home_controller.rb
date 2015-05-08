@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
 
-  before_action :new_user, only: [:welcome, :volunteer, :apply, :partner]
+  before_action :new_user, only: [:welcome, :volunteer, :apply, :partner, :please_wait]
 
   layout 'public'
 
@@ -24,6 +24,10 @@ class HomeController < ApplicationController
     # Otherwise, non-logged in users
     # just get the public home page
     # via the home/index view
+  end
+
+  def please_wait
+
   end
 
   def welcome
