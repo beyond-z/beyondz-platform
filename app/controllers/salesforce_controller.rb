@@ -42,13 +42,16 @@ class SalesforceController < ApplicationController
           if u.applicant_type == 'undergrad_student' && u.university_name == 'San Jose State University'
             sf = BeyondZ::Salesforce.new
             client = sf.get_client
-            client.materialize('CampaignMember')
 
-            cm = SFDC_Models::CampaignMember.new
+            # Can't use client.materialize because it sets the checkboxes to nil
+            # instead of false which fails server-side validation. This method
+            # works though.
+            cm = {}
             # Staging SJSU participatns
-            cm.CampaignId = '7011700000056Pf'
-            cm.ContactId = u.salesforce_id
-            cm.save
+            cm['CampaignId'] = '7011700000056Pf'
+            cm['ContactId'] = u.salesforce_id
+            client.create('CampaignMember', cm)
+
             # The apply now enabled *should* be set by the SF triggers
             # but we might want to do it here now anyway to give faster
             # response to the user.
