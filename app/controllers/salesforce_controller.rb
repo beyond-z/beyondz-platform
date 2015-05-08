@@ -33,6 +33,26 @@ class SalesforceController < ApplicationController
         if u
           u.salesforce_id = parts[1]
           u.save!
+
+          # We may also need to add them to a campaign if certain things
+          # are right. For now, it will hardcode to the SJSU conditions
+          # as that needs to work this coming week, then we'll change that
+          # ...somehow.
+
+          if u.applicant_type == 'undergrad_student' && u.university_name == 'San Jose State University'
+            sf = BeyondZ::Salesforce.new
+            client = sf.get_client
+            client.materialize('CampaignMember')
+
+            cm = SFDC_Models::CampaignMember.new
+            # Staging SJSU participatns
+            cm.CampaignId = '7011700000056Pf'
+            cm.ContactId = u.salesforce_id
+            cm.save
+            # The apply now enabled *should* be set by the SF triggers
+            # but we might want to do it here now anyway to give faster
+            # response to the user.
+          end
         end
       end
     end
