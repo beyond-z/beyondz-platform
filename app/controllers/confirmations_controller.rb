@@ -60,19 +60,6 @@ class ConfirmationsController < Devise::ConfirmationsController
     StaffNotifications.new_user(current_user).deliver
 
     flash[:notice] = nil
-
-    # This is meant to give a chance for Salesforce triggers to run
-    # and update stuff with auto-conversions, campaign adds, and
-    # enable apply now.
-    #
-    # It'd be better to notify them when the event actually happens
-    # but this is a quick easy solution for now.
-    if current_user.applicant_type == 'undergrad_student' && current_user.university_name == 'San Jose State University'
-      # the if is cuz we know these ones are the only time it happens automatically
-      # so no point making everyone else wait
-      sleep(4.seconds)
-    end
-
     redirect_to_welcome_path(current_user)
   end
 
