@@ -161,6 +161,8 @@ class User < ActiveRecord::Base
 
     contact['Account_Activated__c'] = self.confirmed?
 
+    contact['Phone'] = phone
+
     contact['BZ_User_Id__c'] = id
     contact['Interested_In__c'] = applicant_details
     contact['Signup_Date__c'] = created_at

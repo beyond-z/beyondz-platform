@@ -33,6 +33,7 @@ class EnrollmentsController < ApplicationController
       @enrollment.email = current_user.email
       @enrollment.company = current_user.company
       @enrollment.university = current_user.university_name
+      @enrollment.phone = current_user.phone
       @enrollment.anticipated_graduation = current_user.anticipated_graduation
       @enrollment.accepts_txt = true # to pre-check the box
 
