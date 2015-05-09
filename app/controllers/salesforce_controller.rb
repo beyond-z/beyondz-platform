@@ -48,7 +48,7 @@ class SalesforceController < ApplicationController
             # works though.
             cm = {}
             # Staging SJSU participatns
-            cm['CampaignId'] = '7011700000056Pf'
+            cm['CampaignId'] = '701o0000000AK6p'
             cm['ContactId'] = u.salesforce_id
             client.create('CampaignMember', cm)
 
