@@ -5,8 +5,17 @@ class ApplicationController < ActionController::Base
   layout :default_layout
   before_action :save_external_referrer
   before_action :permit_lms_iframe
+  before_filter :check_domain
 
   private
+
+  # Allows all permutations of http://beyondz.org, http://www.beyondz.org, https://beyondz.org, and https://www.beyondz.org
+  # when configure as discussed here: http://stackoverflow.com/questions/6701549/heroku-ssl-on-root-domain
+  def check_domain
+    if Rails.env.production? and request.host.downcase != domain
+      redirect_to request.protocol + domain + request.fullpath, :status => 301
+    end
+  end
 
   def permit_lms_iframe
     secure = Rails.application.secrets.canvas_use_ssl ? 's' : ''
