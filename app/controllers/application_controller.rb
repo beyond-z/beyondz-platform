@@ -1,5 +1,5 @@
-class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
+class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   layout :default_layout
@@ -12,8 +12,8 @@ class ApplicationController < ActionController::Base
   # Allows all permutations of http://beyondz.org, http://www.beyondz.org, https://beyondz.org, and https://www.beyondz.org
   # when configured as discussed here: http://stackoverflow.com/questions/6701549/heroku-ssl-on-root-domain
   def check_domain
-    if Rails.env.production? and request.subdomain.downcase == 'www'
-      redirect_to request.protocol + request.domain + request.fullpath, :status => 301
+    if Rails.env.production? and request.host.downcase == request.domain.downcase
+      redirect_to request.protocol + 'www.' + request.domain + request.fullpath, :status => 301
     end
   end
 
