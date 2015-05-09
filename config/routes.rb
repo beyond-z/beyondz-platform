@@ -3,6 +3,7 @@ BeyondzPlatform::Application.routes.draw do
 
   root "home#index"
   get '/welcome', to: 'home#welcome'
+  get '/activating', to: 'home#please_wait', as: :please_wait
   get '/apply', to: 'home#apply'
   get '/donate', to: 'home#donate'
   get '/volunteer', to: 'home#volunteer'

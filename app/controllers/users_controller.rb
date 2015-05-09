@@ -147,6 +147,8 @@ class UsersController < ApplicationController
       :email,
       :password,
 
+      :phone,
+
       :applicant_type,
       :applicant_details,
       :applicant_comments,

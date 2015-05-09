@@ -27,6 +27,16 @@
   </section>
 
   <section>
+    <div>
+      Phone number:
+    </div>
+    <div class="col-sm-5">
+       <%= f.text_field :phone, 'class' => 'form-control short', 'title' => 'phone number including area code', 'pattern' => '.{10,15}', 'type' => 'tel' %>
+    </div>
+  </section>
+
+
+  <section>
     <div class="required">
       Please create a password to protect any personal information you may provide us.
     </div>

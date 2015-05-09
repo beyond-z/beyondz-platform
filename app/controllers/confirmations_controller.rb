@@ -60,7 +60,12 @@ class ConfirmationsController < Devise::ConfirmationsController
     StaffNotifications.new_user(current_user).deliver
 
     flash[:notice] = nil
-    redirect_to_welcome_path(current_user)
+
+    if current_user.applicant_type == 'undergrad_student' && current_user.university_name == 'San Jose State University'
+      please_wait_path
+    else
+      redirect_to_welcome_path(current_user)
+    end
   end
 
 end

@@ -1,0 +1,18 @@
+<div class="plank tertiary-md">
+  <div class="section-container">
+    <section>
+      <div class="col-sm-6 col-sm-offset-3 text-center">
+        <h2>Activating your account</h2>
+        <p>Just a moment<span id="dots">...</span></p>
+      </div>
+    </section>
+  </div>
+</div>
+<script>
+  setInterval(function() {
+    document.getElementById('dots').innerHTML += '.';
+  }, 500);
+  setTimeout(function() {
+    location.href = '<%= welcome_path %>';
+  }, 3500);
+</script>
