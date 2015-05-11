@@ -175,6 +175,7 @@ class UsersController < ApplicationController
       # Partners, employers, and others are reached out to manually instead of confirming
       # their account. We immediate make on salesforce and don't require confirmation so
       # we can contact them quickly and painlessly (to them!).
+      # FIXME: indent this after uncommenting the unless line above and end line below!
       @new_user.skip_confirmation!
       # end
       @new_user.save
