@@ -47,7 +47,6 @@ class ConfirmationsController < Devise::ConfirmationsController
   private
 
   def after_confirmation_path_for(resource_name, resource)
-    raise "#{resource_name} -- #{resource}"
     sign_in(resource_name, resource)
 
     # If we set up a salesforce account, update the user/contact there
