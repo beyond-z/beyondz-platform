@@ -138,6 +138,7 @@ class UsersController < ApplicationController
     @referrer = request.referrer
     @user = User.new
     @user.applicant_type = params[:applicant_type] if params[:applicant_type]
+    @user.university_name = params[:university_name] if params[:university_name]
   end
 
   def create
