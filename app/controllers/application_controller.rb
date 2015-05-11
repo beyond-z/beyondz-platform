@@ -71,7 +71,11 @@ class ApplicationController < ActionController::Base
   # keeping this method because we might change our mind back
   # and then we'd do to undo just to redo...
   def redirect_to_welcome_path(user)
-    welcome_path(new_user_id: user.id)
+    if user.applicant_type == 'undergrad_student' && user.university_name == 'San Jose State University'
+      please_wait_path(new_user_id: user.id)
+    else
+      welcome_path(new_user_id: user.id)
+    end
   end
 
 end

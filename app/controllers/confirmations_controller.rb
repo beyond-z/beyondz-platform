@@ -47,6 +47,7 @@ class ConfirmationsController < Devise::ConfirmationsController
   private
 
   def after_confirmation_path_for(resource_name, resource)
+    raise "#{resource_name} -- #{resource}"
     sign_in(resource_name, resource)
 
     # If we set up a salesforce account, update the user/contact there
@@ -61,11 +62,7 @@ class ConfirmationsController < Devise::ConfirmationsController
 
     flash[:notice] = nil
 
-    if current_user.applicant_type == 'undergrad_student' && current_user.university_name == 'San Jose State University'
-      please_wait_path
-    else
-      redirect_to_welcome_path(current_user)
-    end
+    redirect_to_welcome_path(current_user)
   end
 
 end

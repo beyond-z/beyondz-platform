@@ -202,6 +202,12 @@ class UsersController < ApplicationController
 
     @new_user.create_on_salesforce
 
+    if user[:applicant_type] == 'undergrad_student' || user[:applicant_type] == 'volunteer'
+    # FIXME: hack, this auto-signs in as we skip confirmation so they
+    # can immediately apply
+      sign_in('user', @new_user)
+    end
+
     redirect_to redirect_to_welcome_path(@new_user)
   end
 
