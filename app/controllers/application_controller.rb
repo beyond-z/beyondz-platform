@@ -71,7 +71,8 @@ class ApplicationController < ActionController::Base
   # keeping this method because we might change our mind back
   # and then we'd do to undo just to redo...
   def redirect_to_welcome_path(user)
-    if user.applicant_type == 'undergrad_student' && user.university_name == 'San Jose State University'
+    # FIXME: Hack for now. When spam problem is fixed, we want to wait for email activiation/confirmation
+    if user.salesforce_campaign_id
       please_wait_path(new_user_id: user.id)
     else
       welcome_path(new_user_id: user.id)

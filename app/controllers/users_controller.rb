@@ -172,13 +172,19 @@ class UsersController < ApplicationController
 
     if !user[:applicant_type].nil?
       @new_user = User.new(user)
-      # unless user[:applicant_type] == 'undergrad_student' || user[:applicant_type] == 'volunteer'
-      # Partners, employers, and others are reached out to manually instead of confirming
-      # their account. We immediate make on salesforce and don't require confirmation so
-      # we can contact them quickly and painlessly (to them!).
-      # FIXME: indent this after uncommenting the unless line above and end line below!
-      @new_user.skip_confirmation!
-      # end
+      unless user[:applicant_type] == 'undergrad_student' || user[:applicant_type] == 'volunteer'
+        # Partners, employers, and others are reached out to manually instead of confirming
+        # their account. We immediate make on salesforce and don't require confirmation so
+        # we can contact them quickly and painlessly (to them!).
+        @new_user.skip_confirmation!
+      end
+
+      # FIXME: hack to avoid email activation for signups mapped to active campaigns.  this is to get 
+      # around the fact that activation emails are going to spam.  uncomment once we can send emails again.
+      if @new_user.salesforce_campaign_id
+        @new_user.skip_confirmation!
+      end
+
       @new_user.save
     else
       # this is required when signing up through this controller,
@@ -206,7 +212,8 @@ class UsersController < ApplicationController
 
     if user[:applicant_type] == 'undergrad_student' || user[:applicant_type] == 'volunteer'
       # FIXME: hack, this auto-signs in as we skip confirmation so they
-      # can immediately apply
+      # can immediately apply.  This is because our emails are going to spam.  Once
+      # that is fixed, undo this.
       sign_in('user', @new_user)
     end
 
