@@ -219,7 +219,7 @@ class UsersController < ApplicationController
 
     redirect_to redirect_to_welcome_path(@new_user)
 
-    StaffNotifications.new_user(current_user).deliver
+    StaffNotifications.new_user(@new_user).deliver
   end
 
   private
