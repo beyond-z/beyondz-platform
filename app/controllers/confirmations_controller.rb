@@ -57,8 +57,6 @@ class ConfirmationsController < Devise::ConfirmationsController
       current_user.confirm_on_salesforce
     end
 
-    StaffNotifications.new_user(current_user).deliver
-
     flash[:notice] = nil
 
     redirect_to_welcome_path(current_user)

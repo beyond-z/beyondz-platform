@@ -218,6 +218,8 @@ class UsersController < ApplicationController
     end
 
     redirect_to redirect_to_welcome_path(@new_user)
+
+    StaffNotifications.new_user(current_user).deliver
   end
 
   private
