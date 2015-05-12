@@ -210,9 +210,9 @@ class UsersController < ApplicationController
 
     @new_user.create_on_salesforce
 
-    if user[:applicant_type] == 'undergrad_student' || user[:applicant_type] == 'volunteer'
-      # FIXME: hack, this auto-signs in as we skip confirmation so they
-      # can immediately apply.  This is because our emails are going to spam.  Once
+    if @new_user.salesforce_campaign_id
+      # FIXME: hack, this auto-signs in users that are mapped to active campaign since we skip confirmation 
+      # so they can immediately apply.  This is because our emails are going to spam.  Once
       # that is fixed, undo this.
       sign_in('user', @new_user)
     end
