@@ -35,27 +35,23 @@ class SalesforceController < ApplicationController
           u.save!
 
           # We may also need to add them to a campaign if certain things
-          # are right. For now, it will hardcode to the SJSU conditions
-          # as that needs to work this coming week, then we'll change that
-          # ...somehow.
+          # are right. 
+          cm = {}
+          cm['CampaignId'] = u.salesforce_campaign_id
 
-          if u.applicant_type == 'undergrad_student' && u.university_name == 'San Jose State University'
-            sf = BeyondZ::Salesforce.new
-            client = sf.get_client
-
+          if cm['CampaignId']
             # Can't use client.materialize because it sets the checkboxes to nil
             # instead of false which fails server-side validation. This method
             # works though.
-            cm = {}
-            # Staging SJSU participatns
-            cm['CampaignId'] = '701o0000000AK6p'
+            sf = BeyondZ::Salesforce.new
+            client = sf.get_client
             cm['ContactId'] = u.salesforce_id
             client.create('CampaignMember', cm)
-
-            # The apply now enabled *should* be set by the SF triggers
-            # but we might want to do it here now anyway to give faster
-            # response to the user.
           end
+
+          # The apply now enabled *should* be set by the SF triggers
+          # but we might want to do it here now anyway to give faster
+          # response to the user.
         end
       end
     end

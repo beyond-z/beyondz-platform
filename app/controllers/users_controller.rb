@@ -138,6 +138,7 @@ class UsersController < ApplicationController
     @referrer = request.referrer
     @user = User.new
     @user.applicant_type = params[:applicant_type] if params[:applicant_type]
+    @user.university_name = params[:university_name] if params[:university_name]
   end
 
   def create
@@ -177,6 +178,13 @@ class UsersController < ApplicationController
         # we can contact them quickly and painlessly (to them!).
         @new_user.skip_confirmation!
       end
+
+      # FIXME: hack to avoid email activation for signups mapped to active campaigns.  this is to get 
+      # around the fact that activation emails are going to spam.  uncomment once we can send emails again.
+      if @new_user.salesforce_campaign_id
+        @new_user.skip_confirmation!
+      end
+
       @new_user.save
     else
       # this is required when signing up through this controller,
@@ -202,7 +210,16 @@ class UsersController < ApplicationController
 
     @new_user.create_on_salesforce
 
+    if @new_user.salesforce_campaign_id
+      # FIXME: hack, this auto-signs in users that are mapped to active campaign since we skip confirmation 
+      # so they can immediately apply.  This is because our emails are going to spam.  Once
+      # that is fixed, undo this.
+      sign_in('user', @new_user)
+    end
+
     redirect_to redirect_to_welcome_path(@new_user)
+
+    StaffNotifications.new_user(@new_user).deliver
   end
 
   private
