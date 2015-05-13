@@ -1,0 +1,40 @@
+<h1>Automatic Campaign Mapping</h1>
+
+<p>This mapping sets automatic campaign mapping new sign ups based on the fields they enter.</p>
+
+<p>When a new users' account is activated, if their information matches a row here, they will be converted to a contact on the Salesforce side automatically <!-- note this is done by a separate Apex trigger on that end --> and then added to the given campaign without any manual intervention.</p>
+
+<p>Get the Campaign ID from Salesforce by going to it and copy/pasting the id out of the URL. It is all the stuff after the final / but before a ?, if present. It'll look something like <tt>7011700000056Pf</tt></p>
+
+<p>University name is set on university partners and undergrad students. BZ region is set on employers and coaches. Thus, you should only use one or the other field.</p>
+
+<p>For example, a volunteer should have a blank university name. Only the region column should be filled. By contrast, a student should have a blank BZ Region, with a university name filled instead.</p>
+
+<p>Make sure you check the form for the spelling of the fields, as they need to match exactly.</p>
+
+<table class="csv-sample" width="600"><caption>Expected format</caption>
+  <thead><tr>
+      <th>Campaign ID</th><th>Applicant type</th><th>University Name</th><th>BZ Region</th>
+  </tr></thead>
+  <tbody>
+    <tr>
+      <td>7011700000056Pf</td><td>undergrad_student</td><td>San Jose State University</td><td></td>
+    </tr>
+    <tr>
+      <td>70117000000782T</td><td>volunteer</td><td></td><td>Chicago Area</td>
+    </tr>
+    <tr>
+      <td>701170000007DP3</td><td>volunteer</td><td></td><td>Students For Education Reform Fellowship Program</td>
+    </tr>
+    <tr>
+      <td>7011700000056ww</td><td>volunteer</td><td></td><td>San Francisco Bay Area, San Jose</td>
+    </tr>
+  </tbody>
+</table>
+
+<p style="margin: 2em;"><b>Important note:</b> uploading a spreadsheet will delete all current mappings and replace them with what's in the sheet. Be sure that your upload includes ALL the mappings you want kept.</p>
+
+<%= form_for :import, :html => { :multipart => true } do |f| %>
+  <%= f.file_field :csv %>
+  <%= submit_tag 'Upload CSV' %>
+<% end %>
