@@ -72,6 +72,30 @@ class Admin::UsersController < Admin::ApplicationController
     end
   end
 
+  def campaign_mapping
+    # render a view
+  end
+
+  def do_campaign_mapping
+    if params[:import].nil?
+      flash[:message] = 'Please upload a csv file'
+      redirect_to admin_campaign_mapping_path
+      return
+    end
+
+    file = CSV.parse(params[:import][:csv].read)
+    CampaignMapping.destroy_all
+    file.each do |row|
+      CampaignMapping.create(
+        :campaign_id => row[0],
+        :applicant_type => row[1],
+        :university_name => row[2],
+        :bz_region => row[3]
+      )
+    end
+
+  end
+
   def update
 
     initialize_lms_interop
