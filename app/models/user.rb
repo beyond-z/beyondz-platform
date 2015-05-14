@@ -223,24 +223,17 @@ class User < ActiveRecord::Base
   end
 
   def salesforce_campaign_id
-    # PRODUCTION IDs!!!
-    # For now, it will hardcode to the programs that we're currently
-    # recruiting for.  Very soon, we'll make this dynamic.
-    if applicant_type == 'undergrad_student' 
-      if university_name == 'San Jose State University'
-        '701o0000000AK6p'
-      end
-    elsif applicant_type == 'volunteer'
-      if bz_region == 'Chicago Area'
-        '701o0000000AMaA'
-      elsif bz_region == 'Students For Education Reform Fellowship Program'
-        '701o0000000AR6O'
-      elsif bz_region == 'San Francisco Bay Area, San Jose' || bz_region == 'San Francisco Bay Area, East Bay' || bz_region == 'San Francisco Bay Area, San Francisco'
-        '701o0000000AKCJ'
-      end
-    else
-      nil
+    mapping = CampaignMapping.where(
+      :university_name => university_name,
+      :bz_region => bz_region,
+      :applicant_type => applicant_type
+    )
+
+    if mapping.empty?
+      return nil
     end
+
+    mapping.first.campaign_id
   end
 
   # validates :anticipated_graduation, presence: true, if: :graduation_required?

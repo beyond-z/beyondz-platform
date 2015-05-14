@@ -35,7 +35,7 @@ class SalesforceController < ApplicationController
           u.save!
 
           # We may also need to add them to a campaign if certain things
-          # are right. 
+          # are right.
           cm = {}
           cm['CampaignId'] = u.salesforce_campaign_id
 
