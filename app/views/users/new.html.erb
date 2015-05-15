@@ -37,26 +37,35 @@
 
                 <div class="form-group">
                   <label class="required">I am...</label>
+                  <% if !@hide_other_applicant_types || @user.applicant_type == 'undergrad_student' %>
                   <div class="clickable-option">
                     <%= f.radio_button :applicant_type, 'undergrad_student', required: 'required' %>
                     <%= f.label :applicant_type_undergrad_student, 'An undergraduate student' %>
                     <%= render :partial => 'student', :locals => { :f => f} %>
                   </div>
+                  <% end %>
+                  <% if !@hide_other_applicant_types || @user.applicant_type == 'volunteer' %>
                   <div class="clickable-option">
                     <%= f.radio_button :applicant_type, 'volunteer', required: 'required' %>
                     <%= f.label :applicant_type_volunteer, 'Interested in volunteering as a coach in the BZ Accelerator' %>
                     <%= render :partial => 'volunteer', :locals => { :f => f} %>
                   </div>
+                  <% end %>
+                  <% if !@hide_other_applicant_types || @user.applicant_type == 'employer' %>
                   <div class="clickable-option">
                     <%= f.radio_button :applicant_type, 'employer', :required => 'required' %>
                     <%= f.label :applicant_type_employer, 'Interested in offering employment opportunities to BZ alumni', required: 'required' %>
                     <%= render :partial => 'employer', :locals => { :f => f} %>
                   </div>
+                  <% end %>
+                  <% if !@hide_other_applicant_types || @user.applicant_type == 'partner' %>
                   <div class="clickable-option">
                     <%= f.radio_button :applicant_type, 'partner', required: 'required' %>
                     <%= f.label :applicant_type_partner, 'Working in higher education and am interested in partnering with Beyond Z' %>
                     <%= render :partial => 'partner', :locals => { :f => f} %>
                   </div>
+                  <% end %>
+                  <% if !@hide_other_applicant_types || @user.applicant_type == 'other' %>
                   <div class="clickable-option with-text-field">
                     <%= f.radio_button :applicant_type, 'other', required: 'required' %>
                     <%= f.label :applicant_type_other, 'Other?' %>
@@ -78,16 +87,18 @@
                           %>
                         </div>
                       </section>
-
-                      <div class="form-group">
-                        <button type="submit" class="button-primary">Submit</button>
-                      </div>
                     </div>
                   </div>
+                  <% end %>
                 </div>
 
                 <div class="form-group">
                   <%= f.text_area :applicant_comments, :class => 'form-control', :placeholder => 'Comments, thoughts, or questions?', :maxlength => '4000' %>
+                </div>
+
+
+                <div class="form-group">
+                  <button type="submit" class="button-primary">Submit</button>
                 </div>
 
               <% end %>
