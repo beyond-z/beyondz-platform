@@ -36,7 +36,9 @@
                 </div>
 
                 <div class="form-group">
-                  <label class="required">I am...</label>
+                  <% if !@hide_other_applicant_types %>
+                    <label class="required">I am...</label>
+                  <% end %>
                   <% if !@hide_other_applicant_types || @user.applicant_type == 'undergrad_student' %>
                   <div class="clickable-option">
                     <%= f.radio_button :applicant_type, 'undergrad_student', required: 'required' %>
