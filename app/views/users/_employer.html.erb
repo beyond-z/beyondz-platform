@@ -1,7 +1,11 @@
 <div class="form-option-details">
   <section>
     <div>
-      <span class="required">In the following area:</span>
+      <% if @hide_other_applicant_types %>
+        <span class="required">I am interested in offering employment opportunities to BZ alumni in the following area:</span>
+      <% else %>
+        <span class="required">In the following area:</span>
+      <% end %>
       <br />
       <%= render :partial => 'areas', :locals => { :f => f, :list => 'bz_regions_employers' } %>
     </div>

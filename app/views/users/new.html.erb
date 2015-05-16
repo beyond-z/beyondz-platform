@@ -41,36 +41,56 @@
                   <% end %>
                   <% if !@hide_other_applicant_types || @user.applicant_type == 'undergrad_student' %>
                   <div class="clickable-option">
-                    <%= f.radio_button :applicant_type, 'undergrad_student', required: 'required' %>
-                    <%= f.label :applicant_type_undergrad_student, 'An undergraduate student' %>
+                    <% if @hide_other_applicant_types %>
+                      <%= f.hidden_field :applicant_type, 'undergrad_student' %>
+                    <% else %>
+                      <%= f.radio_button :applicant_type, 'undergrad_student', required: 'required' %>
+                      <%= f.label :applicant_type_undergrad_student, 'An undergraduate student' %>
+                    <% end %>
                     <%= render :partial => 'student', :locals => { :f => f} %>
                   </div>
                   <% end %>
                   <% if !@hide_other_applicant_types || @user.applicant_type == 'volunteer' %>
                   <div class="clickable-option">
-                    <%= f.radio_button :applicant_type, 'volunteer', required: 'required' %>
-                    <%= f.label :applicant_type_volunteer, 'Interested in volunteering as a coach in the BZ Accelerator' %>
+                    <% if @hide_other_applicant_types %>
+                      <%= f.hidden_field :applicant_type, 'volunteer' %>
+                    <% else %>
+                      <%= f.radio_button :applicant_type, 'volunteer', required: 'required' %>
+                      <%= f.label :applicant_type_volunteer, 'Interested in volunteering as a coach in the BZ Accelerator' %>
+                    <% end %>
                     <%= render :partial => 'volunteer', :locals => { :f => f} %>
                   </div>
                   <% end %>
                   <% if !@hide_other_applicant_types || @user.applicant_type == 'employer' %>
                   <div class="clickable-option">
-                    <%= f.radio_button :applicant_type, 'employer', :required => 'required' %>
-                    <%= f.label :applicant_type_employer, 'Interested in offering employment opportunities to BZ alumni', required: 'required' %>
+                    <% if @hide_other_applicant_types %>
+                      <%= f.hidden_field :applicant_type, 'employer' %>
+                    <% else %>
+                      <%= f.radio_button :applicant_type, 'employer', :required => 'required' %>
+                      <%= f.label :applicant_type_employer, 'Interested in offering employment opportunities to BZ alumni', required: 'required' %>
+                    <% end %>
                     <%= render :partial => 'employer', :locals => { :f => f} %>
                   </div>
                   <% end %>
                   <% if !@hide_other_applicant_types || @user.applicant_type == 'partner' %>
                   <div class="clickable-option">
-                    <%= f.radio_button :applicant_type, 'partner', required: 'required' %>
-                    <%= f.label :applicant_type_partner, 'Working in higher education and am interested in partnering with Beyond Z' %>
+                    <% if @hide_other_applicant_types %>
+                      <%= f.hidden_field :applicant_type, 'partner' %>
+                    <% else %>
+                      <%= f.radio_button :applicant_type, 'partner', required: 'required' %>
+                      <%= f.label :applicant_type_partner, 'Working in higher education and am interested in partnering with Beyond Z' %>
+                    <% end %>
                     <%= render :partial => 'partner', :locals => { :f => f} %>
                   </div>
                   <% end %>
                   <% if !@hide_other_applicant_types || @user.applicant_type == 'other' %>
                   <div class="clickable-option with-text-field">
-                    <%= f.radio_button :applicant_type, 'other', required: 'required' %>
-                    <%= f.label :applicant_type_other, 'Other?' %>
+                    <% if @hide_other_applicant_types %>
+                      <%= f.hidden_field :applicant_type, 'other' %>
+                    <% else %>
+                      <%= f.radio_button :applicant_type, 'other', required: 'required' %>
+                      <%= f.label :applicant_type_other, 'Other?' %>
+                    <% end %>
                     <%= f.text_field :applicant_details, :class => 'form-control', :placeholder => 'What are you interested in?', :onclick => '$("#user_applicant_type_other").click();', :maxlength => '72' %>
                     <div class="form-option-details">
                       <br />
