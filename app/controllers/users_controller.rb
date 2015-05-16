@@ -139,6 +139,9 @@ class UsersController < ApplicationController
     @user = User.new
     @user.applicant_type = params[:applicant_type] if params[:applicant_type]
     @user.university_name = params[:university_name] if params[:university_name]
+    if params[:applicant_type]
+      @hide_other_applicant_types = true
+    end
   end
 
   def create
