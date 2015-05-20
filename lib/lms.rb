@@ -12,6 +12,10 @@ module BeyondZ
     def create_user(user)
       open_canvas_http
 
+      user_student_id = nil
+      enrollment = Enrollment.find_by_user_id(user.id)
+      user_student_id = enrollment.student_id unless enrollment.nil?
+
       # the v1 is API version, only one option available in Canvas right now
       # accounts/1 refers to the Beyond Z account, which is the only one
       # we use since it is a custom installation.
@@ -23,7 +27,8 @@ module BeyondZ
         'user[sortable_name]' => "#{user.last_name}, #{user.first_name}",
         'user[terms_of_use]' => true,
         'pseudonym[unique_id]' => user.email,
-        'pseudonym[send_confirmation]' => false
+        'pseudonym[send_confirmation]' => false,
+        'pseudonym[sis_user_id]' => user_student_id
       )
       response = @canvas_http.request(request)
 
