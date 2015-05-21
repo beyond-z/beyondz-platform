@@ -137,7 +137,11 @@
           <section>
             <div id="form-academics">
               <h2 class="coach student form-section-header">Academic Background</h2>
-              <div id="form-degree">
+              <div>
+                <label><input type="checkbox" onchange="document.getElementById('form-degree').style.display = this.checked ? '' : 'none';" <%= (@enrollment.university && !@enrollment.university.empty?) ? 'checked' : '' %> />
+                <span>I've earned my college degree and/or am currently enrolled in a college degree program</label>
+              </div>
+              <div id="form-degree" <%= (@enrollment.university && !@enrollment.university.empty?) ? '' : 'style="display:none"'.html_safe %>>
                 <div class="form-group both">
                   <label>Undergraduate College/University</label>
                   <%= f.text_field :university, 'class' => 'form-control', 'type' => 'text', 'placeholder' => 'Example: San Jose State University', :maxlength => '45' %>
