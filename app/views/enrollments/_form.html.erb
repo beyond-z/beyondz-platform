@@ -438,7 +438,7 @@
 
 
               <div class="availability-options">
-              <% @meeting_times.lines.map(&:chomp).each do |time| %>
+              <% @meeting_times.lines.map(&:strip).each do |time| %>
                 <label class="control-label" style="padding-left: 32px;"><input type="checkbox" name="meeting_times[]" value="<%=time%>" <%= checked_if_in_array(:meeting_times, time, @enrollment[:meeting_times]) %> /> <%= time %></label><br />
               <% end %>
               </div>
@@ -491,9 +491,9 @@
                 <label>How did you hear about us? Please select all that apply.</label>
                 <table>
                   <% @sourcing_options.lines.each do |option| %>
-                  <% option = option.chomp %>
+                  <% option = option.strip %>
                   <!-- visibility: none maintains the same spacing as if it was there... -->
-                    <tr><td><input type="checkbox" value="<%= option %>" name="lead_sources[]" <%= checked_if_in_array(:lead_sources, option, @enrollment.lead_sources) %> />&nbsp;</td><td><%= option %> &nbsp;</td><td><input type="text" style="visibility: <%= (option.chomp.ends_with? ':') ? 'visible' : 'hidden' %>" class="form-control" name="lead_sources[]" onchange="this.parentNode.parentNode.querySelector('input[type=checkbox]').checked = true;" value="<%= value_after_array(:lead_sources, option, @enrollment.lead_sources) %>" /> <!-- details unnecessary for this but nice consistency to have two inputs per row for simpler array processing code --></tr>
+                    <tr><td><input type="checkbox" value="<%= option %>" name="lead_sources[]" <%= checked_if_in_array(:lead_sources, option, @enrollment.lead_sources) %> />&nbsp;</td><td><%= option %> &nbsp;</td><td><input type="text" style="visibility: <%= (option.strip.ends_with? ':') ? 'visible' : 'hidden' %>" class="form-control" name="lead_sources[]" onchange="this.parentNode.parentNode.querySelector('input[type=checkbox]').checked = true;" value="<%= value_after_array(:lead_sources, option, @enrollment.lead_sources) %>" /> <!-- details unnecessary for this but nice consistency to have two inputs per row for simpler array processing code --></tr>
                   <% end %>
                 </table>
               </div>
