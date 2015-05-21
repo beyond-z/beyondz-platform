@@ -1,4 +1,5 @@
 <div class="form-option-details">
+  <% unless @hide_other_regions %>
   <section>
     <div>
       <span class="required">I can coach a cohort of students in:</span>
@@ -6,6 +7,9 @@
       <%= render :partial => 'areas', :locals => { :f => f } %>
     </div>
   </section>
+  <% else %>
+    <%= f.hidden_field :bz_region, :value => params[:user][:bz_region] %>
+  <% end %>
 
 
   <section>

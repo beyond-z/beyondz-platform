@@ -35,8 +35,6 @@ class Enrollment < ActiveRecord::Base
   validates :last_summer, presence: true, if: "position == 'student'"
   validates :meaningful_experience, presence: true
 
-  validates :university, presence: true
-  validates :anticipated_graduation, presence: true
   validates :why_bz, presence: true, if: "position == 'coach'"
   validates :personal_passion, presence: true, if: "position == 'coach'"
   validates :teaching_experience, presence: true, if: "position == 'coach'"
