@@ -316,16 +316,16 @@
                                 <div class="form-refernce">
                   <div class="form-group">
                     <label>Reference 1 Name</label>
-                    <%= f.text_field :reference_name, 'class' => 'form-control medium', 'type' => 'text', 'placeholder' => 'First and last name' %>
+                    <%= f.text_field :reference_name, 'class' => 'form-control medium', 'type' => 'text', 'placeholder' => 'First and last name', 'maxlength' => 240 %>
                   </div>
                   <div class="form-group">
                     <label>How do you know this person?</label>
-                    <%= f.text_field :reference_how_known, 'class' => 'form-control', 'type' => 'text' %>
+                    <%= f.text_field :reference_how_known, 'class' => 'form-control', 'type' => 'text', 'maxlength' => 240 %>
                   </div>
                   <div class="form-group">
                     <label>How long have you known this person?</label>
                     <p class="help">E.g: &quot;2 years&quot;</p>
-                    <%= f.text_field :reference_how_long_known, 'class' => 'form-control short', 'type' => 'text' %>
+                    <%= f.text_field :reference_how_long_known, 'class' => 'form-control short', 'type' => 'text', 'maxlength' => 160 %>
                   </div>
                   <div class="form-group">
                     <label>Email</label>
@@ -340,16 +340,16 @@
                                 <div class="form-refernce">
                   <div class="form-group">
                     <label>Reference 2 Name</label>
-                    <%= f.text_field :reference2_name, 'class' => 'form-control medium', 'type' => 'text', 'placeholder' => 'First and last name' %>
+                    <%= f.text_field :reference2_name, 'class' => 'form-control medium', 'type' => 'text', 'placeholder' => 'First and last name', 'maxlength' => 240 %>
                   </div>
                   <div class="form-group">
                     <label>How do you know this person?</label>
-                    <%= f.text_field :reference2_how_known, 'class' => 'form-control', 'type' => 'text' %>
+                    <%= f.text_field :reference2_how_known, 'class' => 'form-control', 'type' => 'text', 'maxlength' => 240 %>
                   </div>
                   <div class="form-group">
                     <label>How long have you known this person?</label>
                     <p class="help">E.g: &quot;2 years&quot;</p>
-                    <%= f.text_field :reference2_how_long_known, 'class' => 'form-control short', 'type' => 'text' %>
+                    <%= f.text_field :reference2_how_long_known, 'class' => 'form-control short', 'type' => 'text', 'maxlength' => 160 %>
                   </div>
                   <div class="form-group">
                     <label>Email</label>

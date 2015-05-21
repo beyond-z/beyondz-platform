@@ -286,6 +286,18 @@ class EnrollmentsController < ApplicationController
 
     cm.Resume__c = @enrollment.resume.url if @enrollment.resume.present?
 
+    cm.Reference_1_Name__c = @enrollment.reference_name
+    cm.Reference_1_How_Known__c = @enrollment.reference_how_known
+    cm.Reference_1_How_Long_Known__c = @enrollment.reference_how_long_known
+    cm.Reference_1_Email__c = @enrollment.reference_email
+    cm.Reference_1_Phone__c = @enrollment.reference_phone
+
+    cm.Reference_2_Name__c = @enrollment.reference2_name
+    cm.Reference_2_How_Known__c = @enrollment.reference2_how_known
+    cm.Reference_2_How_Long_Known__c = @enrollment.reference2_how_long_known
+    cm.Reference_2_Email__c = @enrollment.reference2_email
+    cm.Reference_2_Phone__c = @enrollment.reference2_phone
+
     cm.African_American__c = @enrollment.bkg_african_americanblack
     cm.Asian_American__c = @enrollment.bkg_asian_american
     cm.Latino__c = @enrollment.bkg_latino_or_hispanic
