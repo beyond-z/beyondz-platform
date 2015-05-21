@@ -138,9 +138,16 @@ class UsersController < ApplicationController
     @referrer = request.referrer
     @user = User.new
     @user.applicant_type = params[:applicant_type] if params[:applicant_type]
-    @user.university_name = params[:university_name] if params[:university_name]
     if params[:applicant_type]
       @hide_other_applicant_types = true
+    end
+    # request.query_parameters is used instead of params because
+    # we only want to hide if given in the URL. params would also
+    # hide them on the event of validation failure which would be scary
+    # if they came directly in
+    if request.query_parameters[:user]
+      @hide_other_universities = true if request.query_parameters[:user][:university_name]
+      @hide_other_regions = true if request.query_parameters[:user][:bz_region]
     end
   end
 

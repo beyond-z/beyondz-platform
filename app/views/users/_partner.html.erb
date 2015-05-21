@@ -1,4 +1,5 @@
 <div class="form-option-details">
+  <% unless @hide_other_universities %>
   <section>
     <div class="col-sm-12 form-group">
       <span class="required">I am on the faculty and/or staff at:</span>
@@ -6,5 +7,8 @@
       <%= render :partial => 'colleges', :locals => { :f => f } %>
     </div>
   </section>
+  <% else %>
+    <%= f.hidden_field :university_name, :value => params[:user][:university_name] %>
+  <% end %>
 </div>
 
