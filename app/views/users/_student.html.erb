@@ -1,4 +1,5 @@
 <div class="form-option-details">
+  <% unless @hide_other_universities %>
   <section>
     <div class="required">
       University name:
@@ -7,6 +8,9 @@
       <%= render :partial => 'colleges', :locals => { :f => f} %>
     </div>
   </section>
+  <% else %>
+    <%= f.hidden_field :university_name, :value => params[:user][:university_name] %>
+  <% end %>
 
 
   <section>
