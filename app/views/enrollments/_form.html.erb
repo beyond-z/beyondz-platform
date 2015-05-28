@@ -138,10 +138,21 @@
             <div id="form-academics">
               <h2 class="coach student form-section-header">Academic Background</h2>
               <div style="margin-bottom: 2.5em;">
-                <label><input type="checkbox" onchange="document.getElementById('form-degree').style.display = this.checked ? '' : 'none';" checked />
+                <!-- I'm not using the checkbox directly because we can't
+                     distinguish between explicitly unchecked and initial
+                     load with it (in both cases, the value would just not
+                     be present). With the separate field, the JS will set
+                     it and then we can show/hide based on it being present
+                     and set to zero explicitly. -->
+                <input type="hidden" id="university-hide" name="university_hide" value="0" />
+                <label><input type="checkbox" onchange="
+                  document.getElementById('form-degree').style.display = this.checked ? '' : 'none';
+                  document.getElementById('university-hide').value = this.checked ? '0':'1';
+                  "
+                  <%= (params[:university_hide] == '1') ? '' : 'checked' %>  />
                 <span>I've earned my college degree and/or am currently enrolled in a college degree program</label>
               </div>
-              <div id="form-degree">
+              <div id="form-degree" style="<%= (params[:university_hide] == '1') ? 'display: none' : '' %>">
                 <div class="form-group both">
                   <label>Undergraduate College/University</label>
                   <%= f.text_field :university, 'class' => 'form-control', 'type' => 'text', 'placeholder' => 'Example: San Jose State University', :maxlength => '45' %>
