@@ -70,7 +70,7 @@
                 </div>
                 <div class="form-group">
                   <label>Primary Phone</label>
-                  <%= f.text_field :phone, 'class' => 'form-control short', 'title' => 'phone number including area code', 'pattern' => '.{10,15}', 'type' => 'tel' %>
+                  <%= f.text_field :phone, 'class' => 'form-control short', 'title' => 'phone number including area code', 'pattern' => '.{10,21}', 'type' => 'tel' %>
                 </div>
                 <div class="form-group">
                   <label class="checkbox">
@@ -344,7 +344,7 @@
                   </div>
                   <div class="form-group">
                     <label>Phone Number</label>
-                    <%= f.text_field :reference_phone, 'class' => 'form-control short', 'type' => 'tel', 'pattern' => '[0-9\-() ]{10,15}', 'title' => 'phone number including area code' %>
+                    <%= f.text_field :reference_phone, 'class' => 'form-control short', 'type' => 'tel', 'pattern' => '.{10,21}', 'title' => 'phone number including area code' %>
                   </div>
                 </div>
                 <!-- .form-reference -->
@@ -368,7 +368,7 @@
                   </div>
                   <div class="form-group">
                     <label>Phone Number</label>
-                    <%= f.text_field :reference2_phone, 'class' => 'form-control short', 'type' => 'tel', 'pattern' => '[0-9\-() ]{10,15}', 'title' => 'phone number including area code' %>
+                    <%= f.text_field :reference2_phone, 'class' => 'form-control short', 'type' => 'tel', 'pattern' => '.{10,21}', 'title' => 'phone number including area code' %>
                   </div>
                 </div>
                 <!-- .form-reference -->
