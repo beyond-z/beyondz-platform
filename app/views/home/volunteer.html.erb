@@ -15,10 +15,17 @@
       <section>
         <div class="col-md-6 col-md-offset-3 text-center">
             <div class="apply-button"><a href="/signup/new?applicant_type=volunteer"><div class="apply-text" style="padding-bottom: 0.5em;">SIGN UP TO START YOUR COACH APPLICATION</div><br /><div class="apply-icon"></div></a></div>
-          <br />
-          <br />
-          <p class="shoutout">Why do our leadership coaches volunteer?</p>
-          <p class="feature">We asked them. Here's what they said.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="plank plain-lt">
+    <div class="section-container">
+      <section>
+        <div class="col-md-6 col-md-offset-3 text-center">
+          <p class="shoutout"><b>WHY</b> DO OUR LEADERSHIP COACHES VOLUNTEER?</p>
+          <p class="feature">We asked them. Here's what they tell us.</p>
         </div>
       </section>
     </div>
@@ -28,12 +35,12 @@
     <div class="section-container">
       <section>
         <div class="col-xs-8">
-          <h2 style="text-transform: none;">Because I believe in the unyielding leadership potential of young people no matter where they're from.</h2>
+          <h2 style="text-transform: none;">I believe in the unyielding leadership potential of young people no matter where they're from.</h2>
           <p></p>
           <%= sign_up_link('volunteer') %>
           </div>
           <div class="col-xs-4">
-            <div class="large-icon-rocket"></div>
+            <%= image_tag 'vol-right-03.jpg' %>
           </div>
       </section>
     </div>
@@ -42,10 +49,10 @@
     <div class="section-container">
       <section>
         <div class="col-xs-4">
-          <div class="large-icon-puzzle"></div>
+            <%= image_tag 'vol-left-03.jpg' %>
         </div>
         <div class="col-xs-8">
-          <h2 style="text-transform: none;">Because I wouldn't be where I am if it weren't for the coaches and teammates who invested in me.</h2>
+          <h2 style="text-transform: none;">I wouldn't be where I am if not for the coaches and teammates who invested in me. I'm ready to pay that forward.</h2>
           <%= sign_up_link('volunteer') %>
         </div>
       </section>
@@ -55,11 +62,11 @@
     <div class="section-container">
       <section>
         <div class="col-xs-8">
-          <h2 style="text-transform: none">Because I am part of a community of professionals unlike my other networks: diverse in our backgrounds and careers, similar in our commitment to service and equality.</h2>
+          <h2 style="text-transform: none">It's a community unlike most: diverse in our backgrounds and careers, similar in our commitment to service and equality.</h2>
           <%= sign_up_link('volunteer') %>
         </div>
           <div class="col-xs-4">
-            <div class="large-icon-wand"></div>
+            <%= image_tag 'vol-right-01.jpg' %>
           </div>
       </section>
     </div>
@@ -68,22 +75,60 @@
     <div class="section-container">
       <section>
         <div class="col-xs-4">
-          <div class="large-icon-rocket"></div>
+            <%= image_tag 'vol-left-01.jpg' %>
         </div>
         <div class="col-xs-8">
-          <h2 style="text-transform: none;">Because the skills I'm practicing and honing as a coach and team leader are helping me stand out in my job and advance in my own career.</h2>
+          <h2 style="text-transform: none;">I'm directly contributing to the struggle to close our country's talent gap - and am using my personal story and life's experiences to do that.</h2>
           <%= sign_up_link('volunteer') %>
         </div>
       </section>
     </div>
   </div>
+
+
+  <div class="plank plain-md">
+    <div class="section-container">
+      <section>
+        <div class="col-xs-6" style="text-align: center; color: white; background: url('<%= path_to_image('bkg-nyc-01.jpg') %>') center center no-repeat; background-size: cover;">
+          <p style="font-size: 24px;">NYC Area</p>
+          <p style="font-size: 18px;">August/September - December 2015</p>
+
+          <div class="sign-up-link"><a href="/signup/new?applicant_type=volunteer&user[bz_region]=New York City Area"><div class="sign-up-icon-white"></div><div style="color: white;" class="sign-up-text">Apply now for NYC</div></a></div>
+        </div>
+
+        <div class="col-xs-6" style="text-align: center; color: white; background: url('<%= path_to_image('bkg-sf-01.jpg') %>') center center no-repeat; background-size: cover;">
+          <p style="font-size: 24px;">Bay Area</p>
+          <p style="font-size: 18px;">August - December 2015</p>
+          <div class="sign-up-link"><a href="/signup/new?applicant_type=volunteer&user[bz_region]=San Francisco Bay Area, San Jose&show_regions=true"><div class="sign-up-icon-white"></div><div style="color: white;" class="sign-up-text">Apply now for Bay Area</div></a></div>
+
+        </div>
+      </section>
+      <section>
+        <div class="col-xs-6 col-xs-offset-3">
+          <h3>HOW DO OUR LEADERSHIP COACHES DRIVE PROMISING YOUNG PEOPLE TO REACH THEIR TRUE POTENTIAL? </h3>
+
+          <ul>
+            <li>Work directly with a team of 5-7 college students for a semester</li>
+            <li>Facilitate a weekly evening “lab” – meeting primarily virtually, with occasional in-person activities</li>
+            <li>Given real-world application to leadership concepts by sharing your experiences and career knowledge</li>
+            <li>Support each student to design her or his personal career vision and goals – and a roadmap to get there</li>
+            <li>Help lead our signature Saturday workshop, Story of Self</li>
+            <li>Provide feedback to help students build high-quality portfolios</li>
+            <li>Expose students to your network and other unique opportunities</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </div>
+
+
   <div class="plank primary-lt">
     <div class="section-container text-center">
       <section>
         <div class="col-md-12">
-          <p class="shoutout">WHY WILL YOU VOLUNTEER WITH BEYOND Z?</p>
+          <p class="shoutout">READY TO MAKE A REAL DIFFERENCE?</p>
           <br />
-          <div class="apply-button"><a href="/signup/new?applicant_type=volunteer"><div class="apply-icon"></div><div class="apply-text">SIGN UP TO START YOUR COACH APPLICATION</div></a></div>
+          <div class="apply-button"><a href="/signup/new?applicant_type=volunteer"><div class="apply-icon"></div><div class="apply-text">JOIN US</div></a></div>
         </div>
       </section>
     </div>
