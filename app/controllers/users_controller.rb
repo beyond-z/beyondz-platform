@@ -138,6 +138,7 @@ class UsersController < ApplicationController
     @referrer = request.referrer
     @user = User.new
     @user.applicant_type = params[:applicant_type] if params[:applicant_type]
+    @user.bz_region = params[:user][:bz_region] if params[:user]
     if params[:applicant_type]
       @hide_other_applicant_types = true
     end
@@ -147,7 +148,9 @@ class UsersController < ApplicationController
     # if they came directly in
     if request.query_parameters[:user]
       @hide_other_universities = true if request.query_parameters[:user][:university_name]
-      @hide_other_regions = true if request.query_parameters[:user][:bz_region]
+      # The Bay Area link on signup needs to precheck... but also show the other regions
+      # so the show_regions=true param allows us to achieve that - precheck without hiding.
+      @hide_other_regions = true if request.query_parameters[:user][:bz_region] && !params[:show_regions]
     end
   end
 
