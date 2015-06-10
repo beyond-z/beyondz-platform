@@ -76,6 +76,12 @@ class SalesforceController < ApplicationController
           CampaignMember
         WHERE
           CampaignId = '#{campaign.Id}'
+        AND
+          Candidate_Status__c = 'Confirmed'
+        AND
+          Section_Name_In_LMS__c <> NULL
+        AND
+          Section_Name_In_LMS__c <> ''
       ")
       members.each do |member|
         user = User.find_by_salesforce_id(member.ContactId)
