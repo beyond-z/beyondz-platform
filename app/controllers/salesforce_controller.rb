@@ -77,7 +77,7 @@ class SalesforceController < ApplicationController
         WHERE
           CampaignId = '#{campaign.Id}'
         AND
-          Candidate_Status__c = 'Accepted'
+          Candidate_Status__c = 'Confirmed'
         AND
           Section_Name_In_LMS__c <> NULL
         AND
