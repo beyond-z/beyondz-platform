@@ -28,6 +28,8 @@ module BeyondZ
         'user[terms_of_use]' => true,
         'pseudonym[unique_id]' => user.email,
         'pseudonym[send_confirmation]' => false,
+        'communication_channel[type]' => 'email',
+        'communication_channel[address]' => user.email,
         'communication_channel[skip_confirmation]' => true,
         'communication_channel[confirmation_url]' => true,
         'pseudonym[sis_user_id]' => user_student_id
