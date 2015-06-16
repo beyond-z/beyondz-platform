@@ -29,6 +29,7 @@ module BeyondZ
         'pseudonym[unique_id]' => user.email,
         'pseudonym[send_confirmation]' => false,
         'communication_channel[skip_confirmation]' => true,
+        'communication_channel[confirmation_url]' => true,
         'pseudonym[sis_user_id]' => user_student_id
       )
       response = @canvas_http.request(request)
@@ -43,6 +44,11 @@ module BeyondZ
       raise "Couldn't create user #{user.email} in canvas #{response.body}" if new_canvas_user['id'].nil?
 
       user.canvas_user_id = new_canvas_user['id']
+
+      if new_canvas_user['confirmation_url']
+          request = Net::HTTP::Get.new(new_canvas_user['confirmation_url'])
+          @canvas_http.request(request)
+      end
 
       user
     end
