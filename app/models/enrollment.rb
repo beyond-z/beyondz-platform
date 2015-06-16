@@ -28,7 +28,7 @@ class Enrollment < ActiveRecord::Base
   validates :state, presence: true
 
   validates :birthdate, presence: true, if: "position == 'student'"
-  validates :gpa, presence: true, if: "position == 'student'"
+  validates :gpa, presence: true, if: "position == 'student' && !university.empty?"
   validates :online_resume, presence: true
   validates :online_resume2, presence: true, if: "position == 'coach' && !resume.present?"
   validates :conquered_challenge, presence: true, if: "position == 'student'"
