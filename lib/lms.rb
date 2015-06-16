@@ -28,6 +28,7 @@ module BeyondZ
         'user[terms_of_use]' => true,
         'pseudonym[unique_id]' => user.email,
         'pseudonym[send_confirmation]' => false,
+        'communication_channel[skip_confirmation'] => true,
         'pseudonym[sis_user_id]' => user_student_id
       )
       response = @canvas_http.request(request)
