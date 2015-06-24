@@ -85,6 +85,68 @@ module BeyondZ
       users.length == 1 ? users[0] : nil
     end
 
+    # When we change an email, it needs to change the login and the
+    # communication channel. This method does that.
+    def change_user_email(uid, old_email, new_email)
+      open_canvas_http
+
+      # Update login - need to look it up then edit it by id
+
+      request = Net::HTTP::Get.new(
+        "/api/v1/users/#{uid}/logins?" \
+        "access_token=#{Rails.application.secrets.canvas_access_token}"
+      )
+      response = @canvas_http.request(request)
+
+      logins = JSON.parse response.body
+
+      login_id = nil
+
+      logins.each do |login|
+        if login['unique_id'] == old_email
+          login_id = login['id']
+          break
+        end
+      end
+
+      # Update primary communication channel (which is the email too)
+      # Canvas doesn't have an edit function, so we'll make a new one, then
+      # search for and delete any with the old one
+      request = Net::HTTP::Post.new(
+        "/api/v1/users/#{uid}/communication_channels"
+      )
+      data = {
+        'communication_channel[address]' => new_email,
+        'communication_channel[type]' => 'email',
+        'access_token' => Rails.application.secrets.canvas_access_token,
+        'communication_channel[skip_confirmation]' => true
+      }
+      request.set_form_data(data)
+      response = @canvas_http.request(request)
+
+      # We might not have found the old email in the event
+      # of it already being changed on Canvas; this isn't an
+      # error condition, we should still try to update the CC
+      # even if the login doesn't already match.
+      if login_id
+        request = Net::HTTP::Put.new(
+          "/api/v1/accounts/1/logins/#{login_id}"
+        )
+        data = {
+          'login[unique_id]' => new_email,
+          'access_token' => Rails.application.secrets.canvas_access_token
+        }
+        request.set_form_data(data)
+        response = @canvas_http.request(request)
+      end
+
+      request = Net::HTTP::Delete.new(
+        "/api/v1/users/#{uid}/communication_channels/email/#{old_email}?access_token=#{Rails.application.secrets.canvas_access_token}"
+      )
+      response = @canvas_http.request(request)
+
+    end
+
     # Enrolls the user in the new course, without modifying any
     # existing data
     def enroll_user_in_course(user, course_id, role, section)

@@ -102,6 +102,34 @@ class Admin::UsersController < Admin::ApplicationController
 
     @user = User.find(params[:id])
 
+    old_email = @user.email
+
+    if params[:user][:email]
+      new_email = params[:user][:email]
+
+      # Update BZ
+      @user.email = new_email
+      @user.skip_reconfirmation!
+
+      # Update Salesforce
+      if @user.salesforce_id
+        salesforce = BeyondZ::Salesforce.new
+        client = salesforce.get_client
+        client.materialize('Contact')
+
+        contact = SFDC_Models::Contact.find(@user.salesforce_id)
+        if contact
+          contact.Email = new_email
+          contact.save
+        end
+      end
+
+      # Update Canvas
+      if @user.canvas_user_id
+        @lms.change_user_email(@user.canvas_user_id, old_email, new_email)
+      end
+    end
+
     @user.first_name = params[:user][:first_name] unless params[:user][:first_name].nil?
     @user.last_name = params[:user][:last_name] unless params[:user][:last_name].nil?
     @user.password = params[:user][:password] unless params[:user][:password].nil? || params[:user][:password].empty?
