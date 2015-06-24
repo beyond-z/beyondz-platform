@@ -1,5 +1,17 @@
 <h1>Edit User</h1>
 
+<h2>Change Email Address</h2>
+<p>Changing the email address will change it on BZ, on Salesforce, and on Canvas. Remember, if you change a user's email address, they must log in with the new address too.</p>
+
+<%= form_for [:admin, @user] do |f| %>
+  <%= f.label :email %>:<br />
+  <%= f.text_field :email %><br />
+
+  <br />
+  <%= f.submit %>
+<% end %>
+
+<h2>Change Password</h2>
 <%= form_for [:admin, @user] do |f| %>
   <%= f.label :password %>:<br />
   <%= f.text_field :password %><br />
