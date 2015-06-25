@@ -47,10 +47,12 @@ module BeyondZ
 
       user.canvas_user_id = new_canvas_user['id']
 
-      if new_canvas_user['confirmation_url']
-          request = Net::HTTP::Get.new(new_canvas_user['confirmation_url'])
-          @canvas_http.request(request)
-      end
+      # Not necessary (and didn't seem to actually work?) since we changed the code
+      # on the Canvas side to mark them registered if skip_confirmation is specified.
+      #if new_canvas_user['confirmation_url']
+      #    request = Net::HTTP::Get.new(new_canvas_user['confirmation_url'])
+      #    @canvas_http.request(request)
+      #end
 
       user
     end
