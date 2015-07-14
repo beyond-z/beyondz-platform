@@ -137,6 +137,8 @@ class User < ActiveRecord::Base
     contact['LastName'] = last_name
     contact['Email'] = email
 
+    # Note on the SOQL queries rather than ActiveRecord style finds:
+    #
     # SFDC_Models::User.find_by_Email(lead_owner)
     # the model didn't work though because the materialize call
     # conflicted their User with our User (the namespace wasn't used
@@ -202,7 +204,8 @@ class User < ActiveRecord::Base
     end
     contact['Anticipated_Graduation__c'] = anticipated_graduation
     if applicant_type == 'employer'
-      contact['Industry'] = profession
+      # Industry on Contact is a custom field...
+      contact[self.salesforce_id ? 'Industry__c' : 'Industry'] = profession
     else
       contact['Title'] = profession
     end
