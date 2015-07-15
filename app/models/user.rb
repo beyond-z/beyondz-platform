@@ -118,11 +118,27 @@ class User < ActiveRecord::Base
     salesforce = BeyondZ::Salesforce.new
     client = salesforce.get_client
 
+    # Does this user already exist on Salesforce as a manually entered contact?
+    # If we, we want to use it directly instead of trying to create a lead.
+
+    salesforce_existing_record = client.http_get("/services/data/v#{client.version}/query?q=" \
+      "SELECT Id FROM Contact WHERE Email = '#{email.sub('\'', '\'\'')}'")
+    sf_answer = JSON.parse(salesforce_existing_record.body)
+    salesforce_existing_record = sf_answer['records']
+
     contact = {}
+
+    unless salesforce_existing_record.empty?
+      self.salesforce_id = salesforce_existing_record.first['Id']
+    end
+    # end
+
     contact['FirstName'] = first_name
     contact['LastName'] = last_name
     contact['Email'] = email
 
+    # Note on the SOQL queries rather than ActiveRecord style finds:
+    #
     # SFDC_Models::User.find_by_Email(lead_owner)
     # the model didn't work though because the materialize call
     # conflicted their User with our User (the namespace wasn't used
@@ -136,30 +152,41 @@ class User < ActiveRecord::Base
     # conflicts with our User class too! So the query function is unusable :(
     # Instead, I'll go one level lower and use their http method, just like the
     # implementation (line 182 of databasedotcom/client.rb)
-    salesforce_lead_owner = client.http_get("/services/data/v#{client.version}/query?q=" \
-      "SELECT Id FROM User WHERE Email = '#{lead_owner.sub('\'', '\'\'')}'")
-    sf_answer = JSON.parse(salesforce_lead_owner.body)
-    salesforce_lead_owner = sf_answer['records']
-    salesforce_lead_owner = salesforce_lead_owner.empty? ? nil : salesforce_lead_owner.first
+    unless self.salesforce_id
+      # If the user is already on salesforce btw, we assume they are already
+      # assigned an owner (this is likely the case when they are manually entered
+      # by someone who has already formed a relationship with that person)
+      salesforce_lead_owner = client.http_get("/services/data/v#{client.version}/query?q=" \
+        "SELECT Id FROM User WHERE Email = '#{lead_owner.sub('\'', '\'\'')}'")
+      sf_answer = JSON.parse(salesforce_lead_owner.body)
+      salesforce_lead_owner = sf_answer['records']
+      salesforce_lead_owner = salesforce_lead_owner.empty? ? nil : salesforce_lead_owner.first
 
-    if salesforce_lead_owner
-      contact['OwnerId'] = salesforce_lead_owner['Id']
-    else
-      # this is the user id we're logged into Salesforce as to use as
-      # a last-resort owner if the other one fails
-      contact['OwnerId'] = client.user_id
+      if salesforce_lead_owner
+        contact['OwnerId'] = salesforce_lead_owner['Id']
+      else
+        # this is the user id we're logged into Salesforce as to use as
+        # a last-resort owner if the other one fails
+        contact['OwnerId'] = client.user_id
+      end
+
+      contact['IsUnreadByOwner'] = false
     end
 
-    contact['IsUnreadByOwner'] = false
+    unless self.salesforce_id
+      contact['City'] = city
+      contact['State'] = state
+    else
+      # The Salesforce Contact record uses different names than the Lead
+      contact['MailingCity'] = city
+      contact['MailingState'] = state
+    end
 
-    contact['City'] = city
-    contact['State'] = state
+    contact['LeadSource'] = 'Website Signup' unless self.salesforce_id
 
-    contact['LeadSource'] = 'Website Signup'
+    contact['Comments_Or_Questions__c'] = applicant_comments unless self.salesforce_id
 
-    contact['Comments_Or_Questions__c'] = applicant_comments
-
-    contact['Account_Activated__c'] = self.confirmed?
+    contact['Account_Activated__c'] = self.confirmed? unless self.salesforce_id
 
     contact['Phone'] = phone
 
@@ -168,14 +195,24 @@ class User < ActiveRecord::Base
     contact['Signup_Date__c'] = created_at
     contact['Came_From_to_Visit_Site__c'] = external_referral_url
     contact['User_Type__c'] = salesforce_applicant_type
-    contact['University_Name__c'] = university_name
+    if self.salesforce_id
+      # On Contact, we changed the name as there's more info available on that record
+      # so it had to be more specific.
+      contact['Undergrad_University__c'] = university_name
+    else
+      contact['University_Name__c'] = university_name
+    end
     contact['Anticipated_Graduation__c'] = anticipated_graduation
     if applicant_type == 'employer'
-      contact['Industry'] = profession
+      # Industry on Contact is a custom field...
+      contact[self.salesforce_id ? 'Industry__c' : 'Industry'] = profession
     else
       contact['Title'] = profession
     end
-    contact['Company'] = (company.nil? || company.empty?) ? "#{name} (individual)" : company
+
+    # Company on Contact is a custom field...
+    contact[self.salesforce_id ? 'Company__c' : 'Company'] = (company.nil? || company.empty?) ? "#{name} (individual)" : company
+
     contact['Started_College__c'] = started_college_in
     contact['Interested_in_opening_BZ__c'] = like_to_help_set_up_program ? true : false
     contact['Keep_Informed__c'] = like_to_know_when_program_starts ? true : false
@@ -188,9 +225,21 @@ class User < ActiveRecord::Base
 
     # The Lead class provided by the gem is buggy so we do it with this call instead
     # which is what Lead.save calls anyway
-    contact = client.create('Lead', contact)
+    unless self.salesforce_id
+      # If the salesforce_id is already set, they are a person created
+      # manually who is now signing up.
+      #
+      # If it isn't set, we create a lead.
+      contact = client.create('Lead', contact)
 
-    self.salesforce_id = contact['Id']
+      self.salesforce_id = contact['Id']
+    else
+      # And if salesforce_id is set already, we found an existing Contact,
+      # so we update that record instead
+
+      client.update('Contact', self.salesforce_id, contact)
+    end
+
     save!
   end
 
