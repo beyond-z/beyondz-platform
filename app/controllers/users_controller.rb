@@ -60,6 +60,42 @@ class UsersController < ApplicationController
     if current_user.in_lms?
       redirect_to "//#{Rails.application.secrets.canvas_server}/"
     end
+
+    # These should never be nil at this point, so I'm not checking
+    # it - if it does happen, the error report should help us find
+    # why it was nil and fix that root cause bug.
+
+    # Both @enrollment and campaign should never be nil.
+
+    @enrollment = Enrollment.find_by(:user_id => current_user.id)
+
+    sf = BeyondZ::Salesforce.new
+    client = sf.get_client
+    client.materialize('Campaign')
+    campaign = SFDC_Models::Campaign.find('7011700000056ww') # @enrollment.campaign_id)
+
+    if campaign
+      @program_title = campaign.Program_Title__c
+      @program_site = campaign.Program_Site__c
+      @request_availability = campaign.Request_Availability__c
+      @meeting_times = campaign.Meeting_Times__c
+
+      # We now need to format the meeting times and determine
+      # if there's any free slots. This is done by querying the
+      # actual users. Might want to cache this later and do triggers
+      # but for now I want to try this for best possible accuracy
+      # (though there's still a potential race condition...)
+      @meeting_times.lines.map(&:strip).each do |time|
+        
+
+        idx = time.rindex(':')
+        if idx
+          time = time[0 .. idx-1]
+          slots = time[idx + 1 .. -1].strip.to_i
+        end
+      end
+    end
+
     # renders a view
   end
 

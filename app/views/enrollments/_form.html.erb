@@ -454,6 +454,14 @@
 
               <div class="availability-options">
               <% @meeting_times.lines.map(&:strip).each do |time| %>
+                <%
+                  # Chop off the number of slots which may be on the end as the user doesn't
+                  # need to see that at this point; it is just our internal thing
+                  idx = time.rindex(':')
+                  if idx
+                    time = time[0 .. idx-1]
+                  end
+                %>
                 <label class="control-label" style="padding-left: 32px;"><input type="checkbox" name="meeting_times[]" value="<%=time%>" <%= checked_if_in_array(:meeting_times, time, @enrollment[:meeting_times]) %> /> <%= time %></label><br />
               <% end %>
               </div>

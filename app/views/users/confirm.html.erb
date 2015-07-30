@@ -13,7 +13,7 @@
           <% if current_user.program_attendance_confirmed %>
             <p>Thank you for confirming your commitment to participate in Beyond Z.</p>
           <% else %>
-            <p class="shoutout"><%= current_user.first_name %>, please confirm the following:</p>
+            <p class="shoutout"><%= current_user.first_name %>, please select the time slot to which you can commit:</p>
           <% end %>
         </div>
       </section>
@@ -34,6 +34,23 @@
               <td>
                 <label for="confirmation">I confirm that will be attending the Beyond Z program.</label>
               </td>
+
+
+              <div class="availability-options">
+              <% @meeting_times.lines.map(&:strip).each do |time| %>
+                <input required="required" id="confirmation" type="radio" name="confirmed" /> <%= time %><br />
+                <% if false %>
+                <label class="control-label" style="padding-left: 32px;"><input type="radio" name="meeting_times[]" value="<%=time%>" <%= checked_if_in_array(:meeting_times, time, @enrollment[:meeting_times]) %> /> <%= time %></label><br />
+
+                <label class="radio"><%= f.radio_button :position, 'coach', 'value' => 'coach', 'id' => 'position_coach' %>Leadership Coach</label><label class="radio"><%= f.radio_button :position, 'student', 'value' => 'student', 'id' => 'position_student' %>Participant (student)</label>
+                <% end %>
+              <% end %>
+                None of these times work for me
+              </div>
+
+
+
+
             </tr></table>
           <% end %>
         </div>
