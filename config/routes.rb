@@ -73,6 +73,9 @@ BeyondzPlatform::Application.routes.draw do
     get '/campaign_mapping', to: 'users#campaign_mapping', as: 'campaign_mapping'
     post '/campaign_mapping', to: 'users#do_campaign_mapping'
 
+    get '/bulk_student_upload', to: 'users#bulk_student_upload', as: 'bulk_student_upload'
+    post '/bulk_student_upload', to: 'users#do_bulk_student_upload'
+
     resources :lists
 
     resources :users do

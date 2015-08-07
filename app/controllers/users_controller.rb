@@ -62,32 +62,35 @@ class UsersController < ApplicationController
 
     @enrollment = Enrollment.find_by(:user_id => current_user.id)
 
-    if false # hack
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
     client.materialize('Campaign')
-    campaign = SFDC_Models::Campaign.find('7011700000056ww') # @enrollment.campaign_id)
-    else
-      campaign = Object.new
-      def campaign.Program_Title__c
-        "Braven"
-      end
-      def campaign.Program_Site__c
-        "Test Site"
-      end
-      def campaign.Request_Availability__c
-        true
-      end
-      def campaign.Meeting_Times__c
-        "Monday 5-7:3\nTuesday 7-9:1\nNone 1-2:0\nWednesday 4-5:6"
-      end
-    end # hack
+    campaign = SFDC_Models::Campaign.find(@enrollment.campaign_id)
 
     if campaign
       @program_title = campaign.Program_Title__c
       @program_site = campaign.Program_Site__c
       @request_availability = campaign.Request_Availability__c
       @meeting_times = campaign.Meeting_Times__c
+
+      # An SOQL query is the most efficient way to get up-to-date information -
+      # it will aggregate the cohorts on the server in a single request.
+
+      # However, the client.query method wants to return SObjects which don't support
+      # sql aggregation features. So, we must use the lower level http_get method ourselves
+      # to get at the underlying data.
+      query_result = client.http_get("/services/data/v#{client.version}/query?q=" \
+        "SELECT COUNT(ContactId), Section_Name_In_LMS__c FROM CampaignMember WHERE CampaignId = '#{campaign.Id}' AND Candidate_Status__c = 'Confirmed' GROUP BY Section_Name_In_LMS__c")
+
+      sf_answer = JSON.parse(query_result.body)
+
+      used_slots_map = {}
+      sf_answer['records'].each do |record|
+        record_count = record['expr0']
+        record_section = record['Section_Name_In_LMS__c']
+
+        used_slots_map[record_section] = record_count
+      end
 
       @times = []
 
@@ -101,11 +104,17 @@ class UsersController < ApplicationController
         idx = line.rindex(':')
         if idx
           time = line[0 .. idx-1]
-          slots = line[idx + 1 .. -1].strip.to_i
+          total_slots = line[idx + 1 .. -1].strip.to_i
+
+          used_slots = 0
+          unless used_slots_map[time].nil?
+            used_slots = used_slots_map[time]
+          end
 
           info = {}
           info['time'] = time
-          info['slots'] = slots
+          info['total_slots'] = total_slots
+          info['slots'] = total_slots - used_slots
           info['id'] = index
 
           @times.push(info)

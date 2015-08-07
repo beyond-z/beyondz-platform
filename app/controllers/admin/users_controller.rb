@@ -96,6 +96,43 @@ class Admin::UsersController < Admin::ApplicationController
 
   end
 
+  def bulk_student_upload
+    # render a view
+  end
+
+  def do_bulk_student_upload
+    if params[:import].nil?
+      flash[:message] = 'Please upload a csv file'
+      redirect_to admin_bulk_student_upload_path
+      return
+    end
+
+    file = CSV.parse(params[:import][:csv].read)
+
+    sf = BeyondZ::Salesforce.new
+    client = sf.get_client
+    client.materialize('CampaignMember')
+
+    file.each do |row|
+      # set the relevant variables on salesforce
+      if row[10] == 'Y' && row[11] == 'Y' # Received Code (Y/N) and Enrolled in Class?
+        email = row[6]
+        u = User.find_by_email(email)
+        if u
+          cm = SFDC_Models::CampaignMember.find_by_ContactId(u.salesforce_id)
+          if cm
+            cm.Section_Name_In_LMS__c = row[13]
+            cm.save
+          end
+        end
+      end
+    end
+
+    flash[:message] = 'Upload successful'
+    redirect_to admin_bulk_student_upload_path
+  end
+
+
   def update
 
     initialize_lms_interop
