@@ -53,14 +53,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def confirm
-    # If they are already confirmed and accepted, here refreshing the page
-    # to watch for updates perhaps, we want to send them to where they want
-    # to be - canvas - ASAP.
-    if current_user.in_lms?
-      redirect_to "//#{Rails.application.secrets.canvas_server}/"
-    end
-
+  def prep_confirm_campaign_info
     # These should never be nil at this point, so I'm not checking
     # it - if it does happen, the error report should help us find
     # why it was nil and fix that root cause bug.
@@ -69,10 +62,26 @@ class UsersController < ApplicationController
 
     @enrollment = Enrollment.find_by(:user_id => current_user.id)
 
+    if false # hack
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
     client.materialize('Campaign')
     campaign = SFDC_Models::Campaign.find('7011700000056ww') # @enrollment.campaign_id)
+    else
+      campaign = Object.new
+      def campaign.Program_Title__c
+        "Braven"
+      end
+      def campaign.Program_Site__c
+        "Test Site"
+      end
+      def campaign.Request_Availability__c
+        true
+      end
+      def campaign.Meeting_Times__c
+        "Monday 5-7:3\nTuesday 7-9:1\nNone 1-2:0\nWednesday 4-5:6"
+      end
+    end # hack
 
     if campaign
       @program_title = campaign.Program_Title__c
@@ -80,23 +89,56 @@ class UsersController < ApplicationController
       @request_availability = campaign.Request_Availability__c
       @meeting_times = campaign.Meeting_Times__c
 
+      @times = []
+
       # We now need to format the meeting times and determine
       # if there's any free slots. This is done by querying the
       # actual users. Might want to cache this later and do triggers
       # but for now I want to try this for best possible accuracy
       # (though there's still a potential race condition...)
-      @meeting_times.lines.map(&:strip).each do |time|
+      @meeting_times.lines.map(&:strip).each_with_index do |line, index|
         
-
-        idx = time.rindex(':')
+        idx = line.rindex(':')
         if idx
-          time = time[0 .. idx-1]
-          slots = time[idx + 1 .. -1].strip.to_i
+          time = line[0 .. idx-1]
+          slots = line[idx + 1 .. -1].strip.to_i
+
+          info = {}
+          info['time'] = time
+          info['slots'] = slots
+          info['id'] = index
+
+          @times.push(info)
         end
       end
     end
 
+  end
+
+  def confirm
+    # If they are already confirmed and accepted, here refreshing the page
+    # to watch for updates perhaps, we want to send them to where they want
+    # to be - canvas - ASAP.
+    if current_user.in_lms?
+      redirect_to "//#{Rails.application.secrets.canvas_server}/"
+    end
+
+    prep_confirm_campaign_info
+
     # renders a view
+  end
+
+  # After they select a time slot, they are asked to "make it official"
+  # or to self-waitlist. This method handles that.
+  def confirm_part_2
+    prep_confirm_campaign_info
+
+    if params[:time] == 'none'
+      # the view handles it because there is
+      # no selected time.
+    else
+      @selected_time = @times[params[:time].to_i]['time']
+    end
   end
 
   def save_confirm

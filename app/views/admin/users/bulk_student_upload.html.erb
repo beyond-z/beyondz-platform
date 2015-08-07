@@ -1,0 +1,17 @@
+<h1>Bulk Student Registration Upload</h1>
+
+<p>This will let you upload student IDs to Salesforce. You still need to Sync to LMS on SF for them to get into Canvas; this just sets the registration codes.</p>
+
+<table class="csv-sample" width="600"><caption>Expected format</caption>
+  <thead><tr>
+  </tr></thead>
+  <tbody>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+
+<%= form_for :import, :html => { :multipart => true } do |f| %>
+  <%= f.file_field :csv %>
+  <%= submit_tag 'Upload CSV' %>
+<% end %>
