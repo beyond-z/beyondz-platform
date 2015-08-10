@@ -161,8 +161,8 @@ class UsersController < ApplicationController
     cm = SFDC_Models::CampaignMember.find_by_ContactId(current_user.salesforce_id)
     if cm
       cm.Candidate_Status__c = 'Confirmed'
-      cm.Apply_Button_Enabled__c = false
       cm.Section_Name_In_LMS__c = params[:selected_time]
+      cm.Apply_Button_Enabled__c = false
       cm.save
     end
 
