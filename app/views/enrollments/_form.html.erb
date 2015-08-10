@@ -18,7 +18,10 @@
           </p>
 
           <p class="help student">
-            To apply to participate in the <%= @program_title %> - <%= @program_site %>, please complete and submit this application in its entirety. Your answers will be automatically saved as you move between questions, and you can safely leave this page and log back in at any time to resume your work. Your application won't be considered for evaluation until you click SEND at the bottom of the form. As a reminder, unlike a typical course, this selective opportunity requires your participation in diverse activities intended to build your leadership and career skills, including: fifteen (15) 2-hour sessions; fourteen (14) 2-hour online modules, three (3) weekend or evening events (exact dates to be confirmed); and individual coaching sessions.
+            To apply to participate in the <%= @program_title %> - <%= @program_site %>, please complete and submit this application in its entirety.
+          </p>
+          <p class="help student">
+            As a reminder, this selective opportunity requires your participation in diverse activities intended to build your leadership and career skills, which can include: weekly evening 2-hour group meetings; occasional weekend events (for exact date(s), please see our website); and individual coaching sessions. As part of the program, you will also complete weekly online modules (approx 2 hours, each) on your own.
           </p>
 
           <p class="help">The application should take approximately 20 minutes to complete and includes the following sections:</p>
@@ -119,13 +122,13 @@
               <div class="form-group student">
                 <label class="checkbox">
                   <%= f.check_box :affirm_qualified %>
-                  <span class="bs-wrapper"><span class="control-label">I affirm to the best of my knowledge that I can fulfill the commitment to attend all required activities, which can include: fifteen (15) 2-hour sessions; fourteen (14) 2-hour online modules; three (3) weekend or evening events (exact dates to be confirmed); and individual coaching sessions.</span></span> </label>
+                  <span class="bs-wrapper"><span class="control-label">I affirm to the best of my knowledge that I can fulfill the commitment to attend all required activities and complete all required modules and assignments. This can include: weekly 2-hour group sessions; weekly independent online modules (approx 2 hours, each); weekend events (for exact date(s), please see our website); and individual coaching sessions.</span></span> </label>
               </div>
 
               <div class="form-group student">
                 <label class="checkbox">
                   <%= f.check_box :affirm_commit %>
-                  <span class="bs-wrapper"><span class="control-label">I affirm that, if accepted and enrolled, I commit to participate fully in <% @program_title %> by coming to all programming prepared to engage in conversations and to support and challenge my peers.</span></span> </label>
+                  <span class="bs-wrapper"><span class="control-label">I affirm that, if accepted and enrolled, I commit to participate fully in <%= @program_title %> by coming to all programming prepared to engage in conversations and to support and challenge my peers.</span></span> </label>
               </div>
             </div>
           </section>
@@ -165,20 +168,20 @@
                        where they may have graduated many years ago, -->
                 </div>
                 <div class="form-group student">
-                  <label>Previous college/university, if any (leave blank if none)</label>
-                  <%= f.text_field :previous_university, 'class' => 'form-control', 'type' => 'text', :maxlength => '45' %>
+                  <label>Previous university/college(s), if any (leave blank if none)</label>
+                  <%= f.text_field :previous_university, 'class' => 'form-control', 'type' => 'text', :maxlength => '220' %>
                 </div>
 
 
                 <p class="help student">Note: We are asking the following questions in order to gain a fuller understanding of your academic background. Your answers will not directly affect your chances of being accepted.</p>
 
                 <div class="form-group both coach student">
-                  <label>Major<span class="student">/Concentration or intended major, if you have one. (Leave blank if none. Include all, if pursuing or completing multiple majors.)</span> <span class="coach"> (List all, if multiple)</span></label>
+                  <label>Major<span class="student">/Concentration or intended major, if you have one. (Leave blank if none. If pursuing multiple majors, list all.)</span> <span class="coach"> (List all, if multiple)</span></label>
                   <%= f.text_field :major, 'class' => 'form-control', 'type' => 'text', :maxlength => '115' %>
                 </div>
 
                 <div class="form-group student">
-                  <label>What is your all college GPA?</label>
+                  <label>What is your college GPA?</label>
                   <%= f.text_field :gpa, 'class' => 'form-control short', 'max' => '10', 'step' => '0.01', 'type' => 'number', 'min' => '0' %>
                 </div>
                 <div class="form-group student">
@@ -249,7 +252,7 @@
               <div class="form-group coach student">
                 <label class="student">Please provide a link to at least one "digital footprint" (or two if you like!) that will help us understand you better.</label>
                 <label class="coach">Please provide a link to two "digital fingerprints" that will help us understand you better.</label>
-                <p class="help">Good examples include: your LinkedIn profile, your blog, an article you wrote, the website of an organization particularly meaningful to you, etc. (Less helpful are links to your Facebook, Instagram, or Twitter accounts.) Please make sure the links are public.<span class="coach"> If you'd prefer to upload a document in lieu of submitting a second link, please click the "Choose File" button below.</span></p>
+                <p class="help">Good examples include: your LinkedIn profile, an article you wrote, the website of an organization particularly meaningful to you, etc. (Less helpful are links to your Facebook, Instagram, or Twitter accounts.) Please make sure the links are public.<span class="coach"> If you'd prefer to upload a document in lieu of submitting a second link, please click the "Choose File" button below.</span></p>
                 <div class="input-group">
                   <%= f.text_field :online_resume, 'class' => 'form-control medium', 'type' => 'url', 'placeholder' => 'Paste URL here', 'onblur' => 'this.value = this.value.replace(/[^a-zA-Z0-9%\-_\.~:\/\?#\[\]@!\$\'\(\)\*\&\+,;=]/g, ""); if(this.value.length && this.value.indexOf("http") != 0) this.value = "http://"+this.value;' %>
                   <%= f.text_field :online_resume2, 'class' => 'form-control medium', 'type' => 'url', 'placeholder' => 'Paste URL here', 'onblur' => 'this.value = this.value.replace(/[^a-zA-Z0-9%\-_\.~:\/\?#\[\]@!\$\'\(\)\*\&\+,;=]/g, ""); if(this.value.length && this.value.indexOf("http") != 0) this.value = "http://"+this.value;' %>
@@ -264,7 +267,7 @@
               </div>
               <!-- #form-resume -->
               <div class="form-group student">
-                <label>How are you spending the summer (in advance of school-year <%= Date.today.year %> - <%= Date.today.year+1 %>)?</label>
+                <label>How will you have spent the summer of <%= Date.today.year %>?</label>
                 <p class="help">Please briefly describe your responsibilities or activities.</p>
                 <%= f.text_area :last_summer, 'class' => 'form-control', 'maxlength' => '150' %>
               </div>
@@ -413,14 +416,14 @@
                   I do receive or have received a Federal Pell Grant</label>
                 <label class="checkbox">
                   <%= f.check_box :identify_first_gen %>
-                  I identify as a first-generation college student <span class="help"><br />(i.e., my parent(s)/legal guardian(s) have not completed a four-year degree)</span></label>
+                  I identify as a first-generation college student <span class="help"><br />(i.e., I don't have a parent or legal guardian who has completed a four-year degree)</span></label>
               </div>
               <div class="form-group">
                 <label>What city do you identify as your hometown?</label>
                 <%= f.text_field :hometown, 'class' => 'form-control short', 'type' => 'text', 'maxlength' => '100' %>
               </div>
               <div class="form-group">
-                <label>What languages other than English do you speak fluently?</label>
+                <label>What languages other than English do you speak fluently, if any?</label>
                 <%= f.text_field :languages, 'class' => 'form-control', 'type' => 'text', 'placeholder' => 'Example: Spanish, Cantonese' %>
               </div>
             </div>
@@ -439,9 +442,11 @@
               <% if @request_availability && @meeting_times %>
               <input type="hidden" name="meeting_times_required" value="1" />
 
-              <%= f.label :meeting_times, "Please select from the list below ALL times during which you expect to be available for #{@program_title} sessions.", :class => 'student' %>
+              <%= f.label :meeting_times, "Please select from the list below ALL times during which you expect to be available for #{@program_title} sessions during the fall, 2015.", :class => 'student' %>
 
-              <p class="student"><i>Please be accurate:</i> You will be assigned to a group that meets weekly during one of these meeting times. Final invitations to join <%= @program_title %> will include a specific day and timeslot, and it will be difficult to change that assignment once made. Note: It's important that you are as accurate as possible in this application, though we also understand your schedule may change after you’ve submitted. If that happens, or if you are currently very unsure of your fall schedule, please email us with details at info@beyondz.org. </p>
+              <p class="student"><i>Please be accurate:</i> You will be assigned to a group that meets weekly during one of these meeting times. Note: It's important that you are as accurate as possible in this application, though we also understand your schedule may change after you’ve submitted. You'll have another chance to confirm your availability before program launch.</p>
+
+              <p class="student">You must check at least one option.</p>
 
               <%= f.label :meeting_times, "Please select from the list below ALL <u>times</u> during which you expect to be available to lead cohort sessions through the end of #{Date.today.year}.".html_safe, :class => 'coach' %>
 
@@ -461,7 +466,7 @@
               <br />
 
               <% end %>
-              <h5>Please affirm your commitment:</h5>
+              <h5 class="coach">Please affirm your commitment:</h5>
               <div class="form-group coach" id="coach-affirm-holder">
                 <label class="checkbox">
                   <%= f.check_box :affirm_commit_coach %>
@@ -490,8 +495,6 @@
                 <p class="help">Please let us know any additional information you wish to share about your interest in <%= @program_title %> - <%= @program_site %>.</p>
                 <%= f.text_area :comments, 'class' => 'form-control', 'maxlength' => '300' %>
               </div>
-
-              <p>Finally, please help us to continuously improve.</p>
 
               <!--
                 Sourcing_Options is a string: one option per line. If a line

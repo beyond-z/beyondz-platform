@@ -269,6 +269,8 @@ class EnrollmentsController < ApplicationController
     cm.Major__c = @enrollment.major
     cm.GPA__c = @enrollment.gpa
 
+    cm.Previous_University__c = @enrollment.previous_university
+
     cm.High_School_GPA__c = @enrollment.hs_gpa
     cm.SAT_Score__c = @enrollment.sat_score
     cm.ACT_Score__c = @enrollment.act_score
