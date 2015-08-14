@@ -98,6 +98,16 @@ class SalesforceController < ApplicationController
           member.Section_Name_In_LMS__c
         )
 
+        if campaign.Target_Coach_Course_ID_in_LMS__c && campaign.Target_Coach_Course_ID_in_LMS__c[0]
+          lms.sync_user_course_enrollment(
+            user,
+            campaign.Target_Coach_Course_ID_in_LMS__c[0].to_i,
+            'STUDENT',
+            member.Section_Name_in_LMS_Coach_Course__c
+          )
+        end
+
+
         user.save!
       end
     end

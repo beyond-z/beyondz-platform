@@ -164,6 +164,7 @@ module BeyondZ
         'enrollment[user_id]' => user.canvas_user_id,
         'enrollment[type]' => "#{role}Enrollment",
         'enrollment[enrollment_state]' => 'active',
+        'enrollment[limit_privileges_to_course_section]' => true,
         'enrollment[notify]' => false
       }
       unless section.nil?
