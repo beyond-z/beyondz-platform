@@ -4,6 +4,8 @@ $(document).ready(function() {
     // make the readonly form actually readonly by prohibiting submissions and restricting edits
     $('#enrollment-form-holder.readonly form').submit(function() { return false; });
     $('#enrollment-form-holder.readonly input, #enrollment-form-holder.readonly textarea').attr('readonly', 'readonly');
+    // readonly attr doesn't work on check/radio boxes, so we handle them with an event handler too
+    $('#enrollment-form-holder.readonly input[type=checkbox], #enrollment-form-holder.readonly input[type=radio]').click(function(e) { e.preventDefault(); return false; });
 
     // This prevents the enter key on single line inputs from submitting
     // the form. We want them to explicitly hit SEND at the bottom instead.
