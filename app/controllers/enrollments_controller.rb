@@ -85,6 +85,7 @@ class EnrollmentsController < ApplicationController
 
     if @enrollment.user_id != current_user.id && !current_user.admin?
       redirect_to new_enrollment_path
+      return
     end
 
     if @enrollment.explicitly_submitted

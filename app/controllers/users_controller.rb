@@ -80,14 +80,14 @@ class UsersController < ApplicationController
       # sql aggregation features. So, we must use the lower level http_get method ourselves
       # to get at the underlying data.
       query_result = client.http_get("/services/data/v#{client.version}/query?q=" \
-        "SELECT COUNT(ContactId), Section_Name_In_LMS__c FROM CampaignMember WHERE CampaignId = '#{campaign.Id}' AND Candidate_Status__c = 'Confirmed' GROUP BY Section_Name_In_LMS__c")
+        "SELECT COUNT(ContactId), Selected_Timeslot__c FROM CampaignMember WHERE CampaignId = '#{campaign.Id}' AND Candidate_Status__c = 'Confirmed' GROUP BY Selected_Timeslot__c")
 
       sf_answer = JSON.parse(query_result.body)
 
       used_slots_map = {}
       sf_answer['records'].each do |record|
         record_count = record['expr0']
-        record_section = record['Section_Name_In_LMS__c']
+        record_section = record['Selected_Timeslot__c']
 
         used_slots_map[record_section] = record_count
       end
@@ -160,8 +160,21 @@ class UsersController < ApplicationController
     client.materialize('Contact')
     cm = SFDC_Models::CampaignMember.find_by_ContactId(current_user.salesforce_id)
     if cm
-      cm.Candidate_Status__c = 'Confirmed'
-      cm.Section_Name_In_LMS__c = params[:selected_time]
+      cm.Candidate_Status__c = params[:selected_time] ? 'Confirmed' : 'Waitlisted'
+      cm.Selected_Timeslot__c = params[:selected_time] ? params[:selected_time] : params[:times].join(';')
+
+      # Set the section name automatically according to the pattern..
+
+      @enrollment = Enrollment.find_by(:user_id => current_user.id)
+      client.materialize('Campaign')
+      campaign = SFDC_Models::Campaign.find(@enrollment.campaign_id)
+
+      if campaign
+        cm.Section_Name_In_LMS__c = "#{campaign.Section_Name_Site_Prefix__c} #{current_user.first_name} #{params[:selected_time]}"
+      end
+
+      # Done
+
       cm.Apply_Button_Enabled__c = false
       cm.save
     end

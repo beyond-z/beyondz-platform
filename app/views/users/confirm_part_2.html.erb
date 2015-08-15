@@ -22,10 +22,13 @@
               <p>Drat. We'll do what we can to include you in the program. In the meantime, we'll add you to our waitlist. Just let us know which of these currently closed section meeting times work for you:</p>
               <% @times.each do |time| %>
                 <% if time['slots'] == 0 %>
-                  <label><input onchange="if(this.checked) document.getElementById('none').checked = false;" type="checkbox" class="some-time-option" name="times[]" /> <%= time['time'] %></label><br />
+                  <label><input onchange="if(this.checked) document.getElementById('none').checked = false;" type="checkbox" class="some-time-option" name="times[]" value="<%= time['time'] %>" /> <%= time['time'] %></label><br />
                 <% end %>
               <% end %>
-              <label><input id="none" type="checkbox" name="none" onchange="if(this.checked) { var i; var a = document.querySelectorAll('.some-time-option'); for(i = 0; i < a.length; i++) a[i].checked = false;}" /> I cannot coach at any of these times either.</label>
+              <% if @times.empty? %>
+                  <label><input onchange="if(this.checked) document.getElementById('none').checked = false;" type="checkbox" class="some-time-option" value="Spring 2016" name="times[]" /> Spring 2016</label><br />
+              <% end %>
+              <label><input id="none" value="none" type="checkbox" name="times[]" onchange="if(this.checked) { var i; var a = document.querySelectorAll('.some-time-option'); for(i = 0; i < a.length; i++) a[i].checked = false;}" /> I cannot coach at any of these times either.</label>
             </div>
           <% end %>
         </div>
