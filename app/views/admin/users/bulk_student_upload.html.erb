@@ -1,0 +1,26 @@
+<h1>Bulk Student Registration Upload</h1>
+
+<p>This will let you upload student IDs to Salesforce. You still need to Sync to LMS on SF for them to get into Canvas; this just sets the registration codes.</p>
+
+<table class="csv-sample" width="600"><caption>Expected format</caption>
+  <thead><tr>
+    <th>Last Name</th><th>First Name</th><th>Anticipated Graduation</th><th>Candidate Status</th><th>Member First Associated Date</th><th>Member Status Update Date</th><th>Email</th><th>Phone</th><th>Student Id</th><th>Registration Code</th><th>Received Code (Y/N)?</th><th>Enrolled in Class?</th><th>Updated in SF?</th><th>Course section (day/time)</th>
+  </tr></thead>
+
+  <tbody>
+    <tr>
+      <td>Alamoudi</td><td>Mohammed</td><td>2018</td><td>Accepted</td><td>5/14/2015</td><td>6/14/2015</td><td>msm-14@hotmail.com</td><td>619-573-8203</td><td>10029916</td><td></td><td>Y</td><td></td><td></td><td></td>
+    </tr><tr>
+      <td>Alvarez</td><td>Yoselina</td><td>2017</td><td>Accepted</td><td>5/18/2015</td><td>6/14/2015</td><td>alvarez.y.2013@gmail.com</td><td>4089069847</td><td>8873228</td><td></td><td>Y</td><td>Y</td><td>Y</td><td>Monday 3:00</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>In that example file, the second one would be imported because the "Enrolled in Class" is set to Y. The section name in LMS would be Monday 3:00. The first row would NOT be imported because while the code is received, he is not enrolled in the class.</p>
+
+<p><strong>Important:</strong> the Y/N fields must be capitalized Y or capitalized N. Do not use lowercase y/n, do not use 'yes' or any other variant. Just use Y.</p>
+
+<%= form_for :import, :html => { :multipart => true } do |f| %>
+  <%= f.file_field :csv %>
+  <%= submit_tag 'Upload CSV' %>
+<% end %>

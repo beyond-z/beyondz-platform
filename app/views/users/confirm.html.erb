@@ -1,10 +1,4 @@
-<form method="POST" action="<%= user_save_confirm_path %>" onsubmit="
-  if(!this.elements['confirmed'].checked) {
-    alert('Please confirm your commitment by checking the box.');
-    return false;
-  }
-  return true;
-">
+<form method="POST" action="<%= user_confirm_part_2_path %>">
   <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
   <div class="plank tertiary-md">
     <div class="section-container">
@@ -13,7 +7,8 @@
           <% if current_user.program_attendance_confirmed %>
             <p>Thank you for confirming your commitment to participate in Beyond Z.</p>
           <% else %>
-            <p class="shoutout"><%= current_user.first_name %>, please confirm the following:</p>
+            <p class="shoutout">Welcome to the <%= @program_title %> community, <%= current_user.first_name %>!</p>
+            <p>We are so pleased to offer you a place among our selective volunteer force. We think you'll be an outstanding coach and will really enjoy this experience leading an inspiring cohort of high-potential, diverse future leaders.</p>
           <% end %>
         </div>
       </section>
@@ -27,14 +22,15 @@
           <% if current_user.program_attendance_confirmed %>
             <p>You'll be hearing from us shortly with more information about our kickoff event.</p>
           <% else %>
-            <table><tr>
-              <td style="padding-right: 6px; vertical-align: top;">
-                <input id="confirmation" type="checkbox" name="confirmed" />
-              </td>
-              <td>
-                <label for="confirmation">I confirm that will be attending the Beyond Z program.</label>
-              </td>
-            </tr></table>
+            <div class="availability-options">
+              <p>We need coaches to lead <%= @program_title %> cohorts at the following times. Please select ONE time slot and then click next. If you are unavailable at the times listed, please select, 'I cannot commit to coach at any of the times listed.' and on the next page, you'll have the option to sign up for our waitlist.</p>
+              <% @times.each do |info| %>
+                <% if info['slots'] > 0 %>
+                <label><input required="required" type="radio" name="time" value="<%= info['id'] %>" /> <%= info['time'] %></label><br />
+                <% end %>
+              <% end %>
+              <label><input required="required" type="radio" name="time" value="none" /> I cannot commit to coach at any of the times listed.</label>
+            </div>
           <% end %>
         </div>
       </section>
@@ -47,7 +43,7 @@
         <div class="col-sm-4 col-sm-offset-4 text-center">
           <% unless current_user.program_attendance_confirmed %>
           <div class="apply-button">
-            <button type="submit" class="no-decoration"><div class="apply-icon"></div><div class="apply-text">Confirm</div>
+            <button type="submit" class="no-decoration"><div class="apply-icon"></div><div class="apply-text">Next</div>
           </div>
           <% end %>
         </div>

@@ -53,6 +53,77 @@ class UsersController < ApplicationController
     end
   end
 
+  def prep_confirm_campaign_info
+    # These should never be nil at this point, so I'm not checking
+    # it - if it does happen, the error report should help us find
+    # why it was nil and fix that root cause bug.
+
+    # Both @enrollment and campaign should never be nil.
+
+    @enrollment = Enrollment.find_by(:user_id => current_user.id)
+
+    sf = BeyondZ::Salesforce.new
+    client = sf.get_client
+    client.materialize('Campaign')
+    campaign = SFDC_Models::Campaign.find(@enrollment.campaign_id)
+
+    if campaign
+      @program_title = campaign.Program_Title__c
+      @program_site = campaign.Program_Site__c
+      @request_availability = campaign.Request_Availability__c
+      @meeting_times = campaign.Meeting_Times__c
+
+      # An SOQL query is the most efficient way to get up-to-date information -
+      # it will aggregate the cohorts on the server in a single request.
+
+      # However, the client.query method wants to return SObjects which don't support
+      # sql aggregation features. So, we must use the lower level http_get method ourselves
+      # to get at the underlying data.
+      query_result = client.http_get("/services/data/v#{client.version}/query?q=" \
+        "SELECT COUNT(ContactId), Selected_Timeslot__c FROM CampaignMember WHERE CampaignId = '#{campaign.Id}' AND Candidate_Status__c = 'Confirmed' GROUP BY Selected_Timeslot__c")
+
+      sf_answer = JSON.parse(query_result.body)
+
+      used_slots_map = {}
+      sf_answer['records'].each do |record|
+        record_count = record['expr0']
+        record_section = record['Selected_Timeslot__c']
+
+        used_slots_map[record_section] = record_count
+      end
+
+      @times = []
+
+      # We now need to format the meeting times and determine
+      # if there's any free slots. This is done by querying the
+      # actual users. Might want to cache this later and do triggers
+      # but for now I want to try this for best possible accuracy
+      # (though there's still a potential race condition...)
+      @meeting_times.lines.map(&:strip).each_with_index do |line, index|
+        
+        idx = line.rindex(':')
+        if idx
+          time = line[0 .. idx-1]
+          total_slots = line[idx + 1 .. -1].strip.to_i
+
+          used_slots = 0
+          unless used_slots_map[time].nil?
+            used_slots = used_slots_map[time]
+          end
+
+          info = {}
+          info['time'] = time
+          info['total_slots'] = total_slots
+          info['slots'] = total_slots - used_slots
+          info['id'] = index
+
+          @times.push(info)
+        end
+      end
+    end
+
+  end
+
   def confirm
     # If they are already confirmed and accepted, here refreshing the page
     # to watch for updates perhaps, we want to send them to where they want
@@ -60,7 +131,23 @@ class UsersController < ApplicationController
     if current_user.in_lms?
       redirect_to "//#{Rails.application.secrets.canvas_server}/"
     end
+
+    prep_confirm_campaign_info
+
     # renders a view
+  end
+
+  # After they select a time slot, they are asked to "make it official"
+  # or to self-waitlist. This method handles that.
+  def confirm_part_2
+    prep_confirm_campaign_info
+
+    if params[:time] == 'none'
+      # the view handles it because there is
+      # no selected time.
+    else
+      @selected_time = @times[params[:time].to_i]['time']
+    end
   end
 
   def save_confirm
@@ -73,7 +160,21 @@ class UsersController < ApplicationController
     client.materialize('Contact')
     cm = SFDC_Models::CampaignMember.find_by_ContactId(current_user.salesforce_id)
     if cm
-      cm.Candidate_Status__c = 'Confirmed'
+      cm.Candidate_Status__c = params[:selected_time] ? 'Confirmed' : 'Waitlisted'
+      cm.Selected_Timeslot__c = params[:selected_time] ? params[:selected_time] : params[:times].join(';')
+
+      # Set the section name automatically according to the pattern..
+
+      @enrollment = Enrollment.find_by(:user_id => current_user.id)
+      client.materialize('Campaign')
+      campaign = SFDC_Models::Campaign.find(@enrollment.campaign_id)
+
+      if campaign
+        cm.Section_Name_In_LMS__c = "#{campaign.Section_Name_Site_Prefix__c} #{current_user.first_name} #{params[:selected_time]}"
+      end
+
+      # Done
+
       cm.Apply_Button_Enabled__c = false
       cm.save
     end

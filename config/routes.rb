@@ -34,6 +34,7 @@ BeyondzPlatform::Application.routes.draw do
   get '/users/clear_session_cookie', to: 'users#clear_session_cookie'
   get '/users/not_on_lms', to: 'users#not_on_lms'
   get '/users/confirm', to: 'users#confirm', as: 'user_confirm'
+  post '/users/confirm_slot', to: 'users#confirm_part_2', as: 'user_confirm_part_2'
   post '/users/confirm', to: 'users#save_confirm', as: 'user_save_confirm'
 
   resources :enrollments, only: [:new, :create, :show, :update]
@@ -71,6 +72,9 @@ BeyondzPlatform::Application.routes.draw do
 
     get '/campaign_mapping', to: 'users#campaign_mapping', as: 'campaign_mapping'
     post '/campaign_mapping', to: 'users#do_campaign_mapping'
+
+    get '/bulk_student_upload', to: 'users#bulk_student_upload', as: 'bulk_student_upload'
+    post '/bulk_student_upload', to: 'users#do_bulk_student_upload'
 
     resources :lists
 

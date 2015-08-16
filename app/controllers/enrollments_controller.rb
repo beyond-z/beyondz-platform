@@ -85,6 +85,7 @@ class EnrollmentsController < ApplicationController
 
     if @enrollment.user_id != current_user.id && !current_user.admin?
       redirect_to new_enrollment_path
+      return
     end
 
     if @enrollment.explicitly_submitted
@@ -268,6 +269,8 @@ class EnrollmentsController < ApplicationController
     cm.Undergraduate_Year__c = @enrollment.anticipated_graduation
     cm.Major__c = @enrollment.major
     cm.GPA__c = @enrollment.gpa
+
+    cm.Previous_University__c = @enrollment.previous_university
 
     cm.High_School_GPA__c = @enrollment.hs_gpa
     cm.SAT_Score__c = @enrollment.sat_score
