@@ -1,169 +1,34 @@
-<div id="home-page">
-  <div class="plank secondary-md main-feature under-logo">
-    <div class="section-container">
-      <section>
-        <div class="col-sm-12">
-          <%= large_modal('intro-video',
-               title: '',
-               content: '<div style="text-align: center">
-                          <iframe src="//player.vimeo.com/video/99267372" width="800" height="450" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
-                        </div>'
-          ) %>
-          <div class="video-quote">
-            <p class="shoutout">ARE WE MISSING OUT ON EXTRAORDINARY TALENT?</p>
-            <p class="feature">
-              While athletic talent scouting starts at early ages and is robust, there is no comparable system for scouting young academic and leadership talent. Beyond Z is here to change that.
-            </p>
-          </div>
-          <i data-toggle="modal" data-target="#intro-video" class="intro-play-button"></i>
-        </div>
-      </section>
-    </div>
-  </div>
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="refresh" content="11;url=http://bebraven.org/<%= @wp_path %>?bzredirect" />
+<title>Beyond Z is now Braven</title>
+<style>
+body {
+	background: #f26522;
+	text-align: center;
+	font: sans-serif;
+	color:#fff;	
+}
+p {
+	font-size: 1.5em;
+}
+a {
+	font-weight: bold;
+	color: #fff;
+	text-decoration: none;
+}
+span {
+	font-weight:bold;
+}
+</style>
+</head>
 
-  <div class="plank primary-lt">
-    <div class="section-container">
-      <section>
-        <div class="col-sm-6 col-sm-offset-3 text-center">
-          <p>
-            The Beyond Z career accelerator discovers, develops, and connects diverse talent to networks and opportunities they deserve.
-          </p>
-        </div>
-      </section>
-      <section>
-        <div class="col-sm-10 col-sm-offset-1 text-center">
-          <p class="shoutout">
-            We believe our next generation of global leaders can emerge from everywhere.
-          </p>
-          <%= join_us_button_large %>
-          <br />
-          <br />
-          <strong>More info:</strong><br />
-          <%= light_page_jump 'For Students', 'for-students' %> |
-          <%= light_page_jump 'For Volunteers', 'for-volunteers' %> |
-          <%= light_page_jump 'For Partners', 'for-partners' %>
-          <br />
-          <br />
-        </div>
-      </section>
-    </div>
-  </div>
-
-  <div class="plank plain-md">
-    <div class="section-container text-center">
-      <section>
-        <div class="col-md-12">
-          <h2>
-            Our Approach
-          </h2>
-        </div>
-      </section>
-      <section>
-        <div class="infographic-column">
-          <div class="discover-icon"></div>
-          <h3>Discover</h3>
-          <p>young people with the focus, drive, and talent to be great</p>
-        </div>
-        <div class="infographic-column">
-          <div class="develop-icon"></div>
-          <h3>Develop</h3>
-          <p>their authentic leadership and 21st century career skills</p>
-        </div>
-        <div class="infographic-column">
-          <div class="connect-icon"></div>
-          <h3>Connect</h3>
-          <p>them to inspiring students, influential advocates, and career opportunities</p>
-        </div>
-      </section>
-    </div>
-  </div>
-
-  <a id="for-students"></a>
-  <div class="plank plain-lt">
-    <div class="section-container">
-      <section>
-        <div class="col-lg-4 no-pad for-students">
-          <%= image_tag 'for_students.jpg' %>
-        </div>
-        <div class="col-lg-8">
-          <h2>
-            For K-12 and College Students
-          </h2>
-          <blockquote>
-            <p>"Beyond Z introduced me into the real world outside of academics! My interviewing and networking skills have definitely grown - I have met some incredible people and stayed in touch with many of them. My decision to enter the Education field has been reinforced through my time at BZ as well!"
-            </p>
-            <footer>Martha Mendoza<br />University of California at Berkeley, 2016</footer>
-          </blockquote>
-          <%= learn_more_link 'applying as a student', apply_path %>
-        </div>
-      </section>
-    </div>
-  </div>
-
-  <a id="for-volunteers"></a>
-  <div class="plank plain-md">
-    <div class="section-container">
-      <section>
-         <div class="col-lg-4 col-lg-push-8 no-pad for-volunteers">
-          <%= image_tag 'for_volunteers.jpg' %>
-        </div>
-        <div class="col-lg-8 col-lg-pull-4">
-          <h2>
-            For Volunteers
-          </h2>
-          <blockquote>
-            <p>"I loved getting to know the kids and hanging out with them - we got to know each of their personalities really well. I particularly loved watching them plan the Hackathon and seeing their efforts pay off. Their excitement for coding, planning, and leading at Beyond Hacks was contagious and I was thrilled for them."
-            </p>
-            <footer>Aly Mejia<br />Leadership Coach</footer>
-          </blockquote>
-          <%= learn_more_link 'volunteering', volunteer_path %>
-        </div>
-      </section>
-    </div>
-  </div>
-
-  <a id="for-partners"></a>
-  <div class="plank plain-lt">
-    <div class="section-container">
-      <section>
-        <div class="col-md-12 text-center">
-          <h2>
-            For Partners
-          </h2>
-        </div>
-      </section>
-      <section>
-        <div class="col-md-6">
-          <blockquote>
-            <p>"Beyond Z's mission is so important – provide leadership development to young people, especially first-generation college students, so that they are positioned to excel at the highest level and become global leaders.</p>
-            <p>I hire Beyond Z interns because they are exceptionally talented. They are smart, passionate, and driven college students who get results."</p>
-            <footer>Patrick O'Donnell<br />Vice President of Parent and Family Engagement, Teach For America</footer>
-          </blockquote>
-        </div>
-        <div class="col-md-6">
-          <blockquote>
-            <p>"All young people should be able to dream without boundaries. I am excited to be an inaugural partner with Beyond Z because their curriculum and programming will help to level the playing field for under-represented populations lacking resources and human capital necessary to reach the highest levels of leadership."</p>
-            <footer>Kaya Henderson<br />Chancellor, Washington D.C. Public Schools</footer>
-          </blockquote>
-        </div>
-      </section>
-      <section>
-        <div class="col-md-12 text-center">
-          <%= learn_more_link 'partnering with us', partner_path %>
-        </div>
-      </section>
-    </div>
-  </div>
-
-  <div class="plank primary-lt">
-    <div class="section-container text-center">
-      <section>
-        <div class="col-md-12">
-          <p class="shoutout">Ready to jumpstart your leadership path today?</p>
-          <br />
-          <%= join_us_button %>
-        </div>
-      </section>
-    </div>
-  </div>
-</div>
+<body onload="timer=setTimeout(function(){ window.location='http://bebraven.org/<%= @wp_path %>?bzredirect';}, 10000)">
+<img src="/bz-logo-md_white-white.png" width="393" height="139" alt="Beyond Z" style="padding-bottom:30px;" /><br/>
+<a href="http://bebraven.org/<%=@wp_path%>"><h1>Beyond Z is now Braven!</h1>
+<p>You should be redirected to our new website <span>BeBraven.org</span> in a few seconds.</p>
+<img src="/excited.gif" width="500" height="281" style="padding-top:30px; /><a href="http://bebraven.org/<%= @wp_path %>">
+</body>
+</html>
