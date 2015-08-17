@@ -7,6 +7,14 @@
     
     <%= render 'shared/asset_stylesheet_includes' %>
     <%= csrf_meta_tags %>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="http://bebraven.org/wp-content/themes/BravenTheme/css/TradeGothicNo.20-CondBold.css"> 
+<link rel='stylesheet' id='bravenstyle-css'  href='http://bebraven.org/wp-content/themes/BravenTheme/css/braven.css?ver=4.2.4' type='text/css' media='all' />
+<link rel='stylesheet' id='BravenTheme-css'  href='http://bebraven.org/wp-content/themes/BravenTheme/style.css?ver=4.2.4' type='text/css' media='all' />
+
   </head>
   <body>
 
@@ -14,49 +22,71 @@
     <%= yield :modals %>
     <div class="public-container">
 
-      <div class="header">
-        <div class="floating-header">
-          <div class="plank">
-            <div class="section-container">
-              <section id="banner" role="banner">
 
-                <nav class="navbar navbar-default" role="navigation">
-                  <!-- Brand and toggle get grouped for better mobile display -->
-                  <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
-                      <span class="sr-only">Toggle navigation</span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                    </button>
-                    <%= link_to image_tag('bz_logo_170.png'), root_path %>
-                  </div>
 
-                  <!-- Menu content for toggling -->
-                  <div class="collapse navbar-collapse top-navigation" id="navbar-collapse-1" style="text-align: right;">
-                    <ul class="nav navbar-nav">
-                      <%= nav_button 'Home', root_path %>
-                      <%= nav_button 'For Students', apply_path %>
-                      <%= nav_button 'For Volunteers', volunteer_path %>
-                      <%= nav_button 'For Partners', partner_path %>
-                      <% if Rails.application.secrets.blog_url %>
-                        <%= nav_button 'Blog', Rails.application.secrets.blog_url %>
-                      <% end %>
-                      <%= nav_button 'Donate', donate_path, 'donate-link' %>
-                      <li><%= render 'shared/login_button' %></li>
-                    </ul>
-                  </div>
-                </nav>
+<div class="upperheader_red">
+    <div class="container">
+    <h4 class="tophdr-content">Join Our Mailing List » <span style="margin-left:2px; margin-right:2px;">
+    <span class="social">
+     <a class="mail_icon" target="_blank" href="#mailinglist"></a>
+   <a class="facebook_icon" target="_blank" href="https://www.facebook.com/BeBraven"></a>
+   <a class="ig_icon" target="_blank" href="https://instagram.com/bebraven/"></a>
+<a class="twitter_icon" target="_blank" href="https://twitter.com/bebraven"></a>
+</span> </span></h4>
+    </div>
+    </div>
+
+
+<div id="topheader">
+    
+   <div id="blogo">
+   <a href="http://bebraven.org"><img src="http://bebraven.org/wp-content/themes/BravenTheme/images/braven_logo.png"></a>
+   </div>
+		
+
+			<div id="navigation" class="navigationbar">
+				<nav id="site-navigation" class="navigation main-navigation" role="navigation">
+				
+		<div class="menu-main-navigation-container"><ul id="primary-menu" class="nav-menu"><li id="menu-item-95" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-95"><a href="http://bebraven.org/become-a-fellow/">Become A Fellow</a>
+<ul class="sub-menu">
+	<li id="menu-item-158" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-158"><a href="http://bebraven.org/become-a-fellow/bay-area/">Bay Area</a></li>
+	<li id="menu-item-157" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-157"><a href="http://bebraven.org/become-a-fellow/nj-nyc-area/">NJ/NYC Area</a></li>
+	<li id="menu-item-753" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-753"><a href="http://bebraven.org/the-fellow-experience/">The Fellow Experience</a></li>
+	<li id="menu-item-827" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-827"><a href="http://bebraven.org/apply-now/">Apply</a></li>
+	<li id="menu-item-847" class="beyondz_menu_item menu-item menu-item-type-custom menu-item-object-custom menu-item-847"><a href="https://www.beyondz.org/signup/new?applicant_type=undergrad_student" onclick="__gaTracker('send', 'event', 'outbound-widget', 'https://www.beyondz.org/signup/new?applicant_type=undergrad_student', 'Apply');">Apply</a></li>
+</ul>
+</li>
+<li id="menu-item-96" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-96"><a href="http://bebraven.org/volunteer-as-a-coach/">Volunteer As A Coach</a>
+<ul class="sub-menu">
+	<li id="menu-item-98" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-98"><a href="http://bebraven.org/coaching-commitment-details/">Coaching Commitment Details</a></li>
+	<li id="menu-item-828" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-828"><a href="http://bebraven.org/apply-now/">Apply</a></li>
+	<li id="menu-item-850" class="beyondz_menu_item menu-item menu-item-type-custom menu-item-object-custom menu-item-850"><a href="https://www.beyondz.org/signup/new?applicant_type=volunteer" onclick="__gaTracker('send', 'event', 'outbound-widget', 'https://www.beyondz.org/signup/new?applicant_type=volunteer', 'Apply');">Apply</a></li>
+</ul>
+</li>
+<li id="menu-item-100" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-100"><a href="http://bebraven.org/partner-with-us/">Partner With Us</a></li>
+<li id="menu-item-101" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-101"><a href="http://bebraven.org/blog/">Blog</a></li>
+<li id="menu-item-102" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-102"><a href="http://bebraven.org/about-us/">About Us</a>
+<ul class="sub-menu">
+	<li id="menu-item-103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="http://bebraven.org/our-team/">Our Team</a></li>
+	<li id="menu-item-451" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-451"><a href="http://bebraven.org/about-us/partners-supporters/">Partners &amp; Supporters</a></li>
+	<li id="menu-item-104" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-104"><a href="http://bebraven.org/about-us/work-at-braven/">Our Core Values</a></li>
+</ul>
+</li>
+<li id="menu-item-105" class="apply_top_btn menu-item menu-item-type-post_type menu-item-object-page menu-item-105"><a href="http://bebraven.org/apply-now/">Apply</a></li>
+<li id="menu-item-450" class="donate_top_btn menu-item menu-item-type-custom menu-item-object-custom menu-item-450"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=VFUYARJB2QRXC" onclick="__gaTracker('send', 'event', 'outbound-widget', 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=VFUYARJB2QRXC', 'Donate');" target="_blank">Donate</a></li>
+</ul></div>					
+				</nav><!-- #site-navigation -->
                 
-              </section>
-            </div> <!-- .section-container -->
-          </div>
-        </div> <!-- .floating-header -->
-        <!-- this acts to fill the space when the floating header is in fixed position up top -->
-        <!-- when it moves down, this spacer assumes its size, keeping the rest of the page content
-             from jumping around, confusing the user as to where they were looking -->
-        <div class="floating-header-spacer"></div>
-      </div> <!-- .header -->
+            </div><!-- #END Navigation -->    
+            
+            	<a class="menuicon" href="#menu"></a>
+                
+               
+
+			</div>
+
+
+                      <li><%= render 'shared/login_button' %></li>
 
       <main role="main">
         <%= render 'shared/messages' %>
