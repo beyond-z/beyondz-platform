@@ -37,7 +37,7 @@ class HomeController < ApplicationController
   def welcome
     # just set here as a default so we can see it if it is improperly set below and
     # also to handle the fallback case for legacy users who applied before the salesforce system was in place
-    @program_title = 'Beyond Z'
+    @program_title = 'Braven'
     if user_signed_in?
       if current_user.program_attendance_confirmed
         redirect_to user_confirm_path
