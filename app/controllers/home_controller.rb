@@ -24,6 +24,9 @@ class HomeController < ApplicationController
     # Otherwise, non-logged in users
     # just get the public home page
     # via the home/index view
+
+    @wp_path = params[:wp_path] ? params[:wp_path] : '' # shortcut to the right page on the new site
+    render layout: false
   end
 
   def please_wait
