@@ -13,7 +13,7 @@
           <div><%= f.label :email %><br />
           <%= f.email_field :email, autofocus: true, :class => 'form-control', :value => @prefill_email %></div>
           <br />
-          <div><%= f.submit "Resend confirmation instructions", :class => 'button-primary' %></div>
+          <div><%= f.submit "Resend confirmation", :class => 'button-primary' %></div>
         <% end %>
         <br />
         <%= render "devise/shared/links" %>

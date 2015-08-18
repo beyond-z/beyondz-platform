@@ -20,10 +20,14 @@ class HomeController < ApplicationController
         # the welcome screen so they can learn more.
         redirect_to welcome_path
       end
+    else
+      # Otherwise, non-logged in users
+      # just get the public home page
+      # via the home/index view
+
+      @wp_path = params[:wp_path] ? params[:wp_path] : '' # shortcut to the right page on the new site
+      render layout: false
     end
-    # Otherwise, non-logged in users
-    # just get the public home page
-    # via the home/index view
   end
 
   def please_wait
@@ -33,7 +37,7 @@ class HomeController < ApplicationController
   def welcome
     # just set here as a default so we can see it if it is improperly set below and
     # also to handle the fallback case for legacy users who applied before the salesforce system was in place
-    @program_title = 'Beyond Z'
+    @program_title = 'Braven'
     if user_signed_in?
       if current_user.program_attendance_confirmed
         redirect_to user_confirm_path

@@ -7,7 +7,7 @@ class FeedbackController < ApplicationController
     f = Feedback
     f.feedback(params[:email], params[:message]).deliver
     # rubocop:disable LineLength
-    flash[:message] = "Thank you for your feedback! It's people like you that help make the Beyond Z experience great."
+    flash[:message] = "Thank you for your feedback! It's people like you that help make the Braven experience great."
     # rubocop:enable LineLength
     redirect_to params[:back_to]
   end

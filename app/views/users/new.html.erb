@@ -10,7 +10,7 @@
           Whether you're interested in participating as a fellow, volunteering as a speaker or coach, or becoming a partner organization, you're in the right place.  
           </p>
 
-          <div id="sign-up-form" class="well well-default">
+          <div id="sign-up-form" class="">
             <div class="panel-body">
               <%= form_for :user, url: users_path, role: 'form' do |f| %>
                 <%= hidden_field_tag 'referrer', @referrer %>
@@ -78,7 +78,7 @@
                       <%= f.radio_button :applicant_type, 'partner', required: 'required', style: 'visibility: hidden;' %>
                     <% else %>
                       <%= f.radio_button :applicant_type, 'partner', required: 'required' %>
-                      <%= f.label :applicant_type_partner, 'Working in higher education and am interested in partnering with Beyond Z' %>
+                      <%= f.label :applicant_type_partner, 'Working in higher education and am interested in partnering with Braven' %>
                     <% end %>
                     <%= render :partial => 'partner', :locals => { :f => f} %>
                   </div>
@@ -132,11 +132,11 @@
           <h2>Why Join?</h2>
           <blockquote>
             <p>&ldquo;You become part of a team that could actually make a difference. You learn that you have a story and how to tell it. You meet lots of highly motivated, inspiring people.&rdquo;</p>
-            <footer>Andy Yitalo, Stanford University, class of 2017</footer>
+            <footer>Andy Yitalo, Braven Fellow '14</footer>
           </blockquote>
           <blockquote>
-            <p>&ldquo;Beyond Z had provided me with innumerable opportunities for personal and professional growth, but the Capstone project took our learning experiences beyond that of our own and empowered me to give back to my community. I really appreciated this opportunity, it was a great learning experience in regards to leadership for me as a project manager.&rdquo;</p>
-            <footer>Kelly Hernandez, Stanford University, class of 2016</footer>
+            <p>&ldquo;Braven had provided me with innumerable opportunities for personal and professional growth, but the Capstone project took our learning experiences beyond that of our own and empowered me to give back to my community. I really appreciated this opportunity, it was a great learning experience in regards to leadership for me as a project manager.&rdquo;</p>
+            <footer>Kelly Hernandez, Braven Fellow '14</footer>
           </blockquote>
         </div>
       </section>
