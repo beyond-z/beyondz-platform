@@ -2,14 +2,20 @@ BeyondzPlatform::Application.routes.draw do
   devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions', passwords: 'passwords' }
 
   root "home#index"
+
+  # These are all moved to the bebraven.org Wordpress site now with specific analogs
+  # we'll forward directly so people's old bookmarks take them to a reasonable location.
+  get '/apply', to: 'home#index', defaults: { wp_path: 'become-a-fellow/' }
+  get '/volunteer', to: 'home#index', defaults: { wp_path: 'volunteer-as-a-coach/' }
+  get '/partner', to: 'home#index', defaults: { wp_path: 'partner-with-us/' }
+
+  # No specific analog on WP yet, just send them to the redirect -> home page.
+  get '/jobs', to: 'home#index'
+  get '/donate', to: 'home#index'
+
+  # These are part of the signup flow and NOT moved to the blog, they should stay here.
   get '/welcome', to: 'home#welcome'
   get '/activating', to: 'home#please_wait', as: :please_wait
-  get '/apply', to: 'home#apply'
-  get '/donate', to: 'home#donate'
-  get '/volunteer', to: 'home#volunteer'
-  get '/partner', to: 'home#partner'
-  get '/supporter_info', to: 'home#supporter_info'
-  get '/jobs', to: 'home#jobs'
 
   # These convenience routes are meant to be given to
   # people during in-person recruitment efforts
