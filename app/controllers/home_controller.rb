@@ -20,13 +20,14 @@ class HomeController < ApplicationController
         # the welcome screen so they can learn more.
         redirect_to welcome_path
       end
-    end
-    # Otherwise, non-logged in users
-    # just get the public home page
-    # via the home/index view
+    else
+      # Otherwise, non-logged in users
+      # just get the public home page
+      # via the home/index view
 
-    @wp_path = params[:wp_path] ? params[:wp_path] : '' # shortcut to the right page on the new site
-    render layout: false
+      @wp_path = params[:wp_path] ? params[:wp_path] : '' # shortcut to the right page on the new site
+      render layout: false
+    end
   end
 
   def please_wait
