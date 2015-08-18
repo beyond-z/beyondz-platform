@@ -2,8 +2,8 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= content_for?(:title) ? yield(:title) : "Beyond Z" %></title>
-    <meta name="description" content="<%= yield(:description) || "Beyond Z" %>">
+    <title><%= content_for?(:title) ? yield(:title) : "Braven" %></title>
+    <meta name="description" content="<%= yield(:description) || "Braven" %>">
     
     <%= render 'shared/asset_stylesheet_includes' %>
     <%= csrf_meta_tags %>
@@ -11,9 +11,10 @@
 
 
 
-<link rel="stylesheet" type="text/css" href="http://bebraven.org/wp-content/themes/BravenTheme/css/TradeGothicNo.20-CondBold.css"> 
-<link rel='stylesheet' id='bravenstyle-css'  href='http://bebraven.org/wp-content/themes/BravenTheme/css/braven.css?ver=4.2.4' type='text/css' media='all' />
-<link rel='stylesheet' id='BravenTheme-css'  href='http://bebraven.org/wp-content/themes/BravenTheme/style.css?ver=4.2.4' type='text/css' media='all' />
+<link rel="stylesheet" type="text/css" href="/bebraven/TradeGothicNo.20-CondBold.css" media='all'> 
+<link rel='stylesheet' id='sass-css'  href='/bebraven/sass-compiled.css' type='text/css' media='all' />
+<link rel='stylesheet' id='bravenstyle-css'  href='/bebraven/braven.css' type='text/css' media='all' />
+<link rel='stylesheet' id='BravenTheme-css'  href='/bebraven/style.css' type='text/css' media='all' />
 
   </head>
   <body>
@@ -32,7 +33,10 @@
    <a class="facebook_icon" target="_blank" href="https://www.facebook.com/BeBraven"></a>
    <a class="ig_icon" target="_blank" href="https://instagram.com/bebraven/"></a>
 <a class="twitter_icon" target="_blank" href="https://twitter.com/bebraven"></a>
-</span> </span></h4>
+</span> </span>
+
+       <span id="login-container"><%= render 'shared/login_button' %></span>
+</h4>
     </div>
     </div>
 
@@ -84,9 +88,6 @@
                
 
 			</div>
-
-
-                      <li><%= render 'shared/login_button' %></li>
 
       <main role="main">
         <%= render 'shared/messages' %>

@@ -2,12 +2,12 @@
     # If salesforce isn't configured, do our regular text
     unless Rails.application.secrets.salesforce_username
 %>
-Welcome to Beyond Z, <%= @user.first_name %>! We are excited to connect with you. Please confirm your email address to activate your account by clicking the link below:
+Welcome to Braven, <%= @user.first_name %>! We are excited to connect with you. Please confirm your email address to activate your account by clicking the link below:
 
 <p><%= link_to 'Confirm your account', confirmation_url(@resource, confirmation_token: @token) %></p>
 
 <p>Thank you,<br />
-The Beyond Z Team</p>
+The Braven Team</p>
 <% 
     # but if it is, we'll pull from there
     else

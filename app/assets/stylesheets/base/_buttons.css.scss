@@ -8,12 +8,13 @@
   @extend .btn-primary;
   @extend .btn-lg;
 
-  background-color: $primary-lt !important;
+  background-color: $primary-lt;
   border-color: $txt-lt !important;
 
+  /*
   &:hover {
     background-color: $cta_highlight !important;
     border-color: $primary-md !important;
-
   }
+*/
 }
