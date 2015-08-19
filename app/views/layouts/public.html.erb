@@ -76,7 +76,14 @@
 	<li id="menu-item-104" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-104"><a href="http://bebraven.org/about-us/work-at-braven/">Our Core Values</a></li>
 </ul>
 </li>
+
+<% if user_signed_in? %>
+  <%if current_user.apply_now_enabled %>
+      <li id="menu-item-105" class="apply_top_btn menu-item menu-item-type-post_type menu-item-object-page menu-item-105"><a href="/enrollments/new">Apply</a></li>
+  <% end %>
+<% else %>
 <li id="menu-item-105" class="apply_top_btn menu-item menu-item-type-post_type menu-item-object-page menu-item-105"><a href="http://bebraven.org/apply-now/">Apply</a></li>
+<% end %>
 <li id="menu-item-450" class="donate_top_btn menu-item menu-item-type-custom menu-item-object-custom menu-item-450"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=VFUYARJB2QRXC" onclick="__gaTracker('send', 'event', 'outbound-widget', 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=VFUYARJB2QRXC', 'Donate');" target="_blank">Donate</a></li>
 </ul></div>					
 				</nav><!-- #site-navigation -->
