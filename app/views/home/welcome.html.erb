@@ -26,8 +26,8 @@
                 <% else %>
                 <p class="shoutout">Thanks for coming back to finish your application. Click here to pick up where you left off!</p>
                 <% end %>
-                <div class="apply-button">
-                  <%= link_to '<div class="apply-icon"></div><div class="apply-text">Apply now!</div>'.html_safe, new_enrollment_path %><br />
+                <div class="apply-button button-primary">
+                  <%= link_to 'Apply now!', new_enrollment_path, style: 'color: white' %><br />
                 </div>
               <% else %>
                 <p class="shoutout">Your account was successfully activated. We will contact you very soon!</p>
