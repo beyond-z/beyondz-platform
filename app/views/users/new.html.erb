@@ -56,7 +56,7 @@
                       <%= f.radio_button :applicant_type, 'volunteer', required: 'required', style: 'visibility: hidden;' %>
                     <% else %>
                       <%= f.radio_button :applicant_type, 'volunteer', required: 'required' %>
-                      <%= f.label :applicant_type_volunteer, 'Interested in volunteering as a coach in the BZ Accelerator' %>
+                      <%= f.label :applicant_type_volunteer, 'Interested in volunteering as a coach in the Braven Accelerator' %>
                     <% end %>
                     <%= render :partial => 'volunteer', :locals => { :f => f} %>
                   </div>
@@ -67,7 +67,7 @@
                       <%= f.radio_button :applicant_type, 'employer', required: 'required', style: 'visibility: hidden;' %>
                     <% else %>
                       <%= f.radio_button :applicant_type, 'employer', :required => 'required' %>
-                      <%= f.label :applicant_type_employer, 'Interested in offering employment opportunities to BZ alumni', required: 'required' %>
+                      <%= f.label :applicant_type_employer, 'Interested in offering employment opportunities to Braven alumni', required: 'required' %>
                     <% end %>
                     <%= render :partial => 'employer', :locals => { :f => f} %>
                   </div>
