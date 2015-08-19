@@ -11,7 +11,7 @@
             <!-- We should be able to re-enable apply now in Salesforce, overriding applicatio_received. The second clause here allows that. -->
             <% if @application_received && !(@new_user.apply_now_enabled || !Rails.application.secrets.salesforce_username) %>
               <h2>Thank you for applying to <%= @program_title %>.</h2>
-              <p>We will be in touch shortly with next steps. If you have any further questions please feel free to <a href="mailto:info@bebraven.org">contact us</a></p>
+              <p>We will be in touch shortly with next steps. If you have any further questions please feel free to <a href="mailto:join@bebraven.org">contact us</a></p>
             <% else %>
                 <!-- When Salesforce integration is enabled, the apply now button will be controlled
                      by a campaign on that end. Until then though, we want everyone to see it. -->
