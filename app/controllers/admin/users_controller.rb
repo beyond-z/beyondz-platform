@@ -122,6 +122,7 @@ class Admin::UsersController < Admin::ApplicationController
           cm = SFDC_Models::CampaignMember.find_by_ContactId(u.salesforce_id)
           if cm
             cm.Section_Name_In_LMS__c = row[13]
+            cm.Candidate_Status__c = 'Confirmed'
             cm.save
           end
         end
