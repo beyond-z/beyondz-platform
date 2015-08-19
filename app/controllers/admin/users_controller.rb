@@ -170,6 +170,7 @@ class Admin::UsersController < Admin::ApplicationController
 
     @user.first_name = params[:user][:first_name] unless params[:user][:first_name].nil?
     @user.last_name = params[:user][:last_name] unless params[:user][:last_name].nil?
+    @user.salesforce_id = params[:user][:salesforce_id] unless params[:user][:salesforce_id].nil?
     @user.password = params[:user][:password] unless params[:user][:password].nil? || params[:user][:password].empty?
 
     if params[:sync_with_canvas]
@@ -178,6 +179,25 @@ class Admin::UsersController < Admin::ApplicationController
 
     @user.save!
     redirect_to "/admin/users/#{@user.id}"
+  end
+
+  def impersonate
+    sign_in(:user, User.find(params[:id]))
+    if params[:unsubmit_application]
+      enrollment = Enrollment.find_by_user_id(params[:id])
+      if enrollment
+        enrollment.explicitly_submitted = false
+        enrollment.save(validate: false)
+        # Also send them straight there as that's probably what we actually
+        # want to do.
+        redirect_to enrollment_path(enrollment.id)
+      else
+        # No enrollment to reset
+        redirect_to root_path
+      end
+    else
+      redirect_to root_path
+    end
   end
 
   def new
