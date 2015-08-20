@@ -66,6 +66,8 @@ BeyondzPlatform::Application.routes.draw do
     get '/users/csv_import', to: 'users#csv_import', as: 'csv_import'
     post '/users/csv_import', to: 'users#do_csv_import'
 
+    post '/users/:id/impersonate', to: 'users#impersonate', as: 'impersonate'
+
     get '/users/lead_owner_mapping', to: 'users#lead_owner_mapping', as: 'lead_owner_mapping'
     get '/users/import_lead_owner_mapping', to: 'users#import_lead_owner_mapping', as: 'import_lead_owner_mapping'
     post '/users/import_lead_owner_mapping', to: 'users#do_import_lead_owner_mapping'

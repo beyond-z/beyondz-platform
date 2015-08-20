@@ -19,3 +19,15 @@
   <br />
   <%= f.submit %>
 <% end %>
+
+
+<h2>Change Salesforce ID mapping</h2>
+<p>Please be VERY careful when doing this. If SF ID gets out of sync, they will no longer be able to match up with syncing to Canvas or submitting applications. Only change it if you are absolutely sure this is the right thing to do.</p>
+<p>To get a Salesforce ID, go to the Contact - NOT the lead, NOT the campaign member, always use Contact ID. Get it by going to the contact in Salesforce and looking at the end of the URL. It is the bit after the last slash, but before any question mark (if there is a question mark).</p>
+<%= form_for [:admin, @user] do |f| %>
+  <%= f.label :salesforce_id %>:<br />
+  <%= f.text_field :salesforce_id %><br />
+
+  <br />
+  <%= f.submit %>
+<% end %>

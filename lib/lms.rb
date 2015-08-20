@@ -233,7 +233,7 @@ module BeyondZ
         "/api/v1/users/#{user_id}/enrollments?access_token=#{Rails.application.secrets.canvas_access_token}"
       )
       response = @canvas_http.request(request)
-      info = JSON.parse response.body
+      info = get_all_from_pagination(response)
 
       info
     end
@@ -247,7 +247,7 @@ module BeyondZ
         "/api/v1/courses/#{course_id}/enrollments?access_token=#{Rails.application.secrets.canvas_access_token}"
       )
       response = @canvas_http.request(request)
-      info = JSON.parse response.body
+      info = get_all_from_pagination(response)
 
       info
     end
@@ -303,7 +303,7 @@ module BeyondZ
           "/api/v1/courses/#{course_id}/sections?access_token=#{Rails.application.secrets.canvas_access_token}"
         )
         response = @canvas_http.request(request)
-        info = JSON.parse response.body
+        info = get_all_from_pagination(response)
 
         info.each do |section|
           @section_info[course_id][section['name']] = section
@@ -311,6 +311,44 @@ module BeyondZ
       end
 
       @section_info[course_id]
+    end
+
+    def get_all_from_pagination(response)
+      info = JSON.parse response.body
+      while response
+        link = response.header['link']
+        break if link.nil?
+
+        next_url = nil
+        link.split(',').each do |part|
+          if part.ends_with?('; rel="next"')
+            next_url = part[1 .. link.index('>')-1]
+            break
+          end
+        end
+
+        if next_url
+          next_url = next_url[8 .. -1] # trim off the http
+          next_url = next_url[next_url.index('/') .. -1] # we want the path and the query string off it
+          if next_url.index('?')
+            next_url += '&'
+          else
+            next_url += '?'
+          end
+          next_url += "access_token=#{Rails.application.secrets.canvas_access_token}"
+
+          request = Net::HTTP::Get.new(next_url)
+          response = @canvas_http.request(request)
+          more_info = JSON.parse response.body
+          puts(response.body)
+          puts(more_info)
+          info.concat(more_info)
+        else
+          response = nil
+        end
+      end
+
+      info
     end
 
     # Opens a connection to the canvas http api (the address of the
