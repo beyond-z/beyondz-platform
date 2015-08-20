@@ -33,7 +33,7 @@ class Admin::UsersController < Admin::ApplicationController
       header << 'Lead_owner'
       header << 'Applicant type'
       header << 'University Name'
-      header << 'BZ Region'
+      header << 'Braven Region'
 
       csv << header
 
@@ -145,7 +145,7 @@ class Admin::UsersController < Admin::ApplicationController
     if params[:user][:email]
       new_email = params[:user][:email]
 
-      # Update BZ
+      # Update this database 
       @user.email = new_email
       @user.skip_reconfirmation!
 
@@ -421,13 +421,13 @@ class Admin::UsersController < Admin::ApplicationController
     header << 'Anticipated Graduation'
     header << 'Started College In'
     header << 'University Name'
-    header << 'BZ Region(s)'
+    header << 'Braven Region(s)'
     header << 'Profession/Title/Industry'
     header << 'Company'
     header << 'City'
     header << 'State'
-    header << 'Like to know when BZ starts program'
-    header << 'Like to help BZ start'
+    header << 'Like to know when BV starts program'
+    header << 'Like to help BV start'
     header << 'User-provided comments'
     header << 'Signup Date'
     header << 'Last sign in at'
