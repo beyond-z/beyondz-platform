@@ -15,6 +15,8 @@
 <link rel='stylesheet' id='sass-css'  href='/bebraven/sass-compiled.css' type='text/css' media='all' />
 <link rel='stylesheet' id='bravenstyle-css'  href='/bebraven/braven.css' type='text/css' media='all' />
 <link rel='stylesheet' id='BravenTheme-css'  href='/bebraven/style.css' type='text/css' media='all' />
+<link type="text/css" rel="stylesheet" href="/bebraven/jquery.mmenu.all.css" />
+
 
   </head>
   <body>
@@ -51,7 +53,7 @@
 			<div id="navigation" class="navigationbar">
 				<nav id="site-navigation" class="navigation main-navigation" role="navigation">
 				
-		<div class="menu-main-navigation-container"><ul id="primary-menu" class="nav-menu"><li id="menu-item-95" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-95"><a href="http://bebraven.org/become-a-fellow/">Become A Fellow</a>
+		<div class="menu-main-navigation-container"><ul id="primary-menu" class="nav-menu" style="white-space: nowrap;"><li id="menu-item-95" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-95"><a href="http://bebraven.org/become-a-fellow/">Become A Fellow</a>
 <ul class="sub-menu">
 	<li id="menu-item-158" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-158"><a href="http://bebraven.org/become-a-fellow/bay-area/">Bay Area</a></li>
 	<li id="menu-item-157" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-157"><a href="http://bebraven.org/become-a-fellow/nj-nyc-area/">NJ/NYC Area</a></li>
@@ -76,7 +78,14 @@
 	<li id="menu-item-104" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-104"><a href="http://bebraven.org/about-us/work-at-braven/">Our Core Values</a></li>
 </ul>
 </li>
+
+<% if user_signed_in? %>
+  <%if current_user.apply_now_enabled %>
+      <li id="menu-item-105" class="apply_top_btn menu-item menu-item-type-post_type menu-item-object-page menu-item-105"><a href="/enrollments/new">Apply</a></li>
+  <% end %>
+<% else %>
 <li id="menu-item-105" class="apply_top_btn menu-item menu-item-type-post_type menu-item-object-page menu-item-105"><a href="http://bebraven.org/apply-now/">Apply</a></li>
+<% end %>
 <li id="menu-item-450" class="donate_top_btn menu-item menu-item-type-custom menu-item-object-custom menu-item-450"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=VFUYARJB2QRXC" onclick="__gaTracker('send', 'event', 'outbound-widget', 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=VFUYARJB2QRXC', 'Donate');" target="_blank">Donate</a></li>
 </ul></div>					
 				</nav><!-- #site-navigation -->
@@ -88,6 +97,40 @@
                
 
 			</div>
+                        
+   
+                 <nav id="menu">
+                 
+                  <a id="close-mobile-btn" href="#">&times;</a>       
+              
+				<ul><li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-95"><a href="http://bebraven.org/become-a-fellow/">Become A Fellow</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-158"><a href="http://bebraven.org/become-a-fellow/bay-area/">Bay Area</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-157"><a href="http://bebraven.org/become-a-fellow/nj-nyc-area/">NJ/NYC Area</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-753"><a href="http://bebraven.org/the-fellow-experience/">The Fellow Experience</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-847"><a href="https://www.beyondz.org/signup/new?applicant_type=undergrad_student" onclick="__gaTracker('send', 'event', 'outbound-widget', 'https://www.beyondz.org/signup/new?applicant_type=undergrad_student', 'Apply');">Apply</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-96"><a href="http://bebraven.org/volunteer-as-a-coach/">Volunteer As A Coach</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-98"><a href="http://bebraven.org/coaching-commitment-details/">Coaching Commitment Details</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-850"><a href="https://www.beyondz.org/signup/new?applicant_type=volunteer" onclick="__gaTracker('send', 'event', 'outbound-widget', 'https://www.beyondz.org/signup/new?applicant_type=volunteer', 'Apply');">Apply</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-100"><a href="http://bebraven.org/partner-with-us/">Partner With Us</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-101"><a href="http://bebraven.org/blog/">Blog</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-102"><a href="http://bebraven.org/about-us/">About Us</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-103"><a href="http://bebraven.org/our-team/">Our Team</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-451"><a href="http://bebraven.org/about-us/partners-supporters/">Partners &#038; Supporters</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-104"><a href="http://bebraven.org/about-us/work-at-braven/">Our Core Values</a></li>
+</ul>
+</li>
+<li class="apply_top_btn menu-item menu-item-type-post_type menu-item-object-page menu-item-105"><a href="http://bebraven.org/apply-now/">Apply</a></li>
+<li class="donate_top_btn menu-item menu-item-type-custom menu-item-object-custom menu-item-450"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&#038;hosted_button_id=VFUYARJB2QRXC" onclick="__gaTracker('send', 'event', 'outbound-widget', 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=VFUYARJB2QRXC', 'Donate');" target="_blank">Donate</a></li>
+</ul> 
+			</nav>
+
 
       <main role="main">
         <%= render 'shared/messages' %>

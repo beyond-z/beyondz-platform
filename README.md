@@ -29,7 +29,7 @@ If not, [install it](http://postgresapp.com/) and make sure to and set your PATH
 	export PATH="/Applications/Postgres93.app/Contents/MacOS/bin:$PATH"
 ```
 
-Create a database user for the BZ application:
+Create a database user for the Braven application:
 ```Shell
 createuser -s beyondz-platform
 ```

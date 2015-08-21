@@ -20,12 +20,14 @@
           <% else %>
             <div class="availability-options">
               <p>Drat. We'll do what we can to include you in the program. In the meantime, we'll add you to our waitlist. Just let us know which of these currently closed section meeting times work for you:</p>
+              <% outputted = false %>
               <% @times.each do |time| %>
                 <% if time['slots'] == 0 %>
+                  <% outputted = true %>
                   <label><input onchange="if(this.checked) document.getElementById('none').checked = false;" type="checkbox" class="some-time-option" name="times[]" value="<%= time['time'] %>" /> <%= time['time'] %></label><br />
                 <% end %>
               <% end %>
-              <% if @times.empty? %>
+              <% if !outputted %>
                   <label><input onchange="if(this.checked) document.getElementById('none').checked = false;" type="checkbox" class="some-time-option" value="Spring 2016" name="times[]" /> Spring 2016</label><br />
               <% end %>
               <label><input id="none" value="none" type="checkbox" name="times[]" onchange="if(this.checked) { var i; var a = document.querySelectorAll('.some-time-option'); for(i = 0; i < a.length; i++) a[i].checked = false;}" /> I cannot coach at any of these times either.</label>
@@ -41,7 +43,7 @@
       <section>
         <div class="col-sm-4 col-sm-offset-4 text-center">
           <div class="apply-button">
-            <button type="submit" class="no-decoration"><div class="apply-icon"></div><div class="apply-text">Submit</div>
+            <button type="submit" class="btn-primary">Submit</button>
           </div>
         </div>
       </section>

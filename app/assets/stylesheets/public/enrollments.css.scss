@@ -25,6 +25,16 @@
     width: 150px;
   }
 
+  label {
+    font-weight: bold;
+    font-size: 1.0em;
+  }
+
+  p.help {
+    font-weight: normal;
+    font-size: 1.0em;
+  }
+
   label.radio, label.checkbox {
     font-weight: normal;
     margin-left: 21px;

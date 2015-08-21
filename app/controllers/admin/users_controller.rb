@@ -33,7 +33,7 @@ class Admin::UsersController < Admin::ApplicationController
       header << 'Lead_owner'
       header << 'Applicant type'
       header << 'University Name'
-      header << 'BZ Region'
+      header << 'Braven Region'
 
       csv << header
 
@@ -122,6 +122,7 @@ class Admin::UsersController < Admin::ApplicationController
           cm = SFDC_Models::CampaignMember.find_by_ContactId(u.salesforce_id)
           if cm
             cm.Section_Name_In_LMS__c = row[13]
+            cm.Candidate_Status__c = 'Confirmed'
             cm.save
           end
         end
@@ -144,7 +145,7 @@ class Admin::UsersController < Admin::ApplicationController
     if params[:user][:email]
       new_email = params[:user][:email]
 
-      # Update BZ
+      # Update this database 
       @user.email = new_email
       @user.skip_reconfirmation!
 
@@ -169,6 +170,7 @@ class Admin::UsersController < Admin::ApplicationController
 
     @user.first_name = params[:user][:first_name] unless params[:user][:first_name].nil?
     @user.last_name = params[:user][:last_name] unless params[:user][:last_name].nil?
+    @user.salesforce_id = params[:user][:salesforce_id] unless params[:user][:salesforce_id].nil?
     @user.password = params[:user][:password] unless params[:user][:password].nil? || params[:user][:password].empty?
 
     if params[:sync_with_canvas]
@@ -177,6 +179,25 @@ class Admin::UsersController < Admin::ApplicationController
 
     @user.save!
     redirect_to "/admin/users/#{@user.id}"
+  end
+
+  def impersonate
+    sign_in(:user, User.find(params[:id]))
+    if params[:unsubmit_application]
+      enrollment = Enrollment.find_by_user_id(params[:id])
+      if enrollment
+        enrollment.explicitly_submitted = false
+        enrollment.save(validate: false)
+        # Also send them straight there as that's probably what we actually
+        # want to do.
+        redirect_to enrollment_path(enrollment.id)
+      else
+        # No enrollment to reset
+        redirect_to root_path
+      end
+    else
+      redirect_to root_path
+    end
   end
 
   def new
@@ -400,13 +421,13 @@ class Admin::UsersController < Admin::ApplicationController
     header << 'Anticipated Graduation'
     header << 'Started College In'
     header << 'University Name'
-    header << 'BZ Region(s)'
+    header << 'Braven Region(s)'
     header << 'Profession/Title/Industry'
     header << 'Company'
     header << 'City'
     header << 'State'
-    header << 'Like to know when BZ starts program'
-    header << 'Like to help BZ start'
+    header << 'Like to know when BV starts program'
+    header << 'Like to help BV start'
     header << 'User-provided comments'
     header << 'Signup Date'
     header << 'Last sign in at'

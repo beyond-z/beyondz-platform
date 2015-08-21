@@ -10,7 +10,7 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = '"Beyond Z" <' + Rails.application.secrets.mailer_from_email + '>'
+  config.mailer_sender = '"Braven" <' + Rails.application.secrets.mailer_from_email + '>'
 
   config.cas_base_url = Rails.application.secrets.sso_url
   config.cas_create_user = false

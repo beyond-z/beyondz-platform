@@ -170,7 +170,17 @@ class UsersController < ApplicationController
       campaign = SFDC_Models::Campaign.find(@enrollment.campaign_id)
 
       if campaign
-        cm.Section_Name_In_LMS__c = "#{campaign.Section_Name_Site_Prefix__c} #{current_user.first_name} #{params[:selected_time]}"
+        name = params[:selected_time]
+
+        name = 'Su' if name.match(/sunday/i)
+        name = 'Mo' if name.match(/monday/i)
+        name = 'Tu' if name.match(/tuesday/i)
+        name = 'We' if name.match(/wednesday/i)
+        name = 'Th' if name.match(/thursday/i)
+        name = 'Fr' if name.match(/friday/i)
+        name = 'Sa' if name.match(/saturday/i)
+
+        cm.Section_Name_In_LMS__c = "#{campaign.Section_Name_Site_Prefix__c} #{current_user.first_name} (#{name})"
       end
 
       # Done
