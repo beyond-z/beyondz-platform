@@ -189,7 +189,7 @@ module BeyondZ
 
       existing_enrollment = nil
       @course_enrollment_cache[course_id].each do |enrollment|
-        if enrollment['user_id'] == user.canvas_user_id
+        if enrollment['user_id'].to_s == user.canvas_user_id.to_s
           existing_enrollment = enrollment
           break
         end
