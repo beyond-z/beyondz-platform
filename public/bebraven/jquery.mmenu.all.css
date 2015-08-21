@@ -133,7 +133,7 @@ li.mm-vertical.mm-opened > .mm-panel {
     text-decoration: none; 
 	}
   .mm-navbar .mm-title {
-	  background:url(../images/braven_logo_mmenu.png) no-repeat center center;
+	  background:url(images/braven_logo_mmenu.png) no-repeat center center;
 	  text-indent:-99999px;
     text-overflow: ellipsis;
     white-space: nowrap;
