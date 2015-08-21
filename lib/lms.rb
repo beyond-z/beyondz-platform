@@ -189,7 +189,7 @@ module BeyondZ
 
       existing_enrollment = nil
       @course_enrollment_cache[course_id].each do |enrollment|
-        if enrollment['user_id'].to_s == user.canvas_user_id.to_s
+        if enrollment['user_id'] == user.canvas_user_id
           existing_enrollment = enrollment
           break
         end
@@ -247,7 +247,12 @@ module BeyondZ
         "/api/v1/courses/#{course_id}/enrollments?access_token=#{Rails.application.secrets.canvas_access_token}"
       )
       response = @canvas_http.request(request)
-      info = get_all_from_pagination(response)
+      info = nil
+      if response.code == '200'
+        info = get_all_from_pagination(response)
+      else
+        raise "Course #{course_id} does not exist. #{response.body}"
+      end
 
       info
     end
@@ -340,8 +345,6 @@ module BeyondZ
           request = Net::HTTP::Get.new(next_url)
           response = @canvas_http.request(request)
           more_info = JSON.parse response.body
-          puts(response.body)
-          puts(more_info)
           info.concat(more_info)
         else
           response = nil
