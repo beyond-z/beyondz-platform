@@ -1,0 +1,10 @@
+<%= form_for [:admin, @task_definition] do |f| %>
+  Name:<br />
+  <%= f.text_field :name %>
+  <br />
+
+  Details:<br />
+  <%= f.text_area :details, size: '120x25' %>
+  <br />
+  <%= f.submit %>
+<% end %>

@@ -1,0 +1,14 @@
+<h1>Interactive Resume Assignment Definitions</h1>
+
+<ul>
+  <% @assignment_definitions.each do |ad| %>
+    <li>
+      <b><%= link_to "#{ad.id} #{ad.title}", edit_admin_assignment_definition_path(ad.id) %></b>
+      <ol>
+        <% ad.task_definitions.each do |td| %>
+          <li> <%= link_to "#{td.id} #{td.name}", edit_admin_task_definition_path(td.id) %></li>
+        <% end %>
+      </ol>
+    </li>
+  <% end %>
+</ul>
