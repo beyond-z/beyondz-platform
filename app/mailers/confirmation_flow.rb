@@ -12,7 +12,12 @@ class ConfirmationFlow < ActionMailer::Base
     @timeslot = timeslot
 
     sf = BeyondZ::Salesforce.new
-    mail to: recipient.email, subject: sf.get_coach_confirmed_email_subject
+    mail to: recipient.email, subject: sf.get_coach_confirmed_email_subject.
+      gsub('{!Contact.FirstName}', @recipient.first_name).
+      gsub('{!Contact.LastName}', @recipient.last_name).
+      gsub('{!Program.Title}', @program_title).
+      gsub('{!Program.Site}', @program_site).
+      gsub('{!Timeslot}', @timeslot).html_safe
   end
 
 end
