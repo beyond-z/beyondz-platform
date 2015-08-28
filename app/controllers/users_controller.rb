@@ -154,6 +154,10 @@ class UsersController < ApplicationController
     current_user.program_attendance_confirmed = true
     current_user.save!
 
+    # These are actually filled in by the campaign inside a couple ifs
+    program_title = 'Braven'
+    program_site = ''
+
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
     client.materialize('CampaignMember')
@@ -179,6 +183,9 @@ class UsersController < ApplicationController
         name = 'Th' if name.match(/thursday/i)
         name = 'Fr' if name.match(/friday/i)
         name = 'Sa' if name.match(/saturday/i)
+
+        program_title = campaign.Program_Title__c
+        program_site = campaign.Program_Site__c
 
         cm.Section_Name_In_LMS__c = "#{campaign.Section_Name_Site_Prefix__c} #{current_user.first_name} (#{name})"
       end
@@ -208,6 +215,8 @@ class UsersController < ApplicationController
     end
 
 
+    # Send a confirmation email too
+    ConfirmationFlow.coach_confirmed(current_user, program_title, program_site, params[:selected_time]).deliver
 
     redirect_to user_confirm_path
   end
