@@ -1,0 +1,7 @@
+<ul>
+  <% @task_definitions.each do |td| %>
+    <li>
+      <%= link_to "#{td.id} #{td.name}", edit_admin_task_definition_path(td.id) %>
+    </li>
+  <% end %>
+</ul>

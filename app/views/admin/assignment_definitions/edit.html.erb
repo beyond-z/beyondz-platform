@@ -1,0 +1,10 @@
+<%= form_for [:admin, @assignment_definition] do |f| %>
+  Title:<br />
+  <%= f.text_field :title %>
+  <br />
+
+  Front page info:<br />
+  <%= f.text_area :front_page_info, size: '120x25' %>
+  <br />
+  <%= f.submit %>
+<% end %>

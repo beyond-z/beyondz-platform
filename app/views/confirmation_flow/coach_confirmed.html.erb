@@ -1,0 +1,10 @@
+<%
+require 'salesforce'
+sf = BeyondZ::Salesforce.new
+%><%= sf.get_coach_confirmed_email_html.
+  gsub('{!Contact.FirstName}', @recipient.first_name).
+  gsub('{!Contact.LastName}', @recipient.last_name).
+  gsub('{!Program.Title}', @program_title).
+  gsub('{!Program.Site}', @program_site).
+  gsub('{!Timeslot}', @timeslot).html_safe
+%>

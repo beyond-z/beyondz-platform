@@ -69,6 +69,8 @@ class SalesforceController < ApplicationController
 
       lms = BeyondZ::LMS.new
 
+      # If you change the condition on this query, also update
+      # BZ_SyncToLMS.apxc so the list on Salesforce keeps in sync.
       members = client.query("
         SELECT
           ContactId, Section_Name_In_LMS__c
