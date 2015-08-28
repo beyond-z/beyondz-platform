@@ -6,5 +6,5 @@ sf = BeyondZ::Salesforce.new
   gsub('{!Contact.LastName}', @recipient.last_name).
   gsub('{!Program.Title}', @program_title).
   gsub('{!Program.Site}', @program_site).
-  gsub('{!Timeslot}', @timeslot)
+  gsub('{!Timeslot}', @timeslot).html_safe
 %>
