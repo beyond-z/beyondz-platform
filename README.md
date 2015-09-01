@@ -3,7 +3,7 @@ This is where Beyond Z participants login and access their leadership developmen
 
 # Getting Started
 
-Make sure you have Ruby 2.1.1 and Rails 4.0 installed and configured.  You can
+Make sure you have Ruby 2.2.3 and Rails 4.0 installed and configured.  You can
 check by running:
  ```Shell
 ruby -v 
