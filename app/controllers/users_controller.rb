@@ -341,7 +341,12 @@ class UsersController < ApplicationController
       return
     end
 
-    @new_user.create_on_salesforce
+    sf_lead_created = @new_user.create_on_salesforce
+    if !sf_lead_created && @new_user.confirmed?
+      # If we didn't create a new Lead, we need to mark the
+      # existing record as confirmed here to sync up the data.
+      @new_user.confirm_on_salesforce
+    end
 
     if @new_user.salesforce_campaign_id
       # FIXME: hack, this auto-signs in users that are mapped to active campaign since we skip confirmation

@@ -114,6 +114,8 @@ class User < ActiveRecord::Base
     end
   end
 
+  # Returns true if a new Lead was created, returns false
+  # if it found an existing contact to reuse. Throws on error.
   def create_on_salesforce
     salesforce = BeyondZ::Salesforce.new
     client = salesforce.get_client
@@ -223,6 +225,8 @@ class User < ActiveRecord::Base
       contact['BZ_Region__c'] = ''
     end
 
+    lead_created = false
+
     # The Lead class provided by the gem is buggy so we do it with this call instead
     # which is what Lead.save calls anyway
     unless self.salesforce_id
@@ -233,14 +237,19 @@ class User < ActiveRecord::Base
       contact = client.create('Lead', contact)
 
       self.salesforce_id = contact['Id']
+
+      lead_created = true
     else
       # And if salesforce_id is set already, we found an existing Contact,
       # so we update that record instead
 
       client.update('Contact', self.salesforce_id, contact)
+      lead_created = false
     end
 
     save!
+
+    lead_created
   end
 
   def confirm_on_salesforce
