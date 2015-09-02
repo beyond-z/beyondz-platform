@@ -341,7 +341,8 @@ class UsersController < ApplicationController
       return
     end
 
-    if !(@new_user.create_on_salesforce) && @new_user.confirmed?
+    sf_lead_created = @new_user.create_on_salesforce
+    if !sf_lead_created && @new_user.confirmed?
       # If we didn't create a new Lead, we need to mark the
       # existing record as confirmed here to sync up the data.
       @new_user.confirm_on_salesforce
