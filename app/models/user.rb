@@ -247,12 +247,41 @@ class User < ActiveRecord::Base
     salesforce = BeyondZ::Salesforce.new
     client = salesforce.get_client
     client.materialize('Lead')
-    lead = SFDC_Models::Lead.find(salesforce_id)
-    if lead
+    begin
+      lead = SFDC_Models::Lead.find(salesforce_id)
       lead.Account_Activated__c = true
       lead.save
+    rescue Databasedotcom::SalesForceError
+      # Failure is OK, it just means they were already converted to a contact
+      #
+      # We should then go ahead and kick off the post-conversion steps by
+      # adding to the salesforce campaign
+
+      auto_add_to_salesforce_campaign
     end
   end
+
+  def auto_add_to_salesforce_campaign
+    # We may also need to add them to a campaign if certain things
+    # are right.
+    cm = {}
+    cm['CampaignId'] = salesforce_campaign_id
+
+    if cm['CampaignId']
+      # Can't use client.materialize because it sets the checkboxes to nil
+      # instead of false which fails server-side validation. This method
+      # works though.
+      sf = BeyondZ::Salesforce.new
+      client = sf.get_client
+      cm['ContactId'] = salesforce_id
+      client.create('CampaignMember', cm)
+    end
+
+    # The apply now enabled *should* be set by the SF triggers
+    # but we might want to do it here now anyway to give faster
+    # response to the user.
+  end
+
 
   def salesforce_applicant_type
     case applicant_type
