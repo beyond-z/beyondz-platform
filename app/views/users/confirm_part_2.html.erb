@@ -30,7 +30,7 @@
               <% if !outputted %>
                   <label><input onchange="if(this.checked) document.getElementById('none').checked = false;" type="checkbox" class="some-time-option" value="Spring 2016" name="times[]" /> Spring 2016</label><br />
               <% end %>
-              <label><input id="none" value="none" type="checkbox" name="times[]" onchange="if(this.checked) { var i; var a = document.querySelectorAll('.some-time-option'); for(i = 0; i < a.length; i++) a[i].checked = false;}" /> I cannot coach at any of these times either.</label>
+              <label><input id="none" value="none" type="checkbox" name="times[]" onchange="if(this.checked) { var i; var a = document.querySelectorAll('.some-time-option'); for(i = 0; i < a.length; i++) a[i].checked = false;}" /> I cannot participate at any of these times either.</label>
             </div>
           <% end %>
         </div>

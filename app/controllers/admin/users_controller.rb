@@ -142,7 +142,7 @@ class Admin::UsersController < Admin::ApplicationController
 
     old_email = @user.email
 
-    if params[:user][:email]
+    if params[:user][:email] && params[:user][:email] != old_email
       new_email = params[:user][:email]
 
       # Update this database 

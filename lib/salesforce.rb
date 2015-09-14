@@ -152,5 +152,17 @@ module BeyondZ
       get_email_cache('BZ_Coach_Confirmed_Email_Html.text')
     end
 
+    def get_student_confirmed_email_subject
+      get_email_cache('BZ_Student_Confirmed_Email_Html_Subject')
+    end
+
+    def get_student_confirmed_email_html
+      get_email_cache('BZ_Student_Confirmed_Email_Html.html')
+    end 
+
+    def get_student_confirmed_email_text
+      get_email_cache('BZ_Student_Confirmed_Email_Html.text')
+    end
+
   end
 end

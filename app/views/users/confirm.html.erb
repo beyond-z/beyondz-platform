@@ -8,7 +8,11 @@
             <p>Thank you for confirming your commitment to participate in Braven.</p>
           <% else %>
             <p class="shoutout">Welcome to the <%= @program_title %> community, <%= current_user.first_name %>!</p>
-            <p>We are so pleased to offer you a place among our selective volunteer force. We think you'll be an outstanding coach and will really enjoy this experience leading an inspiring cohort of high-potential, diverse future leaders.</p>
+            <% if @confirmation_type == 'coach' %>
+              <p>We are so pleased to offer you a place among our selective volunteer force. We think you'll be an outstanding coach and will really enjoy this experience leading an inspiring cohort of high-potential, diverse future leaders.</p>
+            <% else %>
+              <p>We are so pleased to offer you a place in our program. We think you'll be an outstanding participant and will really enjoy this experience.</p>
+            <% end %>
           <% end %>
         </div>
       </section>
@@ -23,13 +27,17 @@
             <p>You'll be hearing from us shortly with more information about our kickoff event.</p>
           <% else %>
             <div class="availability-options">
-              <p>We need coaches to lead <%= @program_title %> cohorts at the following times. Please select ONE time slot and then click next. If you are unavailable at the times listed, please select, 'I cannot commit to coach at any of the times listed.' and on the next page, you'll have the option to sign up for our waitlist.</p>
+              <% if @confirmation_type == 'coach' %>
+                <p>We need coaches to lead <%= @program_title %> cohorts at the following times. Please select ONE time slot and then click next. If you are unavailable at the times listed, please select, 'I cannot commit to coach at any of the times listed.' and on the next page, you'll have the option to sign up for our waitlist.</p>
+              <% else %>
+                <p>We have <%= @program_title %> slots available at the following times. Please select ONE time slot and then click next. If you are unavailable at the times listed, please select, 'I cannot commit to participate at any of the times listed.' and on the next page, you'll have the option to sign up for our waitlist.</p>
+              <% end %>
               <% @times.each do |info| %>
                 <% if info['slots'] > 0 %>
                 <label><input required="required" type="radio" name="time" value="<%= info['id'] %>" /> <%= info['time'] %></label><br />
                 <% end %>
               <% end %>
-              <label><input required="required" type="radio" name="time" value="none" /> I cannot commit to coach at any of the times listed.</label>
+              <label><input required="required" type="radio" name="time" value="none" /> I cannot commit to <%= @confirmation_type == 'coach' ? 'coach' : 'participate' %> at any of the times listed.</label>
             </div>
           <% end %>
         </div>

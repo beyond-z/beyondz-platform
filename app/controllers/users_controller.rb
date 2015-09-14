@@ -62,6 +62,13 @@ class UsersController < ApplicationController
 
     @enrollment = Enrollment.find_by(:user_id => current_user.id)
 
+    if @enrollment.nil?
+      redirect_to welcome_path
+      return
+    end
+
+    @confirmation_type = @enrollment.position
+
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
     client.materialize('Campaign')
@@ -130,9 +137,9 @@ class UsersController < ApplicationController
     # to be - canvas - ASAP.
     if current_user.in_lms?
       redirect_to "//#{Rails.application.secrets.canvas_server}/"
+    else
+      prep_confirm_campaign_info
     end
-
-    prep_confirm_campaign_info
 
     # renders a view
   end
@@ -216,7 +223,14 @@ class UsersController < ApplicationController
 
 
     # Send a confirmation email too
-    ConfirmationFlow.coach_confirmed(current_user, program_title, program_site, params[:selected_time]).deliver
+    case current_user.applicant_type
+      when 'undergrad_student'
+        ConfirmationFlow.student_confirmed(current_user, program_title, program_site, params[:selected_time]).deliver
+      when 'volunteer'
+        ConfirmationFlow.coach_confirmed(current_user, program_title, program_site, params[:selected_time]).deliver
+      else
+        # intentionally blank, see above
+    end
 
     redirect_to user_confirm_path
   end
