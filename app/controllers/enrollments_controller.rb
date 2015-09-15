@@ -83,14 +83,14 @@ class EnrollmentsController < ApplicationController
 
     sf_answer = JSON.parse(query_result.body)
 
-    if sf_answer.length != 1
+    if sf_answer['records'].length != 1
       # If they aren't a member of one appropriate campaign,
       # they cannot start the application since we won't know
       # which one to show and their data is likely to be lost.
       return false
     end
 
-    cm = SFDC_Models::CampaignMember.find(sf_answer[0]['Id'])
+    cm = SFDC_Models::CampaignMember.find(sf_answer['records'][0]['Id'])
 
 
     campaign = SFDC_Models::Campaign.find(cm.CampaignId)
