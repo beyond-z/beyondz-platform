@@ -43,7 +43,18 @@ class EnrollmentsController < ApplicationController
         # this user is a member of and use that to fetch the associated
         # application out of our system.
 
-        start_application_from_salesforce_campaign
+        if !start_application_from_salesforce_campaign
+          # If we can't start from a salesforce campaign, we don't
+          # want them to actually start at all - w/o the campaign,
+          # we can't save their info properly. This likely happens
+          # because somebody used a direct link without actually 
+          # being added to the campaign.
+          #
+          # Send them back to the welcome path until they are
+          # actually set up with an apply now button enabled.
+          redirect_to welcome_path
+          return
+        end
       end
 
       # we know this is incomplete data, the user will be able
@@ -64,18 +75,35 @@ class EnrollmentsController < ApplicationController
     client = sf.get_client
     client.materialize('CampaignMember')
     client.materialize('Campaign')
-    cm = SFDC_Models::CampaignMember.find_by_ContactId(current_user.salesforce_id)
-    unless cm.nil?
-      campaign = SFDC_Models::Campaign.find(cm.CampaignId)
 
-      # Set the data from the campaign so we can tie back to it
-      @enrollment.campaign_id = campaign.Id
-      @enrollment.position = campaign.Application_Type__c
+    # We need to check all the campaign members to find the one that is most correct
+    # for an application - one with an Application Type set up.
+    query_result = client.http_get("/services/data/v#{client.version}/query?q=" \
+      "SELECT Id FROM CampaignMember WHERE ContactId = '#{current_user.salesforce_id}' AND Campaign.IsActive = TRUE AND Campaign.Application_Type__c != ''")
 
-      # And set on Salesforce that it has been started
-      cm.Application_Status__c = 'started'
-      cm.save
+    sf_answer = JSON.parse(query_result.body)
+
+    if sf_answer.length != 1
+      # If they aren't a member of one appropriate campaign,
+      # they cannot start the application since we won't know
+      # which one to show and their data is likely to be lost.
+      return false
     end
+
+    cm = SFDC_Models::CampaignMember.find(sf_answer[0]['Id'])
+
+
+    campaign = SFDC_Models::Campaign.find(cm.CampaignId)
+
+    # Set the data from the campaign so we can tie back to it
+    @enrollment.campaign_id = campaign.Id
+    @enrollment.position = campaign.Application_Type__c
+
+    # And set on Salesforce that it has been started
+    cm.Application_Status__c = 'started'
+    cm.save
+
+    true
   end
 
   def show
@@ -217,7 +245,7 @@ class EnrollmentsController < ApplicationController
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
     client.materialize('CampaignMember')
-    cm = SFDC_Models::CampaignMember.find_by_ContactId(@enrollment.user.salesforce_id)
+    cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(@enrollment.user.salesforce_id, @enrollment.campaign_id)
     if cm.nil?
       return
     end
