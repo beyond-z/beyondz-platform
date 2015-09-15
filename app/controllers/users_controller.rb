@@ -169,38 +169,39 @@ class UsersController < ApplicationController
     client = sf.get_client
     client.materialize('CampaignMember')
     client.materialize('Contact')
-    cm = SFDC_Models::CampaignMember.find_by_ContactId(current_user.salesforce_id)
+
+    @enrollment = Enrollment.find_by(:user_id => current_user.id)
+
+    cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(current_user.salesforce_id, @enrollment.campaign_id)
     if cm
       cm.Candidate_Status__c = params[:selected_time] ? 'Confirmed' : 'Waitlisted'
       cm.Selected_Timeslot__c = params[:selected_time] ? params[:selected_time] : params[:times].join(';')
 
       # Set the section name automatically according to the pattern..
-
-      @enrollment = Enrollment.find_by(:user_id => current_user.id)
       client.materialize('Campaign')
       campaign = SFDC_Models::Campaign.find(@enrollment.campaign_id)
 
-      if campaign
-        name = params[:selected_time]
+      name = params[:selected_time]
 
-        name = 'Su' if name.match(/sunday/i)
-        name = 'Mo' if name.match(/monday/i)
-        name = 'Tu' if name.match(/tuesday/i)
-        name = 'We' if name.match(/wednesday/i)
-        name = 'Th' if name.match(/thursday/i)
-        name = 'Fr' if name.match(/friday/i)
-        name = 'Sa' if name.match(/saturday/i)
+      name = 'Su' if name.match(/sunday/i)
+      name = 'Mo' if name.match(/monday/i)
+      name = 'Tu' if name.match(/tuesday/i)
+      name = 'We' if name.match(/wednesday/i)
+      name = 'Th' if name.match(/thursday/i)
+      name = 'Fr' if name.match(/friday/i)
+      name = 'Sa' if name.match(/saturday/i)
 
-        program_title = campaign.Program_Title__c
-        program_site = campaign.Program_Site__c
+      program_title = campaign.Program_Title__c
+      program_site = campaign.Program_Site__c
 
-        cm.Section_Name_In_LMS__c = "#{campaign.Section_Name_Site_Prefix__c} #{current_user.first_name} (#{name})"
-      end
-
+      cm.Section_Name_In_LMS__c = "#{campaign.Section_Name_Site_Prefix__c} #{current_user.first_name} (#{name})"
       # Done
 
       cm.Apply_Button_Enabled__c = false
       cm.save
+    else
+      # Just warn me that this assertion failed so I can look into it...
+      StaffNotifications.bug_report(current_user, "Campaign Member not set up.\nSelected timeslot: #{params[:selected_time]}\nCampaign: #{@enrollment.campaign_id}").deliver
     end
 
     contact = SFDC_Models::Contact.find(current_user.salesforce_id)

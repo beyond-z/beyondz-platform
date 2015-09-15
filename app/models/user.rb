@@ -94,6 +94,24 @@ class User < ActiveRecord::Base
     mapping.first.lead_owner
   end
 
+  # Salesforce IDs are a bit weird because they come in both 15 character
+  # and 18 character versions. Both these are supposed to be identical, and
+  # the extra chars are just provided to account for database collations that
+  # are case insensitive for the 15 char version.
+  #
+  # Our database is case-sensitive, so we don't need those final three chars,
+  # and they can be wrong - the manual URLs always give the 15 char version but
+  # the api gives the 18 char version. We need our lookup to treat them both the
+  # same. Thankfully, the 18 char version has the same first 15 chars, so we can
+  # simply truncate it. We want to truncate both what is given and what is in the
+  # database to ensure we look up the right record.
+  #
+  # The default find_by_salesforce_id doesn't do that, but we can redefine it and
+  # get correct results for this special field.
+  def self.find_by_salesforce_id(sid)
+    where('substr(salesforce_id, 0, 15) = substr(?, 0, 15)', [sid]).first
+  end
+
   # We allow empty passwords for certain account types
   # so this enforces that. Otherwise, fall back on devise's
   # default validation for the password.
