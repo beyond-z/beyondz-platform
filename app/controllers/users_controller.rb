@@ -180,25 +180,26 @@ class UsersController < ApplicationController
       client.materialize('Campaign')
       campaign = SFDC_Models::Campaign.find(@enrollment.campaign_id)
 
-      name = params[:selected_time]
-
-      name = 'Su' if name.match(/sunday/i)
-      name = 'Mo' if name.match(/monday/i)
-      name = 'Tu' if name.match(/tuesday/i)
-      name = 'We' if name.match(/wednesday/i)
-      name = 'Th' if name.match(/thursday/i)
-      name = 'Fr' if name.match(/friday/i)
-      name = 'Sa' if name.match(/saturday/i)
-
       program_title = campaign.Program_Title__c
       program_site = campaign.Program_Site__c
 
-      if current_user.applicant_type == 'volunteer'
-      # Set the section name automatically according to the pattern..
-      # This is only for coaches. Students are manually mapped to cohorts.
-        cm.Section_Name_In_LMS__c = "#{campaign.Section_Name_Site_Prefix__c} #{current_user.first_name} (#{name})"
+      if params[:selected_time]
+        name = params[:selected_time]
+
+        name = 'Su' if name.match(/sunday/i)
+        name = 'Mo' if name.match(/monday/i)
+        name = 'Tu' if name.match(/tuesday/i)
+        name = 'We' if name.match(/wednesday/i)
+        name = 'Th' if name.match(/thursday/i)
+        name = 'Fr' if name.match(/friday/i)
+        name = 'Sa' if name.match(/saturday/i)
+
+        if current_user.applicant_type == 'volunteer'
+          # Set the section name automatically according to the pattern..
+          # This is only for coaches. Students are manually mapped to cohorts.
+          cm.Section_Name_In_LMS__c = "#{campaign.Section_Name_Site_Prefix__c} #{current_user.first_name} (#{name})"
+        end
       end
-      # Done
 
       cm.Apply_Button_Enabled__c = false
       cm.save
