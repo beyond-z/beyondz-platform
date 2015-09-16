@@ -108,8 +108,10 @@ class User < ActiveRecord::Base
   #
   # The default find_by_salesforce_id doesn't do that, but we can redefine it and
   # get correct results for this special field.
+  #
+  # It is 16 in here because the end thing is not inclusive in the substr function.
   def self.find_by_salesforce_id(sid)
-    where('substr(salesforce_id, 0, 15) = substr(?, 0, 15)', [sid]).first
+    where('substr(salesforce_id, 0, 16) = substr(?, 0, 16)', [sid]).first
   end
 
   # We allow empty passwords for certain account types
