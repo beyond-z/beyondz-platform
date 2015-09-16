@@ -172,17 +172,22 @@ class UsersController < ApplicationController
 
     @enrollment = Enrollment.find_by(:user_id => current_user.id)
 
+    client.materialize('Campaign')
+    campaign = SFDC_Models::Campaign.find(@enrollment.campaign_id)
+
+    program_title = campaign.Program_Title__c
+    program_site = campaign.Program_Site__c
+
+    chosen_time = params[:selected_time] ? params[:selected_time] : params[:times].join(';')
+    waitlisted = params[:selected_time] ? false : true
+
     cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(current_user.salesforce_id, @enrollment.campaign_id)
     if cm
-      cm.Candidate_Status__c = params[:selected_time] ? 'Confirmed' : 'Waitlisted'
-      cm.Selected_Timeslot__c = params[:selected_time] ? params[:selected_time] : params[:times].join(';')
+      cm.Candidate_Status__c = waitlisted ? 'Waitlisted' : 'Confirmed'
+      cm.Selected_Timeslot__c = chosen_time
 
-      client.materialize('Campaign')
-      campaign = SFDC_Models::Campaign.find(@enrollment.campaign_id)
-
-      program_title = campaign.Program_Title__c
-      program_site = campaign.Program_Site__c
-
+      # We want selected time because this only applies if they actually picked just one,
+      # not several to waitlist.
       if params[:selected_time]
         name = params[:selected_time]
 
@@ -205,7 +210,7 @@ class UsersController < ApplicationController
       cm.save
     else
       # Just warn me that this assertion failed so I can look into it...
-      StaffNotifications.bug_report(current_user, "Campaign Member not set up.\nSelected timeslot: #{params[:selected_time]}\nCampaign: #{@enrollment.campaign_id}").deliver
+      StaffNotifications.bug_report(current_user, "Campaign Member not set up.\nSelected timeslot: #{chosen_time}\nWaitlisted: #{waitlist.to_s}\nCampaign: #{@enrollment.campaign_id}").deliver
     end
 
     contact = SFDC_Models::Contact.find(current_user.salesforce_id)
@@ -230,9 +235,9 @@ class UsersController < ApplicationController
     # Send a confirmation email too
     case current_user.applicant_type
       when 'undergrad_student'
-        ConfirmationFlow.student_confirmed(current_user, program_title, program_site, params[:selected_time]).deliver
+        ConfirmationFlow.student_confirmed(current_user, program_title, program_site, chosen_time).deliver
       when 'volunteer'
-        ConfirmationFlow.coach_confirmed(current_user, program_title, program_site, params[:selected_time]).deliver
+        ConfirmationFlow.coach_confirmed(current_user, program_title, program_site, chosen_time).deliver
       else
         # intentionally blank, see above
     end
