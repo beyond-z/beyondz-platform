@@ -80,6 +80,8 @@ class UsersController < ApplicationController
       @request_availability = campaign.Request_Availability__c
       @meeting_times = campaign.Meeting_Times__c
 
+      @sf_campaign_id = campaign.Id
+
       # An SOQL query is the most efficient way to get up-to-date information -
       # it will aggregate the cohorts on the server in a single request.
 
@@ -141,6 +143,15 @@ class UsersController < ApplicationController
       prep_confirm_campaign_info
     end
 
+    if current_user.program_attendance_confirmed && @enrollment
+      sf = BeyondZ::Salesforce.new
+      client = sf.get_client
+      client.materialize('CampaignMember')
+      cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(current_user.salesforce_id, @enrollment.campaign_id)
+
+      @waitlisted = cm.Candidate_Status__c == 'Waitlisted'
+    end
+
     # renders a view
   end
 
@@ -158,12 +169,11 @@ class UsersController < ApplicationController
   end
 
   def save_confirm
+    chosen_time = params[:selected_time] ? params[:selected_time] : params[:times].join(';')
+    waitlisted = params[:selected_time] ? false : true
+
     current_user.program_attendance_confirmed = true
     current_user.save!
-
-    # These are actually filled in by the campaign inside a couple ifs
-    program_title = 'Braven'
-    program_site = ''
 
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
@@ -177,9 +187,6 @@ class UsersController < ApplicationController
 
     program_title = campaign.Program_Title__c
     program_site = campaign.Program_Site__c
-
-    chosen_time = params[:selected_time] ? params[:selected_time] : params[:times].join(';')
-    waitlisted = params[:selected_time] ? false : true
 
     cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(current_user.salesforce_id, @enrollment.campaign_id)
     if cm
@@ -232,14 +239,16 @@ class UsersController < ApplicationController
     end
 
 
-    # Send a confirmation email too
-    case current_user.applicant_type
-      when 'undergrad_student'
-        ConfirmationFlow.student_confirmed(current_user, program_title, program_site, chosen_time).deliver
-      when 'volunteer'
-        ConfirmationFlow.coach_confirmed(current_user, program_title, program_site, chosen_time).deliver
-      else
-        # intentionally blank, see above
+    # Send a confirmation email too for confirmed people
+    if !waitlisted
+      case current_user.applicant_type
+        when 'undergrad_student'
+          ConfirmationFlow.student_confirmed(current_user, program_title, program_site, chosen_time).deliver
+        when 'volunteer'
+          ConfirmationFlow.coach_confirmed(current_user, program_title, program_site, chosen_time).deliver
+        else
+          # intentionally blank, see above
+      end
     end
 
     redirect_to user_confirm_path

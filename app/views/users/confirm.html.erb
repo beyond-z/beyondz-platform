@@ -5,7 +5,11 @@
       <section>
         <div class="col-sm-6 col-sm-offset-3 text-center">
           <% if current_user.program_attendance_confirmed %>
-            <p>Thank you for confirming your commitment to participate in Braven.</p>
+            <% if @waitlist %>
+              <p>Thank you for your response.</p>
+            <% else %>
+              <p>Thank you for confirming your commitment to participate in Braven.</p>
+            <% end %>
           <% else %>
             <p class="shoutout">Welcome to the <%= @program_title %> community, <%= current_user.first_name %>!</p>
             <% if @confirmation_type == 'coach' %>
@@ -24,7 +28,11 @@
       <section>
         <div class="col-sm-4 col-sm-offset-4">
           <% if current_user.program_attendance_confirmed %>
-            <p>You'll be hearing from us shortly with more information about our kickoff event.</p>
+            <% if @waitlist %>
+              <p>We will get in contact with you if a slot opens up.</p>
+            <% else %>
+              <p>You'll be hearing from us shortly with more information about our kickoff event.</p>
+            <% end %>
           <% else %>
             <div class="availability-options">
               <% if @confirmation_type == 'coach' %>
