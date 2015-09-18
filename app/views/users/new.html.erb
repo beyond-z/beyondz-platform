@@ -91,8 +91,8 @@
                       <%= f.radio_button :applicant_type, 'other', required: 'required' %>
                       <%= f.label :applicant_type_other, 'Other?' %>
                     <% end %>
-                    <%= f.text_field :applicant_details, :class => 'form-control', :placeholder => 'What are you interested in?', :onclick => '$("#user_applicant_type_other").click();', :maxlength => '72' %>
                     <div class="form-option-details">
+                    <%= f.text_field :applicant_details, :class => 'form-control', :placeholder => 'What are you interested in?', :onclick => '$("#user_applicant_type_other").click();', :maxlength => '72' %>
                       <br />
                       <section>
                         <div class="col-sm-5">

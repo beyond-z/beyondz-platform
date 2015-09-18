@@ -116,6 +116,16 @@ module BeyondZ
         set_cached_value('BZ_Coach_Confirmed_Email_Html.html', template.HtmlValue)
       end
 
+      template = SFDC_Models::EmailTemplate.find_by_DeveloperName('BZ_Student_Confirmed_Email_Html')
+
+      if template
+        # We can also update the Subject on this request since we have it here anyway
+        set_cached_value('BZ_Student_Confirmed_Email_Html_Subject', template.Subject)
+        # ditto for the text version
+        set_cached_value('BZ_Student_Confirmed_Email_Html.text', template.Body)
+        # And cache the HTML, of course
+        set_cached_value('BZ_Student_Confirmed_Email_Html.html', template.HtmlValue)
+      end
     end
 
     def get_email_cache(cache_key)
@@ -150,6 +160,18 @@ module BeyondZ
 
     def get_coach_confirmed_email_text
       get_email_cache('BZ_Coach_Confirmed_Email_Html.text')
+    end
+
+    def get_student_confirmed_email_subject
+      get_email_cache('BZ_Student_Confirmed_Email_Html_Subject')
+    end
+
+    def get_student_confirmed_email_html
+      get_email_cache('BZ_Student_Confirmed_Email_Html.html')
+    end 
+
+    def get_student_confirmed_email_text
+      get_email_cache('BZ_Student_Confirmed_Email_Html.text')
     end
 
   end

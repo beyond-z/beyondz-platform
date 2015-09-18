@@ -62,6 +62,13 @@ class UsersController < ApplicationController
 
     @enrollment = Enrollment.find_by(:user_id => current_user.id)
 
+    if @enrollment.nil?
+      redirect_to welcome_path
+      return
+    end
+
+    @confirmation_type = @enrollment.position
+
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
     client.materialize('Campaign')
@@ -72,6 +79,8 @@ class UsersController < ApplicationController
       @program_site = campaign.Program_Site__c
       @request_availability = campaign.Request_Availability__c
       @meeting_times = campaign.Meeting_Times__c
+
+      @sf_campaign_id = campaign.Id
 
       # An SOQL query is the most efficient way to get up-to-date information -
       # it will aggregate the cohorts on the server in a single request.
@@ -130,9 +139,18 @@ class UsersController < ApplicationController
     # to be - canvas - ASAP.
     if current_user.in_lms?
       redirect_to "//#{Rails.application.secrets.canvas_server}/"
+    else
+      prep_confirm_campaign_info
     end
 
-    prep_confirm_campaign_info
+    if current_user.program_attendance_confirmed && @enrollment
+      sf = BeyondZ::Salesforce.new
+      client = sf.get_client
+      client.materialize('CampaignMember')
+      cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(current_user.salesforce_id, @enrollment.campaign_id)
+
+      @waitlisted = cm.Candidate_Status__c == 'Waitlisted'
+    end
 
     # renders a view
   end
@@ -151,29 +169,33 @@ class UsersController < ApplicationController
   end
 
   def save_confirm
+    chosen_time = params[:selected_time] ? params[:selected_time] : params[:times].join(';')
+    waitlisted = params[:selected_time] ? false : true
+
     current_user.program_attendance_confirmed = true
     current_user.save!
-
-    # These are actually filled in by the campaign inside a couple ifs
-    program_title = 'Braven'
-    program_site = ''
 
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
     client.materialize('CampaignMember')
     client.materialize('Contact')
-    cm = SFDC_Models::CampaignMember.find_by_ContactId(current_user.salesforce_id)
+
+    @enrollment = Enrollment.find_by(:user_id => current_user.id)
+
+    client.materialize('Campaign')
+    campaign = SFDC_Models::Campaign.find(@enrollment.campaign_id)
+
+    program_title = campaign.Program_Title__c
+    program_site = campaign.Program_Site__c
+
+    cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(current_user.salesforce_id, @enrollment.campaign_id)
     if cm
-      cm.Candidate_Status__c = params[:selected_time] ? 'Confirmed' : 'Waitlisted'
-      cm.Selected_Timeslot__c = params[:selected_time] ? params[:selected_time] : params[:times].join(';')
+      cm.Candidate_Status__c = waitlisted ? 'Waitlisted' : 'Confirmed'
+      cm.Selected_Timeslot__c = chosen_time
 
-      # Set the section name automatically according to the pattern..
-
-      @enrollment = Enrollment.find_by(:user_id => current_user.id)
-      client.materialize('Campaign')
-      campaign = SFDC_Models::Campaign.find(@enrollment.campaign_id)
-
-      if campaign
+      # We want selected time because this only applies if they actually picked just one,
+      # not several to waitlist.
+      if params[:selected_time]
         name = params[:selected_time]
 
         name = 'Su' if name.match(/sunday/i)
@@ -184,16 +206,18 @@ class UsersController < ApplicationController
         name = 'Fr' if name.match(/friday/i)
         name = 'Sa' if name.match(/saturday/i)
 
-        program_title = campaign.Program_Title__c
-        program_site = campaign.Program_Site__c
-
-        cm.Section_Name_In_LMS__c = "#{campaign.Section_Name_Site_Prefix__c} #{current_user.first_name} (#{name})"
+        if current_user.applicant_type == 'volunteer'
+          # Set the section name automatically according to the pattern..
+          # This is only for coaches. Students are manually mapped to cohorts.
+          cm.Section_Name_In_LMS__c = "#{campaign.Section_Name_Site_Prefix__c} #{current_user.first_name} (#{name})"
+        end
       end
-
-      # Done
 
       cm.Apply_Button_Enabled__c = false
       cm.save
+    else
+      # Just warn me that this assertion failed so I can look into it...
+      StaffNotifications.bug_report(current_user, "Campaign Member not set up.\nSelected timeslot: #{chosen_time}\nWaitlisted: #{waitlist.to_s}\nCampaign: #{@enrollment.campaign_id}").deliver
     end
 
     contact = SFDC_Models::Contact.find(current_user.salesforce_id)
@@ -215,8 +239,17 @@ class UsersController < ApplicationController
     end
 
 
-    # Send a confirmation email too
-    ConfirmationFlow.coach_confirmed(current_user, program_title, program_site, params[:selected_time]).deliver
+    # Send a confirmation email too for confirmed people
+    if !waitlisted
+      case current_user.applicant_type
+        when 'undergrad_student'
+          ConfirmationFlow.student_confirmed(current_user, program_title, program_site, chosen_time).deliver
+        when 'volunteer'
+          ConfirmationFlow.coach_confirmed(current_user, program_title, program_site, chosen_time).deliver
+        else
+          # intentionally blank, see above
+      end
+    end
 
     redirect_to user_confirm_path
   end
@@ -341,7 +374,12 @@ class UsersController < ApplicationController
       return
     end
 
-    @new_user.create_on_salesforce
+    sf_lead_created = @new_user.create_on_salesforce
+    if !sf_lead_created && @new_user.confirmed?
+      # If we didn't create a new Lead, we need to mark the
+      # existing record as confirmed here to sync up the data.
+      @new_user.confirm_on_salesforce
+    end
 
     if @new_user.salesforce_campaign_id
       # FIXME: hack, this auto-signs in users that are mapped to active campaign since we skip confirmation

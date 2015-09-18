@@ -244,7 +244,7 @@ module BeyondZ
       open_canvas_http
 
       request = Net::HTTP::Get.new(
-        "/api/v1/courses/#{course_id}/enrollments?access_token=#{Rails.application.secrets.canvas_access_token}"
+        "/api/v1/courses/#{course_id}/enrollments?per_page=100&access_token=#{Rails.application.secrets.canvas_access_token}"
       )
       response = @canvas_http.request(request)
       info = nil

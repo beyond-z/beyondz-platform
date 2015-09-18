@@ -26,4 +26,11 @@ class StaffNotifications < ActionMailer::Base
     # deletions, it will need some kind of database sync to fix
     mail(to: 'tech@beyondz.org', subject: 'LMS User Mismatch')
   end
+
+  def bug_report(user, bug_info)
+    @user = user
+    @bug_info = bug_info
+
+    mail(to: 'tech@beyondz.org', subject: 'Bug in BZ platform')
+  end
 end

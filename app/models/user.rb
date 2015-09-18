@@ -94,6 +94,26 @@ class User < ActiveRecord::Base
     mapping.first.lead_owner
   end
 
+  # Salesforce IDs are a bit weird because they come in both 15 character
+  # and 18 character versions. Both these are supposed to be identical, and
+  # the extra chars are just provided to account for database collations that
+  # are case insensitive for the 15 char version.
+  #
+  # Our database is case-sensitive, so we don't need those final three chars,
+  # and they can be wrong - the manual URLs always give the 15 char version but
+  # the api gives the 18 char version. We need our lookup to treat them both the
+  # same. Thankfully, the 18 char version has the same first 15 chars, so we can
+  # simply truncate it. We want to truncate both what is given and what is in the
+  # database to ensure we look up the right record.
+  #
+  # The default find_by_salesforce_id doesn't do that, but we can redefine it and
+  # get correct results for this special field.
+  #
+  # It is 16 in here because the end thing is not inclusive in the substr function.
+  def self.find_by_salesforce_id(sid)
+    where('substr(salesforce_id, 0, 16) = substr(?, 0, 16)', [sid]).first
+  end
+
   # We allow empty passwords for certain account types
   # so this enforces that. Otherwise, fall back on devise's
   # default validation for the password.
@@ -114,6 +134,8 @@ class User < ActiveRecord::Base
     end
   end
 
+  # Returns true if a new Lead was created, returns false
+  # if it found an existing contact to reuse. Throws on error.
   def create_on_salesforce
     salesforce = BeyondZ::Salesforce.new
     client = salesforce.get_client
@@ -223,6 +245,8 @@ class User < ActiveRecord::Base
       contact['BZ_Region__c'] = ''
     end
 
+    lead_created = false
+
     # The Lead class provided by the gem is buggy so we do it with this call instead
     # which is what Lead.save calls anyway
     unless self.salesforce_id
@@ -233,26 +257,60 @@ class User < ActiveRecord::Base
       contact = client.create('Lead', contact)
 
       self.salesforce_id = contact['Id']
+
+      lead_created = true
     else
       # And if salesforce_id is set already, we found an existing Contact,
       # so we update that record instead
 
       client.update('Contact', self.salesforce_id, contact)
+      lead_created = false
     end
 
     save!
+
+    lead_created
   end
 
   def confirm_on_salesforce
     salesforce = BeyondZ::Salesforce.new
     client = salesforce.get_client
     client.materialize('Lead')
-    lead = SFDC_Models::Lead.find(salesforce_id)
-    if lead
+    begin
+      lead = SFDC_Models::Lead.find(salesforce_id)
       lead.Account_Activated__c = true
       lead.save
+    rescue Databasedotcom::SalesForceError
+      # Failure is OK, it just means they were already converted to a contact
+      #
+      # We should then go ahead and kick off the post-conversion steps by
+      # adding to the salesforce campaign
+
+      auto_add_to_salesforce_campaign
     end
   end
+
+  def auto_add_to_salesforce_campaign
+    # We may also need to add them to a campaign if certain things
+    # are right.
+    cm = {}
+    cm['CampaignId'] = salesforce_campaign_id
+
+    if cm['CampaignId']
+      # Can't use client.materialize because it sets the checkboxes to nil
+      # instead of false which fails server-side validation. This method
+      # works though.
+      sf = BeyondZ::Salesforce.new
+      client = sf.get_client
+      cm['ContactId'] = salesforce_id
+      client.create('CampaignMember', cm)
+    end
+
+    # The apply now enabled *should* be set by the SF triggers
+    # but we might want to do it here now anyway to give faster
+    # response to the user.
+  end
+
 
   def salesforce_applicant_type
     case applicant_type

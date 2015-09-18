@@ -34,24 +34,7 @@ class SalesforceController < ApplicationController
           u.salesforce_id = parts[1]
           u.save!
 
-          # We may also need to add them to a campaign if certain things
-          # are right.
-          cm = {}
-          cm['CampaignId'] = u.salesforce_campaign_id
-
-          if cm['CampaignId']
-            # Can't use client.materialize because it sets the checkboxes to nil
-            # instead of false which fails server-side validation. This method
-            # works though.
-            sf = BeyondZ::Salesforce.new
-            client = sf.get_client
-            cm['ContactId'] = u.salesforce_id
-            client.create('CampaignMember', cm)
-          end
-
-          # The apply now enabled *should* be set by the SF triggers
-          # but we might want to do it here now anyway to give faster
-          # response to the user.
+          u.auto_add_to_salesforce_campaign
         end
       end
     end
