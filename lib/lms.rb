@@ -32,7 +32,7 @@ module BeyondZ
         'communication_channel[address]' => user.email,
         'communication_channel[skip_confirmation]' => true,
         'communication_channel[confirmation_url]' => true,
-        'pseudonym[sis_user_id]' => "#{user.id}-#{user_student_id}"
+        'pseudonym[sis_user_id]' => "BVID#{user.id}-SISID#{user_student_id}"
       )
       response = @canvas_http.request(request)
 
