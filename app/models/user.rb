@@ -47,8 +47,8 @@ class User < ActiveRecord::Base
          :cas_authenticatable
 
   has_one :enrollment, dependent: :destroy
+  has_many :tasks, dependent: :destroy
   has_many :assignments, dependent: :destroy
-  has_many :tasks
 
   has_many :coach_students, foreign_key: :coach_id
   has_many :students, through: :coach_students, :source => :student
