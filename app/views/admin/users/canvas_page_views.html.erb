@@ -1,0 +1,8 @@
+<form method="GET" action="<%= admin_get_canvas_page_views_path(format: 'csv') %>">
+  <p>Please be patient, this may take a couple minutes to generate and download.</p>
+  <label>Course ID: 
+    <input type="text" name="course_id" value="11" />
+  </label>
+  <br />
+  <input type="submit" value="Download spreadsheet" />
+</form>

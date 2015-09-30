@@ -63,6 +63,9 @@ BeyondzPlatform::Application.routes.draw do
   namespace :admin do
     root "home#index"
 
+    get '/users/canvas_page_views', to: 'users#canvas_page_views', as: 'canvas_page_views'
+    get '/users/get_canvas_page_views', to: 'users#get_canvas_page_views', as: 'get_canvas_page_views'
+
     get '/users/csv_import', to: 'users#csv_import', as: 'csv_import'
     post '/users/csv_import', to: 'users#do_csv_import'
 

@@ -1,3 +1,5 @@
+require 'csv'
+
 module BeyondZ
   # This communicates with the Canvas LMS through its REST API
   # allowing interoperation between it and our own system.
@@ -290,6 +292,95 @@ module BeyondZ
       end
 
       section_info[section_name]
+    end
+
+    def get_page_data(course_id, user_id = nil)
+      open_canvas_http
+
+      request = Net::HTTP::Get.new(
+        "/api/v1/courses/#{course_id}/analytics/#{user_id.nil? ? '' : "users/#{user_id}/"}activity?per_page=100&access_token=#{Rails.application.secrets.canvas_access_token}"
+      )
+      response = @canvas_http.request(request)
+      info = get_all_from_pagination(response)
+
+      info
+    end
+
+    def get_user_data_spreadsheet(course_id)
+      enrollments = get_course_enrollments(course_id)
+
+      totals = {}
+
+      a = 0
+
+      got = {}
+
+      enrollments.map! do |enrollment|
+        # We want to pull users only once, even if they are enrolled in the
+        # course multiple times (such as in different sections)
+        if got[enrollment['user_id']]
+          next
+        end
+
+        got[enrollment['user_id']] = true
+
+        data = get_page_data(course_id, enrollment['user_id'])
+        data = data['page_views']
+        enrollment['page_data'] = data
+
+        if enrollment['page_data']
+          enrollment['page_data'].each do |k, v|
+            totals[k] = 0 if totals[k].nil?
+            totals[k] += v
+          end
+        end
+
+        enrollment
+      end
+
+      CSV.generate do |csv|
+        header = []
+        header << 'User Canvas ID'
+        header << 'User Name'
+        header << 'User Email'
+        totals.keys.sort.each do |k|
+          header << k
+        end
+
+        csv << header
+
+        enrollments.each do |enrollment|
+          if enrollment.nil? || enrollment['user'].nil?
+            next
+          end
+          row = []
+          row << enrollment['user']['id']
+          row << enrollment['user']['name']
+          row << enrollment['user']['login_id']
+
+          totals.keys.sort.each do |k|
+            if enrollment['page_data'] && enrollment['page_data'][k]
+              row << (enrollment['page_data'][k])
+            else
+              row << 0
+            end
+          end
+
+          csv << row
+        end
+
+        row = []
+        row << ''
+        row << 'Total'
+        row << ''
+
+        totals.keys.sort.each do |k|
+          row << totals[k]
+        end
+
+        csv << row
+
+      end
     end
 
     private
