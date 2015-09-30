@@ -26,9 +26,13 @@ class Admin::UsersController < Admin::ApplicationController
   end
 
   def canvas_page_views
+    # render a simple view
+  end
+
+  def get_canvas_page_views
     initialize_lms_interop
     respond_to do |format|
-      format.csv { render text: @lms.get_user_data_spreadsheet(11) } # BZ course, later we can add some UI to tis
+      format.csv { render text: @lms.get_user_data_spreadsheet(params[:course_id]) }
     end
   end
 
