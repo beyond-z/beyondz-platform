@@ -309,6 +309,13 @@ module BeyondZ
     def get_user_data_spreadsheet(course_id)
       enrollments = get_course_enrollments(course_id)
 
+      read_sections(course_id)
+
+      # We want the ID map instead of the name map since we're
+      # pulling info that way from Canvas instead of populating
+      # Canvas like we are in the rest of the file.
+      section_info_by_id = @section_info_by_id[course_id]
+
       totals = {}
 
       a = 0
@@ -328,6 +335,13 @@ module BeyondZ
         data = data['page_views']
         enrollment['page_data'] = data
 
+        cohort = ''
+        if enrollment['course_section_id'] && section_info_by_id[enrollment['course_section_id']]
+          cohort = section_info_by_id[enrollment['course_section_id']]['name']
+        end
+
+        enrollment['cohort'] = cohort
+
         if enrollment['page_data']
           enrollment['page_data'].each do |k, v|
             totals[k] = 0 if totals[k].nil?
@@ -343,6 +357,7 @@ module BeyondZ
         header << 'User Canvas ID'
         header << 'User Name'
         header << 'User Email'
+        header << 'Cohort'
         totals.keys.sort.each do |k|
           header << k
         end
@@ -357,6 +372,7 @@ module BeyondZ
           row << enrollment['user']['id']
           row << enrollment['user']['name']
           row << enrollment['user']['login_id']
+          row << enrollment['cohort']
 
           totals.keys.sort.each do |k|
             if enrollment['page_data'] && enrollment['page_data'][k]
@@ -388,10 +404,12 @@ module BeyondZ
     def read_sections(course_id)
       if @section_info.nil?
         @section_info = {}
+        @section_info_by_id = {}
       end
 
       if @section_info[course_id].nil?
         @section_info[course_id] = {}
+        @section_info_by_id[course_id] = {}
 
         open_canvas_http
 
@@ -403,6 +421,7 @@ module BeyondZ
 
         info.each do |section|
           @section_info[course_id][section['name']] = section
+          @section_info_by_id[course_id][section['id']] = section
         end
       end
 
