@@ -47,7 +47,7 @@ class SalesforceController < ApplicationController
       cid = params[:contactId]
       new_campaign = params[:campaignId]
       reset = params[:reset]
-      u = User.find_by_salesforce_id(parts[0])
+      u = User.find_by_salesforce_id(cid)
       if u
         existing_enrollment = Enrollment.find_by(:user_id => u.id)
         if existing_enrollment
