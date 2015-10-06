@@ -42,6 +42,46 @@ class SalesforceController < ApplicationController
     render plain: 'OK'
   end
 
+  def change_campaigns
+    if check_magic_token
+        cid = params[:contactId]
+        new_campaign = params[:campaignId]
+        reset = params[:reset]
+        u = User.find_by_salesforce_id(parts[0])
+        if u
+          existing_enrollment = Enrollment.find_by(:user_id => u.id)
+          if existing_enrollment
+            existing_enrollment.campaign_id = new_campaign
+            if reset
+              # We want to allow them to update and re-submit the app
+              # so we will unsubmit but keep their data in place.
+              existing_enrollment.explicitly_submitted = false
+            end
+            # It may be in-progress, so we don't want to validate it
+            # at this time, just update the one piece of inf.
+            existing_enrollment.save(validate: false)
+            # Note: this assumes the old and new campaigns are both the same
+            # type, for example, student or LC. If they want to change tracks
+            # entirely, we will need to  have them start an all-new application.
+          end
+
+          if reset
+            # This should reset the user so they can basically start fresh
+            # Above, we unsubmitted the app. Here, we want to unconfirm too
+            u.program_attendance_confirmed = false
+
+            u.save
+            # Note that other variables are changed on the Salesforce side
+            # which can update us through triggers too
+          end
+        end
+      end
+    end
+
+    render plain: 'OK'
+  end
+
+
   def sync_to_lms
     if check_magic_token
       sf = BeyondZ::Salesforce.new

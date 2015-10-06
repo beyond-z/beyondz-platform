@@ -30,6 +30,7 @@ BeyondzPlatform::Application.routes.draw do
   get '/salesforce/change_apply_now', to: 'salesforce#change_apply_now'
   get '/salesforce/record_converted_leads', to: 'salesforce#record_converted_leads'
   get '/salesforce/sync_to_lms', to: 'salesforce#sync_to_lms'
+  get '/salesforce/change_campaigns', to: 'salesforce#change_campaigns'
 
   resources :feedback
   resources :comments
