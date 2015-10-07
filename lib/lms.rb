@@ -1,3 +1,5 @@
+require 'csv'
+
 module BeyondZ
   # This communicates with the Canvas LMS through its REST API
   # allowing interoperation between it and our own system.
@@ -32,7 +34,7 @@ module BeyondZ
         'communication_channel[address]' => user.email,
         'communication_channel[skip_confirmation]' => true,
         'communication_channel[confirmation_url]' => true,
-        'pseudonym[sis_user_id]' => user_student_id
+        'pseudonym[sis_user_id]' => "BVID#{user.id}-SISID#{user_student_id}"
       )
       response = @canvas_http.request(request)
 
@@ -292,15 +294,122 @@ module BeyondZ
       section_info[section_name]
     end
 
+    def get_page_data(course_id, user_id = nil)
+      open_canvas_http
+
+      request = Net::HTTP::Get.new(
+        "/api/v1/courses/#{course_id}/analytics/#{user_id.nil? ? '' : "users/#{user_id}/"}activity?per_page=100&access_token=#{Rails.application.secrets.canvas_access_token}"
+      )
+      response = @canvas_http.request(request)
+      info = get_all_from_pagination(response)
+
+      info
+    end
+
+    def get_user_data_spreadsheet(course_id)
+      enrollments = get_course_enrollments(course_id)
+
+      read_sections(course_id)
+
+      # We want the ID map instead of the name map since we're
+      # pulling info that way from Canvas instead of populating
+      # Canvas like we are in the rest of the file.
+      section_info_by_id = @section_info_by_id[course_id]
+
+      totals = {}
+
+      a = 0
+
+      got = {}
+
+      enrollments.map! do |enrollment|
+        # We want to pull users only once, even if they are enrolled in the
+        # course multiple times (such as in different sections)
+        if got[enrollment['user_id']]
+          next
+        end
+
+        got[enrollment['user_id']] = true
+
+        data = get_page_data(course_id, enrollment['user_id'])
+        data = data['page_views']
+        enrollment['page_data'] = data
+
+        cohort = ''
+        if enrollment['course_section_id'] && section_info_by_id[enrollment['course_section_id']]
+          cohort = section_info_by_id[enrollment['course_section_id']]['name']
+        end
+
+        enrollment['cohort'] = cohort
+
+        if enrollment['page_data']
+          enrollment['page_data'].each do |k, v|
+            totals[k] = 0 if totals[k].nil?
+            totals[k] += v
+          end
+        end
+
+        enrollment
+      end
+
+      CSV.generate do |csv|
+        header = []
+        header << 'User Canvas ID'
+        header << 'User Name'
+        header << 'User Email'
+        header << 'Cohort'
+        totals.keys.sort.each do |k|
+          header << k
+        end
+
+        csv << header
+
+        enrollments.each do |enrollment|
+          if enrollment.nil? || enrollment['user'].nil?
+            next
+          end
+          row = []
+          row << enrollment['user']['id']
+          row << enrollment['user']['name']
+          row << enrollment['user']['login_id']
+          row << enrollment['cohort']
+
+          totals.keys.sort.each do |k|
+            if enrollment['page_data'] && enrollment['page_data'][k]
+              row << (enrollment['page_data'][k])
+            else
+              row << 0
+            end
+          end
+
+          csv << row
+        end
+
+        row = []
+        row << ''
+        row << 'Total'
+        row << ''
+
+        totals.keys.sort.each do |k|
+          row << totals[k]
+        end
+
+        csv << row
+
+      end
+    end
+
     private
 
     def read_sections(course_id)
       if @section_info.nil?
         @section_info = {}
+        @section_info_by_id = {}
       end
 
       if @section_info[course_id].nil?
         @section_info[course_id] = {}
+        @section_info_by_id[course_id] = {}
 
         open_canvas_http
 
@@ -312,6 +421,7 @@ module BeyondZ
 
         info.each do |section|
           @section_info[course_id][section['name']] = section
+          @section_info_by_id[course_id][section['id']] = section
         end
       end
 

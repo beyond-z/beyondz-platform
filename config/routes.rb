@@ -30,6 +30,7 @@ BeyondzPlatform::Application.routes.draw do
   get '/salesforce/change_apply_now', to: 'salesforce#change_apply_now'
   get '/salesforce/record_converted_leads', to: 'salesforce#record_converted_leads'
   get '/salesforce/sync_to_lms', to: 'salesforce#sync_to_lms'
+  get '/salesforce/change_campaigns', to: 'salesforce#change_campaigns'
 
   resources :feedback
   resources :comments
@@ -62,6 +63,9 @@ BeyondzPlatform::Application.routes.draw do
 
   namespace :admin do
     root "home#index"
+
+    get '/users/canvas_page_views', to: 'users#canvas_page_views', as: 'canvas_page_views'
+    get '/users/get_canvas_page_views', to: 'users#get_canvas_page_views', as: 'get_canvas_page_views'
 
     get '/users/csv_import', to: 'users#csv_import', as: 'csv_import'
     post '/users/csv_import', to: 'users#do_csv_import'

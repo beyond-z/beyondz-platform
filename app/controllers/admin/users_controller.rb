@@ -25,6 +25,17 @@ class Admin::UsersController < Admin::ApplicationController
     end
   end
 
+  def canvas_page_views
+    # render a simple view
+  end
+
+  def get_canvas_page_views
+    initialize_lms_interop
+    respond_to do |format|
+      format.csv { render text: @lms.get_user_data_spreadsheet(params[:course_id]) }
+    end
+  end
+
   # It should change to Lead_owner, applicant_type, university_name, bz_region
   # and allow blanks on them.
   def csv_lead_owner_export
