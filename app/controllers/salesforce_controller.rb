@@ -70,6 +70,13 @@ class SalesforceController < ApplicationController
           # Above, we unsubmitted the app. Here, we want to unconfirm too
           u.program_attendance_confirmed = false
 
+          # We also want to enable the apply now button again so they can
+          # go in and resubmit immediately. The Salesforce trigger doesn't do
+          # this because we are inserting into a new campaign rather than updating
+          # an existing one, and we wouldn't be resetting if we didn't want to let
+          # them resubmit, so it is safe to do this.
+          u.apply_now_enabled = true
+
           u.save
           # Note that other variables are changed on the Salesforce side
           # which can update us through triggers too
