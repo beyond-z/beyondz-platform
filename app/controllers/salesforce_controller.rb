@@ -70,6 +70,10 @@ class SalesforceController < ApplicationController
           # Above, we unsubmitted the app. Here, we want to unconfirm too
           u.program_attendance_confirmed = false
 
+          # We also want to disconnect them from Canvas so they can reapply. When we
+          # resync, it will find their existing account and reconnect them at that time.
+          u.canvas_user_id = nil
+
           u.save
           # Note that other variables are changed on the Salesforce side
           # which can update us through triggers too
