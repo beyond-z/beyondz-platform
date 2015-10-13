@@ -3,6 +3,8 @@
 module SFDC_Models
 end
 
+require "google/api_client"
+
 # I'm monkeypatching the databasedotcom gem to fix a major bug
 Databasedotcom::Client.class_eval do
   # This method is copy/pasted from the gem source with one
@@ -64,6 +66,61 @@ module BeyondZ
         :username => Rails.application.secrets.salesforce_username,
         :password => "#{Rails.application.secrets.salesforce_password}#{Rails.application.secrets.salesforce_security_token}"
       )
+    end
+
+    def run_report(report_id)
+      client = get_client
+      info = client.http_get("/services/data/v29.0/analytics/reports/#{report_id}?includeDetails=true")
+      info = JSON.parse(info.body)
+
+      # App:
+      #  225953769019-dknslqms22l6tmapmk48d83jndoos9t8.apps.googleusercontent.com 
+      #  y2oLQ0F3dN83x2UrqLkMR8ew 
+      # User:
+      #  refresh_token: 1/qhB2G_ufJcVL2lOWuIB9hcskIYmlXJo8RU35Ba_rbmI
+
+      client = Google::APIClient.new({ :application_name => 'Braven', :application_version => '1.0.0' })
+      auth = client.authorization
+      auth.client_id = '225953769019-dknslqms22l6tmapmk48d83jndoos9t8.apps.googleusercontent.com'
+      auth.client_secret = 'y2oLQ0F3dN83x2UrqLkMR8ew'
+      auth.refresh_token = '1/qhB2G_ufJcVL2lOWuIB9hcskIYmlXJo8RU35Ba_rbmI'
+
+      auth.fetch_access_token!
+      session = GoogleDrive.login_with_oauth(auth.access_token)
+
+      sheet = session.spreadsheet_by_key('1o7xw027aHE_jdTSs58ByWTYuGVd2-9ml8lVHMJUL7Lo')
+
+      ws = sheet.worksheets[5] # a new sheet at the end...
+
+      row = 1
+      col = 1
+
+      info['reportMetadata']['detailColumns'].each do |column|
+        ws[row, col] = column
+        col += 1
+      end
+
+      col = 1
+      row += 1
+
+      info['groupingsDown']['groupings'].each do |grouping|
+         ws[row, 1] = grouping['label']
+         row += 1
+
+         source_section = info['factMap']["#{grouping['key']}!T"]
+
+         source_section['rows'].each do |source_row|
+          col = 1
+          source_row['dataCells'].each do |source_cell|
+            ws[row, col] = source_cell['value']
+            col += 1
+          end
+          row += 1
+        end
+      end
+
+      ws.save
+
     end
 
     def get_cached_value(key, max_age = 8.hours)
