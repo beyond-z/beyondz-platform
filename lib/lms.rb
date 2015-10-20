@@ -7,6 +7,14 @@ module BeyondZ
 
     public
 
+    def get_due_dates
+
+    end
+
+    def set_due_dates
+
+    end
+
     # Creates a user in canvas based on the passed user
     # storing the new canvas user id in the object.
     #
