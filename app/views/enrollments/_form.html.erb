@@ -363,10 +363,10 @@
         <div class="section-container">
           <section>
             <div id="form-personal-bkg">
-              <h2 class="coach student">Personal Background * </h2>
+              <h2 class="coach student">Personal Background &dagger; </h2>
               <p class="help">We strive to ensure our community is diverse. Please respond to the following questions about your background, identity and experiences to the extent you feel comfortable.</p>
               <p class="help">All questions in this section are <b>optional</b> and have no bearing on our selection decisions.</p>
-              <h5>Which race(s)/ethnicity(-ies) do you identify with (check all that apply) * :</h5>
+              <h5>Which race(s)/ethnicity(-ies) do you identify with (check all that apply) &dagger; :</h5>
               <div class="form-group">
                 <label class="checkbox"><%= f.check_box :bkg_african_americanblack, 'value' => 'african-americanblack', 'id' => 'bkg_african-americanblack' %>African American/Black</label>
                 <label class="checkbox"><%= f.check_box :bkg_asian_american, 'value' => 'asian-american', 'id' => 'bkg_asian-american' %>Asian American</label>
@@ -380,7 +380,7 @@
                 <div><input type="checkbox" id="bkg-other" /> Other: <%= f.text_field :bkg_other, :onfocus => 'document.getElementById("bkg-other").checked = true;', :maxlength => 40 %></div>
               </div>
               <div class="form-group" style="margin-top: 30px; margin-bottom: 30px;">
-                <h5>Please check any of the following statements that you identify with * :</h3>
+                <h5>Please check any of the following statements that you identify with &dagger; :</h3>
                 <label class="checkbox">
                   <%= f.check_box :identify_poc %>
                   I identify as a person of color</label>
@@ -400,7 +400,7 @@
                   I am an international student studying abroad in the United States for only one semester.</label>
               </div>
               <div class="form-group" style="margin-top: 30px; margin-bottom: 30px;">
-                <h5>What is your gender identity? * </h3>
+                <h5>What is your gender identity? &dagger; </h3>
 
                 <label class="radio"><input type="radio" name="enrollment[gender_identity]" value="male" <%= (@enrollment.gender_identity == 'male') ? 'checked' : '' %> /> Male</label>
                 <label class="radio"><input type="radio" name="enrollment[gender_identity]" value="female" <%= (@enrollment.gender_identity == 'female') ? 'checked' : '' %> /> Female</label>
@@ -408,7 +408,7 @@
 
               </div>
               <div class="form-group">
-                <p>* Please note that the information from these 3 questions is used to gather statistical data on candidates and applicants and will not be used or shared in any other way.</p>
+                <p>&dagger; Please note that the information from these 3 questions is used to gather statistical data on candidates and applicants and will not be used or shared in any other way.</p>
               </div>
               <div class="form-group">
                 <label>What city do you identify as your hometown?</label>
