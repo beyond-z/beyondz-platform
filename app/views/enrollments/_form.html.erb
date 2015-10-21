@@ -363,9 +363,9 @@
         <div class="section-container">
           <section>
             <div id="form-personal-bkg">
-              <h2 class="coach student">Personal Background <sup>&dagger;</sup> </h2>
-              <p class="help">We strive to ensure our community is diverse. Please respond to the following questions about your background, identity and experiences to the extent you feel comfortable.</p>
-              <p class="help">All questions in this section are <b>optional</b> and have no bearing on our selection decisions.</p>
+              <h2 class="coach student">Personal Background</h2>
+              <p class="help">We strive to ensure our community is diverse. Please respond to the following questions about your background, identity and experiences to the extent you feel comfortable.<br />
+              All questions in this section are <b>optional</b> and have no bearing on our selection decisions.</p>
               <h5>Which race(s)/ethnicity(-ies) do you identify with (check all that apply) <sup>&dagger;</sup> :</h5>
               <div class="form-group">
                 <label class="checkbox"><%= f.check_box :bkg_african_americanblack, 'value' => 'african-americanblack', 'id' => 'bkg_african-americanblack' %>African American/Black</label>
@@ -404,11 +404,8 @@
 
                 <label class="radio"><input type="radio" name="enrollment[gender_identity]" value="male" <%= (@enrollment.gender_identity == 'male') ? 'checked' : '' %> /> Male</label>
                 <label class="radio"><input type="radio" name="enrollment[gender_identity]" value="female" <%= (@enrollment.gender_identity == 'female') ? 'checked' : '' %> /> Female</label>
-                <label class="radio"><input type="radio" name="enrollment[gender_identity]" value="other"  <%= (@enrollment.gender_identity != 'male' && @enrollment.gender_identity != 'female') ? 'checked' : '' %> /> Other: <input type="text" maxlength="80" name="other_gender_identity" value="<%= (@enrollment.gender_identity != 'male' && @enrollment.gender_identity != 'female') ? @enrollment.gender_identity : '' %>"></label>
+                <label class="radio"><input type="radio" name="enrollment[gender_identity]" value="other"  <%= (@enrollment.gender_identity && @enrollment.gender_identity != 'male' && @enrollment.gender_identity != 'female') ? 'checked' : '' %> /> Other: <input type="text" maxlength="80" name="other_gender_identity" value="<%= (@enrollment.gender_identity != 'male' && @enrollment.gender_identity != 'female') ? @enrollment.gender_identity : '' %>"></label>
 
-              </div>
-              <div class="form-group">
-                <p>&dagger; Please note that the information from these 3 questions is used to gather statistical data on candidates and applicants and will not be used or shared in any other way.</p>
               </div>
               <div class="form-group">
                 <label>What city do you identify as your hometown?</label>
@@ -417,6 +414,10 @@
               <div class="form-group">
                 <label>What languages other than English do you speak fluently, if any?</label>
                 <%= f.text_field :languages, 'class' => 'form-control', 'type' => 'text', 'placeholder' => 'Example: Spanish, Cantonese' %>
+              </div>
+
+              <div class="form-group">
+                <p>&dagger; Please note that the information from these questions is used to gather statistical data on candidates and applicants and will not be used or shared in any other way.</p>
               </div>
             </div>
             <!-- #form-personal-bkg --> 

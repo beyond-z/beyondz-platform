@@ -169,7 +169,7 @@ class EnrollmentsController < ApplicationController
     @enrollment.meeting_times = '' # need to clear out because if none are checked, the next line never runs
     @enrollment.meeting_times = params[:meeting_times].join(';') if params[:meeting_times]
 
-    if params[:user][:gender_identity] != 'male' && params[:user][:gender_identity] != 'female' && params[:other_gender_identity]
+    if params[:enrollment][:gender_identity] != 'male' && params[:enrollment][:gender_identity] != 'female' && params[:other_gender_identity]
       @enrollment.gender_identity = params[:other_gender_identity]
     end
 
