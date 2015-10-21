@@ -169,6 +169,10 @@ class EnrollmentsController < ApplicationController
     @enrollment.meeting_times = '' # need to clear out because if none are checked, the next line never runs
     @enrollment.meeting_times = params[:meeting_times].join(';') if params[:meeting_times]
 
+    if params[:enrollment][:gender_identity] != 'male' && params[:enrollment][:gender_identity] != 'female' && params[:other_gender_identity]
+      @enrollment.gender_identity = params[:other_gender_identity]
+    end
+
     if params[:meeting_times_required] && (@enrollment.meeting_times.nil? || @enrollment.meeting_times.empty?)
       @enrollment.check_meeting_times = true
     end
@@ -288,7 +292,6 @@ class EnrollmentsController < ApplicationController
     cm.Summer__c = @enrollment.last_summer
     cm.Post_Grad__c = @enrollment.post_graduation_plans
     cm.Why_BZ__c = @enrollment.why_bz
-    cm.Community_Connection__c = @enrollment.community_connection
     cm.Passions_Expertise__c = @enrollment.personal_passion
     cm.Meaningful_Activity__c = @enrollment.meaningful_experience
     cm.Relevant_Experience__c = @enrollment.teaching_experience
@@ -344,6 +347,8 @@ class EnrollmentsController < ApplicationController
     cm.Other_Race__c = @enrollment.bkg_other
     cm.Hometown__c = @enrollment.hometown
     cm.Pell_Grant_Recipient__c = @enrollment.pell_grant
+    cm.Study_Abroad__c = @enrollment.study_abroad
+    cm.Gender_Identity__c = @enrollment.gender_identity
 
     cm.save
   end
