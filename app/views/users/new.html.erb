@@ -7,6 +7,12 @@
             Join Us
           </h1>
 
+          <% if !@hide_other_applicant_types %>
+          <p class="lead">
+          Whether you're interested in participating as a fellow, volunteering as a speaker or coach, or becoming a partner organization, you're in the right place.  
+          </p>
+          <% end %>
+
           <div id="sign-up-form" class="">
             <div class="panel-body">
               <%= form_for :user, url: users_path, role: 'form' do |f| %>

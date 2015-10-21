@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150513173331) do
+ActiveRecord::Schema.define(version: 20151021153015) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -192,6 +192,8 @@ ActiveRecord::Schema.define(version: 20150513173331) do
     t.string   "company"
     t.string   "title"
     t.boolean  "affirm_commit_coach"
+    t.boolean  "study_abroad"
+    t.string   "gender_identity"
   end
 
   add_index "enrollments", ["user_id"], name: "index_enrollments_on_user_id", using: :btree

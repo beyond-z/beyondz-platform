@@ -106,35 +106,6 @@
         </div>
         <!-- .section-container --></div>
 
-      <div class="plank plain-lt student">
-        <div class="section-container">
-          <section>
-            <div id="form-affirmations" class="student">
-              <h2 class="student form-section-header student">Affirmations</h2>
-
-              <div class="form-group student">
-                <label class="checkbox">
-                  <%= f.check_box :will_be_student %>
-                  <span class="bs-wrapper"><span class="control-label">I affirm that I am qualified to participate in <%= @program_title %> as a student in good academic standing enrolled at <%= @program_site %>.</span></span>
-                </label>
-              </div>
-
-              <div class="form-group student">
-                <label class="checkbox">
-                  <%= f.check_box :affirm_qualified %>
-                  <span class="bs-wrapper"><span class="control-label">I affirm to the best of my knowledge that I can fulfill the commitment to attend all required activities and complete all required modules and assignments. This can include: weekly 2-hour group sessions; weekly independent online modules (approx 2 hours, each); weekend events (for exact date(s), please see our website); and individual coaching sessions.</span></span> </label>
-              </div>
-
-              <div class="form-group student">
-                <label class="checkbox">
-                  <%= f.check_box :affirm_commit %>
-                  <span class="bs-wrapper"><span class="control-label">I affirm that, if accepted and enrolled, I commit to participate fully in <%= @program_title %> by coming to all programming prepared to engage in conversations and to support and challenge my peers.</span></span> </label>
-              </div>
-            </div>
-          </section>
-        </div>
-      </div>
-
       <div class="plank plain-lt both coach student">
         <div class="section-container">
           <section>
@@ -190,6 +161,7 @@
                 </div>
 
 
+                <!--
                 <div class="form-group student">
                   <label>If you'd like, feel free to provide us with your high school GPA, SAT, and/or ACT scores:</label>
                   <br />
@@ -197,6 +169,7 @@
                   Overall SAT: <%= f.text_field :sat_score, 'class' => 'form-control short', 'maxlength' => '12' %>
                   Overall ACT: <%= f.text_field :act_score, 'class' => 'form-control short', 'maxlength' => '12' %>
                 </div>
+                -->
 
                 <div class="form-group coach">
                   <label>Graduate school, if any</label>
@@ -234,7 +207,7 @@
                   <%= f.text_field :title, "class"=>'form-control', 'maxlength' => '75' %><br />
               </div>
               <div class="form-group coach student">
-                <label class="student">Please list your significant extracurricular, volunteer, and professional commitments for the upcoming school year (<%= Date.today.year %> - <%= Date.today.year+1 %>).</label>
+                <label class="student">Please list all your extracurricular, volunteer, and professional commitments for the upcoming school year (<%= Date.today.year %> - <%= Date.today.year+1 %>).</label>
                 <label class="coach">Please list any other significant volunteer commitments you've made for the upcoming year (<%= Date.today.year %> - <%= Date.today.year+1 %>), including Board commitments, pro bono work, coaching, and other volunteer roles (recurring or occasional).</label>
                 <p class="help student">Please include approximate hours per month, and if it varies by semester, please note that too. Ex: Student worker at the library, 25 hours/month. Rugby captain, 30 hours/month, fall semester only.</p>
                 <p class="help coach">Please include approximate hours per month, and if it varies by season, please note that too. Ex: AAU girls' coach, 10 hours/week, summer only. Board member, Carver Academy - East, 4 hours/month.</p>
@@ -249,9 +222,9 @@
                 <%= f.text_area :meaningful_experience, 'class' => 'form-control', 'maxlength' => '300' %>
               </div>
 
-              <div class="form-group coach student">
+              <div class="form-group coach">
                 <label class="student">Please provide a link to at least one "digital footprint" (or two if you like!) that will help us understand you better.</label>
-                <label class="coach">Please provide a link to two "digital fingerprints" that will help us understand you better.</label>
+                <label class="coach">Please provide a link to a "digital fingerprint" that will help us understand you better.</label>
                 <p class="help">Good examples include: your LinkedIn profile, an article you wrote, the website of an organization particularly meaningful to you, etc. (Less helpful are links to your Facebook, Instagram, or Twitter accounts.) Please make sure the links are public.<span class="coach"> If you'd prefer to upload a document in lieu of submitting a second link, please click the "Choose File" button below.</span></p>
                 <div class="input-group">
                   <%= f.text_field :online_resume, 'class' => 'form-control medium', 'type' => 'url', 'placeholder' => 'Paste URL here', 'onblur' => 'this.value = this.value.replace(/[^a-zA-Z0-9%\-_\.~:\/\?#\[\]@!\$\'\(\)\*\&\+,;=]/g, ""); if(this.value.length && this.value.indexOf("http") != 0) this.value = "http://"+this.value;' %>
@@ -266,13 +239,16 @@
                 <% end %>
               </div>
               <!-- #form-resume -->
+              <!--
               <div class="form-group student">
                 <label>How will you have spent the summer of <%= Date.today.year %>?</label>
                 <p class="help">Please briefly describe your responsibilities or activities.</p>
                 <%= f.text_area :last_summer, 'class' => 'form-control', 'maxlength' => '150' %>
               </div>
+              -->
              <div class="form-group student">
-                <label><span class="coach">If still in college, w</span><span class="student">W</span>hat do you hope to do post-graduation?</label>
+                <label class="coach">If still in college, what do you hope to do post-graduation?</label>
+                <label class="student">If you had to choose now, what job/profession do you want to pursue after graduation?</label>
                 <p class="help">Even if you aren't quite sure yet, please let us know what you are hoping to do, or options you are seriously considering.</p>
                 <%= f.text_area :post_graduation_plans, 'class' => 'form-control', 'maxlength' => '150' %>
               </div>
@@ -292,7 +268,7 @@
               <p class="help">Please use complete sentences!</p>
 
               <div class="form-group coach student">
-                <label class="student">Why do you want to participate in <%= @program_title %>, accelerating your career and becoming part of a diverse network of leaders?</label>
+                <label class="student">Why do you want to join the <%= @program_title %>?</label>
                 <label class="coach">Why do you want to be a <%= @program_title %> Leadership Coach?</label>
                 <%= f.text_area :why_bz, 'class' => 'form-control', 'maxlength' => '500' %>
               </div>
@@ -417,6 +393,18 @@
                 <label class="checkbox">
                   <%= f.check_box :identify_first_gen %>
                   I identify as a first-generation college student <span class="help"><br />(i.e., I don't have a parent or legal guardian who has completed a four-year degree)</span></label>
+
+                <label class="checkbox">
+                  <%= f.check_box :study_abroad %>
+                  I am an international student studying abroad in the United States for only one semester.</label>
+              </div>
+              <div class="form-group" style="margin-top: 30px; margin-bottom: 30px;">
+                <h5>What is your gender identity?</h3>
+
+                <label class="radio"><input type="radio" name="enrollment[gender_identity]" value="male" <%= (@enrollment.gender_identity == 'male') ? 'checked' : '' %> /> Male</label>
+                <label class="radio"><input type="radio" name="enrollment[gender_identity]" value="female" <%= (@enrollment.gender_identity == 'female') ? 'checked' : '' %> /> Female</label>
+                <label class="radio"><input type="radio" name="enrollment[gender_identity]" value="other"  <%= (@enrollment.gender_identity != 'male' && @enrollment.gender_identity != 'female') ? 'checked' : '' %> /> Other: <input type="text" maxlength="80" name="other_gender_identity" value="<%= (@enrollment.gender_identity != 'male' && @enrollment.gender_identity != 'female') ? @enrollment.gender_identity : '' %>"></label>
+
               </div>
               <div class="form-group">
                 <label>What city do you identify as your hometown?</label>
@@ -490,6 +478,36 @@
           </section>
         </div>
       </div>
+
+      <div class="plank plain-lt student">
+        <div class="section-container">
+          <section>
+            <div id="form-affirmations" class="student">
+              <h2 class="student form-section-header student">Affirmations</h2>
+
+              <div class="form-group student">
+                <label class="checkbox">
+                  <%= f.check_box :will_be_student %>
+                  <span class="bs-wrapper"><span class="control-label">I affirm that I am qualified to participate in <%= @program_title %> as a student in good academic standing enrolled at <%= @program_site %>.</span></span>
+                </label>
+              </div>
+
+              <div class="form-group student">
+                <label class="checkbox">
+                  <%= f.check_box :affirm_qualified %>
+                  <span class="bs-wrapper"><span class="control-label">I affirm to the best of my knowledge that I can fulfill the commitment to attend all required activities and complete all required modules and assignments. This can include: weekly 2-hour group sessions; weekly independent online modules (approx 2 hours, each); weekend events (for exact date(s), please see our website); and individual coaching sessions.</span></span> </label>
+              </div>
+
+              <div class="form-group student">
+                <label class="checkbox">
+                  <%= f.check_box :affirm_commit %>
+                  <span class="bs-wrapper"><span class="control-label">I affirm that, if accepted and enrolled, I commit to participate fully in <%= @program_title %> by coming to all programming prepared to engage in conversations and to support and challenge my peers.</span></span> </label>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
 
       <div class="plank plain-md coach student">
         <div class="section-container">
