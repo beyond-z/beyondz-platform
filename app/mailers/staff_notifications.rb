@@ -33,4 +33,9 @@ class StaffNotifications < ActionMailer::Base
 
     mail(to: 'tech@beyondz.org', subject: 'Bug in BZ platform')
   end
+
+  def canvas_views_ready(email, data)
+    attachments['get_canvas_page_views.csv'] = data
+    mail(to: email, subject: 'Page views spreadsheet', from: 'Braven Website <' + Rails.application.secrets.mailer_from_email + '>')
+  end
 end

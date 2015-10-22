@@ -399,6 +399,10 @@ module BeyondZ
       end
     end
 
+    def email_user_data_spreadsheet(email, course_id)
+      StaffNotifications.canvas_views_ready(email, get_user_data_spreadsheet(course_id)).deliver
+    end
+
     private
 
     def read_sections(course_id)
