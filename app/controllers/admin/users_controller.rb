@@ -31,9 +31,7 @@ class Admin::UsersController < Admin::ApplicationController
 
   def get_canvas_page_views
     initialize_lms_interop
-    respond_to do |format|
-      format.csv { render text: @lms.get_user_data_spreadsheet(params[:course_id]) }
-    end
+    @lms.delay.email_user_data_spreadsheet(params[:email], params[:course_id])
   end
 
   # It should change to Lead_owner, applicant_type, university_name, bz_region
