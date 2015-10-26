@@ -131,7 +131,7 @@ class Admin::AssignmentsController < Admin::ApplicationController
     end
 
     changed.each do |key, value|
-      raise lms.set_due_dates(value).to_s
+      lms.set_due_dates(value)
     end
 
     flash[:message] = 'Changes made, you should double check on Canvas now.'
