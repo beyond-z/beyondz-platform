@@ -1,0 +1,6 @@
+<p>Select a course to get a spreadsheet of its assignments and due dates.</p>
+
+<%= form_for :course do |f| %>
+  <%= f.select :course_id, options_for_select(@courses) %>
+  <%= submit_tag 'Get Assignments' %>
+<% end %>
