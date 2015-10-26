@@ -1,0 +1,12 @@
+<h1>Assignment due date mass updater</h1>
+
+<p>To begin, get a <%= link_to 'spreadsheet export here', admin_get_due_dates_path %>.</p>
+
+<p>Then, edit the due dates and upload the csv here.</p>
+
+<p>Please note: you cannot use this to add a section override. This functionality can ONLY edit due dates for existing columns.</p>
+
+<%= form_for :import, :html => { :multipart => true } do |f| %>
+  <%= f.file_field :csv %>
+  <%= submit_tag 'Upload CSV' %>
+<% end %>
