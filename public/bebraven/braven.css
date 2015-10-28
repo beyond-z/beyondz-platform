@@ -164,6 +164,9 @@ div.nav-menu > ul {
 	position: relative;
 }
 
+.nav-menu .sub-menu li {
+	display: block;
+}
 
 .nav-menu li a {
     display: block;
