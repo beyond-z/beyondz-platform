@@ -88,46 +88,53 @@ class Admin::AssignmentsController < Admin::ApplicationController
 
     changed = {}
 
-    file.each_with_index do |row, index|
-      next if index == 0 # skip the header row
+    begin
+      file.each_with_index do |row, index|
+        next if index == 0 # skip the header row
 
-      assignment_id = row[0]
-      course_id = row[1]
-      due_at = import_date_translation(row[4])
-      override_id = row[5]
+        assignment_id = row[0]
+        course_id = row[1]
+        due_at = import_date_translation(row[4], index)
+        override_id = row[5]
 
-      # find the original object in the preloaded bit
-      assignment = nil
-      assignments.each do |a|
-        if a['id'].to_s == assignment_id.to_s
-          assignment = a
-          break
+        # find the original object in the preloaded bit
+        assignment = nil
+        assignments.each do |a|
+          if a['id'].to_s == assignment_id.to_s
+            assignment = a
+            break
+          end
         end
-      end
 
-      # This should never happen
-      next if assignment.nil?
+        # This should never happen
+        next if assignment.nil?
 
-      if override_id == ''
-        # no override id means act on the main object itself
-        if assignment['due_at'] != due_at
-          assignment['due_at'] = due_at
-          changed[assignment_id] = assignment
-        end
-      else
-        # otherwise, we need to find the override and set it
-        if assignment['overrides']
-          assignment['overrides'].each do |override|
-            if override['id'].to_s == override_id
-              if override['due_at'] != due_at
-                override['due_at'] = due_at
-                changed[assignment_id] = assignment
+        if override_id == ''
+          # no override id means act on the main object itself
+          if assignment['due_at'] != due_at
+            assignment['due_at'] = due_at
+            changed[assignment_id] = assignment
+          end
+        else
+          # otherwise, we need to find the override and set it
+          if assignment['overrides']
+            assignment['overrides'].each do |override|
+              if override['id'].to_s == override_id
+                if override['due_at'] != due_at
+                  override['due_at'] = due_at
+                  changed[assignment_id] = assignment
+                end
+                break
               end
-              break
             end
           end
         end
       end
+    rescue BadDateException => e
+      flash[:error] = "#{e.message} is in the wrong format."
+      flash[:message] = 'Please write dates and times in format YYYY-MM-DD HH:MM ZZZ. For example, "2015-12-25 12:00 EST" means noon in Eastern time on Christmas 2015.'
+      redirect_to admin_set_due_dates_path
+      return
     end
 
     changed.each do |key, value|
@@ -142,12 +149,16 @@ class Admin::AssignmentsController < Admin::ApplicationController
   #
   # So, the string is a date/time in user-friendly format,
   # and it needs to return the full ISO format
-  def import_date_translation(date_string)
+  def import_date_translation(date_string, informational_row)
     if date_string.nil? || date_string.empty?
       return date_string
     end
     # See the format we use below.. includes timezone for user info
-    dt = DateTime.strptime("#{date_string}", '%Y-%m-%d %H:%M %Z')
+    begin
+      dt = DateTime.strptime("#{date_string}", '%Y-%m-%d %H:%M %Z')
+    rescue ArgumentError
+      raise BadDateException, "Row ##{informational_row+1} with date \"#{date_string}\""
+    end
     dt.iso8601
   end
 
@@ -173,4 +184,8 @@ class Admin::AssignmentsController < Admin::ApplicationController
     dt = dt.in_time_zone('America/Los_Angeles')
     dt.strftime('%Y-%m-%d %H:%M %Z')
   end
+end
+
+class BadDateException < Exception
+
 end
