@@ -94,6 +94,7 @@ class Admin::AssignmentsController < Admin::ApplicationController
 
         assignment_id = row[0]
         course_id = row[1]
+        due_at_str = row[4]
         due_at = import_date_translation(row[4], index)
         override_id = row[5]
 
@@ -111,7 +112,14 @@ class Admin::AssignmentsController < Admin::ApplicationController
 
         if override_id == ''
           # no override id means act on the main object itself
-          if assignment['due_at'] != due_at
+          #
+          # It compares what *would* be exported with what the user wrote
+          # on the string level to better check for unchanged rows because
+          # the timezone adjustment can cause the basic comparison to fail
+          # despite them referring to the same thing once saved.
+          # (Basically "9:00 PST" != "12:00 GMT" on this level, so we want
+          #  to convert them both to export format so we know that will match.)
+          if export_date_translation(assignment['due_at']) != due_at_str
             assignment['due_at'] = due_at
             changed[assignment_id] = assignment
           end
@@ -120,7 +128,8 @@ class Admin::AssignmentsController < Admin::ApplicationController
           if assignment['overrides']
             assignment['overrides'].each do |override|
               if override['id'].to_s == override_id
-                if override['due_at'] != due_at
+                # Ditto on the string note as above
+                if export_date_translation(override['due_at']) != due_at_str
                   override['due_at'] = due_at
                   changed[assignment_id] = assignment
                 end
@@ -136,6 +145,8 @@ class Admin::AssignmentsController < Admin::ApplicationController
       redirect_to admin_set_due_dates_path
       return
     end
+
+    raise changed.keys.to_s
 
     changed.each do |key, value|
       lms.set_due_dates(value)
