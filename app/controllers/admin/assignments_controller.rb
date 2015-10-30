@@ -146,8 +146,6 @@ class Admin::AssignmentsController < Admin::ApplicationController
       return
     end
 
-    raise changed.keys.to_s
-
     changed.each do |key, value|
       lms.set_due_dates(value)
     end
