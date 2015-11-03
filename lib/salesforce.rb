@@ -3,6 +3,8 @@
 module SFDC_Models
 end
 
+require "google/api_client"
+
 # I'm monkeypatching the databasedotcom gem to fix a major bug
 Databasedotcom::Client.class_eval do
   # This method is copy/pasted from the gem source with one
@@ -64,6 +66,60 @@ module BeyondZ
         :username => Rails.application.secrets.salesforce_username,
         :password => "#{Rails.application.secrets.salesforce_password}#{Rails.application.secrets.salesforce_security_token}"
       )
+    end
+
+    def run_report(report_id, file_key, worksheet_name)
+      client = get_client
+      info = client.http_get("/services/data/v29.0/analytics/reports/#{report_id}?includeDetails=true")
+      info = JSON.parse(info.body)
+
+      client = Google::APIClient.new({ :application_name => 'Braven', :application_version => '1.0.0' })
+      auth = client.authorization
+      auth.client_id = Rails.application.secrets.google_spreadsheet_client_id
+      auth.client_secret = Rails.application.secrets.google_spreadsheet_client_secret
+      auth.refresh_token = Rails.application.secrets.google_spreadsheet_refresh_token
+
+      auth.fetch_access_token!
+      session = GoogleDrive.login_with_oauth(auth.access_token)
+
+      sheet = session.spreadsheet_by_key(file_key)
+
+      ws = sheet.worksheet_by_title(worksheet_name)
+
+      row = 1
+      col = 1
+
+      info['reportMetadata']['detailColumns'].each do |column|
+        ws[row, col] = column
+        col += 1
+      end
+
+      col = 1
+      row += 1
+
+      info['groupingsDown']['groupings'].each do |grouping|
+         ws[row, 1] = grouping['label']
+         row += 1
+
+         source_section = info['factMap']["#{grouping['key']}!T"]
+
+         source_section['rows'].each do |source_row|
+          col = 1
+          source_row['dataCells'].each do |source_cell|
+            ws[row, col] = source_cell['value']
+            col += 1
+          end
+          row += 1
+        end
+      end
+
+      # Truncate the rest of the sheet so it only has what we just updated
+      # (will remove zombie rows from old updates with more data than this one)
+      ws.max_rows = row
+      ws.max_cols = col
+
+      ws.save
+
     end
 
     def get_cached_value(key, max_age = 8.hours)

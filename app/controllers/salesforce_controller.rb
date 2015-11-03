@@ -4,6 +4,14 @@ require 'lms'
 # Popup windows from SF buttons are still done in the admin area, but triggers notify
 # this controller which will take appropriate action.
 class SalesforceController < ApplicationController
+  def sync_report_to_google_spreadsheet 
+    if check_magic_token 
+      sf = BeyondZ::Salesforce.new 
+      sf.delay.run_report(params[:report_id], params[:file_key], params[:worksheet_name]) 
+    end 
+    render plain: 'OK' 
+  end 
+
   def change_apply_now
     if check_magic_token
       params[:yes_list].split(',').each do |id|
