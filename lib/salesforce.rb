@@ -68,29 +68,23 @@ module BeyondZ
       )
     end
 
-    def run_report(report_id)
+    def run_report(report_id, file_key, worksheet_name)
       client = get_client
       info = client.http_get("/services/data/v29.0/analytics/reports/#{report_id}?includeDetails=true")
       info = JSON.parse(info.body)
 
-      # App:
-      #  225953769019-dknslqms22l6tmapmk48d83jndoos9t8.apps.googleusercontent.com 
-      #  y2oLQ0F3dN83x2UrqLkMR8ew 
-      # User:
-      #  refresh_token: 1/qhB2G_ufJcVL2lOWuIB9hcskIYmlXJo8RU35Ba_rbmI
-
       client = Google::APIClient.new({ :application_name => 'Braven', :application_version => '1.0.0' })
       auth = client.authorization
-      auth.client_id = '225953769019-dknslqms22l6tmapmk48d83jndoos9t8.apps.googleusercontent.com'
-      auth.client_secret = 'y2oLQ0F3dN83x2UrqLkMR8ew'
-      auth.refresh_token = '1/qhB2G_ufJcVL2lOWuIB9hcskIYmlXJo8RU35Ba_rbmI'
+      auth.client_id = Rails.application.secrets.google_spreadsheet_client_id
+      auth.client_secret = Rails.application.secrets.google_spreadsheet_client_secret
+      auth.refresh_token = Rails.application.secrets.google_spreadsheet_refresh_token
 
       auth.fetch_access_token!
       session = GoogleDrive.login_with_oauth(auth.access_token)
 
-      sheet = session.spreadsheet_by_key('1o7xw027aHE_jdTSs58ByWTYuGVd2-9ml8lVHMJUL7Lo')
+      sheet = session.spreadsheet_by_key(file_key)
 
-      ws = sheet.worksheets[5] # a new sheet at the end...
+      ws = sheet.worksheet_by_title(worksheet_name)
 
       row = 1
       col = 1
@@ -118,6 +112,11 @@ module BeyondZ
           row += 1
         end
       end
+
+      # Truncate the rest of the sheet so it only has what we just updated
+      # (will remove zombie rows from old updates with more data than this one)
+      ws.max_rows = row
+      ws.max_cols = col
 
       ws.save
 
