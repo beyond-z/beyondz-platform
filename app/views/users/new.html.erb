@@ -6,9 +6,12 @@
           <h1>
             Join Us
           </h1>
+
+          <% if !@hide_other_applicant_types %>
           <p class="lead">
           Whether you're interested in participating as a fellow, volunteering as a speaker or coach, or becoming a partner organization, you're in the right place.  
           </p>
+          <% end %>
 
           <div id="sign-up-form" class="">
             <div class="panel-body">
@@ -120,7 +123,10 @@
 
 
                 <div class="form-group">
-                  <button type="submit" class="button-primary">Submit</button>
+                  <button type="submit" class="button-primary">
+                    <!-- We check the model campaign id to see if they will be auto-mapped based on query params. If so, next
+                         step is start application, so it says that. Otherwise, generic "submit" is used. -->
+                    <%= (@user.applicant_type == 'volunteer' || @user.applicant_type == 'undergrad_student') ? "Next: Start Application" : "Submit" %></button>
                 </div>
 
               <% end %>

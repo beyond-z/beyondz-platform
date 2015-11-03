@@ -1,8 +1,12 @@
-<form method="GET" action="<%= admin_get_canvas_page_views_path(format: 'csv') %>">
-  <p>Please be patient, this may take a couple minutes to generate and download.</p>
+<form method="GET" action="<%= admin_get_canvas_page_views_path %>">
+  <p>The course ID is the canvas course number. 11 is the accelerator students class. If you go to a course in Canvas, you can find this id in the url right after teh courses/ part.</p>
+  <p>Requesting the spreadsheet will cause it to be emailed to you when the data preparation is finished, which can take several minutes.</p>
   <label>Course ID: 
     <input type="text" name="course_id" value="11" />
   </label>
+  <label>Your email address: 
+    <input type="email" name="email" value="tech@beyondz.org" />
+  </label>
   <br />
-  <input type="submit" value="Download spreadsheet" />
+  <input type="submit" value="Request spreadsheet" />
 </form>

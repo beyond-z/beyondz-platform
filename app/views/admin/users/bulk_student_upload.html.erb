@@ -1,8 +1,9 @@
 <h1>Bulk Student Registration Upload</h1>
 
-<p>This will let you upload student IDs to Salesforce. You still need to Sync to LMS on SF for them to get into Canvas; this just sets the registration codes.</p>
+<p>This will let you set student course sections in bulk in Salesforce.  You still need to Sync to LMS on SF for them to get into Canvas.</p>
+<p>All columns in the spreadsheet are ignored except <em>Email</em>, <em>Received Code (Y/N)?</em>, <em>Enrolled in Class?</em>, and <em>Course section (day/time)</em>.  The rest of the columns are there just to make it easy to use the existing roster to do the upload.  To start creating a spreadsheet from scratch, go into Salesforce and run the <a href="https://na17.salesforce.com/00Oo0000004WwRu">StudentRecruitmentData_forBulkUpload</a> report and export it to Excel. Then add the missing columns and populate the <em>Received Code (Y/N)?</em> and <em>Enrolled in Class?</em> columns for the students you're interested in updating.  Finally, set their <em>Course section (day/time)</em> values appropriately before uploading.</p>
 
-<table class="csv-sample" width="600"><caption>Expected format</caption>
+<table class="sample-csv" width="600"><caption>Expected format</caption>
   <thead><tr>
     <th>Last Name</th><th>First Name</th><th>Anticipated Graduation</th><th>Candidate Status</th><th>Member First Associated Date</th><th>Member Status Update Date</th><th>Email</th><th>Phone</th><th>Student Id</th><th>Registration Code</th><th>Received Code (Y/N)?</th><th>Enrolled in Class?</th><th>Updated in SF?</th><th>Course section (day/time)</th>
   </tr></thead>

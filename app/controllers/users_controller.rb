@@ -301,6 +301,10 @@ class UsersController < ApplicationController
     # if they came directly in
     if request.query_parameters[:user]
       @hide_other_universities = true if request.query_parameters[:user][:university_name]
+
+      # Set so it is available to the model too for subsequent campaign id checks
+      @user.university_name = params[:user][:university_name]
+
       # The Bay Area link on signup needs to precheck... but also show the other regions
       # so the show_regions=true param allows us to achieve that - precheck without hiding.
       @hide_other_regions = true if request.query_parameters[:user][:bz_region] && !params[:show_regions]

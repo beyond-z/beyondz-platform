@@ -9,6 +9,8 @@ gem 'rails', '4.1.11'
 # Use postgresql as the database for Active Record
 gem 'pg'
 
+gem 'delayed_job_active_record'
+
 # group :production do
 # end
 

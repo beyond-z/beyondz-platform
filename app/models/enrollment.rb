@@ -28,10 +28,10 @@ class Enrollment < ActiveRecord::Base
   validates :state, presence: true
 
   validates :birthdate, presence: true, if: "position == 'student'"
-  validates :online_resume, presence: true
-  validates :online_resume2, presence: true, if: "position == 'coach' && !resume.present?"
+  # validates :online_resume, presence: true
+  # validates :online_resume2, presence: true, if: "position == 'coach' && !resume.present?"
   validates :conquered_challenge, presence: true, if: "position == 'student'"
-  validates :last_summer, presence: true, if: "position == 'student'"
+  # validates :last_summer, presence: true, if: "position == 'student'"
   validates :meaningful_experience, presence: true
 
   validates :why_bz, presence: true, if: "position == 'coach'"
