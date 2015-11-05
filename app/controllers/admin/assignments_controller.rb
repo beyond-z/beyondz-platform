@@ -33,7 +33,8 @@ class Admin::AssignmentsController < Admin::ApplicationController
       header << 'Name'
       header << 'Section Name'
       header << 'Due Date'
-      header << 'Override ID (do not change)'
+      header << 'Until'
+      header << 'Override ID (do not change, but leave blank for new section)'
 
       csv << header
 
@@ -44,6 +45,7 @@ class Admin::AssignmentsController < Admin::ApplicationController
         exportable << a['name']
         exportable << ''
         exportable << export_date_translation(a['due_at'])
+        exportable << export_date_translation(a['lock_at'])
         exportable << ''
 
         csv << exportable
@@ -56,6 +58,7 @@ class Admin::AssignmentsController < Admin::ApplicationController
             exportable << a['name']
             exportable << override['title']
             exportable << export_date_translation(override['due_at'])
+            exportable << export_date_translation(override['lock_at'])
             exportable << override['id']
 
             csv << exportable
@@ -94,9 +97,12 @@ class Admin::AssignmentsController < Admin::ApplicationController
 
         assignment_id = row[0]
         course_id = row[1]
+        section_name = row[3]
         due_at_str = row[4]
         due_at = import_date_translation(row[4], index)
-        override_id = row[5]
+        lock_at_str = row[5]
+        lock_at = import_date_translation(row[5], index)
+        override_id = row[6]
 
         # find the original object in the preloaded bit
         assignment = nil
@@ -107,24 +113,58 @@ class Admin::AssignmentsController < Admin::ApplicationController
           end
         end
 
-        # This should never happen
-        next if assignment.nil?
+        if assignment.nil?
+          raise BadAssignmentException, "Row ##{index} has bad Assignment ID #{assignment_id}. Double check it on Canvas."
+        end
 
-        if override_id == ''
-          # no override id means act on the main object itself
-          #
-          # It compares what *would* be exported with what the user wrote
-          # on the string level to better check for unchanged rows because
-          # the timezone adjustment can cause the basic comparison to fail
-          # despite them referring to the same thing once saved.
-          # (Basically "9:00 PST" != "12:00 GMT" on this level, so we want
-          #  to convert them both to export format so we know that will match.)
-          if export_date_translation(assignment['due_at']) != due_at_str
-            assignment['due_at'] = due_at
+        if override_id.nil? || override_id == ''
+          if section_name.nil? || section_name.empty?
+            # no override id and no section name means act on the main object itself
+            #
+            # It compares what *would* be exported with what the user wrote
+            # on the string level to better check for unchanged rows because
+            # the timezone adjustment can cause the basic comparison to fail
+            # despite them referring to the same thing once saved.
+            # (Basically "9:00 PST" != "12:00 GMT" on this level, so we want
+            #  to convert them both to export format so we know that will match.)
+            if export_date_translation(assignment['due_at']) != due_at_str
+              assignment['due_at'] = due_at
+              changed[assignment_id] = assignment
+            end
+            if export_date_translation(assignment['lock_at']) != lock_at_str
+              assignment['lock_at'] = lock_at
+              changed[assignment_id] = assignment
+            end
+          else
+            # Otherwise, an existing section name but no override ID
+            # means we need to create a new override.
+            override = {}
+            section_object = lms.get_section_by_name(course_id, section_name, false)
+            if section_object.nil?
+              raise BadSectionNameException, "Row ##{index} has bad Section Name #{section_name}. Double check it on Canvas. These need to match exactly."
+            end
+            override['course_section_id'] = section_object['id']
+            override['due_at'] = due_at
+            override['lock_at'] = lock_at
+
+            if assignment['overrides'].nil?
+              assignment['overrides'] = []
+            end
+
+            assignment['overrides'].each do |override|
+              if override['title'] == section_name
+                raise DuplicateSectionNameException, "Row ##{index} claims to create a new due date for #{section_name}, but a row already exists for that section. Duplicates are not allowed and will confuse Canvas. The section ID column if you want to edit the existing row ought to be #{override['id']}"
+              end
+            end
+
+
+            assignment['overrides'] << override
             changed[assignment_id] = assignment
           end
         else
           # otherwise, we need to find the override and set it
+          found_override = false
+          found_override_name = ''
           if assignment['overrides']
             assignment['overrides'].each do |override|
               if override['id'].to_s == override_id
@@ -133,15 +173,44 @@ class Admin::AssignmentsController < Admin::ApplicationController
                   override['due_at'] = due_at
                   changed[assignment_id] = assignment
                 end
+                if export_date_translation(override['lock_at']) != lock_at_str
+                  override['lock_at'] = lock_at
+                  changed[assignment_id] = assignment
+                end
+                found_override = true
+                found_override_name = override['title']
                 break
               end
             end
+          end
+
+          if !found_override
+            raise BadSectionNameException, "Row ##{index} claims to edit #{override_id}, but Canvas doesn't think that exists. You might want to re-export and be careful not to exit the override ID column for rows that already exist."
+          end
+          
+          if found_override && found_override_name != section_name
+            raise BadSectionNameException, "Row ##{index} claims to edit #{override_id}, but the spreadsheet listed #{section_name} as the section name, and Canvas thinks it is supposed to be #{found_override_name}. You might have made a mistake copy/pasting an existing row. You want to change the section name, then clear out the override id column for a new row."
           end
         end
       end
     rescue BadDateException => e
       flash[:error] = "#{e.message} is in the wrong format."
       flash[:message] = 'Please write dates and times in format YYYY-MM-DD HH:MM ZZZ. For example, "2015-12-25 12:00 EST" means noon in Eastern time on Christmas 2015.'
+      redirect_to admin_set_due_dates_path
+      return
+    rescue BadAssignmentException => e
+      flash[:error] = "#{e.message}"
+      flash[:message] = 'Go to the assignment you want on Canvas. At the end of the URL there will be a number like /assignments/21. The assignment ID there would be 21.'
+      redirect_to admin_set_due_dates_path
+      return
+    rescue DuplicateSectionNameException => e
+      flash[:error] = "#{e.message}"
+      flash[:message] = 'Make sure each cohort only appears once per assignment. You might want to get a fresh export of the spreadsheet to sync with Canvas and then make your edits on that.'
+      redirect_to admin_set_due_dates_path
+      return
+    rescue BadSectionNameException => e
+      flash[:error] = "#{e.message}"
+      flash[:message] = 'Make sure the cohort name in the row is an exact match. Also double-check the assignment ID and course ID columns. If this is supposed to be a new override, also make sure you remembered to clear out the override ID column too (and if it is supposed to edit an existing one, be sure that value is left the same from the export). Any given section should only appear once per assignment.'
       redirect_to admin_set_due_dates_path
       return
     end
@@ -196,5 +265,17 @@ class Admin::AssignmentsController < Admin::ApplicationController
 end
 
 class BadDateException < Exception
+
+end
+
+class BadAssignmentException < Exception
+
+end
+
+class BadSectionNameException < Exception
+
+end
+
+class DuplicateSectionNameException < Exception
 
 end
