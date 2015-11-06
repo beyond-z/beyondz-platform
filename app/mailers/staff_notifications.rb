@@ -38,4 +38,10 @@ class StaffNotifications < ActionMailer::Base
     attachments['get_canvas_page_views.csv'] = data
     mail(to: email, subject: 'Page views spreadsheet', from: 'Braven Website <' + Rails.application.secrets.mailer_from_email + '>')
   end
+
+  def salesforce_report_ready(email, success, message)
+    @success = success
+    @message = message
+    mail(to: email, subject: 'Salesforce report', from: 'Braven Website <' + Rails.application.secrets.mailer_from_email + '>')
+  end
 end
