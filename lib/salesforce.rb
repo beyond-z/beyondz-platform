@@ -68,6 +68,19 @@ module BeyondZ
       )
     end
 
+    def run_report_and_email_update(report_id, file_key, worksheet_name, email_to_send_update_to)
+      if email_to_send_update_to.nil?
+        email_to_send_update_to = Rails.application.secrets.staff_email
+      end
+
+      begin
+        run_report(report_id, file_key, worksheet_name)
+        StaffNotifications.salesforce_report_ready(email_to_send_update_to, true, 'Success!').deliver
+      rescue Exception => e
+        StaffNotifications.salesforce_report_ready(email_to_send_update_to, false, e.to_s).deliver
+      end
+    end
+
     def run_report(report_id, file_key, worksheet_name)
       client = get_client
       info = client.http_get("/services/data/v29.0/analytics/reports/#{report_id}?includeDetails=true")
@@ -88,35 +101,46 @@ module BeyondZ
 
       row = 1
       col = 1
+      total_cols = 0
+      total_rows = 0
 
       info['reportMetadata']['detailColumns'].each do |column|
         ws[row, col] = column
         col += 1
+        total_cols += 1
       end
 
       col = 1
       row += 1
+      total_rows += 1
 
-      info['groupingsDown']['groupings'].each do |grouping|
-         ws[row, 1] = grouping['label']
-         row += 1
-
-         source_section = info['factMap']["#{grouping['key']}!T"]
-
-         source_section['rows'].each do |source_row|
+      handle_section = lambda do |source_section|
+        return if source_section.nil?
+        source_section['rows'].each do |source_row|
           col = 1
           source_row['dataCells'].each do |source_cell|
-            ws[row, col] = source_cell['value']
+            ws[row, col] = source_cell['label']
             col += 1
           end
           row += 1
+          total_rows += 1
         end
+      end
+
+      handle_section.call(info['factMap']["T!T"])
+
+      info['groupingsDown']['groupings'].each do |grouping|
+        ws[row, 1] = grouping['label']
+        row += 1
+        total_rows += 1
+
+        handle_section.call(info['factMap']["#{grouping['key']}!T"])
       end
 
       # Truncate the rest of the sheet so it only has what we just updated
       # (will remove zombie rows from old updates with more data than this one)
-      ws.max_rows = row
-      ws.max_cols = col
+      ws.max_rows = total_rows
+      ws.max_cols = total_cols
 
       ws.save
 

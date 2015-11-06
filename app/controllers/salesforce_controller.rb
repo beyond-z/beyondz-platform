@@ -7,9 +7,9 @@ class SalesforceController < ApplicationController
   def sync_report_to_google_spreadsheet 
     if check_magic_token 
       sf = BeyondZ::Salesforce.new 
-      sf.delay.run_report(params[:report_id], params[:file_key], params[:worksheet_name]) 
+      sf.delay.run_report_and_email_update(params[:report_id], params[:file_key], params[:worksheet_name], params[:email]) 
     end 
-    render plain: 'OK' 
+    render plain: 'It will run in the background. Check your email in several minutes for a status update.' 
   end 
 
   def change_apply_now

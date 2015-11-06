@@ -1,0 +1,11 @@
+<% if @success %>
+  The salesforce report you asked for ran successfully.
+
+  The google spreadsheet is now updated.
+<% else %>
+  The salesforce report you asked for FAILED.
+
+  Please forward this email to the tech team so we can look at why.
+
+<%= @message %>
+<% end %>
