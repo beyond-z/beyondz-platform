@@ -1,0 +1,16 @@
+<h1>Assignment due date mass updater</h1>
+
+<p>To begin, get a <%= link_to 'spreadsheet export here', admin_get_due_dates_path %>.</p>
+
+<p>Then, edit the due dates and upload the csv here.</p>
+
+<p style="font-weight: bold;">To add a new section override, copy/paste a row for that assignment that already exists to get the first three columns, then change the Section Name to be the cohort name, and clear out the "Override ID" column for the new row.</p>
+
+<p>Note that the times will be exported in Pacific time. You may change this, but since we operate on both coasts, Pacific has the advantage of being the latest one. So if you set an assignment to be due on November 5 at 11:59 PM in Pacific time, it will at least still show as due on November 5 in Eastern time too... just at 8:59pm instead.</p>
+
+<p>Basically just keep both the west and east coasts in mind while making changes.</p>
+
+<%= form_for :import, :html => { :multipart => true } do |f| %>
+  <%= f.file_field :csv %>
+  <%= submit_tag 'Upload CSV' %>
+<% end %>

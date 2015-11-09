@@ -7,6 +7,48 @@ module BeyondZ
 
     public
 
+    def get_assignments(course_id)
+      open_canvas_http
+
+      request = Net::HTTP::Get.new(
+        "/api/v1/courses/#{course_id}/assignments?include=overrides&access_token=#{Rails.application.secrets.canvas_access_token}"
+      )
+      response = @canvas_http.request(request)
+      info = get_all_from_pagination(response)
+
+      info
+    end
+
+    def set_due_dates(assignment_object)
+      open_canvas_http
+
+      request = Net::HTTP::Put.new(
+        "/api/v1/courses/#{assignment_object['course_id']}/assignments/#{assignment_object['id']}",
+        initheader = {'Content-Type' => 'application/json'}
+      )
+      arg = {}
+      arg['access_token'] = Rails.application.secrets.canvas_access_token
+      arg['assignment'] = assignment_object
+      arg['assignment']['assignment_overrides'] = assignment_object['overrides'] # WTF api
+      request.body = arg.to_json
+
+      response = @canvas_http.request(request)
+
+      response
+    end
+
+    def get_courses
+      open_canvas_http
+
+      request = Net::HTTP::Get.new(
+        "/api/v1/courses?access_token=#{Rails.application.secrets.canvas_access_token}"
+      )
+      response = @canvas_http.request(request)
+      info = get_all_from_pagination(response)
+
+      info
+    end
+
     # Creates a user in canvas based on the passed user
     # storing the new canvas user id in the object.
     #

@@ -223,16 +223,16 @@
               </div>
 
               <div class="form-group coach student">
-                <label class="student">Optionally, please provide a link to a "digital footprint" (or two if you like!) that will help us understand you better.</label>
                 <label class="coach">Please provide a link to a "digital fingerprint" that will help us understand you better.</label>
-                <p class="help">Good examples include: your LinkedIn profile, an article you wrote, the website of an organization particularly meaningful to you, etc. (Less helpful are links to your Facebook, Instagram, or Twitter accounts.) Please make sure the links are public.<span class="coach"> If you'd prefer to upload a document in lieu of submitting a second link, please click the "Choose File" button below.</span></p>
-                <div class="input-group">
+                <p class="help coach">Good examples include: your LinkedIn profile, an article you wrote, the website of an organization particularly meaningful to you, etc. (Less helpful are links to your Facebook, Instagram, or Twitter accounts.) Please make sure the links are public.<span class="coach"> If you'd prefer to upload a document in lieu of submitting a second link, please click the "Choose File" button below.</span></p>
+                <div class="input-group coach">
                   <%= f.text_field :online_resume, 'class' => 'form-control medium', 'type' => 'url', 'placeholder' => 'Paste URL here', 'onblur' => 'this.value = this.value.replace(/[^a-zA-Z0-9%\-_\.~:\/\?#\[\]@!\$\'\(\)\*\&\+,;=]/g, ""); if(this.value.length && this.value.indexOf("http") != 0) this.value = "http://"+this.value;' %>
                   <%= f.text_field :online_resume2, 'class' => 'form-control medium', 'type' => 'url', 'placeholder' => 'Paste URL here', 'onblur' => 'this.value = this.value.replace(/[^a-zA-Z0-9%\-_\.~:\/\?#\[\]@!\$\'\(\)\*\&\+,;=]/g, ""); if(this.value.length && this.value.indexOf("http") != 0) this.value = "http://"+this.value;' %>
                 </div>
               </div>
-              <div class="form-group">
-                <label>Or upload a resume as a .doc or .pdf file (2 MB or less)</label>
+              <div class="form-group coach student">
+                <label class="coach">Or upload a resume as a .doc or .pdf file (2 MB or less)</label>
+                <label class="student">Optionally, you may upload a resume as a .doc or .pdf file (2 MB or less)</label>
                 <%= f.file_field :resume %>
                 <% if @enrollment.resume.present? %>
                   <%= link_to 'Download previously uploaded resume', @enrollment.resume.url %>

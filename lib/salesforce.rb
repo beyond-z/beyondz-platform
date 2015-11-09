@@ -3,6 +3,8 @@
 module SFDC_Models
 end
 
+require "google/api_client"
+
 # I'm monkeypatching the databasedotcom gem to fix a major bug
 Databasedotcom::Client.class_eval do
   # This method is copy/pasted from the gem source with one
@@ -64,6 +66,84 @@ module BeyondZ
         :username => Rails.application.secrets.salesforce_username,
         :password => "#{Rails.application.secrets.salesforce_password}#{Rails.application.secrets.salesforce_security_token}"
       )
+    end
+
+    def run_report_and_email_update(report_id, file_key, worksheet_name, email_to_send_update_to)
+      if email_to_send_update_to.nil?
+        email_to_send_update_to = Rails.application.secrets.staff_email
+      end
+
+      begin
+        run_report(report_id, file_key, worksheet_name)
+        StaffNotifications.salesforce_report_ready(email_to_send_update_to, true, 'Success!').deliver
+      rescue Exception => e
+        StaffNotifications.salesforce_report_ready(email_to_send_update_to, false, e.to_s).deliver
+      end
+    end
+
+    def run_report(report_id, file_key, worksheet_name)
+      client = get_client
+      info = client.http_get("/services/data/v29.0/analytics/reports/#{report_id}?includeDetails=true")
+      info = JSON.parse(info.body)
+
+      client = Google::APIClient.new({ :application_name => 'Braven', :application_version => '1.0.0' })
+      auth = client.authorization
+      auth.client_id = Rails.application.secrets.google_spreadsheet_client_id
+      auth.client_secret = Rails.application.secrets.google_spreadsheet_client_secret
+      auth.refresh_token = Rails.application.secrets.google_spreadsheet_refresh_token
+
+      auth.fetch_access_token!
+      session = GoogleDrive.login_with_oauth(auth.access_token)
+
+      sheet = session.spreadsheet_by_key(file_key)
+
+      ws = sheet.worksheet_by_title(worksheet_name)
+
+      row = 1
+      col = 1
+      total_cols = 0
+      total_rows = 0
+
+      info['reportMetadata']['detailColumns'].each do |column|
+        ws[row, col] = column
+        col += 1
+        total_cols += 1
+      end
+
+      col = 1
+      row += 1
+      total_rows += 1
+
+      handle_section = lambda do |source_section|
+        return if source_section.nil?
+        source_section['rows'].each do |source_row|
+          col = 1
+          source_row['dataCells'].each do |source_cell|
+            ws[row, col] = source_cell['label']
+            col += 1
+          end
+          row += 1
+          total_rows += 1
+        end
+      end
+
+      handle_section.call(info['factMap']["T!T"])
+
+      info['groupingsDown']['groupings'].each do |grouping|
+        ws[row, 1] = grouping['label']
+        row += 1
+        total_rows += 1
+
+        handle_section.call(info['factMap']["#{grouping['key']}!T"])
+      end
+
+      # Truncate the rest of the sheet so it only has what we just updated
+      # (will remove zombie rows from old updates with more data than this one)
+      ws.max_rows = total_rows
+      ws.max_cols = total_cols
+
+      ws.save
+
     end
 
     def get_cached_value(key, max_age = 8.hours)

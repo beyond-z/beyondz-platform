@@ -35,6 +35,10 @@
 .env-staging
 .env-dev
 
+# These are the secrets used to create the Google API refresh token in the ENV
+client_secret.json
+google_credentials.json
+
 # Ignore powder setup
 .powder
 .powenv

@@ -272,6 +272,8 @@ class EnrollmentsController < ApplicationController
     cm.Application_Status__c = 'Submitted'
     cm.Apply_Button_Enabled__c = false
 
+    cm.Date_App_Submitted__c = DateTime.now
+
     cm.Industry__c = @enrollment.industry
     cm.Company__c = @enrollment.company
     cm.Middle_Name__c = @enrollment.middle_name
