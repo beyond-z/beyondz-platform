@@ -104,11 +104,27 @@ module BeyondZ
       total_cols = 0
       total_rows = 0
 
+      # These determine how far out we want to clear things. Instead of just truncating
+      # with max_rows and max_cols in the API, we clear out up to these points so named
+      # ranges in the user-define sheet remain valid. The size here should be big enough
+      # to accommodate real-world data, but not so big that we take forever sending clear
+      # commands with multiple megabytes of zeroes we don't need. We might need to adjust
+      # these later, but this seems like a decent starting value with room for growth.
+      max_cols = 32
+      max_rows = 500
+
       info['reportMetadata']['detailColumns'].each do |column|
         ws[row, col] = column
         col += 1
         total_cols += 1
       end
+
+      # Clear out the remaining header row of any old data..
+      while col < max_cols
+        ws[row, col] = ''
+        col += 1
+      end
+
 
       col = 1
       row += 1
@@ -122,6 +138,13 @@ module BeyondZ
             ws[row, col] = source_cell['label']
             col += 1
           end
+
+          # Clear out the remaining data row of any old data..
+          while col < max_cols
+            ws[row, col] = ''
+            col += 1
+          end
+
           row += 1
           total_rows += 1
         end
@@ -134,13 +157,29 @@ module BeyondZ
         row += 1
         total_rows += 1
 
+        col = 1
+
+        # Clear out the remaining header row of any old data..
+        while col < max_cols
+          ws[row, col] = ''
+          col += 1
+        end
+
+
         handle_section.call(info['factMap']["#{grouping['key']}!T"])
       end
 
-      # Truncate the rest of the sheet so it only has what we just updated
+      # Clear the rest of the sheet so it only has what we just updated
       # (will remove zombie rows from old updates with more data than this one)
-      ws.max_rows = total_rows
-      ws.max_cols = total_cols
+
+      while row < max_rows
+        col = 1
+        while col < max_cols
+          ws[row, col] = ''
+          col += 1
+        end
+        row += 1
+      end
 
       ws.save
 
