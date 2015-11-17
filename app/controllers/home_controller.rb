@@ -72,6 +72,17 @@ class HomeController < ApplicationController
           campaign = SFDC_Models::Campaign.find(existing_enrollment.campaign_id)
           @program_title = campaign.Program_Title__c
         end
+      else
+        if existing_enrollment.campaign_id
+          sf = BeyondZ::Salesforce.new
+          client = sf.get_client
+          client.materialize('Campaign')
+          campaign = SFDC_Models::Campaign.find(existing_enrollment.campaign_id)
+          if campaign.Status == 'Completed'
+            @program_completed = true
+          end
+        end
+
       end
     end
   end
