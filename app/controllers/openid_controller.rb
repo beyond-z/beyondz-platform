@@ -15,7 +15,7 @@ require 'openid/store/filesystem'
 class OpenidController < ApplicationController
 
   skip_before_filter :verify_authenticity_token
-  before_filter :authenticate_user!, :only => [:auto_login, :index]
+  before_filter :authenticate_user!, :only => [:auto_login]
 
   include OpenID::Server
   layout nil
@@ -176,7 +176,7 @@ EOS
   end
 
   def approved(trust_root)
-    return trust_root == Rails.application.secrets.qa_host
+    return URI(trust_root).host == Rails.application.secrets.qa_host
   end
 
   def is_authorized(identity_url, trust_root)
