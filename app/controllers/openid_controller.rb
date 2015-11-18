@@ -31,7 +31,7 @@ class OpenidController < ApplicationController
   def url_script
     # Referrer check just to keep other sites from linking this in and getting our
     # user id too.
-    if request.referrer.nil? || request.referrer.host == Rails.application.secrets.qa_host
+    if request.referrer.nil? || URI(request.referrer).host == Rails.application.secrets.qa_host
       if user_signed_in?
         code = "var bz_current_user_openid_url = #{url_for_user.to_json};";
       else
