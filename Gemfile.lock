@@ -219,6 +219,7 @@ GEM
       rainbow (>= 1.99.1, < 3.0)
       ruby-progressbar (~> 1.4)
     ruby-ole (1.2.11.8)
+    ruby-openid (2.7.0)
     ruby-progressbar (1.7.5)
     rubycas-client (2.3.9)
       activesupport
@@ -296,6 +297,7 @@ DEPENDENCIES
   rails_12factor
   rails_layout
   rubocop
+  ruby-openid
   sass-rails (~> 4.0.0)
   sdoc
   therubyracer

@@ -169,4 +169,24 @@ BeyondzPlatform::Application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+
+
+  # OpenID stuff
+  get '/openid/server/xrds', :controller => 'openid', :action => 'idp_xrds'
+  get '/openid/user/:username', :controller => 'openid', :action => 'user_page'
+  get '/openid/user/:username/xrds', :controller => 'openid', :action => 'user_xrds'
+  post '/openid/server/xrds', :controller => 'openid', :action => 'idp_xrds'
+  post '/openid/user/:username', :controller => 'openid', :action => 'user_page'
+  post '/openid/user/:username/xrds', :controller => 'openid', :action => 'user_xrds'
+
+  # Allow downloading Web Service WSDL as a file with an extension
+  # instead of a file named 'wsdl'
+  get '/openid/service.wsdl', :controller => 'openid', :action => 'wsdl'
+
+  # Install the default route as the lowest priority.
+  get '/openid/:action', :controller => 'openid'
+  post '/openid/:action', :controller => 'openid'
+
+
+
 end

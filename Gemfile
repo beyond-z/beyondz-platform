@@ -98,3 +98,4 @@ gem 'devise_cas_authenticatable'
 # https://github.com/heroku/databasedotcom
 gem 'databasedotcom'
 
+gem 'ruby-openid'
