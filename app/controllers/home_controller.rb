@@ -25,7 +25,7 @@ class HomeController < ApplicationController
           sf = BeyondZ::Salesforce.new
           client = sf.get_client
           client.materialize('CampaignMember')
-          cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(current_user.salesforce_id, @enrollment.campaign_id)
+          cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(current_user.salesforce_id, enrollment.campaign_id)
 
           # If accepted, ask for confirmation, if not, go to welcome where
           # they will learn about how to continue their application
