@@ -6,3 +6,8 @@
 @import './base/style';
 
 @import "./admin/*";
+
+#admin-index {
+  border: 10px solid black;
+  padding:10px;
+}

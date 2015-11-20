@@ -361,6 +361,8 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
+  # Obsolete - used to be a field used by staff to manually mark off which candidates where owned by who
+  # Now we use Salesforce lead mapping.
   def relationship_manager?
     !relationship_manager.nil?
   end
