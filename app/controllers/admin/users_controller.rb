@@ -4,7 +4,11 @@ require 'lms'
 
 class Admin::UsersController < Admin::ApplicationController
   def index
-    @users = User.all
+    if params[:search]
+      @users = User.search(params[:search])
+    else
+      @users = User.all
+    end
     respond_to do |format|
       format.html { render }
       format.csv { render text: csv_export }

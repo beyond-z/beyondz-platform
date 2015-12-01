@@ -114,6 +114,11 @@ class User < ActiveRecord::Base
     where('substr(salesforce_id, 0, 16) = substr(?, 0, 16)', [sid]).first
   end
 
+  def self.search(query)
+    # where(:title, query) -> This would return an exact match of the query
+    where("lower(first_name) like ? OR lower(last_name) like ? OR lower(email) like ?", "%#{query.downcase}%", "%#{query.downcase}%", "%#{query.downcase}%")
+  end
+
   # We allow empty passwords for certain account types
   # so this enforces that. Otherwise, fall back on devise's
   # default validation for the password.
