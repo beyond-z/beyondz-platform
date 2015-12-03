@@ -125,7 +125,7 @@ class SalesforceController < ApplicationController
         user = User.find_by_salesforce_id(member.ContactId)
         next if user.nil?
         lms.sync_user_logins(user)
-        connect_to_qa(user)
+        setup_in_osqa(user)
         type = 'STUDENT'
         if campaign.Type == 'Leadership Coaches'
           type = 'TA'
@@ -162,7 +162,7 @@ class SalesforceController < ApplicationController
 
   private
 
-  def connect_to_qa(user)
+  def setup_in_osqa(user)
     if @qa_http.nil?
       @qa_http = Net::HTTP.new(Rails.application.secrets.qa_host, 443)
       @qa_http.use_ssl = true
