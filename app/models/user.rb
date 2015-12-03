@@ -46,6 +46,8 @@ class User < ActiveRecord::Base
          :database_authenticatable,
          :cas_authenticatable
 
+  paginates_per 100
+
   has_one :enrollment, dependent: :destroy
   has_many :tasks, dependent: :destroy
   has_many :assignments, dependent: :destroy

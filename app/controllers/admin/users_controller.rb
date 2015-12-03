@@ -4,10 +4,11 @@ require 'lms'
 
 class Admin::UsersController < Admin::ApplicationController
   def index
+    current_page = params[:page] # was getting ArgumentError (wrong number of arguments (1 for 0) when using param directly with .page method
     if params[:search]
-      @users = User.search(params[:search])
+      @users = User.search(params[:search]).page(current_page)
     else
-      @users = User.all
+      @users = User.order(:last_name).page(current_page)
     end
     respond_to do |format|
       format.html { render }
