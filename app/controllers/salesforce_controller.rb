@@ -125,6 +125,7 @@ class SalesforceController < ApplicationController
         user = User.find_by_salesforce_id(member.ContactId)
         next if user.nil?
         lms.sync_user_logins(user)
+        setup_in_osqa(user)
         type = 'STUDENT'
         if campaign.Type == 'Leadership Coaches'
           type = 'TA'
@@ -157,5 +158,26 @@ class SalesforceController < ApplicationController
   # needlessly
   def check_magic_token
     params[:magic_token] == Rails.application.secrets.salesforce_magic_token
+  end
+
+  private
+
+  def setup_in_osqa(user)
+    if @qa_http.nil?
+      @qa_http = Net::HTTP.new(Rails.application.secrets.qa_host, 443)
+      @qa_http.use_ssl = true
+      if Rails.application.secrets.canvas_allow_self_signed_ssl # reusing this config option since it is the same deal here
+        @qa_http.verify_mode = OpenSSL::SSL::VERIFY_NONE # self-signed cert would fail
+      end
+    end
+ 
+    request = Net::HTTP::Post.new('/account/create-user/')
+    request.set_form_data(
+        'access_token' => Rails.application.secrets.qa_token,
+        'url' => "#{root_url}openid/user/#{user.id}",
+        'name' => user.name,
+        'email' => user.email,
+      )
+      response = @qa_http.request(request)
   end
 end
