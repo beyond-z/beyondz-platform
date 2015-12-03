@@ -98,4 +98,8 @@ gem 'devise_cas_authenticatable'
 # https://github.com/heroku/databasedotcom
 gem 'databasedotcom'
 
+# used to give this server Open ID auth capabilities for other sites to use our database as the master auth DB.  e.g. our OSQA server
 gem 'ruby-openid'
+
+# Supports pagination of a list of objects.
+gem 'kaminari', '~> 0.16.3'

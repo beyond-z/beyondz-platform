@@ -1,3 +1,10 @@
+<%= form_tag(admin_users_path, method: "get") do |f| %>
+  <%= text_field_tag :search, params[:search], placeholder: "Search" %>
+<% end %>
+<br/>
+<% if @users.empty? %>
+[No users found]
+<% end %>
 <table>
 <% @users.each do |user| %>
 <tr>
@@ -8,3 +15,4 @@
 </tr>
 <% end %>
 </table>
+<%= paginate @users %>
