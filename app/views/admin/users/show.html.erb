@@ -18,11 +18,20 @@
     <td><%= @user.email %> <%= link_to 'Change', edit_admin_user_path(@user) %></td>
   </tr>
   <tr>
-    <th>Salesforce ID</th>
-    <td><%= @user.salesforce_id %> <%= link_to 'Change', edit_admin_user_path(@user) %></td>
+    <th>Salesforce Contact ID</th>
+    <td><%= @user.salesforce_id ? @user.salesforce_id : '--not set--' %> <%= link_to 'Change', edit_admin_user_path(@user) %></td>
+  </tr>
+  <tr>
+    <% e = Enrollment.find_by_user_id(@user.id) %>
+    <th>Salesforce Enrollment Campaign ID</th>
+    <% if e %>
+      <td><%= e.campaign_id ? e.campaign_id : '--not set--'  %> <%= link_to 'Change', edit_admin_user_path(@user) %></td>
+    <% else %>
+      <td>--no enrollment found, user hasn't opened application yet--</td>
+    <% end %>
   </tr>
 </table>
-
+<br/>
   <p>Use with care, the user might get emailed or you could change info on their behalf.</p>
   <%= form_for [:admin, @user], :method => 'POST', url: admin_impersonate_path(@user) do %>
     <%
