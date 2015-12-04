@@ -46,6 +46,8 @@ class User < ActiveRecord::Base
          :database_authenticatable,
          :cas_authenticatable
 
+  paginates_per 100
+
   has_one :enrollment, dependent: :destroy
   has_many :tasks, dependent: :destroy
   has_many :assignments, dependent: :destroy
@@ -112,6 +114,11 @@ class User < ActiveRecord::Base
   # It is 16 in here because the end thing is not inclusive in the substr function.
   def self.find_by_salesforce_id(sid)
     where('substr(salesforce_id, 0, 16) = substr(?, 0, 16)', [sid]).first
+  end
+
+  def self.search(query)
+    # where(:title, query) -> This would return an exact match of the query
+    where("lower(first_name) like ? OR lower(last_name) like ? OR lower(email) like ?", "%#{query.downcase}%", "%#{query.downcase}%", "%#{query.downcase}%")
   end
 
   # We allow empty passwords for certain account types
@@ -361,6 +368,8 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
+  # Obsolete - used to be a field used by staff to manually mark off which candidates where owned by who
+  # Now we use Salesforce lead mapping.
   def relationship_manager?
     !relationship_manager.nil?
   end

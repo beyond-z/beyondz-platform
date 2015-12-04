@@ -17,6 +17,15 @@ class Admin::EnrollmentsController < Admin::ApplicationController
     redirect_to enrollment_path(params[:id])
   end
 
+  def update
+    if params[:enrollment][:campaign_id]
+      @enrollment = Enrollment.find(params[:id])
+      @enrollment.campaign_id = params[:enrollment][:campaign_id]
+      @enrollment.save(validate: false)
+    end
+    redirect_to admin_user_path(params[:enrollment][:user_id])
+  end
+
   private
 
   def csv_export

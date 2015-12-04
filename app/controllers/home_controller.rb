@@ -15,10 +15,28 @@ class HomeController < ApplicationController
       elsif current_user.student?
         redirect_to assignments_path
       else
-        # This is a logged in user who is not yet
-        # accepted into the program - we'll give them
-        # the welcome screen so they can learn more.
-        redirect_to welcome_path
+        # Logged in user who may be applying or may be confirmed
+        # let's check the enrollment and SF status
+        enrollment = Enrollment.find_by_user_id(current_user.id)
+        if current_user.program_attendance_confirmed
+          # If already confirmed, the confirm path will have a nice next steps screen
+          redirect_to user_confirm_path
+        elsif enrollment
+          sf = BeyondZ::Salesforce.new
+          client = sf.get_client
+          client.materialize('CampaignMember')
+          cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(current_user.salesforce_id, enrollment.campaign_id)
+
+          # If accepted, ask for confirmation, if not, go to welcome where
+          # they will learn about how to continue their application
+          if cm.Candidate_Status__c == "Accepted"
+            redirect_to user_confirm_path
+          else
+            redirect_to welcome_path
+          end
+        else
+          redirect_to welcome_path
+        end
       end
     else
       # Otherwise, non-logged in users
@@ -54,6 +72,17 @@ class HomeController < ApplicationController
           campaign = SFDC_Models::Campaign.find(existing_enrollment.campaign_id)
           @program_title = campaign.Program_Title__c
         end
+      else
+        if existing_enrollment.campaign_id
+          sf = BeyondZ::Salesforce.new
+          client = sf.get_client
+          client.materialize('Campaign')
+          campaign = SFDC_Models::Campaign.find(existing_enrollment.campaign_id)
+          if campaign.Status == 'Completed'
+            @program_completed = true
+          end
+        end
+
       end
     end
   end

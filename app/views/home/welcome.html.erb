@@ -30,7 +30,13 @@
                   <%= link_to 'Apply now!', new_enrollment_path, style: 'color: white' %><br />
                 </div>
               <% else %>
-                <p class="shoutout">Your account was successfully activated. We will contact you very soon!</p>
+                <% if @program_completed %>
+                  <p class="shoutout">
+                  The program you signed up for has ended. If you are interested in participating in an upcoming program, please reach out to us at <a href="mailto:info@bebraven.org">info@bebraven.org</a>
+                  </p>
+                <% else %>
+                  <p class="shoutout">Your account was successfully activated. We will contact you very soon!</p>
+                <% end %>
               <% end %>
             <% end %>
 

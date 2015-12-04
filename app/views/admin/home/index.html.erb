@@ -1,18 +1,25 @@
 <h1>Braven Platform Admin Directory</h1>
-
+<div id="admin-index">
+<h2>Users</h2>
 <ul>
   <li><%= link_to 'Users', admin_users_path %></li>
   <li><%= link_to 'Create Special Canvas User', new_admin_user_path %></li>
   <li><%= link_to 'Users Export (csv) - includes applications', admin_users_path(:format => 'csv') %></li>
-  <li><%= link_to 'Import user cohort assignment csv', admin_csv_import_path %></li>
-  <li><%= link_to 'Import user status csv', admin_user_status_csv_import_path %></li>
-
+  <li><%= link_to 'Users Export (xls) - raw data', admin_users_path(:format => 'xls') %></li>
+  <!-- Obsolete: This was for bulk assigning users to their cohorts before we wrote the Salesforce confirmation flow.  It's obsolete now. -->
+  <!--<li><%= link_to 'Import user cohort assignment csv', admin_csv_import_path %></li>-->
+  <!-- Obsolete: This was to allow a staff member to manage recruitment by making decisions and assigning values to the candidates
+                 that would show up in the users.csv export.  Now we use Salesforce. -->
+  <!-- <li><%= link_to 'Import user status csv', admin_user_status_csv_import_path %></li>-->
+</ul>
+<h2>Applications</h2>
+<ul>
   <li><%= link_to 'Enrollment Applications', admin_enrollments_path %></li>
   <li><%= link_to 'Applications Export (csv)', admin_enrollments_path(:format => 'csv') %></li>
-
-  <li><%= link_to 'Users Export (xls) - raw data', admin_users_path(:format => 'xls') %></li>
   <li><%= link_to 'Applications Export (xls) - raw data', admin_enrollments_path(:format => 'xls') %></li>
-
+</ul>
+<h2>Signup and Salesforce</h2>
+<ul>
   <li><%= link_to 'Export Lead Owner Mapping', admin_lead_owner_mapping_path(:format => 'csv') %></li>
   <li><%= link_to 'Import Lead Owner Mapping', admin_import_lead_owner_mapping_path %></li>
 
@@ -21,13 +28,21 @@
   <li><%= link_to 'List of Braven Regions on signup form for employers', admin_list_path('bz_regions_employers') %></li>
 
   <li><%= link_to 'Automatic campaign mapping', admin_campaign_mapping_path %></li>
-
+</ul>
+<h2>Canvas</h2>
+<ul>
+  <!-- This is for bulk assigning cohorts and was implemented so we could do this for SJSU after the registrar confirmed
+       their participation in the program.  It was before we had the self-service confirmation flow.
+       It was designed to be used with a specific spreadsheet that Abby was using to manage the roster.  
+       If we want to turn this into a process that anyone could use, we would need to do a little work to generalize it.
+       -->
   <li><%= link_to 'Bulk Student Upload', admin_bulk_student_upload_path %></li>
 
   <li><%= link_to 'Resume assignment editor', admin_assignment_definitions_path %></li>
 
-  <li><%= link_to 'Canvas Page Views', admin_canvas_page_views_path %></li>
+  <li><%= link_to 'Canvas Page View Data', admin_canvas_page_views_path %></li>
 
   <li><%= link_to 'Due Date Export', admin_get_due_dates_path %></li>
   <li><%= link_to 'Due Date Import', admin_set_due_dates_path %></li>
 </ul>
+</div>
