@@ -3,7 +3,7 @@ if Rails.env.production?
   ActionMailer::Base.smtp_settings = {
     :address => Rails.application.secrets.smtp_server,
     :port => 587,
-    :domain => Rails.application.secrets.mailer_domain,
+    :domain => Rails.application.secrets.smtp_domain,
     :user_name => Rails.application.secrets.smtp_username,
     :password => Rails.application.secrets.smtp_password,
     :authentication => :login # plain, login, or cram_md5i
@@ -17,7 +17,7 @@ else
   ActionMailer::Base.smtp_settings = {
     :address => Rails.application.secrets.smtp_server,
     :port => 587,
-    :domain => Rails.application.secrets.mailer_domain,
+    :domain => Rails.application.secrets.smtp_domain,
     :user_name => Rails.application.secrets.smtp_username,
     :password => Rails.application.secrets.smtp_password,
     :authentication => :login # plain, login, or cram_md5i
