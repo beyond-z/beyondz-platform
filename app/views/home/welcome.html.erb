@@ -16,7 +16,7 @@
                 <!-- When Salesforce integration is enabled, the apply now button will be controlled
                      by a campaign on that end. Until then though, we want everyone to see it. -->
               <% if @new_user.apply_now_enabled || !Rails.application.secrets.salesforce_username %>
-                <% if Enrollment.find_by(:user_id => current_user.id).nil? %>
+                <% if Enrollment.find_by(:user_id => @new_user.id).nil? %>
                   <!-- FIXME: this is a hack where we auto-activate accounts b/c emails are going to spam.  Revert this once we have email activation back. -->
                   <% if @new_user.salesforce_campaign_id %>
                     <p class="shoutout">You've successfully signed up.  Now you can complete your application.</p>
