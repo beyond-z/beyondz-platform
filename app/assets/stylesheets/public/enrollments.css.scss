@@ -73,3 +73,7 @@
 #form-availability .field_with_errors ~ .availability-options {
   @extend .has-error;
 }
+
+.student, .coach {
+  display: none;
+}

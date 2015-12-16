@@ -157,7 +157,7 @@
                 </div>
                 <div class="form-group student">
                   <label>Is there anything you'd like us to know about circumstances affecting your GPA?</label>
-                  <%= f.text_area :gpa_circumstances, 'class' => 'form-control', 'maxlength' => '300' %>
+                  <%= f.text_area :gpa_circumstances, 'class' => 'form-control', 'maxlength' => '500' %>
                 </div>
 
 
@@ -211,7 +211,7 @@
                 <label class="coach">Please list any other significant volunteer commitments you've made for the upcoming year (<%= Date.today.year %> - <%= Date.today.year+1 %>), including Board commitments, pro bono work, coaching, and other volunteer roles (recurring or occasional).</label>
                 <p class="help student">Please include approximate hours per month, and if it varies by semester, please note that too. Ex: Student worker at the library, 25 hours/month. Rugby captain, 30 hours/month, fall semester only.</p>
                 <p class="help coach">Please include approximate hours per month, and if it varies by season, please note that too. Ex: AAU girls' coach, 10 hours/week, summer only. Board member, Carver Academy - East, 4 hours/month.</p>
-                <%= f.text_area :current_volunteer_activities, 'class' => 'form-control', 'maxlength' => '300' %>
+                <%= f.text_area :current_volunteer_activities, 'class' => 'form-control', 'maxlength' => '1000' %>
               </div>
 
               <div class="form-group coach student" id="form-leadership-exp">
@@ -219,7 +219,7 @@
                 <p class="coach help">While we are interested in the diversity of activities in which you're involved, we are also curious to learn more about a single experience that has been particularly meaningful to your development as a leader.</p>
                 <label class="student">What is <u>one</u> professional, extracurricular, or volunteer experience that has been particularly meaningful to you? Why?</label>
                 <p class="student help">While we are interested in seeing the diversity of activities in which you're involved (described in the preceding question), we are also curious about which single experience has been particularly meaningful to your development.</p>
-                <%= f.text_area :meaningful_experience, 'class' => 'form-control', 'maxlength' => '300' %>
+                <%= f.text_area :meaningful_experience, 'class' => 'form-control', 'maxlength' => '1000' %>
               </div>
 
               <div class="form-group coach student">
@@ -281,12 +281,12 @@
 
               <div class="form-group coach">
                 <label>What areas of personal expertise or passion are you particularly excited to share with <%= @program_title %> participants?</label>
-                <%= f.text_area :personal_passion, 'class' => 'form-control', 'maxlength' => '300' %>
+                <%= f.text_area :personal_passion, 'class' => 'form-control', 'maxlength' => '500' %>
               </div>
               <div class="form-group coach">
                 <label>Share about one of your experiences teaching, coaching, and/or working with young people. Describe your role/experience, your impact, and key moment(s) of learning or reflections.</label>
                 <p class="help">Please think expansively. Examples include years leading a classroom, summers coaching a youth sports team, time leading or participating in a work-based mentoring or onboarding program, etc.</p>
-                <%= f.text_area :teaching_experience, 'class' => 'form-control', 'maxlength' => '500' %>
+                <%= f.text_area :teaching_experience, 'class' => 'form-control', 'maxlength' => '800' %>
               </div>
 
             </div>
@@ -476,7 +476,7 @@
 
               <div class="form-group coach">
                 <span class="coach">Please let us know of any dates that you anticipate you will not be available through the end of <%= Date.today.year %>.</span>
-                <%= f.text_area :cannot_attend, 'class' => 'form-control', 'maxlength' => '300', 'style'=>'height: 6em !important;' %>
+                <%= f.text_area :cannot_attend, 'class' => 'form-control', 'maxlength' => '500', 'style'=>'height: 6em !important;' %>
               </div>
             </div>
 
@@ -522,7 +522,7 @@
               <div class="form-group">
                 <label>Anything else you'd like to share?</label>
                 <p class="help">Please let us know any additional information you wish to share about your interest in <%= @program_title %> - <%= @program_site %>.</p>
-                <%= f.text_area :comments, 'class' => 'form-control', 'maxlength' => '300' %>
+                <%= f.text_area :comments, 'class' => 'form-control', 'maxlength' => '1000' %>
               </div>
 
               <!--

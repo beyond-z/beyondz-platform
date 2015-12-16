@@ -59,23 +59,32 @@ class HomeController < ApplicationController
     if user_signed_in?
       if current_user.program_attendance_confirmed
         redirect_to user_confirm_path
+        return
       end
       existing_enrollment = Enrollment.find_by(:user_id => current_user.id)
       return if existing_enrollment.nil?
 
+      sf = BeyondZ::Salesforce.new
+      client = sf.get_client
+      client.materialize('CampaignMember')
+      cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(current_user.salesforce_id, existing_enrollment.campaign_id)
+
+      # If accepted, we go back to confirmation (see above in the index method)
+      # repeated here in welcome so if they bookmarked this, they won't get lost
+      if cm && cm.Candidate_Status__c == "Accepted"
+        redirect_to user_confirm_path
+        return
+      end
+
       if existing_enrollment.explicitly_submitted
         @application_received = true
         if existing_enrollment.campaign_id
-          sf = BeyondZ::Salesforce.new
-          client = sf.get_client
           client.materialize('Campaign')
           campaign = SFDC_Models::Campaign.find(existing_enrollment.campaign_id)
           @program_title = campaign.Program_Title__c
         end
       else
         if existing_enrollment.campaign_id
-          sf = BeyondZ::Salesforce.new
-          client = sf.get_client
           client.materialize('Campaign')
           campaign = SFDC_Models::Campaign.find(existing_enrollment.campaign_id)
           if campaign.Status == 'Completed'

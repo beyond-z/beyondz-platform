@@ -52,16 +52,11 @@ $(document).ready(function() {
     });
 
 
-    // hide all other fields until one of the applying as is selected
-    if(!$('#position_coach').prop('checked') && !$('#position_student').prop('checked'))
-      $('.coach, .student').hide(); // none are selected, hide everything
-    else {
-      // one is selected but not the other, so need to be more careful about what we hide
-      if(!$('#position_coach').prop('checked'))
-        $('.coach:not(.student)').fadeOut('fast');
-      if(!$('#position_student').prop('checked'))
-        $('.student:not(.coach)').fadeOut('fast');
-    }
+    // Show only the elements that are actually selected in the form
+    if($('#position_coach').prop('checked'))
+      $('.coach').show();
+    if($('#position_student').prop('checked'))
+      $('.student').show();
     
     // Show or hide questions based on user type and program upon selection change:
     $('[value=student]').click(function(){
@@ -124,33 +119,4 @@ $(document).ready(function() {
     // upload the file only when it changes to save bandwidth - don't
     // want the file to re-upload each time they hit a key!
     $('input[type=file]').change(saveEnrollmentwithFile);
-    
-  // replace programming languages (testing only) with actual majors
-  var majors = [
-    'ActionScript',
-    'AppleScript',
-    'Asp',
-    'BASIC',
-    'C',
-    'C++',
-    'Clojure',
-    'COBOL',
-    'ColdFusion',
-    'Erlang',
-    'Fortran',
-    'Groovy',
-    'Haskell',
-    'Java',
-    'JavaScript',
-    'Lisp',
-    'Perl',
-    'PHP',
-    'Python',
-    'Ruby',
-    'Scala',
-    'Scheme'
-  ];
-  $('#major').autocomplete({
-    source: majors
-  });
 });
