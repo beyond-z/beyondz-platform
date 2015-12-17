@@ -1,6 +1,0 @@
-# Redirect beyondz.org requests to bebraven.org
-RewriteEngine On
-RewriteCond %{HTTP_HOST} ^staging\.beyondz\.org [NC]
-RewriteRule (.*) https://stagingjoin.bebraven.org/$1 [R=301,L]
-RewriteCond %{HTTP_HOST} !^join\.bebraven\.org [NC]
-RewriteRule (.*) https://join.bebraven.org/$1 [R=301,L]

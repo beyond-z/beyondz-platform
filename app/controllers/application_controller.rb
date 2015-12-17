@@ -5,8 +5,17 @@ class ApplicationController < ActionController::Base
   layout :default_layout
   before_action :save_external_referrer
   before_action :permit_lms_iframe
+  before_filter :redirect_if_old
 
   private
+
+  # We moved from beyondz.org to join.bebraven.org but I couldn't
+  # get .htaccess redirects working on heroku, so I'm doing it in code.
+  def redirect_if_old
+    if request.host != Rails.application.secrets.root_domain
+      redirect_to "#{request.protocol}#{Rails.application.secrets.root_domain}#{request.fullpath}", :status => :moved_permanently
+    end
+  end
 
   def permit_lms_iframe
     secure = Rails.application.secrets.canvas_use_ssl ? 's' : ''
