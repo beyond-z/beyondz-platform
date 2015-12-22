@@ -24,14 +24,14 @@ class StaffNotifications < ActionMailer::Base
     # we want this to go to the tech team always, not the staff in general
     # because it is most likely a code bug, but even if caused by manual
     # deletions, it will need some kind of database sync to fix
-    mail(to: 'tech@beyondz.org', subject: 'LMS User Mismatch')
+    mail(to: 'tech@bebraven.org', subject: 'LMS User Mismatch')
   end
 
   def bug_report(user, bug_info)
     @user = user
     @bug_info = bug_info
 
-    mail(to: 'tech@beyondz.org', subject: 'Bug in BZ platform')
+    mail(to: 'tech@bebraven.org', subject: 'Bug in BZ platform')
   end
 
   def canvas_views_ready(email, data)

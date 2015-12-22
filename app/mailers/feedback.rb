@@ -8,6 +8,6 @@ class Feedback < ActionMailer::Base
   def feedback(from, message)
     @from = from
     @message = message
-    mail(to: 'tech@beyondz.org', subject: 'Site Feedback')
+    mail(to: 'tech@bebraven.org', subject: 'Site Feedback')
   end
 end

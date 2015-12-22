@@ -493,7 +493,7 @@ class User < ActiveRecord::Base
           user.email,
           user.name,
           next_assignment.title,
-          'http://platform.beyondz.org/assignments/' +
+          'https://join.bebraven.org/assignments/' +
           next_assignment.seo_name)
             .deliver
       end

@@ -122,18 +122,6 @@ foreman start
 ```
 The app will be available at [http://localhost:5000](http://localhost:5000) by default
 
-## Testing
-We have created a few test users that you can login to the platform with.  They are populated using the `rake db:seed` task.
-
-    username: test+student1@beyondz.org
-    password: test
-
-    username: test+coach1@beyondz.org
-    password: test
-
-    username: test+admin@beyondz.org
-    password: test
-
 ## Development Process
 
 Here is a [nice overview](http://nathanhoad.net/git-workflow-forks-remotes-and-pull-requests) of the workflow we follow, which is also detailed below.
