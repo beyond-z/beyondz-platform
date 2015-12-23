@@ -36,11 +36,8 @@ class HomeController < ApplicationController
       end
     else
       # Otherwise, non-logged in users
-      # just get the public home page
-      # via the home/index view
-
-      @wp_path = params[:wp_path] ? params[:wp_path] : '' # shortcut to the right page on the new site
-      redirect_to "https://bebraven.org/#{@wp_path}"
+      # just get the join page
+      redirect_to new_user_path
     end
   end
 
