@@ -21,9 +21,3 @@ var $_GET = getQueryParams(document.location.search);
 // If we've been asked to redirect, do it now, busting out of the iframe.
 if('out_to_lms' in $_GET)
   window.top.location.href = $_GET['out_to_lms'];
-
-$(document).ready(function() {
-
-  load_component_comments();
-
-});

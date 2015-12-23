@@ -3,12 +3,6 @@ BeyondzPlatform::Application.routes.draw do
 
   root "home#index"
 
-  # These are all moved to the bebraven.org Wordpress site now with specific analogs
-  # we'll forward directly so people's old bookmarks take them to a reasonable location.
-  get '/apply', to: 'home#index', defaults: { wp_path: 'become-a-fellow/' }
-  get '/volunteer', to: 'home#index', defaults: { wp_path: 'volunteer-as-a-coach/' }
-  get '/partner', to: 'home#index', defaults: { wp_path: 'partner-with-us/' }
-
   # No specific analog on WP yet, just send them to the redirect -> home page.
   get '/jobs', to: 'home#index'
   get '/donate', to: 'home#index'
@@ -53,15 +47,6 @@ BeyondzPlatform::Application.routes.draw do
     resources :tasks, only: [:update, :show]
   end
 
-  namespace :coach do
-    root "home#index"
-
-    resources :assignments
-    resources :students do
-      resources :tasks
-    end
-  end
-
   namespace :admin do
     root "home#index"
 
@@ -97,23 +82,13 @@ BeyondzPlatform::Application.routes.draw do
 
     resources :lists
 
-    resources :users do
-      resources :students
-    end
-
-    resources :coaches, controller: 'users' do
-      resources :students
-    end
-
-    resources :students, controller: 'users'
+    resources :users
 
     resources :enrollments
 
     resources :task_definitions
     resources :assignment_definitions
   end
-
-  get '/assignments/:action', controller: 'assignments' # For the hard-coded assignment details
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
