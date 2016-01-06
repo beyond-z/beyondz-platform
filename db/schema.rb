@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160106163112) do
+ActiveRecord::Schema.define(version: 20151022175037) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -128,12 +128,12 @@ ActiveRecord::Schema.define(version: 20160106163112) do
     t.string   "program_ms"
     t.boolean  "program_ms_ms_epa"
     t.boolean  "will_be_student"
-    t.string   "undergrad_university"
-    t.string   "undergraduate_year"
+    t.string   "university"
+    t.string   "anticipated_graduation"
     t.string   "major"
     t.string   "previous_university"
     t.string   "gpa"
-    t.string   "digital_footprint"
+    t.string   "online_resume"
     t.boolean  "bkg_african_americanblack"
     t.boolean  "bkg_asian_american"
     t.boolean  "bkg_latino_or_hispanic"
@@ -167,15 +167,15 @@ ActiveRecord::Schema.define(version: 20160106163112) do
     t.text     "community_connection"
     t.text     "last_summer"
     t.text     "post_graduation_plans"
-    t.text     "relevant_experience"
-    t.text     "passions_expertise"
+    t.text     "teaching_experience"
+    t.text     "personal_passion"
     t.text     "why_bz"
     t.text     "commitments"
     t.text     "cannot_attend"
     t.text     "comments"
     t.text     "other_meaningful_volunteer_activities"
-    t.text     "other_commitments"
-    t.text     "meaningful_activity"
+    t.text     "current_volunteer_activities"
+    t.text     "meaningful_experience"
     t.string   "languages"
     t.boolean  "program_ms_ms_nyc"
     t.boolean  "program_ms_ms_mp"
@@ -197,10 +197,10 @@ ActiveRecord::Schema.define(version: 20160106163112) do
     t.string   "hs_gpa"
     t.string   "sat_score"
     t.string   "act_score"
-    t.string   "digital_footprint2"
+    t.string   "online_resume2"
     t.text     "conquered_challenge"
     t.string   "bkg_other"
-    t.string   "sourcing_info"
+    t.string   "lead_sources"
     t.boolean  "pell_grant"
     t.string   "meeting_times"
     t.string   "birthdate"

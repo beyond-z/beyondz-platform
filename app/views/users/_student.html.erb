@@ -14,11 +14,11 @@
 
 
   <section>
-    <div>
+    <div class="required">
       Started college in:
     </div>
     <div class="col-sm-5">
-      <%= f.select :started_college_in, options_for_select(started_college_years, params[:user].nil? ? '' : params[:user][:started_college_in]), {}, :class => 'form-control', include_blank: true %>
+      <%= f.select :started_college_in, options_for_select(started_college_years, params[:user].nil? ? '' : params[:user][:started_college_in]), {}, :class => 'form-control', include_blank: true, :required => 'required' %>
     </div>
   </section>
   <section>
