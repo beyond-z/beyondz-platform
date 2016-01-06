@@ -28,19 +28,17 @@ class Enrollment < ActiveRecord::Base
   validates :state, presence: true
 
   validates :birthdate, presence: true, if: "position == 'student'"
-  # validates :online_resume, presence: true
-  # validates :online_resume2, presence: true, if: "position == 'coach' && !resume.present?"
   validates :conquered_challenge, presence: true, if: "position == 'student'"
   # validates :last_summer, presence: true, if: "position == 'student'"
-  validates :meaningful_experience, presence: true
+  validates :meaningful_activity, presence: true
 
   validates :why_bz, presence: true, if: "position == 'coach'"
-  validates :personal_passion, presence: true, if: "position == 'coach'"
-  validates :teaching_experience, presence: true, if: "position == 'coach'"
+  validates :passions_expertise, presence: true, if: "position == 'coach'"
+  validates :relevant_experience, presence: true, if: "position == 'coach'"
 
   validates :affirm_commit_coach, presence: true, if: "position == 'coach'"
 
-  validates :current_volunteer_activities, presence: true, if: "position == 'student'"
+  validates :other_commitments, presence: true, if: "position == 'student'"
   validates :post_graduation_plans, presence: true, if: "position == 'student'"
   validates :why_bz, presence: true, if: "position == 'student'"
   validates :affirm_qualified, presence: true, if: "position == 'student'"
