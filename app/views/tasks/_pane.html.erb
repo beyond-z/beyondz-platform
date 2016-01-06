@@ -23,16 +23,11 @@
         <% end %>
 
         <div class="action-box">
-          <% if @current_user.coach? %>
-            <%= render "coach/tasks/action_box" %>
-          <% else %>
-            <%= render "tasks/action_box" %>
-          <% end %>
+          <%= render "tasks/action_box" %>
         </div>
       </div>
     </div>
     <div class="col-sm-4 hide-on-iframe">
-      <%= render "tasks/discussion" %>
     </div>
   </section>
 </div>

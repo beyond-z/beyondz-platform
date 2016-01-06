@@ -10,10 +10,6 @@ class HomeController < ApplicationController
         redirect_to admin_root_path
       elsif current_user.in_lms?
         redirect_to "//#{Rails.application.secrets.canvas_server}/"
-      elsif current_user.coach?
-        redirect_to coaches_root_path
-      elsif current_user.student?
-        redirect_to assignments_path
       else
         # Logged in user who may be applying or may be confirmed
         # let's check the enrollment and SF status
@@ -40,11 +36,8 @@ class HomeController < ApplicationController
       end
     else
       # Otherwise, non-logged in users
-      # just get the public home page
-      # via the home/index view
-
-      @wp_path = params[:wp_path] ? params[:wp_path] : '' # shortcut to the right page on the new site
-      render layout: false
+      # just get the join page
+      redirect_to new_user_path
     end
   end
 
