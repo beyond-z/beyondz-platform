@@ -291,7 +291,6 @@ class EnrollmentsController < ApplicationController
 
     cm.Birthdate__c = @enrollment.birthdate
 
-    cm.Summer__c = @enrollment.last_summer # this is blank now but kept so we can view+edit old applications
     cm.Post_Grad__c = @enrollment.post_graduation_plans
     cm.Why_BZ__c = @enrollment.why_bz
     cm.Passions_Expertise__c = @enrollment.passions_expertise
