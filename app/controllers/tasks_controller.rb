@@ -4,7 +4,6 @@ class TasksController < ApplicationController
   before_action :use_controller_js
 
   def show
-    @coaches_comments = Comment.need_student_attention(current_user.id)
     @assignment = Assignment.find(params[:assignment_id])
     @task = Task.find(params[:id])
     @next_task = @task.next

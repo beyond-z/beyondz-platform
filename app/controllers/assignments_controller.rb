@@ -21,8 +21,6 @@ class AssignmentsController < ApplicationController
     else
       @incomplete_assignments = user.assignments.for_display.not_submitted
       @complete_assignments = user.assignments.submitted.count
-
-      @coaches_comments = Comment.need_student_attention(uid)
     end
   end
 
@@ -48,7 +46,6 @@ class AssignmentsController < ApplicationController
       end
     end
 
-    @coaches_comments = Comment.need_student_attention(current_user.id)
     @assignment = Assignment.find(params[:id])
 
     tasks = @assignment.tasks.need_student_attention

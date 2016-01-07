@@ -18,7 +18,7 @@
       Started college in:
     </div>
     <div class="col-sm-5">
-      <%= f.select :started_college_in, options_for_select(started_college_years, params[:user].nil? ? '' : params[:user][:started_college_in]), {}, :class => 'form-control', include_blank: true, :required => 'required' %>
+      <%= f.select :started_college_in, options_for_select([''].concat(started_college_years.to_a), params[:user].nil? ? '' : params[:user][:started_college_in]), {}, :class => 'form-control' %>
     </div>
   </section>
   <section>

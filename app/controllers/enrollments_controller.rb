@@ -32,10 +32,10 @@ class EnrollmentsController < ApplicationController
       @enrollment.last_name = current_user.last_name
       @enrollment.email = current_user.email
       @enrollment.company = current_user.company
-      @enrollment.university = current_user.university_name
+      @enrollment.undergrad_university = current_user.university_name
       @enrollment.phone = current_user.phone
       @enrollment.title = current_user.profession
-      @enrollment.anticipated_graduation = current_user.anticipated_graduation
+      @enrollment.undergraduate_year = current_user.anticipated_graduation
       @enrollment.accepts_txt = true # to pre-check the box
 
       if Rails.application.secrets.salesforce_username && current_user.salesforce_id
@@ -182,8 +182,8 @@ class EnrollmentsController < ApplicationController
     #
     # Names with a colon in them expect details, so we remove excess semicolons there so the
     # resulting string is more human readable without extra punctuation.
-    @enrollment.lead_sources = ''
-    @enrollment.lead_sources = params[:lead_sources].join(';') if params[:lead_sources]
+    @enrollment.sourcing_info = ''
+    @enrollment.sourcing_info = params[:sourcing_info].join(';') if params[:sourcing_info]
 
     # Always save without validating, this ensures the partial
     # data is not lost and allows resume upload to proceed even
@@ -195,7 +195,7 @@ class EnrollmentsController < ApplicationController
     # because otherwise, they are probably just saving incomplete
     # data to finish later
     unless params[:user_submit].nil?
-      @enrollment.lead_sources = @enrollment.lead_sources.gsub(':;', ': ').squeeze(';') if @enrollment.lead_sources
+      @enrollment.sourcing_info = @enrollment.sourcing_info.gsub(':;', ': ').squeeze(';') if @enrollment.sourcing_info
       @enrollment.save(validate: true)
     end
 
@@ -285,40 +285,36 @@ class EnrollmentsController < ApplicationController
 
     cm.Eligible__c = @enrollment.will_be_student
     cm.GPA_Circumstances__c = @enrollment.gpa_circumstances
-    cm.Other_Commitments__c = @enrollment.current_volunteer_activities
+    cm.Other_Commitments__c = @enrollment.other_commitments
 
     cm.Grad_Degree__c = @enrollment.grad_degree
 
     cm.Birthdate__c = @enrollment.birthdate
 
-    cm.Summer__c = @enrollment.last_summer
     cm.Post_Grad__c = @enrollment.post_graduation_plans
     cm.Why_BZ__c = @enrollment.why_bz
-    cm.Passions_Expertise__c = @enrollment.personal_passion
-    cm.Meaningful_Activity__c = @enrollment.meaningful_experience
-    cm.Relevant_Experience__c = @enrollment.teaching_experience
+    cm.Passions_Expertise__c = @enrollment.passions_expertise
+    cm.Meaningful_Activity__c = @enrollment.meaningful_activity
+    cm.Relevant_Experience__c = @enrollment.relevant_experience
 
-    cm.Undergrad_University__c = @enrollment.university
-    cm.Undergraduate_Year__c = @enrollment.anticipated_graduation
+    cm.Undergrad_University__c = @enrollment.undergrad_university
+    cm.Undergraduate_Year__c = @enrollment.undergraduate_year
     cm.Major__c = @enrollment.major
     cm.GPA__c = @enrollment.gpa
 
     cm.Previous_University__c = @enrollment.previous_university
 
-    cm.High_School_GPA__c = @enrollment.hs_gpa
-    cm.SAT_Score__c = @enrollment.sat_score
-    cm.ACT_Score__c = @enrollment.act_score
     cm.Conquered_Challenge__c = @enrollment.conquered_challenge
     cm.Languages__c = @enrollment.languages
-    cm.Sourcing_Info__c = @enrollment.lead_sources
+    cm.Sourcing_Info__c = @enrollment.sourcing_info
     cm.Available_Meeting_Times__c = @enrollment.meeting_times
     cm.Additional_Comments__c = @enrollment.comments
 
     cm.Grad_University__c = @enrollment.grad_school
     cm.Graduate_Year__c = @enrollment.anticipated_grad_school_graduation
 
-    cm.Digital_Footprint__c = @enrollment.online_resume
-    cm.Digital_Footprint_2__c = @enrollment.online_resume2
+    cm.Digital_Footprint__c = @enrollment.digital_footprint
+    cm.Digital_Footprint_2__c = @enrollment.digital_footprint2
 
     cm.Resume__c = @enrollment.resume.url if @enrollment.resume.present?
 

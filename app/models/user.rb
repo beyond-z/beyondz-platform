@@ -52,9 +52,6 @@ class User < ActiveRecord::Base
   has_many :tasks, dependent: :destroy
   has_many :assignments, dependent: :destroy
 
-  has_many :coach_students, foreign_key: :coach_id
-  has_many :students, through: :coach_students, :source => :student
-
   validates :first_name, presence: true
   validates :last_name, presence: true
 
@@ -383,24 +380,6 @@ class User < ActiveRecord::Base
     last_seen = current_sign_in_at || last_sign_in_at || created_at
     difference = DateTime.now - last_seen.to_datetime
     difference.floor # round to nearest day
-  end
-
-  def coach
-    CoachStudent.find_by(student_id: id).try(:coach)
-  end
-
-  # We do need to decide exactly how users will be accepted
-  # into the program and as what roles. For now, it will just
-  # see if we added any students in the admin, thus making them
-  # a coach, or if not, the applicant type is set if they enrolled
-  # thus telling us they aren't a full student yet. (This realistically
-  # only separates our seed data from real data - which is fine until
-  # we start actually accepting people.)
-  #
-  # This method may be obsolete given the shift to Canvas - a coach
-  # is now a TA in that system rather than a special user here.
-  def coach?
-    students.any?
   end
 
   def student?

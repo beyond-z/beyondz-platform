@@ -1,6 +1,5 @@
 $(document).ready(function() {
   load_component_video_quiz();
-  load_component_comments();
   load_component_compare_and_rank();
 
   $('.context-notes').popover({

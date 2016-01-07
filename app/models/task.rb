@@ -5,7 +5,6 @@ class Task < ActiveRecord::Base
   belongs_to :task_definition
   belongs_to :user
   has_many :responses, class_name: 'TaskResponse', dependent: :destroy
-  has_many :comments, dependent: :destroy
 
   scope :for_assignment, -> (assignment_id) {
     where(assignment_id: assignment_id)
