@@ -305,9 +305,6 @@ class EnrollmentsController < ApplicationController
 
     cm.Previous_University__c = @enrollment.previous_university
 
-    cm.High_School_GPA__c = @enrollment.hs_gpa
-    cm.SAT_Score__c = @enrollment.sat_score
-    cm.ACT_Score__c = @enrollment.act_score
     cm.Conquered_Challenge__c = @enrollment.conquered_challenge
     cm.Languages__c = @enrollment.languages
     cm.Sourcing_Info__c = @enrollment.sourcing_info

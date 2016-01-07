@@ -27,6 +27,11 @@ class StaffNotifications < ActionMailer::Base
     mail(to: 'tech@bebraven.org', subject: 'LMS User Mismatch')
   end
 
+  def salesforce_sync_failed(msg)
+    @msg = msg
+    mail(to: 'tech@bebraven.org', subject: 'Salesforce Sync Failure')
+  end
+
   def bug_report(user, bug_info)
     @user = user
     @bug_info = bug_info
