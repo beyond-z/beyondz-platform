@@ -121,33 +121,49 @@ class SalesforceController < ApplicationController
         AND
           Section_Name_In_LMS__c <> ''
       ")
-      members.each do |member|
-        user = User.find_by_salesforce_id(member.ContactId)
-        next if user.nil?
-        lms.sync_user_logins(user)
-        setup_in_osqa(user)
-        type = 'STUDENT'
-        if campaign.Type == 'Leadership Coaches'
-          type = 'TA'
-        end
-        lms.sync_user_course_enrollment(
-          user,
-          campaign.Target_Course_ID_In_LMS__c[0].to_i,
-          type,
-          member.Section_Name_In_LMS__c
-        )
+      begin
+        members.each do |member|
+          user = User.find_by_salesforce_id(member.ContactId)
+          next if user.nil?
 
-        if campaign.Coach_Course_ID__c && campaign.Coach_Course_ID__c[0]
+          # I set up osqa first since it is a separate component
+          # and may throw. I'd rather do it before attempting canvas
+          # setup so we don't have half-created users in canvas if
+          # this does happen to error out
+          if Rails.application.secrets.qa_token && !Rails.application.secrets.qa_token.empty?
+            setup_in_osqa(user)
+          end
+
+          lms.sync_user_logins(user)
+
+          type = 'STUDENT'
+          if campaign.Type == 'Leadership Coaches'
+            type = 'TA'
+          end
           lms.sync_user_course_enrollment(
             user,
-            campaign.Coach_Course_ID__c[0].to_i,
-            'STUDENT',
-            campaign.Section_Name_in_LMS_Coach_Course__c
+            campaign.Target_Course_ID_In_LMS__c[0].to_i,
+            type,
+            member.Section_Name_In_LMS__c
           )
+
+          if campaign.Coach_Course_ID__c && campaign.Coach_Course_ID__c[0]
+            lms.sync_user_course_enrollment(
+              user,
+              campaign.Coach_Course_ID__c[0].to_i,
+              'STUDENT',
+              campaign.Section_Name_in_LMS_Coach_Course__c
+            )
+          end
+
+
+          user.save!
         end
-
-
-        user.save!
+      # Gotta catch 'em all!
+      # the point here is just to report the problem,
+      # then the user will decide how to handle it later
+      rescue Exception => e
+        StaffNotifications.salesforce_sync_failed(e.to_s).deliver
       end
     end
 

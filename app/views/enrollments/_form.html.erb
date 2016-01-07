@@ -161,16 +161,6 @@
                 </div>
 
 
-                <!--
-                <div class="form-group student">
-                  <label>If you'd like, feel free to provide us with your high school GPA, SAT, and/or ACT scores:</label>
-                  <br />
-                  High School GPA: <%= f.text_field :hs_gpa, 'class' => 'form-control short', 'maxlength' => '12' %>
-                  Overall SAT: <%= f.text_field :sat_score, 'class' => 'form-control short', 'maxlength' => '12' %>
-                  Overall ACT: <%= f.text_field :act_score, 'class' => 'form-control short', 'maxlength' => '12' %>
-                </div>
-                -->
-
                 <div class="form-group coach">
                   <label>Graduate school, if any</label>
                   <%= f.text_field :grad_school, 'class' => 'form-control', 'type' => 'text', 'maxlength' => '45' %>
@@ -230,7 +220,7 @@
                   <%= f.text_field :digital_footprint2, 'class' => 'form-control medium', 'type' => 'url', 'placeholder' => 'Paste URL here', 'onblur' => 'this.value = this.value.replace(/[^a-zA-Z0-9%\-_\.~:\/\?#\[\]@!\$\'\(\)\*\&\+,;=]/g, ""); if(this.value.length && this.value.indexOf("http") != 0) this.value = "http://"+this.value;' %>
                 </div>
               </div>
-              <div class="form-group coach student">
+              <div class="form-group coach student" style="clear: left;">
                 <label class="coach">Or upload a resume as a .doc or .pdf file (2 MB or less)</label>
                 <label class="student">Optionally, you may upload a resume as a .doc or .pdf file (2 MB or less)</label>
                 <%= f.file_field :resume %>
@@ -239,13 +229,6 @@
                 <% end %>
               </div>
               <!-- #form-resume -->
-              <!--
-              <div class="form-group student">
-                <label>How will you have spent the summer of <%= Date.today.year %>?</label>
-                <p class="help">Please briefly describe your responsibilities or activities.</p>
-                <%= f.text_area :last_summer, 'class' => 'form-control', 'maxlength' => '150' %>
-              </div>
-              -->
              <div class="form-group student">
                 <label class="coach">If still in college, what do you hope to do post-graduation?</label>
                 <label class="student">If you had to choose now, what job/profession do you want to pursue after graduation?</label>
