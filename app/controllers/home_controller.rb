@@ -25,7 +25,7 @@ class HomeController < ApplicationController
 
           # If accepted, ask for confirmation, if not, go to welcome where
           # they will learn about how to continue their application
-          if cm.Candidate_Status__c == "Accepted"
+          if cm && cm.Candidate_Status__c == "Accepted"
             redirect_to user_confirm_path
           else
             redirect_to welcome_path
