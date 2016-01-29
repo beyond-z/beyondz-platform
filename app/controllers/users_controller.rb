@@ -342,7 +342,7 @@ class UsersController < ApplicationController
 
     if !user[:applicant_type].nil?
       @new_user = User.new(user)
-      unless user[:applicant_type] == 'undergrad_student' || user[:applicant_type] == 'volunteer'
+      unless user[:applicant_type] == 'undergrad_student' || user[:applicant_type] == 'volunteer' || user[:applicant_type] == 'temp_volunteer'
         # Partners, employers, and others are reached out to manually instead of confirming
         # their account. We immediate make on salesforce and don't require confirmation so
         # we can contact them quickly and painlessly (to them!).
