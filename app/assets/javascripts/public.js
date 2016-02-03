@@ -65,3 +65,32 @@ $(document).ready(function() {
   $(window).scroll(setScrollClass);
   setScrollClass(); // ensure it is correctly set upon page load too
 });
+
+function BZ_formSubmitWaitHelper(form) {
+  var now = Date.now();
+  var lastClick = form.getAttribute("data-last-click");
+  if(lastClick)
+    lastClick = lastClick|0; // force conversion to number
+  else
+    lastClick = 0;
+
+  if(now - lastClick < 1500)
+    return false; // double click detected, do not submit twice
+
+  form.setAttribute("data-last-click", now);
+
+  // indicate the wait to the user and allow the submit to continue
+  var a = form.querySelector('button[type=submit]');
+  if(!a && form.tagName == "A") {
+    a = form;
+  }
+
+  if(a) {
+    a.innerHTML = 'Please Wait...';
+    a.style.cursor = 'wait';
+  }
+
+  document.body.style.cursor = 'wait';
+
+  return true;
+}

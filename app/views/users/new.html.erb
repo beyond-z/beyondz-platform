@@ -15,10 +15,7 @@
 
           <div id="sign-up-form" class="">
             <div class="panel-body">
-              <%= form_for :user, url: users_path, role: 'form', html: { onsubmit: "var a = this.querySelector('button[type=submit]');
-                  a.innerHTML = 'Please Wait...';
-                  a.style.cursor = 'wait';
-                  document.body.style.cursor = 'wait'; return true;"} do |f| %>
+              <%= form_for :user, url: users_path, role: 'form', html: { onsubmit: "return BZ_formSubmitWaitHelper(this);"} do |f| %>
                 <%= hidden_field_tag 'referrer', @referrer %>
                 <%= render :partial => 'shared/form_errors', locals: { object: @user } %>
                 <div class="form-group">
