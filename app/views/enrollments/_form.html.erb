@@ -289,7 +289,7 @@
             <div id="form-references" class="volunteer coach">
               <h2 class="volunteer coach">References</h2>
               <p class="help">Please list <span class="coach">TWO people we could contact as character references</span><span class="volunteer">a person we could contact as a character reference</span>. Good examples include a manager, colleague, professor, mentor, or a peer who knows you well.</p>
-              <p>For each reference, please provide either a phone number or email address (or both).</p>
+              <p><span class="coach student">For each reference, p</span><span class="volunteer">P</span>lease provide either a phone number or email address (or both).</p>
               <div>
                                 <div class="form-refernce">
                   <div class="form-group">
@@ -383,7 +383,7 @@
                   <%= f.check_box :identify_first_gen %>
                   I identify as a first-generation college student <span class="help"><br />(i.e., I don't have a parent or legal guardian who has completed a four-year degree)</span></label>
 
-                <label class="checkbox">
+                <label class="checkbox coach student">
                   <%= f.check_box :study_abroad %>
                   I am an international student studying abroad in the United States for only one semester.</label>
               </div>
@@ -428,9 +428,9 @@
               <p class="student"><i>Please be accurate:</i> You will be assigned to a group that meets weekly during one of these meeting times. Note: It's important that you are as accurate as possible in this application, though we also understand your schedule may change after you’ve submitted. You'll have another chance to confirm your availability before program launch.</p>
 
               <%= f.label :meeting_times, "Please select from the list below ALL <u>times</u> during which you expect to be available to lead cohort sessions through the end of #{Date.today.year}.".html_safe, :class => 'coach' %>
-              <%= f.label :meeting_times, "Please select from the list below ALL <u>times</u> during which you expect to be available to volunteer..".html_safe, :class => 'volunteer' %>
+              <%= f.label :meeting_times, "Please select from the list of one-time volunteer opportunities for Spring 2016 below. (You may select as many as you would like)".html_safe, :class => 'volunteer' %>
 
-              <p class="volunteer coach"><i>Please be flexible:</i> The more options you select, the greater our opportunity to ensure all participants benefit from the great diversity of our community.</p>
+              <p class="coach"><i>Please be flexible:</i> The more options you select, the greater our opportunity to ensure all participants benefit from the great diversity of our community.</p>
 
               <p class="coach"><i>Please note</i>: Your invitation to join <%= @program_title %> - <%= @program_site %> will include a specific campus location, day, and timeslot, at which point you'll be asked to officially confirm your role. It's important that you are as accurate as possible, so we can make reliable matches between coaches and participants. However, we also understand your schedule may change after you've submitted. <i>If that happens, or if you are currently very unsure of your upcoming schedule, please email us with details at <a href="mailto:info@bebraven.org">info@bebraven.org</a>.</i></p>
 
