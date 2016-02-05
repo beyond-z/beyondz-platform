@@ -97,7 +97,7 @@ class EnrollmentsController < ApplicationController
 
     # Set the data from the campaign so we can tie back to it
     @enrollment.campaign_id = campaign.Id
-    @enrollment.position = current_user.applicant_type == 'temp_volunteer' ? 'volunteer' : campaign.Application_Type__c
+    @enrollment.position = campaign.Application_Type__c
 
     # And set on Salesforce that it has been started
     cm.Application_Status__c = 'started'
