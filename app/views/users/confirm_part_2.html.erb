@@ -21,6 +21,8 @@
             <div class="availability-options">
               <% if @confirmation_type == 'coach' %>
                 <p>Drat. We'll do what we can to include you in the program. In the meantime, we'll add you to our waitlist. Just let us know which of these currently closed section meeting times work for you:</p>
+              <% elsif @confirmation_type == 'volunteer' %>
+                <p>Drat. We'll do what we can to include you. In the meantime, we'll add you to our waitlist. Just let us know which of these currently closed opportunities work for you:</p>
               <% else %>
                 <p>We're sorry we don't have an open slot that fits your schedule. We'd like to add you to our waitlist in case a slot opens up. Just let us know which of these section meeting times work for you, all of which are currently full. Choose as many as you can for the best chance of getting in off the waitlist.</p>
               <% end %>
