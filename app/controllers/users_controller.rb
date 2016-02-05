@@ -78,7 +78,7 @@ class UsersController < ApplicationController
       @program_title = campaign.Program_Title__c
       @program_site = campaign.Program_Site__c
       @request_availability = campaign.Request_Availability__c
-      @meeting_times = campaign.Meeting_Times__c
+      @meeting_times = current_user.applicant_type == 'temp_volunteer' ? campaign.Volunteer_Opportunities__c : campaign.Meeting_Times__c
 
       @sf_campaign_id = campaign.Id
 
