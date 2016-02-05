@@ -70,11 +70,11 @@ function BZ_formSubmitWaitHelper(form) {
   var now = Date.now();
   var lastClick = form.getAttribute("data-last-click");
   if(lastClick)
-    lastClick = lastClick|0; // force conversion to number
+    lastClick = lastClick;
   else
-    lastClick = 0;
+    lastClick = 0; // ensure not null
 
-  if(now - lastClick < 1500)
+  if(now - lastClick < 2000)
     return false; // double click detected, do not submit twice
 
   form.setAttribute("data-last-click", now);
