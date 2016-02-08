@@ -13,7 +13,7 @@
           <h1>Application for <%= @program_title %> - <%= @program_site %><br /><%= Date.today.year %></h1>
           </header>
 
-          <p class="help coach">
+          <p class="help coach volunteer">
            To apply to volunteer as a <%= @program_title %> Leadership Coach in our <%= @program_site %> program, please complete and submit this application in its entirety. Your answers will be automatically saved as you move between questions, and you can safely leave this page and log back in at any time to resume your work. Your application won't be considered for evaluation until you click SEND at the bottom of the form.
           </p>
 
@@ -29,7 +29,7 @@
         </div>
         <!--.section-container--> 
       </div>
-      <div class="plank knockout-md coach student">
+      <div class="plank knockout-md coach student volunteer">
         <div class="section-container">
           <ul id="jumplinks" style="padding: 20px 0;"></ul>
         </div>
@@ -38,18 +38,20 @@
         <div class="section-container">
           <section>
             <div id="form-basics">
-              <h2 class=" coach student form-section-header">Basic Information</h2>
+              <h2 class=" coach volunteer student form-section-header">Basic Information</h2>
 
               <!-- I'm keeping this here because the javascript checks these IDs
                    but eventually we should probably remove it and do it all server side. -->
               <div class="form-group" id="form-user-type" <%= (@position_is_set ? 'style="display: none;"'.html_safe : '') %>>
                 <h5>Applying as</h5>
                 <input value="" type="hidden" name="position" />
-                <label class="radio"><%= f.radio_button :position, 'coach', 'value' => 'coach', 'id' => 'position_coach' %>Leadership Coach</label><label class="radio"><%= f.radio_button :position, 'student', 'value' => 'student', 'id' => 'position_student' %>Participant (student)</label>
+                <label class="radio"><%= f.radio_button :position, 'coach', 'value' => 'coach', 'id' => 'position_coach' %>Leadership Coach</label>
+                <label class="radio"><%= f.radio_button :position, 'student', 'value' => 'student', 'id' => 'position_student' %>Participant (student)</label>
+                <label class="radio"><%= f.radio_button :position, 'volunteer', 'value' => 'volunteer', 'id' => 'position_volunteer' %>Volunteer</label>
               </div>
               <!-- end part that should be cut -->
 
-              <div class="coach student" id="form-name">
+              <div class="coach volunteer student" id="form-name">
                 <h4>Your Name</h4>
                 <div class="form-group has-success">
                   <%= f.label :first_name %>
@@ -65,7 +67,7 @@
                 </div>
               </div>
               <!-- #form-name -->
-              <div class="coach student" id="form-contact">
+              <div class="volunteer coach student" id="form-contact">
                 <h4>Your Contact Info</h4>
                 <div class="form-group has-success">
                   <label>Primary Email</label>
@@ -106,11 +108,11 @@
         </div>
         <!-- .section-container --></div>
 
-      <div class="plank plain-lt both coach student">
+      <div class="plank plain-lt both volunteer coach student">
         <div class="section-container">
           <section>
             <div id="form-academics">
-              <h2 class="coach student form-section-header">Academic Background</h2>
+              <h2 class="volunteer coach student form-section-header">Academic Background</h2>
               <div style="margin-bottom: 2.5em;">
                 <!-- I'm not using the checkbox directly because we can't
                      distinguish between explicitly unchecked and initial
@@ -133,7 +135,7 @@
                 </div>
                 <div class="form-group both">
                   <label class="student">Year of expected graduation</label>
-                  <label class="coach">Year of graduation</label>
+                  <label class="volunteer coach">Year of graduation</label>
                   <%= f.text_field :undergraduate_year, 'class' => 'form-control short', 'step' => '1', 'type' => 'number', 'min' => Date.today.year - 50 %>
                   <!-- the -50 there is an arbitrary amount to account for the coach case,
                        where they may have graduated many years ago, -->
@@ -146,8 +148,8 @@
 
                 <p class="help student">Note: We are asking the following questions in order to gain a fuller understanding of your academic background. Your answers will not directly affect your chances of being accepted.</p>
 
-                <div class="form-group both coach student">
-                  <label>Major<span class="student">/Concentration or intended major, if you have one. (Leave blank if none. If pursuing multiple majors, list all.)</span> <span class="coach"> (List all, if multiple)</span></label>
+                <div class="form-group both volunteer coach student">
+                  <label>Major<span class="student">/Concentration or intended major, if you have one. (Leave blank if none. If pursuing multiple majors, list all.)</span> <span class="volunteer coach"> (List all, if multiple)</span></label>
                   <%= f.text_field :major, 'class' => 'form-control', 'type' => 'text', :maxlength => '115' %>
                 </div>
 
@@ -161,7 +163,7 @@
                 </div>
 
 
-                <div class="form-group coach">
+                <div class="form-group volunteer coach">
                   <label>Graduate school, if any</label>
                   <%= f.text_field :grad_school, 'class' => 'form-control', 'type' => 'text', 'maxlength' => '45' %>
                   <label>Graduate degree</label>
@@ -180,13 +182,13 @@
         <!-- .section-container --></div>
 
 
-      <div class="plank plain-md coach student">
+      <div class="plank plain-md volunteer coach student">
         <div class="section-container">
           <section>
             <div id="form-prof-bkg">
               <h2 class="student">Professional and Volunteer Background and Commitment</h2>
-              <h2 class="coach">Professional and Volunteer Experience</h2>
-              <div class="form-group coach">
+              <h2 class="volunteer coach">Professional and Volunteer Experience</h2>
+              <div class="form-group volunteer coach">
                 <h5>What is your current occupation?:</h5>
                 <p class="help">Please respond to at least one of the following questions about your occupation (industry, company, title).</p>
                 <label>Industry:</label>
@@ -196,11 +198,11 @@
                 <label>Title:</label>
                   <%= f.text_field :title, "class"=>'form-control', 'maxlength' => '75' %><br />
               </div>
-              <div class="form-group coach student">
+              <div class="form-group volunteer coach student">
                 <label class="student">Please list all your extracurricular, volunteer, and professional commitments for the upcoming school year (<%= Date.today.year %> - <%= Date.today.year+1 %>).</label>
-                <label class="coach">Please list any other significant volunteer commitments you've made for the upcoming year (<%= Date.today.year %> - <%= Date.today.year+1 %>), including Board commitments, pro bono work, coaching, and other volunteer roles (recurring or occasional).</label>
+                <label class="volunteer coach">Please list any other significant volunteer commitments you've made for the upcoming year (<%= Date.today.year %> - <%= Date.today.year+1 %>), including Board commitments, pro bono work, coaching, and other volunteer roles (recurring or occasional).</label>
                 <p class="help student">Please include approximate hours per month, and if it varies by semester, please note that too. Ex: Student worker at the library, 25 hours/month. Rugby captain, 30 hours/month, fall semester only.</p>
-                <p class="help coach">Please include approximate hours per month, and if it varies by season, please note that too. Ex: AAU girls' coach, 10 hours/week, summer only. Board member, Carver Academy - East, 4 hours/month.</p>
+                <p class="help volunteer coach">Please include approximate hours per month, and if it varies by season, please note that too. Ex: AAU girls' coach, 10 hours/week, summer only. Board member, Carver Academy - East, 4 hours/month.</p>
                 <%= f.text_area :other_commitments, 'class' => 'form-control', 'maxlength' => '1000' %>
               </div>
 
@@ -212,16 +214,18 @@
                 <%= f.text_area :meaningful_activity, 'class' => 'form-control', 'maxlength' => '1000' %>
               </div>
 
-              <div class="form-group coach student">
-                <label class="coach">Please provide a link to a "digital fingerprint" that will help us understand you better.</label>
-                <p class="help coach">Good examples include: your LinkedIn profile, an article you wrote, the website of an organization particularly meaningful to you, etc. (Less helpful are links to your Facebook, Instagram, or Twitter accounts.) Please make sure the links are public.<span class="coach"> If you'd prefer to upload a document in lieu of submitting a second link, please click the "Choose File" button below.</span></p>
-                <div class="input-group coach">
+              <div class="form-group volunteer coach student">
+                <label class="volunteer coach">Please provide a link to a "digital fingerprint" that will help us understand you better.</label>
+                <p class="help volunteer coach">Good examples include: your LinkedIn profile, an article you wrote, the website of an organization particularly meaningful to you, etc. (Less helpful are links to your Facebook, Instagram, or Twitter accounts.) Please make sure the links are public.<span class="volunteer coach"> If you'd prefer to upload a document in lieu of submitting a second link, please click the "Choose File" button below.</span></p>
+                <div class="input-group volunteer coach">
                   <%= f.text_field :digital_footprint, 'class' => 'form-control medium', 'type' => 'url', 'placeholder' => 'Paste URL here', 'onblur' => 'this.value = this.value.replace(/[^a-zA-Z0-9%\-_\.~:\/\?#\[\]@!\$\'\(\)\*\&\+,;=]/g, ""); if(this.value.length && this.value.indexOf("http") != 0) this.value = "http://"+this.value;' %>
+                </div>
+                <div class="input-group coach">
                   <%= f.text_field :digital_footprint2, 'class' => 'form-control medium', 'type' => 'url', 'placeholder' => 'Paste URL here', 'onblur' => 'this.value = this.value.replace(/[^a-zA-Z0-9%\-_\.~:\/\?#\[\]@!\$\'\(\)\*\&\+,;=]/g, ""); if(this.value.length && this.value.indexOf("http") != 0) this.value = "http://"+this.value;' %>
                 </div>
               </div>
-              <div class="form-group coach student" style="clear: left;">
-                <label class="coach">Or upload a resume as a .doc or .pdf file (2 MB or less)</label>
+              <div class="form-group volunteer coach student" style="clear: left;">
+                <label class="volunteer coach">Or upload a resume as a .doc or .pdf file (2 MB or less)</label>
                 <label class="student">Optionally, you may upload a resume as a .doc or .pdf file (2 MB or less)</label>
                 <%= f.file_field :resume %>
                 <% if @enrollment.resume.present? %>
@@ -230,7 +234,7 @@
               </div>
               <!-- #form-resume -->
              <div class="form-group student">
-                <label class="coach">If still in college, what do you hope to do post-graduation?</label>
+                <label class="volunteer coach">If still in college, what do you hope to do post-graduation?</label>
                 <label class="student">If you had to choose now, what job/profession do you want to pursue after graduation?</label>
                 <p class="help">Even if you aren't quite sure yet, please let us know what you are hoping to do, or options you are seriously considering.</p>
                 <%= f.text_area :post_graduation_plans, 'class' => 'form-control', 'maxlength' => '150' %>
@@ -243,16 +247,17 @@
       </div>
 
 
-      <div class="plank plain-lt both coach student">
+      <div class="plank plain-lt both volunteer coach student">
         <div class="section-container">
           <section>
             <div id="form-reflective">
-              <h2 class="coach student form-section-header">Short-Answer Reflective Questions</h2>
+              <h2 class="volunteer coach student form-section-header">Short-Answer Reflective Questions</h2>
               <p class="help">Please use complete sentences!</p>
 
-              <div class="form-group coach student">
+              <div class="form-group volunteer coach student">
                 <label class="student">Why do you want to join the <%= @program_title %>?</label>
                 <label class="coach">Why do you want to be a <%= @program_title %> Leadership Coach?</label>
+                <label class="volunteer">Why do you want to be a <%= @program_title %> volunteer and what areas of personal expertise or passion are you excited to share?</label>
                 <%= f.text_area :why_bz, 'class' => 'form-control', 'maxlength' => '500' %>
               </div>
 
@@ -278,13 +283,13 @@
         </div>
       </div>
 
-      <div class="plank plain-md student coach">
+      <div class="plank plain-md student volunteer coach">
         <div class="section-container">
           <section>
-            <div id="form-references" class="coach">
-              <h2 class="coach">References</h2>
-              <p class="help">Please list TWO people we could contact as character references. Good examples include a manager, colleague, professor, mentor, or a peer who knows you well.</p>
-              <p>For each reference, please provide either a phone number or email address (or both).</p>
+            <div id="form-references" class="volunteer coach">
+              <h2 class="volunteer coach">References</h2>
+              <p class="help">Please list <span class="coach">TWO people we could contact as character references</span><span class="volunteer">a person we could contact as a character reference</span>. Good examples include a manager, colleague, professor, mentor, or a peer who knows you well.</p>
+              <p><span class="coach student">For each reference, p</span><span class="volunteer">P</span>lease provide either a phone number or email address (or both).</p>
               <div>
                                 <div class="form-refernce">
                   <div class="form-group">
@@ -310,7 +315,7 @@
                   </div>
                 </div>
                 <!-- .form-reference -->
-                                <div class="form-refernce">
+                                <div class="form-refernce coach student">
                   <div class="form-group">
                     <label>Reference 2 Name</label>
                     <%= f.text_field :reference2_name, 'class' => 'form-control medium', 'type' => 'text', 'placeholder' => 'First and last name', 'maxlength' => 240 %>
@@ -342,11 +347,11 @@
         <!-- .section-container --> 
       </div>
 
-      <div class="plank plain-lt both coach student">
+      <div class="plank plain-lt both volunteer coach student">
         <div class="section-container">
           <section>
             <div id="form-personal-bkg">
-              <h2 class="coach student">Personal Background</h2>
+              <h2 class="volunteer coach student">Personal Background</h2>
               <p class="help">We strive to ensure our community is diverse. Please respond to the following questions about your background, identity and experiences to the extent you feel comfortable.<br />
               All questions in this section are <b>optional</b> and have no bearing on our selection decisions.</p>
               <h5>Which race(s)/ethnicity(-ies) do you identify with (check all that apply) <sup>&dagger;</sup> :</h5>
@@ -378,7 +383,7 @@
                   <%= f.check_box :identify_first_gen %>
                   I identify as a first-generation college student <span class="help"><br />(i.e., I don't have a parent or legal guardian who has completed a four-year degree)</span></label>
 
-                <label class="checkbox">
+                <label class="checkbox coach student">
                   <%= f.check_box :study_abroad %>
                   I am an international student studying abroad in the United States for only one semester.</label>
               </div>
@@ -409,11 +414,11 @@
         <!-- .section-container --></div>
 
 
-      <div class="plank plain-lt both coach <%= (@request_availability && @meeting_times) ? "student" : "" %>">
+      <div class="plank plain-lt both volunteer coach <%= (@request_availability && @meeting_times) ? "student" : "" %>">
         <div class="section-container">
           <section>
             <div id="form-availability">
-              <h2 class="coach <%= (@request_availability && @meeting_times) ? "student" : "" %>">Availability</h2>
+              <h2 class="volunteer coach <%= (@request_availability && @meeting_times) ? "student" : "" %>">Availability</h2>
 
               <% if @request_availability && @meeting_times %>
               <input type="hidden" name="meeting_times_required" value="1" />
@@ -423,10 +428,13 @@
               <p class="student"><i>Please be accurate:</i> You will be assigned to a group that meets weekly during one of these meeting times. Note: It's important that you are as accurate as possible in this application, though we also understand your schedule may change after you’ve submitted. You'll have another chance to confirm your availability before program launch.</p>
 
               <%= f.label :meeting_times, "Please select from the list below ALL <u>times</u> during which you expect to be available to lead cohort sessions through the end of #{Date.today.year}.".html_safe, :class => 'coach' %>
+              <%= f.label :meeting_times, "Please select from the list of one-time volunteer opportunities below. (You may select as many as you would like)".html_safe, :class => 'volunteer' %>
 
               <p class="coach"><i>Please be flexible:</i> The more options you select, the greater our opportunity to ensure all participants benefit from the great diversity of our community.</p>
 
-              <p class="coach"><i>Please note</i>: Your invitation to join <%= @program_title %> - <%= @program_site %> will include a specific campus location, day, and timeslot, at which point you'll be asked to officially confirm your role. It's important that you are as accurate as possible, so we can make reliable matches between coaches and participants. However, we also understand your schedule may change after you've submitted. <i>If that happens, or if you are currently very unsure of your fall schedule, please email us with details at <a href="mailto:info@bebraven.org">info@bebraven.org</a>.</i></p>
+              <p class="coach"><i>Please note</i>: Your invitation to join <%= @program_title %> - <%= @program_site %> will include a specific campus location, day, and timeslot, at which point you'll be asked to officially confirm your role. It's important that you are as accurate as possible, so we can make reliable matches between coaches and participants. However, we also understand your schedule may change after you've submitted. <i>If that happens, or if you are currently very unsure of your upcoming schedule, please email us with details at <a href="mailto:info@bebraven.org">info@bebraven.org</a>.</i></p>
+
+              <p class="volunteer"><i>Please note</i>: Your invitation to join <%= @program_title %> - <%= @program_site %> will include a specific campus location, day, and timeslot, at which point you'll be asked to officially confirm your participation. However, we also understand your schedule may change after you've submitted. <i>If that happens, or if you are currently very unsure of your upcoming schedule, please email us with details at <a href="mailto:info@bebraven.org">info@bebraven.org</a>.</i></p>
 
               <p>You must check at least one option.</p>
 
@@ -448,17 +456,21 @@
               <br />
 
               <% end %>
-              <h5 class="coach">Please affirm your commitment:</h5>
-              <div class="form-group coach" id="coach-affirm-holder">
-                <label class="checkbox">
+              <h5 class="volunteer coach">Please affirm your commitment:</h5>
+              <div class="form-group volunteer coach" id="coach-affirm-holder">
+                <label class="checkbox coach">
                   <%= f.check_box :affirm_commit_coach %>
                   <span class="bs-wrapper"><span class="control-label"> I affirm that to the best of my knowledge I can fulfill the commitment to participate in all Leadership Coach activities, which can include: facilitating weekly cohort sessions (a mix of in-person and virtual); leading virtual individual coaching sessions participants; and delivering feedback on selected artifacts (e.g., resumes) submitted by participants.</span></span>
                 </label>
 
+                <label class="checkbox volunteer">
+                  <%= f.check_box :affirm_commit_coach %>
+                  <span class="bs-wrapper"><span class="control-label"> I affirm that to the best of my knowledge I can fulfill the commitment to participate in one or more of the selected activities above.</span></span>
+                </label>
               </div>
 
-              <div class="form-group coach">
-                <span class="coach">Please let us know of any dates that you anticipate you will not be available through the end of <%= Date.today.year %>.</span>
+              <div class="form-group volunteer coach">
+                <span class="volunteer coach">Please let us know of any dates that you anticipate you will not be available through the end of <%= Date.today.year %>.</span>
                 <%= f.text_area :cannot_attend, 'class' => 'form-control', 'maxlength' => '500', 'style'=>'height: 6em !important;' %>
               </div>
             </div>
@@ -497,11 +509,11 @@
       </div>
 
 
-      <div class="plank plain-md coach student">
+      <div class="plank plain-md volunteer coach student">
         <div class="section-container">
           <section>
             <div id="form-almost-done">
-              <h2 class="coach student">Almost Done</h2>
+              <h2 class="volunteer coach student">Almost Done</h2>
               <div class="form-group">
                 <label>Anything else you'd like to share?</label>
                 <p class="help">Please let us know any additional information you wish to share about your interest in <%= @program_title %> - <%= @program_site %>.</p>
@@ -541,7 +553,7 @@
           </section>
         </div>
       </div>
-      <div class="plank tertiary-md student coach">
+      <div class="plank tertiary-md student volunteer coach">
         <div class="section-container">
           <section>
             <div id="form-end">

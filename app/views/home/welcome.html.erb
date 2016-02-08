@@ -7,7 +7,7 @@
           <p class="shoutout">Check your email at <br /> <%= @new_user.email %> <br /> to complete your sign-up.</p></p>
           <p class="feature"><strong>Tip:</strong> if you don't see it in your inbox within a few minutes, please check your spam folder.</p>
         <% elsif @new_user %>
-          <% if @new_user.applicant_type == 'volunteer' || @new_user.applicant_type == 'undergrad_student' %>
+          <% if @new_user.applicant_type == 'volunteer' || @new_user.applicant_type == 'undergrad_student' || @new_user.applicant_type == 'temp_volunteer' %>
             <!-- We should be able to re-enable apply now in Salesforce, overriding applicatio_received. The second clause here allows that. -->
             <% if @application_received && !(@new_user.apply_now_enabled || !Rails.application.secrets.salesforce_username) %>
               <h2>Thank you for applying to <%= @program_title %>.</h2>

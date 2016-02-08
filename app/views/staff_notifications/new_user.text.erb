@@ -13,6 +13,8 @@ First name: <%= @user.first_name %>
       %> Grad student: <%= @user.university_name %>, anticipated graduation in <%= @user.anticipated_graduation %><%
     when 'undergrad_student'
       %> Undergrad student: <%= @user.university_name %>, anticipated graduation in <%= @user.anticipated_graduation %><%
+    when 'temp_volunteer'
+      %> Temp volunteer: <%= @user.applicant_details %><%
     when 'school_student'
       %> Student: <%= @user.anticipated_graduation %><%
     end %>
