@@ -30,7 +30,7 @@ class Enrollment < ActiveRecord::Base
   validates :birthdate, presence: true, if: "position == 'student'"
   validates :conquered_challenge, presence: true, if: "position == 'student'"
   # validates :last_summer, presence: true, if: "position == 'student'"
-  validates :meaningful_activity, presence: true
+  validates :meaningful_activity, presence: true, if: "position == 'student' || position == 'coach'"
 
   validates :why_bz, presence: true, if: "position == 'coach'"
   validates :passions_expertise, presence: true, if: "position == 'coach'"
