@@ -79,6 +79,7 @@ class Admin::AssignmentsController < Admin::ApplicationController
       return
     end
 
+    email = params[:email]
     file = CSV.parse(params[:import][:csv].read)
 
     # pre-load the assignments based on the first row
@@ -215,12 +216,18 @@ class Admin::AssignmentsController < Admin::ApplicationController
       return
     end
 
+    self.delay.commit_new_due_dates(email, changed)
+
+    flash[:message] = 'Changes in progress, you should check your email to know when it is complete.'
+    redirect_to admin_set_due_dates_path
+  end
+
+  def commit_new_due_dates(email, changed)
+    lms = BeyondZ::LMS.new
     changed.each do |key, value|
       lms.set_due_dates(value)
     end
-
-    flash[:message] = 'Changes made, you should double check on Canvas now.'
-    redirect_to admin_set_due_dates_path
+    StaffNotifications.canvas_due_dates_updated(email).deliver
   end
 
   # This is the date translation when we're importing data
@@ -248,6 +255,7 @@ class Admin::AssignmentsController < Admin::ApplicationController
     if date_string.nil? || date_string.empty?
       return date_string
     end
+    raise date_string
     dt = DateTime.iso8601(date_string)
     # Best guess for friendly timezone... using the city means
     # the library will handle stuff like DST... for now though.

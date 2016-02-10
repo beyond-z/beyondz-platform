@@ -11,6 +11,11 @@
 <p>Basically just keep both the west and east coasts in mind while making changes.</p>
 
 <%= form_for :import, :html => { :multipart => true } do |f| %>
+  Your email: <%= f.text_field :email %>
+  <br />
+  <br />
   <%= f.file_field :csv %>
   <%= submit_tag 'Upload CSV' %>
 <% end %>
+
+<p>You will get an email when the update is complete if all goes well. It can take several minutes.</p>
