@@ -138,7 +138,14 @@
                   <button type="submit" class="button-primary">
                     <!-- We check the model campaign id to see if they will be auto-mapped based on query params. If so, next
                          step is start application, so it says that. Otherwise, generic "submit" is used. -->
-                    <%= (@user.applicant_type == 'volunteer' || @user.applicant_type == 'undergrad_student' || @user.applicant_type == 'temp_volunteer') ? "Next: Start Application" : "Submit" %></button>
+                    <% if(@user.applicant_type == 'volunteer' || @user.applicant_type == 'undergrad_student') %>
+                      Next: Start Application
+                    <% elsif @user.applicant_type == 'temp_volunteer'%>
+                      Next: Register
+                    <% else %>
+                      Submit
+                    <% end %>
+                  </button>
                 </div>
 
               <% end %>

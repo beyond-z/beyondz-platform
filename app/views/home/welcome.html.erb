@@ -27,7 +27,7 @@
                 <p class="shoutout">Thanks for coming back to finish your application. Click here to pick up where you left off!</p>
                 <% end %>
                 <div class="apply-button button-primary">
-                  <%= link_to 'Apply now!', new_enrollment_path, style: 'color: white', onclick: 'return BZ_formSubmitWaitHelper(this);' %><br />
+                  <%= link_to (@new_user.applicant_type == "temp_volunteer" ? 'Register now!' : 'Apply now!'), new_enrollment_path, style: 'color: white', onclick: 'return BZ_formSubmitWaitHelper(this);' %><br />
                 </div>
               <% else %>
                 <% if @program_completed %>

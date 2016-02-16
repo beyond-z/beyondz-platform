@@ -8,7 +8,7 @@
             <% if @waitlisted %>
               <p>Thank you for your response.</p>
             <% else %>
-              <p>Thank you for confirming your commitment to participate in Braven.</p>
+              <p>Thank you for confirming your commitment to <%- (current_user.applicant_type == 'temp_volunteer') ? 'volunteer with' : 'participate in' %> Braven.</p>
             <% end %>
           <% else %>
             <p class="shoutout">Welcome to the <%= @program_title %> community, <%= current_user.first_name %>!</p>
@@ -33,7 +33,11 @@
             <% if @waitlisted %>
               <p>We will get in contact with you if a slot opens up.</p>
             <% else %>
-              <p>You'll be hearing from us shortly with more information about our kickoff event.</p>
+              <% if current_user.applicant_type == 'temp_volunteer' %>
+                <p>You'll be hearing from us shortly with more information.</p>
+              <% else %>
+                <p>You'll be hearing from us shortly with more information about our kickoff event.</p>
+              <% end %>
             <% end %>
           <% else %>
             <div class="availability-options">
