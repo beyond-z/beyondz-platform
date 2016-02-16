@@ -10,7 +10,8 @@
       <div class="plank tertiary-md light">
         <div class="section-container">
           <header id="prototype-header">
-          <h1>Application for <%= @program_title %> - <%= @program_site %><br /><%= Date.today.year %></h1>
+          <h1 class="coach student">Application for <%= @program_title %> - <%= @program_site %><br /><%= Date.today.year %></h1>
+          <h1 class="volunteer">Registration for <%= @program_title %> - <%= @program_site %><br /><%= Date.today.year %></h1>
           </header>
 
           <p class="help coach">
@@ -565,7 +566,7 @@
                 <div class="apply-button">This application has been received!</div>
               <% else %>
                 <div class="apply-button form-submit">
-                  <button class="button-primary" type="submit" name="user_submit" onclick="return confirm('Are you sure you are ready to send your application?');">SEND</button>
+                  <button class="button-primary" type="submit" name="user_submit" onclick="return confirm('Are you sure you are ready to send your form?');">SEND</button>
                 </div>
               <% end %>
             </div>
