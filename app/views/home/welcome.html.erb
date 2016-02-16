@@ -10,7 +10,7 @@
           <% if @new_user.applicant_type == 'volunteer' || @new_user.applicant_type == 'undergrad_student' || @new_user.applicant_type == 'temp_volunteer' %>
             <!-- We should be able to re-enable apply now in Salesforce, overriding applicatio_received. The second clause here allows that. -->
             <% if @application_received && !(@new_user.apply_now_enabled || !Rails.application.secrets.salesforce_username) %>
-              <h2>Thank you for applying to <%= @program_title %>.</h2>
+              <h2>Thank you for <%= (@new_user.applicant_type == 'temp_volunteer') ? 'registering with' : 'applying to' %> <%= @program_title %>.</h2>
               <p>We will be in touch shortly with next steps. If you have any further questions please feel free to <a href="mailto:join@bebraven.org">contact us</a></p>
             <% else %>
                 <!-- When Salesforce integration is enabled, the apply now button will be controlled
@@ -19,7 +19,13 @@
                 <% if Enrollment.find_by(:user_id => @new_user.id).nil? %>
                   <!-- FIXME: this is a hack where we auto-activate accounts b/c emails are going to spam.  Revert this once we have email activation back. -->
                   <% if @new_user.salesforce_campaign_id %>
-                    <p class="shoutout">You've successfully signed up.  Now you can complete your application.</p>
+                    <p class="shoutout">You've successfully signed up. 
+                      <% if @new_user.applicant_type == 'temp_volunteer' %>
+                        Now you can complete your registration.
+                      <% else %>
+                        Now you can complete your application.
+                      <% end %>
+                    </p>
                   <% else %>
                     <p class="shoutout">Your account was successfully activated. Now you can complete your application.</p>
                   <% end %>
