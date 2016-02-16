@@ -29,7 +29,7 @@
             As a reminder, this selective opportunity requires your participation in diverse activities intended to build your leadership and career skills, which can include: weekly evening 2-hour group meetings; occasional weekend events (for exact date(s), please see our website); and individual coaching sessions. As part of the program, you will also complete weekly online modules (approx 2 hours, each) on your own.
           </p>
 
-          <p class="help">The <span class="coach student">application</span><span class="volunteer">registration</span> should take approximately 20 minutes to complete and includes the following sections:</p>
+          <p class="help">The <span class="coach student">application</span><span class="volunteer">registration</span> should take approximately <span class="coach student">20</span><span class="volunteer">10</span> minutes to complete and includes the following sections:</p>
 
         </div>
         <!--.section-container--> 
@@ -203,11 +203,11 @@
                 <label>Title:</label>
                   <%= f.text_field :title, "class"=>'form-control', 'maxlength' => '75' %><br />
               </div>
-              <div class="form-group volunteer coach student">
+              <div class="form-group coach student">
                 <label class="student">Please list all your extracurricular, volunteer, and professional commitments for the upcoming school year (<%= Date.today.year %> - <%= Date.today.year+1 %>).</label>
-                <label class="volunteer coach">Please list any other significant volunteer commitments you've made for the upcoming year (<%= Date.today.year %> - <%= Date.today.year+1 %>), including Board commitments, pro bono work, coaching, and other volunteer roles (recurring or occasional).</label>
+                <label class="coach">Please list any other significant volunteer commitments you've made for the upcoming year (<%= Date.today.year %> - <%= Date.today.year+1 %>), including Board commitments, pro bono work, coaching, and other volunteer roles (recurring or occasional).</label>
                 <p class="help student">Please include approximate hours per month, and if it varies by semester, please note that too. Ex: Student worker at the library, 25 hours/month. Rugby captain, 30 hours/month, fall semester only.</p>
-                <p class="help volunteer coach">Please include approximate hours per month, and if it varies by season, please note that too. Ex: AAU girls' coach, 10 hours/week, summer only. Board member, Carver Academy - East, 4 hours/month.</p>
+                <p class="help coach">Please include approximate hours per month, and if it varies by season, please note that too. Ex: AAU girls' coach, 10 hours/week, summer only. Board member, Carver Academy - East, 4 hours/month.</p>
                 <%= f.text_area :other_commitments, 'class' => 'form-control', 'maxlength' => '1000' %>
               </div>
 
@@ -288,11 +288,11 @@
         </div>
       </div>
 
-      <div class="plank plain-md student volunteer coach">
+      <div class="plank plain-md student coach">
         <div class="section-container">
           <section>
-            <div id="form-references" class="volunteer coach">
-              <h2 class="volunteer coach">References</h2>
+            <div id="form-references" class="coach">
+              <h2 class="coach">References</h2>
               <p class="help">Please list <span class="coach">TWO people we could contact as character references</span><span class="volunteer">a person we could contact as a character reference</span>. Good examples include a manager, colleague, professor, mentor, or a peer who knows you well.</p>
               <p><span class="coach student">For each reference, p</span><span class="volunteer">P</span>lease provide either a phone number or email address (or both).</p>
               <div>
@@ -461,16 +461,11 @@
               <br />
 
               <% end %>
-              <h5 class="volunteer coach">Please affirm your commitment:</h5>
+              <h5 class="coach">Please affirm your commitment:</h5>
               <div class="form-group volunteer coach" id="coach-affirm-holder">
                 <label class="checkbox coach">
                   <%= f.check_box :affirm_commit_coach %>
                   <span class="bs-wrapper"><span class="control-label"> I affirm that to the best of my knowledge I can fulfill the commitment to participate in all Leadership Coach activities, which can include: facilitating weekly cohort sessions (a mix of in-person and virtual); leading virtual individual coaching sessions participants; and delivering feedback on selected artifacts (e.g., resumes) submitted by participants.</span></span>
-                </label>
-
-                <label class="checkbox volunteer">
-                  <%= f.check_box :affirm_commit_coach %>
-                  <span class="bs-wrapper"><span class="control-label"> I affirm that to the best of my knowledge I can fulfill the commitment to participate in one or more of the selected activities above.</span></span>
                 </label>
               </div>
 
