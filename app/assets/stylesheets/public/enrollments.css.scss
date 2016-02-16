@@ -74,6 +74,8 @@
   @extend .has-error;
 }
 
-.student, .coach, .volunteer {
-  display: none;
+#enrollment-form-holder {
+  .student, .coach, .volunteer {
+    display: none;
+  }
 }
