@@ -46,6 +46,7 @@ class HomeController < ApplicationController
   end
 
   def welcome
+    @apply_now_showing = false
     # just set here as a default so we can see it if it is improperly set below and
     # also to handle the fallback case for legacy users who applied before the salesforce system was in place
     @program_title = 'Braven'

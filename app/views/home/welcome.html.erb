@@ -33,6 +33,7 @@
                 <p class="shoutout">Thanks for coming back to finish your application. Click here to pick up where you left off!</p>
                 <% end %>
                 <div class="apply-button button-primary">
+                  <% @apply_now_showing = true %>
                   <%= link_to (@new_user.applicant_type == "temp_volunteer" ? 'Register now!' : 'Apply now!'), new_enrollment_path, style: 'color: white', onclick: 'return BZ_formSubmitWaitHelper(this);' %><br />
                 </div>
               <% else %>
@@ -56,6 +57,7 @@
   </div>
 </div>
 
+<% if !@apply_now_showing %>
 <div class="plank plain-lt">
   <div class="section-container">
     <section>
@@ -85,3 +87,4 @@
     </section>
   </div>
 </div>
+<% end %>
