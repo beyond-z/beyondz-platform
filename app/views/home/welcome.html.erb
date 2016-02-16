@@ -7,10 +7,10 @@
           <p class="shoutout">Check your email at <br /> <%= @new_user.email %> <br /> to complete your sign-up.</p></p>
           <p class="feature"><strong>Tip:</strong> if you don't see it in your inbox within a few minutes, please check your spam folder.</p>
         <% elsif @new_user %>
-          <% if @new_user.applicant_type == 'volunteer' || @new_user.applicant_type == 'undergrad_student' %>
+          <% if @new_user.applicant_type == 'volunteer' || @new_user.applicant_type == 'undergrad_student' || @new_user.applicant_type == 'temp_volunteer' %>
             <!-- We should be able to re-enable apply now in Salesforce, overriding applicatio_received. The second clause here allows that. -->
             <% if @application_received && !(@new_user.apply_now_enabled || !Rails.application.secrets.salesforce_username) %>
-              <h2>Thank you for applying to <%= @program_title %>.</h2>
+              <h2>Thank you for <%= (@new_user.applicant_type == 'temp_volunteer') ? 'registering with' : 'applying to' %> <%= @program_title %>.</h2>
               <p>We will be in touch shortly with next steps. If you have any further questions please feel free to <a href="mailto:join@bebraven.org">contact us</a></p>
             <% else %>
                 <!-- When Salesforce integration is enabled, the apply now button will be controlled
@@ -19,7 +19,13 @@
                 <% if Enrollment.find_by(:user_id => @new_user.id).nil? %>
                   <!-- FIXME: this is a hack where we auto-activate accounts b/c emails are going to spam.  Revert this once we have email activation back. -->
                   <% if @new_user.salesforce_campaign_id %>
-                    <p class="shoutout">You've successfully signed up.  Now you can complete your application.</p>
+                    <p class="shoutout">You've successfully signed up. 
+                      <% if @new_user.applicant_type == 'temp_volunteer' %>
+                        Now you can complete your registration.
+                      <% else %>
+                        Now you can complete your application.
+                      <% end %>
+                    </p>
                   <% else %>
                     <p class="shoutout">Your account was successfully activated. Now you can complete your application.</p>
                   <% end %>
@@ -27,7 +33,8 @@
                 <p class="shoutout">Thanks for coming back to finish your application. Click here to pick up where you left off!</p>
                 <% end %>
                 <div class="apply-button button-primary">
-                  <%= link_to 'Apply now!', new_enrollment_path, style: 'color: white' %><br />
+                  <% @apply_now_showing = true %>
+                  <%= link_to (@new_user.applicant_type == "temp_volunteer" ? 'Register now!' : 'Apply now!'), new_enrollment_path, style: 'color: white', onclick: 'return BZ_formSubmitWaitHelper(this);' %><br />
                 </div>
               <% else %>
                 <% if @program_completed %>
@@ -50,6 +57,7 @@
   </div>
 </div>
 
+<% if !@apply_now_showing %>
 <div class="plank plain-lt">
   <div class="section-container">
     <section>
@@ -79,3 +87,4 @@
     </section>
   </div>
 </div>
+<% end %>

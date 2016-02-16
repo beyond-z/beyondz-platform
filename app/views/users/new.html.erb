@@ -15,7 +15,7 @@
 
           <div id="sign-up-form" class="">
             <div class="panel-body">
-              <%= form_for :user, url: users_path, role: 'form' do |f| %>
+              <%= form_for :user, url: users_path, role: 'form', html: { onsubmit: "return BZ_formSubmitWaitHelper(this);"} do |f| %>
                 <%= hidden_field_tag 'referrer', @referrer %>
                 <%= render :partial => 'shared/form_errors', locals: { object: @user } %>
                 <div class="form-group">
@@ -64,6 +64,18 @@
                     <%= render :partial => 'volunteer', :locals => { :f => f} %>
                   </div>
                   <% end %>
+                  <% if !@hide_other_applicant_types || @user.applicant_type == 'temp_volunteer' %>
+                  <div class="clickable-option">
+                    <% if @hide_other_applicant_types %>
+                      <%= f.radio_button :applicant_type, 'temp_volunteer', required: 'required', style: 'visibility: hidden;' %>
+                    <% else %>
+                      <%= f.radio_button :applicant_type, 'temp_volunteer', required: 'required' %>
+                      <%= f.label :applicant_type_volunteer, 'Interested in volunteering in a smaller capacity with the Braven Accelerator' %>
+                    <% end %>
+                    <%= render :partial => 'temp_volunteer', :locals => { :f => f} %>
+                  </div>
+                  <% end %>
+
                   <% if !@hide_other_applicant_types || @user.applicant_type == 'employer' %>
                   <div class="clickable-option">
                     <% if @hide_other_applicant_types %>
@@ -126,7 +138,14 @@
                   <button type="submit" class="button-primary">
                     <!-- We check the model campaign id to see if they will be auto-mapped based on query params. If so, next
                          step is start application, so it says that. Otherwise, generic "submit" is used. -->
-                    <%= (@user.applicant_type == 'volunteer' || @user.applicant_type == 'undergrad_student') ? "Next: Start Application" : "Submit" %></button>
+                    <% if(@user.applicant_type == 'volunteer' || @user.applicant_type == 'undergrad_student') %>
+                      Next: Start Application
+                    <% elsif @user.applicant_type == 'temp_volunteer'%>
+                      Next: Register
+                    <% else %>
+                      Submit
+                    <% end %>
+                  </button>
                 </div>
 
               <% end %>

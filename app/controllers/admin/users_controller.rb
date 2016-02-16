@@ -252,11 +252,17 @@ class Admin::UsersController < Admin::ApplicationController
     raise @user.errors.to_json unless @user.valid?
 
 
+    # Save first so it gets an id
+    @user.save!
+
+    # then sync with canvas (it needs to know the id first to have
+    # a unique sis id)
     if params[:sync_with_canvas]
       @lms.sync_user_logins(@user)
+      # and save again so it stores the lms user ID in the object
+      @user.save!
     end
 
-    @user.save!
 
     redirect_to admin_users_path
   end

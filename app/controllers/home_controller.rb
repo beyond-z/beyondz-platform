@@ -25,7 +25,7 @@ class HomeController < ApplicationController
 
           # If accepted, ask for confirmation, if not, go to welcome where
           # they will learn about how to continue their application
-          if cm.Candidate_Status__c == "Accepted"
+          if cm && cm.Candidate_Status__c == "Accepted"
             redirect_to user_confirm_path
           else
             redirect_to welcome_path
@@ -46,6 +46,7 @@ class HomeController < ApplicationController
   end
 
   def welcome
+    @apply_now_showing = false
     # just set here as a default so we can see it if it is improperly set below and
     # also to handle the fallback case for legacy users who applied before the salesforce system was in place
     @program_title = 'Braven'

@@ -10,7 +10,14 @@
 
 <p>Basically just keep both the west and east coasts in mind while making changes.</p>
 
+<p>The time zones are given as two-letter abbreviations, such as PT, ET, MT, and CT, for Pacific time, Eastern time, Mountain time, and Central time. Do not try to use PDT or PST, just use PT and it will automatically figure out if daylight saving time is in effect or not by looking at the date.</p>
+
 <%= form_for :import, :html => { :multipart => true } do |f| %>
+  Your email: <%= f.text_field :email, value: @user_email %>
+  <br />
+  <br />
   <%= f.file_field :csv %>
   <%= submit_tag 'Upload CSV' %>
 <% end %>
+
+<p>You will get an email when the update is complete if all goes well. It can take several minutes.</p>

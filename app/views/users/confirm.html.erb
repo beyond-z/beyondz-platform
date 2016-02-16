@@ -3,17 +3,19 @@
   <div class="plank tertiary-md">
     <div class="section-container">
       <section>
-        <div class="col-sm-6 col-sm-offset-3 text-center">
+        <div class="col-sm-8 col-sm-offset-2 text-center">
           <% if current_user.program_attendance_confirmed %>
             <% if @waitlisted %>
               <p>Thank you for your response.</p>
             <% else %>
-              <p>Thank you for confirming your commitment to participate in Braven.</p>
+              <p>Thank you for confirming your commitment to <%- (current_user.applicant_type == 'temp_volunteer') ? 'volunteer with' : 'participate in' %> Braven.</p>
             <% end %>
           <% else %>
             <p class="shoutout">Welcome to the <%= @program_title %> community, <%= current_user.first_name %>!</p>
             <% if @confirmation_type == 'coach' %>
               <p>We are so pleased to offer you a place among our selective volunteer force. We think you'll be an outstanding coach and will really enjoy this experience leading an inspiring cohort of high-potential, diverse future leaders.</p>
+            <% elsif @confirmation_type == 'volunteer' %>
+              <p>We are so pleased to offer you a place among our volunteer force.</p>
             <% else %>
               <p>We are so pleased to offer you a place in our program. We think you'll be an outstanding Braven Fellow and will really enjoy this experience.</p>
             <% end %>
@@ -26,17 +28,23 @@
   <div class="plank plain-lt">
     <div class="section-container">
       <section>
-        <div class="col-sm-4 col-sm-offset-4">
+        <div class="col-sm-8 col-sm-offset-2">
           <% if current_user.program_attendance_confirmed %>
             <% if @waitlisted %>
               <p>We will get in contact with you if a slot opens up.</p>
             <% else %>
-              <p>You'll be hearing from us shortly with more information about our kickoff event.</p>
+              <% if current_user.applicant_type == 'temp_volunteer' %>
+                <p>You'll be hearing from us shortly with more information.</p>
+              <% else %>
+                <p>You'll be hearing from us shortly with more information about our kickoff event.</p>
+              <% end %>
             <% end %>
           <% else %>
             <div class="availability-options">
               <% if @confirmation_type == 'coach' %>
                 <p>We need coaches to lead <%= @program_title %> cohorts at the following times. Please select ONE time slot and then click next. If you are unavailable at the times listed, please select, 'I cannot commit to coach at any of the times listed.' and on the next page, you'll have the option to sign up for our waitlist.</p>
+              <% elsif @confirmation_type == 'volunteer' %>
+                <p>We need volunteers to help our <%= @program_title %> team in the following areas. Please select ONE slot and then click next. If you are unavailable at the times listed, please select, 'I cannot commit to help at any of the times listed.' and on the next page, you'll have the option to sign up for our waitlist.</p>
               <% else %>
                 <p>We have <%= @program_title %> slots available at the following times. Please select ONE time slot and then click next. If you are unavailable at the times listed, please select, 'I cannot commit to participate at any of the times listed.' and on the next page, you'll have the option to sign up for our waitlist.</p>
               <% end %>

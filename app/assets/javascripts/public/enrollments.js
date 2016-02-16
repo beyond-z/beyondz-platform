@@ -57,15 +57,24 @@ $(document).ready(function() {
       $('.coach').show();
     if($('#position_student').prop('checked'))
       $('.student').show();
+    if($('#position_volunteer').prop('checked'))
+      $('.volunteer').show();
     
     // Show or hide questions based on user type and program upon selection change:
     $('[value=student]').click(function(){
       $('.coach').fadeOut('fast');
+      $('.volunteer').fadeOut('fast');
       $('.student').fadeIn('fast');
     });
     $('[value=coach]').click(function(){
       $('.student').fadeOut('fast');
+      $('.volunteer').fadeOut('fast');
       $('.coach').fadeIn('fast');
+    });
+    $('[value=volunteer]').click(function(){
+      $('.student').fadeOut('fast');
+      $('.coach').fadeOut('fast');
+      $('.volunteer').fadeIn('fast');
     });
 
     // Hide "other" checkbox/radio detail inputs 

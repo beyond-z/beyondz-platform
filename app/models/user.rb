@@ -322,6 +322,8 @@ class User < ActiveRecord::Base
       'Undergrad'
     when 'volunteer'
       'Volunteer'
+    when 'temp_volunteer'
+      'Temp Volunteer'
     when 'employer'
       'Employer'
     when 'partner'
