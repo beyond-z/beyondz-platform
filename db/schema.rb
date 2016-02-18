@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151022175037) do
+ActiveRecord::Schema.define(version: 20160217221201) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -197,12 +197,12 @@ ActiveRecord::Schema.define(version: 20151022175037) do
     t.string   "hs_gpa"
     t.string   "sat_score"
     t.string   "act_score"
-    t.string   "online_resume2"
+    t.string   "digital_footprint2"
     t.text     "conquered_challenge"
     t.string   "bkg_other"
-    t.string   "lead_sources"
+    t.string   "sourcing_info"
     t.boolean  "pell_grant"
-    t.string   "meeting_times"
+    t.text     "meeting_times"
     t.string   "birthdate"
     t.string   "industry"
     t.string   "company"
