@@ -265,7 +265,6 @@ class Admin::AssignmentsController < Admin::ApplicationController
     if date_string.nil? || date_string.empty?
       return date_string
     end
-    raise date_string
     dt = DateTime.iso8601(date_string)
     # Best guess for friendly timezone... using the city means
     # the library will handle stuff like DST... for now though.
