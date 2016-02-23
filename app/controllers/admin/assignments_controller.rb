@@ -116,7 +116,7 @@ class Admin::AssignmentsController < Admin::ApplicationController
         end
 
         if assignment.nil?
-          raise BadAssignmentException, "Row ##{index} has bad Assignment ID #{assignment_id}. Double check it on Canvas."
+          raise BadAssignmentException, "Row ##{index+1} has bad Assignment ID #{assignment_id}. Double check it on Canvas."
         end
 
         if override_id.nil? || override_id == ''
@@ -143,7 +143,7 @@ class Admin::AssignmentsController < Admin::ApplicationController
             override = {}
             section_object = lms.get_section_by_name(course_id, section_name, false)
             if section_object.nil?
-              raise BadSectionNameException, "Row ##{index} has bad Section Name #{section_name}. Double check it on Canvas. These need to match exactly."
+              raise BadSectionNameException, "Row ##{index+1} has bad Section Name #{section_name}. Double check it on Canvas. These need to match exactly."
             end
             override['course_section_id'] = section_object['id']
             override['due_at'] = due_at
@@ -155,7 +155,7 @@ class Admin::AssignmentsController < Admin::ApplicationController
 
             assignment['overrides'].each do |override|
               if override['title'] == section_name
-                raise DuplicateSectionNameException, "Row ##{index} claims to create a new due date for #{section_name}, but a row already exists for that section. Duplicates are not allowed and will confuse Canvas. The section ID column if you want to edit the existing row ought to be #{override['id']}"
+                raise DuplicateSectionNameException, "Row ##{index+1} claims to create a new due date for #{section_name}, but a row already exists for that section. Duplicates are not allowed and will confuse Canvas. The section ID column if you want to edit the existing row ought to be #{override['id']}"
               end
             end
 
@@ -187,11 +187,11 @@ class Admin::AssignmentsController < Admin::ApplicationController
           end
 
           if !found_override
-            raise BadSectionNameException, "Row ##{index} claims to edit #{override_id}, but Canvas doesn't think that exists. You might want to re-export and be careful not to exit the override ID column for rows that already exist."
+            raise BadSectionNameException, "Row ##{index+1} claims to edit #{override_id}, but Canvas doesn't think that exists. You might want to re-export and be careful not to exit the override ID column for rows that already exist."
           end
           
           if found_override && found_override_name != section_name
-            raise BadSectionNameException, "Row ##{index} claims to edit #{override_id}, but the spreadsheet listed #{section_name} as the section name, and Canvas thinks it is supposed to be #{found_override_name}. You might have made a mistake copy/pasting an existing row. You want to change the section name, then clear out the override id column for a new row."
+            raise BadSectionNameException, "Row ##{index+1} claims to edit #{override_id}, but the spreadsheet listed #{section_name} as the section name, and Canvas thinks it is supposed to be #{found_override_name}. You might have made a mistake copy/pasting an existing row. You want to change the section name, then clear out the override id column for a new row."
           end
         end
       end
@@ -217,18 +217,11 @@ class Admin::AssignmentsController < Admin::ApplicationController
       return
     end
 
-    self.delay.commit_new_due_dates(email, changed)
+    lms = BeyondZ::LMS.new
+    lms.delay.commit_new_due_dates(email, changed)
 
     flash[:message] = 'Changes in progress, you should check your email to know when it is complete.'
     redirect_to admin_set_due_dates_path(email: email)
-  end
-
-  def commit_new_due_dates(email, changed)
-    lms = BeyondZ::LMS.new
-    changed.each do |key, value|
-      lms.set_due_dates(value)
-    end
-    StaffNotifications.canvas_due_dates_updated(email).deliver
   end
 
   # This is the date translation when we're importing data
@@ -265,7 +258,6 @@ class Admin::AssignmentsController < Admin::ApplicationController
     if date_string.nil? || date_string.empty?
       return date_string
     end
-    raise date_string
     dt = DateTime.iso8601(date_string)
     # Best guess for friendly timezone... using the city means
     # the library will handle stuff like DST... for now though.

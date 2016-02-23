@@ -37,6 +37,13 @@ module BeyondZ
       response
     end
 
+    def commit_new_due_dates(email, changed)
+      changed.each do |key, value|
+        self.set_due_dates(value)
+      end
+      StaffNotifications.canvas_due_dates_updated(email).deliver
+    end
+
     def get_courses
       open_canvas_http
 
