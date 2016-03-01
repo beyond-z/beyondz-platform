@@ -10,8 +10,8 @@ class Assignment < ActiveRecord::Base
   scope :incomplete, -> { where.not(state: :complete) }
   scope :for_display, -> {
     joins(:assignment_definition)\
-    .includes(:assignment_definition)\
-    .order('assignment_definitions.start_date ASC')
+      .includes(:assignment_definition)\
+      .order('assignment_definitions.start_date ASC')
   }
   scope :need_student_attention, -> {
     where(state: [:new, :started, :pending_revision])

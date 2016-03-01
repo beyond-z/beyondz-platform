@@ -115,7 +115,7 @@ class User < ActiveRecord::Base
 
   def self.search(query)
     # where(:title, query) -> This would return an exact match of the query
-    where("lower(first_name) like ? OR lower(last_name) like ? OR lower(email) like ?", "%#{query.downcase}%", "%#{query.downcase}%", "%#{query.downcase}%")
+    where('lower(first_name) like ? OR lower(last_name) like ? OR lower(email) like ?', "%#{query.downcase}%", "%#{query.downcase}%", "%#{query.downcase}%")
   end
 
   # We allow empty passwords for certain account types
@@ -178,7 +178,7 @@ class User < ActiveRecord::Base
     # conflicts with our User class too! So the query function is unusable :(
     # Instead, I'll go one level lower and use their http method, just like the
     # implementation (line 182 of databasedotcom/client.rb)
-    unless self.salesforce_id
+    unless salesforce_id
       # If the user is already on salesforce btw, we assume they are already
       # assigned an owner (this is likely the case when they are manually entered
       # by someone who has already formed a relationship with that person)
@@ -199,7 +199,7 @@ class User < ActiveRecord::Base
       contact['IsUnreadByOwner'] = false
     end
 
-    unless self.salesforce_id
+    unless salesforce_id
       contact['City'] = city
       contact['State'] = state
     else
@@ -208,11 +208,11 @@ class User < ActiveRecord::Base
       contact['MailingState'] = state
     end
 
-    contact['LeadSource'] = 'Website Signup' unless self.salesforce_id
+    contact['LeadSource'] = 'Website Signup' unless salesforce_id
 
-    contact['Comments_Or_Questions__c'] = applicant_comments unless self.salesforce_id
+    contact['Comments_Or_Questions__c'] = applicant_comments unless salesforce_id
 
-    contact['Account_Activated__c'] = self.confirmed? unless self.salesforce_id
+    contact['Account_Activated__c'] = self.confirmed? unless salesforce_id
 
     contact['Phone'] = phone
 
@@ -221,7 +221,7 @@ class User < ActiveRecord::Base
     contact['Signup_Date__c'] = created_at
     contact['Came_From_to_Visit_Site__c'] = external_referral_url
     contact['User_Type__c'] = salesforce_applicant_type
-    if self.salesforce_id
+    if salesforce_id
       # On Contact, we changed the name as there's more info available on that record
       # so it had to be more specific.
       contact['Undergrad_University__c'] = university_name
@@ -231,13 +231,13 @@ class User < ActiveRecord::Base
     contact['Anticipated_Graduation__c'] = anticipated_graduation
     if applicant_type == 'employer'
       # Industry on Contact is a custom field...
-      contact[self.salesforce_id ? 'Industry__c' : 'Industry'] = profession
+      contact[salesforce_id ? 'Industry__c' : 'Industry'] = profession
     else
       contact['Title'] = profession
     end
 
     # Company on Contact is a custom field...
-    contact[self.salesforce_id ? 'Company__c' : 'Company'] = (company.nil? || company.empty?) ? "#{name} (individual)" : company
+    contact[salesforce_id ? 'Company__c' : 'Company'] = (company.nil? || company.empty?) ? "#{name} (individual)" : company
 
     contact['Started_College__c'] = started_college_in
     contact['Interested_in_opening_BZ__c'] = like_to_help_set_up_program ? true : false
@@ -253,7 +253,7 @@ class User < ActiveRecord::Base
 
     # The Lead class provided by the gem is buggy so we do it with this call instead
     # which is what Lead.save calls anyway
-    unless self.salesforce_id
+    unless salesforce_id
       # If the salesforce_id is already set, they are a person created
       # manually who is now signing up.
       #
@@ -267,7 +267,7 @@ class User < ActiveRecord::Base
       # And if salesforce_id is set already, we found an existing Contact,
       # so we update that record instead
 
-      client.update('Contact', self.salesforce_id, contact)
+      client.update('Contact', salesforce_id, contact)
       lead_created = false
     end
 
@@ -399,12 +399,8 @@ class User < ActiveRecord::Base
   # Resets all assignments and tasks to an initial, unfinished
   # state.
   def reset_assignments!
-    assignments.each do |a|
-      a.destroy!
-    end
-    tasks.each do |t|
-      t.destroy!
-    end
+    assignments.each(&:destroy!)
+    tasks.each(&:destroy!)
 
     # re-recreate them after destroying to get fresh data
     create_child_skeleton_rows
@@ -418,7 +414,6 @@ class User < ActiveRecord::Base
   # relationships with the same skeleton row pattern.
   def create_child_skeleton_rows
     ActiveRecord::Base.transaction do
-
       AssignmentDefinition.all.each do |a|
         assignment = assignments.find_by_assignment_definition_id(a.id)
         if assignment.nil?
@@ -476,7 +471,7 @@ class User < ActiveRecord::Base
           next_assignment.title,
           'https://join.bebraven.org/assignments/' +
           next_assignment.seo_name)
-            .deliver
+          .deliver
       end
     end
   end

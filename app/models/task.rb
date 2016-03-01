@@ -14,23 +14,23 @@ class Task < ActiveRecord::Base
   scope :incomplete, -> { where.not(tasks: { state: :complete }) }
   scope :required, -> {
     joins(:task_definition)\
-    .where(task_definitions: { required: true })
+      .where(task_definitions: { required: true })
   }
   scope :not_required, -> {
     joins(:task_definition)\
-    .where(task_definitions: { required: false })
+      .where(task_definitions: { required: false })
   }
   scope :require_approval, -> {
     joins(:task_definition)\
-    .where(task_definitions: { requires_approval: true })
+      .where(task_definitions: { requires_approval: true })
   }
   scope :do_not_require_approval, -> {
     joins(:task_definition)\
-    .where(task_definitions: { requires_approval: false })
+      .where(task_definitions: { requires_approval: false })
   }
   scope :for_display, -> {
     joins(:task_definition).includes(:task_definition)\
-    .order('task_definitions.position ASC')
+      .order('task_definitions.position ASC')
   }
   scope :need_student_attention, -> {
     where(state: [:new, :pending_revision])
@@ -143,7 +143,6 @@ class Task < ActiveRecord::Base
     success = false
 
     ActiveRecord::Base.transaction do
-
       self.updated_at = Time.now
 
       if task_params
@@ -177,10 +176,8 @@ class Task < ActiveRecord::Base
         success = true
         submit!
       end
-
     end
 
     success
   end
-
 end

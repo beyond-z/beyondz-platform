@@ -1,5 +1,4 @@
 class TasksController < ApplicationController
-
   before_action :require_student
   before_action :use_controller_js
 
@@ -37,5 +36,4 @@ class TasksController < ApplicationController
       # end
     end
   end
-
 end
