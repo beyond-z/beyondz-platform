@@ -239,7 +239,8 @@ class Admin::AssignmentsController < Admin::ApplicationController
     begin
       # ....yielding a valid %Z specifier such as PST
       dt = DateTime.strptime("#{date_string}", '%Y-%m-%d %H:%M %Z')
-      time_test = dt.to_time
+      # switching to a TZ that observes DST for the next check
+      time_test = dt.to_time.in_time_zone('America/New_York')
       # Now, if the date in there (the to_time converts it to an actual time btw)
       # is in DST, then we need to fall back because it was uploaded in ST but
       # should be in DT (which will spring it forward a bit, so the minus balances)
