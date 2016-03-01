@@ -1,5 +1,4 @@
 class TaskFile < ActiveRecord::Base
-
   belongs_to :task_section
   belongs_to :task_response
 
@@ -53,5 +52,4 @@ class TaskFile < ActiveRecord::Base
   def reset(file_type)
     update_attribute(file_type.to_sym, nil)
   end
-
 end

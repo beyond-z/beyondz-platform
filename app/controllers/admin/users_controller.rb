@@ -107,7 +107,6 @@ class Admin::UsersController < Admin::ApplicationController
         :bz_region => row[3]
       )
     end
-
   end
 
   def bulk_student_upload
@@ -149,7 +148,6 @@ class Admin::UsersController < Admin::ApplicationController
 
 
   def update
-
     initialize_lms_interop
 
     @user = User.find(params[:id])
@@ -159,7 +157,7 @@ class Admin::UsersController < Admin::ApplicationController
     if params[:user][:email] && params[:user][:email] != old_email
       new_email = params[:user][:email]
 
-      # Update this database 
+      # Update this database
       @user.email = new_email
       @user.skip_reconfirmation!
 
@@ -247,7 +245,7 @@ class Admin::UsersController < Admin::ApplicationController
     initialize_lms_interop
 
     @user = User.new(params[:user].permit(
-      :first_name, :last_name, :email, :password))
+                       :first_name, :last_name, :email, :password))
     @user.skip_confirmation! # admins don't need to confirm new accounts
     raise @user.errors.to_json unless @user.valid?
 

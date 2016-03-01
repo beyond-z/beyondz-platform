@@ -77,5 +77,4 @@ class ApplicationController < ActionController::Base
       welcome_path(new_user_id: user.id)
     end
   end
-
 end

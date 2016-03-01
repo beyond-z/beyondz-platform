@@ -1,5 +1,4 @@
 class HomeController < ApplicationController
-
   before_action :new_user, only: [:welcome, :volunteer, :apply, :partner, :please_wait]
 
   layout 'public'
@@ -25,7 +24,7 @@ class HomeController < ApplicationController
 
           # If accepted, ask for confirmation, if not, go to welcome where
           # they will learn about how to continue their application
-          if cm && cm.Candidate_Status__c == "Accepted"
+          if cm && cm.Candidate_Status__c == 'Accepted'
             redirect_to user_confirm_path
           else
             redirect_to welcome_path
@@ -42,7 +41,6 @@ class HomeController < ApplicationController
   end
 
   def please_wait
-
   end
 
   def welcome
@@ -68,7 +66,7 @@ class HomeController < ApplicationController
 
       # If accepted, we go back to confirmation (see above in the index method)
       # repeated here in welcome so if they bookmarked this, they won't get lost
-      if cm && cm.Candidate_Status__c == "Accepted"
+      if cm && cm.Candidate_Status__c == 'Accepted'
         redirect_to user_confirm_path
         return
       end
@@ -117,5 +115,4 @@ class HomeController < ApplicationController
       @new_user = User.find(params[:new_user_id])
     end
   end
-
 end
