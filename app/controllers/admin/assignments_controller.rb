@@ -247,7 +247,7 @@ class Admin::AssignmentsController < Admin::ApplicationController
     rescue ArgumentError
       raise BadDateException, "Row ##{informational_row+1} with date \"#{date_string}\""
     end
-    dt.iso8601
+    dt.utc.iso8601 # do the utc conversion on our end to ensure canvas doesn't try to
   end
 
   # This is the translation when we're exporting from Canvas.
