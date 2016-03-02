@@ -1,5 +1,4 @@
 class EnrollmentsController < ApplicationController
-
   before_filter :authenticate_user!
   before_action :setup_defaults
 
@@ -43,11 +42,11 @@ class EnrollmentsController < ApplicationController
         # this user is a member of and use that to fetch the associated
         # application out of our system.
 
-        if !start_application_from_salesforce_campaign
+        unless start_application_from_salesforce_campaign
           # If we can't start from a salesforce campaign, we don't
           # want them to actually start at all - w/o the campaign,
           # we can't save their info properly. This likely happens
-          # because somebody used a direct link without actually 
+          # because somebody used a direct link without actually
           # being added to the campaign.
           #
           # Send them back to the welcome path until they are
@@ -240,11 +239,6 @@ class EnrollmentsController < ApplicationController
     end
   end
 
-  # Since this method is long but not complex (it is just a list of field mapping)
-  # it is expedient to disable the rubocop thing here instead of trying to appease
-  # it by making a simple thing complex.
-  #
-  # rubocop:disable MethodLength
   def enrollment_submitted_crm_actions
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
@@ -350,7 +344,6 @@ class EnrollmentsController < ApplicationController
 
     cm.save
   end
-  # rubocop: enable Metrics/MethodLength
 
   def create
     @enrollment = Enrollment.create(enrollment_params)
@@ -368,5 +361,4 @@ class EnrollmentsController < ApplicationController
     # allow all like 60 fields without listing them all
     params.require(:enrollment).permit!
   end
-
 end

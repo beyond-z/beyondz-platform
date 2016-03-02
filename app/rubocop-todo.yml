@@ -8,10 +8,10 @@ ClassAndModuleChildren:
   Enabled: false # without this, it complains about the namespaced classes
 
 CyclomaticComplexity:
-  Max: 15
+  Max: 25
 
 ClassLength:
-  Max: 350
+  Max: 450
 
 Lambda:
   Enabled: false
@@ -26,16 +26,10 @@ GlobalVars:
   Enabled: false # $userInfo from json (we'll be replacing this soon with db)
 
 LineLength:
-  Max: 125 # largest line in here currently
-
-MethodLength:
-  Max: 55 # largest method in here currently
+  Max: 575 # largest line in here currently
 
 IfUnlessModifier:
   Enabled: false # I think the cure is worse than the disease here
-
-RaiseArgs:
-  EnforcedStyle: compact # I don't know for sure what this does
 
 SignalException:
   Enabled: false # nor this
@@ -46,10 +40,7 @@ HashSyntax:
 EmptyLines:
   Enabled: false # whether multiple empty lines are allowed together
 
-EmptyLinesAroundBody:
-  Enabled: false # whether empty lines are allowed around methods, etc...
-
-TrailingBlankLines:
+Style/TrailingBlankLines:
   Enabled: false # whether ending new line is required at end of file
 
 Style/Next:
@@ -57,3 +48,33 @@ Style/Next:
 
 Style/GuardClause:
   Enabled: false # it complains about this when we have a simple if statement but i prefer the if
+
+Metrics/AbcSize:
+  Max: 150
+
+Metrics/ModuleLength:
+  Max: 250
+
+Metrics/MethodLength:
+  Max: 155 # largest method in here currently
+
+Metrics/PerceivedComplexity:
+  Max: 35
+
+Metrics/BlockNesting:
+  Max: 10
+
+Style/PredicateName:
+  Enabled: false
+
+Style/UnlessElse:
+  Enabled: false
+
+Style/AccessorMethodName:
+  Enabled: false
+
+Style/RaiseArgs:
+  Enabled: false
+
+Lint/RescueException:
+  Enabled: false

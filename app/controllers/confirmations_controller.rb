@@ -23,7 +23,7 @@ class ConfirmationsController < Devise::ConfirmationsController
       # We undo the url encoding somewhat to conveniently allow
       # the test+foo emails to be entered. Emails don't have spaces
       # anyway so this is harmless.
-      @prefill_email = params[:email].gsub(' ', '+')
+      @prefill_email = params[:email].tr(' ', '+')
     end
     @auto_submit = params[:auto]
   end
@@ -61,5 +61,4 @@ class ConfirmationsController < Devise::ConfirmationsController
 
     redirect_to_welcome_path(current_user)
   end
-
 end

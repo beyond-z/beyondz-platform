@@ -6,14 +6,13 @@
 # here even did, so I left most of it the same. Maybe we can come back and clean up more later.
 require 'pathname'
 
-require "openid"
-require "openid/consumer/discovery"
+require 'openid'
+require 'openid/consumer/discovery'
 require 'openid/extensions/sreg'
 require 'openid/extensions/pape'
 require 'openid/store/filesystem'
 
 class OpenidController < ApplicationController
-
   skip_before_filter :verify_authenticity_token
   before_filter :authenticate_user!, :only => [:auto_login]
 
@@ -33,9 +32,9 @@ class OpenidController < ApplicationController
     # user id too.
     if request.referrer.nil? || URI(request.referrer).host == Rails.application.secrets.qa_host
       if user_signed_in?
-        code = "var bz_current_user_openid_url = #{url_for_user.to_json};";
+        code = "var bz_current_user_openid_url = #{url_for_user.to_json};"
       else
-        code = "var bz_current_user_openid_url = null;"
+        code = 'var bz_current_user_openid_url = null;'
       end
       render :text => code, :content_type => 'text/javascript'
     end
@@ -62,13 +61,13 @@ class OpenidController < ApplicationController
 
     # no openid.mode was given
     unless oidreq
-      render :text => "This is an OpenID server endpoint."
+      render :text => 'This is an OpenID server endpoint.'
       return
     end
 
     oidresp = nil
 
-    if oidreq.kind_of?(CheckIDRequest)
+    if oidreq.is_a?(CheckIDRequest)
 
       identity = oidreq.identity
 
@@ -89,7 +88,7 @@ class OpenidController < ApplicationController
 
       if oidresp
         nil
-      elsif self.is_authorized(identity, oidreq.trust_root)
+      elsif is_authorized(identity, oidreq.trust_root)
         oidresp = oidreq.answer(true, nil, identity)
 
         # add the sreg response if requested
@@ -107,14 +106,14 @@ class OpenidController < ApplicationController
         oidresp = oidreq.answer(true, nil, identity)
         add_sreg(oidreq, oidresp)
         add_pape(oidreq, oidresp)
-        return self.render_response(oidresp)
+        return render_response(oidresp)
       end
 
     else
       oidresp = server.handle_request(oidreq)
     end
 
-    self.render_response(oidresp)
+    render_response(oidresp)
   end
 
   def user_page
@@ -124,7 +123,7 @@ class OpenidController < ApplicationController
     # This is not technically correct, and should eventually be updated
     # to do real Accept header parsing and logic.  Though I expect it will work
     # 99% of the time.
-    if accept and accept.include?('application/xrds+xml')
+    if accept && accept.include?('application/xrds+xml')
       user_xrds
       return
     end
@@ -147,18 +146,18 @@ EOS
 
   def user_xrds
     types = [
-             OpenID::OPENID_2_0_TYPE,
-             OpenID::OPENID_1_0_TYPE,
-             OpenID::SREG_URI,
-            ]
+      OpenID::OPENID_2_0_TYPE,
+      OpenID::OPENID_1_0_TYPE,
+      OpenID::SREG_URI
+    ]
 
     render_xrds(types)
   end
 
   def idp_xrds
     types = [
-             OpenID::OPENID_IDP_2_0_TYPE,
-            ]
+      OpenID::OPENID_IDP_2_0_TYPE
+    ]
 
     render_xrds(types)
   end
@@ -172,23 +171,23 @@ EOS
       store = OpenID::Store::Filesystem.new(dir)
       @server = Server.new(store, server_url)
     end
-    return @server
+    @server
   end
 
   def approved(trust_root)
-    return URI(trust_root).host == Rails.application.secrets.qa_host
+    URI(trust_root).host == Rails.application.secrets.qa_host
   end
 
   def is_authorized(identity_url, trust_root)
-    return (current_user and (identity_url == url_for_user) and self.approved(trust_root))
+    (current_user && (identity_url == url_for_user) && approved(trust_root))
   end
 
   def render_xrds(types)
-    type_str = ""
+    type_str = ''
 
-    types.each { |uri|
+    types.each do |uri|
       type_str += "<Type>#{uri}</Type>\n      "
-    }
+    end
 
     yadis = <<EOS
 <?xml version="1.0" encoding="UTF-8"?>
@@ -198,7 +197,7 @@ EOS
   <XRD>
     <Service priority="0">
       #{type_str}
-      <URI>#{url_for(:controller => 'openid', :action => 'index',  :only_path => false)}</URI>
+      <URI>#{url_for(:controller => 'openid', :action => 'index', :only_path => false)}</URI>
     </Service>
   </XRD>
 </xrds:XRDS>
@@ -235,7 +234,7 @@ EOS
 
   def render_response(oidresp)
     if oidresp.needs_signing
-      signed_response = server.signatory.sign(oidresp)
+      server.signatory.sign(oidresp)
     end
     web_response = server.encode_response(oidresp)
 
@@ -250,6 +249,4 @@ EOS
       render :text => web_response.body, :status => 400
     end
   end
-
-
 end

@@ -21,7 +21,6 @@
 #   A task with zero sections ought to give the user everything they need in the
 #   details, for example, a link to an outside website.
 class TaskDefinition < ActiveRecord::Base
-
   belongs_to :assignment_definition
   has_many :tasks, dependent: :destroy
   has_many :sections, class_name: 'TaskSection', dependent: :destroy
@@ -31,5 +30,4 @@ class TaskDefinition < ActiveRecord::Base
   scope :not_required, -> { where(required: false) }
   scope :require_approval, -> { where(requires_approval: true) }
   scope :do_not_require_approval, -> { where(requires_approval: false) }
-
 end

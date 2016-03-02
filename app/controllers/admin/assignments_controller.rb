@@ -5,7 +5,7 @@ class Admin::AssignmentsController < Admin::ApplicationController
     lms = BeyondZ::LMS.new
 
     @courses = []
-    
+
     all = lms.get_courses
     all.each do |course|
       @courses << ["#{course['name']} (#{course['id']})", course['id']]
@@ -116,7 +116,7 @@ class Admin::AssignmentsController < Admin::ApplicationController
         end
 
         if assignment.nil?
-          raise BadAssignmentException, "Row ##{index+1} has bad Assignment ID #{assignment_id}. Double check it on Canvas."
+          raise BadAssignmentException, "Row ##{index + 1} has bad Assignment ID #{assignment_id}. Double check it on Canvas."
         end
 
         if override_id.nil? || override_id == ''
@@ -143,7 +143,7 @@ class Admin::AssignmentsController < Admin::ApplicationController
             override = {}
             section_object = lms.get_section_by_name(course_id, section_name, false)
             if section_object.nil?
-              raise BadSectionNameException, "Row ##{index+1} has bad Section Name #{section_name}. Double check it on Canvas. These need to match exactly."
+              raise BadSectionNameException, "Row ##{index + 1} has bad Section Name #{section_name}. Double check it on Canvas. These need to match exactly."
             end
             override['course_section_id'] = section_object['id']
             override['due_at'] = due_at
@@ -153,9 +153,9 @@ class Admin::AssignmentsController < Admin::ApplicationController
               assignment['overrides'] = []
             end
 
-            assignment['overrides'].each do |override|
-              if override['title'] == section_name
-                raise DuplicateSectionNameException, "Row ##{index+1} claims to create a new due date for #{section_name}, but a row already exists for that section. Duplicates are not allowed and will confuse Canvas. The section ID column if you want to edit the existing row ought to be #{override['id']}"
+            assignment['overrides'].each do |o|
+              if o['title'] == section_name
+                raise DuplicateSectionNameException, "Row ##{index + 1} claims to create a new due date for #{section_name}, but a row already exists for that section. Duplicates are not allowed and will confuse Canvas. The section ID column if you want to edit the existing row ought to be #{o['id']}"
               end
             end
 
@@ -168,30 +168,30 @@ class Admin::AssignmentsController < Admin::ApplicationController
           found_override = false
           found_override_name = ''
           if assignment['overrides']
-            assignment['overrides'].each do |override|
-              if override['id'].to_s == override_id
+            assignment['overrides'].each do |o|
+              if o['id'].to_s == override_id
                 # Ditto on the string note as above
-                if export_date_translation(override['due_at']) != due_at_str
-                  override['due_at'] = due_at
+                if export_date_translation(o['due_at']) != due_at_str
+                  o['due_at'] = due_at
                   changed[assignment_id] = assignment
                 end
-                if export_date_translation(override['lock_at']) != lock_at_str
-                  override['lock_at'] = lock_at
+                if export_date_translation(o['lock_at']) != lock_at_str
+                  o['lock_at'] = lock_at
                   changed[assignment_id] = assignment
                 end
                 found_override = true
-                found_override_name = override['title']
+                found_override_name = o['title']
                 break
               end
             end
           end
 
-          if !found_override
-            raise BadSectionNameException, "Row ##{index+1} claims to edit #{override_id}, but Canvas doesn't think that exists. You might want to re-export and be careful not to exit the override ID column for rows that already exist."
+          unless found_override
+            raise BadSectionNameException, "Row ##{index + 1} claims to edit #{override_id}, but Canvas doesn't think that exists. You might want to re-export and be careful not to exit the override ID column for rows that already exist."
           end
-          
+
           if found_override && found_override_name != section_name
-            raise BadSectionNameException, "Row ##{index+1} claims to edit #{override_id}, but the spreadsheet listed #{section_name} as the section name, and Canvas thinks it is supposed to be #{found_override_name}. You might have made a mistake copy/pasting an existing row. You want to change the section name, then clear out the override id column for a new row."
+            raise BadSectionNameException, "Row ##{index + 1} claims to edit #{override_id}, but the spreadsheet listed #{section_name} as the section name, and Canvas thinks it is supposed to be #{found_override_name}. You might have made a mistake copy/pasting an existing row. You want to change the section name, then clear out the override id column for a new row."
           end
         end
       end
@@ -239,15 +239,16 @@ class Admin::AssignmentsController < Admin::ApplicationController
     begin
       # ....yielding a valid %Z specifier such as PST
       dt = DateTime.strptime("#{date_string}", '%Y-%m-%d %H:%M %Z')
-      time_test = dt.to_time
+      # switching to a TZ that observes DST for the next check
+      time_test = dt.to_time.in_time_zone('America/New_York')
       # Now, if the date in there (the to_time converts it to an actual time btw)
       # is in DST, then we need to fall back because it was uploaded in ST but
       # should be in DT (which will spring it forward a bit, so the minus balances)
-      dt = dt - 1.hour if time_test.dst?
+      dt -= 1.hour if time_test.dst?
     rescue ArgumentError
-      raise BadDateException, "Row ##{informational_row+1} with date \"#{date_string}\""
+      raise BadDateException, "Row ##{informational_row + 1} with date \"#{date_string}\""
     end
-    dt.iso8601
+    dt.utc.iso8601 # do the utc conversion on our end to ensure canvas doesn't try to
   end
 
   # This is the translation when we're exporting from Canvas.
@@ -279,17 +280,13 @@ class Admin::AssignmentsController < Admin::ApplicationController
 end
 
 class BadDateException < Exception
-
 end
 
 class BadAssignmentException < Exception
-
 end
 
 class BadSectionNameException < Exception
-
 end
 
 class DuplicateSectionNameException < Exception
-
 end

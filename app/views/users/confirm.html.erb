@@ -31,12 +31,12 @@
         <div class="col-sm-8 col-sm-offset-2">
           <% if current_user.program_attendance_confirmed %>
             <% if @waitlisted %>
-              <p>We will get in contact with you if a slot opens up.</p>
+              <p style="text-align: center;">We will get in contact with you if a slot opens up.</p>
             <% else %>
               <% if current_user.applicant_type == 'temp_volunteer' %>
-                <p>You'll be hearing from us shortly with more information.</p>
+                <p style="text-align: center;">You'll be hearing from us shortly with more information.</p>
               <% else %>
-                <p>You'll be hearing from us shortly with more information about our kickoff event.</p>
+                <p style="text-align: center;">You'll be hearing from us shortly with more information about our kickoff event.</p>
               <% end %>
             <% end %>
           <% else %>

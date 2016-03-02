@@ -1,5 +1,4 @@
 class TaskResponse < ActiveRecord::Base
-
   belongs_to :task
   belongs_to :task_section
   has_many :files, class_name: 'TaskFile', dependent: :destroy
@@ -27,5 +26,4 @@ class TaskResponse < ActiveRecord::Base
       file.destroy
     end
   end
-
 end

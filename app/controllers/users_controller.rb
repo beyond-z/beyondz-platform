@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-
   layout 'public'
 
   before_filter :authenticate_user!, :only => [:reset, :confirm, :save_confirm, :not_on_lms]
@@ -109,11 +108,10 @@ class UsersController < ApplicationController
       # but for now I want to try this for best possible accuracy
       # (though there's still a potential race condition...)
       @meeting_times.lines.map(&:strip).each_with_index do |line, index|
-        
         idx = line.rindex(':')
         if idx
-          time = line[0 .. idx-1]
-          total_slots = line[idx + 1 .. -1].strip.to_i
+          time = line[0..idx - 1]
+          total_slots = line[idx + 1..-1].strip.to_i
 
           used_slots = 0
           unless used_slots_map[time].nil?
@@ -130,7 +128,6 @@ class UsersController < ApplicationController
         end
       end
     end
-
   end
 
   def confirm
@@ -217,7 +214,7 @@ class UsersController < ApplicationController
       cm.save
     else
       # Just warn me that this assertion failed so I can look into it...
-      StaffNotifications.bug_report(current_user, "Campaign Member not set up.\nSelected timeslot: #{chosen_time}\nWaitlisted: #{waitlist.to_s}\nCampaign: #{@enrollment.campaign_id}").deliver
+      StaffNotifications.bug_report(current_user, "Campaign Member not set up.\nSelected timeslot: #{chosen_time}\nWaitlisted: #{waitlist}\nCampaign: #{@enrollment.campaign_id}").deliver
     end
 
     contact = SFDC_Models::Contact.find(current_user.salesforce_id)
@@ -227,12 +224,6 @@ class UsersController < ApplicationController
         contact.Participant_Information__c = 'Participant'
       when 'volunteer'
         contact.Volunteer_Information__c = 'Current LC'
-      else
-        # this space intentionally left blank
-        # because other shouldn't be confirmed through
-        # this controller anyway, but if they do link,
-        # we don't want to crash - we can still update
-        # our local database.
       end
 
       contact.save
@@ -240,14 +231,12 @@ class UsersController < ApplicationController
 
 
     # Send a confirmation email too for confirmed people
-    if !waitlisted
+    unless waitlisted
       case current_user.applicant_type
-        when 'undergrad_student'
-          ConfirmationFlow.student_confirmed(current_user, program_title, program_site, chosen_time).deliver
-        when 'volunteer'
-          ConfirmationFlow.coach_confirmed(current_user, program_title, program_site, chosen_time).deliver
-        else
-          # intentionally blank, see above
+      when 'undergrad_student'
+        ConfirmationFlow.student_confirmed(current_user, program_title, program_site, chosen_time).deliver
+      when 'volunteer'
+        ConfirmationFlow.coach_confirmed(current_user, program_title, program_site, chosen_time).deliver
       end
     end
 
