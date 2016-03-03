@@ -178,6 +178,37 @@ class Admin::UsersController < Admin::ApplicationController
       if @user.canvas_user_id
         @lms.change_user_email(@user.canvas_user_id, old_email, new_email)
       end
+
+      # Update OSQA, if configured
+      if Rails.application.secrets.qa_token && !Rails.application.secrets.qa_token.empty?
+        if @qa_http.nil?
+          @qa_http = Net::HTTP.new(Rails.application.secrets.qa_host, 443)
+          @qa_http.use_ssl = true
+          if Rails.application.secrets.canvas_allow_self_signed_ssl # reusing this config option since it is the same deal here
+            @qa_http.verify_mode = OpenSSL::SSL::VERIFY_NONE # self-signed cert would fail
+          end
+        end
+
+        request = Net::HTTP::Post.new('/account/change-user-email/')
+        request.set_form_data(
+          'access_token' => Rails.application.secrets.qa_token,
+          'old_email' => old_email,
+          'new_email' => new_email
+        )
+        @qa_http.request(request)
+      end
+
+    request = Net::HTTP::Post.new('/account/create-user/')
+    request.set_form_data(
+      'access_token' => Rails.application.secrets.qa_token,
+      'url' => "#{root_url}openid/user/#{user.id}",
+      'name' => user.name,
+      'email' => user.email
+    )
+    @qa_http.request(request)
+  end
+
+
     end
 
     @user.first_name = params[:user][:first_name] unless params[:user][:first_name].nil?
