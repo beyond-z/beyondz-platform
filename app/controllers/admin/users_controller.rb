@@ -197,18 +197,6 @@ class Admin::UsersController < Admin::ApplicationController
         )
         @qa_http.request(request)
       end
-
-    request = Net::HTTP::Post.new('/account/create-user/')
-    request.set_form_data(
-      'access_token' => Rails.application.secrets.qa_token,
-      'url' => "#{root_url}openid/user/#{user.id}",
-      'name' => user.name,
-      'email' => user.email
-    )
-    @qa_http.request(request)
-  end
-
-
     end
 
     @user.first_name = params[:user][:first_name] unless params[:user][:first_name].nil?
