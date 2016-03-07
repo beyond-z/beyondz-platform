@@ -30,6 +30,8 @@ group :development, :test do
   gem 'factory_girl_rails'
   # allows for user browser simulation in integration testing
   gem 'capybara'
+  # Allows starting the rails server with the .env file specifying the ENV variables
+  gem 'foreman'
 end
 
 # Use SCSS for stylesheets
