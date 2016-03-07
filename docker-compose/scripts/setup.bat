@@ -63,7 +63,7 @@ if [ "$(uname)" == "Darwin" ]; then
   fi
 
   cd $join_src_path
-  if [ ! -e .env]; then 
+  if [ ! -e .env ]; then
     echo "Error: No .env file found.  Make sure that exists by copying env.sample and editing it before running the Docker VM."
     exit 1;
   fi
