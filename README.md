@@ -2,6 +2,15 @@ This is where Beyond Z participants login and access their leadership developmen
 
 
 # Getting Started
+There are two ways to setup your local development environment, one uses
+Docker VMs and services and the other is to set it up manually.
+
+## Docker Setup
+Just run:
+```Shell
+docker-compose/scripts/setup.bat
+
+## Manual Setup
 
 Make sure you have Ruby 2.2.3 and Rails 4.0 installed and configured.  You can
 check by running:

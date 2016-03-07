@@ -19,6 +19,9 @@
 /db/*.sqlite3
 /db/*.sqlite3-journal
 
+# This is used for development only and may be different per developer machine
+/db/seeds.rb
+
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
@@ -34,6 +37,10 @@
 .env-test
 .env-staging
 .env-dev
+
+# We have two versions, one for use with Docker VMs and one for normal localhost.  Let the developer choose
+# and don't track in src ctrl
+config/database.yml
 
 # These are the secrets used to create the Google API refresh token in the ENV
 client_secret.json
