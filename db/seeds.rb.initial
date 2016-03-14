@@ -1,4 +1,4 @@
-# This file should contain all the record creation needed to seed the database
+s file should contain all the record creation needed to seed the database
 # with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db
 # with db:setup).
@@ -2099,3 +2099,4 @@ item.task_definitions.push(task_definition)
 item.save
 
 User.all.each { |u| u.create_child_skeleton_rows }
+
