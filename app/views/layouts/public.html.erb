@@ -17,9 +17,27 @@
 <link rel='stylesheet' id='BravenTheme-css'  href='/bebraven/style.css' type='text/css' media='all' />
 <link type="text/css" rel="stylesheet" href="/bebraven/jquery.mmenu.all.css" />
 
+  <style>
+    #cookie-warning {
+      display: none;
+    }
+    .bz-browser-warning {
+      background-color: yellow;
+      font-weight: bold;
+      padding: 1em;
+    }
+  </style>
 
   </head>
   <body>
+    <div class="bz-browser-warning" id="cookie-warning">
+      Cookies are not enabled in your browser. BeBraven.org will not work correctly without them. Please <a href="http://www.wikihow.com/Enable-Cookies-in-Your-Internet-Web-Browser">enable them</a> or try a different web browser for best results.
+    </div>
+    <noscript>
+    <div class="bz-browser-warning" id="noscript-warning">
+      Javascript is not enabled in your browser. BeBraven.org will not work correctly without it. Please <a href="http://www.enable-javascript.com/">enable it</a> or try a different web browser to continue without difficulty.
+    </div>
+    </noscript>
 
     <%= render 'shared/standard_modals' %>
     <%= yield :modals %>
@@ -141,6 +159,10 @@
        
     </div> <!-- .public-container -->
 
+    <script>
+      if(navigator.cookieEnabled === false)
+        document.getElementById("cookie-warning").style.display = "block";
+    </script>
     <%= render 'shared/asset_javascript_includes' %>
     <%= render 'shared/google_analytics' %>
   </body>
