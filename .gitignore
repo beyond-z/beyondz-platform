@@ -38,8 +38,8 @@
 .env-staging
 .env-dev
 
-# We have two versions, one for use with Docker VMs and one for normal localhost.  Let the developer choose
-# and don't track in src ctrl
+# We have two versions, one for use with Docker VMs and one for normal localhost and tests.  Leave the
+# test one that Travis uses in src control but don't report changes in git
 config/database.yml
 
 # These are the secrets used to create the Google API refresh token in the ENV
