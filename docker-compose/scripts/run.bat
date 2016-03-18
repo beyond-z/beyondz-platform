@@ -6,6 +6,8 @@ if [ -e /app/tmp/pids/server.pid ]; then
   rm /app/tmp/pids/server.pid
 fi
 
+cp -a /app/docker-compose/config/* /app/config/
+
 echo ""
 echo "Note: If this is the first time you're starting this container, you may have to run the following:"
 echo ""
