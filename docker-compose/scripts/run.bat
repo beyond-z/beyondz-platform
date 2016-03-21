@@ -7,6 +7,7 @@ if [ -e /app/tmp/pids/server.pid ]; then
 fi
 
 cp -a /app/docker-compose/config/* /app/config/
+cp -a /app/docker-compose/.env-docker /app/.env
 
 echo ""
 echo "Note: If this is the first time you're starting this container, you may have to run the following:"
