@@ -22,6 +22,9 @@
 # This is used for development only and may be different per developer machine
 /db/seeds.rb
 
+# Used to load development database
+/db/dev_db.sql*
+
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
