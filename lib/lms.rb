@@ -19,6 +19,16 @@ module BeyondZ
       info
     end
 
+    def destroy_user(user_id)
+      open_canvas_http
+
+      request = Net::HTTP::Delete.new(
+        "/api/v1/bz/delete_user/#{user_id}?access_token=#{Rails.application.secrets.canvas_access_token}"
+      )
+      response = @canvas_http.request(request)
+      response
+    end
+
     def set_due_dates(assignment_object)
       open_canvas_http
 
