@@ -256,6 +256,11 @@ class Admin::UsersController < Admin::ApplicationController
 
   def destroy
     @user = User.find(params[:id])
+    if @user.canvas_user_id
+      initialize_lms_interop
+
+      @lms.delete_user(@user.canvas_user_id)
+    end
     @user.destroy!
     redirect_to '/admin/users'
   end
