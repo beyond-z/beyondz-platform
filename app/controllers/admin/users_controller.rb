@@ -259,7 +259,7 @@ class Admin::UsersController < Admin::ApplicationController
     if @user.canvas_user_id
       initialize_lms_interop
 
-      @lms.delete_user(@user.canvas_user_id)
+      @lms.destroy_user(@user.canvas_user_id)
     end
     @user.destroy!
     redirect_to '/admin/users'
