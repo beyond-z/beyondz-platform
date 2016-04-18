@@ -49,7 +49,7 @@ en:
       unlocked: "Your account has been unlocked successfully. Please sign in to continue."
   errors:
     messages:
-      taken: "has already been registered with Braven. If you forgot your password, please <a href=\"/users/password/new\">click here</a> to reset your password."
+      taken: "has already been registered with Braven. Please <a href=\"/users/sign_in_sso\">log-in here</a>. If you forgot your password, please <a href=\"/users/password/new\">click here</a> to reset your password."
       already_confirmed: "was already confirmed, please try signing in"
       confirmation_period_expired: "needs to be confirmed within %{period}, please request a new one"
       expired: "has expired, please request a new one"
