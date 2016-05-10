@@ -270,7 +270,7 @@ class Admin::UsersController < Admin::ApplicationController
       client.materialize('Contact')
       cm = SFDC_Models::Contact.find(user.salesforce_id)
       if cm
-        cm.BZ_User_Id__c = ""
+        cm.BZ_User_Id__c = ''
         cm.Signup_Date__c = ''
         cm.save
         client.materialize('CampaignMember')
