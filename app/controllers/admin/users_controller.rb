@@ -256,11 +256,52 @@ class Admin::UsersController < Admin::ApplicationController
 
   def destroy
     @user = User.find(params[:id])
+    user = @user
     if @user.canvas_user_id
       initialize_lms_interop
 
       @lms.destroy_user(@user.canvas_user_id)
     end
+
+    # update the user on Salesforce, if present
+    if user.salesforce_id
+      sf = BeyondZ::Salesforce.new
+      client = sf.get_client
+      client.materialize('Contact')
+      cm = SFDC_Models::Contact.find(user.salesforce_id)
+      if cm
+        cm.BZ_User_Id__c = ''
+        cm.Signup_Date__c = ''
+        cm.save
+        client.materialize('CampaignMember')
+        cm = SFDC_Models::CampaignMember.find_by_ContactId(user.salesforce_id)
+        if cm
+          cm.delete
+        end
+      end
+    end
+
+
+    # Update OSQA, if configured
+    if Rails.application.secrets.qa_token && !Rails.application.secrets.qa_token.empty?
+      if @qa_http.nil?
+        @qa_http = Net::HTTP.new(Rails.application.secrets.qa_host, 443)
+        @qa_http.use_ssl = true
+        if Rails.application.secrets.canvas_allow_self_signed_ssl # reusing this config option since it is the same deal here
+          @qa_http.verify_mode = OpenSSL::SSL::VERIFY_NONE # self-signed cert would fail
+        end
+      end
+
+      request = Net::HTTP::Post.new('/account/destroy-user/')
+      request.set_form_data(
+        'access_token' => Rails.application.secrets.qa_token,
+        'email' => @user.email
+      )
+      @qa_http.request(request)
+    end
+
+
+
     @user.destroy!
     redirect_to '/admin/users'
   end
