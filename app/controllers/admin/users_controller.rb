@@ -268,11 +268,11 @@ class Admin::UsersController < Admin::ApplicationController
       sf = BeyondZ::Salesforce.new
       client = sf.get_client
       client.materialize('Contact')
-      cm = SFDC_Models::Contact.find(user.salesforce_id)
-      if cm
-        cm.BZ_User_Id__c = ''
-        cm.Signup_Date__c = ''
-        cm.save
+      contact = SFDC_Models::Contact.find(user.salesforce_id)
+      if contact
+        contact.BZ_User_Id__c = ''
+        contact.Signup_Date__c = ''
+        contact.save
         client.materialize('CampaignMember')
         cm = SFDC_Models::CampaignMember.find_by_ContactId(user.salesforce_id)
         if cm
