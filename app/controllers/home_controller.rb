@@ -43,6 +43,24 @@ class HomeController < ApplicationController
   def please_wait
   end
 
+  # This will be used for more accurate redirection - the JS will
+  # poll this to only redirect once it is done (instead of just using
+  # a fixed timer), and tell them where to go afterward - we can send
+  # the user directly to the application if they are ready for it.
+  def please_wait_status
+    obj = {}
+
+    if current_user.applicant_type == 'volunteer' || current_user.applicant_type == 'undergrad_student' || current_user.applicant_type == 'temp_volunteer'
+      obj["ready"] = current_user.apply_now_enabled
+      obj["path"] = new_enrollment_path
+    else
+      obj["ready"] = true
+      obj["path"] = welcome_path
+    end
+
+    render :json => obj
+  end
+
   def welcome
     @apply_now_showing = false
     # just set here as a default so we can see it if it is improperly set below and
