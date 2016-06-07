@@ -51,11 +51,11 @@ class HomeController < ApplicationController
     obj = {}
 
     if current_user.applicant_type == 'volunteer' || current_user.applicant_type == 'undergrad_student' || current_user.applicant_type == 'temp_volunteer'
-      obj["ready"] = current_user.apply_now_enabled
-      obj["path"] = new_enrollment_path
+      obj['ready'] = current_user.apply_now_enabled
+      obj['path'] = new_enrollment_path
     else
-      obj["ready"] = true
-      obj["path"] = welcome_path
+      obj['ready'] = true
+      obj['path'] = welcome_path
     end
 
     render :json => obj
