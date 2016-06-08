@@ -12,7 +12,15 @@
   setInterval(function() {
     document.getElementById('dots').innerHTML += '.';
   }, 500);
-  setTimeout(function() {
-    location.href = '<%= welcome_path %>';
-  }, 4500);
+
+  function check_please_wait_status() {
+    $.get('<%= please_wait_status_path %>', function(data) {
+      if(data.ready)
+        location.href = data.path;
+      else
+        setTimeout(check_please_wait_status, 2500);
+    });
+  }
+
+  setTimeout(check_please_wait_status, 2500);
 </script>
