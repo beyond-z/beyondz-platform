@@ -379,6 +379,11 @@ class UsersController < ApplicationController
       # so they can immediately apply.  This is because our emails are going to spam.  Once
       # that is fixed, undo this.
       sign_in('user', @new_user)
+
+      # we also want to email the people who are automatically confirmed
+      # just so they have a message in their inbox reminding them which
+      # login they used
+      ConfirmationFlow.new_user(@new_user).deliver
     end
 
     redirect_to redirect_to_welcome_path(@new_user)
