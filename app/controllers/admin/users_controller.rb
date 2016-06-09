@@ -11,10 +11,10 @@ class Admin::UsersController < Admin::ApplicationController
       @users = User.order(:last_name)
     end
     respond_to do |format|
-      format.html {
+      format.html do
         @users = @users.page(current_page)
         render
-      }
+      end
       format.csv { render text: csv_export }
       format.xls { send_data(@users.to_xls) }
     end
