@@ -279,9 +279,9 @@ class Admin::UsersController < Admin::ApplicationController
         end
         client.materialize('CampaignMember')
         cms = SFDC_Models::CampaignMember.find_all_by_ContactId(user.salesforce_id)
-        cms.each do |cm|
-          if campaign_ids_to_delete.has_key?(cm.CampaignId)
-            cm.delete
+        cms.each do |campaign_member|
+          if campaign_ids_to_delete.key?(campaign_member.CampaignId)
+            campaign_member.delete
           end
         end
       end
