@@ -57,6 +57,10 @@ class HomeController < ApplicationController
     # also to handle the fallback case for legacy users who applied before the salesforce system was in place
     @program_title = 'Braven'
     if user_signed_in?
+      if current_user.in_lms?
+        redirect_to "//#{Rails.application.secrets.canvas_server}/"
+        return
+      end
       if current_user.program_attendance_confirmed
         redirect_to user_confirm_path
         return

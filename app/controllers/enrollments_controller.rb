@@ -219,7 +219,7 @@ class EnrollmentsController < ApplicationController
         @enrollment.explicitly_submitted = true
         @enrollment.save! # it should still validate successfully
 
-        # Email Abby
+        # Email the staff
         StaffNotifications.new_application(@enrollment).deliver
 
         # Update application status on Salesforce, if configured
