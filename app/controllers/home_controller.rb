@@ -20,12 +20,20 @@ class HomeController < ApplicationController
           sf = BeyondZ::Salesforce.new
           client = sf.get_client
           client.materialize('CampaignMember')
-          cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(current_user.salesforce_id, enrollment.campaign_id)
 
-          # If accepted, ask for confirmation, if not, go to welcome where
-          # they will learn about how to continue their application
-          if cm && cm.Candidate_Status__c == 'Accepted'
-            redirect_to user_confirm_path
+          client.materialize('Campaign')
+          campaign = SFDC_Models::Campaign.find(enrollment.campaign_id)
+          # Only if they need to confirm should we try to send them to confirm
+          # if not need to confirm, send to Welcome, we'll contact them later
+          if campaign && campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == false
+            cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(current_user.salesforce_id, enrollment.campaign_id)
+            # If accepted, ask for confirmation, if not, go to welcome where
+            # they will learn about how to continue their application
+            if cm && cm.Candidate_Status__c == 'Accepted'
+              redirect_to user_confirm_path
+            else
+              redirect_to welcome_path
+            end
           else
             redirect_to welcome_path
           end
