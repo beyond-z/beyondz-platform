@@ -97,8 +97,13 @@ class HomeController < ApplicationController
       # If accepted, we go back to confirmation (see above in the index method)
       # repeated here in welcome so if they bookmarked this, they won't get lost
       if cm && cm.Candidate_Status__c == 'Accepted'
-        redirect_to user_confirm_path
-        return
+        client.materialize('Campaign')
+        # only confirm if the Campaign requires it
+        campaign = SFDC_Models::Campaign.find(existing_enrollment.campaign_id)
+        if campaign && campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == false
+          redirect_to user_confirm_path
+          return
+        end
       end
 
       if existing_enrollment.explicitly_submitted
