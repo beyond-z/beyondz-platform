@@ -5,6 +5,11 @@ class ConfirmationFlow < ActionMailer::Base
   # needed because gmail was filtering some messages: http://blog.mailgun.com/tips-tricks-avoiding-gmail-spam-filtering-when-using-ruby-on-rails-action-mailer/
   default 'Message-ID' => ->(_v_) { "<#{SecureRandom.uuid}@bebraven.org>" }
 
+  def new_user(user)
+    @user = user
+    mail(to: user.email, subject: 'Welcome to Braven')
+  end
+
   def coach_confirmed(recipient, program_title, program_site, timeslot)
     @recipient = recipient
     @program_title = program_title

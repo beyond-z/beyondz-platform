@@ -276,10 +276,18 @@ class Admin::UsersController < Admin::ApplicationController
         contact.BZ_User_Id__c = ''
         contact.Signup_Date__c = ''
         contact.save
+
+        campaign_ids_to_delete = {}
+        SFDC_Models::Campaign.query("IsActive=true AND Type IN ('Leadership Coaches', 'Program Participants', 'Volunteer')").each do |camp|
+          campaign_ids_to_delete[camp.Id] = camp.Id
+        end
+
         client.materialize('CampaignMember')
-        cm = SFDC_Models::CampaignMember.find_by_ContactId(user.salesforce_id)
-        if cm
-          cm.delete
+        cms = SFDC_Models::CampaignMember.find_all_by_ContactId(user.salesforce_id)
+        cms.each do |campaign_member|
+          if campaign_ids_to_delete.key?(campaign_member.CampaignId)
+            campaign_member.delete
+          end
         end
       end
     end
