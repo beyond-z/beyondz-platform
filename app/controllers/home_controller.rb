@@ -20,12 +20,20 @@ class HomeController < ApplicationController
           sf = BeyondZ::Salesforce.new
           client = sf.get_client
           client.materialize('CampaignMember')
-          cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(current_user.salesforce_id, enrollment.campaign_id)
 
-          # If accepted, ask for confirmation, if not, go to welcome where
-          # they will learn about how to continue their application
-          if cm && cm.Candidate_Status__c == 'Accepted'
-            redirect_to user_confirm_path
+          client.materialize('Campaign')
+          campaign = SFDC_Models::Campaign.find(enrollment.campaign_id)
+          # Only if they need to confirm should we try to send them to confirm
+          # if not need to confirm, send to Welcome, we'll contact them later
+          if campaign && campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == false
+            cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(current_user.salesforce_id, enrollment.campaign_id)
+            # If accepted, ask for confirmation, if not, go to welcome where
+            # they will learn about how to continue their application
+            if cm && cm.Candidate_Status__c == 'Accepted'
+              redirect_to user_confirm_path
+            else
+              redirect_to welcome_path
+            end
           else
             redirect_to welcome_path
           end
@@ -43,12 +51,34 @@ class HomeController < ApplicationController
   def please_wait
   end
 
+  # This will be used for more accurate redirection - the JS will
+  # poll this to only redirect once it is done (instead of just using
+  # a fixed timer), and tell them where to go afterward - we can send
+  # the user directly to the application if they are ready for it.
+  def please_wait_status
+    obj = {}
+
+    if current_user.applicant_type == 'volunteer' || current_user.applicant_type == 'undergrad_student' || current_user.applicant_type == 'temp_volunteer'
+      obj['ready'] = current_user.apply_now_enabled
+      obj['path'] = new_enrollment_path
+    else
+      obj['ready'] = true
+      obj['path'] = welcome_path
+    end
+
+    render :json => obj
+  end
+
   def welcome
     @apply_now_showing = false
     # just set here as a default so we can see it if it is improperly set below and
     # also to handle the fallback case for legacy users who applied before the salesforce system was in place
     @program_title = 'Braven'
     if user_signed_in?
+      if current_user.in_lms?
+        redirect_to "//#{Rails.application.secrets.canvas_server}/"
+        return
+      end
       if current_user.program_attendance_confirmed
         redirect_to user_confirm_path
         return
@@ -67,8 +97,13 @@ class HomeController < ApplicationController
       # If accepted, we go back to confirmation (see above in the index method)
       # repeated here in welcome so if they bookmarked this, they won't get lost
       if cm && cm.Candidate_Status__c == 'Accepted'
-        redirect_to user_confirm_path
-        return
+        client.materialize('Campaign')
+        # only confirm if the Campaign requires it
+        campaign = SFDC_Models::Campaign.find(existing_enrollment.campaign_id)
+        if campaign && campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == false
+          redirect_to user_confirm_path
+          return
+        end
       end
 
       if existing_enrollment.explicitly_submitted

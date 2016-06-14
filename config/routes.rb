@@ -10,6 +10,7 @@ BeyondzPlatform::Application.routes.draw do
   # These are part of the signup flow and NOT moved to the blog, they should stay here.
   get '/welcome', to: 'home#welcome'
   get '/activating', to: 'home#please_wait', as: :please_wait
+  get '/activating_status', to: 'home#please_wait_status', as: :please_wait_status
 
   # These convenience routes are meant to be given to
   # people during in-person recruitment efforts

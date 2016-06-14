@@ -12,7 +12,23 @@
   setInterval(function() {
     document.getElementById('dots').innerHTML += '.';
   }, 500);
-  setTimeout(function() {
-    location.href = '<%= welcome_path %>';
-  }, 4500);
+
+  var wait_count = 0;
+  function check_please_wait_status() {
+    wait_count += 1;
+    if(wait_count >= 40) {
+      location.href = '<%= welcome_path %>';
+      return; // give up on the wait and just send them to the "we'll contact you soon" page
+      // odds are after this, ~ 2 minutes, if it hasn't happened yet, it isn't going to (and the
+      // user is likely to give up too)
+    }
+    $.get('<%= please_wait_status_path %>', function(data) {
+      if(data.ready)
+        location.href = data.path;
+      else
+        setTimeout(check_please_wait_status, 2500);
+    });
+  }
+
+  setTimeout(check_please_wait_status, 2500);
 </script>

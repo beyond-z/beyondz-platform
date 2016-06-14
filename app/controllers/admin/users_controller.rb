@@ -6,12 +6,15 @@ class Admin::UsersController < Admin::ApplicationController
   def index
     current_page = params[:page] # was getting ArgumentError (wrong number of arguments (1 for 0) when using param directly with .page method
     if params[:search]
-      @users = User.search(params[:search]).page(current_page)
+      @users = User.search(params[:search])
     else
-      @users = User.order(:last_name).page(current_page)
+      @users = User.order(:last_name)
     end
     respond_to do |format|
-      format.html { render }
+      format.html do
+        @users = @users.page(current_page)
+        render
+      end
       format.csv { render text: csv_export }
       format.xls { send_data(@users.to_xls) }
     end
@@ -256,11 +259,60 @@ class Admin::UsersController < Admin::ApplicationController
 
   def destroy
     @user = User.find(params[:id])
+    user = @user
     if @user.canvas_user_id
       initialize_lms_interop
 
       @lms.destroy_user(@user.canvas_user_id)
     end
+
+    # update the user on Salesforce, if present
+    if user.salesforce_id
+      sf = BeyondZ::Salesforce.new
+      client = sf.get_client
+      client.materialize('Contact')
+      contact = SFDC_Models::Contact.find(user.salesforce_id)
+      if contact
+        contact.BZ_User_Id__c = ''
+        contact.Signup_Date__c = ''
+        contact.save
+
+        campaign_ids_to_delete = {}
+        SFDC_Models::Campaign.query("IsActive=true AND Type IN ('Leadership Coaches', 'Program Participants', 'Volunteer')").each do |camp|
+          campaign_ids_to_delete[camp.Id] = camp.Id
+        end
+
+        client.materialize('CampaignMember')
+        cms = SFDC_Models::CampaignMember.find_all_by_ContactId(user.salesforce_id)
+        cms.each do |campaign_member|
+          if campaign_ids_to_delete.key?(campaign_member.CampaignId)
+            campaign_member.delete
+          end
+        end
+      end
+    end
+
+
+    # Update OSQA, if configured
+    if Rails.application.secrets.qa_token && !Rails.application.secrets.qa_token.empty?
+      if @qa_http.nil?
+        @qa_http = Net::HTTP.new(Rails.application.secrets.qa_host, 443)
+        @qa_http.use_ssl = true
+        if Rails.application.secrets.canvas_allow_self_signed_ssl # reusing this config option since it is the same deal here
+          @qa_http.verify_mode = OpenSSL::SSL::VERIFY_NONE # self-signed cert would fail
+        end
+      end
+
+      request = Net::HTTP::Post.new('/account/destroy-user/')
+      request.set_form_data(
+        'access_token' => Rails.application.secrets.qa_token,
+        'email' => @user.email
+      )
+      @qa_http.request(request)
+    end
+
+
+
     @user.destroy!
     redirect_to '/admin/users'
   end
