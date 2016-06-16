@@ -73,7 +73,6 @@ class EnrollmentsController < ApplicationController
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
     client.materialize('CampaignMember')
-    client.materialize('Campaign')
 
     # We need to check all the campaign members to find the one that is most correct
     # for an application - one with an Application Type set up.
@@ -92,7 +91,7 @@ class EnrollmentsController < ApplicationController
     cm = SFDC_Models::CampaignMember.find(sf_answer['records'][0]['Id'])
 
 
-    campaign = SFDC_Models::Campaign.find(cm.CampaignId)
+    campaign = sf.load_cached_campaign(cm.CampaignId, client)
 
     # Set the data from the campaign so we can tie back to it
     @enrollment.campaign_id = campaign.Id
@@ -140,9 +139,7 @@ class EnrollmentsController < ApplicationController
   def load_salesforce_campaign
     if @enrollment.campaign_id
       sf = BeyondZ::Salesforce.new
-      client = sf.get_client
-      client.materialize('Campaign')
-      campaign = SFDC_Models::Campaign.find(@enrollment.campaign_id)
+      campaign = sf.load_cached_campaign(@enrollment.campaign_id)
 
       # It might be worth caching this at some point too.
 
