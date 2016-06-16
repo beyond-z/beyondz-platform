@@ -70,8 +70,7 @@ class UsersController < ApplicationController
 
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
-    client.materialize('Campaign')
-    campaign = SFDC_Models::Campaign.find(@enrollment.campaign_id)
+    campaign = sf.load_cached_campaign(@enrollment.campaign_id, client)
 
     if campaign
       @program_title = campaign.Program_Title__c
@@ -179,8 +178,7 @@ class UsersController < ApplicationController
 
     @enrollment = Enrollment.find_by(:user_id => current_user.id)
 
-    client.materialize('Campaign')
-    campaign = SFDC_Models::Campaign.find(@enrollment.campaign_id)
+    campaign = sf.load_cached_campaign(@enrollment.campaign_id, client)
 
     program_title = campaign.Program_Title__c
     program_site = campaign.Program_Site__c

@@ -21,8 +21,7 @@ class HomeController < ApplicationController
           client = sf.get_client
           client.materialize('CampaignMember')
 
-          client.materialize('Campaign')
-          campaign = SFDC_Models::Campaign.find(enrollment.campaign_id)
+          campaign = sf.load_cached_campaign(enrollment.campaign_id, client)
           # Only if they need to confirm should we try to send them to confirm
           # if not need to confirm, send to Welcome, we'll contact them later
           if campaign && campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == false
@@ -97,9 +96,9 @@ class HomeController < ApplicationController
       # If accepted, we go back to confirmation (see above in the index method)
       # repeated here in welcome so if they bookmarked this, they won't get lost
       if cm && cm.Candidate_Status__c == 'Accepted'
-        client.materialize('Campaign')
         # only confirm if the Campaign requires it
-        campaign = SFDC_Models::Campaign.find(existing_enrollment.campaign_id)
+
+        campaign = sf.load_cached_campaign(existing_enrollment.campaign_id, client)
         if campaign && campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == false
           redirect_to user_confirm_path
           return
@@ -109,14 +108,12 @@ class HomeController < ApplicationController
       if existing_enrollment.explicitly_submitted
         @application_received = true
         if existing_enrollment.campaign_id
-          client.materialize('Campaign')
-          campaign = SFDC_Models::Campaign.find(existing_enrollment.campaign_id)
+          campaign = sf.load_cached_campaign(existing_enrollment.campaign_id, client)
           @program_title = campaign.Program_Title__c
         end
       else
         if existing_enrollment.campaign_id
-          client.materialize('Campaign')
-          campaign = SFDC_Models::Campaign.find(existing_enrollment.campaign_id)
+          campaign = sf.load_cached_campaign(existing_enrollment.campaign_id, client)
           if campaign.Status == 'Completed'
             @program_completed = true
           end
