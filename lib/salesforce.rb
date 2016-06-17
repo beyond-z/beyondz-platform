@@ -48,6 +48,14 @@ module BeyondZ
   class Salesforce
     public
 
+    def load_cached_campaign(campaign_id, client = nil)
+      Rails.cache.fetch("salesforce/campaign/#{campaign_id}", expires_in: 12.hours) do
+        client = get_client if client.nil?
+        client.materialize('Campaign')
+        SFDC_Models::Campaign.find(campaign_id)
+      end
+    end
+
     def get_client
       client = Databasedotcom::Client.new :host => Rails.application.secrets.salesforce_host
       client.sobject_module = SFDC_Models
