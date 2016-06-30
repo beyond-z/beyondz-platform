@@ -313,6 +313,8 @@ class User < ActiveRecord::Base
     # The apply now enabled *should* be set by the SF triggers
     # but we might want to do it here now anyway to give faster
     # response to the user.
+    apply_now_enabled = true
+    save!
   end
 
 
