@@ -23,13 +23,25 @@
   </tr>
   <tr>
     <% e = Enrollment.find_by_user_id(@user.id) %>
-    <th>Salesforce Enrollment Campaign ID</th>
+    <th>Salesforce Enrollment Campaign ID<br>(LEGACY USE ONLY*)</th>
     <% if e %>
       <td><%= e.campaign_id ? e.campaign_id : '--not set--'  %> <%= link_to 'Change', edit_admin_user_path(@user) %></td>
     <% else %>
       <td>--no enrollment found, user hasn't opened application yet--</td>
     <% end %>
   </tr>
+  <tr>
+    <th>Confirmation Status</th>
+      <td><%= @user.program_attendance_confirmed ? "Confirmed" : "Awaiting"  %>
+        <% if @user.program_attendance_confirmed %>
+          <%= form_for [:admin, @user] do |f| %>
+            <%= f.hidden_field :program_attendance_confirmed, :value => false %><br />
+            <%= f.submit('Reset') %>
+          <% end %>
+        <% end %>
+      </td>
+  </tr>
+
 </table>
 <br/>
   <p>Use with care, the user might get emailed or you could change info on their behalf.</p>
@@ -43,3 +55,5 @@
     <br />
     <input value="Impersonate User" type="submit" />
   <% end %>
+
+  * Old accounts had only one enrollment and one campaign. Newer accounts may have separate enrollments for each campaign they are in. Editing a new account with this feature will cause trouble - don't do it! Instead, just add them to a new campaign and/or remove them from the old one on Salesforce itself and everything should sort out on this end automatically.
