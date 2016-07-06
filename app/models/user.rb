@@ -308,11 +308,13 @@ class User < ActiveRecord::Base
       client = sf.get_client
       cm['ContactId'] = salesforce_id
       client.create('CampaignMember', cm)
-    end
 
-    # The apply now enabled *should* be set by the SF triggers
-    # but we might want to do it here now anyway to give faster
-    # response to the user.
+      # The apply now enabled *should* be set by the SF triggers
+      # but we might want to do it here now anyway to give faster
+      # response to the user.
+      self.apply_now_enabled = true
+      self.save!
+    end
   end
 
 
