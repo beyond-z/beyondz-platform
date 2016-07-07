@@ -26,7 +26,9 @@
       Anticipated graduation:
     </div>
     <div class="col-sm-6">
-      <table style="width: auto; margin: 0px;"><tr><td>
+      <table style="width: auto; margin: 0px;">
+      <tr><td>Year</td><td>Semester</td></tr>
+      <tr><td>
         <%= f.select :anticipated_graduation, options_for_select(graduation_years, params[:user].nil? ? '' : params[:user][:anticipated_graduation]), {}, :class => 'form-control', include_blank: true, :required => 'required' %>
       </td><td>
         <%= f.select :anticipated_graduation_semester, ["Fall", "Spring", "Summer", "Winter"], {}, 'class' => 'short form-control', include_blank: true, :required => 'required' %>
