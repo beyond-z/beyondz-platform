@@ -35,6 +35,7 @@ class EnrollmentsController < ApplicationController
       @enrollment.phone = current_user.phone
       @enrollment.title = current_user.profession
       @enrollment.undergraduate_year = current_user.anticipated_graduation
+      @enrollment.anticipated_graduation_semester = current_user.anticipated_graduation_semester
       @enrollment.accepts_txt = true # to pre-check the box
 
       if Rails.application.secrets.salesforce_username && current_user.salesforce_id
@@ -290,6 +291,7 @@ class EnrollmentsController < ApplicationController
 
     cm.Undergrad_University__c = @enrollment.undergrad_university
     cm.Undergraduate_Year__c = @enrollment.undergraduate_year
+    cm.Anticipated_Graduation_Semester__c = @enrollment.anticipated_graduation_semester
     cm.Major__c = @enrollment.major
     cm.GPA__c = @enrollment.gpa
 

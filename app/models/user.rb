@@ -229,6 +229,7 @@ class User < ActiveRecord::Base
       contact['University_Name__c'] = university_name
     end
     contact['Anticipated_Graduation__c'] = anticipated_graduation
+    contact['Anticipated_Graduation_Semester__c'] = anticipated_graduation_semester
     if applicant_type == 'employer'
       # Industry on Contact is a custom field...
       contact[salesforce_id ? 'Industry__c' : 'Industry'] = profession
