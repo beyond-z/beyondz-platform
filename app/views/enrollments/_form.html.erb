@@ -151,7 +151,7 @@
                   <tr><td>
                   <%= f.text_field :undergraduate_year, 'class' => 'form-control short', 'step' => '1', 'type' => 'number', 'min' => Date.today.year - 50 %>
                   </td><td>
-                  <%= f.select :anticipated_graduation_semester, ["Fall", "Spring", "Summer", "Winter"], {}, 'class' => 'short form-control', include_blank: true, :required => 'required' %>
+                  <%= f.select :anticipated_graduation_semester, ["Fall", "Spring", "Summer", "Winter"], {}, 'class' => 'short form-control', include_blank: true %>
                   </td></tr></table>
                   <!-- the -50 there is an arbitrary amount to account for the coach case,
                        where they may have graduated many years ago, -->
