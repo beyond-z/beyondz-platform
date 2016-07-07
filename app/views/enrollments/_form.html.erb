@@ -141,7 +141,12 @@
                 <div class="form-group both">
                   <label class="student">Year of expected graduation</label>
                   <label class="volunteer coach">Year of graduation</label>
+
+                  <table style="width: auto; margin: 0px;"><tr><td>
+                  <%= f.select :anticipated_graduation_semester, ["Fall", "Spring", "Summer", "Winter"], {}, 'class' => 'short form-control' %>
+                  </td><td>
                   <%= f.text_field :undergraduate_year, 'class' => 'form-control short', 'step' => '1', 'type' => 'number', 'min' => Date.today.year - 50 %>
+                  </td></tr></table>
                   <!-- the -50 there is an arbitrary amount to account for the coach case,
                        where they may have graduated many years ago, -->
                 </div>

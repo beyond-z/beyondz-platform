@@ -290,6 +290,7 @@ class EnrollmentsController < ApplicationController
 
     cm.Undergrad_University__c = @enrollment.undergrad_university
     cm.Undergraduate_Year__c = @enrollment.undergraduate_year
+    cm.Anticipated_Graduation_Semester__c = @enrollment.anticipated_graduation_semester
     cm.Major__c = @enrollment.major
     cm.GPA__c = @enrollment.gpa
 
