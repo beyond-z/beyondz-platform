@@ -27,7 +27,7 @@
     </div>
     <div class="col-sm-6">
       <table style="width: auto; margin: 0px;">
-      <tr><td>Year</td><td>Semester</td></tr>
+      <tr><td style="text-align: center;">Year</td><td style="text-align: center;">Semester</td></tr>
       <tr><td>
         <%= f.select :anticipated_graduation, options_for_select(graduation_years, params[:user].nil? ? '' : params[:user][:anticipated_graduation]), {}, :class => 'form-control', include_blank: true, :required => 'required' %>
       </td><td>
