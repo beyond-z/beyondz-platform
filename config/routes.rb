@@ -83,6 +83,8 @@ BeyondzPlatform::Application.routes.draw do
 
     resources :lists
 
+    resources :resumes
+
     resources :users
 
     resources :enrollments

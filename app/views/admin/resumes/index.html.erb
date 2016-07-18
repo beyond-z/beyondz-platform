@@ -1,0 +1,37 @@
+<h1>Braven Resume Library</h1>
+
+<%= link_to 'Add new resume', new_admin_resume_path %>
+
+|
+
+<form style="display: inline">
+  <input type="search" name="search" value="<%= params[:search]%>" />
+  <input type="submit" value="Search" />
+</form>
+
+<hr />
+
+<table style="min-width: 25%;">
+<tr>
+  <th>Title</th><th align="center">Score</th><th>Tags</th>
+</tr>
+<% @resumes.each do |resume| %>
+<tr>
+  <td>
+  <% if resume.resume.present? %>
+    <%= link_to resume.title, resume.resume.url %>
+  <% end %>
+  </td>
+  <td align="center">
+    <%= resume.score %>
+  </td>
+  <td>
+    <% resume.tags.each do |tag| %>
+      <a href="resumes?search=<%= tag %>"><%= tag %></a>
+    <% end %>
+  </td>
+</tr>
+<% end %>
+</table>
+
+<%= paginate @resumes %>

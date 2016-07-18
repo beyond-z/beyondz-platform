@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160707160912) do
+ActiveRecord::Schema.define(version: 20160717192220) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -237,6 +237,18 @@ ActiveRecord::Schema.define(version: 20160707160912) do
     t.text     "note"
     t.boolean  "optional"
     t.integer  "resource_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "resumes", force: true do |t|
+    t.text     "tags",                default: [], array: true
+    t.string   "resume_file_name"
+    t.string   "resume_content_type"
+    t.integer  "resume_file_size"
+    t.datetime "resume_updated_at"
+    t.integer  "score"
+    t.text     "title"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
