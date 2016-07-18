@@ -5,7 +5,6 @@ class Admin::ResumesController < ApplicationController
   end
 
   def new
-
   end
 
   def create
@@ -15,6 +14,5 @@ class Admin::ResumesController < ApplicationController
   end
 
   def update
-
   end
 end
