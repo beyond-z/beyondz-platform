@@ -131,9 +131,9 @@ class HomeController < ApplicationController
         @applications << { :word => word, :started => started, :path => path, :campaign_type => campaign_type, :accepted => accepted, :application_received => submitted, :program_completed => program_completed, :program_title => program_title, :apply_now_enabled => apply_now_enabled }
       end
 
-      if @applications.count == 1 && @applications[0].path != ''
+      if @applications.count == 1 && @applications[0][:path] != ''
         # If they only have one valid destination, just go ahead and send them right there immediately
-        redirect_to @applications[0].path
+        redirect_to @applications[0][:path]
       end
     end
   end
