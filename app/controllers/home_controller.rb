@@ -8,37 +8,14 @@ class HomeController < ApplicationController
       if current_user.is_administrator?
         redirect_to admin_root_path
       elsif current_user.in_lms?
+        # If LMS, go to canvas here as well as /welcome just because
+        # this is such a frequent and simple case that duplicating the line
+        # here gives the end user a small optimization that I feel is worth it.
         redirect_to "//#{Rails.application.secrets.canvas_server}/"
       else
-        # Logged in user who may be applying or may be confirmed
-        # let's check the enrollment and SF status
-        enrollment = Enrollment.find_by_user_id(current_user.id)
-        if current_user.program_attendance_confirmed
-          # If already confirmed, the confirm path will have a nice next steps screen
-          redirect_to user_confirm_path
-        elsif enrollment
-          sf = BeyondZ::Salesforce.new
-          client = sf.get_client
-          client.materialize('CampaignMember')
-
-          campaign = sf.load_cached_campaign(enrollment.campaign_id, client)
-          # Only if they need to confirm should we try to send them to confirm
-          # if not need to confirm, send to Welcome, we'll contact them later
-          if campaign && campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == false
-            cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(current_user.salesforce_id, enrollment.campaign_id)
-            # If accepted, ask for confirmation, if not, go to welcome where
-            # they will learn about how to continue their application
-            if cm && cm.Candidate_Status__c == 'Accepted'
-              redirect_to user_confirm_path
-            else
-              redirect_to welcome_path
-            end
-          else
-            redirect_to welcome_path
-          end
-        else
-          redirect_to welcome_path
-        end
+        # All other users go to welcome where the complex logic
+        # of where to go for what type of user lives (no longer duplicated here)
+        redirect_to welcome_path
       end
     else
       # Otherwise, non-logged in users
@@ -82,43 +59,81 @@ class HomeController < ApplicationController
         redirect_to user_confirm_path
         return
       end
-      existing_enrollment = Enrollment.find_by(:user_id => current_user.id)
-      return if existing_enrollment.nil?
+
 
       sf = BeyondZ::Salesforce.new
       client = sf.get_client
       client.materialize('CampaignMember')
-      cm = nil
-      if current_user.salesforce_id && existing_enrollment.campaign_id
-        cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(current_user.salesforce_id, existing_enrollment.campaign_id)
-      end
 
-      # If accepted, we go back to confirmation (see above in the index method)
-      # repeated here in welcome so if they bookmarked this, they won't get lost
-      if cm && cm.Candidate_Status__c == 'Accepted'
-        # only confirm if the Campaign requires it
+      @applications = []
 
-        campaign = sf.load_cached_campaign(existing_enrollment.campaign_id, client)
-        if campaign && campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == false
-          redirect_to user_confirm_path
-          return
+      # We need to check all the campaign members to find the one that is most correct
+      # for an application - one with an Application Type set up.
+      query_result = client.http_get("/services/data/v#{client.version}/query?q=" \
+        "SELECT
+          Id, CampaignId, Candidate_Status__c, Apply_Button_Enabled__c
+        FROM CampaignMember WHERE ContactId = '#{current_user.salesforce_id}' AND Campaign.IsActive = TRUE AND Campaign.Application_Type__c != ''")
+
+      sf_answer = JSON.parse(query_result.body)
+
+      sf_answer['records'].each do |record|
+        campaign = sf.load_cached_campaign(record['CampaignId'])
+        campaign_type =
+        case campaign.Type
+        when 'Program Participants'
+          'Fellow'
+        when 'Leadership Coaches'
+          'Coaching'
+        else
+          'Volunteer'
         end
-      end
 
-      if existing_enrollment.explicitly_submitted
-        @application_received = true
-        if existing_enrollment.campaign_id
-          campaign = sf.load_cached_campaign(existing_enrollment.campaign_id, client)
-          @program_title = campaign.Program_Title__c
-        end
-      else
-        if existing_enrollment.campaign_id
-          campaign = sf.load_cached_campaign(existing_enrollment.campaign_id, client)
-          if campaign.Status == 'Completed'
-            @program_completed = true
+        word = 'Start'
+        path = new_enrollment_path(:campaign_id => record['CampaignId'])
+        accepted = false
+        started = false
+        submitted = false
+        program_completed = false
+        program_title = campaign.Program_Title__c
+        apply_now_enabled = record['Apply_Button_Enabled__c']
+
+
+        enrollments = Enrollment.where(:user_id => @new_user.id, :campaign_id => record['CampaignId'])
+        if enrollments.any?
+          enrollment = enrollments.first
+          word = 'Continue'
+          started = true
+          accepted = record['Candidate_Status__c'] == 'Accepted'
+
+          path = ''
+          submitted = enrollment.explicitly_submitted
+          program_completed = campaign.Status == 'Completed'
+
+          unless submitted
+            # If they application isn't submitted, the logical place for them
+            # to go is to the application so they can finish it
+            path = enrollment_path(enrollment)
+          end
+
+          if accepted && campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == false
+            # If accepted, we go back to confirmation (see above in the index method)
+            # repeated here in welcome so if they bookmarked this, they won't get lost
+            # just only done if the confirmation is actually required!
+            path = user_confirm_path
           end
         end
 
+        if program_completed
+          # If the program is completed, always keep them here - it will display a message for them
+          path = ''
+        end
+
+        @applications << { :word => word, :started => started, :path => path, :campaign_type => campaign_type, :accepted => accepted, :application_received => submitted, :program_completed => program_completed, :program_title => program_title, :apply_now_enabled => apply_now_enabled }
+      end
+
+      if @applications.count == 1 && @applications[0].path != ''
+        # If they only have one valid destination, just go ahead and send them right there immediately
+        redirect_to @applications[0].path
       end
     end
   end

@@ -220,7 +220,8 @@ class Admin::UsersController < Admin::ApplicationController
   def impersonate
     sign_in(:user, User.find(params[:id]))
     if params[:unsubmit_application]
-      enrollment = Enrollment.find_by_user_id(params[:id])
+      enrollment = Enrollment.latest_for_user(params[:id])
+
       if enrollment
         enrollment.explicitly_submitted = false
         enrollment.save(validate: false)

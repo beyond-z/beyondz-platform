@@ -58,12 +58,14 @@ class SalesforceController < ApplicationController
       cids.split(',').each do |cid|
         u = User.find_by_salesforce_id(cid)
         if u
-          existing_enrollment = Enrollment.find_by(:user_id => u.id)
+          existing_enrollment = Enrollment.latest_for_user(:user_id => u.id)
           if existing_enrollment
             existing_enrollment.campaign_id = new_campaign
             if reset
               # We want to allow them to update and re-submit the app
-              # so we will unsubmit but keep their data in place.
+              # so we will copy the new application from the old,
+              # keeping their old data in place, and let them resubmit.
+              existing_enrollment = existing_enrollment.dup
               existing_enrollment.explicitly_submitted = false
             end
             # It may be in-progress, so we don't want to validate it
