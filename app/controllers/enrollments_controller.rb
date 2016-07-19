@@ -24,7 +24,13 @@ class EnrollmentsController < ApplicationController
     # We need to redirect them to edit their current application
     # if one exists. Otherwise, they can make a new one with some
     # prefilled data which we'll immediately send them to edit.
-    existing_enrollment = Enrollment.find_by(:user_id => current_user.id)
+    existing_enrollment = nil
+    if params[:campaign_id]
+      existing_enrollment = Enrollment.find_by(:user_id => current_user.id, :campaign_id => params[:campaign_id])
+    else
+      # Default link is to just find any; we will start new from a campaign later
+      existing_enrollment = Enrollment.find_by(:user_id => current_user.id)
+    end
     if existing_enrollment.nil?
       # pre-fill any fields that are available from the user model
       @enrollment.first_name = current_user.first_name
@@ -43,7 +49,7 @@ class EnrollmentsController < ApplicationController
         # this user is a member of and use that to fetch the associated
         # application out of our system.
 
-        unless start_application_from_salesforce_campaign
+        unless start_application_from_salesforce_campaign(params[:campaign_id])
           # If we can't start from a salesforce campaign, we don't
           # want them to actually start at all - w/o the campaign,
           # we can't save their info properly. This likely happens
@@ -70,7 +76,7 @@ class EnrollmentsController < ApplicationController
     end
   end
 
-  def start_application_from_salesforce_campaign
+  def start_application_from_salesforce_campaign(campaign_id = nil)
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
     client.materialize('CampaignMember')
@@ -78,18 +84,38 @@ class EnrollmentsController < ApplicationController
     # We need to check all the campaign members to find the one that is most correct
     # for an application - one with an Application Type set up.
     query_result = client.http_get("/services/data/v#{client.version}/query?q=" \
-      "SELECT Id FROM CampaignMember WHERE ContactId = '#{current_user.salesforce_id}' AND Campaign.IsActive = TRUE AND Campaign.Application_Type__c != ''")
+      "SELECT Id, CampaignId FROM CampaignMember WHERE ContactId = '#{current_user.salesforce_id}' AND Campaign.IsActive = TRUE AND Campaign.Application_Type__c != ''")
 
     sf_answer = JSON.parse(query_result.body)
 
-    if sf_answer['records'].length != 1
-      # If they aren't a member of one appropriate campaign,
-      # they cannot start the application since we won't know
-      # which one to show and their data is likely to be lost.
+    cm_id = nil
+
+    if campaign_id.nil?
+      if sf_answer['records'].length != 1
+        # If they aren't a member of one appropriate campaign,
+        # they cannot start the application since we won't know
+        # which one to show and their data is likely to be lost.
+        return false
+      end
+
+      cm_id = sf_answer['records'][0]['Id']
+    else
+      # we need to start an application for a specific campaign... look through the members and find the right one
+      sf_answer['records'].each do |record|
+        if record['CampaignId'] == campaign_id
+          cm_id = record['Id']
+          break
+        end
+      end
+    end
+
+    if cm_id.nil?
+      # Couldn't find the right campaign member, fail to start
+      # so data isn't lost
       return false
     end
 
-    cm = SFDC_Models::CampaignMember.find(sf_answer['records'][0]['Id'])
+    cm = SFDC_Models::CampaignMember.find(cm_id)
 
 
     campaign = sf.load_cached_campaign(cm.CampaignId, client)
