@@ -249,6 +249,7 @@ ActiveRecord::Schema.define(version: 20160717192220) do
     t.datetime "resume_updated_at"
     t.integer  "score"
     t.text     "title"
+    t.text     "content"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

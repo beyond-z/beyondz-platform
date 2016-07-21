@@ -6,12 +6,23 @@
 
 <form style="display: inline">
   <input type="search" name="search" value="<%= params[:search]%>" />
-  <input type="submit" value="Search" />
+  <input type="submit" value="Full text search" />
 </form>
+
+|
+
+<%= link_to 'View all resumes', admin_resumes_path %>
 
 <hr />
 
 <table style="min-width: 25%;">
+<% if params[:search] %>
+  <caption>Search Results</caption>
+<% elsif params[:tag] %>
+  <caption>Tagged with <%= params[:tag] %></caption>
+<% else %>
+  <caption>All resumes</caption>
+<% end %>
 <tr>
   <th>Title</th><th align="center">Score</th><th>Tags</th>
 </tr>
@@ -27,7 +38,7 @@
   </td>
   <td>
     <% resume.tags.each do |tag| %>
-      <a href="resumes?search=<%= tag %>"><%= tag %></a>
+      <a href="resumes?tag=<%= tag %>"><%= tag %></a>
     <% end %>
   </td>
 </tr>

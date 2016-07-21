@@ -5,6 +5,7 @@ class CreateResumes < ActiveRecord::Migration
       t.attachment :resume
       t.integer :score
       t.text :title
+      t.text :content
 
       t.timestamps
     end
