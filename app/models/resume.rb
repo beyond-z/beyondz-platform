@@ -1,7 +1,7 @@
 class Resume < ActiveRecord::Base
   include PgSearch
 
-  pg_search_scope :fulltext_search, against: [ [:title, 'A'], [:content, 'B'] ], using: {tsearch: { any_word: true } }
+  pg_search_scope :fulltext_search, against: [[:title, 'A'], [:content, 'B']], using: { tsearch: { any_word: true } }
 
   has_attached_file :resume
   validates_attachment :resume,
