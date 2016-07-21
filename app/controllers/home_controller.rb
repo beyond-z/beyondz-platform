@@ -88,6 +88,8 @@ class HomeController < ApplicationController
           'Volunteer'
         end
 
+        apply_text = (campaign_type == 'Volunteer') ? 'Registration' : 'Application'
+
         word = 'Start'
         path = new_enrollment_path(:campaign_id => record['CampaignId'])
         accepted = false
@@ -104,6 +106,9 @@ class HomeController < ApplicationController
           word = 'Continue'
           started = true
           accepted = record['Candidate_Status__c'] == 'Accepted'
+
+          # It is recent if it was updated today.... for use in not showing old informational messages
+          recent = enrollment.updated_at == Date.today
 
           path = ''
           submitted = enrollment.explicitly_submitted
@@ -128,7 +133,7 @@ class HomeController < ApplicationController
           path = ''
         end
 
-        @applications << { :word => word, :started => started, :path => path, :campaign_type => campaign_type, :accepted => accepted, :application_received => submitted, :program_completed => program_completed, :program_title => program_title, :apply_now_enabled => apply_now_enabled }
+        @applications << { :word => word, :started => started, :path => path, :campaign_type => campaign_type, :accepted => accepted, :application_received => submitted, :program_completed => program_completed, :program_title => program_title, :apply_now_enabled => apply_now_enabled, :apply_text => apply_text, :recent => recent }
       end
 
       if @applications.count == 1 && @applications[0][:path] != ''
