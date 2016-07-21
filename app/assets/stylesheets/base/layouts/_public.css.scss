@@ -218,6 +218,8 @@
 // define standard buttons/links
 .apply-button {
   display: inline-block;
+  margin-top: 20px;
+  border: none;
 
   .apply-icon {
     display: inline-block;
@@ -225,8 +227,6 @@
     width: 49px;
     vertical-align: middle;
     margin-right: 12px;
-    margin-top: 20px;
-    border: none;
     background: url(image_path('bz_icons.svg')) 0 -1988px;
 
     &:hover {
