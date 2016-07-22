@@ -76,6 +76,9 @@ class HomeController < ApplicationController
 
       sf_answer = JSON.parse(query_result.body)
 
+      key_application_path = ''
+      @key_application_count = 0
+
       sf_answer['records'].each do |record|
         campaign = sf.load_cached_campaign(record['CampaignId'])
         campaign_type =
@@ -99,7 +102,6 @@ class HomeController < ApplicationController
         program_title = campaign.Program_Title__c
         apply_now_enabled = record['Apply_Button_Enabled__c']
 
-
         enrollments = Enrollment.where(:user_id => @new_user.id, :campaign_id => record['CampaignId'])
         if enrollments.any?
           enrollment = enrollments.first
@@ -108,9 +110,10 @@ class HomeController < ApplicationController
           accepted = record['Candidate_Status__c'] == 'Accepted'
 
           # It is recent if it was updated today.... for use in not showing old informational messages
-          recent = enrollment.updated_at == Date.today
+          recent = enrollment.updated_at.to_date == Date.today
 
           path = ''
+          will_show_message = false
           submitted = enrollment.explicitly_submitted
           program_completed = campaign.Status == 'Completed'
 
@@ -131,14 +134,30 @@ class HomeController < ApplicationController
         if program_completed
           # If the program is completed, always keep them here - it will display a message for them
           path = ''
+          will_show_message = true
+        end
+
+        if submitted && !apply_now_enabled && recent
+          # it will show a message for recently submitted applications
+          will_show_message = true
         end
 
         @applications << { :word => word, :started => started, :path => path, :campaign_type => campaign_type, :accepted => accepted, :application_received => submitted, :program_completed => program_completed, :program_title => program_title, :apply_now_enabled => apply_now_enabled, :apply_text => apply_text, :recent => recent }
+
+        if path != ''
+          key_application_path = path
+          @key_application_count += 1
+        elsif will_show_message
+          # We might not be going anywhere, but will show a message,
+          # so consider this application as a visible key destination
+          # for the user
+          @key_application_count += 1
+        end
       end
 
-      if @applications.count == 1 && @applications[0][:path] != ''
+      if @key_application_count == 1 && key_application_path != ''
         # If they only have one valid destination, just go ahead and send them right there immediately
-        redirect_to @applications[0][:path]
+        redirect_to key_application_path
       end
     end
   end
