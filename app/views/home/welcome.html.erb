@@ -10,7 +10,7 @@
         <% elsif @new_user %>
           <!-- CONFIRMED USER { -->
 
-          <% if @applications.count > 1 %>
+          <% if @key_application_count > 1 %>
             <p class="shoutout">You have worked with us in multiple ways. Please select where you want to go next:</p>
           <% elsif @applications.count == 0 %>
             <!-- USER WHO NEED *NOT* APPLY { -->
@@ -28,7 +28,7 @@
             <!-- We should be able to re-enable apply now in Salesforce, overriding application_received. The second clause here allows that. -->
             <% if app[:application_received] && !app[:apply_now_enabled] %>
               <!-- If this thank you is the only thing to show, we always show it. Otherwise, if the application is recent, show the thanks, and otherwise, no need to show it again. -->
-              <% if @applications.count == 1 || app[:recent] %>
+              <% if @key_application_count == 1 || app[:recent] %>
                 <h2>Thank you for <%= (@new_user.applicant_type == 'temp_volunteer') ? 'registering with' : 'applying to' %> <%= @program_title %>.</h2>
                 <p>We will be in touch shortly with next steps. If you have any further questions please feel free to <a href="mailto:join@bebraven.org">contact us</a></p>
               <% end %>
