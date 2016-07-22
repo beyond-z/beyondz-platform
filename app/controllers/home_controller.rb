@@ -76,6 +76,9 @@ class HomeController < ApplicationController
 
       sf_answer = JSON.parse(query_result.body)
 
+      key_application_path = ''
+      @key_application_count = 0
+
       sf_answer['records'].each do |record|
         campaign = sf.load_cached_campaign(record['CampaignId'])
         campaign_type =
@@ -98,10 +101,6 @@ class HomeController < ApplicationController
         program_completed = false
         program_title = campaign.Program_Title__c
         apply_now_enabled = record['Apply_Button_Enabled__c']
-
-        key_application_path = ''
-        @key_application_count = 0
-
 
         enrollments = Enrollment.where(:user_id => @new_user.id, :campaign_id => record['CampaignId'])
         if enrollments.any?
