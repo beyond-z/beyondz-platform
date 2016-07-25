@@ -58,7 +58,7 @@ class SalesforceController < ApplicationController
       cids.split(',').each do |cid|
         u = User.find_by_salesforce_id(cid)
         if u
-          existing_enrollment = Enrollment.latest_for_user(:user_id => u.id)
+          existing_enrollment = Enrollment.latest_for_user(u.id)
           if existing_enrollment
             existing_enrollment.campaign_id = new_campaign
             if reset

@@ -274,24 +274,28 @@ class Admin::UsersController < Admin::ApplicationController
       sf = BeyondZ::Salesforce.new
       client = sf.get_client
       client.materialize('Contact')
-      contact = SFDC_Models::Contact.find(user.salesforce_id)
-      if contact
-        contact.BZ_User_Id__c = ''
-        contact.Signup_Date__c = ''
-        contact.save
+      begin
+        contact = SFDC_Models::Contact.find(user.salesforce_id)
+        if contact
+          contact.BZ_User_Id__c = ''
+          contact.Signup_Date__c = ''
+          contact.save
 
-        campaign_ids_to_delete = {}
-        SFDC_Models::Campaign.query("IsActive=true AND Type IN ('Leadership Coaches', 'Program Participants', 'Volunteer')").each do |camp|
-          campaign_ids_to_delete[camp.Id] = camp.Id
-        end
+          campaign_ids_to_delete = {}
+          SFDC_Models::Campaign.query("IsActive=true AND Type IN ('Leadership Coaches', 'Program Participants', 'Volunteer')").each do |camp|
+            campaign_ids_to_delete[camp.Id] = camp.Id
+          end
 
-        client.materialize('CampaignMember')
-        cms = SFDC_Models::CampaignMember.find_all_by_ContactId(user.salesforce_id)
-        cms.each do |campaign_member|
-          if campaign_ids_to_delete.key?(campaign_member.CampaignId)
-            campaign_member.delete
+          client.materialize('CampaignMember')
+          cms = SFDC_Models::CampaignMember.find_all_by_ContactId(user.salesforce_id)
+          cms.each do |campaign_member|
+            if campaign_ids_to_delete.key?(campaign_member.CampaignId)
+              campaign_member.delete
+            end
           end
         end
+      rescue Databasedotcom::SalesForceError
+        user.salesforce_id = nil
       end
     end
 

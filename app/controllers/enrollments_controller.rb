@@ -32,17 +32,23 @@ class EnrollmentsController < ApplicationController
       existing_enrollment = Enrollment.find_by(:user_id => current_user.id)
     end
     if existing_enrollment.nil?
-      # pre-fill any fields that are available from the user model
-      @enrollment.first_name = current_user.first_name
-      @enrollment.last_name = current_user.last_name
-      @enrollment.email = current_user.email
-      @enrollment.company = current_user.company
-      @enrollment.undergrad_university = current_user.university_name
-      @enrollment.phone = current_user.phone
-      @enrollment.title = current_user.profession
-      @enrollment.undergraduate_year = current_user.anticipated_graduation
-      @enrollment.anticipated_graduation_semester = current_user.anticipated_graduation_semester
-      @enrollment.accepts_txt = true # to pre-check the box
+      # pre-fill from a previous enrollment, if possible
+      old_enrollment = Enrollment.latest_for_user(current_user.id)
+      if old_enrollment
+        @enrollment = old_enrollment.dup
+        @enrollment.explicitly_submitted = false
+      else
+        # otherwise, pre-fill any fields that are available from the user model
+        @enrollment.first_name = current_user.first_name
+        @enrollment.last_name = current_user.last_name
+        @enrollment.email = current_user.email
+        @enrollment.company = current_user.company
+        @enrollment.undergrad_university = current_user.university_name
+        @enrollment.phone = current_user.phone
+        @enrollment.title = current_user.profession
+        @enrollment.undergraduate_year = current_user.anticipated_graduation
+        @enrollment.accepts_txt = true # to pre-check the box
+      end
 
       if Rails.application.secrets.salesforce_username && current_user.salesforce_id
         # If Salesforce is enabled, we'll query it to see which campaign
