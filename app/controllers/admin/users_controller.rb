@@ -202,6 +202,8 @@ class Admin::UsersController < Admin::ApplicationController
       end
     end
 
+    @user.program_attendance_confirmed = params[:user][:program_attendance_confirmed] unless params[:user][:program_attendance_confirmed].nil?
+
     @user.first_name = params[:user][:first_name] unless params[:user][:first_name].nil?
     @user.last_name = params[:user][:last_name] unless params[:user][:last_name].nil?
     @user.salesforce_id = params[:user][:salesforce_id] unless params[:user][:salesforce_id].nil?

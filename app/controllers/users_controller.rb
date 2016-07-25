@@ -316,6 +316,7 @@ class UsersController < ApplicationController
       :like_to_help_set_up_program,
       :started_college_in,
       :anticipated_graduation,
+      :anticipated_graduation_semester,
       :profession,
       :company,
       :city,
