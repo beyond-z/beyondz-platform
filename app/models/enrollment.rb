@@ -56,7 +56,7 @@ class Enrollment < ActiveRecord::Base
   attr_writer :check_meeting_times
 
   def self.latest_for_user(user_id)
-    enrollments = Enrollment.where(:user_id => user_id).order(created_at: :desc)
+    enrollments = Enrollment.where(:user_id => user_id).order(updated_at: :desc)
     enrollment = enrollments.empty? ? nil : enrollments.first
     enrollment
   end
