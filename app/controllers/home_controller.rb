@@ -142,7 +142,7 @@ class HomeController < ApplicationController
           will_show_message = true
         end
 
-        if submitted && !apply_now_enabled 
+        if submitted && !apply_now_enabled
           user_submitted_any = true
           if recent
             # it will show a message for recently submitted applications
