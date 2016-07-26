@@ -55,11 +55,6 @@ class HomeController < ApplicationController
         redirect_to "//#{Rails.application.secrets.canvas_server}/"
         return
       end
-      if current_user.program_attendance_confirmed
-        redirect_to user_confirm_path
-        return
-      end
-
 
       sf = BeyondZ::Salesforce.new
       client = sf.get_client
@@ -78,6 +73,9 @@ class HomeController < ApplicationController
 
       key_application_path = ''
       @key_application_count = 0
+      user_submitted_any = false
+      @show_thanks = false
+      @show_accepted = false
 
       sf_answer['records'].each do |record|
         campaign = sf.load_cached_campaign(record['CampaignId'])
@@ -108,6 +106,7 @@ class HomeController < ApplicationController
           word = 'Continue'
           started = true
           accepted = record['Candidate_Status__c'] == 'Accepted'
+          confirmed = record['Candidate_Status__c'] == 'Confirmed'
 
           # It is recent if it was updated today.... for use in not showing old informational messages
           recent = enrollment.updated_at.to_date == Date.today
@@ -127,7 +126,13 @@ class HomeController < ApplicationController
             # If accepted, we go back to confirmation (see above in the index method)
             # repeated here in welcome so if they bookmarked this, they won't get lost
             # just only done if the confirmation is actually required!
-            path = user_confirm_path
+            path = user_confirm_path(:enrollment_id => enrollment.id)
+            @show_accepted = true
+            @show_accepted_path = path
+          end
+
+          if confirmed && campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == false
+            path = user_confirm_path(:enrollment_id => enrollment.id)
           end
         end
 
@@ -137,9 +142,13 @@ class HomeController < ApplicationController
           will_show_message = true
         end
 
-        if submitted && !apply_now_enabled && recent
-          # it will show a message for recently submitted applications
-          will_show_message = true
+        if submitted && !apply_now_enabled
+          user_submitted_any = true
+          if recent
+            # it will show a message for recently submitted applications
+            will_show_message = true
+            @show_thanks = true
+          end
         end
 
         @applications << { :word => word, :started => started, :path => path, :campaign_type => campaign_type, :accepted => accepted, :application_received => submitted, :program_completed => program_completed, :program_title => program_title, :apply_now_enabled => apply_now_enabled, :apply_text => apply_text, :recent => recent }
@@ -153,6 +162,12 @@ class HomeController < ApplicationController
           # for the user
           @key_application_count += 1
         end
+      end
+
+      # If the only thing we can possibly show is a thank you page, make sure we are actually going
+      # to show it so the user gets something here.
+      if user_submitted_any && (@applications.count == 1 || @key_application_count == 0)
+        @show_thanks = true
       end
 
       if @key_application_count == 1 && key_application_path != ''

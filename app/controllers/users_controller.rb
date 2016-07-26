@@ -59,7 +59,11 @@ class UsersController < ApplicationController
 
     # Both @enrollment and campaign should never be nil.
 
-    @enrollment = Enrollment.find_by(:user_id => current_user.id)
+    if params[:enrollment_id]
+      @enrollment = Enrollment.find(params[:enrollment_id])
+    else
+      @enrollment = Enrollment.latest_for_user(current_user.id)
+    end
 
     if @enrollment.nil?
       redirect_to welcome_path
@@ -176,7 +180,11 @@ class UsersController < ApplicationController
     client.materialize('CampaignMember')
     client.materialize('Contact')
 
-    @enrollment = Enrollment.find_by(:user_id => current_user.id)
+    if params[:enrollment_id]
+      @enrollment = Enrollment.find(params[:enrollment_id])
+    else
+      @enrollment = Enrollment.find_by(:user_id => current_user.id)
+    end
 
     campaign = sf.load_cached_campaign(@enrollment.campaign_id, client)
 
@@ -238,7 +246,7 @@ class UsersController < ApplicationController
       end
     end
 
-    redirect_to user_confirm_path
+    redirect_to user_confirm_path(:enrollment_id => params[:enrollment_id])
   end
 
   def reset
