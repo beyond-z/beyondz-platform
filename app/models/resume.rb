@@ -1,6 +1,8 @@
 class Resume < ActiveRecord::Base
   include PgSearch
 
+  # also has a document_type field that can be 'resume' or 'cover-letter'
+
   pg_search_scope :fulltext_search, against: [[:title, 'A'], [:content, 'B']], using: { tsearch: { any_word: true } }
 
   has_attached_file :resume

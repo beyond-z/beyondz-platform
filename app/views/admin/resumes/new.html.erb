@@ -1,4 +1,8 @@
-<h1>Add Resume to Library</h1>
+<h1>Add File to Library</h1>
+
+<%= link_to 'View Library', admin_resumes_path %>
+
+<hr />
 
 <%= form_for [:admin, Resume.new] do |f| %>
   <label>
@@ -7,7 +11,13 @@
   </label>
   <br />
   <label>
-    Resume file upload:<br />
+    Type:<br />
+    <%= f.select :document_type, { "Resume" => 'resume', "Cover letter" => 'cover-letter' } %>
+  </label>
+  <br />
+
+  <label>
+    File upload:<br />
     <%= f.file_field :resume %>
   </label>
   <br />
@@ -29,7 +39,7 @@
     <%= f.text_field :score %>
   </label>
   <br />
-  <%= f.submit %>
+  <%= f.submit 'Add File' %>
 <% end %>
 
 

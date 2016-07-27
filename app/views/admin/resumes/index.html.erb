@@ -1,6 +1,6 @@
 <h1>Braven Resume Library</h1>
 
-<%= link_to 'Add new resume', new_admin_resume_path %>
+<%= link_to 'Add new file', new_admin_resume_path %>
 
 |
 
@@ -11,7 +11,7 @@
 
 |
 
-<%= link_to 'View all resumes', admin_resumes_path %>
+<%= link_to 'View all files', admin_resumes_path %>
 
 <hr />
 
@@ -21,10 +21,10 @@
 <% elsif params[:tag] %>
   <caption>Tagged with <%= params[:tag] %></caption>
 <% else %>
-  <caption>All resumes</caption>
+  <caption>All files</caption>
 <% end %>
 <tr>
-  <th>Title</th><th align="center">Score</th><th>Tags</th>
+  <th>Title</th><th>Type</th><th align="center">Score</th><th>Tags</th>
 </tr>
 <% @resumes.each do |resume| %>
 <tr>
@@ -32,6 +32,9 @@
   <% if resume.resume.present? %>
     <%= link_to resume.title, resume.resume.url %>
   <% end %>
+  </td>
+  <td>
+    <%= resume.document_type %>
   </td>
   <td align="center">
     <%= resume.score %>
