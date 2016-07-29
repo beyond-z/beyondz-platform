@@ -8,7 +8,7 @@ ClassAndModuleChildren:
   Enabled: false # without this, it complains about the namespaced classes
 
 CyclomaticComplexity:
-  Max: 28
+  Max: 30
 
 ClassLength:
   Max: 450
