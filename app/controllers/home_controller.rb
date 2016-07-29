@@ -51,10 +51,6 @@ class HomeController < ApplicationController
     # also to handle the fallback case for legacy users who applied before the salesforce system was in place
     @program_title = 'Braven'
     if user_signed_in?
-      if current_user.in_lms?
-        redirect_to "//#{Rails.application.secrets.canvas_server}/"
-        return
-      end
 
       sf = BeyondZ::Salesforce.new
       client = sf.get_client
@@ -76,6 +72,7 @@ class HomeController < ApplicationController
       user_submitted_any = false
       @show_thanks = false
       @show_accepted = false
+      confirmed_count = 0
 
       sf_answer['records'].each do |record|
         campaign = sf.load_cached_campaign(record['CampaignId'])
@@ -132,7 +129,12 @@ class HomeController < ApplicationController
           end
 
           if confirmed && campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == false
-            path = user_confirm_path(:enrollment_id => enrollment.id)
+            if current_user.in_lms?
+              path = "//#{Rails.application.secrets.canvas_server}/"
+            else
+              path = user_confirm_path(:enrollment_id => enrollment.id)
+            end
+            confirmed_count += 1
           end
         end
 
@@ -168,6 +170,15 @@ class HomeController < ApplicationController
       # to show it so the user gets something here.
       if user_submitted_any && (@applications.count == 1 || @key_application_count == 0)
         @show_thanks = true
+      end
+
+      # "Thank you for confirming" is one of the least interesting messages
+      # we can show. If it is the only thing available, go ahead and show it
+      # but otherwise, take it out of consideration.
+      if confirmed_count < @key_application_count
+        @key_application_count -= confirmed_count
+      elsif confirmed_count == @key_application_count
+        @key_application_count = 1
       end
 
       if @key_application_count == 1 && key_application_path != ''
