@@ -90,6 +90,7 @@ class HomeController < ApplicationController
 
         word = 'Start'
         path = new_enrollment_path(:campaign_id => record['CampaignId'])
+        path_important = true
         accepted = false
         started = false
         submitted = false
@@ -135,6 +136,7 @@ class HomeController < ApplicationController
               path = user_confirm_path(:enrollment_id => enrollment.id)
             end
             confirmed_count += 1
+            path_important = false
           end
         end
 
@@ -156,7 +158,9 @@ class HomeController < ApplicationController
         @applications << { :word => word, :started => started, :path => path, :campaign_type => campaign_type, :accepted => accepted, :application_received => submitted, :program_completed => program_completed, :program_title => program_title, :apply_now_enabled => apply_now_enabled, :apply_text => apply_text, :recent => recent }
 
         if path != ''
-          key_application_path = path
+          if path_important || key_application_path == ''
+            key_application_path = path
+          end
           @key_application_count += 1
         elsif will_show_message
           # We might not be going anywhere, but will show a message,
