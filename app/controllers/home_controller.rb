@@ -7,11 +7,6 @@ class HomeController < ApplicationController
     if current_user
       if current_user.is_administrator?
         redirect_to admin_root_path
-      elsif current_user.in_lms?
-        # If LMS, go to canvas here as well as /welcome just because
-        # this is such a frequent and simple case that duplicating the line
-        # here gives the end user a small optimization that I feel is worth it.
-        redirect_to "//#{Rails.application.secrets.canvas_server}/"
       else
         # All other users go to welcome where the complex logic
         # of where to go for what type of user lives (no longer duplicated here)
