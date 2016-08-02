@@ -53,7 +53,7 @@ class SalesforceController < ApplicationController
   def change_campaigns
     if check_magic_token
       cids = params[:contactIds]
-      new_campaign = params[:campaignId]
+      # new_campaign = params[:campaignId]
       reset = params[:reset] == 'true'
       cids.split(',').each do |cid|
         u = User.find_by_salesforce_id(cid)
