@@ -58,24 +58,8 @@ class SalesforceController < ApplicationController
       cids.split(',').each do |cid|
         u = User.find_by_salesforce_id(cid)
         if u
-          existing_enrollment = Enrollment.latest_for_user(u.id)
-          if existing_enrollment
-            existing_enrollment.campaign_id = new_campaign
-            if reset
-              # We want to allow them to update and re-submit the app
-              # so we will copy the new application from the old,
-              # keeping their old data in place, and let them resubmit.
-              existing_enrollment = existing_enrollment.dup
-              existing_enrollment.explicitly_submitted = false
-            end
-            # It may be in-progress, so we don't want to validate it
-            # at this time, just update the one piece of inf.
-            existing_enrollment.save(validate: false)
-            # Note: this assumes the old and new campaigns are both the same
-            # type, for example, student or LC. If they want to change tracks
-            # entirely, we will need to  have them start an all-new application.
-          end
-
+          # No need to modify the enrollment any more, since the /welcome code
+          # will check SF campaign member instead of relying on this logic.
           if reset
             # This should reset the user so they can basically start fresh
             # Above, we unsubmitted the app. Here, we want to unconfirm too
