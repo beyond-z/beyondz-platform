@@ -160,6 +160,12 @@ class SalesforceController < ApplicationController
 
 
           user.save!
+
+          # Email a welcome email that includes an invitation to join the
+          # associated Facebook group (can't do that via api since FB removed
+          # that functionality - emailing the link is best we can do now.)
+
+          ConfirmationFlow.invite_to_fb(user, campaign.Facebook_Group__c, campaign.Program_Title__c).deliver
         end
       # Gotta catch 'em all!
       # the point here is just to report the problem,
