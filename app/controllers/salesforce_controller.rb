@@ -53,27 +53,13 @@ class SalesforceController < ApplicationController
   def change_campaigns
     if check_magic_token
       cids = params[:contactIds]
-      # new_campaign = params[:campaignId]
-      reset = params[:reset] == 'true'
+      new_campaign = params[:newCampaignId]
+      old_campaign = params[:oldCampaignId]
       cids.split(',').each do |cid|
         u = User.find_by_salesforce_id(cid)
-        if u
-          # No need to modify the enrollment any more, since the /welcome code
-          # will check SF campaign member instead of relying on this logic.
-          if reset
-            # This should reset the user so they can basically start fresh
-            # Above, we unsubmitted the app. Here, we want to unconfirm too
-            u.program_attendance_confirmed = false
-
-            # We also want to disconnect them from Canvas so they can reapply. When we
-            # resync, it will find their existing account and reconnect them at that time.
-            u.canvas_user_id = nil
-
-            u.save
-            # Note that other variables are changed on the Salesforce side
-            # which can update us through triggers too
-          end
-        end
+        e = Enrollment.where(:user_id => u.id, :campaign_id => old_campaign)
+        e.campaign_id = new_campaign
+        e.save(validate: false)
       end
     end
 
