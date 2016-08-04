@@ -137,7 +137,9 @@ class HomeController < ApplicationController
 
         if program_completed
           # If the program is completed, always keep them here - it will display a message for them
+          # don't want them to redirect to the app nor ahve the button
           path = ''
+          apply_now_enabled = false
           will_show_message = true
         end
 
