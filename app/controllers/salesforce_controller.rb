@@ -58,6 +58,8 @@ class SalesforceController < ApplicationController
       cids.split(',').each do |cid|
         u = User.find_by_salesforce_id(cid)
         e = Enrollment.where(:user_id => u.id, :campaign_id => old_campaign)
+        next if e.empty?
+        e = e.first
         e.campaign_id = new_campaign
         e.save(validate: false)
       end
