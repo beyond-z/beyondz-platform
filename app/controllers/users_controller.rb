@@ -137,7 +137,6 @@ class UsersController < ApplicationController
   end
 
   def confirm
-
     prep_confirm_campaign_info
 
     if @enrollment.nil?

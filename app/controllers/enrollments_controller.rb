@@ -170,6 +170,22 @@ class EnrollmentsController < ApplicationController
       @position_is_set = true
     end
 
+    if @enrollment.user_id == current_user.id
+      # If the user is loading themselves and they have a newer one,
+      # copy over the new fields into the blanks of this one, if applicable
+      latest = Enrollment.latest_for_user(@enrollment.user_id)
+      if latest.id != @enrollment.id
+        Enrollment.attribute_names.each do |name|
+          type = Enrollment.columns_hash[name].type
+          if type == :string || type == :text
+            if @enrollment[name].nil? || @enrollment[name] == ''
+              @enrollment[name] = latest[name]
+            end
+          end
+        end
+      end
+    end
+
     load_salesforce_campaign
     render 'new'
   end
