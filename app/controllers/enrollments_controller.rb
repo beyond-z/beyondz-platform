@@ -153,7 +153,12 @@ class EnrollmentsController < ApplicationController
       # it read only unless the apply now is explicitly reenabled
       # (which is triggered through salesforce)
 
-      unless @enrollment.user.apply_now_enabled
+      sf = BeyondZ::Salesforce.new
+      client = sf.get_client
+      client.materialize('CampaignMember')
+      cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(@enrollment.user.salesforce_id, @enrollment.campaign_id)
+
+      unless cm.Apply_Button_Enabled__c
         @enrollment_read_only = true
       end
     end

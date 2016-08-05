@@ -106,7 +106,7 @@ class HomeController < ApplicationController
 
           path = ''
           will_show_message = false
-          submitted = enrollment.explicitly_submitted
+          submitted = !apply_now_enabled
           program_completed = campaign.Status == 'Completed'
 
           unless submitted
