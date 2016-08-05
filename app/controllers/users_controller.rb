@@ -137,23 +137,27 @@ class UsersController < ApplicationController
   end
 
   def confirm
+
+    prep_confirm_campaign_info
+
+    if @enrollment.nil?
+      redirect_to welcome_path
+      return
+    end
+
+    sf = BeyondZ::Salesforce.new
+    client = sf.get_client
+    client.materialize('CampaignMember')
+    cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(current_user.salesforce_id, @enrollment.campaign_id)
+
     # If they are already confirmed and accepted, here refreshing the page
     # to watch for updates perhaps, we want to send them to where they want
     # to be - canvas - ASAP.
-    if current_user.in_lms?
+    if cm.Candidate_Status__c == 'Confirmed' && current_user.in_lms?
       redirect_to "//#{Rails.application.secrets.canvas_server}/"
-    else
-      prep_confirm_campaign_info
     end
 
-    if current_user.program_attendance_confirmed && @enrollment
-      sf = BeyondZ::Salesforce.new
-      client = sf.get_client
-      client.materialize('CampaignMember')
-      cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(current_user.salesforce_id, @enrollment.campaign_id)
-
-      @waitlisted = cm.Candidate_Status__c == 'Waitlisted'
-    end
+    @waitlisted = cm.Candidate_Status__c == 'Waitlisted'
 
     # renders a view
   end
