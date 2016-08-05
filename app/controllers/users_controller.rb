@@ -278,7 +278,7 @@ class UsersController < ApplicationController
   # think the risk is that big. The referrer check should foil any pranks
   # in practice.
   def clear_session_cookie
-    if request.referer.starts_with?(Rails.application.secrets.sso_url)
+    if request.referer.nil? || request.referer.starts_with?(Rails.application.secrets.sso_url)
       reset_session
     end
     render nothing: true
