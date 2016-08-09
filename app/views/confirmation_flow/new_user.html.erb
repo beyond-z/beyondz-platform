@@ -1,8 +1,11 @@
-<p>Welcome to Braven, <%= @user.first_name %>! We are excited to connect with you. You can now log into the site!</p>
+<p>Thanks for signing up with Braven, <%= @user.first_name %>! You can now log into the site with:</p>
 
 Website: <%= link_to 'https://bebraven.org', root_url %><br />
 Email: <%= @user.email %><br />
 Password: your chosen password at sign up
+
+<p>In the meantime, check out what our fellows are up to
+<a href="https://bebraven.org/blog/">on our blog</a> and listen to <a href="http://j.mp/bravenonnpr">our story on NPR</a>.</p>
 
 <p>Thank you,<br />
 The Braven Team</p>
