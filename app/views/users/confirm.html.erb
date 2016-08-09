@@ -5,11 +5,11 @@
     <div class="section-container">
       <section>
         <div class="col-sm-8 col-sm-offset-2 text-center">
-          <% if current_user.program_attendance_confirmed %>
+          <% if @confirmed %>
             <% if @waitlisted %>
               <p>Thank you for your response.</p>
             <% else %>
-              <p>Thank you for confirming your commitment to <%- (current_user.applicant_type == 'temp_volunteer') ? 'volunteer with' : 'participate in' %> Braven.</p>
+              <p>Thank you for confirming your commitment to <%- (@confirmation_type == 'volunteer') ? 'volunteer with' : 'participate in' %> Braven.</p>
             <% end %>
           <% else %>
             <p class="shoutout">Welcome to the <%= @program_title %> community, <%= current_user.first_name %>!</p>
@@ -30,11 +30,11 @@
     <div class="section-container">
       <section>
         <div class="col-sm-8 col-sm-offset-2">
-          <% if current_user.program_attendance_confirmed %>
+          <% if @confirmed %>
             <% if @waitlisted %>
               <p style="text-align: center;">We will get in contact with you if a slot opens up.</p>
             <% else %>
-              <% if current_user.applicant_type == 'temp_volunteer' %>
+              <% if @confirmation_type == 'volunteer' %>
                 <p style="text-align: center;">You'll be hearing from us shortly with more information.</p>
               <% else %>
                 <p style="text-align: center;">You'll be hearing from us shortly with more information about our kickoff event.</p>
@@ -66,7 +66,7 @@
     <div class="section-container">
       <section>
         <div class="col-sm-4 col-sm-offset-4 text-center">
-          <% unless current_user.program_attendance_confirmed %>
+          <% unless @confirmed %>
           <div class="apply-button">
             <button type="submit" class="btn-primary">Next</button>
           </div>

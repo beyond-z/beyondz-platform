@@ -157,6 +157,7 @@ class UsersController < ApplicationController
     end
 
     @waitlisted = cm.Candidate_Status__c == 'Waitlisted'
+    @confirmed = cm.Candidate_Status__c == 'Confirmed'
 
     # renders a view
   end
