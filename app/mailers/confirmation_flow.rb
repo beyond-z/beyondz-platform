@@ -7,7 +7,7 @@ class ConfirmationFlow < ActionMailer::Base
 
   def new_user(user)
     @user = user
-    mail(to: user.email, subject: 'Welcome to Braven')
+    mail(to: user.email, subject: 'Braven Login Info')
   end
 
   def coach_confirmed(recipient, program_title, program_site, timeslot)
