@@ -5,12 +5,10 @@
     <div class="section-container">
       <section>
         <div class="col-sm-8 col-sm-offset-2 text-center">
-          <% if @confirmed %>
-            <% if @waitlisted %>
-              <p>Thank you for your response.</p>
-            <% else %>
-              <p>Thank you for confirming your commitment to <%- (@confirmation_type == 'volunteer') ? 'volunteer with' : 'participate in' %> Braven.</p>
-            <% end %>
+          <% if @waitlisted %>
+            <p>Thank you for your response.</p>
+          <% elsif @confirmed %>
+            <p>Thank you for confirming your commitment to <%- (@confirmation_type == 'volunteer') ? 'volunteer with' : 'participate in' %> Braven.</p>
           <% else %>
             <p class="shoutout">Welcome to the <%= @program_title %> community, <%= current_user.first_name %>!</p>
             <% if @confirmation_type == 'coach' %>
@@ -30,15 +28,13 @@
     <div class="section-container">
       <section>
         <div class="col-sm-8 col-sm-offset-2">
-          <% if @confirmed %>
-            <% if @waitlisted %>
-              <p style="text-align: center;">We will get in contact with you if a slot opens up.</p>
+          <% if @waitlisted %>
+            <p style="text-align: center;">We will get in contact with you if a slot opens up.</p>
+          <% elsif @confirmed %>
+            <% if @confirmation_type == 'volunteer' %>
+              <p style="text-align: center;">You'll be hearing from us shortly with more information.</p>
             <% else %>
-              <% if @confirmation_type == 'volunteer' %>
-                <p style="text-align: center;">You'll be hearing from us shortly with more information.</p>
-              <% else %>
-                <p style="text-align: center;">You'll be hearing from us shortly with more information about our kickoff event.</p>
-              <% end %>
+              <p style="text-align: center;">You'll be hearing from us shortly with more information about our kickoff event.</p>
             <% end %>
           <% else %>
             <div class="availability-options">
