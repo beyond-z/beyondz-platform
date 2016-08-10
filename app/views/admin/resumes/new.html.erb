@@ -1,0 +1,45 @@
+<h1>Add File to Library</h1>
+
+<%= link_to 'View Library', admin_resumes_path %>
+
+<hr />
+
+<%= form_for [:admin, Resume.new] do |f| %>
+  <label>
+    Title:<br />
+    <%= f.text_field :title %>
+  </label>
+  <br />
+  <label>
+    Type:<br />
+    <%= f.select :document_type, { "Resume" => 'resume', "Cover letter" => 'cover-letter' } %>
+  </label>
+  <br />
+
+  <label>
+    File upload:<br />
+    <%= f.file_field :resume %>
+  </label>
+  <br />
+  <label>
+    Tags:<br />
+    <div style="display: none;" id="tags-field">
+      <%= text_field_tag "resume[tags][]" %>
+    </div>
+    <div id="tags-list"></div>
+    <button type="button" onclick="
+      var e = document.querySelector('#tags-field input').cloneNode(true);
+      document.getElementById('tags-list').appendChild(e);
+      e.focus();
+    ">Add Tag</button>
+  </label>
+  <br />
+  <label>
+    Numeric score (1-5):<br />
+    <%= f.text_field :score %>
+  </label>
+  <br />
+  <%= f.submit 'Add File' %>
+<% end %>
+
+
