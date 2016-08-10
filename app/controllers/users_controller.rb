@@ -232,10 +232,10 @@ class UsersController < ApplicationController
 
     contact = SFDC_Models::Contact.find(current_user.salesforce_id)
     if contact
-      case current_user.applicant_type
-      when 'undergrad_student'
+      case campaign.Application_Type__c
+      when 'student'
         contact.Participant_Information__c = 'Participant'
-      when 'volunteer'
+      when 'coach'
         contact.Volunteer_Information__c = 'Current LC'
       end
 
@@ -245,10 +245,10 @@ class UsersController < ApplicationController
 
     # Send a confirmation email too for confirmed people
     unless waitlisted
-      case current_user.applicant_type
-      when 'undergrad_student'
+      case campaign.Application_Type__c
+      when 'student'
         ConfirmationFlow.student_confirmed(current_user, program_title, program_site, chosen_time).deliver
-      when 'volunteer'
+      when 'coach'
         ConfirmationFlow.coach_confirmed(current_user, program_title, program_site, chosen_time).deliver
       end
     end
