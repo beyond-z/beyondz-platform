@@ -155,7 +155,7 @@ class HomeController < ApplicationController
         @applications << { :word => word, :started => started, :path => path, :campaign_type => campaign_type, :accepted => accepted, :application_received => submitted, :program_completed => program_completed, :program_title => program_title, :apply_now_enabled => apply_now_enabled, :apply_text => apply_text, :recent => recent }
 
         if path != ''
-          if path_important || key_application_path == ''
+          if path_important || (key_application_path == '' && !@show_thanks)
             key_application_path = path
           end
           @key_application_count += 1
