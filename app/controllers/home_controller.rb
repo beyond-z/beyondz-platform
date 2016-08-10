@@ -69,7 +69,10 @@ class HomeController < ApplicationController
       @show_accepted = false
       confirmed_count = 0
 
+      had_any_records = false
+
       sf_answer['records'].each do |record|
+        had_any_records = true
         campaign = sf.load_cached_campaign(record['CampaignId'])
         campaign_type =
         case campaign.Type
@@ -185,6 +188,13 @@ class HomeController < ApplicationController
       if @key_application_count == 1 && key_application_path != ''
         # If they only have one valid destination, just go ahead and send them right there immediately
         redirect_to key_application_path
+      end
+
+      if !had_any_records && current_user.in_lms?
+        # if they aren't in SF but are in Canvas, it is a special
+        # user we created like the admin one. Just send them there,
+        # we have nothing else anyway.
+        redirect_to "//#{Rails.application.secrets.canvas_server}/"
       end
     end
   end
