@@ -58,7 +58,7 @@ class HomeController < ApplicationController
       query_result = client.http_get("/services/data/v#{client.version}/query?q=" \
         "SELECT
           Id, CampaignId, Candidate_Status__c, Apply_Button_Enabled__c
-        FROM CampaignMember WHERE ContactId = '#{current_user.salesforce_id}' AND Campaign.IsActive = TRUE AND Campaign.Application_Type__c != ''")
+        FROM CampaignMember WHERE ContactId = '#{current_user.salesforce_id}' AND Campaign.Application_Type__c != ''")
 
       sf_answer = JSON.parse(query_result.body)
 
@@ -137,7 +137,7 @@ class HomeController < ApplicationController
 
         if program_completed
           # If the program is completed, always keep them here - it will display a message for them
-          # don't want them to redirect to the app nor ahve the button
+          # don't want them to redirect to the app nor have the button
           path = ''
           apply_now_enabled = false
           will_show_message = true
