@@ -148,7 +148,7 @@ class HomeController < ApplicationController
 
         if submitted && !apply_now_enabled
           user_submitted_any = true
-          if recent
+          if recent && !current_user.in_lms?
             # it will show a message for recently submitted applications
             will_show_message = true
             @show_thanks = true
