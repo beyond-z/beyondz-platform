@@ -185,6 +185,13 @@ class HomeController < ApplicationController
         @key_application_count = 1
       end
 
+      # show thanks and accepted are both headers. If we have both of them,
+      # only the most important will be shown (accepted), so we can subtract
+      # the other one.
+      if @show_accepted && @show_thanks && @key_application_count > 1
+        @key_application_count -= 1
+      end
+
       if @key_application_count == 1 && key_application_path != ''
         # If they only have one valid destination, just go ahead and send them right there immediately
         redirect_to key_application_path
