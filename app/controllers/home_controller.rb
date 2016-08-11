@@ -87,7 +87,7 @@ class HomeController < ApplicationController
         apply_text = (campaign_type == 'Volunteer') ? 'Registration' : 'Application'
 
         word = 'Start'
-        path = new_enrollment_path(:campaign_id => record['CampaignId'])
+        path = campaign.IsActive ? new_enrollment_path(:campaign_id => record['CampaignId']) : ''
         path_important = true
         accepted = false
         started = false

@@ -59,7 +59,7 @@ Metrics/MethodLength:
   Max: 155 # largest method in here currently
 
 Metrics/PerceivedComplexity:
-  Max: 35
+  Max: 50
 
 Metrics/BlockNesting:
   Max: 10
