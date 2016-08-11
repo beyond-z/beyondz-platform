@@ -172,7 +172,7 @@ class HomeController < ApplicationController
 
       # If the only thing we can possibly show is a thank you page, make sure we are actually going
       # to show it so the user gets something here.
-      if user_submitted_any && (@applications.count == 1 || @key_application_count == 0)
+      if user_submitted_any && (@applications.count == 1 || @key_application_count == 0) && !@show_accepted
         @show_thanks = true
       end
 
