@@ -57,7 +57,7 @@ class HomeController < ApplicationController
       # for an application - one with an Application Type set up.
       query_result = client.http_get("/services/data/v#{client.version}/query?q=" \
         "SELECT
-          Id, CampaignId, Candidate_Status__c, Apply_Button_Enabled__c
+          Id, CampaignId, Candidate_Status__c, Apply_Button_Enabled__c, Section_Name_In_LMS__c
         FROM CampaignMember WHERE ContactId = '#{current_user.salesforce_id}' AND Campaign.Application_Type__c != ''")
 
       sf_answer = JSON.parse(query_result.body)
@@ -128,7 +128,7 @@ class HomeController < ApplicationController
           end
 
           if confirmed && campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == false
-            if current_user.in_lms?
+            if current_user.in_lms? && record['Section_Name_In_LMS__c'] != ''
               path = "//#{Rails.application.secrets.canvas_server}/"
             else
               path = user_confirm_path(:enrollment_id => enrollment.id)
