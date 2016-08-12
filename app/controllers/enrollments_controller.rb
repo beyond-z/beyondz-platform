@@ -24,26 +24,38 @@ class EnrollmentsController < ApplicationController
     # We need to redirect them to edit their current application
     # if one exists. Otherwise, they can make a new one with some
     # prefilled data which we'll immediately send them to edit.
-    existing_enrollment = Enrollment.find_by(:user_id => current_user.id)
+    existing_enrollment = nil
+    if params[:campaign_id]
+      existing_enrollment = Enrollment.find_by(:user_id => current_user.id, :campaign_id => params[:campaign_id])
+    else
+      # Default link is to just find any; we will start new from a campaign later
+      existing_enrollment = Enrollment.find_by(:user_id => current_user.id)
+    end
     if existing_enrollment.nil?
-      # pre-fill any fields that are available from the user model
-      @enrollment.first_name = current_user.first_name
-      @enrollment.last_name = current_user.last_name
-      @enrollment.email = current_user.email
-      @enrollment.company = current_user.company
-      @enrollment.undergrad_university = current_user.university_name
-      @enrollment.phone = current_user.phone
-      @enrollment.title = current_user.profession
-      @enrollment.undergraduate_year = current_user.anticipated_graduation
-      @enrollment.anticipated_graduation_semester = current_user.anticipated_graduation_semester
-      @enrollment.accepts_txt = true # to pre-check the box
+      # pre-fill from a previous enrollment, if possible
+      old_enrollment = Enrollment.latest_for_user(current_user.id)
+      if old_enrollment
+        @enrollment = old_enrollment.dup
+        @enrollment.explicitly_submitted = false
+      else
+        # otherwise, pre-fill any fields that are available from the user model
+        @enrollment.first_name = current_user.first_name
+        @enrollment.last_name = current_user.last_name
+        @enrollment.email = current_user.email
+        @enrollment.company = current_user.company
+        @enrollment.undergrad_university = current_user.university_name
+        @enrollment.phone = current_user.phone
+        @enrollment.title = current_user.profession
+        @enrollment.undergraduate_year = current_user.anticipated_graduation
+        @enrollment.accepts_txt = true # to pre-check the box
+      end
 
       if Rails.application.secrets.salesforce_username && current_user.salesforce_id
         # If Salesforce is enabled, we'll query it to see which campaign
         # this user is a member of and use that to fetch the associated
         # application out of our system.
 
-        unless start_application_from_salesforce_campaign
+        unless start_application_from_salesforce_campaign(params[:campaign_id])
           # If we can't start from a salesforce campaign, we don't
           # want them to actually start at all - w/o the campaign,
           # we can't save their info properly. This likely happens
@@ -70,7 +82,7 @@ class EnrollmentsController < ApplicationController
     end
   end
 
-  def start_application_from_salesforce_campaign
+  def start_application_from_salesforce_campaign(campaign_id = nil)
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
     client.materialize('CampaignMember')
@@ -78,18 +90,38 @@ class EnrollmentsController < ApplicationController
     # We need to check all the campaign members to find the one that is most correct
     # for an application - one with an Application Type set up.
     query_result = client.http_get("/services/data/v#{client.version}/query?q=" \
-      "SELECT Id FROM CampaignMember WHERE ContactId = '#{current_user.salesforce_id}' AND Campaign.IsActive = TRUE AND Campaign.Application_Type__c != ''")
+      "SELECT Id, CampaignId FROM CampaignMember WHERE ContactId = '#{current_user.salesforce_id}' AND Campaign.IsActive = TRUE AND Campaign.Application_Type__c != ''")
 
     sf_answer = JSON.parse(query_result.body)
 
-    if sf_answer['records'].length != 1
-      # If they aren't a member of one appropriate campaign,
-      # they cannot start the application since we won't know
-      # which one to show and their data is likely to be lost.
+    cm_id = nil
+
+    if campaign_id.nil?
+      if sf_answer['records'].length != 1
+        # If they aren't a member of one appropriate campaign,
+        # they cannot start the application since we won't know
+        # which one to show and their data is likely to be lost.
+        return false
+      end
+
+      cm_id = sf_answer['records'][0]['Id']
+    else
+      # we need to start an application for a specific campaign... look through the members and find the right one
+      sf_answer['records'].each do |record|
+        if record['CampaignId'] == campaign_id
+          cm_id = record['Id']
+          break
+        end
+      end
+    end
+
+    if cm_id.nil?
+      # Couldn't find the right campaign member, fail to start
+      # so data isn't lost
       return false
     end
 
-    cm = SFDC_Models::CampaignMember.find(sf_answer['records'][0]['Id'])
+    cm = SFDC_Models::CampaignMember.find(cm_id)
 
 
     campaign = sf.load_cached_campaign(cm.CampaignId, client)
@@ -121,7 +153,12 @@ class EnrollmentsController < ApplicationController
       # it read only unless the apply now is explicitly reenabled
       # (which is triggered through salesforce)
 
-      unless @enrollment.user.apply_now_enabled
+      sf = BeyondZ::Salesforce.new
+      client = sf.get_client
+      client.materialize('CampaignMember')
+      cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(@enrollment.user.salesforce_id, @enrollment.campaign_id)
+
+      unless cm.Apply_Button_Enabled__c
         @enrollment_read_only = true
       end
     end
@@ -131,6 +168,22 @@ class EnrollmentsController < ApplicationController
     # forms better and tie them to salesforce campaigns.
     if @enrollment.position
       @position_is_set = true
+    end
+
+    if @enrollment.user_id == current_user.id
+      # If the user is loading themselves and they have a newer one,
+      # copy over the new fields into the blanks of this one, if applicable
+      latest = Enrollment.latest_for_user(@enrollment.user_id)
+      if latest.id != @enrollment.id
+        Enrollment.attribute_names.each do |name|
+          type = Enrollment.columns_hash[name].type
+          if type == :string || type == :text
+            if @enrollment[name].nil? || @enrollment[name] == ''
+              @enrollment[name] = latest[name]
+            end
+          end
+        end
+      end
     end
 
     load_salesforce_campaign
@@ -148,7 +201,7 @@ class EnrollmentsController < ApplicationController
         @program_title = campaign.Program_Title__c
         @program_site = campaign.Program_Site__c
         @request_availability = campaign.Request_Availability__c
-        @meeting_times = current_user.applicant_type == 'temp_volunteer' ? campaign.Volunteer_Opportunities__c : campaign.Meeting_Times__c
+        @meeting_times = campaign.Application_Type__c == 'volunteer' ? campaign.Volunteer_Opportunities__c : campaign.Meeting_Times__c
         @sourcing_options = campaign.Sourcing_Info_Options__c
         # Empty string instead of nil is easier to test for in the view
         # if this isn't filled in, we'll just skip the whole question

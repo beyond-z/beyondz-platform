@@ -1,15 +1,14 @@
 <form method="POST" action="<%= user_confirm_part_2_path %>">
   <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+  <input name="enrollment_id" type="hidden" value="<%= params[:enrollment_id] %>" />
   <div class="plank tertiary-md">
     <div class="section-container">
       <section>
         <div class="col-sm-8 col-sm-offset-2 text-center">
-          <% if current_user.program_attendance_confirmed %>
-            <% if @waitlisted %>
-              <p>Thank you for your response.</p>
-            <% else %>
-              <p>Thank you for confirming your commitment to <%- (current_user.applicant_type == 'temp_volunteer') ? 'volunteer with' : 'participate in' %> Braven.</p>
-            <% end %>
+          <% if @waitlisted %>
+            <p>Thank you for your response.</p>
+          <% elsif @confirmed %>
+            <p>Thank you for confirming your commitment to <%- (@confirmation_type == 'volunteer') ? 'volunteer with' : 'participate in' %> Braven.</p>
           <% else %>
             <p class="shoutout">Welcome to the <%= @program_title %> community, <%= current_user.first_name %>!</p>
             <% if @confirmation_type == 'coach' %>
@@ -29,15 +28,13 @@
     <div class="section-container">
       <section>
         <div class="col-sm-8 col-sm-offset-2">
-          <% if current_user.program_attendance_confirmed %>
-            <% if @waitlisted %>
-              <p style="text-align: center;">We will get in contact with you if a slot opens up.</p>
+          <% if @waitlisted %>
+            <p style="text-align: center;">We will get in contact with you if a slot opens up.</p>
+          <% elsif @confirmed %>
+            <% if @confirmation_type == 'volunteer' %>
+              <p style="text-align: center;">You'll be hearing from us shortly with more information.</p>
             <% else %>
-              <% if current_user.applicant_type == 'temp_volunteer' %>
-                <p style="text-align: center;">You'll be hearing from us shortly with more information.</p>
-              <% else %>
-                <p style="text-align: center;">You'll be hearing from us shortly with more information about our kickoff event.</p>
-              <% end %>
+              <p style="text-align: center;">You'll be hearing from us shortly with more information about our kickoff event.</p>
             <% end %>
           <% else %>
             <div class="availability-options">
@@ -65,7 +62,7 @@
     <div class="section-container">
       <section>
         <div class="col-sm-4 col-sm-offset-4 text-center">
-          <% unless current_user.program_attendance_confirmed %>
+          <% unless @confirmed || @waitlisted %>
           <div class="apply-button">
             <button type="submit" class="btn-primary">Next</button>
           </div>
