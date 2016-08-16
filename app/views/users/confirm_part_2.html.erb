@@ -1,6 +1,6 @@
 <form method="POST" action="<%= user_save_confirm_path %>">
   <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
-  <input name="enrollment_id" type="hidden" value="<%= params[:enrollment_id] %>" />
+  <input name="enrollment_id" type="hidden" value="<%= @enrollment.id %>" />
   <div class="plank tertiary-md">
     <div class="section-container">
       <section>
