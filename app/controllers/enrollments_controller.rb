@@ -23,8 +23,9 @@ class EnrollmentsController < ApplicationController
   # just replace variants of that written convention with the empty string
   # for storage and validation in the system.
   def handle_na(str)
-    if(str == 'na' || str == 'n/a' || str == 'N/a' || str == 'N/A')
+    if str == 'na' || str == 'n/a' || str == 'N/a' || str == 'N/A'
       return ''
+    end
     str
   end
 
