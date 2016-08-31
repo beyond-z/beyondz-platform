@@ -29,6 +29,17 @@ class EnrollmentsController < ApplicationController
     str
   end
 
+  # On Salesforce URL fields, there is a 255 char max. We need a helper method
+  # to keep those strings to the allowed size. Simply truncating is OK because
+  # long URLs virtually always work when truncated anyway (the stuff at the end
+  # tends to be search engine tracking spam)
+  def limit_size(str, max)
+    if str.length > max
+      return str[0 .. max]
+    end
+    str
+  end
+
   def new
     @enrollment = Enrollment.new
     @enrollment.user_id = current_user.id
@@ -371,8 +382,8 @@ class EnrollmentsController < ApplicationController
     cm.Grad_University__c = @enrollment.grad_school
     cm.Graduate_Year__c = @enrollment.anticipated_grad_school_graduation
 
-    cm.Digital_Footprint__c = @enrollment.digital_footprint
-    cm.Digital_Footprint_2__c = @enrollment.digital_footprint2
+    cm.Digital_Footprint__c = limit_size(@enrollment.digital_footprint, 255)
+    cm.Digital_Footprint_2__c = limit_size(@enrollment.digital_footprint2, 255)
 
     cm.Resume__c = @enrollment.resume.url if @enrollment.resume.present?
 
