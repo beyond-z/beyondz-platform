@@ -308,7 +308,16 @@ class User < ActiveRecord::Base
       sf = BeyondZ::Salesforce.new
       client = sf.get_client
       cm['ContactId'] = salesforce_id
-      client.create('CampaignMember', cm)
+
+      begin
+        client.create('CampaignMember', cm)
+      rescue Databasedotcom::SalesForceError
+        # If this failure happens, it is almost certainly just because they
+        # are already in the campaign - probably because we invited them from
+        # Salesforce, so we can simply proceed normally and let the campaign
+        # member check in the welcome page show them next steps, assuming
+        # apply now will work until triggers hit us to say otherwise.
+      end
 
       # The apply now enabled *should* be set by the SF triggers
       # but we might want to do it here now anyway to give faster
