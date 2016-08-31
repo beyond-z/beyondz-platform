@@ -35,7 +35,7 @@ class EnrollmentsController < ApplicationController
   # tends to be search engine tracking spam)
   def limit_size(str, max)
     if str.length > max
-      return str[0 .. max]
+      return str[0..max]
     end
     str
   end
