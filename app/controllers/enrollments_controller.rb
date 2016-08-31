@@ -17,6 +17,18 @@ class EnrollmentsController < ApplicationController
 
   layout 'public'
 
+  # Some users like to write "N/A" on application fields when they
+  # feel it is not applicable. Web conventions are to just leave the field
+  # blank, and that's what the validator does. This helper function will
+  # just replace variants of that written convention with the empty string
+  # for storage and validation in the system.
+  def handle_na(str)
+    if str == 'na' || str == 'n/a' || str == 'N/a' || str == 'N/A'
+      return ''
+    end
+    str
+  end
+
   def new
     @enrollment = Enrollment.new
     @enrollment.user_id = current_user.id
@@ -367,14 +379,14 @@ class EnrollmentsController < ApplicationController
     cm.Reference_1_Name__c = @enrollment.reference_name
     cm.Reference_1_How_Known__c = @enrollment.reference_how_known
     cm.Reference_1_How_Long_Known__c = @enrollment.reference_how_long_known
-    cm.Reference_1_Email__c = @enrollment.reference_email
-    cm.Reference_1_Phone__c = @enrollment.reference_phone
+    cm.Reference_1_Email__c = handle_na(@enrollment.reference_email)
+    cm.Reference_1_Phone__c = handle_na(@enrollment.reference_phone)
 
     cm.Reference_2_Name__c = @enrollment.reference2_name
     cm.Reference_2_How_Known__c = @enrollment.reference2_how_known
     cm.Reference_2_How_Long_Known__c = @enrollment.reference2_how_long_known
-    cm.Reference_2_Email__c = @enrollment.reference2_email
-    cm.Reference_2_Phone__c = @enrollment.reference2_phone
+    cm.Reference_2_Email__c = handle_na(@enrollment.reference2_email)
+    cm.Reference_2_Phone__c = handle_na(@enrollment.reference2_phone)
 
     cm.African_American__c = @enrollment.bkg_african_americanblack
     cm.Asian_American__c = @enrollment.bkg_asian_american
