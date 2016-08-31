@@ -311,12 +311,16 @@ class User < ActiveRecord::Base
 
       begin
         client.create('CampaignMember', cm)
-      rescue Databasedotcom::SalesForceError
+      rescue Databasedotcom::SalesForceError => e
         # If this failure happens, it is almost certainly just because they
         # are already in the campaign - probably because we invited them from
         # Salesforce, so we can simply proceed normally and let the campaign
         # member check in the welcome page show them next steps, assuming
         # apply now will work until triggers hit us to say otherwise.
+
+        # I warn just because rubocop is annoying and doesn't want the exception
+        # do disappear, and it doesn't hurt to log, but we don't really care.
+        warn e
       end
 
       # The apply now enabled *should* be set by the SF triggers
