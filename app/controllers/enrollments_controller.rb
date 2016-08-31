@@ -239,6 +239,9 @@ class EnrollmentsController < ApplicationController
     @enrollment = Enrollment.find(params[:id])
     @enrollment.update_attributes(enrollment_params)
 
+    @enrollment.digital_footprint = limit_size(@enrollment.digital_footprint, 255)
+    @enrollment.digital_footprint2 = limit_size(@enrollment.digital_footprint2, 255)
+
     @enrollment.meeting_times = '' # need to clear out because if none are checked, the next line never runs
     @enrollment.meeting_times = params[:meeting_times].join(';') if params[:meeting_times]
 
