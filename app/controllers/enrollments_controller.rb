@@ -17,6 +17,29 @@ class EnrollmentsController < ApplicationController
 
   layout 'public'
 
+  # Some users like to write "N/A" on application fields when they
+  # feel it is not applicable. Web conventions are to just leave the field
+  # blank, and that's what the validator does. This helper function will
+  # just replace variants of that written convention with the empty string
+  # for storage and validation in the system.
+  def handle_na(str)
+    if str == 'na' || str == 'n/a' || str == 'N/a' || str == 'N/A'
+      return ''
+    end
+    str
+  end
+
+  # On Salesforce URL fields, there is a 255 char max. We need a helper method
+  # to keep those strings to the allowed size. Simply truncating is OK because
+  # long URLs virtually always work when truncated anyway (the stuff at the end
+  # tends to be search engine tracking spam)
+  def limit_size(str, max)
+    if str.length > max
+      return str[0..max]
+    end
+    str
+  end
+
   def new
     @enrollment = Enrollment.new
     @enrollment.user_id = current_user.id
@@ -359,22 +382,22 @@ class EnrollmentsController < ApplicationController
     cm.Grad_University__c = @enrollment.grad_school
     cm.Graduate_Year__c = @enrollment.anticipated_grad_school_graduation
 
-    cm.Digital_Footprint__c = @enrollment.digital_footprint
-    cm.Digital_Footprint_2__c = @enrollment.digital_footprint2
+    cm.Digital_Footprint__c = limit_size(@enrollment.digital_footprint, 255)
+    cm.Digital_Footprint_2__c = limit_size(@enrollment.digital_footprint2, 255)
 
     cm.Resume__c = @enrollment.resume.url if @enrollment.resume.present?
 
     cm.Reference_1_Name__c = @enrollment.reference_name
     cm.Reference_1_How_Known__c = @enrollment.reference_how_known
     cm.Reference_1_How_Long_Known__c = @enrollment.reference_how_long_known
-    cm.Reference_1_Email__c = @enrollment.reference_email
-    cm.Reference_1_Phone__c = @enrollment.reference_phone
+    cm.Reference_1_Email__c = handle_na(@enrollment.reference_email)
+    cm.Reference_1_Phone__c = handle_na(@enrollment.reference_phone)
 
     cm.Reference_2_Name__c = @enrollment.reference2_name
     cm.Reference_2_How_Known__c = @enrollment.reference2_how_known
     cm.Reference_2_How_Long_Known__c = @enrollment.reference2_how_long_known
-    cm.Reference_2_Email__c = @enrollment.reference2_email
-    cm.Reference_2_Phone__c = @enrollment.reference2_phone
+    cm.Reference_2_Email__c = handle_na(@enrollment.reference2_email)
+    cm.Reference_2_Phone__c = handle_na(@enrollment.reference2_phone)
 
     cm.African_American__c = @enrollment.bkg_african_americanblack
     cm.Asian_American__c = @enrollment.bkg_asian_american

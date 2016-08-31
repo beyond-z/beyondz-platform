@@ -43,6 +43,7 @@ class Enrollment < ActiveRecord::Base
   validates :affirm_qualified, presence: true, if: "position == 'student'"
   validates :affirm_commit, presence: true, if: "position == 'student'"
   validates :will_be_student, presence: true, if: "position == 'student'"
+  validates :undergraduate_year, presence: true, if: "position == 'student'"
 
   validates :reference_name, presence: true, if: "position == 'coach'"
   validates :reference_email, presence: true, if: "position == 'coach' && reference_phone.empty?"
