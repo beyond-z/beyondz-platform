@@ -327,7 +327,7 @@
                   </div>
                   <div class="form-group">
                     <label>Phone Number</label>
-                    <%= f.text_field :reference_phone, 'class' => 'form-control short', 'type' => 'tel', 'pattern' => '.{10,21}', 'title' => 'phone number including area code' %>
+                    <%= f.text_field :reference_phone, 'class' => 'form-control short', 'type' => 'tel', 'pattern' => '.{10,21}', 'title' => 'phone number including area code', 'onchange' => 'if(this.value.toLowerCase() == \'n/a\') this.value = \'\'' %>
                   </div>
                 </div>
                 <!-- .form-reference -->
@@ -351,7 +351,7 @@
                   </div>
                   <div class="form-group">
                     <label>Phone Number</label>
-                    <%= f.text_field :reference2_phone, 'class' => 'form-control short', 'type' => 'tel', 'pattern' => '.{10,21}', 'title' => 'phone number including area code' %>
+                    <%= f.text_field :reference2_phone, 'class' => 'form-control short', 'type' => 'tel', 'pattern' => '.{10,21}', 'title' => 'phone number including area code', 'onchange' => 'if(this.value.toLowerCase() == \'n/a\') this.value = \'\'' %>
                   </div>
                 </div>
                 <!-- .form-reference -->
