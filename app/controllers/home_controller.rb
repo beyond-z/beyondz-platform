@@ -127,10 +127,10 @@ class HomeController < ApplicationController
             @show_accepted_path = path
           end
 
-          if confirmed && campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == false
+          if confirmed
             if current_user.in_lms? && record['Section_Name_In_LMS__c'] != ''
               path = "//#{Rails.application.secrets.canvas_server}/"
-            else
+            elsif campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == false
               path = user_confirm_path(:enrollment_id => enrollment.id)
             end
             confirmed_count += 1
