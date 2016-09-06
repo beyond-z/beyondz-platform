@@ -132,6 +132,18 @@ module BeyondZ
           end
           row += 1
           total_rows += 1
+
+          # experiment: try saving partial data every 300 rows
+          # to avoid "request entity too large" errors from google
+          # on large reports
+          if total_rows % 300 == 0
+            ws.max_rows = total_rows
+            ws.max_cols = total_cols
+
+            ws.save
+          end
+
+
         end
       end
 
