@@ -23,6 +23,7 @@ BeyondzPlatform::Application.routes.draw do
   # and back to the application itself
 
   get '/salesforce/change_apply_now', to: 'salesforce#change_apply_now'
+  get '/salesforce/disable_osqa_notification_emails', to: 'salesforce#disable_osqa_notification_emails'
   get '/salesforce/sync_report_to_google_spreadsheet', to: 'salesforce#sync_report_to_google_spreadsheet'
   get '/salesforce/record_converted_leads', to: 'salesforce#record_converted_leads'
   get '/salesforce/sync_to_lms', to: 'salesforce#sync_to_lms'
