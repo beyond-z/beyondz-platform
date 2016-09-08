@@ -42,7 +42,7 @@ class SalesforceController < ApplicationController
           if u
             disable_email_notifications_in_osqa(u)
           else
-             logger.info "No user found to disable email notifications for: #{u}"
+            logger.info "No user found to disable email notifications for: #{u}"
           end
         end
       else
@@ -196,7 +196,7 @@ class SalesforceController < ApplicationController
   def disable_email_notifications_in_osqa(user)
     if @qa_http.nil?
 
-      if (Rails.env.development? || Rails.env.test?)
+      if Rails.env.development? || Rails.env.test?
         # in development SSL doesnt work, so just use plain http
         @qa_http = Net::HTTP.new(Rails.application.secrets.qa_host, 80)
       else
@@ -215,5 +215,4 @@ class SalesforceController < ApplicationController
     )
     @qa_http.request(request)
   end
-
 end
