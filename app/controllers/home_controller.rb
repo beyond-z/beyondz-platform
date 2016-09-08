@@ -1,7 +1,17 @@
 class HomeController < ApplicationController
   before_action :new_user, only: [:welcome, :volunteer, :apply, :partner, :please_wait]
+  before_filter :authenticate_user_for_welcome, :only => [:welcome]
 
   layout 'public'
+
+  # On welcome, if new_user_id is present, they need to confirm before
+  # actually logging in, so we want to show the "please check email" button
+  # on welcome. Otherwise, ask them to log back in.
+  def authenticate_user_for_welcome
+    unless params[:new_user_id]
+      authenticate_user!
+    end
+  end
 
   def index
     if current_user
@@ -29,12 +39,12 @@ class HomeController < ApplicationController
   def please_wait_status
     obj = {}
 
+    obj['path'] = welcome_path
+
     if current_user.applicant_type == 'volunteer' || current_user.applicant_type == 'undergrad_student' || current_user.applicant_type == 'temp_volunteer'
       obj['ready'] = current_user.apply_now_enabled
-      obj['path'] = new_enrollment_path
     else
       obj['ready'] = true
-      obj['path'] = welcome_path
     end
 
     render :json => obj
@@ -68,6 +78,7 @@ class HomeController < ApplicationController
       @show_thanks = false
       @show_accepted = false
       confirmed_count = 0
+      any_completed = false
 
       had_any_records = false
 
@@ -127,7 +138,7 @@ class HomeController < ApplicationController
             @show_accepted_path = path
           end
 
-          if confirmed
+          if confirmed && !program_completed
             if current_user.in_lms? && record['Section_Name_In_LMS__c'] != ''
               path = "//#{Rails.application.secrets.canvas_server}/"
             elsif campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == false
@@ -143,7 +154,7 @@ class HomeController < ApplicationController
           # don't want them to redirect to the app nor have the button
           path = ''
           apply_now_enabled = false
-          will_show_message = true
+          any_completed = true
         end
 
         if submitted && !apply_now_enabled
@@ -195,6 +206,10 @@ class HomeController < ApplicationController
       if @key_application_count == 1 && key_application_path != ''
         # If they only have one valid destination, just go ahead and send them right there immediately
         redirect_to key_application_path
+      end
+
+      if @key_application_count == 0 && any_completed
+        @show_completed = true
       end
 
       if !had_any_records && current_user.in_lms?
