@@ -36,7 +36,7 @@ class SalesforceController < ApplicationController
   def disable_osqa_notification_emails
     if check_magic_token
       if Rails.application.secrets.qa_token && !Rails.application.secrets.qa_token.empty?
-        print params[:emails]
+        logger.debug "disable_osqa_notification_emails for #{params[:emails]}"
         params[:emails].split(',').each do |email|
           u = User.find_by_email(email)
           if u
@@ -45,14 +45,13 @@ class SalesforceController < ApplicationController
             logger.info "No user found to disable email notifications for: #{u}"
           end
         end
+        render plain: 'OK'
       else
         render plain: 'No QA_TOKEN set'
       end
     else
       render plain: 'magic_token is wrong'
     end
-
-    render plain: 'OK'
   end
 
   def record_converted_leads
