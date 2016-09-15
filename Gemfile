@@ -108,5 +108,5 @@ gem 'kaminari', '~> 0.16.3'
 
 # For resume reading
 gem 'msworddoc-extractor', '~> 0.2.0'
-gem 'doc_ripper', '~> 0.0.7'
+#gem 'doc_ripper', '~> 0.0.7'
 gem 'pg_search'
