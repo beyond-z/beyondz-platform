@@ -1,4 +1,4 @@
-require 'doc_ripper'
+#require 'doc_ripper'
 class Admin::ResumesController < ApplicationController
   def index
     page = params[:page]
