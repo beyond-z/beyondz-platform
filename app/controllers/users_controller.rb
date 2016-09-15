@@ -59,7 +59,11 @@ class UsersController < ApplicationController
 
     # Both @enrollment and campaign should never be nil.
 
-    @enrollment = Enrollment.find_by(:user_id => current_user.id)
+    if params[:enrollment_id]
+      @enrollment = Enrollment.find(params[:enrollment_id])
+    else
+      @enrollment = Enrollment.latest_for_user(current_user.id)
+    end
 
     if @enrollment.nil?
       redirect_to welcome_path
@@ -76,7 +80,10 @@ class UsersController < ApplicationController
       @program_title = campaign.Program_Title__c
       @program_site = campaign.Program_Site__c
       @request_availability = campaign.Request_Availability__c
-      @meeting_times = current_user.applicant_type == 'temp_volunteer' ? campaign.Volunteer_Opportunities__c : campaign.Meeting_Times__c
+      @meeting_times = campaign.Application_Type__c == 'volunteer' ? campaign.Volunteer_Opportunities__c : campaign.Meeting_Times__c
+      if @meeting_times.nil?
+        @meeting_times = ''
+      end
 
       @sf_campaign_id = campaign.Id
 
@@ -130,23 +137,27 @@ class UsersController < ApplicationController
   end
 
   def confirm
+    prep_confirm_campaign_info
+
+    if @enrollment.nil?
+      redirect_to welcome_path
+      return
+    end
+
+    sf = BeyondZ::Salesforce.new
+    client = sf.get_client
+    client.materialize('CampaignMember')
+    cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(current_user.salesforce_id, @enrollment.campaign_id)
+
     # If they are already confirmed and accepted, here refreshing the page
     # to watch for updates perhaps, we want to send them to where they want
     # to be - canvas - ASAP.
-    if current_user.in_lms?
+    if cm.Candidate_Status__c == 'Confirmed' && current_user.in_lms?
       redirect_to "//#{Rails.application.secrets.canvas_server}/"
-    else
-      prep_confirm_campaign_info
     end
 
-    if current_user.program_attendance_confirmed && @enrollment
-      sf = BeyondZ::Salesforce.new
-      client = sf.get_client
-      client.materialize('CampaignMember')
-      cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(current_user.salesforce_id, @enrollment.campaign_id)
-
-      @waitlisted = cm.Candidate_Status__c == 'Waitlisted'
-    end
+    @waitlisted = cm.Candidate_Status__c == 'Waitlisted'
+    @confirmed = cm.Candidate_Status__c == 'Confirmed'
 
     # renders a view
   end
@@ -176,7 +187,11 @@ class UsersController < ApplicationController
     client.materialize('CampaignMember')
     client.materialize('Contact')
 
-    @enrollment = Enrollment.find_by(:user_id => current_user.id)
+    if params[:enrollment_id]
+      @enrollment = Enrollment.find(params[:enrollment_id])
+    else
+      @enrollment = Enrollment.find_by(:user_id => current_user.id)
+    end
 
     campaign = sf.load_cached_campaign(@enrollment.campaign_id, client)
 
@@ -217,10 +232,10 @@ class UsersController < ApplicationController
 
     contact = SFDC_Models::Contact.find(current_user.salesforce_id)
     if contact
-      case current_user.applicant_type
-      when 'undergrad_student'
+      case campaign.Application_Type__c
+      when 'student'
         contact.Participant_Information__c = 'Participant'
-      when 'volunteer'
+      when 'coach'
         contact.Volunteer_Information__c = 'Current LC'
       end
 
@@ -230,15 +245,15 @@ class UsersController < ApplicationController
 
     # Send a confirmation email too for confirmed people
     unless waitlisted
-      case current_user.applicant_type
-      when 'undergrad_student'
+      case campaign.Application_Type__c
+      when 'student'
         ConfirmationFlow.student_confirmed(current_user, program_title, program_site, chosen_time).deliver
-      when 'volunteer'
+      when 'coach'
         ConfirmationFlow.coach_confirmed(current_user, program_title, program_site, chosen_time).deliver
       end
     end
 
-    redirect_to user_confirm_path
+    redirect_to user_confirm_path(:enrollment_id => params[:enrollment_id])
   end
 
   def reset
@@ -267,7 +282,7 @@ class UsersController < ApplicationController
   # think the risk is that big. The referrer check should foil any pranks
   # in practice.
   def clear_session_cookie
-    if request.referer.starts_with?(Rails.application.secrets.sso_url)
+    if request.referer.nil? || request.referer.starts_with?(Rails.application.secrets.sso_url)
       reset_session
     end
     render nothing: true

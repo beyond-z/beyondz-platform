@@ -33,6 +33,27 @@ class SalesforceController < ApplicationController
     render plain: 'OK'
   end
 
+  def disable_osqa_notification_emails
+    if check_magic_token
+      if Rails.application.secrets.qa_token && !Rails.application.secrets.qa_token.empty?
+        logger.debug "disable_osqa_notification_emails for #{params[:emails]}"
+        params[:emails].split(',').each do |email|
+          u = User.find_by_email(email)
+          if u
+            disable_email_notifications_in_osqa(u)
+          else
+            logger.info "No user found to disable email notifications for: #{u}"
+          end
+        end
+        render plain: 'OK'
+      else
+        render plain: 'No QA_TOKEN set'
+      end
+    else
+      render plain: 'magic_token is wrong'
+    end
+  end
+
   def record_converted_leads
     if check_magic_token
       params[:changes].split(',').each do |change|
@@ -53,41 +74,15 @@ class SalesforceController < ApplicationController
   def change_campaigns
     if check_magic_token
       cids = params[:contactIds]
-      new_campaign = params[:campaignId]
-      reset = params[:reset] == 'true'
+      new_campaign = params[:newCampaignId]
+      old_campaign = params[:oldCampaignId]
       cids.split(',').each do |cid|
         u = User.find_by_salesforce_id(cid)
-        if u
-          existing_enrollment = Enrollment.find_by(:user_id => u.id)
-          if existing_enrollment
-            existing_enrollment.campaign_id = new_campaign
-            if reset
-              # We want to allow them to update and re-submit the app
-              # so we will unsubmit but keep their data in place.
-              existing_enrollment.explicitly_submitted = false
-            end
-            # It may be in-progress, so we don't want to validate it
-            # at this time, just update the one piece of inf.
-            existing_enrollment.save(validate: false)
-            # Note: this assumes the old and new campaigns are both the same
-            # type, for example, student or LC. If they want to change tracks
-            # entirely, we will need to  have them start an all-new application.
-          end
-
-          if reset
-            # This should reset the user so they can basically start fresh
-            # Above, we unsubmitted the app. Here, we want to unconfirm too
-            u.program_attendance_confirmed = false
-
-            # We also want to disconnect them from Canvas so they can reapply. When we
-            # resync, it will find their existing account and reconnect them at that time.
-            u.canvas_user_id = nil
-
-            u.save
-            # Note that other variables are changed on the Salesforce side
-            # which can update us through triggers too
-          end
-        end
+        e = Enrollment.where(:user_id => u.id, :campaign_id => old_campaign)
+        next if e.empty?
+        e = e.first
+        e.campaign_id = new_campaign
+        e.save(validate: false)
       end
     end
 
@@ -192,6 +187,29 @@ class SalesforceController < ApplicationController
       'access_token' => Rails.application.secrets.qa_token,
       'url' => "#{root_url}openid/user/#{user.id}",
       'name' => user.name,
+      'email' => user.email
+    )
+    @qa_http.request(request)
+  end
+
+  def disable_email_notifications_in_osqa(user)
+    if @qa_http.nil?
+
+      if Rails.env.development? || Rails.env.test?
+        # in development SSL doesnt work, so just use plain http
+        @qa_http = Net::HTTP.new(Rails.application.secrets.qa_host, 80)
+      else
+        @qa_http = Net::HTTP.new(Rails.application.secrets.qa_host, 443)
+        @qa_http.use_ssl = true
+        if Rails.application.secrets.canvas_allow_self_signed_ssl # reusing this config option since it is the same deal here
+          @qa_http.verify_mode = OpenSSL::SSL::VERIFY_NONE # self-signed cert would fail
+        end
+      end
+    end
+
+    request = Net::HTTP::Post.new('/account/disable-notifications/')
+    request.set_form_data(
+      'access_token' => Rails.application.secrets.qa_token,
       'email' => user.email
     )
     @qa_http.request(request)

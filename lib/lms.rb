@@ -87,6 +87,7 @@ module BeyondZ
         'user[short_name]' => user.first_name,
         'user[sortable_name]' => "#{user.last_name}, #{user.first_name}",
         'user[terms_of_use]' => true,
+        'user[skip_registration]' => true,
         'pseudonym[unique_id]' => user.email,
         'pseudonym[send_confirmation]' => false,
         'communication_channel[type]' => 'email',

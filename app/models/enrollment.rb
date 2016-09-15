@@ -43,6 +43,7 @@ class Enrollment < ActiveRecord::Base
   validates :affirm_qualified, presence: true, if: "position == 'student'"
   validates :affirm_commit, presence: true, if: "position == 'student'"
   validates :will_be_student, presence: true, if: "position == 'student'"
+  validates :undergraduate_year, presence: true, if: "position == 'student'"
 
   validates :reference_name, presence: true, if: "position == 'coach'"
   validates :reference_email, presence: true, if: "position == 'coach' && reference_phone.empty?"
@@ -54,4 +55,10 @@ class Enrollment < ActiveRecord::Base
   validates :meeting_times, presence: true, if: '@check_meeting_times'
 
   attr_writer :check_meeting_times
+
+  def self.latest_for_user(user_id)
+    enrollments = Enrollment.where(:user_id => user_id).order(updated_at: :desc)
+    enrollment = enrollments.empty? ? nil : enrollments.first
+    enrollment
+  end
 end

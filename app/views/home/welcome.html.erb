@@ -2,55 +2,72 @@
   <div class="section-container">
     <section>
       <div class="col-sm-6 col-sm-offset-3 text-center">
-        <% if @new_user && @new_user.confirmed_at.nil? %>
+        <% if @new_user && @new_user.confirmed_at.nil? %> <!-- UNCONFIRMED USER { -->
           <p>Welcome <%= @new_user.name %>!</p>
           <p class="shoutout">Check your email at <br /> <%= @new_user.email %> <br /> to complete your sign-up.</p></p>
           <p class="feature"><strong>Tip:</strong> if you don't see it in your inbox within a few minutes, please check your spam folder.</p>
+         <!-- } UNCONFIRMED USER -->
         <% elsif @new_user %>
-          <% if @new_user.applicant_type == 'volunteer' || @new_user.applicant_type == 'undergrad_student' || @new_user.applicant_type == 'temp_volunteer' %>
-            <!-- We should be able to re-enable apply now in Salesforce, overriding applicatio_received. The second clause here allows that. -->
-            <% if @application_received && !(@new_user.apply_now_enabled || !Rails.application.secrets.salesforce_username) %>
-              <h2>Thank you for <%= (@new_user.applicant_type == 'temp_volunteer') ? 'registering with' : 'applying to' %> <%= @program_title %>.</h2>
-              <p>We will be in touch shortly with next steps. If you have any further questions please feel free to <a href="mailto:join@bebraven.org">contact us</a></p>
+          <!-- CONFIRMED USER { -->
+
+          <% if @show_accepted %>
+            <p class="shoutout">You have been accepted to Braven.</p>
+            <div class="apply-button button-primary" style="width: 100%; margin-bottom: 0.25em; padding-left: 0px; padding-right: 0px;">
+              <%= link_to "Please confirm your availability now", @show_accepted_path, style: 'color: white', onclick: 'return BZ_formSubmitWaitHelper(this);' %><br />
+            </div>
+          <% elsif @show_thanks %>
+            <h2>Thank you for <%= (@new_user.applicant_type == 'temp_volunteer') ? 'registering with' : 'applying to' %> <%= @program_title %>.</h2>
+            <p>We will be in touch shortly with next steps. If you have any further questions please feel free to <a href="mailto:join@bebraven.org">contact us</a></p>
+          <% else %>
+            <% if @key_application_count > 1 %>
+              <p class="shoutout">You have worked with us in multiple ways. Please select where you want to go next:</p>
+            <% elsif @applications.count == 0 %>
+              <!-- USER WHO NEED *NOT* APPLY { -->
+              <h2>Thank you for your interest in Braven.</h2>
+              <p>We'll get back to you at <%= @new_user.email %> very soon!</p>
+              <!-- } USER WHO NEED *NOT* APPLY -->
             <% else %>
-                <!-- When Salesforce integration is enabled, the apply now button will be controlled
-                     by a campaign on that end. Until then though, we want everyone to see it. -->
-              <% if @new_user.apply_now_enabled || !Rails.application.secrets.salesforce_username %>
-                <% if Enrollment.find_by(:user_id => @new_user.id).nil? %>
-                  <!-- FIXME: this is a hack where we auto-activate accounts b/c emails are going to spam.  Revert this once we have email activation back. -->
-                  <% if @new_user.salesforce_campaign_id %>
-                    <p class="shoutout">You've successfully signed up. 
-                      <% if @new_user.applicant_type == 'temp_volunteer' %>
-                        Now you can complete your registration.
-                      <% else %>
-                        Now you can complete your application.
-                      <% end %>
-                    </p>
-                  <% else %>
-                    <p class="shoutout">Your account was successfully activated. Now you can complete your application.</p>
-                  <% end %>
-                <% else %>
-                <p class="shoutout">Thanks for coming back to finish your application. Click here to pick up where you left off!</p>
-                <% end %>
-                <div class="apply-button button-primary">
-                  <% @apply_now_showing = true %>
-                  <%= link_to (@new_user.applicant_type == "temp_volunteer" ? 'Register now!' : 'Apply now!'), new_enrollment_path, style: 'color: white', onclick: 'return BZ_formSubmitWaitHelper(this);' %><br />
-                </div>
+              <!-- just one application, don't need a special header -->
+            <% end %>
+          <% end %>
+
+          <% if (@show_thanks || @show_accepted) && @key_application_count > 1 %>
+            <!-- if there's other applications, show some other header below thanks -->
+            <p>You also have access to the following:</p>
+          <% end %>
+
+
+          <% @applications.each do |app| %>
+            <!-- We should be able to re-enable apply now in Salesforce, overriding application_received. The second clause here allows that. -->
+            <% if app[:application_received] && !app[:apply_now_enabled] %>
+              <!-- this is a thank you, it is done above -->
+            <% elsif app[:apply_now_enabled] %>
+              <!-- need a header if this is the only one -->
+              <% if @applications.count == 1 %>
+                <p class="shoutout">You've successfully signed up.  Now you can complete your application.</p>
+              <% end %>
+
+              <% @apply_now_showing = true %>
+              <div class="apply-button button-primary" style="width: 100%; margin-bottom: 0.25em; padding-left: 0px; padding-right: 0px;">
+                 <%= link_to ("#{app[:word]} Your #{app[:campaign_type]} #{app[:apply_text]}"), app[:path], style: 'color: white', onclick: 'return BZ_formSubmitWaitHelper(this);' %><br />
+              </div>
+            <% else %>
+              <!-- apply now is DISABLED -->
+              <% if app[:program_completed] %>
+                <!-- disabled because the program is over -->
+                <p class="shoutout">
+                The <%= app[:program_title] %> program you signed up for has ended. If you are interested in participating in an upcoming program, please reach out to us at <a href="mailto:info@bebraven.org">info@bebraven.org</a>
+                </p>
               <% else %>
-                <% if @program_completed %>
-                  <p class="shoutout">
-                  The program you signed up for has ended. If you are interested in participating in an upcoming program, please reach out to us at <a href="mailto:info@bebraven.org">info@bebraven.org</a>
-                  </p>
-                <% else %>
-                  <p class="shoutout">Your account was successfully activated. We will contact you very soon!</p>
+                <!-- disabled for some other reason -->
+                <!-- we will only show anything here if it is the only one - otherwise, showing nothing makes sense because we don't want to distract the user from the program they do care about with a program they can't even use -->
+                <% if @applications.count == 1 %>
+                 <p class="shoutout">Your account was successfully activated. We will contact you very soon!</p>
                 <% end %>
               <% end %>
             <% end %>
-
-          <% else %>
-            <h2>Thank you for your interest in Braven.</h2>
-            <p>We'll get back to you at <%= @new_user.email %> very soon!</p>
           <% end %>
+          <!-- } CONFIRMED USER -->
         <% end %>
       </div>
     </section>
@@ -58,33 +75,33 @@
 </div>
 
 <% if !@apply_now_showing %>
-<div class="plank plain-lt">
-  <div class="section-container">
-    <section>
-      <div class="col-sm-4 col-sm-offset-4">
-        <h2>Why stop here?</h2>
-        <p>Help spread the word so we can discover more leaders and expand the network that supports them:</p>
+  <div class="plank plain-lt">
+    <div class="section-container">
+      <section>
+        <div class="col-sm-4 col-sm-offset-4">
+          <h2>Why stop here?</h2>
+          <p>Help spread the word so we can discover more leaders and expand the network that supports them:</p>
 
-        <a href="https://twitter.com/intent/tweet?button_hashtag=BeBraven&text=I%20just%20signed%20up%20for" class="twitter-hashtag-button" data-size="large" data-url="http://bebraven.org/">Tweet #BeBraven</a>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          <a href="https://twitter.com/intent/tweet?button_hashtag=BeBraven&text=I%20just%20signed%20up%20for" class="twitter-hashtag-button" data-size="large" data-url="http://bebraven.org/">Tweet #BeBraven</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
-      </div>
-    </section>
+        </div>
+      </section>
+    </div>
   </div>
-</div>
 
-<div class="plank plain-md">
-  <div class="section-container">
-    <section>
-      <div class="col-sm-4 col-sm-offset-4">
-        <p>
-          You can also check out the following links to discover all the great reasons people are joining Braven:<br />
-          <%= link_to 'Become a fellow', 'http://bebraven.org/become-a-fellow/' %><br />
-          <%= link_to 'Volunteer with Braven', 'http://bebraven.org/volunteer-as-a-coach/' %><br />
-          <%= link_to 'Partner with Braven', 'http://bebraven.org/partner-with-us/' %>
-        </p>
-      </div>
-    </section>
+  <div class="plank plain-md">
+    <div class="section-container">
+      <section>
+        <div class="col-sm-4 col-sm-offset-4">
+          <p>
+            You can also check out the following links to discover all the great reasons people are joining Braven:<br />
+            <%= link_to 'Become a fellow', 'http://bebraven.org/become-a-fellow/' %><br />
+            <%= link_to 'Volunteer with Braven', 'http://bebraven.org/volunteer-as-a-coach/' %><br />
+            <%= link_to 'Partner with Braven', 'http://bebraven.org/partner-with-us/' %>
+          </p>
+        </div>
+      </section>
+    </div>
   </div>
-</div>
 <% end %>
