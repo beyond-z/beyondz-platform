@@ -267,13 +267,14 @@
         <div class="section-container">
           <section>
             <div id="form-reflective">
-              <h2 class="volunteer coach student form-section-header">Short-Answer Reflective Questions</h2>
+              <h2 class="coach student form-section-header">Short-Answer Reflective Questions</h2>
+              <h2 class="volunteer form-section-header">Short-Answer Reflective Question</h2>
               <p class="help">Please use complete sentences!</p>
 
               <div class="form-group volunteer coach student">
                 <label class="student">Why do you want to join the <%= @program_title %>?</label>
                 <label class="coach">Why do you want to be a <%= @program_title %> Leadership Coach?</label>
-                <label class="volunteer">Why do you want to be a <%= @program_title %> volunteer and what areas of personal expertise or passion are you excited to share?</label>
+                <label class="volunteer">Why do you want to be a volunteer and what areas of personal expertise or passion are you excited to share?</label>
                 <%= f.text_area :why_bz, 'class' => 'form-control', 'maxlength' => '500' %>
               </div>
 
@@ -450,8 +451,6 @@
 
               <p class="coach"><i>Please note</i>: Your invitation to join <%= @program_title %> - <%= @program_site %> will include a specific campus location, day, and timeslot, at which point you'll be asked to officially confirm your role. It's important that you are as accurate as possible, so we can make reliable matches between coaches and participants. However, we also understand your schedule may change after you've submitted. <i>If that happens, or if you are currently very unsure of your upcoming schedule, please email us with details at <a href="mailto:info@bebraven.org">info@bebraven.org</a>.</i></p>
 
-              <p class="volunteer"><i>Please note</i>: Your invitation to join <%= @program_title %> - <%= @program_site %> will include a specific campus location, day, and timeslot, at which point you'll be asked to officially confirm your participation. However, we also understand your schedule may change after you've submitted. <i>If that happens, or if you are currently very unsure of your upcoming schedule, please email us with details at <a href="mailto:info@bebraven.org">info@bebraven.org</a>.</i></p>
-
               <p>You must check at least one option.</p>
 
 
@@ -480,8 +479,8 @@
                 </label>
               </div>
 
-              <div class="form-group volunteer coach">
-                <span class="volunteer coach">Please let us know of any dates that you anticipate you will not be available through the end of <%= Date.today.year %>.</span>
+              <div class="form-group coach">
+                <span class="coach">Please let us know of any dates that you anticipate you will not be available through the end of <%= Date.today.year %>.</span>
                 <%= f.text_area :cannot_attend, 'class' => 'form-control', 'maxlength' => '500', 'style'=>'height: 6em !important;' %>
               </div>
             </div>
