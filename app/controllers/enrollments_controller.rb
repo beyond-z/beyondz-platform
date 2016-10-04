@@ -374,6 +374,9 @@ class EnrollmentsController < ApplicationController
     cm.Major__c = @enrollment.major
     cm.GPA__c = @enrollment.gpa
 
+    cm.Enrollment_Year__c = @enrollment.enrollment_year
+    cm.Enrollment_Semester__c = @enrollment.enrollment_semester
+
     cm.Previous_University__c = @enrollment.previous_university
 
     cm.Conquered_Challenge__c = @enrollment.conquered_challenge

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160717192220) do
+ActiveRecord::Schema.define(version: 20161004170054) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -211,6 +211,8 @@ ActiveRecord::Schema.define(version: 20160717192220) do
     t.boolean  "study_abroad"
     t.string   "gender_identity"
     t.string   "anticipated_graduation_semester"
+    t.integer  "enrollment_year"
+    t.string   "enrollment_semester"
   end
 
   add_index "enrollments", ["user_id"], name: "index_enrollments_on_user_id", using: :btree
