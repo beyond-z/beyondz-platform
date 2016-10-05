@@ -71,6 +71,7 @@ class EnrollmentsController < ApplicationController
         @enrollment.title = current_user.profession
         @enrollment.undergraduate_year = current_user.anticipated_graduation
         @enrollment.enrollment_year = current_user.started_college_in
+        @enrollment.enrollment_semester = current_user.started_college_in_semester
         @enrollment.accepts_txt = true # to pre-check the box
       end
 
