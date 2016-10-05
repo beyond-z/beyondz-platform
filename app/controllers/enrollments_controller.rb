@@ -379,7 +379,6 @@ class EnrollmentsController < ApplicationController
 
     cm.Previous_University__c = @enrollment.previous_university
 
-    cm.Conquered_Challenge__c = @enrollment.conquered_challenge
     cm.Languages__c = @enrollment.languages
     cm.Sourcing_Info__c = @enrollment.sourcing_info
     cm.Available_Meeting_Times__c = @enrollment.meeting_times

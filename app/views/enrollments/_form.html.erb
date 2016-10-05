@@ -150,8 +150,6 @@
                   </td><td>
                   <%= f.select :enrollment_semester, ["Fall", "Spring", "Summer", "Winter"], {}, 'class' => 'short form-control', include_blank: true %>
                   </td></tr></table>
-                  <!-- the -50 there is an arbitrary amount to account for the coach case,
-                       where they may have graduated many years ago, -->
                 </div>
 
 
@@ -188,7 +186,7 @@
                 </div>
 
                 <div class="form-group student">
-                  <label>What is your college GPA, or, if you're a freshman, your high school GPA</label>
+                  <label>What is your college GPA, or, if you're a freshman, your high school GPA?</label>
                   <%= f.text_field :gpa, 'class' => 'form-control short', 'max' => '10', 'step' => '0.01', 'type' => 'number', 'min' => '0' %>
                 </div>
                 <div class="form-group student">
@@ -241,7 +239,7 @@
               </div>
 
               <div class="form-group coach student" id="form-leadership-exp">
-                <label class="coach">In at least 150 words, share <u>one</u> recent professional or volunteer experience that has been particularly meaningful to you? Why?</label>
+                <label class="coach">In at least 150 words, share <u>one</u> recent professional or volunteer experience that has been particularly meaningful to you. Why was it meaningful to you?</label>
                 <p class="coach help">While we are interested in the diversity of activities in which you're involved, we are also curious to learn more about a single experience that has been particularly meaningful to your development as a leader.</p>
                 <label class="student">What is <u>one</u> professional, extracurricular, or volunteer experience that has been particularly meaningful to you? Why?</label>
                 <p class="student help">While we are interested in seeing the diversity of activities in which you're involved (described in the preceding question), we are also curious about which single experience has been particularly meaningful to your development.</p>
