@@ -70,6 +70,7 @@ class EnrollmentsController < ApplicationController
         @enrollment.phone = current_user.phone
         @enrollment.title = current_user.profession
         @enrollment.undergraduate_year = current_user.anticipated_graduation
+        @enrollment.enrollment_year = current_user.started_college_in
         @enrollment.accepts_txt = true # to pre-check the box
       end
 
@@ -374,7 +375,7 @@ class EnrollmentsController < ApplicationController
     cm.Major__c = @enrollment.major
     cm.GPA__c = @enrollment.gpa
 
-    cm.Enrollment_Year__c = @enrollment.enrollment_year
+    cm.Started_College__c = @enrollment.enrollment_year
     cm.Enrollment_Semester__c = @enrollment.enrollment_semester
 
     cm.Previous_University__c = @enrollment.previous_university
