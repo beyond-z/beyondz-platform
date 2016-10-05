@@ -166,7 +166,7 @@ class EnrollmentsController < ApplicationController
     @enrollment = Enrollment.find(params[:id])
 
     if @enrollment.user_id != current_user.id && !current_user.admin?
-      redirect_to new_enrollment_path
+      redirect_to welcome_path
       return
     end
 
