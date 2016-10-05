@@ -1,0 +1,47 @@
+<h1>Braven Resume Library</h1>
+
+<form style="display: inline">
+  <input type="search" name="search" value="<%= params[:search]%>" />
+  <input type="submit" value="Full text search" />
+</form>
+
+|
+
+<%= link_to 'View all files', resumes_path %>
+
+<hr />
+
+<table style="min-width: 25%;">
+<% if params[:search] %>
+  <caption>Search Results</caption>
+<% elsif params[:tag] %>
+  <caption>Tagged with <%= params[:tag] %></caption>
+<% else %>
+  <caption>All files</caption>
+<% end %>
+<tr>
+  <th>Title</th><th>Type</th><th align="center">Score</th><th>Tags</th>
+</tr>
+<% @resumes.each do |resume| %>
+<tr>
+  <td>
+  <% if resume.resume.present? %>
+    <%= link_to resume.title, resume.resume.url %>
+  <% end %>
+  </td>
+  <td>
+    <%= resume.document_type %>
+  </td>
+  <td align="center">
+    <%= resume.score %>
+  </td>
+  <td>
+    <% resume.tags.each do |tag| %>
+      <a href="resumes?tag=<%= tag %>"><%= tag %></a>
+    <% end %>
+  </td>
+</tr>
+<% end %>
+</table>
+
+<%= paginate @resumes %>
