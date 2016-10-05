@@ -150,8 +150,10 @@ class HomeController < ApplicationController
         end
 
         if program_completed
-          # If the program is completed, always keep them here - it will display a message for them
-          # don't want them to redirect to the app nor have the button
+          # If the program is completed and they only had a submitted/confirmed app for
+          # that program, then we keep them at the home_controller. However, if they
+          # complete the program but get access to a new app (e.g. they were a fellow but
+          # we recruit them to be an LC, then they should be taken to the LC app.
           path = ''
           apply_now_enabled = false
           any_completed = true
