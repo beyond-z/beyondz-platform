@@ -15,10 +15,17 @@
 
   <section>
     <div>
-      Started college in:
+      Started college at this university in:
     </div>
-    <div class="col-sm-5">
-      <%= f.select :started_college_in, options_for_select([''].concat(started_college_years.to_a), params[:user].nil? ? '' : params[:user][:started_college_in]), {}, :class => 'form-control' %>
+    <div class="col-sm-6">
+      <table style="width: auto; margin: 0px;">
+      <tr><td style="text-align: center;">Year</td><td style="text-align: center;">Semester</td></tr>
+      <tr><td>
+        <%= f.select :started_college_in, options_for_select([''].concat(started_college_years.to_a), params[:user].nil? ? '' : params[:user][:started_college_in]), {}, :class => 'form-control' %>
+      </td><td>
+        <%= f.select :started_college_in_semester, ["Fall", "Spring", "Summer", "Winter"], {}, 'class' => 'short form-control', include_blank: true, :required => 'required' %>
+      </td></tr></table>
+
     </div>
   </section>
   <section>
