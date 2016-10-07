@@ -232,7 +232,7 @@
               </div>
               <div class="form-group coach student">
                 <label class="student">Please list all your extracurricular, volunteer, and professional commitments for the upcoming school year.</label>
-                <label class="coach">Please list any other significant volunteer commitments you've made for the upcoming year, including Board commitments, pro bono work, coaching, and other volunteer roles (recurring or occasional).</label>
+                <label class="coach">Please list any other significant volunteer commitments you've made for the upcoming semester, including Board commitments, pro bono work, coaching, and other volunteer roles (recurring or occasional).</label>
                 <p class="help student">Please include approximate hours per month, and if it varies by semester, please note that too. Ex: Student worker at the library, 25 hours/month. Rugby captain, 30 hours/month, fall semester only.</p>
                 <p class="help coach">Please include approximate hours per month, and if it varies by season, please note that too. Ex: AAU girls' coach, 10 hours/week, summer only. Board member, Carver Academy - East, 4 hours/month.</p>
                 <%= f.text_area :other_commitments, 'class' => 'form-control', 'maxlength' => '1000' %>
@@ -490,7 +490,7 @@
               </div>
 
               <div class="form-group coach">
-                <span class="coach">Please let us know of any dates that you anticipate you will not be available through the end of the year.</span>
+                <span class="coach">Please let us know of any dates that you anticipate you will not be available.</span>
                 <%= f.text_area :cannot_attend, 'class' => 'form-control', 'maxlength' => '500', 'style'=>'height: 6em !important;' %>
               </div>
             </div>
