@@ -10,8 +10,8 @@
       <div class="plank tertiary-md light">
         <div class="section-container">
           <header id="prototype-header">
-          <h1 class="coach student">Application for <%= @program_title %> - <%= @program_site %><br /><%= Date.today.year %></h1>
-          <h1 class="volunteer">Registration for <%= @program_title %> - <%= @program_site %><br /><%= Date.today.year %></h1>
+          <h1 class="coach student">Application for <%= @program_title %> - <%= @program_site %></h1>
+          <h1 class="volunteer">Registration for <%= @program_title %> - <%= @program_site %></h1>
           </header>
 
           <p class="help coach">
@@ -231,8 +231,8 @@
                   <%= f.text_field :title, "class"=>'form-control', 'maxlength' => '75' %><br />
               </div>
               <div class="form-group coach student">
-                <label class="student">Please list all your extracurricular, volunteer, and professional commitments for the upcoming school year (<%= Date.today.year %> - <%= Date.today.year+1 %>).</label>
-                <label class="coach">Please list any other significant volunteer commitments you've made for the upcoming year (<%= Date.today.year %> - <%= Date.today.year+1 %>), including Board commitments, pro bono work, coaching, and other volunteer roles (recurring or occasional).</label>
+                <label class="student">Please list all your extracurricular, volunteer, and professional commitments for the upcoming school year.</label>
+                <label class="coach">Please list any other significant volunteer commitments you've made for the upcoming semester, including Board commitments, pro bono work, coaching, and other volunteer roles (recurring or occasional).</label>
                 <p class="help student">Please include approximate hours per month, and if it varies by semester, please note that too. Ex: Student worker at the library, 25 hours/month. Rugby captain, 30 hours/month, fall semester only.</p>
                 <p class="help coach">Please include approximate hours per month, and if it varies by season, please note that too. Ex: AAU girls' coach, 10 hours/week, summer only. Board member, Carver Academy - East, 4 hours/month.</p>
                 <%= f.text_area :other_commitments, 'class' => 'form-control', 'maxlength' => '1000' %>
@@ -454,7 +454,7 @@
 
               <p class="student"><i>Please be accurate:</i> You will be assigned to a group that meets weekly during one of these meeting times. Note: It's important that you are as accurate as possible in this application, though we also understand your schedule may change after you’ve submitted. You'll have another chance to confirm your availability before program launch.</p>
 
-              <%= f.label :meeting_times, "Please select from the list below ALL <u>times</u> during which you expect to be available to lead cohort sessions through the end of #{Date.today.year}.".html_safe, :class => 'coach' %>
+              <%= f.label :meeting_times, "Please select from the list below ALL <u>times</u> during which you expect to be available to lead cohort sessions.".html_safe, :class => 'coach' %>
               <%= f.label :meeting_times, "Please select from the list of one-time volunteer opportunities below. (You may select as many as you would like)".html_safe, :class => 'volunteer' %>
 
               <p class="coach"><i>Please be flexible:</i> The more options you select, the greater our opportunity to ensure all participants benefit from the great diversity of our community.</p>
@@ -490,7 +490,7 @@
               </div>
 
               <div class="form-group coach">
-                <span class="coach">Please let us know of any dates that you anticipate you will not be available through the end of <%= Date.today.year %>.</span>
+                <span class="coach">Please let us know of any dates that you anticipate you will not be available.</span>
                 <%= f.text_area :cannot_attend, 'class' => 'form-control', 'maxlength' => '500', 'style'=>'height: 6em !important;' %>
               </div>
             </div>
