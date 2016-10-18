@@ -148,7 +148,7 @@
                   <tr><td>
                   <%= f.text_field :enrollment_year, 'class' => 'form-control short', 'step' => '1', 'type' => 'number', 'min' => Date.today.year - 10 %>
                   </td><td>
-                  <%= f.select :enrollment_semester, ["Fall", "Spring", "Summer", "Winter"], {}, 'class' => 'short form-control', include_blank: true %>
+                  <%= f.select :enrollment_semester, options_for_select(["Fall", "Spring", "Summer", "Winter"], @enrollment.enrollment_semester), {}, 'class' => 'short form-control', include_blank: true %>
                   </td></tr></table>
                 </div>
 
@@ -166,7 +166,7 @@
                   <tr><td>
                   <%= f.text_field :undergraduate_year, 'class' => 'form-control short', 'step' => '1', 'type' => 'number', 'min' => Date.today.year - 50 %>
                   </td><td>
-                  <%= f.select :anticipated_graduation_semester, ["Fall", "Spring", "Summer", "Winter"], {}, 'class' => 'short form-control', include_blank: true %>
+                  <%= f.select :anticipated_graduation_semester, options_for_select(["Fall", "Spring", "Summer", "Winter"], @enrollment.anticipated_graduation_semester), {}, 'class' => 'short form-control', include_blank: true %>
                   </td></tr></table>
                   <!-- the -50 there is an arbitrary amount to account for the coach case,
                        where they may have graduated many years ago, -->
