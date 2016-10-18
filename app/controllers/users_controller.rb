@@ -330,6 +330,7 @@ class UsersController < ApplicationController
       :like_to_know_when_program_starts,
       :like_to_help_set_up_program,
       :started_college_in,
+      :started_college_in_semester,
       :anticipated_graduation,
       :anticipated_graduation_semester,
       :profession,
