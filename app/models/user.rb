@@ -241,6 +241,7 @@ class User < ActiveRecord::Base
     contact[salesforce_id ? 'Company__c' : 'Company'] = (company.nil? || company.empty?) ? "#{name} (individual)" : company
 
     contact['Started_College__c'] = started_college_in
+    contact['Enrollment_Semester__c'] = started_college_in_semester
     contact['Interested_in_opening_BZ__c'] = like_to_help_set_up_program ? true : false
     contact['Keep_Informed__c'] = like_to_know_when_program_starts ? true : false
     # we store the string and SF needs a string, but the library expects an array so we split it back up here

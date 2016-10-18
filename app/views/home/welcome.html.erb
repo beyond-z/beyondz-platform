@@ -18,6 +18,8 @@
           <% elsif @show_thanks %>
             <h2>Thank you for <%= (@new_user.applicant_type == 'temp_volunteer') ? 'registering with' : 'applying to' %> <%= @program_title %>.</h2>
             <p>We will be in touch shortly with next steps. If you have any further questions please feel free to <a href="mailto:join@bebraven.org">contact us</a></p>
+          <% elsif @show_completed %>
+            <h2>Thank you for participating</h2>
           <% else %>
             <% if @key_application_count > 1 %>
               <p class="shoutout">You have worked with us in multiple ways. Please select where you want to go next:</p>

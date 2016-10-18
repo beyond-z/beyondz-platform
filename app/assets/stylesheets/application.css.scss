@@ -77,3 +77,18 @@
 .in-iframe .hide-on-iframe {
   display: none;
 }
+
+
+h1, h2, h3, h4, h5, h6,
+th {
+  font-family: "TradeGothicNo.20-CondBold", "Oswald", "Open Sans", sans-serif;
+  text-transform: uppercase;
+  line-height: normal;
+  font-weight: bold;
+  font-weight: 700;
+}
+
+td, th {
+  padding: 5px 10px 5px 0px;
+  border-bottom: 1px solid #efefef;
+}
