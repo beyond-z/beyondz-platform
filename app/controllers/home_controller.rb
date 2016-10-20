@@ -55,13 +55,13 @@ class HomeController < ApplicationController
     # just set here as a default so we can see it if it is improperly set below and
     # also to handle the fallback case for legacy users who applied before the salesforce system was in place
     @program_title = 'Braven'
+    @key_application_count = 0
+    @applications = []
     if user_signed_in?
 
       sf = BeyondZ::Salesforce.new
       client = sf.get_client
       client.materialize('CampaignMember')
-
-      @applications = []
 
       # We need to check all the campaign members to find the one that is most correct
       # for an application - one with an Application Type set up.
@@ -73,7 +73,6 @@ class HomeController < ApplicationController
       sf_answer = JSON.parse(query_result.body)
 
       key_application_path = ''
-      @key_application_count = 0
       user_submitted_any = false
       @show_thanks = false
       @show_accepted = false
