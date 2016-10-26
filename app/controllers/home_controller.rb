@@ -97,22 +97,18 @@ class HomeController < ApplicationController
         apply_text = (campaign_type == 'Volunteer') ? 'Registration' : 'Application'
 
         word = 'Start'
-        path = campaign.IsActive ? new_enrollment_path(:campaign_id => record['CampaignId']) : ''
         path_important = true
-        accepted = false
-        started = false
-        submitted = false
-        program_completed = false
         program_title = campaign.Program_Title__c
         apply_now_enabled = record['Apply_Button_Enabled__c']
 
         enrollment = nil
+        started = false
         enrollments = Enrollment.where(:user_id => @new_user.id, :campaign_id => record['CampaignId'])
         if enrollments.any?
           enrollment = enrollments.first
+          started = true
+          word = 'Continue'
         end
-        word = 'Continue'
-        started = true
         accepted = record['Candidate_Status__c'] == 'Accepted'
         confirmed = record['Candidate_Status__c'] == 'Confirmed'
 
@@ -124,10 +120,10 @@ class HomeController < ApplicationController
         submitted = !apply_now_enabled
         program_completed = campaign.Status == 'Completed'
 
-        unless submitted
+        if !submitted && campaign.IsActive
           # If they application isn't submitted, the logical place for them
           # to go is to the application so they can finish it
-          path = enrollment.nil? ? new_enrollment_path(:campaign_id => campaign.Id : enrollment_path(enrollment)
+          path = enrollment.nil? ? new_enrollment_path(:campaign_id => record['CampaignId']) : enrollment_path(enrollment)
         end
 
         if accepted && campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == false
