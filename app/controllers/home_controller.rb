@@ -97,55 +97,55 @@ class HomeController < ApplicationController
         apply_text = (campaign_type == 'Volunteer') ? 'Registration' : 'Application'
 
         word = 'Start'
-        path = campaign.IsActive ? new_enrollment_path(:campaign_id => record['CampaignId']) : ''
         path_important = true
-        accepted = false
-        started = false
-        submitted = false
-        program_completed = false
         program_title = campaign.Program_Title__c
         apply_now_enabled = record['Apply_Button_Enabled__c']
 
+        enrollment = nil
+        started = false
         enrollments = Enrollment.where(:user_id => @new_user.id, :campaign_id => record['CampaignId'])
         if enrollments.any?
           enrollment = enrollments.first
-          word = 'Continue'
           started = true
-          accepted = record['Candidate_Status__c'] == 'Accepted'
-          confirmed = record['Candidate_Status__c'] == 'Confirmed'
+          word = 'Continue'
+        end
+        accepted = record['Candidate_Status__c'] == 'Accepted'
+        confirmed = record['Candidate_Status__c'] == 'Confirmed'
 
-          # It is recent if it was updated today.... for use in not showing old informational messages
-          recent = enrollment.updated_at.to_date == Date.today
+        # It is recent if it was updated today.... for use in not showing old informational messages
+        recent = enrollment.nil? ? false : (enrollment.updated_at.to_date == Date.today)
 
-          path = ''
-          will_show_message = false
-          submitted = !apply_now_enabled
-          program_completed = campaign.Status == 'Completed'
+        path = ''
+        will_show_message = false
+        submitted = !apply_now_enabled
+        program_completed = campaign.Status == 'Completed'
 
-          unless submitted
-            # If they application isn't submitted, the logical place for them
-            # to go is to the application so they can finish it
-            path = enrollment_path(enrollment)
-          end
+        if !submitted && campaign.IsActive
+          # If they application isn't submitted, the logical place for them
+          # to go is to the application so they can finish it
+          path = enrollment.nil? ? new_enrollment_path(:campaign_id => record['CampaignId']) : enrollment_path(enrollment)
+        end
 
-          if accepted && campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == false
-            # If accepted, we go back to confirmation (see above in the index method)
-            # repeated here in welcome so if they bookmarked this, they won't get lost
-            # just only done if the confirmation is actually required!
+        if accepted && campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == false
+          # If accepted, we go back to confirmation (see above in the index method)
+          # repeated here in welcome so if they bookmarked this, they won't get lost
+          # just only done if the confirmation is actually required!
+
+          # enrollment must never be nil here, and should never be in the flow
+          path = user_confirm_path(:enrollment_id => enrollment.id)
+          @show_accepted = true
+          @show_accepted_path = path
+        end
+
+        if confirmed && !program_completed
+          if current_user.in_lms? && record['Section_Name_In_LMS__c'] != ''
+            path = "//#{Rails.application.secrets.canvas_server}/"
+          elsif campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == false
+            # enrollment must never be nil here, and should never be in the flow
             path = user_confirm_path(:enrollment_id => enrollment.id)
-            @show_accepted = true
-            @show_accepted_path = path
           end
-
-          if confirmed && !program_completed
-            if current_user.in_lms? && record['Section_Name_In_LMS__c'] != ''
-              path = "//#{Rails.application.secrets.canvas_server}/"
-            elsif campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == false
-              path = user_confirm_path(:enrollment_id => enrollment.id)
-            end
-            confirmed_count += 1
-            path_important = false
-          end
+          confirmed_count += 1
+          path_important = false
         end
 
         if program_completed
