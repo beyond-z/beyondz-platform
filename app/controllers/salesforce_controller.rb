@@ -4,6 +4,10 @@ require 'lms'
 # Popup windows from SF buttons are still done in the admin area, but triggers notify
 # this controller which will take appropriate action.
 class SalesforceController < ApplicationController
+  # this comes from cross site - salesforce - and we have our own magic
+  # token to use instead of teh random normal CSRF check
+  skip_before_filter :verify_authenticity_token
+
   def sync_report_to_google_spreadsheet
     if check_magic_token
       sf = BeyondZ::Salesforce.new
