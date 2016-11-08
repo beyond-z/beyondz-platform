@@ -288,7 +288,7 @@
               <p class="help">Please use complete sentences!</p>
 
               <div class="form-group volunteer coach student">
-                <label class="student">In at least 150 words, share why you want to join the <%= @program_title %>. If you're not sure, email <a href="mailto:info@bebraven.org">info@bebraven.org</a> and we can tell you more about the experience!</label>
+                <label class="student">In at least 150 words, share why you want to join the <%= @program_title %>. If you're not sure, email <a tabindex="-1" href="mailto:info@bebraven.org">info@bebraven.org</a> and we can tell you more about the experience!</label>
                 <label class="coach">Why do you want to be a <%= @program_title %> Leadership Coach?</label>
                 <label class="volunteer">Why do you want to be a volunteer and what areas of personal expertise or passion are you excited to share?</label>
                 <%= f.text_area :why_bz, 'class' => 'form-control', 'maxlength' => '500' %>
