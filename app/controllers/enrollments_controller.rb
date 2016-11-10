@@ -35,7 +35,7 @@ class EnrollmentsController < ApplicationController
   # tends to be search engine tracking spam)
   def limit_size(str, max)
     if str.length > max
-      return str[0..max]
+      return str[0...max]
     end
     str
   end
@@ -242,8 +242,8 @@ class EnrollmentsController < ApplicationController
     @enrollment = Enrollment.find(params[:id])
     @enrollment.update_attributes(enrollment_params)
 
-    @enrollment.digital_footprint = limit_size(@enrollment.digital_footprint, 255)
-    @enrollment.digital_footprint2 = limit_size(@enrollment.digital_footprint2, 255)
+    @enrollment.digital_footprint = @enrollment.digital_footprint
+    @enrollment.digital_footprint2 = @enrollment.digital_footprint2
 
     @enrollment.meeting_times = '' # need to clear out because if none are checked, the next line never runs
     @enrollment.meeting_times = params[:meeting_times].join(';') if params[:meeting_times]
@@ -390,8 +390,8 @@ class EnrollmentsController < ApplicationController
     cm.Grad_University__c = @enrollment.grad_school
     cm.Graduate_Year__c = @enrollment.anticipated_grad_school_graduation
 
-    cm.Digital_Footprint__c = limit_size(@enrollment.digital_footprint, 255)
-    cm.Digital_Footprint_2__c = limit_size(@enrollment.digital_footprint2, 255)
+    cm.Digital_Footprint__c = limit_size(@enrollment.digital_footprint, 200)
+    cm.Digital_Footprint_2__c = limit_size(@enrollment.digital_footprint2, 200)
 
     cm.Resume__c = @enrollment.resume.url if @enrollment.resume.present?
 
