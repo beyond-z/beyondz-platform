@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161005180801) do
+ActiveRecord::Schema.define(version: 20161108183542) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,7 +133,7 @@ ActiveRecord::Schema.define(version: 20161005180801) do
     t.string   "major"
     t.string   "previous_university"
     t.string   "gpa"
-    t.string   "online_resume"
+    t.text     "digital_footprint"
     t.boolean  "bkg_african_americanblack"
     t.boolean  "bkg_asian_american"
     t.boolean  "bkg_latino_or_hispanic"
@@ -197,7 +197,7 @@ ActiveRecord::Schema.define(version: 20161005180801) do
     t.string   "hs_gpa"
     t.string   "sat_score"
     t.string   "act_score"
-    t.string   "digital_footprint2"
+    t.text     "digital_footprint2"
     t.text     "conquered_challenge"
     t.string   "bkg_other"
     t.string   "sourcing_info"
