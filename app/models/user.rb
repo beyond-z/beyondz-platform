@@ -180,7 +180,7 @@ class User < ActiveRecord::Base
     # Does this user already exist on Salesforce as a manually entered contact?
     # If we, we want to use it directly instead of trying to create a lead.
     existing_salesforce_id = salesforce.exists_in_salesforce(email)
-    if !existing_salesforce_id.nil?
+    unless existing_salesforce_id.nil?
       self.salesforce_id = existing_salesforce_id
     end
 
@@ -329,7 +329,7 @@ class User < ActiveRecord::Base
           cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(salesforce_id, salesforce_campaign_id)
           if !cm.nil?
             cm.Candidate_Status__c = candidate_status unless candidate_status.nil?
-            if !selected_timeslot.nil?
+            unless selected_timeslot.nil?
               if cm.Volunteer_Event_Signups__c.nil? || cm.Volunteer_Event_Signups__c == ''
                 # This is the first event they're signing up for.
                 cm.Volunteer_Event_Signups__c = selected_timeslot
