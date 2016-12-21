@@ -76,6 +76,27 @@ module BeyondZ
       )
     end
 
+    # Returns the Salesforce ID of the contact if they exist or nil if not
+    def exists_in_salesforce(email)
+      client = get_client
+      # Note: this doesn't work if there is a + in the email.  I can escape it and call the REST API like this in the workbench:
+      # /services/data/v22.0/query?q=SELECT+Id+FROM+Contact+WHERE+Email+=+'brian%2Btestcalendlyvolunteer4@bebraven.org'
+      # but from this gem, it doesn't work.  Would have to dig into the guts of what the gem is doing to fix.  It's already been an
+      # hour, so I'm punting on getting that working.
+      escaped_email = email.sub('\'', '\'\'') # This is a poor man's SQL escape so that an apostrophe doesn't break the SQL query.
+      url_path = "/services/data/v#{client.version}/query?q=" \
+        "SELECT Id FROM Contact WHERE Email = '#{escaped_email}'"
+      salesforce_existing_record = client.http_get(url_path)
+      sf_answer = JSON.parse(salesforce_existing_record.body)
+      salesforce_existing_record = sf_answer['records']
+
+      if salesforce_existing_record.empty?
+        return nil
+      else
+        return salesforce_existing_record.first['Id']
+      end
+    end
+
     def run_report_and_email_update(report_id, file_key, worksheet_name, email_to_send_update_to)
       if email_to_send_update_to.nil?
         email_to_send_update_to = Rails.application.secrets.staff_email

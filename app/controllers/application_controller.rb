@@ -11,8 +11,10 @@ class ApplicationController < ActionController::Base
 
   # We moved from beyondz.org to join.bebraven.org but I couldn't
   # get .htaccess redirects working on heroku, so I'm doing it in code.
+  # Don't do it on dev though since you may have setup some funky domain stuff
+  # to develop (e.g. you're using ngrok to expose your server to the internets)
   def redirect_if_old
-    if request.host != Rails.application.secrets.root_domain
+    if Rails.env.production? && request.host != Rails.application.secrets.root_domain
       redirect_to "#{request.protocol}#{Rails.application.secrets.root_domain}#{request.fullpath}", :status => :moved_permanently
     end
   end

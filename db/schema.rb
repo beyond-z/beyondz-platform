@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161108183542) do
+ActiveRecord::Schema.define(version: 20161209154600) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pg_stat_statements"
 
   create_table "assignment_definitions", force: true do |t|
     t.string   "title"
@@ -56,6 +57,8 @@ ActiveRecord::Schema.define(version: 20161108183542) do
     t.string   "bz_region"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "calendar_email"
+    t.string   "calendar_url"
   end
 
   create_table "coach_students", force: true do |t|

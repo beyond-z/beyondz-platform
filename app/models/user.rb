@@ -59,7 +59,7 @@ class User < ActiveRecord::Base
   # a default if it doesn't exist for our combination of fields.
   #
   # Returns a user's email address.
-  def lead_owner
+  def lead_owner_email
     # The 'other' option on the signup form should be accessible here too.
     # So if we see the keyword 'other' in the mapping, we match that to anything
     # except the item on the list we have.
@@ -89,8 +89,41 @@ class User < ActiveRecord::Base
     if mapping.empty?
       return Rails.application.secrets.default_lead_owner
     end
-
     mapping.first.lead_owner
+  end
+
+  def salesforce_lead_owner_id
+    sf = BeyondZ::Salesforce.new
+    client = sf.get_client
+
+    # Note on the SOQL queries rather than ActiveRecord style finds:
+    #
+    # SFDC_Models::User.find_by_Email(lead_owner)
+    # the model didn't work though because the materialize call
+    # conflicted their User with our User (the namespace wasn't used
+    # properly!) So doing SOQL instead. The sub call is to escape the quotes
+    # to mitigate SQL injection (of course, this comes from our code anyway,
+    # so there should be no security risk, but I just prefer to be a bit
+    # defensive.)
+    #
+    # Moreover, since the databasedotcom gem tries to materialize objects... and
+    # has a bug where it ignores the module if it finds a class in global... it
+    # conflicts with our User class too! So the query function is unusable :(
+    # Instead, I'll go one level lower and use their http method, just like the
+    # implementation (line 182 of databasedotcom/client.rb)
+    salesforce_lead_owner = client.http_get("/services/data/v#{client.version}/query?q=" \
+        "SELECT Id FROM User WHERE Email = '#{lead_owner_email.sub('\'', '\'\'')}'")
+    sf_answer = JSON.parse(salesforce_lead_owner.body)
+    salesforce_lead_owner = sf_answer['records']
+    salesforce_lead_owner = salesforce_lead_owner.empty? ? nil : salesforce_lead_owner.first
+
+    if salesforce_lead_owner
+      return salesforce_lead_owner['Id']
+    else
+      # this is the user id we're logged into Salesforce as to use as
+      # a last-resort owner if the other one fails
+      return client.user_id
+    end
   end
 
   # Salesforce IDs are a bit weird because they come in both 15 character
@@ -146,56 +179,22 @@ class User < ActiveRecord::Base
 
     # Does this user already exist on Salesforce as a manually entered contact?
     # If we, we want to use it directly instead of trying to create a lead.
-
-    salesforce_existing_record = client.http_get("/services/data/v#{client.version}/query?q=" \
-      "SELECT Id FROM Contact WHERE Email = '#{email.sub('\'', '\'\'')}'")
-    sf_answer = JSON.parse(salesforce_existing_record.body)
-    salesforce_existing_record = sf_answer['records']
+    existing_salesforce_id = salesforce.exists_in_salesforce(email)
+    unless existing_salesforce_id.nil?
+      self.salesforce_id = existing_salesforce_id
+    end
 
     contact = {}
-
-    unless salesforce_existing_record.empty?
-      self.salesforce_id = salesforce_existing_record.first['Id']
-    end
-    # end
 
     contact['FirstName'] = first_name
     contact['LastName'] = last_name
     contact['Email'] = email
 
-    # Note on the SOQL queries rather than ActiveRecord style finds:
-    #
-    # SFDC_Models::User.find_by_Email(lead_owner)
-    # the model didn't work though because the materialize call
-    # conflicted their User with our User (the namespace wasn't used
-    # properly!) So doing SOQL instead. The sub call is to escape the quotes
-    # to mitigate SQL injection (of course, this comes from our code anyway,
-    # so there should be no security risk, but I just prefer to be a bit
-    # defensive.)
-    #
-    # Moreover, since the databasedotcom gem tries to materialize objects... and
-    # has a bug where it ignores the module if it finds a class in global... it
-    # conflicts with our User class too! So the query function is unusable :(
-    # Instead, I'll go one level lower and use their http method, just like the
-    # implementation (line 182 of databasedotcom/client.rb)
+    # If the user is already on salesforce btw, we assume they are already
+    # assigned an owner (this is likely the case when they are manually entered
+    # by someone who has already formed a relationship with that person)
     unless salesforce_id
-      # If the user is already on salesforce btw, we assume they are already
-      # assigned an owner (this is likely the case when they are manually entered
-      # by someone who has already formed a relationship with that person)
-      salesforce_lead_owner = client.http_get("/services/data/v#{client.version}/query?q=" \
-        "SELECT Id FROM User WHERE Email = '#{lead_owner.sub('\'', '\'\'')}'")
-      sf_answer = JSON.parse(salesforce_lead_owner.body)
-      salesforce_lead_owner = sf_answer['records']
-      salesforce_lead_owner = salesforce_lead_owner.empty? ? nil : salesforce_lead_owner.first
-
-      if salesforce_lead_owner
-        contact['OwnerId'] = salesforce_lead_owner['Id']
-      else
-        # this is the user id we're logged into Salesforce as to use as
-        # a last-resort owner if the other one fails
-        contact['OwnerId'] = client.user_id
-      end
-
+      contact['OwnerId'] = salesforce_lead_owner_id
       contact['IsUnreadByOwner'] = false
     end
 
@@ -296,11 +295,15 @@ class User < ActiveRecord::Base
     end
   end
 
-  def auto_add_to_salesforce_campaign
+  def auto_add_to_salesforce_campaign(candidate_status = nil, selected_timeslot = nil, sourcing_info = nil)
     # We may also need to add them to a campaign if certain things
     # are right.
     cm = {}
     cm['CampaignId'] = salesforce_campaign_id
+    cm['Candidate_Status__c'] = candidate_status unless candidate_status.nil?
+    cm['Volunteer_Event_Signups__c'] = selected_timeslot unless selected_timeslot.nil?
+    cm['Sourcing_Info__c'] = sourcing_info unless sourcing_info.nil?
+    cm['Opted_Out_Reason__c'] = '' # Reset this in case they cancel but then signup again.
 
     if cm['CampaignId']
       # Can't use client.materialize because it sets the checkboxes to nil
@@ -311,17 +314,40 @@ class User < ActiveRecord::Base
       cm['ContactId'] = salesforce_id
 
       begin
-        client.create('CampaignMember', cm)
+        cm = client.create('CampaignMember', cm)
       rescue Databasedotcom::SalesForceError => e
         # If this failure happens, it is almost certainly just because they
         # are already in the campaign - probably because we invited them from
         # Salesforce, so we can simply proceed normally and let the campaign
         # member check in the welcome page show them next steps, assuming
         # apply now will work until triggers hit us to say otherwise.
-
-        # I warn just because rubocop is annoying and doesn't want the exception
-        # do disappear, and it doesn't hurt to log, but we don't really care.
-        warn e
+        #
+        # However, for Temp Volunteers they maybe rescheduling or signing up again after cancelling, so we want to
+        # update their record with the new information
+        if applicant_type == 'temp_volunteer'
+          client.materialize('CampaignMember')
+          cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(salesforce_id, salesforce_campaign_id)
+          if !cm.nil?
+            cm.Candidate_Status__c = candidate_status unless candidate_status.nil?
+            unless selected_timeslot.nil?
+              if cm.Volunteer_Event_Signups__c.nil? || cm.Volunteer_Event_Signups__c == ''
+                # This is the first event they're signing up for.
+                cm.Volunteer_Event_Signups__c = selected_timeslot
+              else
+                # If they signup for a second event, create a line delimited list of events they signed up for.
+                cm.Volunteer_Event_Signups__c = "#{cm.Volunteer_Event_Signups__c}\n#{selected_timeslot}"
+              end
+            end
+            cm.Sourcing_Info__c = sourcing_info unless sourcing_info.nil?
+            # Reset this in case they cancel but signup again.
+            cm.Opted_Out_Reason__c = ''
+            cm.save
+          else
+            logger.debug "########## No CampaignMember found with salesforce_id = #{salesforce_id} and salesforce_campaign_id = #{salesforce_campaign_id}.  Failed to update their volunteer signup info"
+          end
+        else
+          logger.debug "Caught #{e} -- which usually means that the CampaignMember already exists in Salesforce, which is fine."
+        end
       end
 
       # The apply now enabled *should* be set by the SF triggers
@@ -329,9 +355,63 @@ class User < ActiveRecord::Base
       # response to the user.
       self.apply_now_enabled = true
       self.save!
+      return cm
+    else
+      logger.debug "No 'salesforce_campaign_id' found for #{inspect}.  Can't create a Campaign Member."
+      return nil
     end
   end
 
+  def cancel_volunteer_signup(selected_timeslot, cancellation_reason = nil)
+    sf = BeyondZ::Salesforce.new
+    client = sf.get_client
+    client.materialize('CampaignMember')
+    cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(salesforce_id, salesforce_campaign_id)
+    if !cm.nil?
+      if cm.Volunteer_Event_Signups__c == selected_timeslot
+        # Exact match means they are cancelling the only timeslot they signed up for
+        cm.Volunteer_Event_Signups__c = ''
+        cm.Candidate_Status__c = 'Opted Out'
+        cm.Opted_Out_Reason__c = 'Cancelled Volunteer Signup'
+      elsif !cm.Volunteer_Event_Signups__c.nil? && cm.Volunteer_Event_Signups__c.include?(selected_timeslot)
+        # If this timeslot is in the list, they signed up for multiple and we just want to remove the one
+        # they're cancelling from the list.
+        # Note: this handles both \r\n and just \n since they may manually edit the list in an editor
+        # that inserts a carriage return
+
+        # First handle removing it from the beginning or middle of the list
+        cm.Volunteer_Event_Signups__c.slice! "#{selected_timeslot}\r\n"
+        cm.Volunteer_Event_Signups__c.slice! "#{selected_timeslot}\n"
+        # Now handle removing it from the end of the list.
+        cm.Volunteer_Event_Signups__c.slice! "\r\n#{selected_timeslot}"
+        cm.Volunteer_Event_Signups__c.slice! "\n#{selected_timeslot}"
+      end
+      cm.save
+
+      sf = BeyondZ::Salesforce.new
+      client = sf.get_client
+      campaign = sf.load_cached_campaign(cm.CampaignId)
+      client.materialize('Task')
+      task = SFDC_Models::Task.new
+      task.OwnerId = campaign.OwnerId
+      task['Subject'] = "Cancelled Volunteer Signup for #{first_name} #{last_name}: #{selected_timeslot}"
+      description = "This person signed up for '#{selected_timeslot}' but then cancelled"
+      description = "#{description} citing this as the reason\n\n'#{cancellation_reason}'" unless cancellation_reason.nil? || cancellation_reason == ''
+      task['Description'] = description
+      task['ActivityDate'] = DateTime.now
+      task.WhoId = cm.ContactId
+      task.WhatId = cm.CampaignId
+      task.Status = 'Completed'
+      task['CampaignMemberId__c'] = cm.Id
+      task.IsReminderSet = false
+      task.IsRecurrence = false
+      task.save
+    else
+      logger.debug "No CampaignMember found with salesforce_id = #{salesforce_id} and salesforce_campaign_id = #{salesforce_campaign_id}.  Failed to set Candidate Status to cancel their Volunteer Signup"
+    end
+  rescue Databasedotcom::SalesForceError => e
+    logger.warn "###### Caught Databasedotcom::SalesForceError #{e.inspect} -- Failed to update CampaignMember and record a Task of the cancellation for #{first_name} #{last_name} - #{selected_timeslot}"
+  end
 
   def salesforce_applicant_type
     case applicant_type
@@ -360,10 +440,47 @@ class User < ActiveRecord::Base
     )
 
     if mapping.empty?
+      logger.debug "########## No campaign mapping found for #{university_name}, #{bz_region}, #{applicant_type}"
       return nil
     end
 
     mapping.first.campaign_id
+  end
+
+  # The BZ Region that this user is mapped to given their Calendar Email and Application Type
+  def self.get_bz_region(applicant_type, calendar_email)
+    mapping = CampaignMapping.where(
+      :calendar_email => calendar_email,
+      :applicant_type => applicant_type
+    )
+
+    if mapping.empty?
+      logger.debug "########## No BZ Region found for this calendar_email = #{calendar_email} and applicant_type=#{applicant_type}."
+      return nil
+    end
+
+    mapping.first.bz_region
+  end
+
+  # Returns the URL of the calendly calendar of volunteer events for the specified
+  # bz_region
+  def self.get_calendar_url(bz_region)
+    mapping = CampaignMapping.where(
+      :bz_region => bz_region,
+      :applicant_type => 'temp_volunteer'
+    )
+
+    if mapping.empty?
+      logger.debug "########## No calendar_email found for this bz_region = #{bz_region}"
+      return nil
+    end
+
+    # Examples:
+    # https://calendly.com/run-volunteers
+    # https://calendly.com/sjsu-volunteers
+    # https://calendly.com/stagingbraven
+
+    mapping.first.calendar_url
   end
 
   # validates :anticipated_graduation, presence: true, if: :graduation_required?
@@ -423,6 +540,9 @@ class User < ActiveRecord::Base
     create_child_skeleton_rows
   end
 
+  # TODO: the assignments, tasks, and submissions code is obsolete. This takes up room in the database.
+  # Do a project to remove the objects and tables.
+  #
   # This will create the skeletons for assignments, tasks,
   # and submissions based on the definitions. We should run
   # this whenever a user is created or a definition is added.

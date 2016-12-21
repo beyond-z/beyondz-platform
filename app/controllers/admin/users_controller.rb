@@ -107,7 +107,9 @@ class Admin::UsersController < Admin::ApplicationController
         :campaign_id => row[0],
         :applicant_type => row[1],
         :university_name => row[2],
-        :bz_region => row[3]
+        :bz_region => row[3],
+        :calendar_email => row[4],
+        :calendar_url => row[5]
       )
     end
   end

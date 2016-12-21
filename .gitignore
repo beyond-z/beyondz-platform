@@ -63,3 +63,6 @@ start.sh
 # and i disable ssl because it kept breaking on salesforce
 # obviously don't want that committed but i want it to stay for my testing
 config/initializers/disable_ssl.rb
+
+# I save local versions of files for use in development only as .dev.  Ignore those
+*.dev
