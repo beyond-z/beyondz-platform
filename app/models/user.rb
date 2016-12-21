@@ -180,7 +180,7 @@ class User < ActiveRecord::Base
     # Does this user already exist on Salesforce as a manually entered contact?
     # If we, we want to use it directly instead of trying to create a lead.
     existing_salesforce_id = salesforce.exists_in_salesforce(email)
-    if (existing_salesforce_id != nil)
+    if !existing_salesforce_id.nil?
       self.salesforce_id = existing_salesforce_id
     end
 
@@ -300,9 +300,9 @@ class User < ActiveRecord::Base
     # are right.
     cm = {}
     cm['CampaignId'] = salesforce_campaign_id
-    cm['Candidate_Status__c'] = candidate_status unless candidate_status == nil
-    cm['Volunteer_Event_Signups__c'] = selected_timeslot unless selected_timeslot == nil
-    cm['Sourcing_Info__c'] = sourcing_info unless sourcing_info == nil
+    cm['Candidate_Status__c'] = candidate_status unless candidate_status.nil?
+    cm['Volunteer_Event_Signups__c'] = selected_timeslot unless selected_timeslot.nil?
+    cm['Sourcing_Info__c'] = sourcing_info unless sourcing_info.nil?
     cm['Opted_Out_Reason__c'] = '' # Reset this in case they cancel but then signup again.
 
     if cm['CampaignId']
@@ -324,13 +324,13 @@ class User < ActiveRecord::Base
         #
         # However, for Temp Volunteers they maybe rescheduling or signing up again after cancelling, so we want to
         # update their record with the new information
-        if (applicant_type == 'temp_volunteer')
+        if applicant_type == 'temp_volunteer'
           client.materialize('CampaignMember')
           cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(salesforce_id, salesforce_campaign_id)
-          if (cm != nil)
-            cm.Candidate_Status__c = candidate_status unless candidate_status == nil
-            if (selected_timeslot != nil)
-              if (cm.Volunteer_Event_Signups__c == nil || cm.Volunteer_Event_Signups__c == '')
+          if !cm.nil?
+            cm.Candidate_Status__c = candidate_status unless candidate_status.nil?
+            if !selected_timeslot.nil?
+              if cm.Volunteer_Event_Signups__c.nil? || cm.Volunteer_Event_Signups__c == ''
                 # This is the first event they're signing up for.
                 cm.Volunteer_Event_Signups__c = selected_timeslot
               else
@@ -338,13 +338,15 @@ class User < ActiveRecord::Base
                 cm.Volunteer_Event_Signups__c = "#{cm.Volunteer_Event_Signups__c}\n#{selected_timeslot}"
               end
             end
-            cm.Sourcing_Info__c = sourcing_info unless sourcing_info == nil
+            cm.Sourcing_Info__c = sourcing_info unless sourcing_info.nil?
             # Reset this in case they cancel but signup again.
             cm.Opted_Out_Reason__c = ''
             cm.save
           else
             logger.debug "########## No CampaignMember found with salesforce_id = #{salesforce_id} and salesforce_campaign_id = #{salesforce_campaign_id}.  Failed to update their volunteer signup info"
           end
+        else
+          logger.debug "Caught #{e} -- which usually means that the CampaignMember already exists in Salesforce, which is fine."
         end
       end
 
@@ -355,62 +357,60 @@ class User < ActiveRecord::Base
       self.save!
       return cm
     else
-      logger.debug "No 'salesforce_campaign_id' found for #{self.inspect}.  Can't create a Campaign Member."
+      logger.debug "No 'salesforce_campaign_id' found for #{inspect}.  Can't create a Campaign Member."
       return nil
     end
   end
 
   def cancel_volunteer_signup(selected_timeslot, cancellation_reason = nil)
-    begin
+    sf = BeyondZ::Salesforce.new
+    client = sf.get_client
+    client.materialize('CampaignMember')
+    cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(salesforce_id, salesforce_campaign_id)
+    if !cm.nil?
+      if cm.Volunteer_Event_Signups__c == selected_timeslot
+        # Exact match means they are cancelling the only timeslot they signed up for
+        cm.Volunteer_Event_Signups__c = ''
+        cm.Candidate_Status__c = 'Opted Out'
+        cm.Opted_Out_Reason__c = 'Cancelled Volunteer Signup'
+      elsif !cm.Volunteer_Event_Signups__c.nil? && cm.Volunteer_Event_Signups__c.include?(selected_timeslot)
+        # If this timeslot is in the list, they signed up for multiple and we just want to remove the one
+        # they're cancelling from the list.
+        # Note: this handles both \r\n and just \n since they may manually edit the list in an editor
+        # that inserts a carriage return
+
+        # First handle removing it from the beginning or middle of the list
+        cm.Volunteer_Event_Signups__c.slice! "#{selected_timeslot}\r\n"
+        cm.Volunteer_Event_Signups__c.slice! "#{selected_timeslot}\n"
+        # Now handle removing it from the end of the list.
+        cm.Volunteer_Event_Signups__c.slice! "\r\n#{selected_timeslot}"
+        cm.Volunteer_Event_Signups__c.slice! "\n#{selected_timeslot}"
+      end
+      cm.save
+
       sf = BeyondZ::Salesforce.new
       client = sf.get_client
-      client.materialize('CampaignMember')
-      cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(salesforce_id, salesforce_campaign_id)
-      if (cm != nil)
-        if (cm.Volunteer_Event_Signups__c == selected_timeslot)
-          # Exact match means they are cancelling the only timeslot they signed up for
-          cm.Volunteer_Event_Signups__c = ''
-          cm.Candidate_Status__c = 'Opted Out'
-          cm.Opted_Out_Reason__c = 'Cancelled Volunteer Signup'
-        elsif (cm.Volunteer_Event_Signups__c != nil && cm.Volunteer_Event_Signups__c.include?(selected_timeslot))
-          # If this timeslot is in the list, they signed up for multiple and we just want to remove the one
-          # they're cancelling from the list.
-          # Note: this handles both \r\n and just \n since they may manually edit the list in an editor
-          # that inserts a carriage return
-
-          # First handle removing it from the beginning or middle of the list
-          cm.Volunteer_Event_Signups__c.slice! "#{selected_timeslot}\r\n"
-          cm.Volunteer_Event_Signups__c.slice! "#{selected_timeslot}\n"
-          # Now handle removing it from the end of the list.
-          cm.Volunteer_Event_Signups__c.slice! "\r\n#{selected_timeslot}"
-          cm.Volunteer_Event_Signups__c.slice! "\n#{selected_timeslot}"
-        end
-        cm.save
-
-        sf = BeyondZ::Salesforce.new
-        client = sf.get_client
-        campaign = sf.load_cached_campaign(cm.CampaignId)
-        client.materialize('Task')
-        task = SFDC_Models::Task.new
-        task.OwnerId = campaign.OwnerId
-        task['Subject'] = "Cancelled Volunteer Signup for #{first_name} #{last_name}: #{selected_timeslot}"
-        description = "This person signed up for '#{selected_timeslot}' but then cancelled"
-        description = "#{description} citing this as the reason\n\n'#{cancellation_reason}'" unless (cancellation_reason == nil || cancellation_reason == '')
-        task['Description'] = description
-        task['ActivityDate'] =  DateTime.now
-        task.WhoId = cm.ContactId
-        task.WhatId = cm.CampaignId
-        task.Status = 'Completed'
-        task['CampaignMemberId__c'] = cm.Id
-        task.IsReminderSet = false
-        task.IsRecurrence = false
-        task.save
-      else
-        logger.debug "No CampaignMember found with salesforce_id = #{salesforce_id} and salesforce_campaign_id = #{salesforce_campaign_id}.  Failed to set Candidate Status to cancel their Volunteer Signup"
-      end
-    rescue Databasedotcom::SalesForceError => e
-      logger.warn "###### Caught Databasedotcom::SalesForceError #{e.inspect} -- Failed to update CampaignMember and record a Task of the cancellation for #{first_name} #{last_name} - #{selected_timeslot}"
+      campaign = sf.load_cached_campaign(cm.CampaignId)
+      client.materialize('Task')
+      task = SFDC_Models::Task.new
+      task.OwnerId = campaign.OwnerId
+      task['Subject'] = "Cancelled Volunteer Signup for #{first_name} #{last_name}: #{selected_timeslot}"
+      description = "This person signed up for '#{selected_timeslot}' but then cancelled"
+      description = "#{description} citing this as the reason\n\n'#{cancellation_reason}'" unless cancellation_reason.nil? || cancellation_reason == ''
+      task['Description'] = description
+      task['ActivityDate'] = DateTime.now
+      task.WhoId = cm.ContactId
+      task.WhatId = cm.CampaignId
+      task.Status = 'Completed'
+      task['CampaignMemberId__c'] = cm.Id
+      task.IsReminderSet = false
+      task.IsRecurrence = false
+      task.save
+    else
+      logger.debug "No CampaignMember found with salesforce_id = #{salesforce_id} and salesforce_campaign_id = #{salesforce_campaign_id}.  Failed to set Candidate Status to cancel their Volunteer Signup"
     end
+  rescue Databasedotcom::SalesForceError => e
+    logger.warn "###### Caught Databasedotcom::SalesForceError #{e.inspect} -- Failed to update CampaignMember and record a Task of the cancellation for #{first_name} #{last_name} - #{selected_timeslot}"
   end
 
   def salesforce_applicant_type
@@ -460,7 +460,6 @@ class User < ActiveRecord::Base
     end
 
     mapping.first.bz_region
-
   end
 
   # Returns the URL of the calendly calendar of volunteer events for the specified
@@ -541,7 +540,7 @@ class User < ActiveRecord::Base
     create_child_skeleton_rows
   end
 
-  # TODO: the assignments, tasks, and submissions code is obsolete. This takes up room in the database. 
+  # TODO: the assignments, tasks, and submissions code is obsolete. This takes up room in the database.
   # Do a project to remove the objects and tables.
   #
   # This will create the skeletons for assignments, tasks,

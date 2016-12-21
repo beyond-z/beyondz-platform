@@ -29,7 +29,7 @@ class CalendlyController < ApplicationController
   def invitee_action
     if check_magic_token
 
-      eventType = params[:event]
+      event_type = params[:event]
       calendar_email = params[:payload][:event][:extended_assigned_to][0][:email] # This is the email of the account used to create the calendar
       email = params[:payload][:invitee][:email]
       first_name = params[:payload][:invitee][:first_name]
@@ -46,31 +46,31 @@ class CalendlyController < ApplicationController
       selected_timeslot = "#{event_name}: #{start_time}"
 
       bz_region = User.get_bz_region(applicant_type, calendar_email)
-      if (bz_region == nil)
+      if bz_region.nil?
         raise NoRegionMappingException "No bz_region set b/c we haven't mapped the calendar #{calendar_email} to a region for #{applicant_type}"
       end
 
-      if (eventType == "invitee.created")
+      if event_type == 'invitee.created'
         calendly_url = User.get_calendar_url(bz_region)
         phone = nil
         city = nil
         state = nil
         sourcing_info = nil
         params[:payload][:questions_and_answers].each do |qa|
-          if (qa[:question] == 'Phone')
+          if qa[:question] == 'Phone'
             phone = qa[:answer]
-          elsif (qa[:question] == 'City that you live in?')
+          elsif qa[:question] == 'City that you live in?'
             city = qa[:answer]
-          elsif (qa[:question] == 'State that you live in?')
+          elsif qa[:question] == 'State that you live in?'
             state = qa[:answer]
-          elsif (qa[:question] == 'How did you hear about us?')
+          elsif qa[:question] == 'How did you hear about us?'
             sourcing_info = qa[:answer]
           end
         end
 
         # Create a BZ User in this platform
         current_user = User.find_by_email(email)
-        if (current_user == nil)
+        if current_user.nil?
           current_user = User.new(:first_name => first_name, :last_name => last_name, :email => email, :phone => phone, :applicant_type => applicant_type, :city => city, :state => state, :external_referral_url => calendly_url, :bz_region => bz_region)
         else
           current_user.bz_region = bz_region
@@ -93,7 +93,7 @@ class CalendlyController < ApplicationController
         salesforce = BeyondZ::Salesforce.new
         existing_salesforce_id = salesforce.exists_in_salesforce(email)
         client = salesforce.get_client
-        if (existing_salesforce_id != nil)
+        if !existing_salesforce_id.nil?
           client.update('Contact', existing_salesforce_id, contact)
         else
           # Note: for new users that volunteer, we don't create BZ Users.  We just populate a new Salesforce
@@ -109,13 +109,13 @@ class CalendlyController < ApplicationController
         current_user.save!
 
         cm = current_user.auto_add_to_salesforce_campaign('Confirmed', selected_timeslot, sourcing_info)
-        if (cm == nil)
+        if cm.nil?
           logger.debug "######## Failed to create Campaign Member for #{current_user.inspect}.  Dunno why though."
         end
 
-      elsif (eventType == "invitee.canceled")
+      elsif event_type == 'invitee.canceled'
         current_user = User.find_by_email(email)
-        if (current_user != nil)
+        if !current_user.nil?
           current_user.bz_region = bz_region
           current_user.applicant_type = applicant_type
           cancellation_reason = params[:payload][:invitee][:cancel_reason]
@@ -125,7 +125,7 @@ class CalendlyController < ApplicationController
         end
 
       else
-        logger.warn "Unrecognized event type found: #{eventType} -- NOOP";
+        logger.warn "Unrecognized event type found: #{event_type} -- NOOP"
       end
 
     end

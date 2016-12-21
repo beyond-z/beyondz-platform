@@ -346,15 +346,15 @@ class UsersController < ApplicationController
       # We don't create a user now for Temp Volunteers.  Instead, we send them to calendly and
       # when they signup for an event, that calls into the calendly_controller to create a new
       # user.
-      if (user[:applicant_type] == 'temp_volunteer')
+      if user[:applicant_type] == 'temp_volunteer'
         calendar_url = User.get_calendar_url(user[:bz_region])
-        if (calendar_url == nil)
+        if calendar_url.nil?
           raise NoCalendarMappingException, "No calendar_url found for bz_region #{user[:bz_region]}"
         end
 
         # TODO: URL escape the names and email.  especially the "+" in an email
-        #Example URL:
-        #path = "https://calendly.com/stagingbraven?first_name=#{user[:first_name]}&last_name=#{user[:last_name]}&email=#{user[:email]}"
+        # Example URL:
+        # path = "https://calendly.com/stagingbraven?first_name=#{user[:first_name]}&last_name=#{user[:last_name]}&email=#{user[:email]}"
         path = "#{calendar_url}?first_name=#{user[:first_name]}&last_name=#{user[:last_name]}&email=#{user[:email]}"
         redirect_to path
         return
