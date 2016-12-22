@@ -32,6 +32,9 @@ BeyondzPlatform::Application.routes.draw do
   get '/salesforce/change_campaigns', to: 'salesforce#change_campaigns'
   post '/salesforce/change_campaigns', to: 'salesforce#change_campaigns'
 
+  # Add hook for calendly to call when Invitees either signup for or cancel their signup for an event
+  post '/calendly/invitee_action', to:'calendly#invitee_action'
+
   resources :feedback
   resources :comments
   get '/signup', to: 'users#new' # This is not really a proper REST path, but we don't have a show operation so this is for convenience (e.g. talking to someong at an event: "hey just go to bz.org/signup to signup!")

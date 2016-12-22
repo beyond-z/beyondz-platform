@@ -3,9 +3,15 @@
     <div class="section-container">
       <section>
         <div class="col-sm-6">
-          <h1>
-            Join Us
-          </h1>
+          <% if @user.applicant_type == 'temp_volunteer' %>
+            <h1>
+            Volunteer With Us
+            </h1>
+          <% else %>
+            <h1>
+              Join Us
+            </h1>
+          <% end %>
 
           <% if !@hide_other_applicant_types %>
           <p class="lead">
@@ -141,7 +147,7 @@
                     <% if(@user.applicant_type == 'volunteer' || @user.applicant_type == 'undergrad_student') %>
                       Next: Start Application
                     <% elsif @user.applicant_type == 'temp_volunteer'%>
-                      Next: Register
+                      Next: Choose Event
                     <% else %>
                       Submit
                     <% end %>
@@ -154,6 +160,7 @@
         </div>
 
         <div class="col-sm-4 col-sm-offset-2 hidden-xs">
+        <% if @user.applicant_type != 'temp_volunteer' %>
           <h2>Why Join?</h2>
           <blockquote>
             <p>&ldquo;You become part of a team that could actually make a difference. You learn that you have a story and how to tell it. You meet lots of highly motivated, inspiring people.&rdquo;</p>
@@ -163,6 +170,12 @@
             <p>&ldquo;Braven had provided me with innumerable opportunities for personal and professional growth, but the Capstone project took our learning experiences beyond that of our own and empowered me to give back to my community. I really appreciated this opportunity, it was a great learning experience in regards to leadership for me as a project manager.&rdquo;</p>
             <footer>Kelly Hernandez, Braven Fellow '14</footer>
           </blockquote>
+        <% else %>
+          <h2>Why Volunteer?</h2><!-- Note: this only shows if you use the applicant_type=temp_volunteer query param -->
+          <p>You'll have the opportunity to impact promising college students as they take
+          their first steps into the professional world. You'll also meet like-minded volutneers from your
+          area to help make a difference and have fun while doing it!</p>
+        <% end %>
         </div>
       </section>
     </div>

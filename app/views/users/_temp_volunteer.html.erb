@@ -10,33 +10,5 @@
   <% else %>
     <%= f.hidden_field :bz_region, :value => params[:user][:bz_region] %>
   <% end %>
-
-
-  <section>
-    <div>
-      Profession / job title:
-    </div>
-    <div class="col-sm-7">
-      <%= f.text_field :profession, :class => 'form-control', :maxlength => '70' %>
-    </div>
-  </section>
-  <section>
-    <div>
-      Company:
-    </div>
-    <div class="col-sm-7">
-      <%= f.text_field :company, :class => 'form-control', :maxlength => '70' %>
-    </div>
-  </section>
-
-  <section>
-    <div class="required">
-      Please create a password to protect any personal information you may provide us.
-    </div>
-    <div class="col-sm-7">
-      <%= f.password_field :password, :class => 'form-control', placeholder: 'Create a password', pattern: '.{4,}', title: 'make a password at least four characters long', :required => 'required' %>
-    </div>
-  </section>
-
 </div>
 
