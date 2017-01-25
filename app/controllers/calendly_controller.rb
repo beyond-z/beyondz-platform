@@ -57,13 +57,13 @@ class CalendlyController < ApplicationController
         title_industry = nil
         city_state = nil
         params[:payload][:questions_and_answers].each do |qa|
-          if qa[:question].downcase.include?('Phone')
+          if qa[:question].downcase.include?('phone')
             phone = qa[:answer]
-          elsif qa[:question].downcase.include?('Employer')
+          elsif qa[:question].downcase.include?('employer')
             company = qa[:answer]
-          elsif qa[:question].downcase.include?('Title')
+          elsif qa[:question].downcase.include?('title')
             title_industry = qa[:answer]
-          elsif qa[:question].downcase.include?('City, State')
+          elsif qa[:question].downcase.include?('city, state')
             city_state = qa[:answer]
           end
         end
