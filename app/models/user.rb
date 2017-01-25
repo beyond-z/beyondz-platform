@@ -295,14 +295,13 @@ class User < ActiveRecord::Base
     end
   end
 
-  def auto_add_to_salesforce_campaign(candidate_status = nil, selected_timeslot = nil, sourcing_info = nil)
+  def auto_add_to_salesforce_campaign(candidate_status = nil, selected_timeslot = nil)
     # We may also need to add them to a campaign if certain things
     # are right.
     cm = {}
     cm['CampaignId'] = salesforce_campaign_id
     cm['Candidate_Status__c'] = candidate_status unless candidate_status.nil?
     cm['Volunteer_Event_Signups__c'] = selected_timeslot unless selected_timeslot.nil?
-    cm['Sourcing_Info__c'] = sourcing_info unless sourcing_info.nil?
     cm['Opted_Out_Reason__c'] = '' # Reset this in case they cancel but then signup again.
 
     if cm['CampaignId']
@@ -338,7 +337,6 @@ class User < ActiveRecord::Base
                 cm.Volunteer_Event_Signups__c = "#{cm.Volunteer_Event_Signups__c}\n#{selected_timeslot}"
               end
             end
-            cm.Sourcing_Info__c = sourcing_info unless sourcing_info.nil?
             # Reset this in case they cancel but signup again.
             cm.Opted_Out_Reason__c = ''
             cm.save

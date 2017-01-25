@@ -53,20 +53,25 @@ class CalendlyController < ApplicationController
       if event_type == 'invitee.created'
         calendly_url = User.get_calendar_url(bz_region)
         phone = nil
-        city = nil
-        state = nil
-        sourcing_info = nil
+        company = nil
+        title_industry = nil
+        city_state = nil
         params[:payload][:questions_and_answers].each do |qa|
-          if qa[:question] == 'Phone'
+          if qa[:question].downcase.include?('Phone')
             phone = qa[:answer]
-          elsif qa[:question] == 'City that you live in?'
-            city = qa[:answer]
-          elsif qa[:question] == 'State that you live in?'
-            state = qa[:answer]
-          elsif qa[:question] == 'How did you hear about us?'
-            sourcing_info = qa[:answer]
+          elsif qa[:question].downcase.include?('Employer')
+            company = qa[:answer]
+          elsif qa[:question].downcase.include?('Title')
+            title_industry = qa[:answer]
+          elsif qa[:question].downcase.include?('City, State')
+            city_state = qa[:answer]
           end
         end
+
+        # Note: city_state is supposed to be in the format: City, State.  E.g. Brooklyn, NY
+        # If it's not, just set the city to the whole string
+        city = city_state.split(',')[0]
+        state = city_state.split(',')[1]
 
         # Create a BZ User in this platform
         current_user = User.find_by_email(email)
@@ -83,8 +88,9 @@ class CalendlyController < ApplicationController
         contact['Phone'] = phone
         contact['Signup_Date__c'] = DateTime.now
         contact['MailingCity'] = city
-        contact['MailingState'] = state
-        contact['Sourcing_Info__c'] = sourcing_info
+        contact['MailingState'] = state unless state.nil?
+        contact['Company__c'] = company
+        contact['Title'] = title_industry # Both their title and industry could have commans, so can't split reliable.  Just stuff it all in Title field.
         contact['BZ_Region__c'] = bz_region
         contact['User_Type__c'] = 'Temp Volunteer'
         contact['BZ_User_Id__c'] = current_user.id
@@ -108,7 +114,7 @@ class CalendlyController < ApplicationController
         current_user.skip_confirmation!
         current_user.save!
 
-        cm = current_user.auto_add_to_salesforce_campaign('Confirmed', selected_timeslot, sourcing_info)
+        cm = current_user.auto_add_to_salesforce_campaign('Confirmed', selected_timeslot)
         if cm.nil?
           logger.debug "######## Failed to create Campaign Member for #{current_user.inspect}.  Dunno why though."
         end
