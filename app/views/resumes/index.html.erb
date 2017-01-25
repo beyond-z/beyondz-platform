@@ -37,7 +37,8 @@
   </td>
   <td>
     <% resume.tags.each do |tag| %>
-      <a href="resumes?tag=<%= tag %>"><%= tag %></a>
+      <% next if tag.empty? %>
+      <a class="resume-tag" href="resumes?tag=<%= tag %>"><%= tag %></a>
     <% end %>
   </td>
 </tr>
