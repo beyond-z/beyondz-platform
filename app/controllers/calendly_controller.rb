@@ -37,6 +37,11 @@ class CalendlyController < ApplicationController
       event_name = params[:payload][:event_type][:name]
       start_time = params[:payload][:event][:invitee_start_time_pretty]
 
+      # There is a bug in calendly where Last Name is not actually a required field.
+      # I opened a support ticket, but in the meantime this is meant to put something in that field
+      # so at least a Salesforce record is created.
+      last_name = "<Missing>" if last_name.nil?
+
       contact = {}
       contact['FirstName'] = first_name
       contact['LastName'] = last_name
