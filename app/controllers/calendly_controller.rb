@@ -38,14 +38,10 @@ class CalendlyController < ApplicationController
         event_name = params[:payload][:event_type][:name]
         start_time = params[:payload][:event][:invitee_start_time_pretty]
 
-        # There is a bug in calendly where Last Name is not actually a required field.
-        # I opened a support ticket, but in the meantime this is meant to put something in that field
-        # so at least a Salesforce record is created.
-        last_name = "<Missing>" if last_name.blank?
 
         contact = {}
         contact['FirstName'] = first_name
-        contact['LastName'] = last_name
+        contact['LastName'] = last_name unless last_name.blank?
         contact['Email'] = email
 
         applicant_type = 'temp_volunteer'
@@ -108,6 +104,10 @@ class CalendlyController < ApplicationController
           if !existing_salesforce_id.nil?
             client.update('Contact', existing_salesforce_id, contact)
           else
+            # There is a bug in calendly where Last Name is not actually a required field.
+            # This is meant to put something in that field so at least a Salesforce record is created.
+            contact['LastName'] = "<Missing>" if last_name.blank?
+
             # Note: for new users that volunteer, we don't create BZ Users.  We just populate a new Salesforce
             # contact as though it was done manually.  Only Fellows and LCs get BZ Users after this calendly integration goes live.
             contact['LeadSource'] = 'Volunteer Signup'
