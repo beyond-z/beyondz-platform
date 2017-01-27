@@ -58,9 +58,8 @@
     padding: 3px;
 
     &:before {
-      @extend .glyphicon;
-      @extend .glyphicon-info-sign;
-      
+      content: '?\a0';
+
       color: $plain-dk;
       padding-right: 3px;
     }
