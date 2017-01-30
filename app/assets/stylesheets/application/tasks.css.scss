@@ -58,10 +58,11 @@
     padding: 3px;
 
     &:before {
-      content: '?\a0';
+      content: '?';
+      border: solid 1px;
+      padding: 1px;
 
-      color: $plain-dk;
-      padding-right: 3px;
+      margin-right: 3px;
     }
 
     &:hover {
