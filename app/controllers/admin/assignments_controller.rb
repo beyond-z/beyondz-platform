@@ -100,6 +100,7 @@ class Admin::AssignmentsController < Admin::ApplicationController
         assignment_id = row[0]
         course_id = row[1]
         section_name = row[3]
+        section_name = section_name.strip unless section_name.nil?
         due_at_str = row[4]
         due_at = import_date_translation(row[4], index)
         lock_at_str = row[5]

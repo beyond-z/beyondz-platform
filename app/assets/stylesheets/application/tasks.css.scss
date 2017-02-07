@@ -58,11 +58,11 @@
     padding: 3px;
 
     &:before {
-      @extend .glyphicon;
-      @extend .glyphicon-info-sign;
-      
-      color: $plain-dk;
-      padding-right: 3px;
+      content: '?';
+      border: solid 1px;
+      padding: 1px;
+
+      margin-right: 3px;
     }
 
     &:hover {

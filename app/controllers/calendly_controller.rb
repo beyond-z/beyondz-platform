@@ -106,7 +106,7 @@ class CalendlyController < ApplicationController
           else
             # There is a bug in calendly where Last Name is not actually a required field.
             # This is meant to put something in that field so at least a Salesforce record is created.
-            contact['LastName'] = "<Missing>" if last_name.blank?
+            contact['LastName'] = '<Missing>' if last_name.blank?
 
             # Note: for new users that volunteer, we don't create BZ Users.  We just populate a new Salesforce
             # contact as though it was done manually.  Only Fellows and LCs get BZ Users after this calendly integration goes live.
