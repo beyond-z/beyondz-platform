@@ -55,6 +55,12 @@ class User < ActiveRecord::Base
   validates :first_name, presence: true
   validates :last_name, presence: true
 
+  before_save :capitalize_name
+  def capitalize_name
+    self.first_name = self.first_name.capitalize unless self.first_name.nil?
+    self.last_name = self.last_name.capitalize unless self.last_name.nil?
+  end
+
   # Finds the lead owner from the uploaded spreadsheet mapping, or returns
   # a default if it doesn't exist for our combination of fields.
   #
@@ -186,8 +192,8 @@ class User < ActiveRecord::Base
 
     contact = {}
 
-    contact['FirstName'] = first_name
-    contact['LastName'] = last_name
+    contact['FirstName'] = first_name.capitalize
+    contact['LastName'] = last_name.capitalize
     contact['Email'] = email
 
     # If the user is already on salesforce btw, we assume they are already

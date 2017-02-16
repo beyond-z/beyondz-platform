@@ -376,11 +376,13 @@ class EnrollmentsController < ApplicationController
     cm.Anticipated_Graduation_Semester__c = @enrollment.anticipated_graduation_semester
     cm.Major__c = @enrollment.major
     cm.GPA__c = @enrollment.gpa
+    cm.GPA__c = 'NA' if @enrollment.gpa.blank? || @enrollment.gpa == '0'
 
     cm.Started_College__c = @enrollment.enrollment_year
     cm.Enrollment_Semester__c = @enrollment.enrollment_semester
-
+    cm.Is_Graduate_Student__c = @enrollment.is_graduate_student
     cm.Previous_University__c = @enrollment.previous_university
+    cm.High_School__c = @enrollment.high_school
 
     cm.Languages__c = @enrollment.languages
     cm.Sourcing_Info__c = @enrollment.sourcing_info
