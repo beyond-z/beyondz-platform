@@ -55,6 +55,17 @@ class Enrollment < ActiveRecord::Base
 
   attr_writer :check_meeting_times
 
+  before_save :capitalize_name
+  def capitalize_name
+    self.first_name = self.first_name.capitalize unless self.first_name.nil?
+    self.last_name = self.last_name.capitalize unless self.last_name.nil?
+  end
+
+  before_save :set_gpa_if_zero
+  def set_gpa_if_zero
+    self.gpa = 'NA' if self.gpa.blank? || self.gpa == '0'
+  end
+
   def self.latest_for_user(user_id)
     enrollments = Enrollment.where(:user_id => user_id).order(updated_at: :desc)
     enrollment = enrollments.empty? ? nil : enrollments.first
