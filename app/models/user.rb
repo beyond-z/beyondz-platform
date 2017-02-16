@@ -57,8 +57,8 @@ class User < ActiveRecord::Base
 
   before_save :capitalize_name
   def capitalize_name
-    self.first_name = self.first_name.capitalize unless self.first_name.nil?
-    self.last_name = self.last_name.capitalize unless self.last_name.nil?
+    self.first_name = first_name.capitalize unless first_name.nil?
+    self.last_name = last_name.capitalize unless last_name.nil?
   end
 
   # Finds the lead owner from the uploaded spreadsheet mapping, or returns
