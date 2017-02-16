@@ -57,13 +57,13 @@ class Enrollment < ActiveRecord::Base
 
   before_save :capitalize_name
   def capitalize_name
-    self.first_name = self.first_name.capitalize unless self.first_name.nil?
-    self.last_name = self.last_name.capitalize unless self.last_name.nil?
+    self.first_name = first_name.split.map(&:capitalize).join(' ') unless first_name.nil?
+    self.last_name = last_name.split.map(&:capitalize).join(' ') unless last_name.nil?
   end
 
   before_save :set_gpa_if_zero
   def set_gpa_if_zero
-    self.gpa = 'NA' if self.gpa.blank? || self.gpa == '0'
+    self.gpa = 'NA' if gpa.blank? || gpa == '0'
   end
 
   def self.latest_for_user(user_id)
