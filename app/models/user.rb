@@ -57,8 +57,8 @@ class User < ActiveRecord::Base
 
   before_save :capitalize_name
   def capitalize_name
-    self.first_name = first_name.capitalize unless first_name.nil?
-    self.last_name = last_name.capitalize unless last_name.nil?
+    self.first_name = first_name.split.map(&:capitalize).join(' ') unless first_name.nil?
+    self.last_name = last_name.split.map(&:capitalize).join(' ') unless last_name.nil?
   end
 
   # Finds the lead owner from the uploaded spreadsheet mapping, or returns
@@ -192,8 +192,8 @@ class User < ActiveRecord::Base
 
     contact = {}
 
-    contact['FirstName'] = first_name.capitalize
-    contact['LastName'] = last_name.capitalize
+    contact['FirstName'] = first_name.split.map(&:capitalize).join(' ')
+    contact['LastName'] = last_name.split.map(&:capitalize).join(' ')
     contact['Email'] = email
 
     # If the user is already on salesforce btw, we assume they are already
