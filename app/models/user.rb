@@ -445,17 +445,20 @@ class User < ActiveRecord::Base
         :bz_region => bz_region,
         :applicant_type => applicant_type
       )
+      if mapping.empty?
+        logger.debug "########## No campaign mapping found for #{bz_region}, #{applicant_type}"
+        return nil
+      end
     else
       mapping = CampaignMapping.where(
         :university_name => university_name,
         :bz_region => bz_region,
         :applicant_type => applicant_type
       )
-    end
-
-    if mapping.empty?
-      logger.debug "########## No campaign mapping found for #{university_name}, #{bz_region}, #{applicant_type}"
-      return nil
+      if mapping.empty?
+        logger.debug "########## No campaign mapping found for #{university_name}, #{bz_region}, #{applicant_type}"
+        return nil
+      end
     end
 
     mapping.first.campaign_id
