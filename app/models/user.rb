@@ -437,11 +437,21 @@ class User < ActiveRecord::Base
   end
 
   def salesforce_campaign_id
-    mapping = CampaignMapping.where(
-      :university_name => university_name,
-      :bz_region => bz_region,
-      :applicant_type => applicant_type
-    )
+    mapping = nil
+    # For Temp Volunteers, they may have been a Fellow or a Coach in the past and thus have their university_name set,
+    # however, we don't use university_name when looking up the Campaign for that region, so the mapping is not found.
+    if applicant_type == 'temp_volunteer'
+      mapping = CampaignMapping.where(
+        :bz_region => bz_region,
+        :applicant_type => applicant_type
+      )
+    else
+      mapping = CampaignMapping.where(
+        :university_name => university_name,
+        :bz_region => bz_region,
+        :applicant_type => applicant_type
+      )
+    end
 
     if mapping.empty?
       logger.debug "########## No campaign mapping found for #{university_name}, #{bz_region}, #{applicant_type}"
