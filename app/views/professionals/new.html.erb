@@ -47,18 +47,22 @@
   <strong>In which industries do you work or have you worked in the past? (Check all that apply. If yours is not listed, please select a similar field and/or select ‘other.’)</strong>
   <br />
 
+  <div class="long-list-of-checkboxes">
   <% @industries.sort.map(&:strip).each do |industry| %>
-    <input type="checkbox" value="<%= industry %>" name="professional[industries][]" /> <%= industry %></label><br>
+    <label><input type="checkbox" value="<%= industry %>" name="professional[industries][]" /> <%= industry %></label><br>
   <% end %>
+  </div>
 
   <br />
   <strong>What was your undergraduate and/or graduate fields of study? (Check all that apply. If yours is not listed, please select a similar field and/or select ‘other.’)</strong>
   <br />
 
   <br />
+  <div class="long-list-of-checkboxes">
   <% @fields.sort.map(&:strip).each do |field| %>
-    <input type="checkbox" value="<%= field %>" name="professional[studies][]" /> <%= field %></label><br>
+    <label><input type="checkbox" value="<%= field %>" name="professional[studies][]" /> <%= field %></label><br>
   <% end %>
+  </div>
 
   <br />
   <strong>Are you willing to be contacted by Braven Fellows who are interested in learning more about your career? </strong>

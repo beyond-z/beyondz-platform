@@ -1,3 +1,11 @@
+#new-professional-page {
+  .long-list-of-checkboxes {
+    column-count: 3;
+    -moz-column-count: 3;
+    -webkit-column-count: 3;
+  }
+}
+
 #enrollment-form-holder {
   td {
     vertical-align: middle;
