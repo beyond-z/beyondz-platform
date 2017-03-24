@@ -1,0 +1,78 @@
+<div id="new-professional-page">
+  <div class="plank plain-lt">
+    <div class="section-container">
+      <section>
+        <div class="col-sm-6">
+          <h1>Register with us</h1>
+
+          <p class="lead">
+          Intro blurb
+          </p>
+
+<%= form_for :professional, :url => professionals_path do |f| %>
+  <%= hidden_field_tag 'referrer', @referrer %>
+  <%= render :partial => 'shared/form_errors', locals: { object: @professional } %>
+
+  <%= f.text_field :first_name, :class => 'form-control', required: 'required', placeholder: 'First Name'  %>
+  <br />
+  <%= f.text_field :last_name, :class => 'form-control', required: 'required', placeholder: 'Last Name'  %>
+  <br />
+  <%= f.text_field :email, :class => 'form-control', required: 'required', placeholder: 'Email'  %>
+  <br />
+  <%= f.text_field :phone, :class => 'form-control', placeholder: 'Phone'  %>
+  <br />
+  <%= f.text_field :linkedin_url, :class => 'form-control', placeholder: 'LinkedIn URL'  %>
+  <br />
+  <label>
+    <strong>Were you a Braven Fellow in the past?</strong>
+    <br />
+      <label><%= f.radio_button :braven_fellow, :true %> Yes</label>
+    <br />
+      <label><%= f.radio_button :braven_fellow, :false %> No</label>
+  </label>
+  <br />
+  <br />
+  <label>
+    <strong>Were/are you a Braven Leadership Coach?</strong>
+
+    <br />
+      <label><%= f.radio_button :braven_lc, :true %> Yes</label>
+    <br />
+      <label><%= f.radio_button :braven_lc, :false %> No</label>
+  </label>
+
+
+  <br />
+  <br />
+  <strong>In which industries do you work or have you worked in the past? (Check all that apply. If yours is not listed, please select a similar field and/or select ‘other.’)</strong>
+  <br />
+
+  <% @industries.sort.map(&:strip).each do |industry| %>
+    <input type="checkbox" value="<%= industry %>" name="professional[industries][]" /> <%= industry %></label><br>
+  <% end %>
+
+  <br />
+  <strong>What was your undergraduate and/or graduate fields of study? (Check all that apply. If yours is not listed, please select a similar field and/or select ‘other.’)</strong>
+  <br />
+
+  <br />
+  <% @fields.sort.map(&:strip).each do |field| %>
+    <input type="checkbox" value="<%= field %>" name="professional[studies][]" /> <%= field %></label><br>
+  <% end %>
+
+  <br />
+  <strong>Are you willing to be contacted by Braven Fellows who are interested in learning more about your career? </strong>
+  <br />
+    <label><%= f.radio_button :willing_to_be_contacted, :true %> Yes</label>
+  <br />
+    <label><%= f.radio_button :willing_to_be_contacted, :false %> No</label>
+  <br /><br />
+
+  <%= f.submit 'Register', :class => 'button-primary' %>
+<% end %>
+
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
