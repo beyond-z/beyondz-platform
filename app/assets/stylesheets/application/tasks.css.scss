@@ -58,8 +58,7 @@
     padding: 3px;
 
     &:before {
-      content: '?';
-      border: solid 1px;
+      content: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QMXEDoHPEmf2wAAASBJREFUOMulkyFOxGAQhb92qwYMghAEAoLFAOEAFPScYAW/4ADsrkZhSDccADIQblBLYC9AQHEAdgkGsfJ3BAR/SdO0TQPPvvdmJjPzIgJc7jEVXO5XgCFwCGwEegZMgMxUZoUWIKqYM2BAOy5N5bjwRCXzXejaBY+msudy/zvBOTCqEW4Bc+AFWKpw16biIpf7ZeCjxvxsKjuhwS3Qr9FsJsBJw5jbLvejULzfoBkmwH4D+QWchkV/Ar0aTRoD6w0F3k1l0VQWgIcGzVrcsukyl7SJXvk73uKW8bpgEgPZPwqM2x5pHs7XA87CU5VxYypH5Ve+B9KOnZ9MZdflnjiYMZUD4KKD+aowm8pPFiqJXA1xTkOcI2Aa4jw2lWk5zt+5FmkPTn8zDgAAAABJRU5ErkJggg==");
       padding: 1px;
 
       margin-right: 3px;
