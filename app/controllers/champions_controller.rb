@@ -4,7 +4,6 @@ class ChampionsController < ApplicationController
   before_filter :set_up_lists
 
   def index
-
   end
 
   def new
@@ -180,5 +179,4 @@ class ChampionsController < ApplicationController
       'Creative Writing'
     ]
   end
-
 end
