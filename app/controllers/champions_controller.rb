@@ -1,8 +1,41 @@
 class ChampionsController < ApplicationController
   layout 'public'
 
+  before_filter :set_up_lists
+
+  def index
+
+  end
+
   def new
     @champion = Champion.new
+  end
+
+  def create
+    champion = params[:champion].permit(
+      :first_name,
+      :last_name,
+      :email,
+      :phone,
+      :linkedin_url,
+      :braven_fellow,
+      :braven_lc,
+      :willing_to_be_contacted
+    )
+
+    champion[:industries] = params[:champion][:industries]
+    champion[:studies] = params[:champion][:studies]
+
+    n = Champion.new(champion)
+    if n.errors.any?
+      @champion = n
+      render 'new'
+      return
+    end
+    n.save
+  end
+
+  def set_up_lists
     @industries = [
       'Accounting',
       'Advertising',
@@ -148,27 +181,4 @@ class ChampionsController < ApplicationController
     ]
   end
 
-  def create
-    champion = params[:champion].permit(
-      :first_name,
-      :last_name,
-      :email,
-      :phone,
-      :linkedin_url,
-      :braven_fellow,
-      :braven_lc,
-      :willing_to_be_contacted
-    )
-
-    champion[:industries] = params[:champion][:industries]
-    champion[:studies] = params[:champion][:studies]
-
-    n = Champion.new(champion)
-    if n.errors.any?
-      @champion = n
-      render 'new'
-      return
-    end
-    n.save
-  end
 end
