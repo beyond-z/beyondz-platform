@@ -60,6 +60,21 @@ ActiveRecord::Schema.define(version: 20170324162100) do
     t.string   "calendar_url"
   end
 
+  create_table "champions", force: true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email"
+    t.string   "phone"
+    t.string   "linkedin_url"
+    t.boolean  "braven_fellow"
+    t.boolean  "braven_lc"
+    t.boolean  "willing_to_be_contacted"
+    t.string   "industries",              array: true
+    t.string   "studies",                 array: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "coach_students", force: true do |t|
     t.integer  "coach_id"
     t.integer  "student_id"
@@ -233,21 +248,6 @@ ActiveRecord::Schema.define(version: 20170324162100) do
   create_table "lists", force: true do |t|
     t.string   "friendly_name"
     t.string   "content"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "professionals", force: true do |t|
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "email"
-    t.string   "phone"
-    t.string   "linkedin_url"
-    t.boolean  "braven_fellow"
-    t.boolean  "braven_lc"
-    t.boolean  "willing_to_be_contacted"
-    t.string   "industries",              array: true
-    t.string   "studies",                 array: true
     t.datetime "created_at"
     t.datetime "updated_at"
   end
