@@ -1,8 +1,8 @@
-class ProfessionalsController < ApplicationController
+class ChampionsController < ApplicationController
   layout 'public'
 
   def new
-    @professional = Professional.new
+    @champion = Champion.new
     @industries = [
       'Accounting',
       'Advertising',
@@ -149,7 +149,7 @@ class ProfessionalsController < ApplicationController
   end
 
   def create
-    professional = params[:professional].permit(
+    champion = params[:champion].permit(
       :first_name,
       :last_name,
       :email,
@@ -160,12 +160,12 @@ class ProfessionalsController < ApplicationController
       :willing_to_be_contacted
     )
 
-    professional[:industries] = params[:professional][:industries]
-    professional[:studies] = params[:professional][:studies]
+    champion[:industries] = params[:champion][:industries]
+    champion[:studies] = params[:champion][:studies]
 
-    n = Professional.new(professional)
+    n = Champion.new(champion)
     if n.errors.any?
-      @professional = n
+      @champion = n
       render 'new'
       return
     end

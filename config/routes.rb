@@ -24,7 +24,7 @@ BeyondzPlatform::Application.routes.draw do
 
   resources :resumes
 
-  resources :professionals
+  resources :champions
 
   get '/salesforce/change_apply_now', to: 'salesforce#change_apply_now'
   get '/salesforce/disable_osqa_notification_emails', to: 'salesforce#disable_osqa_notification_emails'

@@ -1,4 +1,4 @@
-<div id="new-professional-page">
+<div id="new-champion-page">
   <div class="plank plain-lt">
     <div class="section-container">
       <section>
@@ -6,12 +6,12 @@
           <h1>Register with us</h1>
 
           <p class="lead">
-          Intro blurb
+We aim to support Braven Fellows in growing their network by connecting them to professionals who can provide insight into their industry and workplace. Please complete this form to be added to our database of Braven Champions: you may be contacted via e-mail by Fellows requesting an informational interview. Thank you for your support! 
           </p>
 
-<%= form_for :professional, :url => professionals_path do |f| %>
+<%= form_for :champion, :url => champions_path do |f| %>
   <%= hidden_field_tag 'referrer', @referrer %>
-  <%= render :partial => 'shared/form_errors', locals: { object: @professional } %>
+  <%= render :partial => 'shared/form_errors', locals: { object: @champion } %>
 
   <%= f.text_field :first_name, :class => 'form-control', required: 'required', placeholder: 'First Name'  %>
   <br />
@@ -49,7 +49,7 @@
 
   <div class="long-list-of-checkboxes">
   <% @industries.sort.map(&:strip).each do |industry| %>
-    <label><input type="checkbox" value="<%= industry %>" name="professional[industries][]" /> <%= industry %></label><br>
+    <label><input type="checkbox" value="<%= industry %>" name="champion[industries][]" /> <%= industry %></label><br>
   <% end %>
   </div>
 
@@ -60,7 +60,7 @@
   <br />
   <div class="long-list-of-checkboxes">
   <% @fields.sort.map(&:strip).each do |field| %>
-    <label><input type="checkbox" value="<%= field %>" name="professional[studies][]" /> <%= field %></label><br>
+    <label><input type="checkbox" value="<%= field %>" name="champion[studies][]" /> <%= field %></label><br>
   <% end %>
   </div>
 
