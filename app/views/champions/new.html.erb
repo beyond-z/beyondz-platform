@@ -26,9 +26,9 @@ We aim to support Braven Fellows in growing their network by connecting them to 
   <label>
     <strong>Were you a Braven Fellow in the past?</strong>
     <br />
-      <label><%= f.radio_button :braven_fellow, :true %> Yes</label>
+      <label><%= f.radio_button :braven_fellow, :true, required: 'required' %> Yes</label>
     <br />
-      <label><%= f.radio_button :braven_fellow, :false %> No</label>
+      <label><%= f.radio_button :braven_fellow, :false, required: 'required' %> No</label>
   </label>
   <br />
   <br />
@@ -36,9 +36,9 @@ We aim to support Braven Fellows in growing their network by connecting them to 
     <strong>Were/are you a Braven Leadership Coach?</strong>
 
     <br />
-      <label><%= f.radio_button :braven_lc, :true %> Yes</label>
+      <label><%= f.radio_button :braven_lc, :true, required: 'required' %> Yes</label>
     <br />
-      <label><%= f.radio_button :braven_lc, :false %> No</label>
+      <label><%= f.radio_button :braven_lc, :false, required: 'required' %> No</label>
   </label>
 
 
@@ -53,6 +53,10 @@ We aim to support Braven Fellows in growing their network by connecting them to 
   <% end %>
   </div>
 
+  <label>Other:
+    <input type="text" class="form-field" name="champion[industries][]" />
+  </label>
+
   <br />
   <strong>What was your undergraduate and/or graduate fields of study? (Check all that apply. If yours is not listed, please select a similar field and/or select ‘other.’)</strong>
   <br />
@@ -64,12 +68,16 @@ We aim to support Braven Fellows in growing their network by connecting them to 
   <% end %>
   </div>
 
+  <label>Other:
+    <input type="text" class="form-field" name="champion[studies][]" />
+  </label>
+
   <br />
   <strong>Are you willing to be contacted by Braven Fellows who are interested in learning more about your career? </strong>
   <br />
-    <label><%= f.radio_button :willing_to_be_contacted, :true %> Yes</label>
+    <label><%= f.radio_button :willing_to_be_contacted, :true, required: 'required' %> Yes</label>
   <br />
-    <label><%= f.radio_button :willing_to_be_contacted, :false %> No</label>
+    <label><%= f.radio_button :willing_to_be_contacted, :false, required: 'required' %> No</label>
   <br /><br />
 
   <%= f.submit 'Register', :class => 'button-primary' %>

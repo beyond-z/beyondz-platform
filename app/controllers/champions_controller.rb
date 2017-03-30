@@ -22,8 +22,8 @@ class ChampionsController < ApplicationController
       :willing_to_be_contacted
     )
 
-    champion[:industries] = params[:champion][:industries]
-    champion[:studies] = params[:champion][:studies]
+    champion[:industries] = params[:champion][:industries].reject(&:empty?)
+    champion[:studies] = params[:champion][:studies].reject(&:empty?)
 
     n = Champion.new(champion)
     if n.errors.any?
