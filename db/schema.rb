@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170214183644) do
+ActiveRecord::Schema.define(version: 20170324162100) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,21 @@ ActiveRecord::Schema.define(version: 20170214183644) do
     t.datetime "updated_at"
     t.string   "calendar_email"
     t.string   "calendar_url"
+  end
+
+  create_table "champions", force: true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email"
+    t.string   "phone"
+    t.string   "linkedin_url"
+    t.boolean  "braven_fellow"
+    t.boolean  "braven_lc"
+    t.boolean  "willing_to_be_contacted"
+    t.string   "industries",              array: true
+    t.string   "studies",                 array: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "coach_students", force: true do |t|
@@ -214,10 +229,10 @@ ActiveRecord::Schema.define(version: 20170214183644) do
     t.boolean  "study_abroad"
     t.string   "gender_identity"
     t.string   "anticipated_graduation_semester"
-    t.boolean  "is_graduate_student"
-    t.text     "high_school"
     t.integer  "enrollment_year"
     t.string   "enrollment_semester"
+    t.boolean  "is_graduate_student"
+    t.text     "high_school"
   end
 
   add_index "enrollments", ["user_id"], name: "index_enrollments_on_user_id", using: :btree
