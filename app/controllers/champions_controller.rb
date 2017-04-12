@@ -22,8 +22,18 @@ class ChampionsController < ApplicationController
       :willing_to_be_contacted
     )
 
-    champion[:industries] = params[:champion][:industries].reject(&:empty?)
-    champion[:studies] = params[:champion][:studies].reject(&:empty?)
+    # if JS is there, we'll get the csv, otherwise, it falls back to checkboxes
+    if params[:industries_csv] && !params[:industries_csv].empty?
+      champion[:industries] = params[:industries_csv].split(',').map(&:strip).reject(&:empty?)
+    else
+      champion[:industries] = params[:champion][:industries].reject(&:empty?)
+    end
+
+    if params[:studies_csv] && !params[:studies_csv].empty?
+      champion[:studies] = params[:studies_csv].split(',').map(&:strip).reject(&:empty?)
+    else
+      champion[:studies] = params[:champion][:studies].reject(&:empty?)
+    end
 
     n = Champion.new(champion)
     if !n.valid? || n.errors.any?
