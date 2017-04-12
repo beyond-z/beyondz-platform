@@ -42,6 +42,8 @@ class ChampionsController < ApplicationController
       return
     end
     n.save
+
+    n.create_on_salesforce
   end
 
   def set_up_lists
