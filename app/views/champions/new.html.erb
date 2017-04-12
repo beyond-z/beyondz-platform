@@ -49,7 +49,9 @@ We aim to support Braven Fellows in growing their network by connecting them to 
 
   <div class="long-list-of-checkboxes">
   <% @industries.sort.map(&:strip).each do |industry| %>
-    <label><input type="checkbox" value="<%= industry %>" name="champion[industries][]" /> <%= industry %></label><br>
+    <label><input type="checkbox" value="<%= industry %>" name="champion[industries][]"
+      <%= (params[:champion] && params[:champion][:industries] && params[:champion][:industries].include?(industry)) ? "checked" : "" %>
+    /> <%= industry %></label><br>
   <% end %>
   </div>
 
@@ -64,7 +66,9 @@ We aim to support Braven Fellows in growing their network by connecting them to 
   <br />
   <div class="long-list-of-checkboxes">
   <% @fields.sort.map(&:strip).each do |field| %>
-    <label><input type="checkbox" value="<%= field %>" name="champion[studies][]" /> <%= field %></label><br>
+    <label><input type="checkbox" value="<%= field %>" name="champion[studies][]"
+      <%= (params[:champion] && params[:champion][:studies] && params[:champion][:studies].include?(field)) ? "checked" : "" %>
+    /> <%= field %></label><br>
   <% end %>
   </div>
 

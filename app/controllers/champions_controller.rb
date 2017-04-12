@@ -26,11 +26,12 @@ class ChampionsController < ApplicationController
     champion[:studies] = params[:champion][:studies].reject(&:empty?)
 
     n = Champion.new(champion)
-    if n.errors.any?
+    if !n.valid? || n.errors.any?
       @champion = n
       render 'new'
       return
     end
+    raise Exception.new "asds"
     n.save
   end
 
