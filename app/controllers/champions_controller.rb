@@ -31,7 +31,6 @@ class ChampionsController < ApplicationController
       render 'new'
       return
     end
-    raise Exception.new "asds"
     n.save
   end
 
