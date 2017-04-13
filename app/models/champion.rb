@@ -21,6 +21,11 @@ class Champion < ActiveRecord::Base
     contact['LastName'] = last_name.split.map(&:capitalize).join(' ')
     contact['Email'] = email
     contact['Phone'] = phone
+    contact['LinkedIn_URL__c'] = linkedin_url
+    contact['Previous_Braven_LC__c'] = braven_lc
+    contact['Previous_Braven_Fellow__c'] = braven_fellow
+    contact['Industries__c'] = industries.join(', ')
+    contact['Studies__c'] = studies.join(', ')
     contact = client.create('Lead', contact)
 
     salesforce_id = contact['Id']
