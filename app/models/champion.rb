@@ -15,6 +15,18 @@ class Champion < ActiveRecord::Base
 
     campaign_id = mapping.first.campaign_id
 
+    salesforce_id = nil
+
+    existing_salesforce_id = salesforce.exists_in_salesforce(email)
+    was_new = false
+
+    if existing_salesforce_id.nil?
+      was_new = true
+    else
+      salesforce_id = existing_salesforce_id
+      was_new = false
+    end
+
     contact = {}
 
     contact['FirstName'] = first_name.split.map(&:capitalize).join(' ')
@@ -22,19 +34,26 @@ class Champion < ActiveRecord::Base
     contact['Email'] = email
     contact['Phone'] = phone
     contact['LinkedIn_URL__c'] = linkedin_url
-    contact['Previous_Braven_LC__c'] = braven_lc
-    contact['Previous_Braven_Fellow__c'] = braven_fellow
-    contact['Industries__c'] = industries.join(', ')
-    contact['Studies__c'] = studies.join(', ')
-    contact = client.create('Lead', contact)
+    contact['Industry_Experience__c'] = industries.join(', ')
+    contact['Fields_Of_Study__c'] = studies.join(', ')
 
-    salesforce_id = contact['Id']
+    if was_new
+      contact = client.create('Lead', contact)
+      salesforce_id = contact['Id']
+    else
+      client.update('Contact', salesforce_id, contact)
+    end
 
     cm = {}
     cm['CampaignId'] = campaign_id
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
-    cm['ContactId'] = salesforce_id
+
+    if was_new
+      cm['LeadId'] = salesforce_id
+    else
+      cm['ContactId'] = salesforce_id
+    end
 
     client.create('CampaignMember', cm)
   end
