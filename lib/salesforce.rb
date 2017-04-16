@@ -264,7 +264,9 @@ module BeyondZ
     end
 
     def get_welcome_email_html
-      get_email_cache('BZ_New_Signup_Welcome_and_Confirm_Email_Html.html')
+      get_email_cache('BZ_New_Signup_Welcome_and_Confirm_Email_Html.html').
+        sub('<![CDATA[', '').
+        sub(']]>', '')
     end 
 
     def get_welcome_email_text
