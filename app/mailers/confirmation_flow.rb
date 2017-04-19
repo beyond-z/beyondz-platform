@@ -39,4 +39,12 @@ class ConfirmationFlow < ActionMailer::Base
       .gsub('{!Program.Site}', @program_site)
       .gsub('{!Timeslot}', @timeslot).html_safe
   end
+
+  def invite_to_fb(user, fb_url, program_title)
+    @user = user
+    @fb_url = fb_url
+    @program_title = program_title
+
+    mail to: user.email, subject: "#{program_title} is starting soon - Please join our Facebook group"
+  end
 end
