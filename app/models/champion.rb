@@ -15,6 +15,9 @@ class Champion < ActiveRecord::Base
 
     salesforce_id = nil
 
+    salesforce = BeyondZ::Salesforce.new
+    client = salesforce.get_client
+
     existing_salesforce_id = salesforce.exists_in_salesforce(email)
     was_new = false
 
