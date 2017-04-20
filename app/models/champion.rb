@@ -2,8 +2,6 @@ class Champion < ActiveRecord::Base
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :email, presence: true
-  validates :braven_fellow, presence: true
-  validates :braven_lc, presence: true
   validates :industries, presence: true
   validates :studies, presence: true
 
@@ -16,6 +14,9 @@ class Champion < ActiveRecord::Base
     campaign_id = mapping.first.campaign_id
 
     salesforce_id = nil
+
+    salesforce = BeyondZ::Salesforce.new
+    client = salesforce.get_client
 
     existing_salesforce_id = salesforce.exists_in_salesforce(email)
     was_new = false
