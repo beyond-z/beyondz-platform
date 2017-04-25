@@ -17,6 +17,7 @@ class ChampionsController < ApplicationController
       :email,
       :phone,
       :linkedin_url,
+      :region,
       :braven_fellow,
       :braven_lc,
       :willing_to_be_contacted

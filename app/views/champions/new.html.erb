@@ -41,7 +41,6 @@ We aim to support Braven Fellows in growing their network by connecting them to 
       <label><%= f.radio_button :braven_lc, :false, required: 'required' %> No</label>
   </label>
 
-
   <br />
   <br />
   <noscript>
@@ -84,6 +83,24 @@ We aim to support Braven Fellows in growing their network by connecting them to 
   <label class="other">Other:
     <input type="text" class="form-field" name="champion[studies][]" />
   </label>
+
+
+  <br /><br />
+  <strong>If there are volunteer opportunities in one of the following locations, please select the one you would like to be contacted about, if any.</strong>
+    <div class="form-group">
+      <% areas = List.find_by_friendly_name((defined? list) ? list : 'bz_regions')
+         unless areas.nil?
+         areas.items.each_with_index do |region, idx| %>
+        <div>
+          <label>
+            <%= f.radio_button :region, region, "required" => "required" %>
+            <span><%= region %></span>
+          </label>
+        </div>
+      <% end %>
+      <% end %>
+    </div>
+
 
   <br /><br />
   <strong>Are you willing to be contacted by Braven Fellows who are interested in learning more about your career? </strong>
