@@ -11,19 +11,19 @@ class ChampionsController < ApplicationController
   end
 
   def linkedin_authorize
-      linkedin_connection = LinkedIn.new
-      nonce = session[:oauth_linked_nonce] = SecureRandom.hex
-      redirect_to linkedin_connection.authorize_url(linkedin_oauth_success_url, nonce)
+    linkedin_connection = LinkedIn.new
+    nonce = session[:oauth_linked_nonce] = SecureRandom.hex
+    redirect_to linkedin_connection.authorize_url(linkedin_oauth_success_url, nonce)
   end
 
   def linkedin_oauth_success
     linkedin_connection = LinkedIn.new
     nonce = session.delete(:oauth_linked_nonce)
-    raise Exception.new "Wrong nonce" unless nonce == params[:state]
+    raise Exception.new 'Wrong nonce' unless nonce == params[:state]
 
     if params[:error]
       # Note: if user cancels, then params[:error] == 'user_cancelled_authorize'
-      flash[:error] = "LinkedIn declined"
+      flash[:error] = 'LinkedIn declined'
       Rails.logger.error("LinkedIn authorization failed. error = #{params[:error]}, error_description = #{params[:error_description]}")
     end
 
@@ -43,8 +43,8 @@ class ChampionsController < ApplicationController
       @linkedin_present = true
       render 'new'
     else
-      Rails.logger.error("Error registering LinkedIn service for Champion.  The access_token couldn't be retrieved using the code sent from LinkedIn")
-      raise Exception.new "Failed getting access token for LinkedIn"
+      Rails.logger.error('Error registering LinkedIn service for Champion. The access_token couldn\'t be retrieved using the code sent from LinkedIn')
+      raise Exception.new 'Failed getting access token for LinkedIn'
     end
   end
 
