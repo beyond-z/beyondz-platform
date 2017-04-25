@@ -43,7 +43,7 @@ class ChampionsController < ApplicationController
       @linkedin_present = true
       render 'new'
     else
-      Rails.logger.error("Error registering LinkedIn service for #{@current_user.email}.  The access_token couldn't be retrieved using the code sent from LinkedIn")
+      Rails.logger.error("Error registering LinkedIn service for Champion.  The access_token couldn't be retrieved using the code sent from LinkedIn")
       raise Exception.new "Failed getting access token for LinkedIn"
     end
   end
