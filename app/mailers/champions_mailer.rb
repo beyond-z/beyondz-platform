@@ -12,6 +12,6 @@ class ChampionsMailer < ActionMailer::Base
     mail to: recipient.email, subject: sf.get_new_champion_email_subject
       .gsub('{!Contact.FirstName}', @recipient.first_name)
       .gsub('{!Contact.LastName}', @recipient.last_name)
-      .gsub('{!User.Email}', ENV["CHAMPION_CONTACT_EMAIL"])
+      .gsub('{!User.Email}', ENV['CHAMPION_CONTACT_EMAIL'])
   end
-end 
+end

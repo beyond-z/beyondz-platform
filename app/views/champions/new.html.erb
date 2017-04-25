@@ -9,6 +9,14 @@
 We aim to support Braven Fellows in growing their network by connecting them to professionals who can provide insight into their industry and workplace. Please complete this form to be added to our database of Braven Champions: you may be contacted via e-mail by Fellows requesting an informational interview. Thank you for your support! 
           </p>
 
+          <% if @linkedin_present %>
+            <p>We've filled the form with your Linked In account. Please check it over and submit to finalize!</p>
+          <% else %>
+            <p>
+            <a class="btn-primary" href="<%= linkedin_authorize_url %>">Sign up with your<br />LinkedIn account</a>
+            </p>
+          <% end %>
+
 <%= form_for :champion, :url => champions_path do |f| %>
   <%= hidden_field_tag 'referrer', @referrer %>
   <%= render :partial => 'shared/form_errors', locals: { object: @champion } %>
@@ -93,7 +101,7 @@ We aim to support Braven Fellows in growing their network by connecting them to 
          areas.items.each_with_index do |region, idx| %>
         <div>
           <label>
-            <%= f.radio_button :region, region, "required" => "required" %>
+            <%= f.radio_button :region, region %>
             <span><%= region %></span>
           </label>
         </div>
