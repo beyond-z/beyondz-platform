@@ -45,6 +45,7 @@ class ChampionsController < ApplicationController
     n.save
 
     n.create_on_salesforce
+    ChampionsMailer.new_champion(n).deliver
   end
 
   def set_up_lists
