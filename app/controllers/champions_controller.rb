@@ -10,6 +10,44 @@ class ChampionsController < ApplicationController
     @champion = Champion.new
   end
 
+  def linkedin_authorize
+    linkedin_connection = LinkedIn.new
+    nonce = session[:oauth_linked_nonce] = SecureRandom.hex
+    redirect_to linkedin_connection.authorize_url(linkedin_oauth_success_url, nonce)
+  end
+
+  def linkedin_oauth_success
+    linkedin_connection = LinkedIn.new
+    nonce = session.delete(:oauth_linked_nonce)
+    raise Exception.new 'Wrong nonce' unless nonce == params[:state]
+
+    if params[:error]
+      # Note: if user cancels, then params[:error] == 'user_cancelled_authorize'
+      flash[:error] = 'LinkedIn declined'
+      Rails.logger.error("LinkedIn authorization failed. error = #{params[:error]}, error_description = #{params[:error_description]}")
+    end
+
+    access_token = linkedin_connection.exchange_code_for_token(params[:code], linkedin_oauth_success_url)
+
+    # Note: the service_user_id, service_user_name, and service_user_url are LinkedIn's data that we get
+    # by calling into their API.  E.g. service_user_url maybe something like: https://www.linkedin.com/in/somelinkedinusername
+    if access_token
+      li_user = linkedin_connection.get_service_user_info(access_token)
+
+      @champion = Champion.new
+      @champion.first_name = li_user['service_user_first_name']
+      @champion.last_name = li_user['service_user_last_name']
+      @champion.linkedin_url = li_user['service_user_url']
+      session[:linkedin_access_token] = access_token # keeping it on the server, don't even want to give this to the user
+      # we might be able to pull in even more
+      @linkedin_present = true
+      render 'new'
+    else
+      Rails.logger.error('Error registering LinkedIn service for Champion. The access_token couldn\'t be retrieved using the code sent from LinkedIn')
+      raise Exception.new 'Failed getting access token for LinkedIn'
+    end
+  end
+
   def create
     champion = params[:champion].permit(
       :first_name,
@@ -17,6 +55,7 @@ class ChampionsController < ApplicationController
       :email,
       :phone,
       :linkedin_url,
+      :region,
       :braven_fellow,
       :braven_lc,
       :willing_to_be_contacted
@@ -41,9 +80,13 @@ class ChampionsController < ApplicationController
       render 'new'
       return
     end
+
+    n.access_token = session.delete(:linkedin_access_token)
+
     n.save
 
     n.create_on_salesforce
+    ChampionsMailer.new_champion(n).deliver
   end
 
   def set_up_lists
@@ -190,5 +233,67 @@ class ChampionsController < ApplicationController
       'Culinary Arts',
       'Creative Writing'
     ]
+  end
+end
+
+require 'nokogiri'
+
+class LinkedIn
+  def config
+    a = {}
+    a['api_key'] = ENV['LINKEDIN_API_KEY']
+    a['secret_key'] = ENV['LINKEDIN_API_SECRET']
+    a
+  end
+
+  def get_request(path, access_token)
+    http = Net::HTTP.new('api.linkedin.com', 443)
+    http.use_ssl = true
+    # http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+    request = Net::HTTP::Get.new(path)
+    request['Authorization'] = "Bearer #{access_token}"
+    response = http.request(request)
+
+    response
+  end
+
+  def get_service_user_info(access_token)
+    body = get_request('/v1/people/~:(id,first-name,last-name,public-profile-url,picture-url)', access_token).body
+    data = Nokogiri::XML(body)
+    Rails.logger.debug("### Registering LinkedIn service.  Data returned from LinkedIn API: id = #{data.css('id')[0].inspect}, first-name = #{data.css('first-name')[0].inspect}, public-profile-url = #{data.css('public-profile-url')[0].inspect}")
+
+    user = {}
+
+    user['service_user_id'] = data.css('id')[0].content
+    user['service_user_first_name'] = data.css('first-name')[0].content
+    user['service_user_last_name'] = data.css('last-name')[0].content
+    user['service_user_url'] = data.css('public-profile-url')[0].content unless data.css('public-profile-url')[0].nil? # Not sure what causes this, but sometimes its empty
+
+    user
+  end
+
+  def authorize_url(return_to, nonce)
+    "https://www.linkedin.com/oauth/v2/authorization?response_type=code&scope=r_emailaddress%20r_fullprofile&client_id=#{config['api_key']}&state=#{nonce}&redirect_uri=#{CGI.escape(return_to)}"
+  end
+
+  def exchange_code_for_token(code, redirect_uri)
+    http = Net::HTTP.new('www.linkedin.com', 443)
+    http.use_ssl = true
+    # http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+    request = Net::HTTP::Post.new('/oauth/v2/accessToken')
+    request.set_form_data(
+      'grant_type' => 'authorization_code',
+      'code' => code,
+      'redirect_uri' => redirect_uri,
+      'client_id' => config['api_key'],
+      'client_secret' => config['secret_key']
+    )
+    response = http.request(request)
+
+    info = JSON.parse response.body
+
+    info['access_token']
   end
 end

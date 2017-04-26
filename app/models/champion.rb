@@ -37,6 +37,7 @@ class Champion < ActiveRecord::Base
     contact['LinkedIn_URL__c'] = linkedin_url
     contact['Industry_Experience__c'] = industries.join(', ')
     contact['Fields_Of_Study__c'] = studies.join(', ')
+    contact['BZ_Region__c'] = region
 
     if was_new
       contact = client.create('Lead', contact)

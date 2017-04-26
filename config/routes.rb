@@ -24,6 +24,8 @@ BeyondzPlatform::Application.routes.draw do
 
   resources :resumes
 
+  get '/champions/linkedin_authorize', to: 'champions#linkedin_authorize', as: :linkedin_authorize
+  get '/champions/linkedin_oauth_success', to: 'champions#linkedin_oauth_success', as: :linkedin_oauth_success
   resources :champions
 
   get '/salesforce/change_apply_now', to: 'salesforce#change_apply_now'

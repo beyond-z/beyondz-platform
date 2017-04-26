@@ -9,6 +9,14 @@
 We aim to support Braven Fellows in growing their network by connecting them to professionals who can provide insight into their industry and workplace. Please complete this form to be added to our database of Braven Champions: you may be contacted via e-mail by Fellows requesting an informational interview. Thank you for your support! 
           </p>
 
+          <% if @linkedin_present %>
+            <p>We've filled the form with your Linked In account. Please check it over and submit to finalize!</p>
+          <% else %>
+            <p>
+            <a class="btn-primary" href="<%= linkedin_authorize_url %>">Sign up with your<br />LinkedIn account</a>
+            </p>
+          <% end %>
+
 <%= form_for :champion, :url => champions_path do |f| %>
   <%= hidden_field_tag 'referrer', @referrer %>
   <%= render :partial => 'shared/form_errors', locals: { object: @champion } %>
@@ -40,7 +48,6 @@ We aim to support Braven Fellows in growing their network by connecting them to 
     <br />
       <label><%= f.radio_button :braven_lc, :false, required: 'required' %> No</label>
   </label>
-
 
   <br />
   <br />
@@ -84,6 +91,24 @@ We aim to support Braven Fellows in growing their network by connecting them to 
   <label class="other">Other:
     <input type="text" class="form-field" name="champion[studies][]" />
   </label>
+
+
+  <br /><br />
+  <strong>If there are volunteer opportunities in one of the following locations, please select the one you would like to be contacted about, if any.</strong>
+    <div class="form-group">
+      <% areas = List.find_by_friendly_name((defined? list) ? list : 'bz_regions')
+         unless areas.nil?
+         areas.items.each_with_index do |region, idx| %>
+        <div>
+          <label>
+            <%= f.radio_button :region, region %>
+            <span><%= region %></span>
+          </label>
+        </div>
+      <% end %>
+      <% end %>
+    </div>
+
 
   <br /><br />
   <strong>Are you willing to be contacted by Braven Fellows who are interested in learning more about your career? </strong>
