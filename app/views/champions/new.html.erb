@@ -59,7 +59,7 @@ We aim to support Braven Fellows in growing their network by connecting them to 
   <strong class="script-only">In which industries do you work or have you worked in the past? Start typing to select an item, then add more. You may also enter your own.</strong>
   <br />
 
-  <input type="text" class="multi-complete script-only" id="industries" name="industries_csv" value="<%= params[:industries_csv] ? params[:industries_csv] : @champion.industries.join(', ') %>" />
+  <input type="text" class="multi-complete script-only" id="industries" name="industries_csv" value="<%= params[:industries_csv] ? params[:industries_csv] : (@champion.industries.nil? ? '' : @champion.industries.join(', ')) %>" />
 
   <div class="long-list-of-checkboxes">
   <% @industries.sort.map(&:strip).each do |industry| %>
@@ -81,7 +81,7 @@ We aim to support Braven Fellows in growing their network by connecting them to 
   <strong class="script-only">What was your undergraduate and/or graduate fields of study? Start typing to select an item, then add more. You may also enter your own.</strong>
   <br />
 
-  <input type="text" class="multi-complete script-only" id="studies" name="studies_csv" value="<%= params[:studies_csv] ? params[:studies_csv] : @champion.studies.join(', ') %>" />
+  <input type="text" class="multi-complete script-only" id="studies" name="studies_csv" value="<%= params[:studies_csv] ? params[:studies_csv] : (@champion.studies.nil? ? '' : @champion.studies.join(', ')) %>" />
   <div class="long-list-of-checkboxes">
   <% @fields.sort.map(&:strip).each do |field| %>
     <label><input type="checkbox" value="<%= field %>" name="champion[studies][]"
