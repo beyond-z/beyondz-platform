@@ -36,7 +36,7 @@ class Champion < ActiveRecord::Base
     contact['Phone'] = phone
     if was_new
       # company on Lead is required...
-      contact['Company'] = company
+      contact['Company'] = company.blank? ? 'N/A' : company
     else
       # but custom on Contact
       contact['Company__c'] = company

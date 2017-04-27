@@ -38,6 +38,7 @@ class ChampionsController < ApplicationController
       @champion.first_name = li_user['first_name']
       @champion.last_name = li_user['last_name']
       @champion.email = li_user['email_address']
+      @champion.company = li_user['company']
       @champion.linkedin_url = li_user['user_url']
       @champion.studies = li_user['majors']
       @champion.industries = li_user['industries']
@@ -278,8 +279,16 @@ class LinkedIn
     user['user_url'] = data['publicProfileUrl']
     user['majors'] = get_majors(data['educations'])
     user['industries'] = get_industries(data['threeCurrentPositions'])
+    user['company'] = get_current_employer(data['threeCurrentPositions'])
 
     user
+  end
+
+  def get_current_employer(node)
+    current_employer_node = node['values'].find { |job| job['isCurrent'] == true } unless node['_total'] == 0
+    current_employer_company_node = current_employer_node['company'] unless current_employer_node.nil?
+    current_employer = current_employer_company_node['name'] unless current_employer_company_node.nil?
+    current_employer
   end
 
   def get_majors(educations_node)
