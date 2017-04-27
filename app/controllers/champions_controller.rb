@@ -295,7 +295,7 @@ class LinkedIn
     majors = []
     return majors if educations_node['_total'] == 0
     educations_node['values'].each do |n|
-      majors.push(n['fieldOfStudy'])
+      majors.push(n['fieldOfStudy']) unless majors.include?(n['fieldOfStudy'])
     end
     majors
   end
@@ -306,7 +306,7 @@ class LinkedIn
     pn['values'].each do |n|
       company = n['company']
       next if company.nil?
-      industries.push(company['industry'])
+      industries.push(company['industry']) unless industries.include?(company['industry'])
     end
     industries
   end
