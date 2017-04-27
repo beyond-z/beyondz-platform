@@ -11,14 +11,23 @@ We aim to support Braven Fellows in growing their network by connecting them to 
 
           <% if @linkedin_present %>
             <p>We've filled the form with your Linked In account. Please check it over and submit to finalize!</p>
-          <% else %>
+          <% elsif !params[:showform] %>
             <p>
             <a class="btn-primary" href="<%= linkedin_authorize_url %>">Sign up with your<br />LinkedIn account</a>
             </p>
+            <p>Or, <a href="?showform=true">sign up with an email address</a></p>
           <% end %>
 
+<%
+  if params[:showform] || @linkedin_present || params[:first_name]
+%>
+<div>
+<% else %>
+<div style="display: none;">
+<% end %>
 <%= form_for :champion, :url => champions_path do |f| %>
   <%= hidden_field_tag 'referrer', @referrer %>
+  <%= hidden_field_tag 'showform', params[:showform] %>
   <%= render :partial => 'shared/form_errors', locals: { object: @champion } %>
 
   <%= f.text_field :first_name, :class => 'form-control', required: 'required', placeholder: 'First Name'  %>
@@ -122,6 +131,7 @@ We aim to support Braven Fellows in growing their network by connecting them to 
 
   <%= f.submit 'Register', :class => 'button-primary' %>
 <% end %>
+</div>
 
         </div>
       </section>
