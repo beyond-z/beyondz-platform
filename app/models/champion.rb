@@ -34,20 +34,14 @@ class Champion < ActiveRecord::Base
     contact['LastName'] = last_name.split.map(&:capitalize).join(' ')
     contact['Email'] = email
     contact['Phone'] = phone
-    if was_new
-      # company on Lead is required...
-      contact['Company'] = company.blank? ? 'N/A' : company
-    else
-      # but custom on Contact
-      contact['Company__c'] = company
-    end
+    contact['Company__c'] = company
     contact['LinkedIn_URL__c'] = linkedin_url
     contact['Industry_Experience__c'] = industries.join(', ')
     contact['Fields_Of_Study__c'] = studies.join(', ')
     contact['BZ_Region__c'] = region
 
     if was_new
-      contact = client.create('Lead', contact)
+      contact = client.create('Contact', contact)
       salesforce_id = contact['Id']
     else
       client.update('Contact', salesforce_id, contact)
@@ -57,13 +51,7 @@ class Champion < ActiveRecord::Base
     cm['CampaignId'] = campaign_id
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
-
-    if was_new
-      cm['LeadId'] = salesforce_id
-    else
-      cm['ContactId'] = salesforce_id
-    end
-
+    cm['ContactId'] = salesforce_id
     client.create('CampaignMember', cm)
   end
 end
