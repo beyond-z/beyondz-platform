@@ -267,7 +267,7 @@ class LinkedIn
   end
 
   def get_service_user_info(access_token)
-    body = get_request('/v1/people/~:(id,first-name,last-name,public-profile-url,picture-url,email-address,three-current-positions,industry,educations)?format=json', access_token).body
+    body = get_request('/v1/people/~:(id,first-name,last-name,public-profile-url,picture-url,email-address,three-past-positions,three-current-positions,industry,educations)?format=json', access_token).body
     data = JSON.parse(body)
 
     user = {}
@@ -278,7 +278,7 @@ class LinkedIn
     user['email_address'] = data['emailAddress']
     user['user_url'] = data['publicProfileUrl']
     user['majors'] = get_majors(data['educations'])
-    user['industries'] = get_industries(data['threeCurrentPositions'])
+    user['industries'] = get_industries(data['threeCurrentPositions'], data['threePastPositions'])
     user['company'] = get_current_employer(data['threeCurrentPositions'])
 
     user
@@ -295,19 +295,28 @@ class LinkedIn
     majors = []
     return majors if educations_node['_total'] == 0
     educations_node['values'].each do |n|
-      majors.push(n['fieldOfStudy'])
+      majors.push(n['fieldOfStudy']) unless majors.include?(n['fieldOfStudy'])
     end
     majors
   end
 
-  def get_industries(pn)
+  def get_industries(pn, past)
     industries = []
-    return industries if pn['_total'] == 0
-    pn['values'].each do |n|
-      company = n['company']
-      next if company.nil?
-      industries.push(company['industry'])
+    if pn['_total'] != 0
+      pn['values'].each do |n|
+        company = n['company']
+        next if company.nil?
+        industries.push(company['industry']) unless industries.include?(company['industry'])
+      end
     end
+    if past['_total'] != 0
+      past['values'].each do |n|
+        company = n['company']
+        next if company.nil?
+        industries.push(company['industry']) unless industries.include?(company['industry'])
+      end
+    end
+
     industries
   end
 
