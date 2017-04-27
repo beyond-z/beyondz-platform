@@ -35,9 +35,12 @@ class ChampionsController < ApplicationController
       li_user = linkedin_connection.get_service_user_info(access_token)
 
       @champion = Champion.new
-      @champion.first_name = li_user['service_user_first_name']
-      @champion.last_name = li_user['service_user_last_name']
-      @champion.linkedin_url = li_user['service_user_url']
+      @champion.first_name = li_user['first_name']
+      @champion.last_name = li_user['last_name']
+      @champion.email = li_user['email_address']
+      @champion.linkedin_url = li_user['user_url']
+      @champion.studies = li_user['majors']
+      @champion.industries = li_user['industries']
       session[:linkedin_access_token] = access_token # keeping it on the server, don't even want to give this to the user
       # we might be able to pull in even more
       @linkedin_present = true
@@ -54,6 +57,7 @@ class ChampionsController < ApplicationController
       :last_name,
       :email,
       :phone,
+      :company,
       :linkedin_url,
       :region,
       :braven_fellow,
@@ -77,6 +81,9 @@ class ChampionsController < ApplicationController
     n = Champion.new(champion)
     if !n.valid? || n.errors.any?
       @champion = n
+      if session[:linkedin_access_token]
+        @linkedin_present = true
+      end
       render 'new'
       return
     end
@@ -259,19 +266,45 @@ class LinkedIn
   end
 
   def get_service_user_info(access_token)
-    body = get_request('/v1/people/~:(id,first-name,last-name,public-profile-url,picture-url)', access_token).body
-    data = Nokogiri::XML(body)
-    Rails.logger.debug("### Registering LinkedIn service.  Data returned from LinkedIn API: id = #{data.css('id')[0].inspect}, first-name = #{data.css('first-name')[0].inspect}, public-profile-url = #{data.css('public-profile-url')[0].inspect}")
+    body = get_request('/v1/people/~:(id,first-name,last-name,public-profile-url,picture-url,email-address,three-current-positions,industry,educations)?format=json', access_token).body
+    data = JSON.parse(body)
 
     user = {}
 
-    user['service_user_id'] = data.css('id')[0].content
-    user['service_user_first_name'] = data.css('first-name')[0].content
-    user['service_user_last_name'] = data.css('last-name')[0].content
-    user['service_user_url'] = data.css('public-profile-url')[0].content unless data.css('public-profile-url')[0].nil? # Not sure what causes this, but sometimes its empty
+    user['user_id'] = data['id']
+    user['first_name'] = data['firstName']
+    user['last_name'] = data['lastName']
+    user['email_address'] = data['emailAddress']
+    user['user_url'] = data['publicProfileUrl']
+    user['majors'] = get_majors(data['educations'])
+    user['industries'] = get_industries(data['threeCurrentPositions'])
 
     user
   end
+
+  def get_majors(educations_node)
+    majors = []
+    return majors if educations_node['_total'] == 0
+    educations_node['values'].each do |n|
+      majors.push(n['fieldOfStudy'])
+    end
+    majors
+  end
+
+  def get_industries(pn)
+    industries = []
+    return industries if pn['_total'] == 0
+    pn['values'].each do |n|
+      company = n['company']
+      next if company.nil?
+      industries.push(company['industry'])
+    end
+    industries
+  end
+
+
+
+
 
   def authorize_url(return_to, nonce)
     "https://www.linkedin.com/oauth/v2/authorization?response_type=code&scope=r_emailaddress%20r_fullprofile&client_id=#{config['api_key']}&state=#{nonce}&redirect_uri=#{CGI.escape(return_to)}"

@@ -34,6 +34,13 @@ class Champion < ActiveRecord::Base
     contact['LastName'] = last_name.split.map(&:capitalize).join(' ')
     contact['Email'] = email
     contact['Phone'] = phone
+    if was_new
+      # company on Lead is required...
+      contact['Company'] = company
+    else
+      # but custom on Contact
+      contact['Company__c'] = company
+    end
     contact['LinkedIn_URL__c'] = linkedin_url
     contact['Industry_Experience__c'] = industries.join(', ')
     contact['Fields_Of_Study__c'] = studies.join(', ')
