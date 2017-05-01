@@ -13,7 +13,9 @@ We aim to support Braven Fellows in growing their network by connecting them to 
             <p>We've filled the form with your Linked In account. Please check it over and submit to finalize!</p>
           <% elsif !params[:showform] %>
             <p>
-            <a class="btn-primary" href="<%= linkedin_authorize_url %>">Sign up with your<br />LinkedIn account</a>
+            <a class="btn-primary btn-linkedin" href="<%= linkedin_authorize_url %>">
+              Sign up with your<br />LinkedIn account
+            </a>
             </p>
             <p>Or, <a href="?showform=true">sign up with an email address</a></p>
           <% end %>
