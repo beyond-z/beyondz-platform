@@ -5,17 +5,18 @@
         <div class="col-sm-6">
           <h1>Volunteer with us</h1>
 
-          <p class="lead">
-We aim to support Braven Fellows in growing their network by connecting them to professionals who can provide insight into their industry and workplace. Please signup below to be added to our database of Braven Champions. You may be contacted via e-mail by Fellows requesting an informational interview. Thank you for your support!
-          </p>
-
-          <% if @linkedin_present %>
-            <p>We've filled the form with your Linked In account. Please check it over and submit to finalize!</p>
-          <% elsif !params[:showform] %>
+          <% if params[:showform] %>
+            Please fill out the form below and click "Register".  Thank you for your support!
+          <% elsif @linkedin_present %>
+            <p>We've filled the form with information from your LinkedIn account. Please fill out the rest, check it over, and click "Register".  Thank you for your support!</p>
+          <% else %>
+            <p class="lead">
+              We aim to support Braven Fellows in growing their network by connecting them to professionals who can provide insight into their industry and workplace. Please signup below to be added to our database of Braven Champions. You may be contacted via e-mail by Fellows requesting an informational interview. Thank you for your support!
+            </p>
             <p>
-            <a class="btn-primary btn-linkedin" href="<%= linkedin_authorize_url %>">
-              Sign up with your<br />LinkedIn account
-            </a>
+              <a class="btn-primary btn-linkedin" href="<%= linkedin_authorize_url %>">
+                Sign up with your<br />LinkedIn account
+              </a>
             </p>
             <p>Or, <a href="?showform=true">sign up with an email address</a></p>
           <% end %>
