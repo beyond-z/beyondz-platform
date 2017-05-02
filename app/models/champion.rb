@@ -17,7 +17,7 @@ class Champion < ActiveRecord::Base
 
     salesforce = BeyondZ::Salesforce.new
     client = salesforce.get_client
-    campaign = salesforce.load_cached_campaign(cm.CampaignId, client)
+    campaign = salesforce.load_cached_campaign(campaign_id, client)
     existing_salesforce_id = salesforce.exists_in_salesforce(email)
     was_new = false
 
