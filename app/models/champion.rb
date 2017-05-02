@@ -58,6 +58,5 @@ class Champion < ActiveRecord::Base
     client = sf.get_client
     cm['ContactId'] = salesforce_id
     client.create('CampaignMember', cm)
-
   end
 end
