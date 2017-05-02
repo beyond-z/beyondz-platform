@@ -43,7 +43,9 @@
   <br />
   <%= f.text_field :phone, :class => 'form-control', placeholder: 'Phone'  %>
   <br />
-  <%= f.text_field :company, :class => 'form-control', placeholder: 'Company'  %>
+  <%= f.text_field :company, :class => 'form-control', required: 'required', placeholder: 'Company'  %>
+  <br />
+  <%= f.text_field :job_title, :class => 'form-control', required: 'required', placeholder: 'Job Title'  %>
   <br />
   <%= f.text_field :linkedin_url, :class => 'form-control', placeholder: 'LinkedIn URL'  %>
   <br />

@@ -39,9 +39,11 @@ class ChampionsController < ApplicationController
       @champion.last_name = li_user['last_name']
       @champion.email = li_user['email_address']
       @champion.company = li_user['company']
+      @champion.job_title = li_user['job_title']
       @champion.linkedin_url = li_user['user_url']
       @champion.studies = li_user['majors']
       @champion.industries = li_user['industries']
+
       session[:linkedin_access_token] = access_token # keeping it on the server, don't even want to give this to the user
       # we might be able to pull in even more
       @linkedin_present = true
@@ -59,6 +61,7 @@ class ChampionsController < ApplicationController
       :email,
       :phone,
       :company,
+      :job_title,
       :linkedin_url,
       :region,
       :braven_fellow,
@@ -280,6 +283,7 @@ class LinkedIn
     user['majors'] = get_majors(data['educations'])
     user['industries'] = get_industries(data['threeCurrentPositions'], data['threePastPositions'])
     user['company'] = get_current_employer(data['threeCurrentPositions'])
+    user['job_title'] = get_job_title(data['threeCurrentPositions'])
 
     user
   end
@@ -289,6 +293,12 @@ class LinkedIn
     current_employer_company_node = current_employer_node['company'] unless current_employer_node.nil?
     current_employer = current_employer_company_node['name'] unless current_employer_company_node.nil?
     current_employer
+  end
+
+  def get_job_title(node)
+    current_employer_node = node['values'].find { |job| job['isCurrent'] == true } unless node['_total'] == 0
+    job_title = current_employer_node['title'] unless current_employer_node.nil?
+    job_title
   end
 
   def get_majors(educations_node)
