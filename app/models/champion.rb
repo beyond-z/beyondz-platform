@@ -17,7 +17,7 @@ class Champion < ActiveRecord::Base
 
     salesforce = BeyondZ::Salesforce.new
     client = salesforce.get_client
-
+    campaign = salesforce.load_cached_campaign(cm.CampaignId, client)
     existing_salesforce_id = salesforce.exists_in_salesforce(email)
     was_new = false
 
@@ -29,7 +29,7 @@ class Champion < ActiveRecord::Base
     end
 
     contact = {}
-
+    contact['OwnerId'] = campaign.OwnerId if was_new
     contact['FirstName'] = first_name.split.map(&:capitalize).join(' ')
     contact['LastName'] = last_name.split.map(&:capitalize).join(' ')
     contact['Email'] = email
@@ -39,6 +39,9 @@ class Champion < ActiveRecord::Base
     contact['Industry_Experience__c'] = industries.join(', ')
     contact['Fields_Of_Study__c'] = studies.join(', ')
     contact['BZ_Region__c'] = region
+    contact['Signup_Date__c'] = created_at
+    contact['User_Type__c'] = 'Champion'
+
 
     if was_new
       contact = client.create('Contact', contact)
@@ -53,5 +56,6 @@ class Champion < ActiveRecord::Base
     client = sf.get_client
     cm['ContactId'] = salesforce_id
     client.create('CampaignMember', cm)
+
   end
 end
