@@ -35,6 +35,7 @@ class Champion < ActiveRecord::Base
     contact['Email'] = email
     contact['Phone'] = phone
     contact['Company__c'] = company
+    contact['Title'] = job_title
     contact['LinkedIn_URL__c'] = linkedin_url
     contact['Industry_Experience__c'] = industries.join(', ')
     contact['Fields_Of_Study__c'] = studies.join(', ')
