@@ -23,8 +23,10 @@ class ChampionsController < ApplicationController
 
     if params[:error]
       # Note: if user cancels, then params[:error] == 'user_cancelled_authorize'
-      flash[:error] = 'LinkedIn declined'
+      flash[:error] = 'You declined LinkedIn, please use your email address to sign up.'
       Rails.logger.error("LinkedIn authorization failed. error = #{params[:error]}, error_description = #{params[:error_description]}")
+      redirect_to new_champion_url(:showform => true)
+      return
     end
 
     access_token = linkedin_connection.exchange_code_for_token(params[:code], linkedin_oauth_success_url)
