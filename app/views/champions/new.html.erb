@@ -3,16 +3,17 @@
     <div class="section-container">
       <section>
         <div class="col-sm-6">
-          <h1>Volunteer with us</h1>
+          <h1>Become A Braven Champion</h1>
 
           <% if params[:showform] %>
             <p class="lead">Please fill out the form below and click "Register". Thank you for your support!</p>
           <% elsif @linkedin_present %>
             <p class="lead">We've pre-filled the form with information from your LinkedIn account. Please look it over, fill out the rest, and click "Register". Thank you for your support!</p>
           <% else %>
-            <p class="lead">
+            <!-- We give them this information on bebraven.org before they enter here, so keep it super sparse and streamlined here.
+             <p class="lead">
               We aim to support Braven Fellows in growing their network by connecting them to professionals who can provide insight into their industry and workplace. Please signup below to be added to our database of Braven Champions. You may be contacted via e-mail by Fellows requesting an informational interview. Thank you for your support!
-            </p>
+            </p>-->
             <p>
               <a class="btn-primary btn-linkedin" href="<%= linkedin_authorize_url %>">
                 Sign up with your<br />LinkedIn account
