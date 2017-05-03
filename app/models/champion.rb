@@ -58,6 +58,7 @@ class Champion < ActiveRecord::Base
     client = sf.get_client
 
     cm['ContactId'] = salesforce_id
+    cm['Candidate_Status__c'] = 'Confirmed'
 
     begin
       client.create('CampaignMember', cm)
