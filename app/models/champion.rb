@@ -64,7 +64,7 @@ class Champion < ActiveRecord::Base
       client.create('CampaignMember', cm)
     rescue Databasedotcom::SalesForceError => e
       # already a campaign member, no problem swallowing the error
-      Rails.logger.debug(e)
+      Rails.logger.warn(e)
       @already_member = true # to silence rubocop's complaint that I suppressed it
     end
   end
