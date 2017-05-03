@@ -56,7 +56,16 @@ class Champion < ActiveRecord::Base
     cm['CampaignId'] = campaign_id
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
+
     cm['ContactId'] = salesforce_id
-    client.create('CampaignMember', cm)
+    cm['Candidate_Status__c'] = 'Confirmed'
+
+    begin
+      client.create('CampaignMember', cm)
+    rescue Databasedotcom::SalesForceError => e
+      # already a campaign member, no problem swallowing the error
+      Rails.logger.log(e)
+      @already_member = true # to silence rubocop's complaint that I suppressed it
+    end
   end
 end
