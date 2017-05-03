@@ -3,17 +3,22 @@
     <div class="section-container">
       <section>
         <div class="col-sm-6">
-          <h1>Volunteer with us</h1>
+          <h1>Become A Braven Champion</h1>
 
-          <p class="lead">
-We aim to support Braven Fellows in growing their network by connecting them to professionals who can provide insight into their industry and workplace. Please complete this form to be added to our database of Braven Champions: you may be contacted via e-mail by Fellows requesting an informational interview. Thank you for your support! 
-          </p>
-
-          <% if @linkedin_present %>
-            <p>We've filled the form with your Linked In account. Please check it over and submit to finalize!</p>
-          <% elsif !params[:showform] %>
+          <% if params[:showform] %>
+            <p class="lead">Please fill out the form below and click "Register". Thank you for your support!</p>
+          <% elsif @linkedin_present %>
+            <p class="lead">We've pre-filled the form with information from your LinkedIn account. Please look it over, fill out the rest, and click "Register". Thank you for your support!</p>
+          <% else %>
+            <!-- We give them this information on bebraven.org before they enter here, so keep it super sparse and streamlined here.
+             <p class="lead">
+              We aim to support Braven Fellows in growing their network by connecting them to professionals who can provide insight into their industry and workplace. Please signup below to be added to our database of Braven Champions. You may be contacted via e-mail by Fellows requesting an informational interview. Thank you for your support!
+            </p>-->
+            <br />
             <p>
-            <a class="btn-primary" href="<%= linkedin_authorize_url %>">Sign up with your<br />LinkedIn account</a>
+              <a class="btn-primary btn-linkedin" href="<%= linkedin_authorize_url %>">
+                Sign up with your<br />LinkedIn account
+              </a>
             </p>
             <p>Or, <a href="?showform=true">sign up with an email address</a></p>
           <% end %>
@@ -38,7 +43,9 @@ We aim to support Braven Fellows in growing their network by connecting them to 
   <br />
   <%= f.text_field :phone, :class => 'form-control', placeholder: 'Phone'  %>
   <br />
-  <%= f.text_field :company, :class => 'form-control', placeholder: 'Company'  %>
+  <%= f.text_field :company, :class => 'form-control', required: 'required', placeholder: 'Company'  %>
+  <br />
+  <%= f.text_field :job_title, :class => 'form-control', required: 'required', placeholder: 'Job Title'  %>
   <br />
   <%= f.text_field :linkedin_url, :class => 'form-control', placeholder: 'LinkedIn URL'  %>
   <br />
@@ -121,7 +128,6 @@ We aim to support Braven Fellows in growing their network by connecting them to 
     </div>
 
 
-  <br /><br />
   <strong>Are you willing to be contacted by Braven Fellows who are interested in learning more about your career? </strong>
   <br />
     <label><%= f.radio_button :willing_to_be_contacted, :true, required: 'required' %> Yes</label>

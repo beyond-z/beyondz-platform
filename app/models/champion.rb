@@ -17,7 +17,7 @@ class Champion < ActiveRecord::Base
 
     salesforce = BeyondZ::Salesforce.new
     client = salesforce.get_client
-
+    campaign = salesforce.load_cached_campaign(campaign_id, client)
     existing_salesforce_id = salesforce.exists_in_salesforce(email)
     was_new = false
 
@@ -29,25 +29,24 @@ class Champion < ActiveRecord::Base
     end
 
     contact = {}
-
+    contact['OwnerId'] = campaign.OwnerId if was_new
     contact['FirstName'] = first_name.split.map(&:capitalize).join(' ')
     contact['LastName'] = last_name.split.map(&:capitalize).join(' ')
     contact['Email'] = email
     contact['Phone'] = phone
-    if was_new
-      # company on Lead is required...
-      contact['Company'] = company.blank? ? 'N/A' : company
-    else
-      # but custom on Contact
-      contact['Company__c'] = company
-    end
+    contact['Company__c'] = company
+    contact['Title'] = job_title
     contact['LinkedIn_URL__c'] = linkedin_url
     contact['Industry_Experience__c'] = industries.join(', ')
     contact['Fields_Of_Study__c'] = studies.join(', ')
     contact['BZ_Region__c'] = region
+    contact['Signup_Date__c'] = created_at
+    contact['User_Type__c'] = 'Champion'
+    contact['Volunteer_Information__c'] = 'Champion'
+
 
     if was_new
-      contact = client.create('Lead', contact)
+      contact = client.create('Contact', contact)
       salesforce_id = contact['Id']
     else
       client.update('Contact', salesforce_id, contact)
