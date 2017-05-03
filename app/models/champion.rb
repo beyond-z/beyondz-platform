@@ -57,11 +57,7 @@ class Champion < ActiveRecord::Base
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
 
-    if was_new
-      cm['LeadId'] = salesforce_id
-    else
-      cm['ContactId'] = salesforce_id
-    end
+    cm['ContactId'] = salesforce_id
 
     begin
       client.create('CampaignMember', cm)
