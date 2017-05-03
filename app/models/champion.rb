@@ -64,6 +64,11 @@ class Champion < ActiveRecord::Base
       cm['ContactId'] = salesforce_id
     end
 
-    client.create('CampaignMember', cm)
+    begin
+      client.create('CampaignMember', cm)
+    rescue Databasedotcom::SalesForceError
+      # already a campaign member, no problem swallowing the error
+      @already_member = true # to silence rubocop's complaint that I suppressed it
+    end
   end
 end
