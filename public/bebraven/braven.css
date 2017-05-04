@@ -2117,6 +2117,9 @@ font-weight: 400;
 	text-shadow: none;
 	transition: all 0.5s ease 0s;
 }
+a.btn-primary.btn-linkedin {
+  background: #0084bf;
+}
 .button-primary.large,
 button.btn-primary.large, 
 button.btn.large, 
@@ -2140,6 +2143,9 @@ button.btn-primary:hover,
 a.btn-primary:hover {
 	background:#000;
 	color:#fff !important;
+}
+a.btn-primary.btn-linkedin:hover {
+  background: #0073b1;
 }
 
 input.btn-secondary,

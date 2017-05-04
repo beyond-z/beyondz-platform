@@ -1,0 +1,8 @@
+<%
+require 'salesforce'
+sf = BeyondZ::Salesforce.new
+%><%= sf.get_new_champion_email_text.
+  gsub('{!Contact.FirstName}', @recipient.first_name).
+  gsub('{!Contact.LastName}', @recipient.last_name).
+  gsub('{!User.Email}', ENV["CHAMPION_CONTACT_EMAIL"])
+%>

@@ -6,9 +6,15 @@
           <h1>Registration complete</h1>
 
           <p class="lead">
-          <p>Thank you for volunteering to be a Braven Champion! Braven Fellows may reach out to you requesting informational interviews. We just ask that you respond and work with them to set up a phone call or meeting. Thank you for supporting our future leaders! </p>
+            <!-- <p>Thank you for volunteering to be a Braven Champion! Braven Fellows may reach out to you requesting informational interviews. 
+                    We just ask that you respond and work with them to set up a phone call or meeting. Thank you for supporting our future leaders!</p> -->
+            <p>Thank you for signing up to be a Braven Champion! We will be in touch as volunteer opportunities become available.
+               If you indicated that you would like to be contacted by Braven Fellows requesting informational interviews,
+               we just ask that you respond to them to set up a phone call or meeting. Thank you for supporting our future leaders!</p>
 
-          <p>If you have any questions now or in the future, please reach out to Tess at <a href="mailto:tess@bebraven.org">tess@bebraven.org</a>.</p>
+            <p>If you have any questions now or in the future, please reach out to <%= ENV["CHAMPION_CONTACT_NAME"] %> at 
+              <a href="mailto:<%= ENV["CHAMPION_CONTACT_EMAIL"] %>"><%= ENV["CHAMPION_CONTACT_EMAIL"] %></a>.
+            </p>
           </p>
         </div>
       </section>

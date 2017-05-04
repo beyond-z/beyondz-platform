@@ -61,6 +61,11 @@ class Enrollment < ActiveRecord::Base
     self.last_name = last_name.split.map(&:capitalize).join(' ') unless last_name.nil?
   end
 
+  before_save :strip_birthdate
+  def strip_birthdate
+    self.birthdate = birthdate.strip unless birthdate.nil?
+  end
+
   before_save :set_gpa_if_zero
   def set_gpa_if_zero
     self.gpa = 'NA' if gpa.blank? || gpa == '0'

@@ -11,11 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170324162100) do
+ActiveRecord::Schema.define(version: 20170427112137) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "pg_stat_statements"
 
   create_table "assignment_definitions", force: true do |t|
     t.string   "title"
@@ -74,6 +73,9 @@ ActiveRecord::Schema.define(version: 20170324162100) do
     t.string   "studies",                 array: true
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "region"
+    t.string   "access_token"
+    t.string   "company"
   end
 
   create_table "coach_students", force: true do |t|
