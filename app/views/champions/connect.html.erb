@@ -1,0 +1,119 @@
+<script>/* this needs to be there because some broken script adds a google analytics reference before the first script tag, and the next one in the file needs to have nothing inserted before it! */</script>
+<div id="new-champion-page">
+  <div class="plank plain-lt">
+    <div class="section-container">
+      <section>
+        <div class="col-sm-6">
+          <h1>Braven Champions</h1>
+
+          <p class="lead">
+            This is a very short intro and a prompt to begin searching for volunteers.
+          </p>
+
+          <form>
+            <div>
+              Industry / Profession:
+                <input name="industries_csv" class="multi-complete" type="text" />
+                <script type="text/json"><%= @industries.to_json.html_safe %></script>
+              <input value="Search" type="submit" />
+            </div>
+          </form>
+
+          OR
+
+          <form>
+            <div>
+              Major / Field of Study:
+                <input name="studies_csv" class="multi-complete" type="text" />
+                <script type="text/json"><%= @fields.to_json.html_safe %></script>
+              <input value="Search" type="submit" />
+            </div>
+          </form>
+
+          <div>
+          People who went to your school
+          Companies that people work at
+          </div>
+
+          <% if @results && @results.any? %>
+            <h3>Search Results</h3>
+
+            <% @results.each do |champ| %>
+              <input type="checkbox" style="display: none;" />
+              <a onclick="
+                window.open(this.href);
+                this.previousElementSibling.style.display = '';
+                return false;
+              " href="<%= champ.linkedin_url %>"><%= champ.first_name %> <%= champ.last_name %></a>
+              <br />
+            <% end %>
+          <% end %>
+
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script> 
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+<script>
+$(document).ready(function($) {
+	// Generate multiple-autocomplete input:
+	
+	function split( val ) {
+		return val.split( /,\s*/ );
+	}
+	function extractLast( term ) {
+		return split( term ).pop();
+	}
+	
+	$('.multi-complete').each(function(){
+		var availableTags = [];
+		$(this).next('script').each(function(){
+                    var obj = JSON.parse($(this).text());
+                    for(var a = 0; a < obj.length; a++)
+			availableTags.push(obj[a]);
+		});
+		$(this)
+			// don't navigate away from the field on tab when selecting an item
+			.on( "keydown", function( event ) {
+				if ( event.keyCode === $.ui.keyCode.TAB && this.isOpenedByUser ) {
+					event.preventDefault();
+				}
+			})
+			.autocomplete({
+				minLength: 0,
+				source: function( request, response ) {
+					// delegate back to autocomplete, but extract the last term
+					response( $.ui.autocomplete.filter( availableTags, extractLast( request.term ) ) );
+				},
+				focus: function() {
+					// prevent value inserted on focus
+					return false;
+				},
+				open: function( event, ui ) {
+                                  this.isOpenedByUser = true;
+                                },
+				close: function( event, ui ) {
+                                  this.isOpenedByUser = false;
+                                },
+				select: function( event, ui ) {
+					var terms = split( this.value );
+					// remove the current input
+					terms.pop();
+					// add the selected item
+					terms.push( ui.item.value );
+					// add placeholder to get the comma-and-space at the end
+					terms.push( "" );
+					this.value = terms.join( ", " );
+					return false;
+				}
+		});
+	});
+
+});
+</script>

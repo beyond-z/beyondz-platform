@@ -24,6 +24,7 @@ BeyondzPlatform::Application.routes.draw do
 
   resources :resumes
 
+  get '/connect', to: 'champions#connect', as: :champions_connect
   get '/champions/linkedin_authorize', to: 'champions#linkedin_authorize', as: :linkedin_authorize
   get '/champions/linkedin_oauth_success', to: 'champions#linkedin_oauth_success', as: :linkedin_oauth_success
   resources :champions

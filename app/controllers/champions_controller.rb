@@ -6,6 +6,31 @@ class ChampionsController < ApplicationController
   def index
   end
 
+  before_filter :authenticate_user!, :only => [:connect]
+  def connect
+    # FIXME: prompt linked in access from user
+
+    @results = []
+
+    if params[:studies_csv]
+      studies = params[:studies_csv].split(',').map(&:strip).reject(&:empty?)
+      studies.each do |s|
+        Champion.where("studies @> ?","{#{s}}").each do |c|
+          @results << c
+        end
+      end
+    end
+
+    if params[:industries_csv]
+      industries = params[:industries_csv].split(',').map(&:strip).reject(&:empty?)
+      industries.each do |s|
+        Champion.where("industries @> ?","{#{s}}").each do |c|
+          @results << c
+        end
+      end
+    end
+  end
+
   def new
     @champion = Champion.new
   end
