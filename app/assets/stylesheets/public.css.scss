@@ -324,3 +324,20 @@
 .form-control {
   height: 45px;
 }
+
+form .invalid-message {
+  display: none;
+}
+
+form.submitted-invalid .invalid-message {
+  display: block;
+}
+
+.submitted-invalid :required:invalid {
+  background-color: #ffcccc;
+}
+
+.submitted-invalid input[type=checkbox]:required:invalid,
+.submitted-invalid input[type=radio]:required:invalid {
+  background-color: red;
+}

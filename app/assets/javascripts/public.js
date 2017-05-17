@@ -94,3 +94,19 @@ function BZ_formSubmitWaitHelper(form) {
 
   return true;
 }
+
+$(document).ready(function() {
+  $("form").submit(function() {
+    var valid = true;
+    for(var i = 0; i < this.elements.length; i++)
+      if(this.elements[i].validity && this.elements[i].validity.valid === false) {
+        valid = false;
+        this.elements[i].scrollIntoView();
+        this.elements[i].focus();
+        break;
+      }
+    if(!valid) {
+      $(this).addClass("submitted-invalid");
+    }
+  });
+});
