@@ -67,6 +67,9 @@ $(document).ready(function() {
 });
 
 function BZ_formSubmitWaitHelper(form) {
+  if(!BZFormIsValid(form))
+    return true; // it isn't valid, proceed to the next step
+
   var now = Date.now();
   var lastClick = form.getAttribute("data-last-click");
   if(lastClick)
@@ -94,3 +97,25 @@ function BZ_formSubmitWaitHelper(form) {
 
   return true;
 }
+
+function BZFormIsValid(form) {
+  var valid = true;
+  for(var i = 0; i < form.elements.length; i++)
+    if(form.elements[i].validity && form.elements[i].validity.valid === false) {
+      valid = false;
+      form.elements[i].scrollIntoView();
+      form.elements[i].focus();
+      break;
+    }
+
+  return valid;
+}
+
+$(document).ready(function() {
+  $("form").submit(function() {
+    var valid = BZFormIsValid(this);
+    if(!valid) {
+      $(this).addClass("submitted-invalid");
+    }
+  });
+});
