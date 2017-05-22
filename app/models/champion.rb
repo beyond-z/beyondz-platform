@@ -17,6 +17,7 @@ class Champion < ActiveRecord::Base
 
     salesforce = BeyondZ::Salesforce.new
     client = salesforce.get_client
+    client.materialize('Contact') # Added this b/c sometimes when accessing an existing record before the fields below were added, was getting: ArgumentError (No attribute named LinkedIn_URL__c)
     campaign = salesforce.load_cached_campaign(campaign_id, client)
     existing_salesforce_id = salesforce.exists_in_salesforce(email)
     was_new = false
@@ -54,9 +55,6 @@ class Champion < ActiveRecord::Base
 
     cm = {}
     cm['CampaignId'] = campaign_id
-    sf = BeyondZ::Salesforce.new
-    client = sf.get_client
-
     cm['ContactId'] = salesforce_id
     cm['Candidate_Status__c'] = 'Confirmed'
 
