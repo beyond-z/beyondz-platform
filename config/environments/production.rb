@@ -34,7 +34,7 @@ BeyondzPlatform::Application.configure do
 
   config.assets.precompile += [
     # compile main files (JS and CSS)
-    'main.js', 'application.*', 'admin.*', 'public.*', 'login.*',
+    'main.js', 'application.*', 'admin.*', 'public.*', 'login.*', 'minimal.*',
     #compile subdirectories (JS only, CSS children are 'required')
     'application/*.js', 'admin/*.js', 'public/*.js', 'login/*.js'
   ]
