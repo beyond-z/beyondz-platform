@@ -26,6 +26,11 @@ class UsersController < ApplicationController
     end
   end
 
+  def sso_discovery
+    self.class.layout "minimal"
+
+  end
+
   # We need to exempt this from csrf checking so the CAS server can
   # POST to it. While the operation is theoretically suitable for GET,
   # POST keeps information from appearing in the server logs.
