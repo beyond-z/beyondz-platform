@@ -133,7 +133,14 @@ class SalesforceController < ApplicationController
             setup_in_osqa(user)
           end
 
-          lms.sync_user_logins(user)
+          if campaign.Program_Site__c == 'National Louis University'
+            user_student_id = nil
+            enrollment = Enrollment.find_by_user_id(user.id)
+            user_student_id = enrollment.student_id unless enrollment.nil?
+            lms.sync_user_logins(user, "#{user_student_id}@nlu.edu")
+          else
+            lms.sync_user_logins(user, user.email)
+          end
 
           type = 'STUDENT'
           if campaign.Type == 'Leadership Coaches'
