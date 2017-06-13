@@ -1,0 +1,36 @@
+@import 'application';
+
+hr {
+  margin-top: 0px;
+}
+
+#sso_discovery {
+
+  margin: 1em 2em;
+  text-align: center;
+
+  h2 {
+    font-size: 100%;
+  }
+
+  a {
+    display: inline-block;
+    vertical-align: top;
+    width: 10em;
+    height: 10em;
+    margin: 1em;
+    border: solid 1px #ccc;
+    box-sizing: border-box;
+    padding: 1em;
+    text-align: center;
+
+    line-height: 8em; /* height - vertical padding */
+
+    img {
+      vertical-align: middle;
+      display: inline;
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+}

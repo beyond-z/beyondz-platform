@@ -48,6 +48,7 @@ BeyondzPlatform::Application.routes.draw do
   post '/users/reset', to: 'users#reset', as: 'user_reset'
   get '/users/clear_session_cookie', to: 'users#clear_session_cookie'
   get '/users/not_on_lms', to: 'users#not_on_lms'
+  get '/users/sso_discovery', to: 'users#sso_discovery'
   get '/users/confirm', to: 'users#confirm', as: 'user_confirm'
   post '/users/confirm_slot', to: 'users#confirm_part_2', as: 'user_confirm_part_2'
   post '/users/confirm', to: 'users#save_confirm', as: 'user_save_confirm'
