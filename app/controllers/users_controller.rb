@@ -27,7 +27,7 @@ class UsersController < ApplicationController
   end
 
   def sso_discovery
-    self.class.layout 'minimal'
+    render layout: 'minimal'
   end
 
   # We need to exempt this from csrf checking so the CAS server can
