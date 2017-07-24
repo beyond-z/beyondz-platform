@@ -212,7 +212,7 @@ class Admin::UsersController < Admin::ApplicationController
     @user.password = params[:user][:password] unless params[:user][:password].nil? || params[:user][:password].empty?
 
     if params[:sync_with_canvas]
-      @lms.sync_user_logins(@user)
+      @lms.sync_user_logins(@user, @user.email)
     end
 
     @user.save!
@@ -341,7 +341,7 @@ class Admin::UsersController < Admin::ApplicationController
     # then sync with canvas (it needs to know the id first to have
     # a unique sis id)
     if params[:sync_with_canvas]
-      @lms.sync_user_logins(@user)
+      @lms.sync_user_logins(@user, @user.email)
       # and save again so it stores the lms user ID in the object
       @user.save!
     end
@@ -499,7 +499,7 @@ class Admin::UsersController < Admin::ApplicationController
 
     initialize_lms_interop
 
-    @lms.sync_user_logins(@user)
+    @lms.sync_user_logins(@user, @user.email)
 
     @lms.sync_user_course_enrollment(@user, 7, coaching_beyond, section_coaching_beyond)
     @lms.sync_user_course_enrollment(@user, 3, overdrive, section_overdrive)
