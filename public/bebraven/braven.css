@@ -1,47 +1,23 @@
-/*
-Theme Name: Braven 2015 Theme
-Author: Black Box
-Description: The 2015 theme for Braven
-Version:3.0
-*/
-
-
-
-
-#login-container a {
-    color: white;
-}
-
-
 body {
 background:#fff;
 font-family:Georgia, "Times New Roman", Times, serif;	
 }
-
 
 p {
 	margin: 0 0 24px;
 	font-size:1.2em;
 }
 
-
-
 a {
-
     color:#eb3b45;
- 
 }
-
 
 .upperheader_red {
 background:#eb3b45;
     padding-bottom: 8px;
     padding-left: 0;
     padding-right: 0;
-    padding-top: 8px;
-	
-
-	
+    padding-top: 8px;	
 }
 
 .upperheader_red h4 {
@@ -57,8 +33,6 @@ font-size:1em;
 	padding-right:1.3em;
 	padding-left:1.3em;
 }
-
-
 
 
 .upperheader_red .social a {
@@ -98,241 +72,27 @@ font-size:1em;
 	height:18px;
 }
 
-
+#login-container a {
+  color: white;
+}
 
 #topheader {
-	 background-color: #ffffff;
-	  
-    width: 100%;
+	background-color: #ffffff;
+  width: 100%;
 	height:60px;
 	position:relative;
-	padding:8px 0;
-	max-width:1000px;
-	margin:0 auto;
+  padding:8px 0;
+  max-width:1000px;
+  margin:0 auto;
 	padding-right:1.3em;
 	padding-left:1.3em;
 }
 
-
-
-/**
- * 4.2 Navigation
- * ----------------------------------------------------------------------------
- */
-
-
-
-/* Navbar */
-.navbar {
-	background-color: #f7f5e7;
-	margin: 0 auto;
-	max-width: 1600px;
-	width: 100%;
-	z-index:9999;
-}
-
-
-.navigationbar {
-font-family:TradeGothic, Impact, sans-serif;
-text-transform:uppercase;	
-
-}
-
-.navigationbar {
-   float:right;
-    margin-bottom: 0;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 2px;
-   
-}
-
-.navigationbar::after {
-    clear: both;
-}
-
-
-
-ul.nav-menu,
-div.nav-menu > ul {
-	margin: 0;
-	padding: 0 0 0 0;
-}
-
-.nav-menu li {
-	display: inline-block;
-	position: relative;
-}
-
-.nav-menu .sub-menu li {
-	display: block;
-}
-
-.nav-menu li a {
-    display: block;
-    font-size: 16px;
-    line-height: 1;
-    padding-bottom: 10px;
-	padding-top: 10px;
-    padding-left: 12px;
-    padding-right: 12px;
-	color:#000;
-	z-index: 99999;
-}
-
-
-.nav-menu li:hover > a,
-.nav-menu li a:hover,
-.nav-menu li:focus > a,
-.nav-menu li a:focus {
-	color: #eb3b45;
-	
-}
-
-.nav-menu .sub-menu,
-.nav-menu .children {
-	background-color: #ffffff;
-	border: none;
-	border-top: 0;
-	padding: 0;
-	position: absolute;
-	left: -2px;
-	z-index: 99999;
-	height: 1px;
-	width: 1px;
-	overflow: hidden;
-	clip: rect(1px, 1px, 1px, 1px);
-	-webkit-border-bottom-right-radius: 5px;
--webkit-border-bottom-left-radius: 5px;
--moz-border-radius-bottomright: 5px;
--moz-border-radius-bottomleft: 5px;
-border-bottom-right-radius: 5px;
-border-bottom-left-radius: 5px;
-}
-
-.nav-menu .sub-menu ul,
-.nav-menu .children ul {
-	border-left: 0;
-	left: 100%;
-	top: 0;
-}
-
-ul.nav-menu ul a,
-.nav-menu ul ul a {
-	color: #000000;
-	margin: 0;
-	width: 200px;
-}
-
-ul.nav-menu ul a:hover,
-.nav-menu ul ul a:hover,
-ul.nav-menu ul a:focus,
-.nav-menu ul ul a:focus {
-	color: #eb3b45;
-}
-
-ul.nav-menu li:hover > ul,
-.nav-menu ul li:hover > ul,
-ul.nav-menu .focus > ul,
-.nav-menu .focus > ul {
-	clip: inherit;
-	overflow: inherit;
-	height: inherit;
-	width: inherit;
-}
-
-.nav-menu .current_page_item > a,
-.nav-menu .current-menu-item > a {
-	color: #eb3b45;
-	
-}
-
-.nav-menu .current_page_ancestor > a,
-.nav-menu .current-menu-ancestor > a {
-	color: #000;
-}
-
-
-.nav-menu li.apply_top_btn a{
-background:#d1ab5c;
-color:#fff !important;
-padding-left:20px;
-padding-right:20px;
--moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	border-radius: 3px;
-	transition: all 0.5s ease 0s;
-}
-
-.nav-menu li.apply_top_btn a:hover {
-		background:#000000;
-}
-
-.nav-menu li.donate_top_btn a{
-background:#eb3b45;
-color:#fff !important;
-padding-left:20px;
-padding-right:20px;
--moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	border-radius: 3px;
-	transition: all 0.5s ease 0s;
-}
-
-
-.nav-menu li.donate_top_btn a:hover {
-	background:#000000;
-}
-
-/* For links to functionality that we'll keep on beyondz servers.  Hidden for now, but we can enable them by flipping this style. */
-.nav-menu li.beyondz_menu_item {
-        display:none;
-}
-
-/*END Navigation */
-
-
-
-
-/*Mobile Navigation */
-	
-	
-	#topheader a.menuicon
-{
-	display:none;
-	background: center center no-repeat transparent;
-	background-image: url(images/menu_icon.png);
-	
-	width: 40px;
-	height: 40px;
-	position: absolute;
-	top: 10px;
-	right: 10px;
-}
-
-
-#close-mobile-btn {
-color:#FFF;	
-position: absolute;
-  top: 6px;
-  right: 8px;
-  font-size: 36px;
-  font-weight: bold;
-  text-decoration: none;
- z-index:2;
- line-height:.5em;
-}
-
-#blogo {
+#topheader #blogo {
 float:left;	
 width:185px;
-height:40px;
+height:41px;
 }
-
-
-
-
-/*END Mobile Navigation */
 
 
 #home_top_content,

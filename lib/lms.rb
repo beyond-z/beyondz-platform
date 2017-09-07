@@ -105,7 +105,7 @@ module BeyondZ
       # already having the email address
 
       # Not necessarily an error but for now i'll just make it throw
-      raise "Couldn't create user #{user.email} in canvas #{response.body}" if new_canvas_user['id'].nil?
+      raise "Couldn't create user #{username} <#{user.email}> in canvas #{response.body}" if new_canvas_user['id'].nil?
 
       user.canvas_user_id = new_canvas_user['id']
 
