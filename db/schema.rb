@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170502122137) do
+ActiveRecord::Schema.define(version: 20170912152443) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,7 +60,33 @@ ActiveRecord::Schema.define(version: 20170502122137) do
     t.string   "calendar_url"
   end
 
-  create_table "champions", force: true do |t|
+  create_table "champion_contacts", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "champion_id"
+    t.boolean  "champion_replied"
+    t.boolean  "fellow_get_to_talk_to_champion"
+    t.text     "why_not_talk_to_champion"
+    t.integer  "would_fellow_recommend_champion"
+    t.text     "what_did_champion_do_well"
+    t.text     "what_could_champion_improve"
+    t.boolean  "reminder_requested"
+    t.datetime "fellow_survey_answered_at"
+    t.text     "inappropriate_champion_interaction"
+    t.text     "inappropriate_fellow_interaction"
+    t.boolean  "champion_get_to_talk_to_fellow"
+    t.text     "why_not_talk_to_fellow"
+    t.integer  "how_champion_felt_conversaion_went"
+    t.text     "what_did_fellow_do_well"
+    t.text     "what_could_fellow_improve"
+    t.text     "champion_comments"
+    t.datetime "champion_survey_answered_at"
+    t.text     "fellow_comments"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "champions", id: false, force: true do |t|
+    t.integer  "id",                      null: false
     t.string   "first_name"
     t.string   "last_name"
     t.string   "email"
@@ -69,8 +95,8 @@ ActiveRecord::Schema.define(version: 20170502122137) do
     t.boolean  "braven_fellow"
     t.boolean  "braven_lc"
     t.boolean  "willing_to_be_contacted"
-    t.string   "industries",              array: true
-    t.string   "studies",                 array: true
+    t.string   "industries",                           array: true
+    t.string   "studies",                              array: true
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "region"

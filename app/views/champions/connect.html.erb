@@ -10,6 +10,11 @@
             This is a very short intro and a prompt to begin searching for volunteers.
           </p>
 
+          <p>
+            <input type="checkbox" />
+            I agree to our Terms of Service and will behave professionally in my interactions with Braven Volunteers.
+          </p>
+
           <form>
             <div>
               Industry / Profession:
@@ -29,25 +34,88 @@
               <input value="Search" type="submit" />
             </div>
           </form>
+        </div>
+        <div class="col-sm-12">
 
+          <!--
           <div>
           People who went to your school
           Companies that people work at
           </div>
+          -->
 
           <% if @results && @results.any? %>
             <h3>Search Results</h3>
 
-            <% @results.each do |champ| %>
-              <input type="checkbox" style="display: none;" />
-              <a onclick="
-                window.open(this.href);
-                this.previousElementSibling.style.display = '';
+            <p>First, click someone's name to view their LinkedIn profile.</p>
+
+            <p>Then, if you want to contact them, return here and click the checkbox next to their name.</p>
+
+            <form method="POST" action="<%= request_champion_contact_path %>" onsubmit="
+              var ele = this.querySelectorAll('input[type=checkbox]');
+              var checked = 0;
+              for(var i = 0; i < ele.length; i++)
+                if(ele[i].checked)
+                  checked += 1;
+              if(checked == 0) {
+                alert('To contact a champion, first click their name and see their LinkedIn profile. Then, come back to this tab and check the box that will appear next to their name.');
                 return false;
-              " href="<%= champ.linkedin_url %>"><%= champ.first_name %> <%= champ.last_name %></a>
-              <br />
+              }
+              if(checked > 3) {
+                alert('You can only contact up to three champions at a time. Please uncheck any more than that.');
+                return false;
+              }
+              return true;
+            ">
+            <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+
+            <table class="zebra">
+              <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Company</th>
+                <th>Title</th>
+                <th>Industries</th>
+                <th>Fields</th>
+              </tr>
+            <% @results.each do |champ| %>
+              <tr>
+                <td>
+                  <input type="checkbox" value="<%=champ.id%>" name="champion_ids[]" style="display: none;" />
+                </td>
+                <td>
+                  <a onclick="
+                    window.open(this.href);
+                    this.parentNode.previousElementSibling.children[0].style.display = '';
+                    return false;
+                  " href="<%= champ.linkedin_url %>"><%= champ.first_name %> <%= champ.last_name %> <%= champ.id %></a>
+                </td>
+                <td>
+                  <%= champ.company %>
+                </td>
+                <td>
+                  <%= champ.job_title %>
+                </td>
+                <td>
+                  <ul>
+                  <% champ.industries.each do |i| %>
+                    <li><%= i %></li>
+                  <% end %>
+                  </ul>
+                </td>
+                <td>
+                  <ul>
+                  <% champ.studies.each do |s| %>
+                    <li><%= s %></li>
+                  <% end %>
+                  </ul>
+                </td>
+              </tr>
             <% end %>
           <% end %>
+          </table>
+            <input type="submit" value="Request Contact" />
+          </form>
 
         </div>
       </section>
@@ -117,3 +185,9 @@ $(document).ready(function($) {
 
 });
 </script>
+
+<style>
+  .zebra tr:nth-child(odd) {
+    background-color: #eee;
+  }
+</style>
