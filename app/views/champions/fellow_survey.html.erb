@@ -1,0 +1,87 @@
+<script>/* this needs to be there because some broken script adds a google analytics reference before the first script tag, and the next one in the file needs to have nothing inserted before it! */</script>
+<div id="new-champion-page">
+  <div class="plank plain-lt">
+    <div class="section-container">
+      <section>
+        <div class="col-sm-6">
+          <h1>Braven Champion Survey</h1>
+
+          <p class="lead">
+            We'd like to know a little about how your interaction went with the Braven Champion.
+          </p>
+
+        </div>
+        <div class="col-sm-12">
+          <%= form_for @contact, :url => champion_fellow_survey_save_path do |f| %>
+            Did <%= @champion.name %> reply to your request to connect?<br />
+            <div>
+              <%= f.radio_button :champion_replied, "true" %>
+              Yes
+              <div class="subquestion">
+                Did you get to talk?<br />
+                  <div>
+                  <%= f.radio_button :fellow_get_to_talk_to_champion, "true" %>
+                  Yes
+                    <div class="subquestion">
+                      Would you recommend <%= @champion.name %> to other Fellows with similar interests as yours?
+                        <br />
+                        Less Likely
+                          <label><%= f.radio_button :would_fellow_recommend_champion, "1" %> 1</label>
+                          <label><%= f.radio_button :would_fellow_recommend_champion, "2" %> 2</label>
+                          <label><%= f.radio_button :would_fellow_recommend_champion, "3" %> 3</label>
+                          <label><%= f.radio_button :would_fellow_recommend_champion, "4" %> 4</label>
+                          <label><%= f.radio_button :would_fellow_recommend_champion, "5" %> 5</label>
+                        More Likely
+                      <br />
+                      What did <%= @champion.name %> do well in your conversation?
+                        <br />
+                        <%= f.text_area :what_did_champion_do_well %>
+                      <br />
+                      What could <%= @champion.name %> improve next time?
+                        <br />
+                        <%= f.text_area :what_could_champion_improve %>
+                    </div>
+                  </div>
+                  <div>
+                  <%= f.radio_button :fellow_get_to_talk_to_champion, "false" %>
+                  No
+                  <div class="subquestion">
+                    Why not?
+                      <br />
+                      <%= f.text_area :why_not_talk_to_champion %>
+                  </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+              <%= f.radio_button :champion_replied, "false" %>
+              No
+                <div class="subquestion">
+                Would you like to try reaching out to <%= @champion.name %> once more?
+                <br />
+                  <%= f.radio_button :reminder_requested, "true" %>
+                  Yes
+                  <br />
+                  <%= f.radio_button :reminder_requested, "false" %>
+                  No
+                </div>
+              </div>
+            <%= f.submit 'Save' %>
+          <% end %>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+
+<style>
+.subquestion {
+  padding-left: 2em;
+  display: none;
+}
+
+:checked ~ .subquestion {
+  display: block;
+}
+</style>

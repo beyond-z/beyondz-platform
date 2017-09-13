@@ -1,4 +1,6 @@
 class Champion < ActiveRecord::Base
+  self.primary_key = "id"
+
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :email, presence: true
@@ -65,5 +67,9 @@ class Champion < ActiveRecord::Base
       Rails.logger.warn(e)
       @already_member = true # to silence rubocop's complaint that I suppressed it
     end
+  end
+
+  def name
+    "#{first_name} #{last_name}"
   end
 end

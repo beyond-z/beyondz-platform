@@ -6,6 +6,97 @@ class ChampionsController < ApplicationController
   def index
   end
 
+  before_filter :authenticate_user!, :only => [:connect]
+  def connect
+    # FIXME: prompt linked in access from user
+
+    @results = []
+
+    if params[:view_all]
+      @results = Champion.all
+    end
+
+    if params[:studies_csv]
+      studies = params[:studies_csv].split(',').map(&:strip).reject(&:empty?)
+      studies.each do |s|
+        Champion.where("studies @> ?","{#{s}}").each do |c|
+          @results << c
+        end
+      end
+    end
+
+    if params[:industries_csv]
+      industries = params[:industries_csv].split(',').map(&:strip).reject(&:empty?)
+      industries.each do |s|
+        Champion.where("industries @> ?","{#{s}}").each do |c|
+          @results << c
+        end
+      end
+    end
+
+    @results = @results.sort.uniq
+  end
+
+  def request_contact
+    # the champion ids are passed by the user checking their boxes
+    champion_ids = params[:champion_ids]
+
+    champion_ids.each do |cid|
+      recipient = Champion.find(cid)
+
+      ChampionContact.create(
+        :user_id => current_user.id,
+        :champion_id => cid
+      )
+
+      hit = recipient.industries.any? ? recipient.industries.first : recipient.studies.fist
+
+      ChampionsMailer.connect_request(recipient, current_user, hit).deliver
+    end
+  end
+
+  def fellow_survey
+    @contact = ChampionContact.find(params[:id])
+    @champion = Champion.find(@contact.champion_id)
+  end
+
+  def champion_survey
+    @contact = ChampionContact.find(params[:id])
+    @fellow = User.find(@contact.user_id)
+  end
+
+  def fellow_survey_save
+    @contact = ChampionContact.find(params[:id])
+    @contact.update_attributes(params[:champion_contact].permit(
+      :champion_replied,
+      :fellow_get_to_talk_to_champion,
+      :why_not_talk_to_champion,
+      :would_fellow_recommend_champion,
+      :what_did_champion_do_well,
+      :what_could_champion_improve,
+      :reminder_requested,
+      :inappropriate_champion_interaction,
+      :fellow_comments
+    ))
+    @contact.fellow_survey_answered_at = DateTime.now
+    @contact.save
+  end
+
+  def champion_survey_save
+    @contact = ChampionContact.find(params[:id])
+    @contact.update_attributes(params[:champion_contact].permit(
+      :inappropriate_fellow_interaction,
+      :champion_get_to_talk_to_fellow,
+      :why_not_talk_to_fellow,
+      :how_champion_felt_conversaion_went,
+      :what_did_fellow_do_well,
+      :what_could_fellow_improve,
+      :champion_comments
+    ))
+    @contact.champion_survey_answered_at = DateTime.now
+    @contact.save
+  end
+
   def new
     @champion = Champion.new
   end
