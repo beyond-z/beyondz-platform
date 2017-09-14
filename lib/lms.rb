@@ -80,13 +80,21 @@ module BeyondZ
     def create_event(event_object)
       open_canvas_http
 
-      request = Net::HTTP::Post.new(
-        "/api/v1/calendar_events",
+      request = Net::HTTP::Put.new(
+        "/api/v1/calendar_events/#{event_object['parent_event_id']}",
         initheader = {'Content-Type' => 'application/json'}
       )
       arg = {}
       arg['access_token'] = Rails.application.secrets.canvas_access_token
-      arg['calendar_event'] = event_object
+      child_event_data = {}
+      ced = {}
+      ced['start_at'] = event_object['start_at']
+      ced['end_at'] = event_object['end_at']
+      ced['context_code'] = event_object['context_code']
+      child_event_data["0"] = ced
+      new_event_object = {}
+      new_event_object['child_event_data'] = child_event_data
+      arg['calendar_event'] = new_event_object
       request.body = arg.to_json
 
       response = @canvas_http.request(request)
