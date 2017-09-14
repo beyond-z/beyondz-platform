@@ -7,15 +7,30 @@
           <h1>Braven Champions</h1>
 
           <p class="lead">
-            This is a very short intro and a prompt to begin searching for volunteers.
+            Welcome to the Braven Champions Database! Search for friends of Braven who work in your desired career field. You will be prompted to reach out to these professionals to request an informational interview.
           </p>
+
+          <% if @active_requests.any? %>
+            <h3>You have the following active contacts:</h3>
+            <ol>
+            <% @active_requests.each do |ar| %>
+            <% champion = Champion.find(ar.champion_id) %>
+              <li><a href="<%= champion_fellow_survey_path(ar.id) %>"><%= champion.name %></a></li>
+            <% end %>
+            </ol>
+          <% end %>
+
+          <% if @active_requests.count >= 3 %>
+            <p>You can only contact up to three people at a time.  Chat with them, then complete the surveys linked above before trying to reach anyone else.</p>
+
+          <% else %>
 
           <p>
-            <input type="checkbox" />
-            I agree to our Terms of Service and will act professionally in my interactions with Braven Volunteers.
+            <input id="terms-check" <%= @search_attempted ? 'checked' : '' %> type="checkbox" />
+            I agree to our <a href="/champions/terms" target="_BLANK">Terms of Service</a> and will act professionally in my interactions with Braven Volunteers.
           </p>
 
-          <form>
+          <form onsubmit="return checkTerms();">
             <div>
               Industry / Profession:
                 <input name="industries_csv" class="multi-complete" type="text" />
@@ -26,7 +41,7 @@
 
           OR
 
-          <form>
+          <form onsubmit="return checkTerms();">
             <div>
               Major / Field of Study:
                 <input name="studies_csv" class="multi-complete" type="text" />
@@ -34,6 +49,8 @@
               <input value="Search" type="submit" />
             </div>
           </form>
+
+          <% end %>
         </div>
         <div class="col-sm-12">
 
@@ -43,6 +60,13 @@
           Companies that people work at
           </div>
           -->
+
+          <% if @search_attempted && @results.empty? %>
+            <h3>Search Results</h3>
+
+            <p>No results were found for your search.</p>
+
+          <% end %>
 
           <% if @results && @results.any? %>
             <h3>Search Results</h3>
@@ -81,14 +105,16 @@
             <% @results.each do |champ| %>
               <tr>
                 <td>
-                  <input type="checkbox" value="<%=champ.id%>" name="champion_ids[]" style="display: none;" />
+                  <input onclick="
+                    document.getElementById('request-contact-button').style.display = '';
+                  " type="checkbox" value="<%=champ.id%>" name="champion_ids[]" style="display: none;" />
                 </td>
                 <td>
                   <a onclick="
                     window.open(this.href);
                     this.parentNode.previousElementSibling.children[0].style.display = '';
                     return false;
-                  " href="<%= champ.linkedin_url %>"><%= champ.first_name %> <%= champ.last_name %> <%= champ.id %></a>
+                  " href="<%= champ.linkedin_url %>"><%= champ.first_name %> <%= champ.last_name %></a>
                 </td>
                 <td>
                   <%= champ.company %>
@@ -112,10 +138,10 @@
                 </td>
               </tr>
             <% end %>
-          <% end %>
           </table>
-            <input type="submit" value="Request Contact" />
+            <input id="request-contact-button" style="display: none;" type="submit" class="button-primary" value="Request Contact" />
           </form>
+          <% end %>
 
         </div>
       </section>
@@ -184,6 +210,14 @@ $(document).ready(function($) {
 	});
 
 });
+function checkTerms() {
+  if(!document.getElementById("terms-check").checked) {
+    alert("You must agree to the Terms of Service to perform a search.");
+    return false;
+  }
+
+  return true;
+}
 </script>
 
 <style>

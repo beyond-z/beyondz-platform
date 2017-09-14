@@ -1,0 +1,54 @@
+<script>/* this needs to be there because some broken script adds a google analytics reference before the first script tag, and the next one in the file needs to have nothing inserted before it! */</script>
+<div id="new-champion-page">
+  <div class="plank plain-lt">
+    <div class="section-container">
+      <section>
+        <div class="col-sm-6">
+          <h1>Braven Champions</h1>
+
+          <p class="lead">
+            Now, email the Champion.
+          </p>
+        </div>
+        <div class="col-sm-12">
+          <p>Next,  reach out to them by email and ask to chat!</p>
+
+          <p>Here's a template you can use to get started. You'll want to edit it to best suit you, then copy/paste it into your email program to initiate contact. <strong>Be sure to read this and personalize any placeholders in the text before you send the email.</strong></p>
+
+
+          <div style="padding: 2em; border: solid 2px #ccc;">
+
+          To: <strong><%= @recipient.name %> &lt;<%= @recipient.email %>&gt;</strong>
+          <br />
+          Subject: Would love to connect!
+          <br /><br />
+          <div>
+            <p>Hi <%= @recipient.name %>,</p>
+
+            <p>I was looking through Braven’s volunteer list for people who work in <%= @hit %> and your name came up as a promising lead. I would appreciate a chance to ask you some questions about your career. Are you available to chat at any of the following times?</p>
+              <p>* &lt;insert date/time&gt;<br />
+              * &lt;insert date/time&gt;<br />
+              * &lt;insert date/time&gt;</p>
+
+            <p>For some background on me, please have a look at my LinkedIn profile here: &lt;Your linked in&gt;</p>
+
+            <p>I look forward to connecting!</p>
+
+            <p>Thank you,<br />
+            <%= current_user.name %></p>
+          </div>
+
+          </div>
+
+          <% if @others.any? %>
+            <div style="text-align: center">
+            <a class="button-primary" href="<%= champions_contact_path(@others[0], :others => @others[1 .. -1]) %>">Next Champion</a>
+            </div>
+          <% end %>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+
