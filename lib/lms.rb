@@ -19,6 +19,19 @@ module BeyondZ
       info
     end
 
+    def get_events(course_id)
+      open_canvas_http
+
+      request = Net::HTTP::Get.new(
+        "/api/v1/calendar_events?all_events=true&context_codes[]=course_#{course_id}&access_token=#{Rails.application.secrets.canvas_access_token}"
+      )
+      response = @canvas_http.request(request)
+      info = get_all_from_pagination(response)
+
+      info
+    end
+
+
     def destroy_user(user_id)
       open_canvas_http
 
@@ -47,12 +60,59 @@ module BeyondZ
       response
     end
 
+    def set_event(event_object)
+      open_canvas_http
+
+      request = Net::HTTP::Put.new(
+        "/api/v1/calendar_events/#{event_object['event_id']}",
+        initheader = {'Content-Type' => 'application/json'}
+      )
+      arg = {}
+      arg['access_token'] = Rails.application.secrets.canvas_access_token
+      arg['calendar_event'] = event_object.except('event_id')
+      request.body = arg.to_json
+
+      response = @canvas_http.request(request)
+
+      response
+    end
+
+    def create_event(event_object)
+      open_canvas_http
+
+      request = Net::HTTP::Post.new(
+        "/api/v1/calendar_events",
+        initheader = {'Content-Type' => 'application/json'}
+      )
+      arg = {}
+      arg['access_token'] = Rails.application.secrets.canvas_access_token
+      arg['calendar_event'] = event_object
+      request.body = arg.to_json
+
+      response = @canvas_http.request(request)
+
+      response
+    end
+
+
     def commit_new_due_dates(email, changed)
       changed.each do |key, value|
         self.set_due_dates(value)
       end
       StaffNotifications.canvas_due_dates_updated(email).deliver
     end
+
+    def commit_new_events(email, changed)
+      changed.each do |key, value|
+        if value['event_id'].nil?
+           self.create_event(value.except('event_id'))
+        else
+          self.set_event(value)
+        end
+      end
+      StaffNotifications.canvas_events_updated(email).deliver
+    end
+
 
     def get_courses
       open_canvas_http
@@ -352,6 +412,11 @@ module BeyondZ
       end
 
       section_info[section_name]
+    end
+
+    def get_section_by_id(course_id, section_id)
+      read_sections(course_id)
+      return @section_info_by_id[course_id][section_id.to_i]
     end
 
     def get_page_data(course_id, user_id = nil)

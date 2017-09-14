@@ -48,6 +48,11 @@ class StaffNotifications < ActionMailer::Base
     mail(to: email, subject: 'Due date upload complete')
   end
 
+  def canvas_events_updated(email)
+    mail(to: email, subject: 'Event upload complete')
+  end
+
+
   def salesforce_report_ready(email, success, message)
     @success = success
     @message = message
