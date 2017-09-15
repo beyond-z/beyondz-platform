@@ -17,52 +17,6 @@ class Admin::EventsController < Admin::ApplicationController
     helper.delay.get_events(params[:email], params[:course][:course_id])
   end
 
-  def csv_events_export(course_id, events)
-    lms = BeyondZ::LMS.new
-    CSV.generate do |csv|
-      header = []
-      header << 'Event ID (do not change)'
-      header << 'Course ID (do not change)'
-      header << 'Parent (do not change)'
-      header << 'Section Name'
-      header << 'Title'
-      header << 'Start At'
-      header << 'End At'
-      header << 'Description (HTML)'
-      header << 'Location Name'
-      header << 'Location Address'
-
-      csv << header
-
-      events.each do |a|
-        exportable = []
-
-        section = ''
-        if a['context_code'].starts_with? 'course_section_'
-          section = lms.get_section_by_id(course_id, a['context_code']['course_section_'.length .. -1])
-          if section.nil?
-            section = ''
-          else
-            section = section['name']
-          end
-        end
-
-        exportable << a['id']
-        exportable << a['context_code']
-        exportable << a['parent_event_id']
-        exportable << section
-        exportable << a['title']
-        exportable << export_date_translation(a['start_at'])
-        exportable << export_date_translation(a['end_at'])
-        exportable << a['description']
-        exportable << a['location_name']
-        exportable << a['location_address']
-
-        csv << exportable
-      end
-    end
-  end
-
   def set_events
     @user_email = params[:email]
     # view render
@@ -217,6 +171,74 @@ class Admin::EventsController < Admin::ApplicationController
     end
     dt.utc.iso8601 # do the utc conversion on our end to ensure canvas doesn't try to
   end
+end
+
+class BadDateException < Exception
+end
+
+class BadEventException < Exception
+end
+
+class BadSectionNameException < Exception
+end
+
+class DuplicateSectionNameException < Exception
+end
+
+class EventDownloaderHelper
+  def get_events(email, course_id)
+      lms = BeyondZ::LMS.new
+
+      events = lms.get_events(course_id)
+
+      StaffNotifications.canvas_events_ready(email, csv_events_export(course_id, events)).deliver
+  end
+
+  def csv_events_export(course_id, events)
+    lms = BeyondZ::LMS.new
+    CSV.generate do |csv|
+      header = []
+      header << 'Event ID (do not change)'
+      header << 'Course ID (do not change)'
+      header << 'Parent (do not change)'
+      header << 'Section Name'
+      header << 'Title'
+      header << 'Start At'
+      header << 'End At'
+      header << 'Description (HTML)'
+      header << 'Location Name'
+      header << 'Location Address'
+
+      csv << header
+
+      events.each do |a|
+        exportable = []
+
+        section = ''
+        if a['context_code'].starts_with? 'course_section_'
+          section = lms.get_section_by_id(course_id, a['context_code']['course_section_'.length .. -1])
+          if section.nil?
+            section = ''
+          else
+            section = section['name']
+          end
+        end
+
+        exportable << a['id']
+        exportable << a['context_code']
+        exportable << a['parent_event_id']
+        exportable << section
+        exportable << a['title']
+        exportable << export_date_translation(a['start_at'])
+        exportable << export_date_translation(a['end_at'])
+        exportable << a['description']
+        exportable << a['location_name']
+        exportable << a['location_address']
+
+        csv << exportable
+      end
+    end
+  end
 
   # This is the translation when we're exporting from Canvas.
   #
@@ -244,26 +266,5 @@ class Admin::EventsController < Admin::ApplicationController
     # import side based on the date and assuming wall time is specified by the user.
     dt.strftime('%Y-%m-%d %H:%M %Z').sub('S', '').sub('D', '')
   end
-end
 
-class BadDateException < Exception
-end
-
-class BadEventException < Exception
-end
-
-class BadSectionNameException < Exception
-end
-
-class DuplicateSectionNameException < Exception
-end
-
-class EventDownloaderHelper
-  def get_events(email, course_id)
-    lms = BeyondZ::LMS.new
-
-    events = lms.get_events(course_id)
-
-    StaffNotifications.canvas_events_ready(email, csv_events_export(course_id, events)).deliver
-  end
 end
