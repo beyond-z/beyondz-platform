@@ -20,7 +20,7 @@
             </ol>
           <% end %>
 
-          <% if @active_requests.count >= @max_allowed %>
+          <% if @max_allowed == 0 %>
             <p>You can only contact up to two people at a time.  Chat with them, then complete the surveys linked above before trying to reach anyone else.</p>
 
           <% else %>
