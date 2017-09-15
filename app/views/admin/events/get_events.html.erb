@@ -2,6 +2,9 @@
 
 <%= form_for :course do |f| %>
   <%= f.select :course_id, options_for_select(@courses) %>
+  <br /><br />
+  <p>Your email address: <input type="email" name="email" /></p>
+  <p>(the spreadsheet will be emailed to you when it is ready)</p>
   <%= submit_tag 'Get Events' %>
 <% end %>
 

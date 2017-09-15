@@ -78,7 +78,7 @@ BeyondzPlatform::Application.routes.draw do
     post '/assignments/set_due_dates', to: 'assignments#do_set_due_dates'
 
     get '/events/get_events', to: 'events#get_events', as: 'get_events'
-    post '/events/get_events', to: 'events#download_events', defaults: { format: 'csv' }
+    post '/events/get_events', to: 'events#download_events'
 
     get '/events/set_events', to: 'events#set_events', as: 'set_events'
     post '/events/set_events', to: 'events#do_set_events'
