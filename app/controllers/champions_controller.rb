@@ -117,7 +117,7 @@ class ChampionsController < ApplicationController
       :inappropriate_champion_interaction,
       :fellow_comments
     ))
-    if params[:champion_contact][:fellow_get_to_talk_to_champion] == 'true'
+    if params[:champion_contact][:champion_replied] == 'true'
       @contact.reminder_requested = false
     end
     @contact.fellow_survey_answered_at = DateTime.now
