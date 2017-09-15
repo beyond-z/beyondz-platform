@@ -44,6 +44,10 @@
             <div style="text-align: center">
             <a class="button-primary" href="<%= champions_contact_path(@others[0], :others => @others[1 .. -1]) %>">Next Champion</a>
             </div>
+          <% else %>
+            <div style="text-align: center">
+            <a class="button-primary" href="<%= champions_connect_path() %>">Done</a>
+            </div>
           <% end %>
         </div>
       </section>
