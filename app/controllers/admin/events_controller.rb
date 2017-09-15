@@ -13,8 +13,8 @@ class Admin::EventsController < Admin::ApplicationController
   end
 
   def download_events
-    helper = EventDownloaderHelper.new
-    helper.delay.get_events(params[:email], params[:course][:course_id])
+    lms = BeyondZ::LMS.new
+    lms.delay.get_events_for_email(params[:email], params[:course][:course_id])
   end
 
   def set_events
@@ -108,8 +108,8 @@ class Admin::EventsController < Admin::ApplicationController
           update_object["description"] = description if description != event["description"]
           update_object["location_name"] = location_name if location_name != event["location_name"]
           update_object["location_address"] = location_address if location_address != event["location_address"]
-          update_object["start_at"] = start_at if start_at_string != export_date_translation(event["start_at"])
-          update_object["end_at"] = end_at if end_at_string != export_date_translation(event["end_at"])
+          update_object["start_at"] = start_at if start_at_string != lms.export_date_translation(event["start_at"])
+          update_object["end_at"] = end_at if end_at_string != lms.export_date_translation(event["end_at"])
 
           if update_object.keys.length > 1
             changed[event_id] = update_object
@@ -185,86 +185,3 @@ end
 class DuplicateSectionNameException < Exception
 end
 
-class EventDownloaderHelper
-  def get_events(email, course_id)
-      lms = BeyondZ::LMS.new
-
-      events = lms.get_events(course_id)
-
-      StaffNotifications.canvas_events_ready(email, csv_events_export(course_id, events)).deliver
-  end
-
-  def csv_events_export(course_id, events)
-    lms = BeyondZ::LMS.new
-    CSV.generate do |csv|
-      header = []
-      header << 'Event ID (do not change)'
-      header << 'Course ID (do not change)'
-      header << 'Parent (do not change)'
-      header << 'Section Name'
-      header << 'Title'
-      header << 'Start At'
-      header << 'End At'
-      header << 'Description (HTML)'
-      header << 'Location Name'
-      header << 'Location Address'
-
-      csv << header
-
-      events.each do |a|
-        exportable = []
-
-        section = ''
-        if a['context_code'].starts_with? 'course_section_'
-          section = lms.get_section_by_id(course_id, a['context_code']['course_section_'.length .. -1])
-          if section.nil?
-            section = ''
-          else
-            section = section['name']
-          end
-        end
-
-        exportable << a['id']
-        exportable << a['context_code']
-        exportable << a['parent_event_id']
-        exportable << section
-        exportable << a['title']
-        exportable << export_date_translation(a['start_at'])
-        exportable << export_date_translation(a['end_at'])
-        exportable << a['description']
-        exportable << a['location_name']
-        exportable << a['location_address']
-
-        csv << exportable
-      end
-    end
-  end
-
-  # This is the translation when we're exporting from Canvas.
-  #
-  # So it gives us the ISO format, and needs to return a user-
-  # friendly format in a user-friendly timezone.
-  def export_date_translation(date_string)
-    if date_string.nil? || date_string.empty?
-      return date_string
-    end
-    dt = DateTime.iso8601(date_string)
-    # Best guess for friendly timezone... using the city means
-    # the library will handle stuff like DST... for now though.
-    # The Canvas course API doesn't export the TZ setting, and even if
-    # it did, Rails likes the city name rather than the offset so... i think
-    # this will be best we can for now.
-    #
-    # Pacific time is the latest TZ in the US, so if it is set to end of day there
-    # at least the date will always be right in Eastern time too.
-    #
-    # It will print the tz in the string for the user to read and even modify.
-    dt = dt.in_time_zone('America/Los_Angeles')
-
-    # It strips off the Standard or Daylight abbreviation from it because we
-    # don't want to user to have to think about that. We'll magic it up on the
-    # import side based on the date and assuming wall time is specified by the user.
-    dt.strftime('%Y-%m-%d %H:%M %Z').sub('S', '').sub('D', '')
-  end
-
-end
