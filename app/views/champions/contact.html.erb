@@ -7,13 +7,14 @@
           <h1>Braven Champions</h1>
 
           <p class="lead">
-            Now, email the Champion.
+            Now, email the Champion and ask them to chat!
           </p>
         </div>
         <div class="col-sm-12">
-          <p>Next,  reach out to them by email and ask to chat!</p>
 
           <p>Here's a template you can use to get started. You'll want to edit it to best suit you, then copy/paste it into your email program to initiate contact. <strong>Be sure to read this and personalize any placeholders in the text before you send the email.</strong></p>
+
+          <p>Tip: after copying the text below, you may try pasting it into your email as plain text by pressing ctrl+shift+v on a PC or cmd+shift+v on a Mac.</p>
 
 
           <div style="padding: 2em; border: solid 2px #ccc;">
@@ -23,7 +24,7 @@
           Subject: Would love to connect!
           <br /><br />
           <div>
-            <p>Hi <%= @recipient.name %>,</p>
+            <p>Hi <%= @recipient.first_name %>,</p>
 
             <p>I was looking through Braven’s volunteer list for people who work in <%= @hit %> and your name came up as a promising lead. I would appreciate a chance to ask you some questions about your career. Are you available to chat at any of the following times?</p>
               <p>* &lt;insert date/time&gt;<br />
