@@ -39,7 +39,8 @@ class Admin::EventsController < Admin::ApplicationController
     course_id = course_id["course_".length .. -1]
     lms = BeyondZ::LMS.new
 
-    events = lms.get_events(course_id)
+    # this is just too slow.
+    events = [] # lms.get_events(course_id)
 
     changed = {}
     new_count = 0
@@ -74,11 +75,12 @@ class Admin::EventsController < Admin::ApplicationController
           end
         end
 
-        if event.nil? && !event_id.blank?
-          raise BadEventException, "Row ##{index + 1} has bad Event ID #{event_id}. Double check it on Canvas."
-        end
+        # Gotta bypass this since the get_events is too slow for heroku
+        # if event.nil? && !event_id.blank?
+          # raise BadEventException, "Row ##{index + 1} has bad Event ID #{event_id}. Double check it on Canvas."
+        # end
 
-        if event.nil?
+        if event_id.blank?
           # new section
           section_object = lms.get_section_by_name(course_id, section_name, false)
           if section_object.nil?
@@ -104,12 +106,14 @@ class Admin::EventsController < Admin::ApplicationController
           new_count += 1
         else
           update_object["event_id"] = event_id
-          update_object["title"] = title if title != event["title"]
-          update_object["description"] = description if description != event["description"]
-          update_object["location_name"] = location_name if location_name != event["location_name"]
-          update_object["location_address"] = location_address if location_address != event["location_address"]
-          update_object["start_at"] = start_at if start_at_string != lms.export_date_translation(event["start_at"])
-          update_object["end_at"] = end_at if end_at_string != lms.export_date_translation(event["end_at"])
+          # I have to bypass the partial object updates because, ironically, loading the
+          # old event for comparison is too slow on heroku :(
+          update_object["title"] = title # if title != event["title"]
+          update_object["description"] = description # if description != event["description"]
+          update_object["location_name"] = location_name # if location_name != event["location_name"]
+          update_object["location_address"] = location_address # if location_address != event["location_address"]
+          update_object["start_at"] = start_at if start_at_string # != lms.export_date_translation(event["start_at"])
+          update_object["end_at"] = end_at if end_at_string # != lms.export_date_translation(event["end_at"])
 
           if update_object.keys.length > 1
             changed[event_id] = update_object
