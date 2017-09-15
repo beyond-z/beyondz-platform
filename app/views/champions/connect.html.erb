@@ -64,7 +64,7 @@
           <% if @search_attempted && @results.empty? %>
             <h3>Search Results</h3>
 
-            <p>No results were found for your search.</p>
+            <p>No results were found for your search. Please try something else!</p>
 
           <% end %>
 
@@ -114,7 +114,7 @@
                     window.open(this.href);
                     this.parentNode.previousElementSibling.children[0].style.display = '';
                     return false;
-                  " href="<%= champ.linkedin_url %>"><%= champ.first_name %> <%= champ.last_name %></a>
+                  " href="<%= (champ.linkedin_url.starts_with? 'http') ? champ.linkedin_url : "http://#{champ.linkedin_url}" %>"><%= champ.first_name %> <%= champ.last_name %></a>
                 </td>
                 <td>
                   <%= champ.company %>

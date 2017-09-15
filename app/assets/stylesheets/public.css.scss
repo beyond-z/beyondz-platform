@@ -342,7 +342,29 @@ form.submitted-invalid .invalid-message {
   background-color: red;
 }
 
+#new-champion-page {
+  ul {
+    list-style: initial;
+  }
+  input[type="submit"] {
+    font-family: TradeGothic, Oswald, sans-serif;
+    font-weight: 100;
+    background: #EB3B46;
+    padding: 5px;
+    border-radius: 0;
+    margin: 5px;
+    text-transform: uppercase;
+  }
+  input[type="submit"]:hover {
+    background: #000;
+  }
+  input[type="text"] {
+    padding: 3px;
+  }
+}
+
 .champion-flow-survey {
+
   br {
     margin-bottom: 0.5em;
   }

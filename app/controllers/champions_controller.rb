@@ -28,7 +28,7 @@ class ChampionsController < ApplicationController
       @search_attempted = true
       studies = params[:studies_csv].split(',').map(&:strip).reject(&:empty?)
       studies.each do |s|
-        Champion.where("array_to_string(studies, ',') ILIKE ?","%#{s}%").each do |c|
+        Champion.where("email NOT LIKE '%@bebraven.org'").where("array_to_string(studies, ',') ILIKE ?","%#{s}%").each do |c|
           @results << c
         end
       end
@@ -38,7 +38,7 @@ class ChampionsController < ApplicationController
       @search_attempted = true
       industries = params[:industries_csv].split(',').map(&:strip).reject(&:empty?)
       industries.each do |s|
-        Champion.where("array_to_string(industries, ',') ILIKE ?","%#{s}%").each do |c|
+        Champion.where("email NOT LIKE '%@bebraven.org'").where("array_to_string(industries, ',') ILIKE ?","%#{s}%").each do |c|
           @results << c
         end
       end
