@@ -6,6 +6,144 @@ class ChampionsController < ApplicationController
   def index
   end
 
+  before_filter :authenticate_user!, :only => [:connect, :request_contact, :contact, :fellow_survey, :fellow_survey_save]
+  def connect
+    # FIXME: prompt linked in access from user
+
+    @active_requests = ChampionContact.active(current_user.id)
+    @max_allowed = 2 - @active_requests.count
+    if @max_allowed < 0
+      @max_allowed = 0
+    end
+
+    @results = []
+    @search_attempted = false
+
+    if params[:view_all]
+      @results = Champion.all
+      @search_attempted = true
+    end
+
+    if params[:studies_csv]
+      @search_attempted = true
+      studies = params[:studies_csv].split(',').map(&:strip).reject(&:empty?)
+      studies.each do |s|
+        query = Champion.where("array_to_string(studies, ',') ILIKE ?","%#{s}%")
+        if Rails.application.secrets.smtp_override_recipient.blank?
+          query = query.where("email NOT LIKE '%@bebraven.org'")
+        end
+        query.each do |c|
+          @results << c
+        end
+      end
+    end
+
+    if params[:industries_csv]
+      @search_attempted = true
+      industries = params[:industries_csv].split(',').map(&:strip).reject(&:empty?)
+      industries.each do |s|
+        query = Champion.where("array_to_string(industries, ',') ILIKE ?","%#{s}%")
+        if Rails.application.secrets.smtp_override_recipient.blank?
+          query = query.where("email NOT LIKE '%@bebraven.org'")
+        end
+        query.each do |c|
+          @results << c
+        end
+      end
+    end
+
+    @results = @results.sort.uniq
+  end
+
+  def terms
+  end
+
+  def contact
+    @other_active_requests = ChampionContact.active(current_user.id).where("id != ?", params[:id])
+    cc = ChampionContact.find(params[:id])
+    raise "wrong user" if cc.user_id != current_user.id
+
+    @recipient = Champion.find(cc.champion_id)
+    @hit = @recipient.industries.any? ? @recipient.industries.first : @recipient.studies.fist
+
+    if params[:others]
+      @others = params[:others]
+    else
+      @others = []
+    end
+  end
+
+  def request_contact
+    # the champion ids are passed by the user checking their boxes
+    champion_ids = params[:champion_ids]
+
+    ccs = []
+
+    champion_ids.each do |cid|
+      if ChampionContact.active(current_user.id).where(:champion_id => cid).any?
+        ccs << ChampionContact.active(current_user.id).where(:champion_id => cid).first
+        next
+      end
+
+      ccs << ChampionContact.create(
+        :user_id => current_user.id,
+        :champion_id => cid
+      )
+    end
+
+    redirect_to champions_contact_path(ccs.first.id, :others => ccs[1 .. -1])
+  end
+
+  def fellow_survey
+    @contact = ChampionContact.find(params[:id])
+    @champion = Champion.find(@contact.champion_id)
+  end
+
+  def champion_survey
+    @contact = ChampionContact.find(params[:id])
+    @fellow = User.find(@contact.user_id)
+  end
+
+  def fellow_survey_save
+    @contact = ChampionContact.find(params[:id])
+    @contact.update_attributes(params[:champion_contact].permit(
+      :champion_replied,
+      :fellow_get_to_talk_to_champion,
+      :why_not_talk_to_champion,
+      :would_fellow_recommend_champion,
+      :what_did_champion_do_well,
+      :what_could_champion_improve,
+      :reminder_requested,
+      :inappropriate_champion_interaction,
+      :fellow_comments
+    ))
+    if params[:champion_contact][:fellow_get_to_talk_to_champion] == 'true'
+      @contact.reminder_requested = false
+    end
+    @contact.fellow_survey_answered_at = DateTime.now
+    @contact.save
+
+    if params[:champion_contact][:reminder_requested] == "true"
+      @reminder_requested = true
+      @reminder_email = Champion.find(@contact.champion_id).email
+    end
+  end
+
+  def champion_survey_save
+    @contact = ChampionContact.find(params[:id])
+    @contact.update_attributes(params[:champion_contact].permit(
+      :inappropriate_fellow_interaction,
+      :champion_get_to_talk_to_fellow,
+      :why_not_talk_to_fellow,
+      :how_champion_felt_conversaion_went,
+      :what_did_fellow_do_well,
+      :what_could_fellow_improve,
+      :champion_comments
+    ))
+    @contact.champion_survey_answered_at = DateTime.now
+    @contact.save
+  end
+
   def new
     @champion = Champion.new
   end

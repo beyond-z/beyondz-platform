@@ -24,8 +24,18 @@ BeyondzPlatform::Application.routes.draw do
 
   resources :resumes
 
+  get '/connect', to: 'champions#connect', as: :champions_connect
+  get '/champions/terms', to: 'champions#terms', as: :champions_terms
   get '/champions/linkedin_authorize', to: 'champions#linkedin_authorize', as: :linkedin_authorize
   get '/champions/linkedin_oauth_success', to: 'champions#linkedin_oauth_success', as: :linkedin_oauth_success
+  post '/champions/request_contact', to: 'champions#request_contact', as: :request_champion_contact
+  get '/champions/contact/:id', to: 'champions#contact', as: :champions_contact
+  get '/champions/fellow_survey/:id', to: 'champions#fellow_survey', as: :champion_fellow_survey
+  get '/champions/champion_survey/:id', to: 'champions#champion_survey', as: :champion_champion_survey
+  post '/champions/fellow_survey/:id', to: 'champions#fellow_survey_save'
+  post '/champions/champion_survey/:id', to: 'champions#champion_survey_save'
+  patch '/champions/fellow_survey/:id', to: 'champions#fellow_survey_save', as: :champion_fellow_survey_save
+  patch '/champions/champion_survey/:id', to: 'champions#champion_survey_save', as: :champion_champion_survey_save
   resources :champions
 
   get '/salesforce/change_apply_now', to: 'salesforce#change_apply_now'
@@ -68,6 +78,14 @@ BeyondzPlatform::Application.routes.draw do
 
     get '/assignments/set_due_dates', to: 'assignments#set_due_dates', as: 'set_due_dates'
     post '/assignments/set_due_dates', to: 'assignments#do_set_due_dates'
+
+    get '/events/get_events', to: 'events#get_events', as: 'get_events'
+    post '/events/get_events', to: 'events#download_events'
+
+    get '/events/set_events', to: 'events#set_events', as: 'set_events'
+    post '/events/set_events', to: 'events#do_set_events'
+
+
 
     get '/users/canvas_page_views', to: 'users#canvas_page_views', as: 'canvas_page_views'
     get '/users/get_canvas_page_views', to: 'users#get_canvas_page_views', as: 'get_canvas_page_views'

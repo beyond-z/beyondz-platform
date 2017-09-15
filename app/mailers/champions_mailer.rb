@@ -5,6 +5,18 @@ class ChampionsMailer < ActionMailer::Base
   # needed because gmail was filtering some messages: http://blog.mailgun.com/tips-tricks-avoiding-gmail-spam-filtering-when-using-ruby-on-rails-action-mailer/
   default 'Message-ID' => ->(_v_) { "<#{SecureRandom.uuid}@bebraven.org>" }
 
+  def connect_request(recipient, from, hit)
+    @recipient = recipient
+    @from = from
+    @hit = hit
+    mail(
+          to: recipient.email,
+          subject: "Connect with Braven Fellow",
+          from: "#{from.name} <#{from.email}>",
+          reply_to: from.email
+    )
+  end
+
   def new_champion(recipient)
     @recipient = recipient
 

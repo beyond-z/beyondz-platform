@@ -1,0 +1,29 @@
+<script>/* this needs to be there because some broken script adds a google analytics reference before the first script tag, and the next one in the file needs to have nothing inserted before it! */</script>
+<div id="new-champion-page">
+  <div class="plank plain-lt">
+    <div class="section-container">
+      <section>
+        <div class="col-sm-6">
+          <h1>Braven Champions</h1>
+
+          <p class="lead">
+            Your response has been recorded.
+            <% if @reminder_requested %>
+              Please send a follow-up email to <%= @reminder_email %> asking them to connect.
+            <% end %>
+            Thank you for using the Braven Champions Database!
+          </p>
+
+          <div style="text-align: center">
+            <a class="button-primary" href="<%= champions_connect_path() %>">Search for more champions</a>
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <!-- -->
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+

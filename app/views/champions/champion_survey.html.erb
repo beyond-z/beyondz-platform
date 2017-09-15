@@ -1,0 +1,77 @@
+<script>/* this needs to be there because some broken script adds a google analytics reference before the first script tag, and the next one in the file needs to have nothing inserted before it! */</script>
+<div class="champion-flow-survey" id="new-champion-page">
+  <div class="plank plain-lt">
+    <div class="section-container">
+      <section>
+        <div class="col-sm-6">
+          <h1>Braven Champion Survey</h1>
+
+          <p class="lead">
+            We'd like to know a little about how your interaction went with the Braven Fellow.
+          </p>
+
+        </div>
+        <div class="col-sm-12">
+          <%= form_for @contact, :url => champion_champion_survey_save_path, :html => { :onsubmit => 'return validate_this(this);' } do |f| %>
+            Did you get a chance to talk to <%= @fellow.name %>?<br />
+            <div>
+              <%= f.radio_button :champion_get_to_talk_to_fellow, "true" %>
+              Yes
+              <div class="subquestion">
+                How do you feel the conversation went overall?
+                  <br />
+                  Poorly
+                    <label><%= f.radio_button :how_champion_felt_conversaion_went, "1" %> 1</label>
+                    <label><%= f.radio_button :how_champion_felt_conversaion_went, "2" %> 2</label>
+                    <label><%= f.radio_button :how_champion_felt_conversaion_went, "3" %> 3</label>
+                    <label><%= f.radio_button :how_champion_felt_conversaion_went, "4" %> 4</label>
+                    <label><%= f.radio_button :how_champion_felt_conversaion_went, "5" %> 5</label>
+                  Well
+                <br />
+                What did <%= @fellow.name %> do well in your conversation?
+                  <br />
+                  <%= f.text_area :what_did_fellow_do_well %>
+                <br />
+                What could <%= @fellow.name %> improve next time?
+                  <br />
+                  <%= f.text_area :what_could_fellow_improve %>
+              </div>
+              </div>
+              <div>
+              <%= f.radio_button :champion_get_to_talk_to_fellow, "false" %>
+              No
+                <div class="subquestion">
+                  Why not?
+                    <br />
+                    <%= f.text_area :why_not_talk_to_fellow %>
+                </div>
+              </div>
+              <div>
+              Anything else you'd like us to know?
+              <br />
+              <%= f.text_area :champion_comments %>
+              </div>
+            <%= f.submit 'Save', :class => 'button-primary' %>
+          <% end %>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+<script>
+function validate_this(form) {
+  switch(form.elements['champion_contact[champion_get_to_talk_to_fellow]'].value) {
+    case 'true':
+
+    break;
+    case 'false':
+
+    break;
+    case '':
+      alert('Please answer the survey.');
+      return false;
+  }
+
+  return true;
+}
+</script>

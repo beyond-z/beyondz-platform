@@ -1,0 +1,23 @@
+<h1>Canvas Calendar Events mass updater</h1>
+
+<p>To begin, get a <%= link_to 'spreadsheet export here', admin_get_events_path %>.</p>
+
+<p>Then, edit the events upload the csv here.</p>
+
+<p style="font-weight: bold;">To add a new per-section event, copy/paste a row for that event that already exists, then erase the content of the first two columns (Event ID and Course ID), then change the Section Name to be the cohort name. Set the start at and end at dates - other columns are skipped on new cohorts (it will just carry over the details from the existing ones).</p>
+
+<p>Note that the times will be exported in Pacific time. You may change this, but since we operate on both coasts, Pacific has the advantage of being the latest one. So if you set an assignment to be due on November 5 at 11:59 PM in Pacific time, it will at least still show as due on November 5 in Eastern time too... just at 8:59pm instead.</p>
+
+<p>Basically just keep both the west and east coasts in mind while making changes.</p>
+
+<p>The time zones are given as two-letter abbreviations, such as PT, ET, MT, and CT, for Pacific time, Eastern time, Mountain time, and Central time. Do not try to use PDT or PST, just use PT and it will automatically figure out if daylight saving time is in effect or not by looking at the date.</p>
+
+<%= form_for :import, :html => { :multipart => true } do |f| %>
+  Your email: <%= f.text_field :email, value: @user_email %>
+  <br />
+  <br />
+  <%= f.file_field :csv %>
+  <%= submit_tag 'Upload CSV' %>
+<% end %>
+
+<p>You will get an email when the update is complete if all goes well. It can take several minutes.</p>

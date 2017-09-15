@@ -19,6 +19,19 @@ module BeyondZ
       info
     end
 
+    def get_events(course_id)
+      open_canvas_http
+
+      request = Net::HTTP::Get.new(
+        "/api/v1/calendar_events?all_events=true&context_codes[]=course_#{course_id}&access_token=#{Rails.application.secrets.canvas_access_token}"
+      )
+      response = @canvas_http.request(request)
+      info = get_all_from_pagination(response)
+
+      info
+    end
+
+
     def destroy_user(user_id)
       open_canvas_http
 
@@ -47,12 +60,67 @@ module BeyondZ
       response
     end
 
+    def set_event(event_object)
+      open_canvas_http
+
+      request = Net::HTTP::Put.new(
+        "/api/v1/calendar_events/#{event_object['event_id']}",
+        initheader = {'Content-Type' => 'application/json'}
+      )
+      arg = {}
+      arg['access_token'] = Rails.application.secrets.canvas_access_token
+      arg['calendar_event'] = event_object.except('event_id')
+      request.body = arg.to_json
+
+      response = @canvas_http.request(request)
+
+      response
+    end
+
+    def create_event(event_object)
+      open_canvas_http
+
+      request = Net::HTTP::Put.new(
+        "/api/v1/calendar_events/#{event_object['parent_event_id']}",
+        initheader = {'Content-Type' => 'application/json'}
+      )
+      arg = {}
+      arg['access_token'] = Rails.application.secrets.canvas_access_token
+      child_event_data = {}
+      ced = {}
+      ced['start_at'] = event_object['start_at']
+      ced['end_at'] = event_object['end_at']
+      ced['context_code'] = event_object['context_code']
+      child_event_data["0"] = ced
+      new_event_object = {}
+      new_event_object['child_event_data'] = child_event_data
+      arg['calendar_event'] = new_event_object
+      request.body = arg.to_json
+
+      response = @canvas_http.request(request)
+
+      response
+    end
+
+
     def commit_new_due_dates(email, changed)
       changed.each do |key, value|
         self.set_due_dates(value)
       end
       StaffNotifications.canvas_due_dates_updated(email).deliver
     end
+
+    def commit_new_events(email, changed)
+      changed.each do |key, value|
+        if value['event_id'].nil?
+           self.create_event(value.except('event_id'))
+        else
+          self.set_event(value)
+        end
+      end
+      StaffNotifications.canvas_events_updated(email).deliver
+    end
+
 
     def get_courses
       open_canvas_http
@@ -354,6 +422,11 @@ module BeyondZ
       section_info[section_name]
     end
 
+    def get_section_by_id(course_id, section_id)
+      read_sections(course_id)
+      return @section_info_by_id[course_id][section_id.to_i]
+    end
+
     def get_page_data(course_id, user_id = nil)
       open_canvas_http
 
@@ -462,6 +535,89 @@ module BeyondZ
     def email_user_data_spreadsheet(email, course_id)
       StaffNotifications.canvas_views_ready(email, get_user_data_spreadsheet(course_id)).deliver
     end
+
+    def get_events_for_email(email, course_id)
+        lms = BeyondZ::LMS.new
+
+        events = lms.get_events(course_id)
+
+        StaffNotifications.canvas_events_ready(email, csv_events_export(course_id, events)).deliver
+    end
+
+    def csv_events_export(course_id, events)
+      lms = BeyondZ::LMS.new
+      CSV.generate do |csv|
+        header = []
+        header << 'Event ID (do not change)'
+        header << 'Course ID (do not change)'
+        header << 'Parent (do not change)'
+        header << 'Section Name'
+        header << 'Title'
+        header << 'Start At'
+        header << 'End At'
+        header << 'Description (HTML)'
+        header << 'Location Name'
+        header << 'Location Address'
+
+        csv << header
+
+        events.each do |a|
+          exportable = []
+
+          section = ''
+          if a['context_code'].starts_with? 'course_section_'
+            section = lms.get_section_by_id(course_id, a['context_code']['course_section_'.length .. -1])
+            if section.nil?
+              section = ''
+            else
+              section = section['name']
+            end
+          end
+
+          exportable << a['id']
+          exportable << a['context_code']
+          exportable << a['parent_event_id']
+          exportable << section
+          exportable << a['title']
+          exportable << export_date_translation(a['start_at'])
+          exportable << export_date_translation(a['end_at'])
+          exportable << a['description']
+          exportable << a['location_name']
+          exportable << a['location_address']
+
+          csv << exportable
+        end
+      end
+    end
+
+    # This is the translation when we're exporting from Canvas.
+    #
+    # So it gives us the ISO format, and needs to return a user-
+    # friendly format in a user-friendly timezone.
+    def export_date_translation(date_string)
+      if date_string.nil? || date_string.empty?
+        return date_string
+      end
+      dt = DateTime.iso8601(date_string)
+      # Best guess for friendly timezone... using the city means
+      # the library will handle stuff like DST... for now though.
+      # The Canvas course API doesn't export the TZ setting, and even if
+      # it did, Rails likes the city name rather than the offset so... i think
+      # this will be best we can for now.
+      #
+      # Pacific time is the latest TZ in the US, so if it is set to end of day there
+      # at least the date will always be right in Eastern time too.
+      #
+      # It will print the tz in the string for the user to read and even modify.
+      dt = dt.in_time_zone('America/Los_Angeles')
+
+      # It strips off the Standard or Daylight abbreviation from it because we
+      # don't want to user to have to think about that. We'll magic it up on the
+      # import side based on the date and assuming wall time is specified by the user.
+      dt.strftime('%Y-%m-%d %H:%M %Z').sub('S', '').sub('D', '')
+    end
+
+
 
     private
 

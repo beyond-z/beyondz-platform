@@ -1,0 +1,12 @@
+<p>Select a course to get a spreadsheet of its calendar events.</p>
+
+<%= form_for :course do |f| %>
+  <%= f.select :course_id, options_for_select(@courses) %>
+  <br /><br />
+  <p>Your email address: <input type="email" name="email" /></p>
+  <p>(the spreadsheet will be emailed to you when it is ready)</p>
+  <%= submit_tag 'Get Events' %>
+<% end %>
+
+<br /><br />
+<p>Afterward, go to <%= link_to "Set Events", admin_set_events_path %> and upload your changes.</p>
