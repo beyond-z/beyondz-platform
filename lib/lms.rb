@@ -537,7 +537,6 @@ module BeyondZ
     end
 
     def get_events_for_email(email, course_id)
-        StaffNotifications.canvas_events_ready(email, "starting").deliver
         lms = BeyondZ::LMS.new
 
         events = lms.get_events(course_id)
