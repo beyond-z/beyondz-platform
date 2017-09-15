@@ -112,8 +112,8 @@ class Admin::EventsController < Admin::ApplicationController
           update_object["description"] = description # if description != event["description"]
           update_object["location_name"] = location_name # if location_name != event["location_name"]
           update_object["location_address"] = location_address # if location_address != event["location_address"]
-          update_object["start_at"] = start_at if start_at_string # != lms.export_date_translation(event["start_at"])
-          update_object["end_at"] = end_at if end_at_string # != lms.export_date_translation(event["end_at"])
+          update_object["start_at"] = start_at # if start_at_string != lms.export_date_translation(event["start_at"])
+          update_object["end_at"] = end_at # if end_at_string != lms.export_date_translation(event["end_at"])
 
           if update_object.keys.length > 1
             changed[event_id] = update_object

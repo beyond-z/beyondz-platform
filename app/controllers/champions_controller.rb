@@ -11,6 +11,10 @@ class ChampionsController < ApplicationController
     # FIXME: prompt linked in access from user
 
     @active_requests = ChampionContact.active(current_user.id)
+    @max_allowed = 2 - @active_requests.count
+    if @max_allowed < 0
+      @max_allowed = 0
+    end
 
     @results = []
     @search_attempted = false
@@ -107,6 +111,11 @@ class ChampionsController < ApplicationController
     ))
     @contact.fellow_survey_answered_at = DateTime.now
     @contact.save
+
+    if params[:champion_contact][:reminder_requested] == "true"
+      @reminder_requested = true
+      @reminder_email = Champion.find(@contact.champion_id).email
+    end
   end
 
   def champion_survey_save

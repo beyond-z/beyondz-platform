@@ -7,8 +7,16 @@
           <h1>Braven Champions</h1>
 
           <p class="lead">
-            Your response has been recorded. Thank you for using the Braven Champions Database!
+            Your response has been recorded.
+            <% if @reminder_requested %>
+              Please send a follow-up email to <%= @reminder_email %> asking them to connect.
+            <% end %>
+            Thank you for using the Braven Champions Database!
           </p>
+
+          <div style="text-align: center">
+            <a class="button-primary" href="<%= champions_connect_path() %>">Search for more champions</a>
+          </div>
         </div>
         <div class="col-sm-12">
           <!-- -->
