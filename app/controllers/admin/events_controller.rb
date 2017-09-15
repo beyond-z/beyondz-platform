@@ -13,16 +13,8 @@ class Admin::EventsController < Admin::ApplicationController
   end
 
   def download_events
-    lms = BeyondZ::LMS.new
-
-    events = lms.get_events(params[:course][:course_id])
-
-    respond_to do |format|
-      format.csv do
-        response.headers['Content-Disposition'] = 'attachment; filename="events.csv"'
-        render text: csv_events_export(params[:course][:course_id], events)
-      end
-    end
+    helper = EventDownloaderHelper.new
+    helper.delay.get_events(params[:email], params[:course][:course_id])
   end
 
   def csv_events_export(course_id, events)
@@ -264,4 +256,14 @@ class BadSectionNameException < Exception
 end
 
 class DuplicateSectionNameException < Exception
+end
+
+class EventDownloaderHelper
+  def get_events(email, course_id)
+    lms = BeyondZ::LMS.new
+
+    events = lms.get_events(course_id)
+
+    StaffNotifications.canvas_events_ready(email, csv_events_export(course_id, events)).deliver
+  end
 end

@@ -44,6 +44,11 @@ class StaffNotifications < ActionMailer::Base
     mail(to: email, subject: 'Page views spreadsheet', from: 'Braven Website <' + Rails.application.secrets.mailer_from_email + '>')
   end
 
+  def canvas_events_ready(email, data)
+    attachments['events.csv'] = data
+    mail(to: email, subject: 'Canvas Events spreadsheet', from: 'Braven Website <' + Rails.application.secrets.mailer_from_email + '>')
+  end
+
   def canvas_due_dates_updated(email)
     mail(to: email, subject: 'Due date upload complete')
   end
