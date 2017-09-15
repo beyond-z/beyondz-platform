@@ -6,29 +6,35 @@ class ChampionsController < ApplicationController
   def index
   end
 
-  before_filter :authenticate_user!, :only => [:connect]
+  before_filter :authenticate_user!, :only => [:connect, :request_contact, :contact, :fellow_survey, :fellow_survey_save]
   def connect
     # FIXME: prompt linked in access from user
 
+    @active_requests = ChampionContact.active(current_user.id)
+
     @results = []
+    @search_attempted = false
 
     if params[:view_all]
       @results = Champion.all
+      @search_attempted = true
     end
 
     if params[:studies_csv]
+      @search_attempted = true
       studies = params[:studies_csv].split(',').map(&:strip).reject(&:empty?)
       studies.each do |s|
-        Champion.where("studies @> ?","{#{s}}").each do |c|
+        Champion.where("array_to_string(studies, ',') ILIKE ?","%#{s}%").each do |c|
           @results << c
         end
       end
     end
 
     if params[:industries_csv]
+      @search_attempted = true
       industries = params[:industries_csv].split(',').map(&:strip).reject(&:empty?)
       industries.each do |s|
-        Champion.where("industries @> ?","{#{s}}").each do |c|
+        Champion.where("array_to_string(industries, ',') ILIKE ?","%#{s}%").each do |c|
           @results << c
         end
       end
@@ -37,22 +43,43 @@ class ChampionsController < ApplicationController
     @results = @results.sort.uniq
   end
 
+  def terms
+  end
+
+  def contact
+    @other_active_requests = ChampionContact.active(current_user.id).where("id != ?", params[:id])
+    cc = ChampionContact.find(params[:id])
+    raise "wrong user" if cc.user_id != current_user.id
+
+    @recipient = Champion.find(cc.champion_id)
+    @hit = @recipient.industries.any? ? @recipient.industries.first : @recipient.studies.fist
+
+    if params[:others]
+      @others = params[:others]
+    else
+      @others = []
+    end
+  end
+
   def request_contact
     # the champion ids are passed by the user checking their boxes
     champion_ids = params[:champion_ids]
 
-    champion_ids.each do |cid|
-      recipient = Champion.find(cid)
+    ccs = []
 
-      ChampionContact.create(
+    champion_ids.each do |cid|
+      if ChampionContact.active(current_user.id).where(:champion_id => cid).any?
+        ccs << ChampionContact.active(current_user.id).where(:champion_id => cid).first
+        next
+      end
+
+      ccs << ChampionContact.create(
         :user_id => current_user.id,
         :champion_id => cid
       )
-
-      hit = recipient.industries.any? ? recipient.industries.first : recipient.studies.fist
-
-      ChampionsMailer.connect_request(recipient, current_user, hit).deliver
     end
+
+    redirect_to champions_contact_path(ccs.first.id, :others => ccs[1 .. -1])
   end
 
   def fellow_survey

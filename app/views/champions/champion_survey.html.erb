@@ -1,5 +1,5 @@
 <script>/* this needs to be there because some broken script adds a google analytics reference before the first script tag, and the next one in the file needs to have nothing inserted before it! */</script>
-<div id="new-champion-page">
+<div class="champion-flow-survey" id="new-champion-page">
   <div class="plank plain-lt">
     <div class="section-container">
       <section>
@@ -12,7 +12,7 @@
 
         </div>
         <div class="col-sm-12">
-          <%= form_for @contact, :url => champion_champion_survey_save_path do |f| %>
+          <%= form_for @contact, :url => champion_champion_survey_save_path, :html => { :onsubmit => 'return validate_this(this);' } do |f| %>
             Did you get a chance to talk to <%= @fellow.name %>?<br />
             <div>
               <%= f.radio_button :champion_get_to_talk_to_fellow, "true" %>
@@ -51,22 +51,27 @@
               <br />
               <%= f.text_area :champion_comments %>
               </div>
-            <%= f.submit 'Save' %>
+            <%= f.submit 'Save', :class => 'button-primary' %>
           <% end %>
         </div>
       </section>
     </div>
   </div>
 </div>
+<script>
+function validate_this(form) {
+  switch(form.elements['champion_contact[champion_get_to_talk_to_fellow]'].value) {
+    case 'true':
 
+    break;
+    case 'false':
 
-<style>
-.subquestion {
-  padding-left: 2em;
-  display: none;
+    break;
+    case '':
+      alert('Please answer the survey.');
+      return false;
+  }
+
+  return true;
 }
-
-:checked ~ .subquestion {
-  display: block;
-}
-</style>
+</script>

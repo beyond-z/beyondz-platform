@@ -341,3 +341,29 @@ form.submitted-invalid .invalid-message {
 .submitted-invalid input[type=radio]:required:invalid {
   background-color: red;
 }
+
+.champion-flow-survey {
+  br {
+    margin-bottom: 0.5em;
+  }
+
+  textarea {
+    width: 350px;
+    height: 100px;
+  }
+
+  .subquestion {
+    padding-left: 2em;
+    margin-left: 2em;
+    border-left: solid 2px #ccc;
+    display: none;
+  }
+
+  :checked ~ .subquestion {
+    display: block;
+  }
+
+  .button-primary {
+    margin-top: 1em;
+  }
+}

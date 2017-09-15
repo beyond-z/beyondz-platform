@@ -25,9 +25,11 @@ BeyondzPlatform::Application.routes.draw do
   resources :resumes
 
   get '/connect', to: 'champions#connect', as: :champions_connect
+  get '/champions/terms', to: 'champions#terms', as: :champions_terms
   get '/champions/linkedin_authorize', to: 'champions#linkedin_authorize', as: :linkedin_authorize
   get '/champions/linkedin_oauth_success', to: 'champions#linkedin_oauth_success', as: :linkedin_oauth_success
   post '/champions/request_contact', to: 'champions#request_contact', as: :request_champion_contact
+  get '/champions/contact/:id', to: 'champions#contact', as: :champions_contact
   get '/champions/fellow_survey/:id', to: 'champions#fellow_survey', as: :champion_fellow_survey
   get '/champions/champion_survey/:id', to: 'champions#champion_survey', as: :champion_champion_survey
   post '/champions/fellow_survey/:id', to: 'champions#fellow_survey_save'

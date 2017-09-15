@@ -1,5 +1,5 @@
 <script>/* this needs to be there because some broken script adds a google analytics reference before the first script tag, and the next one in the file needs to have nothing inserted before it! */</script>
-<div id="new-champion-page">
+<div class="champion-flow-survey" id="new-champion-page">
   <div class="plank plain-lt">
     <div class="section-container">
       <section>
@@ -12,7 +12,7 @@
 
         </div>
         <div class="col-sm-12">
-          <%= form_for @contact, :url => champion_fellow_survey_save_path do |f| %>
+          <%= form_for @contact, :url => champion_fellow_survey_save_path, :html => { :onsubmit => 'return validate_this(this);' } do |f| %>
             Did <%= @champion.name %> reply to your request to connect?<br />
             <div>
               <%= f.radio_button :champion_replied, "true" %>
@@ -66,22 +66,39 @@
                   No
                 </div>
               </div>
-            <%= f.submit 'Save' %>
+            <%= f.submit 'Save', :class => 'button-primary' %>
           <% end %>
         </div>
       </section>
     </div>
   </div>
 </div>
+<script>
+function validate_this(form) {
+  switch(form.elements['champion_contact[champion_replied]'].value) {
+    case 'true':
+      switch(form.elements['champion_contact[fellow_get_to_talk_to_champion]'].value) {
+        case "true":
 
+        break;
+        case "false":
 
-<style>
-.subquestion {
-  padding-left: 2em;
-  display: none;
+        break;
+        case "":
+          alert('Please answer the survey.');
+          return false;
+      }
+    break;
+    case 'false':
+      if(form.elements['champion_contact[reminder_requested]'].value == '') {
+        alert('Please answer the survey.');
+        return false;
+      }
+    break;
+    case '':
+      alert('Please answer the survey.');
+      return false;
+  }
+  return true;
 }
-
-:checked ~ .subquestion {
-  display: block;
-}
-</style>
+</script>
