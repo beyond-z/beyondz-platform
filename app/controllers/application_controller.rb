@@ -30,6 +30,7 @@ class ApplicationController < ActionController::Base
     end
 
     response.headers['X-Frame-Options'] = "ALLOW-FROM http#{secure}://#{domain}#{port}"
+    response.headers['Content-Security-Policy'] = "frame-ancestors 'self' http#{secure}://#{domain}#{port}"
   end
 
   def save_external_referrer
