@@ -28,7 +28,7 @@ class ChampionsController < ApplicationController
       @search_attempted = true
       studies = params[:studies_csv].split(',').map(&:strip).reject(&:empty?)
       studies.each do |s|
-        query = Champion.where("array_to_string(studies, ',') ILIKE ?","%#{s}%")
+        query = Champion.where("array_to_string(studies, ',') ILIKE ?","%#{s}%").where("willing_to_be_contacted = true")
         if Rails.application.secrets.smtp_override_recipient.blank?
           query = query.where("email NOT LIKE '%@bebraven.org'")
         end
@@ -42,7 +42,7 @@ class ChampionsController < ApplicationController
       @search_attempted = true
       industries = params[:industries_csv].split(',').map(&:strip).reject(&:empty?)
       industries.each do |s|
-        query = Champion.where("array_to_string(industries, ',') ILIKE ?","%#{s}%")
+        query = Champion.where("array_to_string(industries, ',') ILIKE ?","%#{s}%").where("willing_to_be_contacted = true")
         if Rails.application.secrets.smtp_override_recipient.blank?
           query = query.where("email NOT LIKE '%@bebraven.org'")
         end
