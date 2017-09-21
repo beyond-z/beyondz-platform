@@ -1,4 +1,5 @@
 require 'csv'
+require 'zlib'
 
 module BeyondZ
   # This communicates with the Canvas LMS through its REST API
@@ -23,7 +24,7 @@ module BeyondZ
       open_canvas_http
 
       request = Net::HTTP::Get.new(
-        "/api/v1/calendar_events?all_events=true&context_codes[]=course_#{course_id}&access_token=#{Rails.application.secrets.canvas_access_token}"
+        "/api/v1/calendar_events?per_page=300&all_events=true&context_codes[]=course_#{course_id}&access_token=#{Rails.application.secrets.canvas_access_token}"
       )
       response = @canvas_http.request(request)
       info = get_all_from_pagination(response)
@@ -558,6 +559,7 @@ module BeyondZ
         header << 'Description (HTML)'
         header << 'Location Name'
         header << 'Location Address'
+        # header << 'metadata:' + course_id + ':' + Base64.encode64(Zlib::Deflate.deflate(events.to_json))
 
         csv << header
 
