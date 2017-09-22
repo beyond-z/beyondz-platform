@@ -78,27 +78,70 @@ module BeyondZ
       response
     end
 
+    # assumes parent_event_id is set
     def create_event(event_object)
       open_canvas_http
 
-      request = Net::HTTP::Put.new(
-        "/api/v1/calendar_events/#{event_object['parent_event_id']}",
-        initheader = {'Content-Type' => 'application/json'}
-      )
-      arg = {}
-      arg['access_token'] = Rails.application.secrets.canvas_access_token
-      child_event_data = {}
-      ced = {}
-      ced['start_at'] = event_object['start_at']
-      ced['end_at'] = event_object['end_at']
-      ced['context_code'] = event_object['context_code']
-      child_event_data["0"] = ced
-      new_event_object = {}
-      new_event_object['child_event_data'] = child_event_data
-      arg['calendar_event'] = new_event_object
-      request.body = arg.to_json
+      response = nil
 
-      response = @canvas_http.request(request)
+      if event_object['parent_event_id']
+        # new section in existing event
+
+
+        # we need to get the existing data to populate child events
+        # lest it delete existing ones when we try to add one!
+        request = Net::HTTP::Get.new(
+          "/api/v1/calendar_events/#{event_object['parent_event_id']}?access_token=#{Rails.application.secrets.canvas_access_token}"
+        )
+        response = @canvas_http.request(request)
+        info = JSON.parse response.body
+
+
+
+        request = Net::HTTP::Put.new(
+          "/api/v1/calendar_events/#{event_object['parent_event_id']}",
+          initheader = {'Content-Type' => 'application/json'}
+        )
+        arg = {}
+        arg['access_token'] = Rails.application.secrets.canvas_access_token
+
+        # populate from old child events
+        cedx = 0
+        child_event_data = {}
+        info["child_events"].each do |ce|
+          ced = {}
+          ced['start_at'] = ce['start_at']
+          ced['end_at'] = ce['end_at']
+          ced['context_code'] = ce['context_code']
+          child_event_data[cedx.to_s] = ced
+          cedx += 1
+        end
+
+        ced = {}
+        ced['start_at'] = event_object['start_at']
+        ced['end_at'] = event_object['end_at']
+        ced['context_code'] = event_object['context_code']
+        child_event_data[cedx.to_s] = ced
+        new_event_object = {}
+        new_event_object['child_event_data'] = child_event_data
+        arg['calendar_event'] = new_event_object
+        request.body = arg.to_json
+
+        response = @canvas_http.request(request)
+      else
+        # new event
+
+        request = Net::HTTP::Post.new(
+          "/api/v1/calendar_events",
+          initheader = {'Content-Type' => 'application/json'}
+        )
+        arg = {}
+        arg['access_token'] = Rails.application.secrets.canvas_access_token
+        arg['calendar_event'] = event_object.except('event_id')
+        request.body = arg.to_json
+
+        response = @canvas_http.request(request)
+      end
 
       response
     end
