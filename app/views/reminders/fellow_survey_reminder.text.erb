@@ -1,0 +1,11 @@
+<%= @user.name %>,
+
+You recently requested contact with a Braven Champion and we'd like
+to know how it went.
+
+Please go here and answer a survey about your interaction:
+
+http://<%= ENV['MAILER_HOST'] %>/champions/fellow_survey/<%= @cc.id %>
+
+Thank you for your survey response
+-Braven
