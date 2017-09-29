@@ -85,7 +85,7 @@ ActiveRecord::Schema.define(version: 20170912152443) do
     t.datetime "updated_at"
   end
 
-  create_table "champions", id: false, force: true do |t|
+  create_table "champions", force: true do |t|
     t.integer  "id",                      null: false
     t.string   "first_name"
     t.string   "last_name"
