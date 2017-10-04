@@ -11,14 +11,14 @@ class ChampionContact < ActiveRecord::Base
       AND (fellow_survey_email_sent != TRUE OR champion_survey_email_sent != TRUE))
       AND created_at < ?",
       1.week.ago.end_of_day).each do |cc|
-      unless cc.fellow_survey_answered_at && !cc.fellow_survey_email_sent
+      if cc.fellow_survey_answered_at.nil? && !cc.fellow_survey_email_sent
         # remind fellow
         Reminders.fellow_survey_reminder(User.find(cc.user_id), cc).deliver
         cc.fellow_survey_email_sent = true
         cc.save
       end
 
-      unless cc.champion_survey_answered_at && !cc.champion_survey_email_sent
+      if cc.champion_survey_answered_at.nil? && !cc.champion_survey_email_sent
         # remind champion
         Reminders.champion_survey_reminder(Champion.find(cc.champion_id), cc).deliver
         cc.champion_survey_email_sent = true

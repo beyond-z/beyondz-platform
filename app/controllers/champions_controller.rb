@@ -227,7 +227,6 @@ class ChampionsController < ApplicationController
     # duplicate check, if email exists, just update existing row
     existing = Champion.where(:email => champion[:email])
     if existing.any?
-      raise "exists"
       n = existing.first
       n.update_attributes(champion)
     else
