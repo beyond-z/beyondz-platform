@@ -13,6 +13,7 @@
         </div>
         <div class="col-sm-12">
           <%= form_for @contact, :url => champion_champion_survey_save_path, :html => { :onsubmit => 'return validate_this(this);' } do |f| %>
+            <%= hidden_field_tag :nonce, @contact.nonce %>
             Did you get a chance to talk to <%= @fellow.name %>?<br />
             <div>
               <%= f.radio_button :champion_get_to_talk_to_fellow, "true" %>
