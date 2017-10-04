@@ -222,7 +222,17 @@ class ChampionsController < ApplicationController
       champion[:studies] = params[:champion][:studies].reject(&:empty?)
     end
 
-    n = Champion.new(champion)
+    was_new = false
+    n = nil
+    # duplicate check, if email exists, just update existing row
+    existing = Champion.where(:email => champion[:email])
+    if existing.any?
+      n = existing.first
+      n.update_attributes(champion)
+    else
+      n = Champion.new(champion)
+      was_new = true
+    end
     if !n.valid? || n.errors.any?
       @champion = n
       if session[:linkedin_access_token]
@@ -232,12 +242,17 @@ class ChampionsController < ApplicationController
       return
     end
 
-    n.access_token = session.delete(:linkedin_access_token)
+    if session[:linkedin_access_token]
+      n.access_token = session.delete(:linkedin_access_token)
+    end
 
     n.save
 
     n.create_on_salesforce
-    ChampionsMailer.new_champion(n).deliver
+
+    if was_new
+      ChampionsMailer.new_champion(n).deliver
+    end
   end
 
   def set_up_lists

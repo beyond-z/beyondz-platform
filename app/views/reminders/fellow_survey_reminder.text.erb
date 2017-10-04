@@ -1,0 +1,9 @@
+Hi <%= @user.first_name %>,
+
+You recently requested contact with a Braven Champion and we'd like
+to know how it went. Please go here and answer a 1 minute survey about your experience:
+
+https://<%= ENV['ROOT_DOMAIN'] %>/champions/fellow_survey/<%= @cc.id %>
+
+Thank you!
+- The Braven Team
