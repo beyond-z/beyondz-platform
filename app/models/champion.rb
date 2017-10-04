@@ -6,6 +6,7 @@ class Champion < ActiveRecord::Base
   validates :email, presence: true
   validates :industries, presence: true
   validates :studies, presence: true
+  validates :linkedin_url, presence: true
 
   def create_on_salesforce
     mapping = CampaignMapping.where(
