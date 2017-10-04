@@ -1,11 +1,17 @@
-<%= @champion.name %>,
+Hi <%= @champion.first_name %>,
 
-A Braven Fellow recently requested contact with you, and we'd like
-to hear from you about how it went.
+A Braven Fellow recently requested to reach out to you and we'd like
+to hear from you about how it went. Please go here and answer a one minute
+survey about your experience:
 
-Please go here and answer a survey about your interaction:
+http://<%= ENV['ROOT_DOMAIN'] %>/champions/champion_survey/<%= @cc.id %>
 
-http://<%= ENV['MAILER_HOST'] %>/champions/champion_survey/<%= @cc.id %>
+Thank you for being part of this!
+- The Braven Team
 
-Thank you for your time,
--Braven
+
+You are receiving this email because you signed up to be a Braven Champion at
+https://join.bebraven.org/champions/new
+
+If you no longer wish to be contacted by Braven Fellows for things like information interviews,
+please email us at support@bebraven.org to be removed from our database.
