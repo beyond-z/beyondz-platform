@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170912152443) do
+ActiveRecord::Schema.define(version: 20171003234410) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -83,10 +83,11 @@ ActiveRecord::Schema.define(version: 20170912152443) do
     t.text     "fellow_comments"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "champion_survey_email_sent",         default: false
+    t.boolean  "fellow_survey_email_sent",           default: false
   end
 
   create_table "champions", force: true do |t|
-    t.integer  "id",                      null: false
     t.string   "first_name"
     t.string   "last_name"
     t.string   "email"
@@ -95,8 +96,8 @@ ActiveRecord::Schema.define(version: 20170912152443) do
     t.boolean  "braven_fellow"
     t.boolean  "braven_lc"
     t.boolean  "willing_to_be_contacted"
-    t.string   "industries",                           array: true
-    t.string   "studies",                              array: true
+    t.string   "industries",              array: true
+    t.string   "studies",                 array: true
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "region"
