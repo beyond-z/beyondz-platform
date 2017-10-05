@@ -1,3 +1,5 @@
+require 'uuidtools'
+
 class ChampionsController < ApplicationController
   layout 'public'
 
@@ -87,7 +89,8 @@ class ChampionsController < ApplicationController
 
       ccs << ChampionContact.create(
         :user_id => current_user.id,
-        :champion_id => cid
+        :champion_id => cid,
+        :nonce => UUIDTools::UUID.random_create.to_s
       )
     end
 
@@ -96,16 +99,19 @@ class ChampionsController < ApplicationController
 
   def fellow_survey
     @contact = ChampionContact.find(params[:id])
+    return fellow_permission_denied if current_user.id != 1 && current_user.id != @contact.user_id
     @champion = Champion.find(@contact.champion_id)
   end
 
   def champion_survey
     @contact = ChampionContact.find(params[:id])
+    return champion_permission_denied if @contact.nonce != params[:nonce]
     @fellow = User.find(@contact.user_id)
   end
 
   def fellow_survey_save
     @contact = ChampionContact.find(params[:id])
+    return fellow_permission_denied if current_user.id != 1 && current_user.id != @contact.user_id
     @contact.update_attributes(params[:champion_contact].permit(
       :champion_replied,
       :fellow_get_to_talk_to_champion,
@@ -131,6 +137,7 @@ class ChampionsController < ApplicationController
 
   def champion_survey_save
     @contact = ChampionContact.find(params[:id])
+    return champion_permission_denied if !@contact.nonce.nil? && @contact.nonce != params[:nonce]
     @contact.update_attributes(params[:champion_contact].permit(
       :inappropriate_fellow_interaction,
       :champion_get_to_talk_to_fellow,
@@ -142,6 +149,14 @@ class ChampionsController < ApplicationController
     ))
     @contact.champion_survey_answered_at = DateTime.now
     @contact.save
+  end
+
+  def fellow_permission_denied
+    render 'fellow_permission_denied', :status => :forbidden
+  end
+
+  def champion_permission_denied
+    render 'champion_permission_denied', :status => :forbidden
   end
 
   def new
