@@ -107,7 +107,7 @@
                 <td>
                   <input onclick="
                     document.getElementById('request-contact-button').style.display = '';
-                  " type="checkbox" value="<%=champ.id%>" name="champion_ids[]" <%= champ.linkedin_url.blank? ? '' : 'style="display: none;"' %> />
+                  " type="checkbox" value="<%=champ.id%>" name="champion_ids[]" <%= champ.linkedin_url.blank? ? '' : 'style="display: none;"'.html_safe %> />
                 </td>
                 <td>
                   <% if champ.linkedin_url.blank? %>
@@ -117,7 +117,7 @@
                       window.open(this.href);
                       this.parentNode.previousElementSibling.children[0].style.display = '';
                       return false;
-                    " href="<%= (champ.linkedin_url.starts_with? 'http') ? champ.linkedin_url : "http://#{champ.linkedin_url}" %>"><%= champ.first_name %> <%= champ.last_name %></a>
+                    " href="<%= (champ.linkedin_url.starts_with? 'http') ? champ.linkedin_url : "https://#{champ.linkedin_url}" %>"><%= champ.first_name %> <%= champ.last_name %></a>
                   <% end %>
                 </td>
                 <td>
