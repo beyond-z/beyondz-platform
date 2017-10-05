@@ -107,7 +107,7 @@
                 <td>
                   <input onclick="
                     document.getElementById('request-contact-button').style.display = '';
-                  " type="checkbox" value="<%=champ.id%>" name="champion_ids[]" <%= champ.linkedin_url.blank? ? '' : 'style="display: none;"' %> />
+                  " type="checkbox" value="<%=champ.id%>" name="champion_ids[]" <%= champ.linkedin_url.blank? ? '' : 'style="display: none;"'.html_safe %> />
                 </td>
                 <td>
                   <% if champ.linkedin_url.blank? %>
