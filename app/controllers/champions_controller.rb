@@ -105,7 +105,7 @@ class ChampionsController < ApplicationController
 
   def champion_survey
     @contact = ChampionContact.find(params[:id])
-    return champion_permission_denied if @contact.nonce != params[:nonce]
+    return champion_permission_denied if !@contact.nonce.nil? && @contact.nonce != params[:nonce]
     @fellow = User.find(@contact.user_id)
   end
 
