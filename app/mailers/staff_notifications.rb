@@ -53,7 +53,8 @@ class StaffNotifications < ActionMailer::Base
     mail(to: email, subject: 'Due date upload complete')
   end
 
-  def canvas_events_updated(email)
+  def canvas_events_updated(email, debug_info = "")
+    @debug_info = debug_info
     mail(to: email, subject: 'Event upload complete')
   end
 

@@ -36,17 +36,33 @@ class Admin::EventsController < Admin::ApplicationController
     # If the user followed instructions, this will now
     # match the spreadsheet and preloading will help speed things up.
     course_id = file[1][1]
-    course_id = course_id["course_".length .. -1]
+    course_id = course_id["course_".length .. -1] unless course_id.blank?
     lms = BeyondZ::LMS.new
 
     # this is just too slow if we have too many things... but meh
-    events = lms.get_events(course_id)
+    if course_id.to_i != 0
+      events = lms.get_events(course_id)
+    end
 
     changed = {}
     new_count = 0
 
     begin
       file.each_with_index do |row, index|
+
+        if index == 0
+          metadata = row[10]
+          unless metadata.blank?
+            already_loaded = course_id.to_i
+            course_id = metadata['metadata:'.length .. -2] # we want info out of "metadata:info:"
+            if course_id.to_i != already_loaded
+              events = lms.get_events(course_id)
+            end
+          end
+        end
+
+        raise BadCourseException if course_id.to_i == 0
+
         next if index == 0 # skip the header row
 
         event_id = row[0]
@@ -93,12 +109,13 @@ class Admin::EventsController < Admin::ApplicationController
 
           update_object["event_id"] = nil
           update_object["context_code"] = "course_section_#{section_object['id']}"
+          update_object["course_id"] = course_id
           update_object["parent_event_id"] = parent_event_id
           update_object["title"] = title
           update_object["start_at"] = start_at
           update_object["end_at"] = end_at
           update_object["description"] = description
-          update_object["location_name"] = location_name
+          update_object["location_name"] = location_name unless location_name.blank?
           update_object["location_address"] = location_address
 
           changed["new_#{new_count}"] = update_object
@@ -107,7 +124,7 @@ class Admin::EventsController < Admin::ApplicationController
           update_object["event_id"] = event_id
           update_object["title"] = title if title != event["title"]
           update_object["description"] = description if description != event["description"]
-          update_object["location_name"] = location_name if location_name != event["location_name"]
+          update_object["location_name"] = location_name if location_name != event["location_name"] && !location_name.blank?
           update_object["location_address"] = location_address if location_address != event["location_address"]
           update_object["start_at"] = start_at if start_at_string != lms.export_date_translation(event["start_at"])
           update_object["end_at"] = end_at if end_at_string != lms.export_date_translation(event["end_at"])
@@ -117,6 +134,11 @@ class Admin::EventsController < Admin::ApplicationController
           end
         end
       end
+    rescue BadCourseException => e
+      flash[:error] = 'The course ID is missing from the spreadsheet.'
+      flash[:message] = 'Your spreadsheet was missing the course ID. You should keep the first two rows from the downloaded sheet intact.'
+      redirect_to admin_set_events_path(email: email)
+      return
     rescue BadDateException => e
       flash[:error] = "#{e.message} is in the wrong format."
       flash[:message] = 'Please write dates and times in format YYYY-MM-DD HH:MM ZZZ. For example, "2015-12-25 12:00 EST" means noon in Eastern time on Christmas 2015.'
@@ -175,6 +197,9 @@ class Admin::EventsController < Admin::ApplicationController
 end
 
 class BadDateException < Exception
+end
+
+class BadCourseException < Exception
 end
 
 class BadEventException < Exception
