@@ -99,6 +99,9 @@ BeyondzPlatform::Application.routes.draw do
     get '/users/import_lead_owner_mapping', to: 'users#import_lead_owner_mapping', as: 'import_lead_owner_mapping'
     post '/users/import_lead_owner_mapping', to: 'users#do_import_lead_owner_mapping'
 
+    get '/users/request_spreadsheet', to: 'users#request_spreadsheet', as: 'request_spreadsheet'
+    post '/users/request_spreadsheet', to: 'users#do_request_spreadsheet'
+
     get '/users/user_status_csv_import', to: 'users#user_status_csv_import', as: 'user_status_csv_import'
     post '/users/user_status_csv_import', to: 'users#do_user_status_csv_import'
 

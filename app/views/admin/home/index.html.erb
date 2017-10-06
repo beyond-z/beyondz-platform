@@ -4,8 +4,8 @@
 <ul>
   <li><%= link_to 'Users', admin_users_path %></li>
   <li><%= link_to 'Create Special Canvas User', new_admin_user_path %></li>
-  <li><%= link_to 'Users Export (csv) - includes applications', admin_users_path(:format => 'csv') %></li>
-  <li><%= link_to 'Users Export (xls) - raw data', admin_users_path(:format => 'xls') %></li>
+  <li><%= link_to 'Users Export (csv) - includes applications', admin_request_spreadsheet_path(:sheet => 'users_csv') %></li>
+  <li><%= link_to 'Users Export (xls) - raw data', admin_request_spreadsheet_path(:sheet => 'users_xls') %></li>
   <!-- Obsolete: This was for bulk assigning users to their cohorts before we wrote the Salesforce confirmation flow.  It's obsolete now. -->
   <!--<li><%= link_to 'Import user cohort assignment csv', admin_csv_import_path %></li>-->
   <!-- Obsolete: This was to allow a staff member to manage recruitment by making decisions and assigning values to the candidates
@@ -15,8 +15,8 @@
 <h2>Applications</h2>
 <ul>
   <li><%= link_to 'Enrollment Applications', admin_enrollments_path %></li>
-  <li><%= link_to 'Applications Export (csv)', admin_enrollments_path(:format => 'csv') %></li>
-  <li><%= link_to 'Applications Export (xls) - raw data', admin_enrollments_path(:format => 'xls') %></li>
+  <li><%= link_to 'Applications Export (csv)', admin_request_spreadsheet_path(:sheet => 'applications_csv') %></li>
+  <li><%= link_to 'Applications Export (xls) - raw data', admin_request_spreadsheet_path(:sheet => 'applications_xls') %></li>
 </ul>
 <h2>Signup and Salesforce</h2>
 <ul>
