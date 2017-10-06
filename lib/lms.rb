@@ -75,7 +75,7 @@ module BeyondZ
 
       response = @canvas_http.request(request)
 
-      response
+      response.body
     end
 
     # assumes parent_event_id is set
@@ -143,7 +143,7 @@ module BeyondZ
         response = @canvas_http.request(request)
       end
 
-      response
+      response.body
     end
 
 
@@ -155,14 +155,36 @@ module BeyondZ
     end
 
     def commit_new_events(email, changed)
+      replies = []
+      new_events = {}
       changed.each do |key, value|
-        if value['event_id'].nil?
-           self.create_event(value.except('event_id'))
+        if value['event_id'].blank?
+          if value['parent_event_id'].blank?
+            if new_events[value['title']].nil?
+              new_events[value['title']] = value.clone
+              new_events[value['title']]['context_code'] = "course_#{value['course_id']}"
+              new_events[value['title']]['child_event_data'] = {}
+            end
+            ced = {}
+            ced['start_at'] = value['start_at']
+            ced['end_at'] = value['end_at']
+            ced['context_code'] = value['context_code']
+            new_events[value['title']]['child_event_data'][value['context_code']] = ced
+          else
+            replies << self.create_event(value.except('event_id'))
+          end
         else
-          self.set_event(value)
+          replies << self.set_event(value)
         end
       end
-      StaffNotifications.canvas_events_updated(email).deliver
+
+      # I need to find all the ones with the same title and combine them
+      # into child_event_data under a newly created parent event
+      new_events.each do |key, value|
+        replies << self.create_event(value.except('event_id'))
+      end
+
+      StaffNotifications.canvas_events_updated(email, replies.inspect).deliver
     end
 
 
@@ -602,7 +624,7 @@ module BeyondZ
         header << 'Description (HTML)'
         header << 'Location Name'
         header << 'Location Address'
-        # header << 'metadata:' + course_id + ':' + Base64.encode64(Zlib::Deflate.deflate(events.to_json))
+        header << 'metadata:' + course_id + ':' # + Base64.encode64(Zlib::Deflate.deflate(events.to_json))
 
         csv << header
 
