@@ -57,6 +57,11 @@ class StaffNotifications < ActionMailer::Base
     mail(to: email, subject: 'Event upload complete')
   end
 
+  def requested_spreadsheet_ready(email, filename, data)
+    attachments[filename] = data
+    mail(to: email, subject: 'Braven data sheet', from: 'Braven Website <' + Rails.application.secrets.mailer_from_email + '>')
+  end
+
 
   def salesforce_report_ready(email, success, message)
     @success = success

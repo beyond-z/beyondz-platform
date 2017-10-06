@@ -1,6 +1,7 @@
 require 'csv'
 
 require 'lms'
+require 'sheets_export'
 
 class Admin::UsersController < Admin::ApplicationController
   def index
@@ -15,8 +16,23 @@ class Admin::UsersController < Admin::ApplicationController
         @users = @users.page(current_page)
         render
       end
-      format.csv { render text: csv_export }
-      format.xls { send_data(@users.to_xls) }
+    end
+  end
+
+  def request_spreadsheet
+    @sheet = params[:sheet]
+  end
+
+  def do_request_spreadsheet
+    e = BeyondZ::SheetsExport.new
+    if params[:sheet] == 'users_xls'
+      e.delay.users_xls(params[:email])
+    elsif params[:sheet] == 'users_csv'
+      e.delay.users_csv(params[:email])
+    elsif params[:sheet] == 'applications_csv'
+      e.delay.applications_csv(params[:email])
+    elsif params[:sheet] == 'applications_xls'
+      e.delay.applications_xls(params[:email])
     end
   end
 
@@ -506,96 +522,5 @@ class Admin::UsersController < Admin::ApplicationController
     @lms.sync_user_course_enrollment(@user, college_course, accelerator, section_accelerator)
 
     @user.save!
-  end
-
-  def csv_export_header
-    header = []
-    header << 'User ID'
-    header << 'First Name'
-    header << 'Last Name'
-    header << 'Email'
-    header << 'Relationship Manager (owner)'
-    header << 'New User'
-    header << 'Days Since Last Activity'
-    header << 'Exclude from reporting'
-    header << 'Active Status'
-    header << 'Applicant type'
-    header << 'Type = other'
-    header << 'Anticipated Graduation'
-    header << 'Started College In'
-    header << 'University Name'
-    header << 'Braven Region(s)'
-    header << 'Profession/Title/Industry'
-    header << 'Company'
-    header << 'City'
-    header << 'State'
-    header << 'Like to know when BV starts program'
-    header << 'Like to help BV start'
-    header << 'User-provided comments'
-    header << 'Signup Date'
-    header << 'Last sign in at'
-    header << 'Came from to reach site'
-    header << 'Came from to reach sign up form'
-    header << 'Associated Program'
-
-    Enrollment.column_names.each do |cn|
-      header << cn
-    end
-
-    header << 'Resume URL'
-
-    header
-  end
-
-  def csv_export
-    CSV.generate do |csv|
-      csv << csv_export_header
-      @users.each do |user|
-        exportable = []
-
-        exportable << user.id
-        exportable << user.first_name
-        exportable << user.last_name
-        exportable << user.email
-        exportable << user.relationship_manager
-        exportable << !user.relationship_manager?
-        exportable << user.days_since_last_activity
-        exportable << user.exclude_from_reporting
-        exportable << user.active_status
-        exportable << user.applicant_type
-        exportable << user.applicant_details
-        exportable << user.anticipated_graduation
-        exportable << user.started_college_in
-        exportable << user.university_name
-        exportable << user.bz_region
-        exportable << user.profession
-        exportable << user.company
-        exportable << user.city
-        exportable << user.state
-        exportable << user.like_to_know_when_program_starts
-        exportable << user.like_to_help_set_up_program
-        exportable << user.applicant_comments
-        exportable << user.created_at.to_s
-        exportable << user.last_sign_in_at.to_s
-        exportable << user.external_referral_url
-        exportable << user.internal_referral_url
-        exportable << user.associated_program
-
-        if user.enrollment
-          e = user.enrollment
-          e.attributes.values_at(*Enrollment.column_names).each do |v|
-            exportable << v
-          end
-
-          if e.resume.present?
-            exportable << e.resume.url
-          else
-            exportable << '<none uploaded>'
-          end
-        end
-
-        csv << exportable
-      end
-    end
   end
 end

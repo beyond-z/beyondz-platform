@@ -5,8 +5,6 @@ class Admin::EnrollmentsController < Admin::ApplicationController
     @enrollments = Enrollment.all
     respond_to do |format|
       format.html { render }
-      format.csv { render text: csv_export }
-      format.xls { send_data(@enrollments.to_xls) }
     end
   end
 
@@ -24,24 +22,5 @@ class Admin::EnrollmentsController < Admin::ApplicationController
       @enrollment.save(validate: false)
     end
     redirect_to admin_user_path(params[:enrollment][:user_id])
-  end
-
-  private
-
-  def csv_export
-    CSV.generate do |csv|
-      header = *Enrollment.column_names
-      header << 'Uploaded Resume'
-      csv << header
-      @enrollments.each do |e|
-        exportable = e.attributes.values_at(*Enrollment.column_names)
-        if e.resume.present?
-          exportable << e.resume.url
-        else
-          exportable << '<none uploaded>'
-        end
-        csv << exportable
-      end
-    end
   end
 end

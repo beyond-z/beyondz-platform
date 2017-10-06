@@ -1,0 +1,9 @@
+<p>Enter your email address to request the <%= @sheet %> spreadsheet.</p>
+
+<%= form_tag(admin_request_spreadsheet_path, method: "post") do |f| %>
+  Email: <%= text_field_tag :email %>
+  <%= hidden_field_tag :sheet, @sheet %>
+  <br />
+  <%= submit_tag 'Fetch' %>
+
+<% end %>
