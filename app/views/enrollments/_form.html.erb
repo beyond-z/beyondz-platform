@@ -809,7 +809,7 @@ $(document).ready(function($) {
 				minLength: 0,
 				source: function( request, response ) {
 					// delegate back to autocomplete, but extract the last term
-					response( $.ui.autocomplete.filter( availableTags, extractLast( request.term ) ) );
+					response( $.ui.autocomplete.filter( availableTags, /*extractLast*/( request.term ) ) );
 				},
 				focus: function() {
 					// prevent value inserted on focus
@@ -822,6 +822,7 @@ $(document).ready(function($) {
                                   this.isOpenedByUser = false;
                                 },
 				select: function( event, ui ) {
+                                        /*
 					var terms = split( this.value );
 					// remove the current input
 					terms.pop();
@@ -830,6 +831,8 @@ $(document).ready(function($) {
 					// add placeholder to get the comma-and-space at the end
 					terms.push( "" );
 					this.value = terms.join( ", " );
+                                        */
+                                        this.value = ui.item.value;
 					return false;
 				}
 		});
