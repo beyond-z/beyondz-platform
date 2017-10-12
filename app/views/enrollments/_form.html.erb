@@ -192,9 +192,15 @@
                 <p class="help student">Note: We are asking the following questions in order to gain a fuller understanding of your academic background. Your answers will not directly affect your chances of being accepted.</p>
 
                 <div class="form-group both volunteer coach student">
-                  <label>Major<span class="student">/Concentration or intended major, if you have one. (Leave blank if none. If pursuing multiple majors, list all.)</span> <span class="volunteer coach"> (List all, if multiple)</span></label>
+                  <label>Major<span class="student">/Concentration or intended major, if you have one.</span></label>
                   <%= f.text_field :major, 'class' => 'form-control major-multi-complete', 'type' => 'text', :maxlength => '115' %>
                 </div>
+ 
+                <div class="form-group both volunteer coach student">
+                  <label>Second Major, if you <span class="student">have</span><span class="coach">had</span> one.</label>
+                  <%= f.text_field :major2, 'class' => 'form-control major-multi-complete', 'type' => 'text', :maxlength => '115' %>
+                </div>
+ 
 
                 <div class="form-group student">
                   <label>What is your college GPA, or, if you're a freshman, your high school GPA?</label>
