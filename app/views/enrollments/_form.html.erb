@@ -192,9 +192,15 @@
                 <p class="help student">Note: We are asking the following questions in order to gain a fuller understanding of your academic background. Your answers will not directly affect your chances of being accepted.</p>
 
                 <div class="form-group both volunteer coach student">
-                  <label>Major<span class="student">/Concentration or intended major, if you have one. (Leave blank if none. If pursuing multiple majors, list all.)</span> <span class="volunteer coach"> (List all, if multiple)</span></label>
+                  <label>Major<span class="student">/Concentration or intended major, if you have one.</span></label>
                   <%= f.text_field :major, 'class' => 'form-control major-multi-complete', 'type' => 'text', :maxlength => '115' %>
                 </div>
+ 
+                <div class="form-group both volunteer coach student">
+                  <label>Second Major, if you <span class="student">have</span><span class="coach">had</span> one.</label>
+                  <%= f.text_field :major2, 'class' => 'form-control major-multi-complete', 'type' => 'text', :maxlength => '115' %>
+                </div>
+ 
 
                 <div class="form-group student">
                   <label>What is your college GPA, or, if you're a freshman, your high school GPA?</label>
@@ -809,7 +815,7 @@ $(document).ready(function($) {
 				minLength: 0,
 				source: function( request, response ) {
 					// delegate back to autocomplete, but extract the last term
-					response( $.ui.autocomplete.filter( availableTags, extractLast( request.term ) ) );
+					response( $.ui.autocomplete.filter( availableTags, /*extractLast*/( request.term ) ) );
 				},
 				focus: function() {
 					// prevent value inserted on focus
@@ -822,6 +828,7 @@ $(document).ready(function($) {
                                   this.isOpenedByUser = false;
                                 },
 				select: function( event, ui ) {
+                                        /*
 					var terms = split( this.value );
 					// remove the current input
 					terms.pop();
@@ -830,6 +837,8 @@ $(document).ready(function($) {
 					// add placeholder to get the comma-and-space at the end
 					terms.push( "" );
 					this.value = terms.join( ", " );
+                                        */
+                                        this.value = ui.item.value;
 					return false;
 				}
 		});
