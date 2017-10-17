@@ -55,6 +55,24 @@ class ChampionsController < ApplicationController
     end
 
     @results = @results.sort.uniq
+
+    results_filtered = []
+
+    @results.each do |result|
+      found = false
+      @active_requests.each do |ar|
+        if result.id == ar.champion_id
+          found = true
+          break
+        end
+      end
+
+      if !found
+        results_filtered << result
+      end
+    end
+
+    @results = results_filtered
   end
 
   def terms
