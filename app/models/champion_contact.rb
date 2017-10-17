@@ -1,6 +1,13 @@
 class ChampionContact < ActiveRecord::Base
   def self.active(user_id)
-    ChampionContact.where(:user_id => user_id).where("fellow_survey_answered_at IS NULL OR reminder_requested = true")
+    # A request is still active until BOTH surveys are answered documenting a response
+    # or until the fellow one is answered and it becomes more than 10 days old without
+    # a response from the champion.
+    ChampionContact.where(:user_id => user_id).where("
+      (fellow_survey_answered_at IS NULL OR reminder_requested = true)
+      OR
+      (champion_survey_answered_at IS NULL AND created_at > ?)
+    ", 9.days.ago.end_of_day)
   end
 
   def self.send_reminders
