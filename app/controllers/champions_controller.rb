@@ -55,6 +55,27 @@ class ChampionsController < ApplicationController
     end
 
     @results = @results.sort.uniq
+
+    results_filtered = []
+
+    # soooo this is O(n*m) but I am banking on the number of ChampionContacts being
+    # somewhat small since we limit the amount of interactions any user is allowed to have
+    # and I am expecting the query to be cached.
+    @results.each do |result|
+      found = false
+      ChampionContact.where(:user_id => current_user.id).each do |ar|
+        if result.id == ar.champion_id
+          found = true
+          break
+        end
+      end
+
+      if !found
+        results_filtered << result
+      end
+    end
+
+    @results = results_filtered
   end
 
   def terms

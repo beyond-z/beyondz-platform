@@ -75,7 +75,7 @@ module BeyondZ
 
       response = @canvas_http.request(request)
 
-      response
+      response.body
     end
 
     # assumes parent_event_id is set
@@ -143,7 +143,7 @@ module BeyondZ
         response = @canvas_http.request(request)
       end
 
-      response
+      response.body
     end
 
 
@@ -155,14 +155,36 @@ module BeyondZ
     end
 
     def commit_new_events(email, changed)
+      replies = []
+      new_events = {}
       changed.each do |key, value|
-        if value['event_id'].nil?
-           self.create_event(value.except('event_id'))
+        if value['event_id'].blank?
+          if value['parent_event_id'].blank?
+            if new_events[value['title']].nil?
+              new_events[value['title']] = value.clone
+              new_events[value['title']]['context_code'] = "course_#{value['course_id']}"
+              new_events[value['title']]['child_event_data'] = {}
+            end
+            ced = {}
+            ced['start_at'] = value['start_at']
+            ced['end_at'] = value['end_at']
+            ced['context_code'] = value['context_code']
+            new_events[value['title']]['child_event_data'][value['context_code']] = ced
+          else
+            replies << self.create_event(value.except('event_id'))
+          end
         else
-          self.set_event(value)
+          replies << self.set_event(value)
         end
       end
-      StaffNotifications.canvas_events_updated(email).deliver
+
+      # I need to find all the ones with the same title and combine them
+      # into child_event_data under a newly created parent event
+      new_events.each do |key, value|
+        replies << self.create_event(value.except('event_id'))
+      end
+
+      StaffNotifications.canvas_events_updated(email, replies.inspect).deliver
     end
 
 
@@ -182,7 +204,7 @@ module BeyondZ
     # storing the new canvas user id in the object.
     #
     # Be sure to call user.save at some point after using this.
-    def create_user(user, username)
+    def create_user(user, username, timezone = nil)
       open_canvas_http
 
       user_student_id = nil
@@ -200,6 +222,7 @@ module BeyondZ
         'user[sortable_name]' => "#{user.last_name}, #{user.first_name}",
         'user[terms_of_use]' => true,
         'user[skip_registration]' => true,
+        'user[time_zone]' => timezone,
         'pseudonym[unique_id]' => username,
         'pseudonym[send_confirmation]' => false,
         'communication_channel[type]' => 'email',
@@ -235,10 +258,10 @@ module BeyondZ
     # and creating the user on Canvas if not.
     #
     # Don't forget to call user.save after using this.
-    def sync_user_logins(user, username)
+    def sync_user_logins(user, username, timezone = nil)
       canvas_user = find_user(username)
       if canvas_user.nil?
-        create_user(user, username)
+        create_user(user, username, timezone)
       else
         user.canvas_user_id = canvas_user['id']
       end
@@ -602,7 +625,7 @@ module BeyondZ
         header << 'Description (HTML)'
         header << 'Location Name'
         header << 'Location Address'
-        # header << 'metadata:' + course_id + ':' + Base64.encode64(Zlib::Deflate.deflate(events.to_json))
+        header << 'metadata:' + course_id + ':' # + Base64.encode64(Zlib::Deflate.deflate(events.to_json))
 
         csv << header
 
