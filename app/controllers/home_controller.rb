@@ -94,6 +94,12 @@ class HomeController < ApplicationController
           'Volunteer'
         end
 
+        if campaign_type == 'Volunteer'
+          # We now do volunteers on Calendly, so we want to just skip
+          # the enrollment/confirm flow here for those campaigns
+          next
+        end
+
         apply_text = (campaign_type == 'Volunteer') ? 'Registration' : 'Application'
 
         word = 'Start'
