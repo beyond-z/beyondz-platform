@@ -1,4 +1,5 @@
 require 'lms'
+require 'salesforce'
 
 # The purpose of this controller is to centralize the endpoints for Salesforce triggers.
 # Popup windows from SF buttons are still done in the admin area, but triggers notify
