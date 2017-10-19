@@ -2,16 +2,39 @@
   <div class="section-container">
     <section>
       <div class="col-md-4 col-md-offset-4">
-        <h2>Forgot your password?</h2>
+        <% if params[:show].nil? %>
+          <h2>Forgot your password?</h2>
 
-        <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-          <%= render :partial => 'shared/form_errors', locals: { object: resource } %>
+          <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+            <%= render :partial => 'shared/form_errors', locals: { object: resource } %>
 
-          <div><%= f.label :email %><br />
-          <%= f.email_field :email, autofocus: true, :class => 'form-control' %></div>
-          <br />
-          <div><%= f.submit "Reset Password", :class => 'button-primary' %></div>
+            <div><%= f.label :email %><br />
+            <%= f.email_field :email, value: params[:email], autofocus: true, :class => 'form-control' %></div>
+            <br />
+            <div><%= f.submit "Reset Password", :class => 'button-primary' %></div>
+          <% end %>
+          <div style="padding: 0.5em;">
+            <a href="<%=new_password_path(resource_name, :show => "phone")%>">Forgot email?</a>
+          </div>
+        <% else %>
+          <h2>Forgot your email?</h2>
+
+          <%= form_tag("/users/phone", url: password_path(resource_name), method: :post) do |f| %>
+            <%= render :partial => 'shared/form_errors', locals: { object: resource } %>
+
+            <p>Enter your phone number and we will try to look up the email address you used to join Braven.</p>
+
+            <div>Phone number:<br />
+            <%= telephone_field :phone, :phone, autofocus: true, :class => 'form-control' %></div>
+            <br />
+            <div><%= submit_tag "Lookup Email", :class => 'button-primary' %></div>
+          <% end %>
+          <div style="padding: 0.5em;">
+            <p>Forgot your phone number too? <a href="info@bebraven.org">Contact us</a> for further support.</p>
+          </div>
+
         <% end %>
+        <br />
         <br />
         <%= render "devise/shared/links" %>
       </div>
