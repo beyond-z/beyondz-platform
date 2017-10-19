@@ -95,6 +95,8 @@
             ">
             <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
 
+            <% had_too_recent = true %>
+
             <table class="zebra">
               <tr>
                 <th></th>
@@ -105,11 +107,19 @@
                 <th>Fields</th>
               </tr>
             <% @results.each do |champ| %>
-              <tr>
+              <%
+                too_recent = champ.too_recently_contacted
+                had_too_recent ||= too_recent
+              %>
+              <tr <%= too_recent ? "class='too-recent'".html_safe : "" %>>
                 <td>
+                  <% unless too_recent %>
                   <input onclick="
                     document.getElementById('request-contact-button').style.display = '';
                   " type="checkbox" value="<%=champ.id%>" name="champion_ids[]" <%= champ.linkedin_url.blank? ? '' : 'style="display: none;"'.html_safe %> />
+                  <% else %>
+                    <span>*</span>
+                  <% end %>
                 </td>
                 <td>
                   <% if champ.linkedin_url.blank? %>
@@ -117,7 +127,9 @@
                   <% else %>
                     <a onclick="
                       window.open(this.href);
-                      this.parentNode.previousElementSibling.children[0].style.display = '';
+                      var prev = this.parentNode.previousElementSibling.children[0];
+                      if(prev)
+                        prev.style.display = '';
                       return false;
                     " href="<%= (champ.linkedin_url.starts_with? 'http') ? champ.linkedin_url : "https://#{champ.linkedin_url}" %>"><%= champ.first_name %> <%= champ.last_name %></a>
                   <% end %>
@@ -147,6 +159,10 @@
           </table>
             <input id="request-contact-button" style="display: none;" type="submit" class="button-primary" value="Request Contact" />
           </form>
+          <% end %>
+
+          <% if had_too_recent %>
+            <p>* Some champions are temporarily unavailable for contact because they are already committed to other engagements at this time. You may return to this page to try to contact them again in a week or two.</p>
           <% end %>
 
         </div>
@@ -232,5 +248,9 @@ window.location.hash = '#search-results';
 <style>
   .zebra tr:nth-child(odd) {
     background-color: #eee;
+  }
+
+  .too-recent td {
+    background-color: #ccc;
   }
 </style>
