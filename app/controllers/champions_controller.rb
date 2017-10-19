@@ -71,11 +71,23 @@ class ChampionsController < ApplicationController
       end
 
       if !found
+        # also filtering if the champion was too recently contacted
+        next if too_recently_contacted(result)
         results_filtered << result
       end
     end
 
     @results = results_filtered
+  end
+
+  def too_recently_contacted(champion)
+    flood_check = ChampionContact.where(:champion_id => champion.id).where("created_at > ?", 1.week.ago.end_of_day)
+    return true if flood_check.any?
+
+    semester_check = ChampionContact.where(:champion_id => champion.id).where("created_at > ?", 3.months.ago)
+    return true if semester_check.count > 3
+
+    false
   end
 
   def terms
