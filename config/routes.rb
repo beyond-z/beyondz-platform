@@ -55,6 +55,7 @@ BeyondzPlatform::Application.routes.draw do
   resources :users, only: [:new, :create], :path => :signup
 
   post '/users/reset', to: 'users#reset', as: 'user_reset'
+  post '/users/phone', to: 'users#phone', as: 'user_phone'
   get '/users/clear_session_cookie', to: 'users#clear_session_cookie'
   get '/users/not_on_lms', to: 'users#not_on_lms'
   get '/users/sso_discovery', to: 'users#sso_discovery'

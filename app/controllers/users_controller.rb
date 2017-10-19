@@ -26,6 +26,18 @@ class UsersController < ApplicationController
     end
   end
 
+  def phone
+    phone = params[:phone][:phone]
+    result = User.where("regexp_replace(phone, '[^0-9]', '') = ?", phone.gsub(/[^0-9]/, ''))
+    if result.any?
+      flash[:message] = "We found an account with #{result.first.email}"
+      redirect_to new_password_path('user', :email => result.first.email);
+    else
+      flash[:message] = "We couldn't find an account with your phone number."
+      redirect_to new_password_path('user', :show => 'phone');
+    end
+  end
+
   def sso_discovery
     render layout: 'minimal'
   end
