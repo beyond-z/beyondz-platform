@@ -1,4 +1,5 @@
 require 'lms'
+require 'salesforce'
 
 # The purpose of this controller is to centralize the endpoints for Salesforce triggers.
 # Popup windows from SF buttons are still done in the admin area, but triggers notify
@@ -46,7 +47,7 @@ class SalesforceController < ApplicationController
           if u
             disable_email_notifications_in_osqa(u)
           else
-            logger.info "No user found to disable email notifications for: #{u}"
+            logger.warn "No user found to disable email notifications for: #{u}. Skipping."
           end
         end
         render plain: 'OK'
@@ -82,11 +83,15 @@ class SalesforceController < ApplicationController
       old_campaign = params[:oldCampaignId]
       cids.split(',').each do |cid|
         u = User.find_by_salesforce_id(cid)
-        e = Enrollment.where(:user_id => u.id, :campaign_id => old_campaign)
-        next if e.empty?
-        e = e.first
-        e.campaign_id = new_campaign
-        e.save(validate: false)
+        if u
+          e = Enrollment.where(:user_id => u.id, :campaign_id => old_campaign)
+          next if e.empty?
+          e = e.first
+          e.campaign_id = new_campaign
+          e.save(validate: false)
+        else
+          logger.warn "No user found to change campaigns for Salesforce ID = #{cid}. Skipping. Did not change them from #{old_campaign} to #{new_campaign}"
+        end
       end
     end
 
