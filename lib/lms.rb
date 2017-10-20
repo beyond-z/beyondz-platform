@@ -259,11 +259,16 @@ module BeyondZ
     #
     # Don't forget to call user.save after using this.
     def sync_user_logins(user, username, timezone = nil)
-      canvas_user = find_user(username)
-      if canvas_user.nil?
-        create_user(user, username, timezone)
-      else
-        user.canvas_user_id = canvas_user['id']
+      # if they are already on canvas, no need to look up again
+      if user.canvas_user_id.nil?
+        # but if not, we will try to sync by username
+        # and create if necessary
+        canvas_user = find_user(username)
+        if canvas_user.nil?
+          create_user(user, username, timezone)
+        else
+          user.canvas_user_id = canvas_user['id']
+        end
       end
 
       user
