@@ -90,6 +90,7 @@ class User < ActiveRecord::Base
       :bz_region => bz_region_lookup,
       :applicant_type => applicant_type
     )
+    logger.debug "########## Found Lead Owner: #{mapping.inspect} for university_name_lookup = #{university_name_lookup}, bz_region_lookup = #{bz_region_lookup}, applicant_type = #{applicant_type}"
 
     # IF all else fails, assign it to Abby and she'll handle it manually
     if mapping.empty?
