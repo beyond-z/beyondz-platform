@@ -9,12 +9,12 @@ First name: <%= @user.first_name %>
       %> Other: <%= @user.applicant_details %><%
     when 'professional'
       %> Professional: <%= @user.applicant_details %><%
-    when 'grad_student'
-      %> Grad student: <%= @user.university_name %>, anticipated graduation in <%= @user.anticipated_graduation %><%
+    when 'leadership_coach'
+      %> Leadership Coach: <%= @user.city%>, <%= @user.state %>, working at <%= @user.company %> as a <%= @user.profession %><%
     when 'undergrad_student'
       %> Undergrad student: <%= @user.university_name %>, anticipated graduation in <%= @user.anticipated_graduation %><%
-    when 'temp_volunteer'
-      %> Temp volunteer: <%= @user.applicant_details %><%
+    when 'event_volunteer'
+      %> Event volunteer: <%= @user.applicant_details %><%
     when 'school_student'
       %> Student: <%= @user.anticipated_graduation %><%
     end %>

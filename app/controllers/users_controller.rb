@@ -232,7 +232,7 @@ class UsersController < ApplicationController
         name = 'Fr' if name.match(/friday/i)
         name = 'Sa' if name.match(/saturday/i)
 
-        if current_user.applicant_type == 'volunteer'
+        if current_user.applicant_type == 'leadership_coach'
           # Set the section name automatically according to the pattern..
           # This is only for coaches. Students are manually mapped to cohorts.
           cm.Section_Name_In_LMS__c = "#{campaign.Section_Name_Site_Prefix__c} #{current_user.first_name} (#{name})"
@@ -359,10 +359,10 @@ class UsersController < ApplicationController
     user[:university_name] = params[:undergrad_university_name] if user[:university_name] == 'other'
 
     if !user[:applicant_type].nil?
-      # We don't create a user now for Temp Volunteers.  Instead, we send them to calendly and
+      # We don't create a user now for Event Volunteers.  Instead, we send them to calendly and
       # when they signup for an event, that calls into the calendly_controller to create a new
       # user.
-      if user[:applicant_type] == 'temp_volunteer'
+      if user[:applicant_type] == 'event_volunteer'
         calendar_url = User.get_calendar_url(user[:bz_region])
         if calendar_url.nil?
           raise NoCalendarMappingException, "No calendar_url found for bz_region #{user[:bz_region]}"
@@ -376,7 +376,7 @@ class UsersController < ApplicationController
         return
       end
       @new_user = User.new(user)
-      unless user[:applicant_type] == 'undergrad_student' || user[:applicant_type] == 'volunteer' || user[:applicant_type] == 'temp_volunteer'
+      unless user[:applicant_type] == 'undergrad_student' || user[:applicant_type] == 'leadership_coach' || user[:applicant_type] == 'event_volunteer'
         # Partners, employers, and others are reached out to manually instead of confirming
         # their account. We immediate make on salesforce and don't require confirmation so
         # we can contact them quickly and painlessly (to them!).

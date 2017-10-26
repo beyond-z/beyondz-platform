@@ -328,9 +328,9 @@ class User < ActiveRecord::Base
         # member check in the welcome page show them next steps, assuming
         # apply now will work until triggers hit us to say otherwise.
         #
-        # However, for Temp Volunteers they maybe rescheduling or signing up again after cancelling, so we want to
+        # However, for Event Volunteers they maybe rescheduling or signing up again after cancelling, so we want to
         # update their record with the new information
-        if applicant_type == 'temp_volunteer'
+        if applicant_type == 'event_volunteer'
           client.materialize('CampaignMember')
           cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(salesforce_id, salesforce_campaign_id)
           if !cm.nil?
@@ -348,7 +348,7 @@ class User < ActiveRecord::Base
             cm.Opted_Out_Reason__c = ''
             cm.save
           else
-            logger.debug "########## No CampaignMember found with salesforce_id = #{salesforce_id} and salesforce_campaign_id = #{salesforce_campaign_id}.  Failed to update their volunteer signup info"
+            logger.debug "########## No CampaignMember found with salesforce_id = #{salesforce_id} and salesforce_campaign_id = #{salesforce_campaign_id}.  Failed to update their event volunteer signup info"
           end
         else
           logger.debug "Caught #{e} -- which usually means that the CampaignMember already exists in Salesforce, which is fine."
@@ -412,7 +412,7 @@ class User < ActiveRecord::Base
       task.IsRecurrence = false
       task.save
     else
-      logger.debug "No CampaignMember found with salesforce_id = #{salesforce_id} and salesforce_campaign_id = #{salesforce_campaign_id}.  Failed to set Candidate Status to cancel their Volunteer Signup"
+      logger.debug "No CampaignMember found with salesforce_id = #{salesforce_id} and salesforce_campaign_id = #{salesforce_campaign_id}.  Failed to set Candidate Status to cancel their Event Volunteer Signup"
     end
   rescue Databasedotcom::SalesForceError => e
     logger.warn "###### Caught Databasedotcom::SalesForceError #{e.inspect} -- Failed to update CampaignMember and record a Task of the cancellation for #{first_name} #{last_name} - #{selected_timeslot}"
@@ -422,10 +422,10 @@ class User < ActiveRecord::Base
     case applicant_type
     when 'undergrad_student'
       'Undergrad'
-    when 'volunteer'
-      'Volunteer'
-    when 'temp_volunteer'
-      'Temp Volunteer'
+    when 'leadership_coach'
+      'Leadership Coach'
+    when 'event_volunteer'
+      'Event Volunteer'
     when 'employer'
       'Employer'
     when 'partner'
@@ -439,9 +439,9 @@ class User < ActiveRecord::Base
 
   def salesforce_campaign_id
     mapping = nil
-    # For Temp Volunteers, they may have been a Fellow or a Coach in the past and thus have their university_name set,
+    # For Event Volunteers, they may have been a Fellow or a Coach in the past and thus have their university_name set,
     # however, we don't use university_name when looking up the Campaign for that region, so the mapping is not found.
-    if applicant_type == 'temp_volunteer'
+    if applicant_type == 'event_volunteer'
       mapping = CampaignMapping.where(
         :bz_region => bz_region,
         :applicant_type => applicant_type
@@ -485,7 +485,7 @@ class User < ActiveRecord::Base
   def self.get_calendar_url(bz_region)
     mapping = CampaignMapping.where(
       :bz_region => bz_region,
-      :applicant_type => 'temp_volunteer'
+      :applicant_type => 'event_volunteer'
     )
 
     if mapping.empty?
