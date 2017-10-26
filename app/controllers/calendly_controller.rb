@@ -44,7 +44,7 @@ class CalendlyController < ApplicationController
         contact['LastName'] = last_name unless last_name.blank?
         contact['Email'] = email
 
-        applicant_type = 'temp_volunteer'
+        applicant_type = 'event_volunteer'
         selected_timeslot = "#{event_name}: #{start_time}"
 
         bz_region = User.get_bz_region(applicant_type, calendar_email)
@@ -94,7 +94,7 @@ class CalendlyController < ApplicationController
           contact['Company__c'] = company
           contact['Title'] = title_industry # Both their title and industry could have commans, so can't split reliable.  Just stuff it all in Title field.
           contact['BZ_Region__c'] = bz_region
-          contact['User_Type__c'] = 'Temp Volunteer'
+          contact['User_Type__c'] = 'Event Volunteer'
           contact['BZ_User_Id__c'] = current_user.id
           contact['Came_From_to_Visit_Site__c'] = calendly_url
 

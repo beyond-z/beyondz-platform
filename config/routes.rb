@@ -15,7 +15,7 @@ BeyondzPlatform::Application.routes.draw do
   # These convenience routes are meant to be given to
   # people during in-person recruitment efforts
 
-  get '/volunteer/signup', to: redirect('/signup/new?applicant_type=volunteer')
+  get '/coach/signup', to: redirect('/signup/new?applicant_type=leadership_coach')
   get '/student/signup', to: redirect('/signup/new?applicant_type=undergrad_student')
   get '/employer/signup', to: redirect('/signup/new?applicant_type=employer')
   get '/partner/signup', to: redirect('/signup/new?applicant_type=partner')
