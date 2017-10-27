@@ -15,7 +15,7 @@ BeyondzPlatform::Application.routes.draw do
   # These convenience routes are meant to be given to
   # people during in-person recruitment efforts
 
-  get '/volunteer/signup', to: redirect('/signup/new?applicant_type=volunteer')
+  get '/coach/signup', to: redirect('/signup/new?applicant_type=leadership_coach')
   get '/student/signup', to: redirect('/signup/new?applicant_type=undergrad_student')
   get '/employer/signup', to: redirect('/signup/new?applicant_type=employer')
   get '/partner/signup', to: redirect('/signup/new?applicant_type=partner')
@@ -55,6 +55,7 @@ BeyondzPlatform::Application.routes.draw do
   resources :users, only: [:new, :create], :path => :signup
 
   post '/users/reset', to: 'users#reset', as: 'user_reset'
+  post '/users/phone', to: 'users#phone', as: 'user_phone'
   get '/users/clear_session_cookie', to: 'users#clear_session_cookie'
   get '/users/not_on_lms', to: 'users#not_on_lms'
   get '/users/sso_discovery', to: 'users#sso_discovery'
