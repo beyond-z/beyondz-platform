@@ -424,7 +424,11 @@ class User < ActiveRecord::Base
       'Undergrad'
     when 'leadership_coach'
       'Leadership Coach'
+    when 'volunteer' # Old value here for backwards compatibility
+      'Leadership Coach'
     when 'event_volunteer'
+      'Event Volunteer'
+    when 'temp_volunteer' # Old value here for backwards compatibility
       'Event Volunteer'
     when 'employer'
       'Employer'
@@ -536,6 +540,7 @@ class User < ActiveRecord::Base
     difference.floor # round to nearest day
   end
 
+  # This is obsolete. Need to remove at some point
   def student?
     applicant_type == 'student'
   end
