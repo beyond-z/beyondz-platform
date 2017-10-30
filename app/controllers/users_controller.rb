@@ -309,6 +309,9 @@ class UsersController < ApplicationController
     @referrer = request.referrer
     @user = User.new
     @user.applicant_type = params[:applicant_type] if params[:applicant_type]
+    # some old values no longer in use, translate them for backwards compatibility
+    @user.applicant_type = 'leadership_coach' if @user.applicant_type == 'volunteer'
+    @user.applicant_type = 'event_volunteer' if @user.applicant_type == 'temp_volunteer'
     @user.bz_region = params[:user][:bz_region] if params[:user]
     if params[:applicant_type]
       @hide_other_applicant_types = true
@@ -375,6 +378,9 @@ class UsersController < ApplicationController
         redirect_to path
         return
       end
+      # some old values no longer in use, translate them for backwards compatibility
+      user[:applicant_type] = 'leadership_coach' if user[:applicant_type] == 'volunteer'
+      user[:applicant_type] = 'event_volunteer' if user[:applicant_type] == 'temp_volunteer'
       @new_user = User.new(user)
       unless user[:applicant_type] == 'undergrad_student' || user[:applicant_type] == 'leadership_coach' || user[:applicant_type] == 'event_volunteer'
         # Partners, employers, and others are reached out to manually instead of confirming
