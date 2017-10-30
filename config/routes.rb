@@ -19,6 +19,8 @@ BeyondzPlatform::Application.routes.draw do
   get '/student/signup', to: redirect('/signup/new?applicant_type=undergrad_student')
   get '/employer/signup', to: redirect('/signup/new?applicant_type=employer')
   get '/partner/signup', to: redirect('/signup/new?applicant_type=partner')
+  # Old URL, here for backwards compatibility
+  get '/volunteer/signup', to: redirect('/signup/new?applicant_type=leadership_coach')
 
   # and back to the application itself
 
