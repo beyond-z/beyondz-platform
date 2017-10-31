@@ -250,12 +250,13 @@ class User < ActiveRecord::Base
     contact['Enrollment_Semester__c'] = started_college_in_semester
     contact['Interested_in_opening_BZ__c'] = like_to_help_set_up_program ? true : false
     contact['Keep_Informed__c'] = like_to_know_when_program_starts ? true : false
-    # we store the string and SF needs a string, but the library expects an array so we split it back up here
-    if bz_region
-      contact['BZ_Region__c'] = bz_region
-    else
-      contact['BZ_Region__c'] = ''
-    end
+    # TODO: for uni partner signups, employer partner signups and other, create a BZRegionMapping admin option
+    # that looks up the BZ Region based on the name in the form.  E.g. map 'Rutgers University - Newark' to 'Newark, NJ'
+    # Right now, they just turn into a lead with National set as the region and then if they are assigned to a Campaign
+    # with the BZ Region set, that's when their region is updated.
+    #
+    # BZ_Region is required, so if it's not set, default them to National
+    contact['BZ_Region__c'] = (bz_region.blank? || bz_region == 'Other:') ? 'National' : bz_region
 
     lead_created = false
 
