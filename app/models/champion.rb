@@ -43,7 +43,8 @@ class Champion < ActiveRecord::Base
     contact['LinkedIn_URL__c'] = linkedin_url
     contact['Industry_Experience__c'] = industries.join(', ')
     contact['Fields_Of_Study__c'] = studies.join(', ')
-    contact['BZ_Region__c'] = region
+    # BZ_Region is required, so if they don't choose a region default them to National
+    contact['BZ_Region__c'] = region.blank? ? 'National' : region
     contact['Signup_Date__c'] = created_at
     contact['User_Type__c'] = 'Champion'
     contact['Volunteer_Information__c'] = 'Champion'
