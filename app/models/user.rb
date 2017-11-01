@@ -256,7 +256,7 @@ class User < ActiveRecord::Base
     # with the BZ Region set, that's when their region is updated.
     #
     # BZ_Region is required, so if it's not set, default them to National
-    contact['BZ_Region__c'] = (bz_region.blank? || bz_region == 'Other:') ? 'National' : bz_region
+    contact['BZ_Region__c'] = (bz_region.blank? || bz_region.strip == 'Other:') ? 'National' : bz_region
 
     lead_created = false
 
