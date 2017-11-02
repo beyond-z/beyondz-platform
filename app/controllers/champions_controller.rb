@@ -165,8 +165,6 @@ class ChampionsController < ApplicationController
       # need to email them asking if they want to be back on the list
       Reminders.ask_champion_status(champ).deliver
     end
-
-    end
   end
 
   def champion_survey_save
