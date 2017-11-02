@@ -82,7 +82,6 @@ class HomeController < ApplicationController
       had_any_records = false
 
       sf_answer['records'].each do |record|
-        had_any_records = true
         campaign = sf.load_cached_campaign(record['CampaignId'])
         campaign_type =
         case campaign.Type
@@ -99,6 +98,8 @@ class HomeController < ApplicationController
           # the enrollment/confirm flow here for those campaigns
           next
         end
+
+        had_any_records = true
 
         apply_text = (campaign_type == 'Volunteer') ? 'Registration' : 'Application'
 
@@ -125,6 +126,9 @@ class HomeController < ApplicationController
         will_show_message = false
         submitted = !apply_now_enabled
         program_completed = campaign.Status == 'Completed'
+
+        # so if they are marked as accepted or confirmed in SF but doesn't have an app in our db, it
+        # currently nil errors... what should it do?
 
         if !submitted && campaign.IsActive
           # If they application isn't submitted, the logical place for them
