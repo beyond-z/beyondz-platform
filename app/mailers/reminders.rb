@@ -26,4 +26,9 @@ class Reminders < ActionMailer::Base
     @cc = cc
     mail(to: champion.email, subject: "Please tell us about your Braven Champion experience")
   end
+
+  def ask_champion_status(champion)
+    @champion = champion
+    mail(to: champion.email, reply_to: 'tess@bebraven.org', subject: "Braven Champion - still interested?")
+  end
 end

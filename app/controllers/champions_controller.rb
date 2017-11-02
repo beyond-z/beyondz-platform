@@ -154,6 +154,19 @@ class ChampionsController < ApplicationController
       @reminder_requested = true
       @reminder_email = Champion.find(@contact.champion_id).email
     end
+
+
+    # check for unresponsive champion here
+    if ChampionContact.where(:champion_id => @contact.champion_id, :reminder_requested => false, :champion_replied => false).joins("INNER JOIN champions ON champions.id = champion_contacts.id AND champions.willing_to_be_contacted = true").count == 2
+      champ = Champion.find(@contact.champion_id)
+      champ.willing_to_be_contacted = false
+      champ.save
+
+      # need to email them asking if they want to be back on the list
+      Reminders.ask_champion_status(champ).deliver
+    end
+
+    end
   end
 
   def champion_survey_save
