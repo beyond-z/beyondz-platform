@@ -47,7 +47,7 @@ class Champion < ActiveRecord::Base
     contact['BZ_Region__c'] = region.blank? ? 'National' : region
     contact['Signup_Date__c'] = created_at
     contact['User_Type__c'] = 'Champion'
-    contact['Volunteer_Information__c'] = 'Champion'
+    contact['Champion_Information__c'] = 'Current'
 
 
     if was_new
