@@ -30,6 +30,7 @@ class ChampionsController < ApplicationController
       @search_attempted = true
       studies = params[:studies_csv].split(',').map(&:strip).reject(&:empty?)
       studies.each do |s|
+        record_stat_hit(s)
         query = Champion.where("array_to_string(studies, ',') ILIKE ?","%#{s}%").where("willing_to_be_contacted = true")
         if Rails.application.secrets.smtp_override_recipient.blank?
           query = query.where("email NOT LIKE '%@bebraven.org'")
@@ -44,6 +45,7 @@ class ChampionsController < ApplicationController
       @search_attempted = true
       industries = params[:industries_csv].split(',').map(&:strip).reject(&:empty?)
       industries.each do |s|
+        record_stat_hit(s)
         query = Champion.where("array_to_string(industries, ',') ILIKE ?","%#{s}%").where("willing_to_be_contacted = true")
         if Rails.application.secrets.smtp_override_recipient.blank?
           query = query.where("email NOT LIKE '%@bebraven.org'")
@@ -79,6 +81,28 @@ class ChampionsController < ApplicationController
   end
 
   def terms
+  end
+
+  def record_stat_hit(word)
+    word = word.downcase
+    res = ChampionStats.where(:search_term => word)
+    s = nil
+    if res.empty?
+      s = ChampionStats.new
+      s.search_term = word
+      s.search_count = 0
+    else
+      s = res.first
+    end
+
+    s.search_count += 1
+    s.save
+  end
+
+  # I don't mind this being public cuz it is harmless and maybe even
+  # useful later for sorting auto-complete lists. but i also don't advertise it.
+  def search_stats
+    @stats = ChampionStats.order(search_count: :desc)
   end
 
   def contact

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171012164930) do
+ActiveRecord::Schema.define(version: 20171121203156) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -86,6 +86,13 @@ ActiveRecord::Schema.define(version: 20171012164930) do
     t.boolean  "champion_survey_email_sent",         default: false
     t.boolean  "fellow_survey_email_sent",           default: false
     t.string   "nonce"
+  end
+
+  create_table "champion_stats", force: true do |t|
+    t.string   "search_term"
+    t.integer  "search_count"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "champions", force: true do |t|
