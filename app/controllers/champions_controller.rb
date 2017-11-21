@@ -282,6 +282,17 @@ class ChampionsController < ApplicationController
       n.access_token = session.delete(:linkedin_access_token)
     end
 
+    # defensively limit string lengths before saving to ensure
+    # they don't blow the column limit
+    n.first_name = n.first_name[0 ... 240]
+    n.last_name = n.last_name[0 ... 240]
+    n.email = n.email[0 ... 240]
+    n.phone = n.phone[0 ... 240]
+    n.company = n.company[0 ... 240]
+    n.job_title = n.job_title[0 ... 240]
+    n.linkedin_url = n.linkedin_url[0 ... 240]
+    n.region = n.region[0 ... 240]
+
     n.save
 
     n.create_on_salesforce
