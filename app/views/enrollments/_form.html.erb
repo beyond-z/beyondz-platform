@@ -104,6 +104,13 @@
                   <%= f.text_field :student_id, 'class' => 'form-control short', 'title' => 'Student ID', 'required' => 'required', :maxlength => '35' %>
                 </div>
                 <% end %>
+
+                <% unless @course_options.blank? %>
+                  <label>Your Course Enrollment</label>
+                <div class="form-group">
+                  <%= f.select :student_course, options_for_select(@course_options.lines.map(&:strip).reject(&:empty?), @enrollment.student_course), {}, 'class' => 'short form-control' %>
+                </div>
+                <% end %>
               </div>
               <!-- #form-contact -->
               <!-- #form-track --> 
