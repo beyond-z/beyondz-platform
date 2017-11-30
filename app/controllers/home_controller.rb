@@ -52,14 +52,6 @@ class HomeController < ApplicationController
   end
 
   def welcome
-
-      @show_accepted = true
-      @applications = [{}]
-      @key_application_count = 1
-      @show_accepted_path = user_confirm_path(:enrollment_id => Enrollment.where(:user_id => @current_user.id).first.id)
-      return
-
-
     @apply_now_showing = false
     # just set here as a default so we can see it if it is improperly set below and
     # also to handle the fallback case for legacy users who applied before the salesforce system was in place
