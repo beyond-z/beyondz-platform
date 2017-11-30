@@ -65,6 +65,8 @@ BeyondzPlatform::Application.routes.draw do
   get '/users/confirm', to: 'users#confirm', as: 'user_confirm'
   post '/users/confirm_slot', to: 'users#confirm_part_2', as: 'user_confirm_part_2'
   post '/users/confirm', to: 'users#save_confirm', as: 'user_save_confirm'
+  get '/users/student_confirm', to: 'users#student_confirm', as: 'user_student_confirm'
+  post '/users/student_confirm', to: 'users#save_student_confirm', as: 'user_save_student_confirm'
 
   resources :enrollments, only: [:new, :create, :show, :update]
 
