@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   layout 'public'
 
-  before_filter :authenticate_user!, :only => [:reset, :confirm, :save_confirm, :not_on_lms]
+  before_filter :authenticate_user!, :only => [:reset, :confirm, :save_confirm, :not_on_lms, :student_confirm, :save_student_confirm]
 
   # Our LMS sends logged in, but non-existent (on that application) users
   # back here for us to handle. We need to identify them and send them
@@ -152,6 +152,46 @@ class UsersController < ApplicationController
     end
   end
 
+  def prepare_student_confirm
+    if params[:enrollment_id]
+      @enrollment = Enrollment.find(params[:enrollment_id])
+    else
+      @enrollment = Enrollment.find_by(:user_id => current_user.id)
+    end
+
+    @program_title = "Braven"
+  end
+
+  def student_confirm
+    prepare_student_confirm
+
+  end
+
+  def save_student_confirm
+    prepare_student_confirm
+
+    sf = BeyondZ::Salesforce.new
+    client = sf.get_client
+    client.materialize('CampaignMember')
+    client.materialize('Contact')
+
+    if params[:enrollment_id]
+      @enrollment = Enrollment.find(params[:enrollment_id])
+    else
+      @enrollment = Enrollment.find_by(:user_id => current_user.id)
+    end
+
+    campaign = sf.load_cached_campaign(@enrollment.campaign_id, client)
+
+    cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(current_user.salesforce_id, @enrollment.campaign_id)
+    if cm
+      cm.Acceptance_Answer__c = params[:will_join]
+      cm.Acceptance_Notes__c = params[:why_not]
+      cm.save
+    end
+
+  end
+
   def confirm
     prep_confirm_campaign_info
 
@@ -168,12 +208,12 @@ class UsersController < ApplicationController
     # If they are already confirmed and accepted, here refreshing the page
     # to watch for updates perhaps, we want to send them to where they want
     # to be - canvas - ASAP.
-    if cm.Candidate_Status__c == 'Confirmed' && current_user.in_lms?
+    if (cm.Candidate_Status__c == 'Confirmed' || cm.Candidate_Status__c == 'Registered') && current_user.in_lms?
       redirect_to "//#{Rails.application.secrets.canvas_server}/"
     end
 
     @waitlisted = cm.Candidate_Status__c == 'Waitlisted'
-    @confirmed = cm.Candidate_Status__c == 'Confirmed'
+    @confirmed = cm.Candidate_Status__c == 'Confirmed' || cm.Candidate_Status__c == 'Registered'
 
     # renders a view
   end
@@ -355,8 +395,8 @@ class UsersController < ApplicationController
       :city,
       :state)
 
-    user[:external_referral_url] = session[:referrer] # the first referrer saw by the app
-    user[:internal_referral_url] = params[:referrer] # the one that led direct to sign up
+    user[:external_referral_url] = session[:referrer][0 .. 220] # the first referrer saw by the app
+    user[:internal_referral_url] = params[:referrer][0 .. 220] # the one that led direct to sign up
     @referrer = params[:referrer] # preserve the original one in case of error
 
     user[:university_name] = params[:undergrad_university_name] if user[:university_name] == 'other'

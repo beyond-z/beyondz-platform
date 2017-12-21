@@ -1,0 +1,39 @@
+<form method="POST" action="<%= user_save_student_confirm_path %>">
+  <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+  <input name="enrollment_id" type="hidden" value="<%= @enrollment.id %>" />
+  <div class="plank tertiary-md">
+    <div class="section-container">
+      <section>
+        <div class="col-sm-8 col-sm-offset-2 text-center">
+            <% if params[:will_join] == "yes" %>
+              <p class="shoutout">We're glad to have you!</p>
+            <% end %>
+            <% if params[:will_join] == "no" %>
+              <p class="shoutout">Thanks for letting us know.</p>
+            <% end %>
+            <% if params[:will_join] == "maybe" %>
+              <p class="shoutout">Thanks for letting us know.</p>
+            <% end %>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="plank plain-lt">
+    <div class="section-container">
+      <section>
+        <div class="col-sm-8 col-sm-offset-2">
+            <% if params[:will_join] == "yes" %>
+              <p style="text-align: center;">Great! Go register for for the class today!</p>
+            <% end %>
+            <% if params[:will_join] == "no" %>
+              <p style="text-align: center;">We appreciate your feedback.</p>
+            <% end %>
+            <% if params[:will_join] == "maybe" %>
+              <p style="text-align: center;">Yep, it's a big decision! A Braven staff member will be in touch to talk it over.</p>
+            <% end %>
+        </div>
+      </section>
+    </div>
+  </div>
+</form>

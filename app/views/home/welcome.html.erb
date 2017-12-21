@@ -13,7 +13,7 @@
           <% if @show_accepted %>
             <p class="shoutout">You have been accepted to Braven.</p>
             <div class="apply-button button-primary" style="width: 100%; margin-bottom: 0.25em; padding-left: 0px; padding-right: 0px;">
-              <%= link_to "Please confirm your availability now", @show_accepted_path, style: 'color: white', onclick: 'return BZ_formSubmitWaitHelper(this);' %><br />
+              <%= link_to "Please confirm your #{@confirm_noun} now", @show_accepted_path, style: 'color: white', onclick: 'return BZ_formSubmitWaitHelper(this);' %><br />
             </div>
           <% elsif @show_thanks %>
             <h2>Thank you for <%= (@new_user.applicant_type == 'event_volunteer') ? 'registering with' : 'applying to' %> <%= @program_title %>.</h2>

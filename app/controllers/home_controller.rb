@@ -57,6 +57,7 @@ class HomeController < ApplicationController
     # also to handle the fallback case for legacy users who applied before the salesforce system was in place
     @program_title = 'Braven'
     @key_application_count = 0
+    @confirm_noun = 'availability'
     @applications = []
     if user_signed_in?
 
@@ -117,7 +118,8 @@ class HomeController < ApplicationController
           word = 'Continue'
         end
         accepted = record['Candidate_Status__c'] == 'Accepted'
-        confirmed = record['Candidate_Status__c'] == 'Confirmed'
+        # We want to treat Registered as the same as Confirmed on the join server - in both cases, our part is finished and when they register, SF tracks it for the staff rather than for this program.
+        confirmed = record['Candidate_Status__c'] == 'Confirmed' || record['Candidate_Status__c'] == 'Registered'
 
         # It is recent if it was updated today.... for use in not showing old informational messages
         recent = enrollment.nil? ? false : (enrollment.updated_at.to_date == Date.today)
@@ -144,12 +146,21 @@ class HomeController < ApplicationController
           @show_accepted_path = path
         end
 
+        if accepted && campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == true
+          path = user_student_confirm_path(:enrollment_id => enrollment.id)
+          @confirm_noun = 'commitment'
+          @show_accepted = true
+          @show_accepted_path = path
+        end
+
         if confirmed && !program_completed
           if current_user.in_lms? && record['Section_Name_In_LMS__c'] != ''
             path = "//#{Rails.application.secrets.canvas_server}/"
           elsif campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == false
             # enrollment must never be nil here, and should never be in the flow
             path = user_confirm_path(:enrollment_id => enrollment.id)
+          elsif campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == true
+            path = user_student_confirm_path(:enrollment_id => enrollment.id)
           end
           confirmed_count += 1
           path_important = false
