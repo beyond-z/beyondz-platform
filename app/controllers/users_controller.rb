@@ -395,8 +395,8 @@ class UsersController < ApplicationController
       :city,
       :state)
 
-    user[:external_referral_url] = session[:referrer] # the first referrer saw by the app
-    user[:internal_referral_url] = params[:referrer] # the one that led direct to sign up
+    user[:external_referral_url] = session[:referrer][0 .. 220] # the first referrer saw by the app
+    user[:internal_referral_url] = params[:referrer][0 .. 220] # the one that led direct to sign up
     @referrer = params[:referrer] # preserve the original one in case of error
 
     user[:university_name] = params[:undergrad_university_name] if user[:university_name] == 'other'
