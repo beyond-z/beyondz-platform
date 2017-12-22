@@ -59,6 +59,7 @@ class HomeController < ApplicationController
     @key_application_count = 0
     @confirm_noun = 'availability'
     @applications = []
+begin
     if user_signed_in?
 
       sf = BeyondZ::Salesforce.new
@@ -238,6 +239,13 @@ class HomeController < ApplicationController
         redirect_to "//#{Rails.application.secrets.canvas_server}/"
       end
     end
+# FILTHY HACK to let people still get to canvas when SF quota exceeded
+rescue Databasedotcom::SalesForceError => e
+  if current_user.in_lms?
+        redirect_to "//#{Rails.application.secrets.canvas_server}/"
+end
+
+end
   end
 
   def volunteer
