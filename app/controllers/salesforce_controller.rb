@@ -201,7 +201,7 @@ class SalesforceController < ApplicationController
     request = Net::HTTP::Post.new('/account/create-user/')
     request.set_form_data(
       'access_token' => Rails.application.secrets.qa_token,
-      'url' => "#{root_url}openid/user/#{user.id}",
+      'url' => "https://#{Rails.application.secrets.canvas_server}/openid/user/#{user.canvas_user_id}",
       'name' => user.name,
       'email' => user.email
     )
