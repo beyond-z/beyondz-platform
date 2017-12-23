@@ -190,22 +190,26 @@ class SalesforceController < ApplicationController
   private
 
   def setup_in_osqa(user)
-    if @qa_http.nil?
-      @qa_http = Net::HTTP.new(Rails.application.secrets.qa_host, 443)
-      @qa_http.use_ssl = true
-      if Rails.application.secrets.canvas_allow_self_signed_ssl # reusing this config option since it is the same deal here
-        @qa_http.verify_mode = OpenSSL::SSL::VERIFY_NONE # self-signed cert would fail
+    if user.canvas_user_id
+      if @qa_http.nil?
+        @qa_http = Net::HTTP.new(Rails.application.secrets.qa_host, 443)
+        @qa_http.use_ssl = true
+        if Rails.application.secrets.canvas_allow_self_signed_ssl # reusing this config option since it is the same deal here
+          @qa_http.verify_mode = OpenSSL::SSL::VERIFY_NONE # self-signed cert would fail
+        end
       end
-    end
 
-    request = Net::HTTP::Post.new('/account/create-user/')
-    request.set_form_data(
-      'access_token' => Rails.application.secrets.qa_token,
-      'url' => "https://#{Rails.application.secrets.canvas_server}/openid/user/#{user.canvas_user_id}",
-      'name' => user.name,
-      'email' => user.email
-    )
-    @qa_http.request(request)
+      request = Net::HTTP::Post.new('/account/create-user/')
+      request.set_form_data(
+        'access_token' => Rails.application.secrets.qa_token,
+        'url' => "https://#{Rails.application.secrets.canvas_server}/openid/user/#{user.canvas_user_id}",
+        'name' => user.name,
+        'email' => user.email
+      )
+      @qa_http.request(request)
+    else
+     logger.error("No canvas_user_id set For user #{user.inspect}. FAILED to provision them in the Braven Help system.")
+    end
   end
 
   def disable_email_notifications_in_osqa(user)
