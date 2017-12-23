@@ -130,14 +130,6 @@ class SalesforceController < ApplicationController
           user = User.find_by_salesforce_id(member.ContactId)
           next if user.nil?
 
-          # I set up osqa first since it is a separate component
-          # and may throw. I'd rather do it before attempting canvas
-          # setup so we don't have half-created users in canvas if
-          # this does happen to error out
-          if Rails.application.secrets.qa_token && !Rails.application.secrets.qa_token.empty?
-            setup_in_osqa(user)
-          end
-
           if campaign.Program_Site__c == 'National Louis University' && campaign.Type == 'Program Participants'
             user_student_id = nil
             enrollment = Enrollment.find_by_user_id(user.id)
@@ -167,8 +159,14 @@ class SalesforceController < ApplicationController
             )
           end
 
-
           user.save!
+
+          # Note: The user must be provisioned in Canvas and their canvas_user_id set before this will
+          # run correctly.
+          if Rails.application.secrets.qa_token && !Rails.application.secrets.qa_token.empty?
+            setup_in_osqa(user)
+          end
+
         end
       # Gotta catch 'em all!
       # the point here is just to report the problem,
