@@ -130,45 +130,51 @@ class SalesforceController < ApplicationController
           user = User.find_by_salesforce_id(member.ContactId)
           next if user.nil?
 
-          if campaign.Program_Site__c == 'National Louis University' && campaign.Type == 'Program Participants'
-            user_student_id = nil
-            enrollment = Enrollment.find_by_user_id(user.id)
-            user_student_id = enrollment.student_id unless enrollment.nil?
-            lms.sync_user_logins(user, "#{user_student_id}@nlu.edu", campaign.Default_Timezone__c)
-          else
-            lms.sync_user_logins(user, user.email, campaign.Default_Timezone__c)
-          end
+          begin
+            if campaign.Program_Site__c == 'National Louis University' && campaign.Type == 'Program Participants'
+              user_student_id = nil
+              enrollment = Enrollment.find_by_user_id(user.id)
+              user_student_id = enrollment.student_id unless enrollment.nil?
+              lms.sync_user_logins(user, "#{user_student_id}@nlu.edu", campaign.Default_Timezone__c)
+            else
+              lms.sync_user_logins(user, user.email, campaign.Default_Timezone__c)
+            end
 
-          type = 'STUDENT'
-          if campaign.Type == 'Leadership Coaches'
-            type = 'TA'
-          end
-          lms.sync_user_course_enrollment(
-            user,
-            campaign.Target_Course_ID_In_LMS__c[0].to_i,
-            type,
-            member.Section_Name_In_LMS__c
-          )
-
-          if campaign.Coach_Course_ID__c && campaign.Coach_Course_ID__c[0]
+            type = 'STUDENT'
+            if campaign.Type == 'Leadership Coaches'
+              type = 'TA'
+            end
             lms.sync_user_course_enrollment(
               user,
-              campaign.Coach_Course_ID__c[0].to_i,
-              'STUDENT',
-              campaign.Section_Name_in_LMS_Coach_Course__c
+              campaign.Target_Course_ID_In_LMS__c[0].to_i,
+              type,
+              member.Section_Name_In_LMS__c
             )
-          end
 
-          user.save!
+            if campaign.Coach_Course_ID__c && campaign.Coach_Course_ID__c[0]
+              lms.sync_user_course_enrollment(
+                user,
+                campaign.Coach_Course_ID__c[0].to_i,
+                'STUDENT',
+                campaign.Section_Name_in_LMS_Coach_Course__c
+              )
+            end
 
-          # Note: The user must be provisioned in Canvas and their canvas_user_id set before this will
-          # run correctly.
-          if Rails.application.secrets.qa_token && !Rails.application.secrets.qa_token.empty?
-            setup_in_osqa(user)
+            user.save!
+
+            # Note: The user must be provisioned in Canvas and their canvas_user_id set before this will
+            # run correctly.
+            if Rails.application.secrets.qa_token && !Rails.application.secrets.qa_token.empty?
+              setup_in_osqa(user)
+            end
+          # catching all inside the loop so a failure on one user doesn't abort
+          # the whole thing - we can fix the individual people later
+          rescue Exception => e
+            StaffNotifications.salesforce_sync_failed(e.to_s).deliver
           end
 
         end
-      # Gotta catch 'em all!
+      # Gotta catch 'em all, even after just to ensure reporting by email
       # the point here is just to report the problem,
       # then the user will decide how to handle it later
       rescue Exception => e
