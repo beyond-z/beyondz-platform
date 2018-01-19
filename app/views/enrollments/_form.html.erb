@@ -108,7 +108,7 @@
                 <% unless @course_options.blank? %>
                   <label>Your Course Enrollment</label>
                 <div class="form-group">
-                  <%= f.select :student_course, options_for_select(@course_options.lines.map(&:strip).reject(&:empty?), @enrollment.student_course), {}, 'class' => 'short form-control' %>
+                  <%= f.select :student_course, options_for_select(@course_options.lines.map(&:strip).reject(&:empty?), @enrollment.student_course), {}, 'class' => 'short form-control', 'required' => 'required' %>
                 </div>
                 <% end %>
               </div>
