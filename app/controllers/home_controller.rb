@@ -111,7 +111,8 @@ class HomeController < ApplicationController
 
         enrollment = nil
         started = false
-        enrollments = Enrollment.where(:user_id => @new_user.id, :campaign_id => record['CampaignId'])
+        enrollments = Enrollment.where(:user_id => @new_user.id).where("substring(campaign_id, 1, 15) = ?", record['CampaignId'][0 ... 15])
+
         if enrollments.any?
           enrollment = enrollments.first
           started = true
