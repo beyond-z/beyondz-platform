@@ -84,7 +84,8 @@ class SalesforceController < ApplicationController
       cids.split(',').each do |cid|
         u = User.find_by_salesforce_id(cid)
         if u
-          e = Enrollment.where(:user_id => u.id, :campaign_id => old_campaign)
+          # lol 1-based indexing. what trash.
+          e = Enrollment.where(:user_id => u.id).where("substring(campaign_id, 1, 15) = ?", old_campaign[0 ... 15])
           next if e.empty?
           e = e.first
           e.campaign_id = new_campaign

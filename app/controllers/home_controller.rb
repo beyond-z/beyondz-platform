@@ -111,7 +111,8 @@ class HomeController < ApplicationController
 
           enrollment = nil
           started = false
-          enrollments = Enrollment.where(:user_id => @new_user.id, :campaign_id => record['CampaignId'])
+          enrollments = Enrollment.where(:user_id => @new_user.id).where("substring(campaign_id, 1, 15) = ?", record['CampaignId'][0 ... 15])
+
           if enrollments.any?
             enrollment = enrollments.first
             started = true
@@ -120,6 +121,20 @@ class HomeController < ApplicationController
           accepted = record['Candidate_Status__c'] == 'Accepted'
           # We want to treat Registered as the same as Confirmed on the join server - in both cases, our part is finished and when they register, SF tracks it for the staff rather than for this program.
           confirmed = record['Candidate_Status__c'] == 'Confirmed' || record['Candidate_Status__c'] == 'Registered'
+
+          # It is recent if it was updated today.... for use in not showing old informational messages
+          recent = enrollment.nil? ? false : (enrollment.updated_at.to_date == Date.today)
+
+          path = ''
+          will_show_message = false
+          submitted = !apply_now_enabled
+          program_completed = campaign.Status == 'Completed'
+
+          if !submitted && campaign.IsActive
+            # If they application isn't submitted, the logical place for them
+            # to go is to the application so they can finish it
+            path = enrollment.nil? ? new_enrollment_path(:campaign_id => record['CampaignId']) : enrollment_path(enrollment)
+          end
 
           # It is recent if it was updated today.... for use in not showing old informational messages
           recent = enrollment.nil? ? false : (enrollment.updated_at.to_date == Date.today)

@@ -19,7 +19,7 @@ class UsersController < ApplicationController
 
       StaffNotifications.lms_mismatch(current_user).deliver
 
-      redirect_to welcome_path
+      # renders a view
     else
       # everyone else can just go to welcome to get a generic hello
       redirect_to welcome_path
