@@ -3,15 +3,9 @@
     <div class="section-container">
       <section>
         <div class="col-sm-6">
-          <% if @user.applicant_type == 'event_volunteer' %>
-            <h1>
-            Volunteer With Us
-            </h1>
-          <% else %>
-            <h1>
-              Join Us
-            </h1>
-          <% end %>
+          <h1>
+            Join Us
+          </h1>
 
           <% if !@hide_other_applicant_types %>
           <p class="lead">
@@ -68,17 +62,6 @@
                       <%= f.label :applicant_type_volunteer, 'Interested in volunteering as a coach in the Braven Accelerator' %>
                     <% end %>
                     <%= render :partial => 'leadership_coach', :locals => { :f => f} %>
-                  </div>
-                  <% end %>
-                  <% if !@hide_other_applicant_types || @user.applicant_type == 'event_volunteer' %>
-                  <div class="clickable-option">
-                    <% if @hide_other_applicant_types %>
-                      <%= f.radio_button :applicant_type, 'event_volunteer', required: 'required', style: 'visibility: hidden;' %>
-                    <% else %>
-                      <%= f.radio_button :applicant_type, 'event_volunteer', required: 'required' %>
-                      <%= f.label :applicant_type_volunteer, 'Interested in volunteering in a smaller capacity with the Braven Accelerator' %>
-                    <% end %>
-                    <%= render :partial => 'event_volunteer', :locals => { :f => f} %>
                   </div>
                   <% end %>
 
@@ -146,8 +129,6 @@
                          step is start application, so it says that. Otherwise, generic "submit" is used. -->
                     <% if(@user.applicant_type == 'leadership_coach' || @user.applicant_type == 'undergrad_student') %>
                       Next: Start Application
-                    <% elsif @user.applicant_type == 'event_volunteer'%>
-                      Next: Choose Event
                     <% else %>
                       Submit
                     <% end %>
@@ -160,7 +141,6 @@
         </div>
 
         <div class="col-sm-4 col-sm-offset-2 hidden-xs">
-        <% if @user.applicant_type != 'event_volunteer' %>
           <h2>Why Join?</h2>
           <blockquote>
             <p>&ldquo;You become part of a team that could actually make a difference. You learn that you have a story and how to tell it. You meet lots of highly motivated, inspiring people.&rdquo;</p>
@@ -170,12 +150,6 @@
             <p>&ldquo;Braven had provided me with innumerable opportunities for personal and professional growth, but the Capstone project took our learning experiences beyond that of our own and empowered me to give back to my community. I really appreciated this opportunity, it was a great learning experience in regards to leadership for me as a project manager.&rdquo;</p>
             <footer>Kelly Hernandez, Braven Fellow '14</footer>
           </blockquote>
-        <% else %>
-          <h2>Why Volunteer?</h2><!-- Note: this only shows if you use the applicant_type=event_volunteer query param -->
-          <p>You'll have the opportunity to impact promising college students as they take
-          their first steps into the professional world. You'll also meet like-minded volutneers from your
-          area to help make a difference and have fun while doing it!</p>
-        <% end %>
         </div>
       </section>
     </div>
