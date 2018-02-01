@@ -186,7 +186,13 @@ class UsersController < ApplicationController
     cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(current_user.salesforce_id, @enrollment.campaign_id)
     if cm
       cm.Acceptance_Answer__c = params[:will_join]
-      cm.Acceptance_Notes__c = params[:why_not]
+      if params[:will_join] == 'no'
+        cm.Acceptance_Notes__c = params[:why_not]
+      elsif params[:will_join] == 'maybe'
+        cm.Acceptance_Notes__c = params[:why_maybe]
+      else # yes
+        cm.Acceptance_Notes__c = ''
+      end
       cm.save
     end
 
