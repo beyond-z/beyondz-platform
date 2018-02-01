@@ -165,6 +165,11 @@ class UsersController < ApplicationController
   def student_confirm
     prepare_student_confirm
 
+    if !@enrollment.student_confirmed.blank?
+      render 'save_student_confirm'
+      return
+    end
+
   end
 
   def save_student_confirm
@@ -183,10 +188,30 @@ class UsersController < ApplicationController
 
     campaign = sf.load_cached_campaign(@enrollment.campaign_id, client)
 
+    # save locally to avoid Salesforce API calls on load
+    # and to have a backup in our DB
+    @enrollment.student_confirmed = params[:will_join]
+    if params[:will_join] == 'no'
+      @enrollment.student_confirmed_notes = params[:why_not]
+    elsif params[:will_join] == 'maybe'
+      @enrollment.student_confirmed_notes = params[:why_maybe]
+    else # yes
+      @enrollment.student_confirmed_notes = ''
+    end
+
+    @enrollment.save(validate: false)
+
+    # and save to Salesforce for staff use
     cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(current_user.salesforce_id, @enrollment.campaign_id)
     if cm
       cm.Acceptance_Answer__c = params[:will_join]
-      cm.Acceptance_Notes__c = params[:why_not]
+      if params[:will_join] == 'no'
+        cm.Acceptance_Notes__c = params[:why_not]
+      elsif params[:will_join] == 'maybe'
+        cm.Acceptance_Notes__c = params[:why_maybe]
+      else # yes
+        cm.Acceptance_Notes__c = ''
+      end
       cm.save
     end
 
