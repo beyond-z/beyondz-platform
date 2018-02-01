@@ -50,7 +50,12 @@ class EnrollmentsController < ApplicationController
     # prefilled data which we'll immediately send them to edit.
     existing_enrollment = nil
     if params[:campaign_id]
-      existing_enrollment = Enrollment.find_by(:user_id => current_user.id).where("substring(campaign_id, 1, 15) = ?", params[:campaign_id][0 ... 15])
+      existing_enrollment = Enrollment.where(:user_id => current_user.id).where("substring(campaign_id, 1, 15) = ?", params[:campaign_id][0 ... 15])
+      if existing_enrollment.any?
+        existing_enrollment = existing_enrollment.first
+      else
+        existing_enrollment = nil
+      end
     else
       # Default link is to just find any; we will start new from a campaign later
       existing_enrollment = Enrollment.find_by(:user_id => current_user.id)
