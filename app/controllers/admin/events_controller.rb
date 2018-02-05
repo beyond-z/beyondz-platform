@@ -39,6 +39,8 @@ class Admin::EventsController < Admin::ApplicationController
     course_id = course_id["course_".length .. -1] unless course_id.blank?
     lms = BeyondZ::LMS.new
 
+    events = []
+
     # this is just too slow if we have too many things... but meh
     # and no need to load here if we are going to delete the existing ones anyway
     if course_id.to_i != 0 && params[:delete_existing].nil?
