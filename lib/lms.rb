@@ -154,7 +154,26 @@ module BeyondZ
       StaffNotifications.canvas_due_dates_updated(email).deliver
     end
 
-    def commit_new_events(email, changed)
+    def delete_event(id)
+      open_canvas_http
+
+      request = Net::HTTP::Delete.new("/api/v1/calendar_events/#{id}")
+      data = {
+        'access_token' => Rails.application.secrets.canvas_access_token,
+        'cancel_reason' => 'clear via join server'
+      }
+      request.set_form_data(data)
+      @canvas_http.request(request)
+    end
+
+    def commit_new_events(email, changed, delete_existing, course_id)
+
+      if delete_existing
+        get_events(course_id).each do |event|
+          delete_event(event["id"])
+        end
+      end
+
       replies = []
       new_events = {}
       changed.each do |key, value|

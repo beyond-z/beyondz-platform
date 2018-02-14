@@ -39,8 +39,11 @@ class Admin::EventsController < Admin::ApplicationController
     course_id = course_id["course_".length .. -1] unless course_id.blank?
     lms = BeyondZ::LMS.new
 
+    events = []
+
     # this is just too slow if we have too many things... but meh
-    if course_id.to_i != 0
+    # and no need to load here if we are going to delete the existing ones anyway
+    if course_id.to_i != 0 && params[:delete_existing].nil?
       events = lms.get_events(course_id)
     end
 
@@ -55,7 +58,8 @@ class Admin::EventsController < Admin::ApplicationController
           unless metadata.blank?
             already_loaded = course_id.to_i
             course_id = metadata['metadata:'.length .. -2] # we want info out of "metadata:info:"
-            if course_id.to_i != already_loaded
+            # no need to load here if we are going to delete the existing ones anyway
+            if course_id.to_i != already_loaded && params[:delete_existing].nil?
               events = lms.get_events(course_id)
             end
           end
@@ -65,9 +69,11 @@ class Admin::EventsController < Admin::ApplicationController
 
         next if index == 0 # skip the header row
 
-        event_id = row[0]
+        # if we are going to delete all the existing ones, it should
+        # ignore the existing event IDs if they are present in the spreadsheet
+        event_id = params[:delete_existing] ? nil : row[0]
         context_code = row[1]
-        parent_event_id = row[2]
+        parent_event_id = params[:delete_existing] ? nil : row[2]
         section_name = row[3]
         title = row[4]
         start_at_string = row[5]
@@ -162,7 +168,7 @@ class Admin::EventsController < Admin::ApplicationController
     end
 
     lms = BeyondZ::LMS.new
-    lms.delay.commit_new_events(email, changed)
+    lms.delay.commit_new_events(email, changed, params[:delete_existing].nil? ? false : true, course_id)
 
     flash[:message] = 'Changes in progress, you should check your email to know when it is complete.'
     redirect_to admin_set_events_path(email: email)

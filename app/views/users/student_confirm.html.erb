@@ -15,15 +15,17 @@
   <div class="plank plain-lt">
     <div class="section-container">
       <section>
-        <div class="col-sm-8 col-sm-offset-2">
+        <div class="col-sm-4 col-sm-offset-4">
             <p style="text-align: center;">Are you going to join Braven?</p>
 
             <div><input onclick="
               document.getElementById('why-not-container').style.display = 'none';
+              document.getElementById('why-maybe-container').style.display = 'none';
             " type="radio" value="yes" name="will_join" /> Yes</div>
             <div><input onchange="
               var e = document.getElementById('why-not-container');
               e.style.display = this.checked ? '' : 'none'
+              document.getElementById('why-maybe-container').style.display = 'none';
             " type="radio" value="no" name="will_join" /> No</div>
               <div id="why-not-container" style="margin-left: 2em; display: none;">
                 <label> Bummer! Tell us why not: <br />
@@ -32,7 +34,14 @@
               </div>
             <div><input onclick="
               document.getElementById('why-not-container').style.display = 'none';
+              var e = document.getElementById('why-maybe-container');
+              e.style.display = this.checked ? '' : 'none'
             " type="radio" value="maybe" name="will_join" /> Maybe</div>
+              <div id="why-maybe-container" style="margin-left: 2em; display: none;">
+                <label> Please tell us why: <br />
+                <textarea rows="4" cols="50" name="why_maybe"></textarea>
+                </label>
+              </div>
         </div>
       </section>
     </div>
