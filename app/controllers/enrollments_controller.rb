@@ -12,6 +12,7 @@ class EnrollmentsController < ApplicationController
     @request_availability = false
     @meeting_times = ''
     @sourcing_options = ''
+    @course_options = ''
     @student_id_required = false
   end
 
@@ -49,7 +50,12 @@ class EnrollmentsController < ApplicationController
     # prefilled data which we'll immediately send them to edit.
     existing_enrollment = nil
     if params[:campaign_id]
-      existing_enrollment = Enrollment.find_by(:user_id => current_user.id, :campaign_id => params[:campaign_id])
+      existing_enrollment = Enrollment.where(:user_id => current_user.id).where("substring(campaign_id, 1, 15) = ?", params[:campaign_id][0 ... 15])
+      if existing_enrollment.any?
+        existing_enrollment = existing_enrollment.first
+      else
+        existing_enrollment = nil
+      end
     else
       # Default link is to just find any; we will start new from a campaign later
       existing_enrollment = Enrollment.find_by(:user_id => current_user.id)
@@ -229,10 +235,12 @@ class EnrollmentsController < ApplicationController
         @request_availability = campaign.Request_Availability__c
         @meeting_times = campaign.Application_Type__c == 'volunteer' ? campaign.Volunteer_Opportunities__c : campaign.Meeting_Times__c
         @sourcing_options = campaign.Sourcing_Info_Options__c
+        @course_options = campaign.Course_Options__c
         # Empty string instead of nil is easier to test for in the view
         # if this isn't filled in, we'll just skip the whole question
         # instead of displaying nonsense to the user.
         @sourcing_options = '' if @sourcing_options.nil?
+        @course_options = '' if @course_options.nil?
         @student_id_required = campaign.Request_Student_Id__c
       end
     end
@@ -356,6 +364,8 @@ class EnrollmentsController < ApplicationController
     cm.Cannot_Attend__c = @enrollment.cannot_attend
 
     cm.Student_Id__c = @enrollment.student_id
+
+    cm.Student_Course__c = @enrollment.student_course
 
     cm.Eligible__c = @enrollment.will_be_student
     cm.GPA_Circumstances__c = @enrollment.gpa_circumstances

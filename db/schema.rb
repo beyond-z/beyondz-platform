@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171122152649) do
+ActiveRecord::Schema.define(version: 20180201035639) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -184,8 +184,8 @@ ActiveRecord::Schema.define(version: 20171122152649) do
     t.string   "program_ms"
     t.boolean  "program_ms_ms_epa"
     t.boolean  "will_be_student"
-    t.string   "university"
-    t.string   "anticipated_graduation"
+    t.string   "undergrad_university"
+    t.string   "undergraduate_year"
     t.string   "major"
     t.string   "previous_university"
     t.string   "gpa"
@@ -223,15 +223,15 @@ ActiveRecord::Schema.define(version: 20171122152649) do
     t.text     "community_connection"
     t.text     "last_summer"
     t.text     "post_graduation_plans"
-    t.text     "teaching_experience"
-    t.text     "personal_passion"
+    t.text     "relevant_experience"
+    t.text     "passions_expertise"
     t.text     "why_bz"
     t.text     "commitments"
     t.text     "cannot_attend"
     t.text     "comments"
     t.text     "other_meaningful_volunteer_activities"
-    t.text     "current_volunteer_activities"
-    t.text     "meaningful_experience"
+    t.text     "other_commitments"
+    t.text     "meaningful_activity"
     t.string   "languages"
     t.boolean  "program_ms_ms_nyc"
     t.boolean  "program_ms_ms_mp"
@@ -272,6 +272,9 @@ ActiveRecord::Schema.define(version: 20171122152649) do
     t.boolean  "is_graduate_student"
     t.text     "high_school"
     t.string   "major2"
+    t.string   "student_course"
+    t.string   "student_confirmed"
+    t.text     "student_confirmed_notes"
   end
 
   add_index "enrollments", ["user_id"], name: "index_enrollments_on_user_id", using: :btree
