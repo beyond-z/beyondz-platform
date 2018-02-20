@@ -30,6 +30,12 @@ class EnrollmentsController < ApplicationController
     str
   end
 
+  # for storage, we want to strip out anything non-numeric
+  def format_phone_for_storage(phone)
+    return phone if phone.blank?
+    phone.gsub(/[^0-9]/, '')
+  end
+
   # On Salesforce URL fields, there is a 255 char max. We need a helper method
   # to keep those strings to the allowed size. Simply truncating is OK because
   # long URLs virtually always work when truncated anyway (the stuff at the end
@@ -73,7 +79,7 @@ class EnrollmentsController < ApplicationController
         @enrollment.email = current_user.email
         @enrollment.company = current_user.company
         @enrollment.undergrad_university = current_user.university_name
-        @enrollment.phone = current_user.phone
+        @enrollment.phone = format_phone_for_storage(current_user.phone)
         @enrollment.title = current_user.profession
         @enrollment.undergraduate_year = current_user.anticipated_graduation
         @enrollment.anticipated_graduation_semester = current_user.anticipated_graduation_semester
@@ -344,7 +350,7 @@ class EnrollmentsController < ApplicationController
       # Salesforce claims to have them on CampaignMember, they are
       # actually pulled from the Contact and the API won't let us
       # access or update them through the CampaignMember.
-      contact.Phone = @enrollment.phone
+      contact.Phone = format_phone_for_storage(@enrollment.phone)
       contact.MailingCity = @enrollment.city
       contact.MailingState = @enrollment.state
       contact.Title = @enrollment.title
@@ -412,13 +418,13 @@ class EnrollmentsController < ApplicationController
     cm.Reference_1_How_Known__c = @enrollment.reference_how_known
     cm.Reference_1_How_Long_Known__c = @enrollment.reference_how_long_known
     cm.Reference_1_Email__c = handle_na(@enrollment.reference_email)
-    cm.Reference_1_Phone__c = handle_na(@enrollment.reference_phone)
+    cm.Reference_1_Phone__c = format_phone_for_storage(handle_na(@enrollment.reference_phone))
 
     cm.Reference_2_Name__c = @enrollment.reference2_name
     cm.Reference_2_How_Known__c = @enrollment.reference2_how_known
     cm.Reference_2_How_Long_Known__c = @enrollment.reference2_how_long_known
     cm.Reference_2_Email__c = handle_na(@enrollment.reference2_email)
-    cm.Reference_2_Phone__c = handle_na(@enrollment.reference2_phone)
+    cm.Reference_2_Phone__c = format_phone_for_storage(handle_na(@enrollment.reference2_phone))
 
     cm.African_American__c = @enrollment.bkg_african_americanblack
     cm.Asian_American__c = @enrollment.bkg_asian_american
