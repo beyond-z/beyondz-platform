@@ -9,6 +9,15 @@ module ApplicationHelper
     end
   end
 
+  # for displaying phone numbers, grouping the digits makes it easier to read
+  def format_phone_for_display(phone)
+    return phone if phone.blank?
+    # first normalize it
+    phone = phone.gsub(/[^0-9]/, '')
+    # then display it in common US style
+    "(#{phone[-10 ... -7]}) #{phone[-7 ... -4]}-#{phone[-4 ... -1]}#{phone[-1]}"
+  end
+
   def nav_button(text, path, className = '')
     c = className
     if request.path == path
