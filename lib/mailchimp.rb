@@ -11,7 +11,7 @@ module BeyondZ
     def initialize email
       @key = ENV['MAILCHIMP_KEY']
       @list_id = ENV['MAILCHIMP_LIST']
-      puts "key: #{@key}, list: #{@list_id}"
+
       @email = email
     end
     
