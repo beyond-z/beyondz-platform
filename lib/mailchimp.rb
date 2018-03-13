@@ -9,8 +9,8 @@ module BeyondZ
     VERSION = '3.0'
     
     def initialize email
-      @key = ENV['MAILCHIMP_KEY']
-      @list_id = ENV['MAILCHIMP_LIST']
+      @key = Rails.application.secrets.mailchimp_key
+      @list_id = Rails.application.secrets.mailchimp_list_id
 
       @email = email
     end
