@@ -8,14 +8,14 @@ module BeyondZ
     HOST = "https://us11.api.mailchimp.com"
     VERSION = '3.0'
     
-    def initialize email
+    def initialize(email)
       @key = Rails.application.secrets.mailchimp_key
       @list_id = Rails.application.secrets.mailchimp_list_id
 
       @email = email
     end
     
-    def update new_email
+    def update(new_email)
       return false unless exists?
       
       subscriber_id = search['exact_matches']['members'].first['id']
