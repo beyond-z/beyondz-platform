@@ -426,6 +426,8 @@ class UsersController < ApplicationController
 
     user[:university_name] = params[:undergrad_university_name] if user[:university_name] == 'other'
 
+    user[:phone] = user[:phone].gsub(/[^0-9]/, '') unless user[:phone].blank?
+
     if !user[:applicant_type].nil?
       # We don't create a user now for Event Volunteers.  Instead, we send them to calendly and
       # when they signup for an event, that calls into the calendly_controller to create a new
