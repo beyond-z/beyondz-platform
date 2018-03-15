@@ -69,7 +69,14 @@ class User < ActiveRecord::Base
     return true unless email_changed?
     
     mailchimp = BeyondZ::Mailchimp.new(changed_attributes['email'])
-    mailchimp.update(attributes['email'])
+
+    success = mailchimp.update(attributes['email'])
+    
+    unless success
+      self.errors[:email] << "could not be updated on MailChimp"
+    end
+    
+    success
   end
 
   # Finds the lead owner from the uploaded spreadsheet mapping, or returns
