@@ -57,7 +57,7 @@ class User < ActiveRecord::Base
   validates :last_name, presence: true
 
   before_save :capitalize_name
-  before_save :update_mailchimp, if: :email_changed?
+  before_save :update_mailchimp
   
   def capitalize_name
     self.first_name = first_name.split.map(&:capitalize).join(' ') unless first_name.nil?
@@ -65,6 +65,9 @@ class User < ActiveRecord::Base
   end
   
   def update_mailchimp
+    return true if new_record?
+    return true unless email_changed?
+    
     mailchimp = BeyondZ::Mailchimp.new(changed_attributes['email'])
     mailchimp.update(attributes['email'])
   end
