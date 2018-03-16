@@ -14,6 +14,9 @@ class EnrollmentsController < ApplicationController
     @sourcing_options = ''
     @course_options = ''
     @student_id_required = false
+    @student_id_format = ''
+    @student_id_format_help = ''
+    @student_id_excluded_chars = ''
   end
 
   layout 'public'
@@ -248,6 +251,14 @@ class EnrollmentsController < ApplicationController
         @sourcing_options = '' if @sourcing_options.nil?
         @course_options = '' if @course_options.nil?
         @student_id_required = campaign.Request_Student_Id__c
+
+        # It first js regex replaces excluded chars with '', removing them
+        # then js regex matches student_id format. if it fails, it displays
+        # student id format help to the user.
+        # See: public/enrollments.js studentIdCheck
+        @student_id_format = campaign.Student_ID_Format__c
+        @student_id_format_help = campaign.Student_ID_Format_Help__c
+        @student_id_excluded_chars = campaign.Student_ID_Excluded_Chars__c
       end
     end
   end
