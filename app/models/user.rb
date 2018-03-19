@@ -76,7 +76,8 @@ class User < ActiveRecord::Base
       self.errors[:email] << "could not be updated on MailChimp"
     end
     
-    success
+    # for now, always return true to prevent AR update failure
+    true
   end
 
   # Finds the lead owner from the uploaded spreadsheet mapping, or returns
