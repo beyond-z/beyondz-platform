@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180201035639) do
+ActiveRecord::Schema.define(version: 20180322143110) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -294,6 +294,28 @@ ActiveRecord::Schema.define(version: 20180201035639) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "referrals", force: true do |t|
+    t.string   "referred_by_first_name"
+    t.string   "referred_by_last_name"
+    t.string   "referred_by_email"
+    t.string   "referred_by_phone"
+    t.string   "referral_location"
+    t.string   "referred_by_employer"
+    t.string   "referred_by_affiliation"
+    t.string   "referred_first_name"
+    t.string   "referred_last_name"
+    t.string   "referred_email"
+    t.string   "referred_phone"
+    t.integer  "referrer_user_id"
+    t.string   "referrer_salesforce_id"
+    t.string   "referred_salesforce_id"
+    t.string   "referring_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "referrals", ["referrer_user_id"], name: "index_referrals_on_referrer_user_id", using: :btree
 
   create_table "resources", force: true do |t|
     t.string   "url"
