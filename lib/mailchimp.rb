@@ -3,56 +3,100 @@ require 'json'
 
 module BeyondZ
   class Mailchimp
-    attr_reader :email
+    attr_reader :user, :key, :list_id
     
     HOST = "https://us11.api.mailchimp.com"
     VERSION = '3.0'
     
-    def initialize(email)
+    def initialize(user)
+      @user = user
+      
       @key = Rails.application.secrets.mailchimp_key
       @list_id = Rails.application.secrets.mailchimp_list_id
-
-      @email = email
     end
     
-    def update(new_email)
-      return false unless exists?
+    def update
+      return false unless mailchimp_record
       
-      subscriber_id = search['exact_matches']['members'].first['id']
+      uri = URI("#{HOST}/#{VERSION}/lists/#{@list_id}/members/#{mailchimp_id}")
       
-      uri = URI("#{HOST}/#{VERSION}/lists/#{@list_id}/members/#{subscriber_id}")
+      update_fields = {
+        email_address: user.email,
+        merge_fields: {
+          FNAME: user.first_name,
+          LNAME: user.last_name
+        }
+      }
       
       request = Net::HTTP::Patch.new(uri)
       request.basic_auth 'key', @key
-      request.body = {email_address: new_email}.to_json
+      request.body = update_fields.to_json
       
       response = http.request request
       
       json = JSON.parse(response.body)
-      json['email_address'] == new_email
-    rescue
-      false
+      
+      # success is based on this boolean test
+      json['email_address'] == user.email
+    end
+    
+    def mailchimp_record
+      return @mailchimp_record if defined?(@mailchimp_record)
+      
+      @mailchimp_record = nil
+      
+      # if we have the mailchimp id, use it directly (best option)
+      if user.mailchimp_id
+        @mailchimp_record = record_via_mailchimp_id
+      end
+      
+      # if mailchimp_id is unknown or fails, try e-mail BEFORE it was changed
+      if @mailchimp_record.nil? && user.changed_attributes.has_key?('email')
+        @mailchimp_record = record_via_email(user.changed_attributes['email'])
+        save_mailchimp_id if @mailchimp_record
+      end
+      
+      # otherwise, try current e-mail
+      if @mailchimp_record.nil?
+        @mailchimp_record = record_via_email(user.email)
+        save_mailchimp_id if @mailchimp_record
+      end
+      
+      @mailchimp_record
     end
     
     private
     
-    def exists?
-      search['exact_matches']['total_items'].to_i > 0
-    rescue
-      false
+    def save_mailchimp_id
+      user.update mailchimp_id: mailchimp_id
     end
     
-    def search
-      return @search if defined?(@search)
+    def record_via_email(email)
+      uri = URI("#{HOST}/#{VERSION}/search-members?query=#{email}&list_id=#{list_id}")
+      record = get(uri)
       
-      uri = URI("#{HOST}/#{VERSION}/search-members?query=#{email}&list_id=#{@list_id}")
-
+      return nil unless record['exact_matches']['total_items'].to_i > 0
+      
+      record['exact_matches']['members'].first
+    end
+    
+    def record_via_mailchimp_id
+      uri = URI("#{HOST}/#{VERSION}/lists/#{list_id}/members/#{user.mailchimp_id}")
+      record = get(uri)
+      
+      record.has_key?('id') ? record : nil
+    end
+    
+    def get uri
       request = Net::HTTP::Get.new uri
-      request.basic_auth 'key', @key
+      request.basic_auth 'key', key
       
       response = http.request request
-
-      @search = JSON.parse(response.body)
+      record = JSON.parse(response.body)
+    end
+    
+    def mailchimp_id
+      mailchimp_record ? mailchimp_record['id'] : nil
     end
     
     def http
