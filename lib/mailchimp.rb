@@ -1,5 +1,6 @@
 require 'net/http'
 require 'json'
+require 'digest/md5'
 
 module BeyondZ
   class Mailchimp
@@ -45,21 +46,14 @@ module BeyondZ
       
       @mailchimp_record = nil
       
-      # if we have the mailchimp id, use it directly (best option)
-      if user.mailchimp_id
-        @mailchimp_record = record_via_mailchimp_id
-      end
-      
-      # if mailchimp_id is unknown or fails, try e-mail BEFORE it was changed
-      if @mailchimp_record.nil? && user.changed_attributes.has_key?('email')
+      # Use e-mail BEFORE it was changed, if available
+      if user.changed_attributes.has_key?('email')
         @mailchimp_record = record_via_email(user.changed_attributes['email'])
-        save_mailchimp_id if @mailchimp_record
       end
       
-      # otherwise, try current e-mail
+      # if pre-changed e-mail doesn't exist, or can't be found on mailchimp, try current e-mail
       if @mailchimp_record.nil?
         @mailchimp_record = record_via_email(user.email)
-        save_mailchimp_id if @mailchimp_record
       end
       
       @mailchimp_record
@@ -67,32 +61,22 @@ module BeyondZ
     
     private
     
-    def save_mailchimp_id
-      user.update mailchimp_id: mailchimp_id
+    def hex_digest(email=nil)
+      Digest::MD5.hexdigest(email || user.email)
     end
+    
+    def
     
     def record_via_email(email)
-      uri = URI("#{HOST}/#{VERSION}/search-members?query=#{email}&list_id=#{list_id}")
-      record = get(uri)
-      
-      return nil unless record['exact_matches']['total_items'].to_i > 0
-      
-      record['exact_matches']['members'].first
-    end
-    
-    def record_via_mailchimp_id
-      uri = URI("#{HOST}/#{VERSION}/lists/#{list_id}/members/#{user.mailchimp_id}")
-      record = get(uri)
-      
-      record.has_key?('id') ? record : nil
-    end
-    
-    def get uri
+      uri = URI("#{HOST}/#{VERSION}/lists/#{list_id}/members/#{hex_digest(email)}")
+
       request = Net::HTTP::Get.new uri
       request.basic_auth 'key', key
       
       response = http.request request
       record = JSON.parse(response.body)
+      
+      record.has_key?('id') ? record : nil
     end
     
     def mailchimp_id
