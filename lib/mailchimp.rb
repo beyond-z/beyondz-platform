@@ -8,6 +8,7 @@ module BeyondZ
     
     HOST = "https://us11.api.mailchimp.com"
     VERSION = '3.0'
+    UPDATEABLE_FIELDS = ['email', 'first_name', 'last_name']
     
     def initialize(user)
       @user = user
@@ -59,13 +60,15 @@ module BeyondZ
       @mailchimp_record
     end
     
+    def requires_update?
+      !(user.changed_attributes.keys & UPDATEABLE_FIELDS).empty?
+    end
+    
     private
     
     def hex_digest(email=nil)
       Digest::MD5.hexdigest(email || user.email)
     end
-    
-    def
     
     def record_via_email(email)
       uri = URI("#{HOST}/#{VERSION}/lists/#{list_id}/members/#{hex_digest(email)}")

@@ -67,11 +67,12 @@ class User < ActiveRecord::Base
   def update_mailchimp
     # don't update for a new record, it doesn't exist in mailchimp yet
     return true if new_record?
-    
-    # don't update unless e-mail has changed
-    return true unless email_changed?
 
     mailchimp = BeyondZ::Mailchimp.new(self)
+    
+    # don't update unless an updateable field has changed
+    return true unless mailchimp.requires_update?
+    
     success_status = mailchimp.update
 
     # for now, assume success until retro-sync can be performed
