@@ -70,7 +70,7 @@ module BeyondZ
       
       # if still not found, make a note
       if @mailchimp_record.nil?
-        
+        error("Mailchimp e-mail record was not found")
       end
       
       @mailchimp_record
