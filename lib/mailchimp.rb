@@ -8,7 +8,7 @@ module BeyondZ
     
     HOST = "https://us11.api.mailchimp.com"
     VERSION = '3.0'
-    UPDATEABLE_FIELDS = ['email', 'first_name', 'last_name']
+    UPDATEABLE_FIELDS = ['email', 'first_name', 'last_name', 'bz_region']
     
     def initialize(user)
       @user = user
@@ -47,7 +47,8 @@ module BeyondZ
         email_address: user.email,
         merge_fields: {
           FNAME: user.first_name,
-          LNAME: user.last_name
+          LNAME: user.last_name,
+          REGION: user.bz_region
         }
       }
       
