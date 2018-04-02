@@ -1,5 +1,5 @@
 require 'salesforce'
-require 'mailchimp'
+require 'mailchimp/user'
 
 # Monkey-patch the CAS gem so we can use it without losing the database
 # features we use for SSO - we still manage the users here, including
@@ -68,7 +68,7 @@ class User < ActiveRecord::Base
     # don't update for a new record, it doesn't exist in mailchimp yet
     return true if new_record?
 
-    mailchimp = BeyondZ::Mailchimp.new(self)
+    mailchimp = BeyondZ::Mailchimp::User.new(self)
     
     # don't update unless an updateable field has changed
     return true unless mailchimp.requires_update?
