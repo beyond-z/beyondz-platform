@@ -17,12 +17,29 @@ module BeyondZ
       @list_id = Rails.application.secrets.mailchimp_list_id
     end
     
+    def create
+      if mailchimp_record
+        error "Mailchimp e-mail record for '#{mailchimp_record['email_address']}' already exists"
+        return false
+      end
+      
+      uri = URI("#{HOST}/#{VERSION}/lists/#{@list_id}/members")
+      request = Net::HTTP::Post.new(uri)
+
+      change_request :create, request
+    end
+    
     def update
       return false unless mailchimp_record
-      
+
       uri = URI("#{HOST}/#{VERSION}/lists/#{@list_id}/members/#{mailchimp_id}")
+      request = Net::HTTP::Patch.new(uri)
       
-      update_fields = {
+      change_request :update, request
+    end
+    
+    def change_request request_type, request
+      fields = {
         email_address: user.email,
         merge_fields: {
           FNAME: user.first_name,
@@ -30,9 +47,8 @@ module BeyondZ
         }
       }
       
-      request = Net::HTTP::Patch.new(uri)
       request.basic_auth 'key', @key
-      request.body = update_fields.to_json
+      request.body = fields.to_json
       
       response = http.request request
       
@@ -46,8 +62,10 @@ module BeyondZ
       success_status = json['email_address'] == user.email
       
       # provide more detail if update fails
-      unless success_status
-        error("Mailchimp update was not successful", response)
+      if success_status
+        @mailchimp_record = json
+      else
+        error("Mailchimp #{request_type} was not successful", response)
       end
       
       success_status
