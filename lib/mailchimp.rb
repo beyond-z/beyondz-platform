@@ -30,7 +30,10 @@ module BeyondZ
     end
     
     def update
-      return false unless mailchimp_record
+      unless mailchimp_record
+        error("Mailchimp e-mail record was not found")
+        return false
+      end
 
       uri = URI("#{HOST}/#{VERSION}/lists/#{@list_id}/members/#{mailchimp_id}")
       request = Net::HTTP::Patch.new(uri)
@@ -87,11 +90,6 @@ module BeyondZ
       if @mailchimp_record.nil?
         error "MAILCHIMP: Attempting to lookup current e-mail, #{user.email}"
         @mailchimp_record = record_via_email(user.email)
-      end
-      
-      # if still not found, make a note
-      if @mailchimp_record.nil?
-        error("Mailchimp e-mail record was not found")
       end
       
       @mailchimp_record
