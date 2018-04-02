@@ -40,6 +40,7 @@ module BeyondZ
     
     def change_request request_type, request
       fields = {
+        status: 'subscribed',
         email_address: user.email,
         merge_fields: {
           FNAME: user.first_name,
