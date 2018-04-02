@@ -36,10 +36,21 @@ module BeyondZ
       
       response = http.request request
       
-      json = JSON.parse(response.body)
+      begin
+        json = JSON.parse(response.body)
+      rescue
+        error("Mailchimp JSON Response could not be parsed", response)
+      end
       
       # success is based on this boolean test
-      json['email_address'] == user.email
+      success_status = json['email_address'] == user.email
+      
+      # provide more detail if update fails
+      unless success_status
+        error("Mailchimp update was not successful", response)
+      end
+      
+      success_status
     end
     
     def mailchimp_record
@@ -57,6 +68,11 @@ module BeyondZ
         @mailchimp_record = record_via_email(user.email)
       end
       
+      # if still not found, make a note
+      if @mailchimp_record.nil?
+        error("Mailchimp e-mail record was not found")
+      end
+      
       @mailchimp_record
     end
     
@@ -66,6 +82,14 @@ module BeyondZ
     
     private
     
+    def error message, response=nil
+      if response && response.methods.include?(:body)
+        message += ":\n----\n#{response.body}\n----"
+      end
+      
+      Rails.logger.error(message)
+    end
+
     def hex_digest(email=nil)
       Digest::MD5.hexdigest(email || user.email)
     end
