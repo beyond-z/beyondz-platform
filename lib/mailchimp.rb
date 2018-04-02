@@ -68,6 +68,11 @@ module BeyondZ
         @mailchimp_record = record_via_email(user.email)
       end
       
+      # if still not found, make a note
+      if @mailchimp_record.nil?
+        
+      end
+      
       @mailchimp_record
     end
     
@@ -77,8 +82,12 @@ module BeyondZ
     
     private
     
-    def error message, response
-      Rails.logger.error("#{message}:\n----\n#{response.body}\n----")
+    def error message, response=nil
+      if response && response.methods.include?(:body)
+        message += ":\n----\n#{response.body}\n----"
+      end
+      
+      Rails.logger.error(message)
     end
 
     def hex_digest(email=nil)
