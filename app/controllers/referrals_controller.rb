@@ -37,5 +37,7 @@ class ReferralsController < ApplicationController
     ))
 
     referral.save
+
+    referral.create_on_salesforce
   end
 end
