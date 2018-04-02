@@ -113,6 +113,21 @@ module BeyondZ
       Digest::MD5.hexdigest(email || user.email)
     end
     
+    def http
+      return @http if defined?(@http)
+      
+      uri = URI(HOST)
+
+      @http = Net::HTTP.new(uri.host, uri.port)
+      @http.use_ssl = true
+      
+      @http
+    end
+    
+    def mailchimp_id
+      mailchimp_record ? mailchimp_record['id'] : nil
+    end
+    
     def record_via_email(email)
       uri = URI("#{HOST}/#{VERSION}/lists/#{list_id}/members/#{hex_digest(email)}")
       error "MAILCHIMP user lookup: #{uri}"
@@ -124,21 +139,6 @@ module BeyondZ
       record = JSON.parse(response.body)
       
       record.has_key?('id') ? record : nil
-    end
-    
-    def mailchimp_id
-      mailchimp_record ? mailchimp_record['id'] : nil
-    end
-    
-    def http
-      return @http if defined?(@http)
-      
-      uri = URI(HOST)
-
-      @http = Net::HTTP.new(uri.host, uri.port)
-      @http.use_ssl = true
-      
-      @http
     end
   end
 end
