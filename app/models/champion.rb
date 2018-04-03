@@ -80,7 +80,7 @@ class Champion < ActiveRecord::Base
     return true if flood_check.any?
 
     semester_check = ChampionContact.where(:champion_id => self.id).where("created_at > ?", 3.months.ago)
-    return true if semester_check.count > 3
+    return true if semester_check.count >= 3
 
     false
   end
