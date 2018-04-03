@@ -1,0 +1,168 @@
+module BeyondZ; module Mailchimp
+  class Interest
+    HOST = "https://us11.api.mailchimp.com"
+    VERSION = '3.0'
+    
+    KEY = Rails.application.secrets.mailchimp_key
+    LIST_ID = Rails.application.secrets.mailchimp_list_id
+    
+    class << self
+      def groups
+        return @groups if defined?(@groups)
+
+        sync_from_production
+        @groups = get_groups(LIST_ID)
+      end
+      
+      def sync_from_production
+        production_list_id = Rails.application.secrets.mailchimp_production_list_id
+        
+        # return if we are already in production
+        return false if production_list_id == LIST_ID
+        
+        production_groups = get_groups(production_list_id)
+        local_groups = get_groups(LIST_ID)
+        
+        production_groups.each do |group_name, values|
+          # create group locally if needed
+          group_id = if local_groups.has_key?(group_name)
+            log "found local group #{group_name}"
+            local_groups[group_name][:id]
+          else
+            log "creating local group #{group_name}"
+            create_group(group_name)['id']
+          end
+
+          values[:options].each do |option_name, option_id|
+            # create group option locally if needed
+            if local_groups[group_name] && local_groups[group_name][:options].has_key?(option_name)
+              log "found local group option #{group_name} -> #{option_name}"
+            else
+              log "creating local group option #{group_name} -> #{option_name}"
+              create_group_option(group_id, option_name)
+            end
+          end
+        end
+      end
+  
+      private
+      
+      def create_group group_name
+        uri = URI("#{HOST}/#{VERSION}/lists/#{LIST_ID}/interest-categories")
+        
+        data = post(uri, {'title' => group_name, 'type' => 'hidden'})
+        
+        unless data.has_key?('id')
+          error "couldn't create group #{group_name}"
+        end
+        
+        data
+      end
+      
+      def create_group_option group_id, option_name
+        uri = URI("#{HOST}/#{VERSION}/lists/#{LIST_ID}/interest-categories/#{group_id}/interests")
+        
+        data = post(uri, {'name' => option_name})
+        
+        unless data.has_key?('id')
+          error "couldn't create group option #{option_name}"
+        end
+        
+        data
+      end
+      
+      def get_groups list_id
+        uri = URI("#{HOST}/#{VERSION}/lists/#{list_id}/interest-categories")
+        record = get(uri)
+        
+        unless record.has_key?('categories')
+          error "groups response doesn't contain categories"
+          return {}
+        end
+
+        groups = {}
+        record['categories'].each do |category|
+          groups[category['title']] = {
+            id: category['id'],
+            options: {}
+          }
+        
+          uri = URI("#{HOST}/#{VERSION}/lists/#{list_id}/interest-categories/#{category['id']}/interests")
+          interests = get(uri)
+          
+          unless interests.has_key?('interests')
+            error "interests response doesn't contain interests"
+            return {}
+          end
+        
+          interests['interests'].each do |interest|
+            groups[category['title']][:options][interest['name']] = interest['id']
+          end
+        end
+
+        groups
+      end
+    
+      def error message, response=nil
+        response ||= @last_response
+        
+        if response && response.methods.include?(:body)
+          message += ":\n----\n#{response.body}\n----"
+        end
+    
+        Rails.logger.error("MAILCHIMP: #{message}")
+      end
+      
+      def log message
+        Rails.logger.info("MAILCHIMP: #{message}")
+      end
+
+      def get uri
+        request = Net::HTTP::Get.new(uri)
+        request.basic_auth 'key', KEY
+
+        begin
+          response = http.request request
+          @last_response = response
+          
+          record = JSON.parse(response.body)
+        rescue
+          error "interests could not be retrieved"
+          raise
+        end
+      
+        record
+      end
+
+      def post uri, body
+        request = Net::HTTP::Post.new(uri)
+
+        request.basic_auth 'key', KEY
+        request.body = body.to_json
+
+        begin
+          response = http.request request
+          @last_response = response
+
+          record = JSON.parse(response.body)
+        rescue
+          error "interests could not be posted"
+          raise
+        end
+      
+        record
+      end
+    
+      def http
+        return @http if defined?(@http)
+    
+        uri = URI(HOST)
+
+        @http = Net::HTTP.new(uri.host, uri.port)
+        @http.use_ssl = true
+    
+        @http
+      end
+    end
+  end
+end; end
