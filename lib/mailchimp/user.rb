@@ -2,6 +2,8 @@ require 'net/http'
 require 'json'
 require 'digest/md5'
 
+require 'mailchimp/interest'
+
 module BeyondZ
   module Mailchimp
     class User
@@ -63,19 +65,8 @@ module BeyondZ
       private
     
       def change_request request_type, request
-        fields = {
-          status: 'subscribed',
-          email_address: user.email,
-          merge_fields: {
-            FNAME: user.first_name,
-            LNAME: user.last_name,
-            REGION: user.bz_region,
-            SFID: user.salesforce_id
-          }
-        }
-      
         request.basic_auth 'key', @key
-        request.body = fields.to_json
+        request.body = attributes.to_json
       
         response = http.request request
       
@@ -96,6 +87,23 @@ module BeyondZ
         end
       
         success_status
+      end
+      
+      def attributes
+        attribs = {
+          status: 'subscribed',
+          email_address: user.email,
+          interests: BeyondZ::Mailchimp::Interest.interests_for(user),
+          merge_fields: {
+            FNAME: user.first_name,
+            LNAME: user.last_name
+          }
+        }
+        
+        attribs[:merge_fields][:REGION] = user.bz_region if user.bz_region
+        attribs[:merge_fields][:SFID] = user.salesforce_id if user.salesforce_id
+        
+        attribs
       end
     
       def error message, response=nil

@@ -1,3 +1,5 @@
+require 'digest/md5'
+
 module BeyondZ; module Mailchimp
   class Interest
     HOST = "https://us11.api.mailchimp.com"
@@ -44,8 +46,45 @@ module BeyondZ; module Mailchimp
           end
         end
       end
+      
+      def interests_for user
+        interests = {}
+        
+        # initialize all interests to false
+        interest_ids.each{|id| interests[id] = false}
+        
+        # set location interest
+        interests[location_interest_for(user)] = true
+        
+        interests
+      end
   
       private
+      
+      def location_interest_for user
+        region_name = case user.bz_region
+        when /chicago/i
+          'NLU'
+        when /san\s+francisco/i
+          'SJSU'
+        when /new\s+york|newark/i
+          'NLU'
+        else
+          'No Specific Location'
+        end
+        
+        groups['Location'][:options][region_name]
+      end
+      
+      def interest_ids
+        ids = []
+        
+        groups.each do |group_name, values|
+          ids += values[:options].values
+        end
+        
+        ids
+      end
       
       def create_group group_name
         uri = URI("#{HOST}/#{VERSION}/lists/#{LIST_ID}/interest-categories")
