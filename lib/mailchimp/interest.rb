@@ -53,13 +53,39 @@ module BeyondZ; module Mailchimp
         # initialize all interests to false
         interest_ids.each{|id| interests[id] = false}
         
-        # set location interest
-        interests[location_interest_for(user)] = true
+        # set location interest, if found
+        location_interest = location_interest_for(user)
+        interests[location_interest] = true if location_interest
+        
+        # set recruitment pipeline interest, if found
+        pipeline_interest = pipeline_interest_for(user)
+        interests[pipeline_interest] = true if pipeline_interest
         
         interests
       end
   
       private
+      
+      def pipeline_interest_for user
+        pipeline_name = case user.applicant_type
+        when 'grad_student', 'undergrad_student'
+          'Fellow'
+        when 'leadership_coach'
+          'Leadership Coach'
+        when 'event_volunteer'
+          'Volunteer'
+        when 'professional'
+          'Professional Mentor'
+        when 'employer'
+          'Employer Partner'
+        else
+          nil
+        end
+        
+        return nil if pipeline_name.nil?
+        
+        groups['Recruitment Pipeline'][:options][pipeline_name]
+      end
       
       def location_interest_for user
         region_name = case user.bz_region
