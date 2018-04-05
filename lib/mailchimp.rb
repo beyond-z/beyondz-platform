@@ -60,11 +60,13 @@ module BeyondZ
       
       # Use e-mail BEFORE it was changed, if available
       if user.changed_attributes.has_key?('email')
+        error "MAILCHIMP: Attempting to lookup previous e-mail, #{user.changed_attributes['email']}"
         @mailchimp_record = record_via_email(user.changed_attributes['email'])
       end
       
       # if pre-changed e-mail doesn't exist, or can't be found on mailchimp, try current e-mail
       if @mailchimp_record.nil?
+        error "MAILCHIMP: Attempting to lookup current e-mail, #{user.email}"
         @mailchimp_record = record_via_email(user.email)
       end
       
@@ -96,7 +98,8 @@ module BeyondZ
     
     def record_via_email(email)
       uri = URI("#{HOST}/#{VERSION}/lists/#{list_id}/members/#{hex_digest(email)}")
-
+      error "MAILCHIMP user lookup: #{uri}"
+      
       request = Net::HTTP::Get.new uri
       request.basic_auth 'key', key
       
