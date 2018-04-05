@@ -65,19 +65,24 @@ class User < ActiveRecord::Base
   end
   
   def update_mailchimp
+    # don't update for a new record, it doesn't exist in mailchimp yet
     return true if new_record?
-    return true unless email_changed?
-    
-    mailchimp = BeyondZ::Mailchimp.new(changed_attributes['email'])
 
-    success = mailchimp.update(attributes['email'])
+    mailchimp = BeyondZ::Mailchimp.new(self)
     
-    unless success
+    # don't update unless an updateable field has changed
+    return true unless mailchimp.requires_update?
+    
+    success_status = mailchimp.update
+
+    # for now, assume success until retro-sync can be performed
+    success_status = true
+    
+    unless success_status
       self.errors[:email] << "could not be updated on MailChimp"
     end
     
-    # for now, always return true to prevent AR update failure
-    true
+    success_status
   end
 
   # Finds the lead owner from the uploaded spreadsheet mapping, or returns
