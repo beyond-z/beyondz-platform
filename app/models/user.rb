@@ -1,4 +1,5 @@
 require 'salesforce'
+require 'mailchimp'
 
 # Monkey-patch the CAS gem so we can use it without losing the database
 # features we use for SSO - we still manage the users here, including
@@ -56,9 +57,32 @@ class User < ActiveRecord::Base
   validates :last_name, presence: true
 
   before_save :capitalize_name
+  before_save :update_mailchimp
+  
   def capitalize_name
     self.first_name = first_name.split.map(&:capitalize).join(' ') unless first_name.nil?
     self.last_name = last_name.split.map(&:capitalize).join(' ') unless last_name.nil?
+  end
+  
+  def update_mailchimp
+    # don't update for a new record, it doesn't exist in mailchimp yet
+    return true if new_record?
+
+    mailchimp = BeyondZ::Mailchimp.new(self)
+    
+    # don't update unless an updateable field has changed
+    return true unless mailchimp.requires_update?
+    
+    success_status = mailchimp.update
+
+    # for now, assume success until retro-sync can be performed
+    success_status = true
+    
+    unless success_status
+      self.errors[:email] << "could not be updated on MailChimp"
+    end
+    
+    success_status
   end
 
   # Finds the lead owner from the uploaded spreadsheet mapping, or returns

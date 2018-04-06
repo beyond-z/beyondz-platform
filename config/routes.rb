@@ -25,6 +25,7 @@ BeyondzPlatform::Application.routes.draw do
   # and back to the application itself
 
   resources :resumes
+  resources :referrals
 
   get '/connect', to: 'champions#connect', as: :champions_connect
   get '/champions/terms', to: 'champions#terms', as: :champions_terms

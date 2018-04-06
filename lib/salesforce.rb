@@ -76,6 +76,27 @@ module BeyondZ
       )
     end
 
+    # Returns: new campaign id, if created, or nil if not necessary to create
+    def add_to_campaign(contact_id, campaign_id)
+      cm = {}
+      cm['CampaignId'] = campaign_id
+
+      if cm['CampaignId']
+        cm['ContactId'] = contact_id
+
+        begin
+          cm = client.create('CampaignMember', cm)
+          return cm['Id']
+        rescue Databasedotcom::SalesForceError => e
+          # If this failure happens, it is almost certainly just because they
+          # are already in the campaign 
+          logger.debug "#{e} #{contact_id} #{campaign_id}"
+        end
+      end
+
+      nil
+    end
+
     # Returns the Salesforce ID of the contact if they exist or nil if not
     def exists_in_salesforce(email)
       client = get_client
