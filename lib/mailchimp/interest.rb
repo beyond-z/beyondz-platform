@@ -67,17 +67,24 @@ module BeyondZ; module Mailchimp
       private
       
       def pipeline_interest_for user
-        pipeline_name = case user.applicant_type
-        when 'grad_student', 'undergrad_student'
-          'Fellow'
-        when 'leadership_coach'
-          'Leadership Coach'
-        when 'event_volunteer'
-          'Volunteer'
-        when 'professional'
-          'Professional Mentor'
-        when 'employer'
-          'Employer Partner'
+        pipeline_name = case user.class.name
+        when 'User'
+          case user.applicant_type
+          when 'grad_student', 'undergrad_student'
+            'Fellow'
+          when 'leadership_coach'
+            'Leadership Coach'
+          when 'event_volunteer'
+            'Volunteer'
+          when 'professional'
+            'Professional Mentor'
+          when 'employer'
+            'Employer Partner'
+          else
+            nil
+          end
+        when 'Champion'
+          'Champion'
         else
           nil
         end
@@ -88,7 +95,16 @@ module BeyondZ; module Mailchimp
       end
       
       def location_interest_for user
-        region_name = case user.bz_region
+        region = case user.class.name
+        when 'User'
+          user.bz_region
+        when 'Champion'
+          user.region
+        else
+          ''
+        end
+        
+        region_name = case region
         when /chicago/i
           'NLU'
         when /san\s+francisco/i
