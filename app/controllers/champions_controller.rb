@@ -1,5 +1,8 @@
 require 'uuidtools'
 
+require 'openid'
+require 'openid/store/filesystem'
+
 class ChampionsController < ApplicationController
   layout 'public'
 
@@ -8,9 +11,77 @@ class ChampionsController < ApplicationController
   def index
   end
 
-  before_filter :authenticate_user!, :only => [:connect, :request_contact, :contact, :fellow_survey, :fellow_survey_save]
+  def openid_consumer
+    if @consumer.nil?
+      dir = Pathname.new(Rails.root).join('db').join('cstore')
+      store = OpenID::Store::Filesystem.new(dir)
+      @consumer = OpenID::Consumer.new(session, store)
+    end
+    return @consumer
+  end
+
+  def openid_login_start
+    url = params[:url]
+    if url.nil?
+      redirect_to champion_connect_authenticated_path
+    end
+
+    oidreq = openid_consumer.begin(url)
+    return_to = url_for :action => 'openid_login_complete', :only_path => false
+    realm = url_for :action => 'index', :id => nil, :only_path => false
+    
+    if oidreq.send_redirect?(realm, return_to, params[:immediate])
+      redirect_to oidreq.redirect_url(realm, return_to, params[:immediate])
+    else
+      render :text => oidreq.html_markup(realm, return_to, params[:immediate], {'id' => 'openid_form'})
+    end
+  end
+
+  def openid_login_complete
+    current_url = url_for(:action => 'openid_login_complete', :only_path => false)
+    parameters = params.reject{|k,v|request.path_parameters[k]}
+    parameters.reject!{|k,v|%w{action controller}.include? k.to_s}
+    response = openid_consumer.complete(parameters, current_url)
+    if response.status == OpenID::Consumer::SUCCESS
+      user_url = params["openid.identity"]
+
+      canvas_user_id = user_url[user_url.rindex('/') + 1 .. -1]
+      user = User.where(:canvas_user_id => canvas_user_id)
+      if user.any?
+        sign_in(user.first)
+        redirect_to :action => 'connect'
+        return
+      end
+      # should never happen... if we got here, it means they had a Canvas OpenID URL,
+      # which means the user is there... and thus should be here too due to sync to lms originating here!
+      logger.debug user_id
+      render text: "Your user wasn't found on the Braven server. Please contact support@bebraven.org and tell them this happened and what time it is when you saw this."
+    else
+      # open id failed should also never happen because the URL is given to us by Canvas, which
+      # we also control!
+
+      # flash[:message] = "Please log in using your Braven email and password you set up in the application process."
+      redirect_to :action => 'connect_authenticated'
+      # render :text => "FAILED #{response.inspect}"
+    end
+  end
+
+  before_filter :authenticate_user!, :only => [:connect_authenticated, :request_contact, :contact, :fellow_survey, :fellow_survey_save]
+
+  def connect_authenticated
+    # the before filter forces them to log in, then we can go back to the other thing.
+    redirect_to champions_connect_path
+  end
+
   def connect
     # FIXME: prompt linked in access from user
+
+    if !user_signed_in?
+      # If the user isn't logged in, we want to try OpenID off Canvas via
+      # a client side script
+      render 'openid_auth'
+      return
+    end
 
     @active_requests = ChampionContact.active(current_user.id)
     @max_allowed = 2 - @active_requests.count

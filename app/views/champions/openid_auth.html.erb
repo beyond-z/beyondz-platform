@@ -1,0 +1,14 @@
+<script src="//<%= Rails.application.secrets.canvas_server %>/openid/url_script"></script>
+<script>
+  document.write(bz_current_user_openid_url);
+  if(bz_current_user_openid_url === null) {
+    // the fellow isn't logged into Canvas, send them back to the LMS to log in via
+    // its SSO (which may be Braven login or a university partner)
+    //window.location.href = "/connect_authenticated";
+    window.location.href = "//<%= Rails.application.secrets.canvas_server %>";
+  } else {
+    // they ARE logged into Canvas, use that OpenID url to log them into the Join
+    // server
+    window.location.href = "/champions/openid_login_start?url=" + encodeURIComponent(bz_current_user_openid_url);
+  }
+</script>
