@@ -1,6 +1,6 @@
+<p>Logging you into Braven Champions....</p>
 <script src="//<%= Rails.application.secrets.canvas_server %>/openid/url_script"></script>
 <script>
-  document.write(bz_current_user_openid_url);
   if(bz_current_user_openid_url === null) {
     // the fellow isn't logged into Canvas, send them back to the LMS to log in via
     // its SSO (which may be Braven login or a university partner)
