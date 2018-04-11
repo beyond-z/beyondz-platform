@@ -1,4 +1,6 @@
 class Champion < ActiveRecord::Base
+  include MailchimpUpdates
+
   self.primary_key = "id"
 
   validates :first_name, presence: true

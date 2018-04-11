@@ -61,6 +61,10 @@ module BeyondZ
       
         @mailchimp_record
       end
+
+      def requires_update?
+        !(user.changed_attributes.keys & UPDATEABLE_FIELDS).empty?
+      end
     
       private
     
@@ -143,10 +147,6 @@ module BeyondZ
         record = JSON.parse(response.body)
       
         record.has_key?('id') ? record : nil
-      end
-
-      def requires_update?
-        !(user.changed_attributes.keys & UPDATEABLE_FIELDS).empty?
       end
     end
   end
