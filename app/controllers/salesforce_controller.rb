@@ -69,6 +69,7 @@ class SalesforceController < ApplicationController
           u.save!
 
           u.auto_add_to_salesforce_campaign
+          u.create_mailchimp
         end
       end
     end

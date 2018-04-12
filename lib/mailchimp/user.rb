@@ -19,6 +19,10 @@ module BeyondZ
         @key = Rails.application.secrets.mailchimp_key
         @list_id = Rails.application.secrets.mailchimp_list_id
       end
+      
+      def create_or_update
+        mailchimp_record ? update : create
+      end
     
       def create
         if mailchimp_record
@@ -37,6 +41,9 @@ module BeyondZ
           error("Mailchimp e-mail record was not found")
           return false
         end
+        
+        # we return true because no error has occurred, we're just being efficient.
+        return true unless requires_update?
 
         uri = URI("#{HOST}/#{VERSION}/lists/#{@list_id}/members/#{mailchimp_id}")
         request = Net::HTTP::Patch.new(uri)
