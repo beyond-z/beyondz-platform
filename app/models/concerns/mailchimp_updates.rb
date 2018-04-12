@@ -6,8 +6,8 @@ module MailchimpUpdates
   end
   
   def create_mailchimp
-    # don't create if model doesn't have a salesforce_id (temporary champion issue)
-    return true unless attributes.has_key?('salesforce_id ')
+    # find salesforce id locally or on SF
+    set_salesforce_id unless salesforce_id
     
     # don't create if we're still waiting for a valid salesforce_id
     return true if salesforce_id.nil?
@@ -21,6 +21,12 @@ module MailchimpUpdates
     # don't update for a new record, it doesn't exist in mailchimp yet
     return true if new_record?
 
+    # find salesforce id locally or on SF
+    set_salesforce_id unless salesforce_id
+    
+    # don't create if we're still waiting for a valid salesforce_id
+    return true if salesforce_id.nil?
+
     mailchimp = BeyondZ::Mailchimp::User.new(self)
 
     success_status = mailchimp.update
@@ -33,5 +39,11 @@ module MailchimpUpdates
     end
 
     success_status
+  end
+  
+  private
+  
+  def set_salesforce_id
+    update salesforce_id: BeyondZ::Salesforce.new.exists_in_salesforce(email)
   end
 end
