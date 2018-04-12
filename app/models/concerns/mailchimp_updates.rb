@@ -7,7 +7,7 @@ module MailchimpUpdates
   
   def create_mailchimp
     # find salesforce id locally or on SF
-    set_salesforce_id unless salesforce_id
+    ensure_salesforce_id
     
     # don't create if we're still waiting for a valid salesforce_id
     return true if salesforce_id.nil?
@@ -22,7 +22,7 @@ module MailchimpUpdates
     return true if new_record?
 
     # find salesforce id locally or on SF
-    set_salesforce_id unless salesforce_id
+    ensure_salesforce_id
     
     # don't create if we're still waiting for a valid salesforce_id
     return true if salesforce_id.nil?
@@ -41,9 +41,15 @@ module MailchimpUpdates
     success_status
   end
   
-  private
+  def program_semester
+    return @program_semester if defined?(@program_semester)
+    
+    campaign = BeyondZ::Salesforce.new.campaign_for_contact(self)
+    @program_semester = campaign ? campaign.Program_Semester__c : nil
+  end
   
-  def set_salesforce_id
+  def ensure_salesforce_id
+    return if salesforce_id
     update salesforce_id: BeyondZ::Salesforce.new.exists_in_salesforce(email)
   end
 end

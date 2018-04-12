@@ -61,6 +61,10 @@ module BeyondZ; module Mailchimp
         pipeline_interest = pipeline_interest_for(user)
         interests[pipeline_interest] = true if pipeline_interest
         
+        # set program semester interest, if found
+        semester_interest = semester_interest_for(user)
+        interests[semester_interest] = true if semester_interest
+        
         interests
       end
   
@@ -116,6 +120,11 @@ module BeyondZ; module Mailchimp
         end
         
         groups['Location'][:options][region_name]
+      end
+      
+      def semester_interest_for user
+        return nil if user.program_semester.nil?
+        groups['Semester'][:options][user.program_semester]
       end
       
       def interest_ids
