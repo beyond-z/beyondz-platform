@@ -30,7 +30,7 @@ class Champion < ActiveRecord::Base
     if existing_salesforce_id.nil?
       was_new = true
     else
-      salesforce_id = existing_salesforce_id
+      update salesforce_id: existing_salesforce_id
       was_new = false
     end
 
@@ -54,7 +54,7 @@ class Champion < ActiveRecord::Base
 
     if was_new
       contact = client.create('Contact', contact)
-      salesforce_id = contact['Id']
+      update salesforce_id: contact['Id']
     else
       client.update('Contact', salesforce_id, contact)
     end
