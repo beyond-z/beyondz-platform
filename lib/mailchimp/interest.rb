@@ -120,7 +120,7 @@ module BeyondZ; module Mailchimp
         when /san\s+francisco/i
           'SJSU'
         when /new\s+york|newark/i
-          'NLU'
+          'RUN'
         else
           'No Specific Location'
         end
