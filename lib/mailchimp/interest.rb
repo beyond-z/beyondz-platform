@@ -101,11 +101,17 @@ module BeyondZ; module Mailchimp
       def location_interest_for user
         region = case user.class.name
         when 'User'
-          user.bz_region
+          if user.bz_region
+            bz_region
+          elsif user.university_name
+            region_by_university(user.university_name)
+          else
+            nil
+          end
         when 'Champion'
           user.region
         else
-          ''
+          nil
         end
         
         region_name = case region
@@ -135,6 +141,14 @@ module BeyondZ; module Mailchimp
         end
         
         ids
+      end
+      
+      def region_by_university name 
+        {
+          'National Louis University' => 'Chicago',
+          'San Jose State University' => 'San Francisco Bay Area, San Jose',
+          'Rutgers University - Newark' => 'Newark, NJ'
+        }[name]
       end
       
       def create_group group_name
