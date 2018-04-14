@@ -23,7 +23,7 @@ module MailchimpUpdates
 
     # find salesforce id locally or on SF
     ensure_salesforce_id
-    
+
     # don't create if we're still waiting for a valid salesforce_id
     return true if salesforce_id.nil?
 
@@ -50,6 +50,10 @@ module MailchimpUpdates
   
   def ensure_salesforce_id
     return if salesforce_id
-    update salesforce_id: BeyondZ::Salesforce.new.exists_in_salesforce(email)
+
+    new_id = BeyondZ::Salesforce.new.exists_in_salesforce(email)
+
+    # skip validations and callbacks to prevent endless update loop
+    User.where(id: id).update_all(salesforce_id: new_id) if new_id
   end
 end
