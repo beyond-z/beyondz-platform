@@ -104,13 +104,25 @@ module BeyondZ; module Mailchimp
           if user.bz_region
             user.bz_region
           elsif user.university_name
-            region_by_university(user.university_name)
+            if region = region_by_university(user.university_name)
+              region
+            else
+              log "Cannot identify a Location interest by university name #{user.university_name}"
+              nil
+            end
           else
+            log "Cannot identify a Location interest without a user bz_region or university name"
             nil
           end
         when 'Champion'
-          user.region
+          if user.region
+            user.region
+          else
+            log "Cannot identify a Location interest when champion region is blank"
+            nil
+          end
         else
+          log "Cannot identify a Location interest without a User or Champion"
           nil
         end
         
