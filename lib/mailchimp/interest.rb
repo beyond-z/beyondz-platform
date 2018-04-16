@@ -102,7 +102,7 @@ module BeyondZ; module Mailchimp
         region = case user.class.name
         when 'User'
           if user.bz_region
-            bz_region
+            user.bz_region
           elsif user.university_name
             region_by_university(user.university_name)
           else
