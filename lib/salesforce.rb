@@ -96,6 +96,22 @@ module BeyondZ
 
       nil
     end
+    
+    # entity can be a user or champion, at the moment.
+    def campaign_for_contact entity
+      entity.ensure_salesforce_id
+      return if entity.salesforce_id.nil?
+      
+      client = get_client
+      
+      client.materialize('CampaignMember')
+      campaign_member = SFDC_Models::CampaignMember.query("ContactId = '#{entity.salesforce_id}'").first
+      
+      return nil if campaign_member.nil?
+      
+      client.materialize('Campaign')
+      SFDC_Models::Campaign.find(campaign_member.CampaignId)
+    end
 
     # Returns the Salesforce ID of the contact if they exist or nil if not
     def exists_in_salesforce(email)

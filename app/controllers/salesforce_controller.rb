@@ -62,13 +62,14 @@ class SalesforceController < ApplicationController
   def record_converted_leads
     if check_magic_token
       params[:changes].split(',').each do |change|
-        parts = change.split(':')
-        u = User.find_by_salesforce_id(parts[0])
+        lead_id, contact_id = change.split(':')
+        u = User.find_by_salesforce_id(lead_id)
         if u
-          u.salesforce_id = parts[1]
+          u.salesforce_id = contact_id
           u.save!
 
           u.auto_add_to_salesforce_campaign
+          u.create_mailchimp
         end
       end
     end
