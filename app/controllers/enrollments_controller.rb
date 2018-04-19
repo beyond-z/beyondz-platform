@@ -397,7 +397,6 @@ class EnrollmentsController < ApplicationController
     cm.Post_Grad__c = @enrollment.post_graduation_plans
     cm.Why_BZ__c = @enrollment.why_bz
     cm.Passions_Expertise__c = @enrollment.passions_expertise
-    cm.What_To_Land_Strong_First_Job__c = @enrollment.what_to_land_strong_first_job
     cm.Want_Grow_Professionally__c = @enrollment.want_grow_professionally
     cm.Meaningful_Activity__c = @enrollment.meaningful_activity
     cm.Relevant_Experience__c = @enrollment.relevant_experience

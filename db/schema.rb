@@ -276,10 +276,10 @@ ActiveRecord::Schema.define(version: 20180419011421) do
     t.string   "student_course"
     t.string   "student_confirmed"
     t.text     "student_confirmed_notes"
+    t.text     "what_to_land_strong_first_job"
     t.string   "address1"
     t.string   "address2"
     t.string   "zip"
-    t.text     "what_to_land_strong_first_job"
     t.text     "want_grow_professionally"
   end
 

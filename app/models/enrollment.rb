@@ -41,7 +41,6 @@ class Enrollment < ActiveRecord::Base
   # digital_footprint == linked in url
   validates :digital_footprint, presence: true, if: "position == 'coach'"
 
-  validates :what_to_land_strong_first_job, presence: true, if: "position == 'coach'"
   validates :want_grow_professionally, presence: true, if: "position == 'coach'"
 
   validates :other_commitments, presence: true, if: "position == 'student'"

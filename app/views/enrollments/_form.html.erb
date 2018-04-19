@@ -15,7 +15,7 @@
           </header>
 
           <p class="help coach">
-           To apply to volunteer as a <%= @program_title %> Leadership Coach in our <%= @program_site %> program, please complete and submit this application in its entirety. Your answers will be automatically saved as you move between questions, and you can safely leave this page and log back in at any time to resume your work. Your application won't be considered for evaluation until you click SEND at the bottom of the form.
+           To apply to volunteer as a<%= (%w(a e i o u).include?(@program_title.downcase[0]) ? 'n' : '') %> <%= @program_title %> Leadership Coach in our <%= @program_site %> program, please complete and submit this application in its entirety. Your answers will be automatically saved as you move between questions, and you can safely leave this page and log back in at any time to resume your work. Your application won't be considered for evaluation until you click SEND at the bottom of the form.
           </p>
 
           <p class="help volunteer">
@@ -29,7 +29,7 @@
           This selective opportunity requires your participation in diverse activities intended to build your leadership and career skills. Mandatory activities include: <ul class="help student"><li>Once a week 2-hour group meetings in the evening (in-person)</li><li>Weekly online modules, approximately 2 hours each (on your own)</li><li>Occasional weekend events (for exact date(s), please <a href="https://bebraven.org/">see our website</a>)</li></ul>
           </p>
 
-          <p class="help">The <span class="coach student">application</span><span class="volunteer">registration</span> should take approximately <span class="coach student">20</span><span class="volunteer">10</span> minutes to complete and includes the following sections:</p>
+          <p class="help">The <span class="coach student">application</span><span class="volunteer">registration</span> should take approximately <span class="coach student">30</span><span class="volunteer">10</span> minutes to complete and includes the following sections:</p>
 
         </div>
         <!--.section-container--> 
@@ -289,7 +289,7 @@
                 <%= f.text_area :meaningful_activity, 'class' => 'form-control', 'maxlength' => '1000' %>
               </div>
               <div class="form-group volunteer coach student" style="clear: left;">
-                <label class="volunteer coach">Or upload a resume as a .doc or .pdf file (2 MB or less)</label>
+                <label class="volunteer coach">Upload a resume as a .doc or .pdf file (2 MB or less)</label>
                 <label class="student">Optionally, you may upload a resume as a .doc or .pdf file (2 MB or less)</label>
                 <%= f.file_field :resume %>
                 <% if @enrollment.resume.present? %>
@@ -321,7 +321,7 @@
 
               <div class="form-group volunteer coach student">
                 <label class="student">In at least 100 words, share why you want to join the <%= @program_title %>. If you're not sure, email <a tabindex="-1" href="mailto:info@bebraven.org">info@bebraven.org</a> and we can tell you more about the experience!</label>
-                <label class="coach">Why do you want to be a <%= @program_title %> Leadership Coach?</label>
+                <label class="coach">Why do you want to be a<%= (%w(a e i o u).include?(@program_title.downcase[0]) ? 'n' : '') %> <%= @program_title %> Leadership Coach?</label>
                 <label class="volunteer">Why do you want to be a volunteer and what areas of personal expertise or passion are you excited to share?</label>
                 <%= f.text_area :why_bz, 'class' => 'form-control', 'maxlength' => '1000' %>
               </div>
@@ -329,10 +329,6 @@
               <div class="form-group coach">
                 <label>What areas of personal expertise or passion are you particularly excited to share with <%= @program_title %> participants?</label>
                 <%= f.text_area :passions_expertise, 'class' => 'form-control', 'maxlength' => '500' %>
-              </div>
-              <div class="form-group coach">
-                <label>From your experience, what does it take to land a strong first job after college?</label>
-                <%= f.text_area :what_to_land_strong_first_job, 'class' => 'form-control', 'maxlength' => '500' %>
               </div>
               <div class="form-group coach">
                 <label>Share about one of your experiences teaching, coaching, facilitating, and/or managing a team. Describe your role/experience, your impact, and a key moment of learning or reflection.</label>
@@ -519,6 +515,14 @@
 
               <br />
 
+              <div class="form-group coach">
+                <span class="coach">Please let us know if you expect to be unavailable during any cohort sessions (on the nights you indicated above) for the upcoming semester.</span>
+                <%= f.text_area :cannot_attend, 'class' => 'form-control', 'maxlength' => '500', 'style'=>'height: 6em !important;' %>
+              </div>
+
+
+              <br />
+
               <% end %>
               <h5 class="coach">Please affirm your commitment:</h5>
               <div class="form-group volunteer coach" id="coach-affirm-holder">
@@ -526,11 +530,6 @@
                   <%= f.check_box :affirm_commit_coach %>
                   <span class="bs-wrapper"><span class="control-label"> I affirm that to the best of my knowledge I can fulfill the commitment to participate in all Leadership Coach activities, which can include: facilitating weekly cohort sessions; leading virtual individual coaching sessions participants; and delivering feedback on selected artifacts (e.g., resumes) submitted by participants.</span></span>
                 </label>
-              </div>
-
-              <div class="form-group coach">
-                <span class="coach">Please let us know of any dates that you anticipate you will not be available.</span>
-                <%= f.text_area :cannot_attend, 'class' => 'form-control', 'maxlength' => '500', 'style'=>'height: 6em !important;' %>
               </div>
             </div>
 
