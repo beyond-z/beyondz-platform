@@ -88,11 +88,24 @@
                     <span class="bs-wrapper"><span class="control-label">I can accept text messages on this phone</span> </span></label>
                 </div>
                 <div class="form-group">
-                  <label>Where do you live?</label>
+                  <label>Mailing Address</label>
+                  <br />
+                  <%= f.text_field :address1, 'class' => 'form-control', 'placeholder' => 'Address', 'style' => 'display: inline', :maxlength => '85' %>
+                  <br />
+                  <%= f.text_field :address2, 'class' => 'form-control', 'placeholder' => 'Address 2', 'style' => 'display: inline', :maxlength => '85' %>
                   <br />
                   <%= f.text_field :city, 'class' => 'form-control short', 'placeholder' => 'City', 'style' => 'display: inline', :maxlength => '35' %>
                   <%= f.text_field :state, 'class' => 'form-control short', 'placeholder' => 'State', 'style' => 'display: inline', :maxlength => '35' %>
+                  <%= f.text_field :zip, 'class' => 'form-control short', 'placeholder' => 'Zip', 'style' => 'display: inline', :maxlength => '35' %>
                 </div>
+
+              <div class="form-group volunteer coach">
+                <div class="input-group volunteer coach">
+                  <label>LinkedIn Profile URL</label>
+                  <%= f.text_field :digital_footprint, 'class' => 'form-control medium', 'type' => 'url', 'placeholder' => 'LinkedIn Profile URL', 'onblur' => 'this.value = this.value.replace(/[^a-zA-Z0-9%\-_\.~:\/\?#\[\]@!\$\'\(\)\*\&\+,;=]/g, ""); if(this.value.length && this.value.indexOf("http") != 0) this.value = "http://"+this.value;' %>
+                </div>
+              </div>
+
                 <div class="form-group student">
                   <label>Your date of birth (MM/DD/YYYY)</label>
                   <%= f.text_field :birthdate, 'class' => 'form-control short', 'placeholder' => '2/28/1994', 'pattern' => ' *[0-9]{1,2}/[0-9]{1,2}/[0-9]{4} *' %>
@@ -270,17 +283,6 @@
                 <p class="student help">While we are interested in seeing the diversity of activities in which you're involved (described in the preceding question), we are also curious about which single experience has been particularly meaningful to your development.</p>
                 <%= f.text_area :meaningful_activity, 'class' => 'form-control', 'maxlength' => '1000' %>
               </div>
-
-              <div class="form-group volunteer coach student">
-                <label class="volunteer coach">Please provide a link to a "digital fingerprint" that will help us understand you better.</label>
-                <p class="help volunteer coach">Good examples include: your LinkedIn profile, an article you wrote, the website of an organization particularly meaningful to you, etc. (Less helpful are links to your Facebook, Instagram, or Twitter accounts.) Please make sure the links are public.<span class="volunteer coach"> If you'd prefer to upload a document in lieu of submitting a second link, please click the "Choose File" button below.</span></p>
-                <div class="input-group volunteer coach">
-                  <%= f.text_field :digital_footprint, 'class' => 'form-control medium', 'type' => 'url', 'placeholder' => 'Paste URL here', 'onblur' => 'this.value = this.value.replace(/[^a-zA-Z0-9%\-_\.~:\/\?#\[\]@!\$\'\(\)\*\&\+,;=]/g, ""); if(this.value.length && this.value.indexOf("http") != 0) this.value = "http://"+this.value;' %>
-                </div>
-                <div class="input-group coach">
-                  <%= f.text_field :digital_footprint2, 'class' => 'form-control medium', 'type' => 'url', 'placeholder' => 'Paste URL here', 'onblur' => 'this.value = this.value.replace(/[^a-zA-Z0-9%\-_\.~:\/\?#\[\]@!\$\'\(\)\*\&\+,;=]/g, ""); if(this.value.length && this.value.indexOf("http") != 0) this.value = "http://"+this.value;' %>
-                </div>
-              </div>
               <div class="form-group volunteer coach student" style="clear: left;">
                 <label class="volunteer coach">Or upload a resume as a .doc or .pdf file (2 MB or less)</label>
                 <label class="student">Optionally, you may upload a resume as a .doc or .pdf file (2 MB or less)</label>
@@ -324,9 +326,16 @@
                 <%= f.text_area :passions_expertise, 'class' => 'form-control', 'maxlength' => '500' %>
               </div>
               <div class="form-group coach">
-                <label>Share about one of your experiences teaching, coaching, and/or working with young people. Describe your role/experience, your impact, and key moment(s) of learning or reflections.</label>
-                <p class="help">Please think expansively. Examples include years leading a classroom, summers coaching a youth sports team, time leading or participating in a work-based mentoring or onboarding program, etc.</p>
+                <label>From your experience, what does it take to land a strong first job after college?</label>
+                <%= f.text_area :what_to_land_strong_first_job, 'class' => 'form-control', 'maxlength' => '500' %>
+              </div>
+              <div class="form-group coach">
+                <label>Share about one of your experiences teaching, coaching, facilitating, and/or managing a team. Describe your role/experience, your impact, and a key moment of learning or reflection.</label>
                 <%= f.text_area :relevant_experience, 'class' => 'form-control', 'maxlength' => '800' %>
+              </div>
+              <div class="form-group coach">
+                <label>What are some ways you want to grow professionally?</label>
+                <%= f.text_area :want_grow_professionally, 'class' => 'form-control', 'maxlength' => '500' %>
               </div>
 
             </div>
@@ -510,7 +519,7 @@
               <div class="form-group volunteer coach" id="coach-affirm-holder">
                 <label class="checkbox coach">
                   <%= f.check_box :affirm_commit_coach %>
-                  <span class="bs-wrapper"><span class="control-label"> I affirm that to the best of my knowledge I can fulfill the commitment to participate in all Leadership Coach activities, which can include: facilitating weekly cohort sessions (a mix of in-person and virtual); leading virtual individual coaching sessions participants; and delivering feedback on selected artifacts (e.g., resumes) submitted by participants.</span></span>
+                  <span class="bs-wrapper"><span class="control-label"> I affirm that to the best of my knowledge I can fulfill the commitment to participate in all Leadership Coach activities, which can include: facilitating weekly cohort sessions; leading virtual individual coaching sessions participants; and delivering feedback on selected artifacts (e.g., resumes) submitted by participants.</span></span>
                 </label>
               </div>
 

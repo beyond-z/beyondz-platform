@@ -25,6 +25,8 @@ class Enrollment < ActiveRecord::Base
 
   validates :city, presence: true
   validates :state, presence: true
+  validates :address1, presence: true, if: "position == 'coach'"
+  validates :zip, presence: true, if: "position == 'coach'"
 
   validates :birthdate, presence: true, if: "position == 'student'"
   # validates :last_summer, presence: true, if: "position == 'student'"
@@ -35,6 +37,12 @@ class Enrollment < ActiveRecord::Base
   validates :relevant_experience, presence: true, if: "position == 'coach'"
 
   validates :affirm_commit_coach, presence: true, if: "position == 'coach'"
+
+  # digital_footprint == linked in url
+  validates :digital_footprint, presence: true, if: "position == 'coach'"
+
+  validates :what_to_land_strong_first_job, presence: true, if: "position == 'coach'"
+  validates :want_grow_professionally, presence: true, if: "position == 'coach'"
 
   validates :other_commitments, presence: true, if: "position == 'student'"
   validates :post_graduation_plans, presence: true, if: "position == 'student'"
