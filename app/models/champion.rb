@@ -56,7 +56,9 @@ class Champion < ActiveRecord::Base
       contact = client.create('Contact', contact)
       update salesforce_id: contact['Id']
     else
-      client.update('Contact', salesforce_id, contact)
+      # commenting because there is some Databasedotcom::SalesForceError (HTTP Method 'PATCH' not allowed. Allowed are HEAD,GET,POST):
+      # error here from SF and we don't really need to update it anyway... so just going to skip so signups don't break.
+      # client.update('Contact', salesforce_id, contact)
     end
 
     cm = {}
