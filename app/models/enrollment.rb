@@ -38,9 +38,6 @@ class Enrollment < ActiveRecord::Base
 
   validates :affirm_commit_coach, presence: true, if: "position == 'coach'"
 
-  # digital_footprint == linked in url
-  validates :digital_footprint, presence: true, if: "position == 'coach'"
-
   validates :want_grow_professionally, presence: true, if: "position == 'coach'"
 
   validates :other_commitments, presence: true, if: "position == 'student'"
