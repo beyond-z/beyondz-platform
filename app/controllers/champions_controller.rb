@@ -8,6 +8,45 @@ class ChampionsController < ApplicationController
 
   before_filter :set_up_lists
 
+  skip_before_filter :verify_authenticity_token, :only => [:email_processor]
+  http_basic_authenticate_with name: "cloudmail", password: Rails.application.secrets.cloudmailin_password, :only => :email_processor
+  def email_processor
+    # The goal in here: archive the email for future reference
+    # see if it is coming from the fellow or the champion
+    # if the fellow's first time, start the connection clock and record that they did reach out
+    # if the champion's first time, record that they did answer
+    #
+    # to tell who it is, the To address will include the interaction id, a directional indicator, and a security hash
+    # so like c123-ab3af56e@champions.bebraven.org means "to champion, interaction #123, hash ab3af56e"
+    #
+    # Once we process and archive, we need to forward to the actual recipient and add/fix the
+    # Reply-To header, the From header, and maybe the subject.
+    #
+    # From will say "Fellow's Name via Braven Champions <fxxx-dddd@champions.bebraven.org>"
+
+
+    to = params[:envelope][:to]
+
+    extracted = to.match(/([cf])([0-9]+)-([0-9a-zA-Z]+)@champions.bebraven.org/)
+
+    to_party = extracted[1] # c or f
+    interaction_id = extracted[2]
+    security_hash = extracted[3]
+
+    cc = ChampionContact.find(interaction_id)
+
+    if security_hash != cc.security_hash
+      render text: "Bad security code", status: 404
+      return
+    end
+
+    # FIXME: I'm not sure that attachments actually work
+    ChampionsForwarderMailer.forward_message(to_party, cc, params[:headers][:Subject], params[:plain], params[:html], params[:attachments]).deliver
+
+
+    render text: "OK"
+  end
+
   def index
   end
 
@@ -183,6 +222,7 @@ class ChampionsController < ApplicationController
 
     @recipient = Champion.find(cc.champion_id)
     @hit = @recipient.industries.any? ? @recipient.industries.first : @recipient.studies.fist
+    @cc = cc
 
     if params[:others]
       @others = params[:others]

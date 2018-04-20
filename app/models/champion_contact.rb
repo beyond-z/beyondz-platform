@@ -10,6 +10,28 @@ class ChampionContact < ActiveRecord::Base
     ", 9.days.ago.end_of_day)
   end
 
+  def security_hash
+    Digest::SHA1.hexdigest("#{id}-#{nonce}-#{champion_id}-#{user_id}")[0 .. 6]
+  end
+
+  def champion_email
+    "c#{id}-#{security_hash}@champions.bebraven.org"
+  end
+
+  def fellow_email
+    "f#{id}-#{security_hash}@champions.bebraven.org"
+  end
+
+  def champion_email_with_name
+    champion = Champion.find(champion_id)
+    "#{champion.name} via Braven Champions <#{champion_email}>"
+  end
+
+  def fellow_email_with_name
+    fellow = User.find(user_id)
+    "#{fellow.name} via Braven Champions <#{fellow_email}>"
+  end
+
   def self.send_reminders
     # if a week has passed and the fellow hasn't answered the survey yet, we email them asking them to fill it out
     # similarly, if a week has passed after the contact request and the champion hasn't answered, we ask them too

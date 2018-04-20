@@ -31,6 +31,7 @@ BeyondzPlatform::Application.routes.draw do
   get '/connect_authenticated', to: 'champions#connect_authenticated', as: :champions_connect_authenticated
   get '/champions/openid_login_start', to: 'champions#openid_login_start'
   get '/champions/openid_login_complete', to: 'champions#openid_login_complete'
+  post '/champions/email_processor', to: 'champions#email_processor'
   get '/champions/terms', to: 'champions#terms', as: :champions_terms
   get '/champions/linkedin_authorize', to: 'champions#linkedin_authorize', as: :linkedin_authorize
   get '/champions/linkedin_oauth_success', to: 'champions#linkedin_oauth_success', as: :linkedin_oauth_success
