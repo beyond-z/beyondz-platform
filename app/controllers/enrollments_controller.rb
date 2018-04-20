@@ -199,7 +199,7 @@ class EnrollmentsController < ApplicationController
       client.materialize('CampaignMember')
       cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(@enrollment.user.salesforce_id, @enrollment.campaign_id)
 
-      unless cm.Apply_Button_Enabled__c
+      unless cm && cm.Apply_Button_Enabled__c
         @enrollment_read_only = true
       end
     end
@@ -362,8 +362,10 @@ class EnrollmentsController < ApplicationController
       # actually pulled from the Contact and the API won't let us
       # access or update them through the CampaignMember.
       contact.Phone = format_phone_for_storage(@enrollment.phone)
+      contact.MailingStreet = [@enrollment.address1, @enrollment.address2].join("\n")
       contact.MailingCity = @enrollment.city
       contact.MailingState = @enrollment.state
+      contact.PostalCode = @enrollment.zip
       contact.Title = @enrollment.title
       contact.save
     end
@@ -395,6 +397,7 @@ class EnrollmentsController < ApplicationController
     cm.Post_Grad__c = @enrollment.post_graduation_plans
     cm.Why_BZ__c = @enrollment.why_bz
     cm.Passions_Expertise__c = @enrollment.passions_expertise
+    cm.Want_Grow_Professionally__c = @enrollment.want_grow_professionally
     cm.Meaningful_Activity__c = @enrollment.meaningful_activity
     cm.Relevant_Experience__c = @enrollment.relevant_experience
 

@@ -15,7 +15,7 @@
           </header>
 
           <p class="help coach">
-           To apply to volunteer as a <%= @program_title %> Leadership Coach in our <%= @program_site %> program, please complete and submit this application in its entirety. Your answers will be automatically saved as you move between questions, and you can safely leave this page and log back in at any time to resume your work. Your application won't be considered for evaluation until you click SEND at the bottom of the form.
+           To apply to volunteer as a<%= (%w(a e i o u).include?(@program_title.downcase[0]) ? 'n' : '') %> <%= @program_title %> Leadership Coach in our <%= @program_site %> program, please complete and submit this application in its entirety. Your answers will be automatically saved as you move between questions, and you can safely leave this page and log back in at any time to resume your work. Your application won't be considered for evaluation until you click SEND at the bottom of the form.
           </p>
 
           <p class="help volunteer">
@@ -29,7 +29,7 @@
           This selective opportunity requires your participation in diverse activities intended to build your leadership and career skills. Mandatory activities include: <ul class="help student"><li>Once a week 2-hour group meetings in the evening (in-person)</li><li>Weekly online modules, approximately 2 hours each (on your own)</li><li>Occasional weekend events (for exact date(s), please <a href="https://bebraven.org/">see our website</a>)</li></ul>
           </p>
 
-          <p class="help">The <span class="coach student">application</span><span class="volunteer">registration</span> should take approximately <span class="coach student">20</span><span class="volunteer">10</span> minutes to complete and includes the following sections:</p>
+          <p class="help">The <span class="coach student">application</span><span class="volunteer">registration</span> should take approximately <span class="coach student">30</span><span class="volunteer">10</span> minutes to complete and includes the following sections:</p>
 
         </div>
         <!--.section-container--> 
@@ -88,11 +88,29 @@
                     <span class="bs-wrapper"><span class="control-label">I can accept text messages on this phone</span> </span></label>
                 </div>
                 <div class="form-group">
-                  <label>Where do you live?</label>
+                  <label class="coach volunteer">Mailing Address</label>
+                  <label class="student">Where do you live?</label>
+                  <div class="coach volunteer">
+                  <%= f.text_field :address1, 'class' => 'form-control', 'placeholder' => 'Address', 'style' => 'display: inline', :maxlength => '85' %>
                   <br />
+                  <%= f.text_field :address2, 'class' => 'form-control', 'placeholder' => 'Address 2', 'style' => 'display: inline', :maxlength => '85' %>
+                  </div>
+                  <div>
                   <%= f.text_field :city, 'class' => 'form-control short', 'placeholder' => 'City', 'style' => 'display: inline', :maxlength => '35' %>
                   <%= f.text_field :state, 'class' => 'form-control short', 'placeholder' => 'State', 'style' => 'display: inline', :maxlength => '35' %>
+                  </div>
+                  <div class="coach volunteer">
+                  <%= f.text_field :zip, 'class' => 'form-control short', 'placeholder' => 'Zip', 'style' => 'display: inline', :maxlength => '35' %>
+                  </div>
                 </div>
+
+              <div class="form-group volunteer coach">
+                <div class="input-group volunteer coach">
+                  <label>LinkedIn Profile URL</label>
+                  <%= f.text_field :digital_footprint, 'class' => 'form-control medium', 'type' => 'url', 'placeholder' => 'LinkedIn Profile URL', 'onblur' => 'this.value = this.value.replace(/[^a-zA-Z0-9%\-_\.~:\/\?#\[\]@!\$\'\(\)\*\&\+,;=]/g, ""); if(this.value.length && this.value.indexOf("http") != 0) this.value = "http://"+this.value;' %>
+                </div>
+              </div>
+
                 <div class="form-group student">
                   <label>Your date of birth (MM/DD/YYYY)</label>
                   <%= f.text_field :birthdate, 'class' => 'form-control short', 'placeholder' => '2/28/1994', 'pattern' => ' *[0-9]{1,2}/[0-9]{1,2}/[0-9]{4} *' %>
@@ -112,6 +130,19 @@
                   <%= f.select :student_course, options_for_select(@course_options.lines.map(&:strip).reject(&:empty?), @enrollment.student_course), {}, 'class' => 'short form-control', 'required' => 'required' %>
                 </div>
                 <% end %>
+
+              <br />
+
+              <div class="form-group volunteer coach student" style="clear: left;">
+                <label class="volunteer coach">Upload a resume as a .doc or .pdf file (2 MB or less)</label>
+                <label class="student">Optionally, you may upload a resume as a .doc or .pdf file (2 MB or less)</label>
+                <%= f.file_field :resume %>
+                <% if @enrollment.resume.present? %>
+                  <%= link_to 'Download previously uploaded resume', @enrollment.resume.url %>
+                <% end %>
+              </div>
+
+
               </div>
               <!-- #form-contact -->
               <!-- #form-track --> 
@@ -270,25 +301,6 @@
                 <p class="student help">While we are interested in seeing the diversity of activities in which you're involved (described in the preceding question), we are also curious about which single experience has been particularly meaningful to your development.</p>
                 <%= f.text_area :meaningful_activity, 'class' => 'form-control', 'maxlength' => '1000' %>
               </div>
-
-              <div class="form-group volunteer coach student">
-                <label class="volunteer coach">Please provide a link to a "digital fingerprint" that will help us understand you better.</label>
-                <p class="help volunteer coach">Good examples include: your LinkedIn profile, an article you wrote, the website of an organization particularly meaningful to you, etc. (Less helpful are links to your Facebook, Instagram, or Twitter accounts.) Please make sure the links are public.<span class="volunteer coach"> If you'd prefer to upload a document in lieu of submitting a second link, please click the "Choose File" button below.</span></p>
-                <div class="input-group volunteer coach">
-                  <%= f.text_field :digital_footprint, 'class' => 'form-control medium', 'type' => 'url', 'placeholder' => 'Paste URL here', 'onblur' => 'this.value = this.value.replace(/[^a-zA-Z0-9%\-_\.~:\/\?#\[\]@!\$\'\(\)\*\&\+,;=]/g, ""); if(this.value.length && this.value.indexOf("http") != 0) this.value = "http://"+this.value;' %>
-                </div>
-                <div class="input-group coach">
-                  <%= f.text_field :digital_footprint2, 'class' => 'form-control medium', 'type' => 'url', 'placeholder' => 'Paste URL here', 'onblur' => 'this.value = this.value.replace(/[^a-zA-Z0-9%\-_\.~:\/\?#\[\]@!\$\'\(\)\*\&\+,;=]/g, ""); if(this.value.length && this.value.indexOf("http") != 0) this.value = "http://"+this.value;' %>
-                </div>
-              </div>
-              <div class="form-group volunteer coach student" style="clear: left;">
-                <label class="volunteer coach">Or upload a resume as a .doc or .pdf file (2 MB or less)</label>
-                <label class="student">Optionally, you may upload a resume as a .doc or .pdf file (2 MB or less)</label>
-                <%= f.file_field :resume %>
-                <% if @enrollment.resume.present? %>
-                  <%= link_to 'Download previously uploaded resume', @enrollment.resume.url %>
-                <% end %>
-              </div>
               <!-- #form-resume -->
              <div class="form-group student">
                 <label class="volunteer coach">If still in college, what do you hope to do post-graduation?</label>
@@ -314,7 +326,7 @@
 
               <div class="form-group volunteer coach student">
                 <label class="student">In at least 100 words, share why you want to join the <%= @program_title %>. If you're not sure, email <a tabindex="-1" href="mailto:info@bebraven.org">info@bebraven.org</a> and we can tell you more about the experience!</label>
-                <label class="coach">Why do you want to be a <%= @program_title %> Leadership Coach?</label>
+                <label class="coach">Why do you want to be a<%= (%w(a e i o u).include?(@program_title.downcase[0]) ? 'n' : '') %> <%= @program_title %> Leadership Coach?</label>
                 <label class="volunteer">Why do you want to be a volunteer and what areas of personal expertise or passion are you excited to share?</label>
                 <%= f.text_area :why_bz, 'class' => 'form-control', 'maxlength' => '1000' %>
               </div>
@@ -324,9 +336,12 @@
                 <%= f.text_area :passions_expertise, 'class' => 'form-control', 'maxlength' => '500' %>
               </div>
               <div class="form-group coach">
-                <label>Share about one of your experiences teaching, coaching, and/or working with young people. Describe your role/experience, your impact, and key moment(s) of learning or reflections.</label>
-                <p class="help">Please think expansively. Examples include years leading a classroom, summers coaching a youth sports team, time leading or participating in a work-based mentoring or onboarding program, etc.</p>
+                <label>Share about one of your experiences teaching, coaching, facilitating, and/or managing a team. Describe your role/experience, your impact, and a key moment of learning or reflection.</label>
                 <%= f.text_area :relevant_experience, 'class' => 'form-control', 'maxlength' => '800' %>
+              </div>
+              <div class="form-group coach">
+                <label>What are some ways you want to grow professionally?</label>
+                <%= f.text_area :want_grow_professionally, 'class' => 'form-control', 'maxlength' => '500' %>
               </div>
 
             </div>
@@ -505,18 +520,21 @@
 
               <br />
 
+              <div class="form-group coach">
+                <span class="coach">Please let us know if you expect to be unavailable during any cohort sessions (on the nights you indicated above) for the upcoming semester.</span>
+                <%= f.text_area :cannot_attend, 'class' => 'form-control', 'maxlength' => '500', 'style'=>'height: 6em !important;' %>
+              </div>
+
+
+              <br />
+
               <% end %>
               <h5 class="coach">Please affirm your commitment:</h5>
               <div class="form-group volunteer coach" id="coach-affirm-holder">
                 <label class="checkbox coach">
                   <%= f.check_box :affirm_commit_coach %>
-                  <span class="bs-wrapper"><span class="control-label"> I affirm that to the best of my knowledge I can fulfill the commitment to participate in all Leadership Coach activities, which can include: facilitating weekly cohort sessions (a mix of in-person and virtual); leading virtual individual coaching sessions participants; and delivering feedback on selected artifacts (e.g., resumes) submitted by participants.</span></span>
+                  <span class="bs-wrapper"><span class="control-label"> I affirm that to the best of my knowledge I can fulfill the commitment to participate in all Leadership Coach activities, which can include: facilitating weekly cohort sessions; leading virtual individual coaching sessions participants; and delivering feedback on selected artifacts (e.g., resumes) submitted by participants.</span></span>
                 </label>
-              </div>
-
-              <div class="form-group coach">
-                <span class="coach">Please let us know of any dates that you anticipate you will not be available.</span>
-                <%= f.text_area :cannot_attend, 'class' => 'form-control', 'maxlength' => '500', 'style'=>'height: 6em !important;' %>
               </div>
             </div>
 
