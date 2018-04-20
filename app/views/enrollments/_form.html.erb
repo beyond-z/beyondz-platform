@@ -91,14 +91,14 @@
                   <label class="coach volunteer">Mailing Address</label>
                   <label class="student">Where do you live?</label>
                   <div class="coach volunteer">
-                  <br />
                   <%= f.text_field :address1, 'class' => 'form-control', 'placeholder' => 'Address', 'style' => 'display: inline', :maxlength => '85' %>
                   <br />
                   <%= f.text_field :address2, 'class' => 'form-control', 'placeholder' => 'Address 2', 'style' => 'display: inline', :maxlength => '85' %>
                   </div>
-                  <br />
+                  <div>
                   <%= f.text_field :city, 'class' => 'form-control short', 'placeholder' => 'City', 'style' => 'display: inline', :maxlength => '35' %>
                   <%= f.text_field :state, 'class' => 'form-control short', 'placeholder' => 'State', 'style' => 'display: inline', :maxlength => '35' %>
+                  </div>
                   <div class="coach volunteer">
                   <%= f.text_field :zip, 'class' => 'form-control short', 'placeholder' => 'Zip', 'style' => 'display: inline', :maxlength => '35' %>
                   </div>
@@ -130,6 +130,19 @@
                   <%= f.select :student_course, options_for_select(@course_options.lines.map(&:strip).reject(&:empty?), @enrollment.student_course), {}, 'class' => 'short form-control', 'required' => 'required' %>
                 </div>
                 <% end %>
+
+              <br />
+
+              <div class="form-group volunteer coach student" style="clear: left;">
+                <label class="volunteer coach">Upload a resume as a .doc or .pdf file (2 MB or less)</label>
+                <label class="student">Optionally, you may upload a resume as a .doc or .pdf file (2 MB or less)</label>
+                <%= f.file_field :resume %>
+                <% if @enrollment.resume.present? %>
+                  <%= link_to 'Download previously uploaded resume', @enrollment.resume.url %>
+                <% end %>
+              </div>
+
+
               </div>
               <!-- #form-contact -->
               <!-- #form-track --> 
@@ -287,14 +300,6 @@
                 <label class="student">In at least 150 words, share <u>one</u> professional, extracurricular, or volunteer experience that has been particularly meaningful to you. Why was it meaningful to you?</label>
                 <p class="student help">While we are interested in seeing the diversity of activities in which you're involved (described in the preceding question), we are also curious about which single experience has been particularly meaningful to your development.</p>
                 <%= f.text_area :meaningful_activity, 'class' => 'form-control', 'maxlength' => '1000' %>
-              </div>
-              <div class="form-group volunteer coach student" style="clear: left;">
-                <label class="volunteer coach">Upload a resume as a .doc or .pdf file (2 MB or less)</label>
-                <label class="student">Optionally, you may upload a resume as a .doc or .pdf file (2 MB or less)</label>
-                <%= f.file_field :resume %>
-                <% if @enrollment.resume.present? %>
-                  <%= link_to 'Download previously uploaded resume', @enrollment.resume.url %>
-                <% end %>
               </div>
               <!-- #form-resume -->
              <div class="form-group student">
