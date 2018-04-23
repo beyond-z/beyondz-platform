@@ -7,6 +7,7 @@ module BeyondZ; module Mailchimp
     
     KEY = Rails.application.secrets.mailchimp_key
     LIST_ID = Rails.application.secrets.mailchimp_list_id
+    PRODUCTION_LIST_ID = Rails.application.secrets.production_mailchimp_list_id
     
     class << self
       def groups
@@ -17,12 +18,10 @@ module BeyondZ; module Mailchimp
       end
       
       def sync_from_production
-        production_list_id = Rails.application.secrets.mailchimp_production_list_id
-        
         # return if we are already in production
-        return false if production_list_id == LIST_ID
+        return false if in_production?
         
-        production_groups = get_groups(production_list_id)
+        production_groups = get_groups(PRODUCTION_LIST_ID)
         local_groups = get_groups(LIST_ID)
         
         production_groups.each do |group_name, values|
@@ -231,6 +230,10 @@ module BeyondZ; module Mailchimp
       
       def log message
         Rails.logger.info("MAILCHIMP: #{message}")
+      end
+      
+      def in_production?
+        PRODUCTION_LIST_ID.nil? || PRODUCTION_LIST_ID == LIST_ID
       end
 
       def get uri
