@@ -111,7 +111,9 @@ module BeyondZ
           }
         }
         
-        attribs[:merge_fields][:REGION] = user.bz_region if user.bz_region
+        region = BeyondZ::Mailchimp::Interest.region_for(user)
+        attribs[:merge_fields][:REGION] = region if region
+
         attribs[:merge_fields][:SFID] = user.salesforce_id if user.salesforce_id
         
         attribs
