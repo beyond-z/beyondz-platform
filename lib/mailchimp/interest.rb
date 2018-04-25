@@ -67,7 +67,7 @@ module BeyondZ; module Mailchimp
         interests
       end
       
-      def region_for user
+      def region_for user, verbose=true
         case user.class.name
         when 'User'
           if user.bz_region
@@ -76,24 +76,28 @@ module BeyondZ; module Mailchimp
             if region = region_by_university(user.university_name)
               region
             else
-              log "Cannot identify a Region by university name #{user.university_name}"
+              log "Cannot identify a Region by university name #{user.university_name}" if verbose
               nil
             end
           else
-            log "Cannot identify a Region without a user bz_region or university name"
+            log "Cannot identify a Region without a user bz_region or university name" if verbose
             nil
           end
         when 'Champion'
           if user.region
             user.region
           else
-            log "Cannot identify a Region when champion region is blank"
+            log "Cannot identify a Region when champion region is blank" if verbose
             nil
           end
         else
-          log "Cannot identify a Region without a User or Champion"
+          log "Cannot identify a Region without a User or Champion" if verbose
           nil
         end
+      end
+      
+      def interests_by_name interest_ids
+        interest_ids.map{|interest_id| interests_by_id[interest_id]}
       end
   
       private
@@ -220,6 +224,20 @@ module BeyondZ; module Mailchimp
         end
 
         groups
+      end
+      
+      def interests_by_id
+        return @interests_by_id if defined?(@interests_by_id)
+        
+        @interests_by_id = {}
+        
+        get_groups(LIST_ID).each do |category_name, hash|
+          hash[:options].each do |interest_name, interest_id|
+            @interests_by_id[interest_id] = "#{category_name} - #{interest_name}"
+          end
+        end
+        
+        @interests_by_id
       end
     
       def error message, response=nil
