@@ -34,24 +34,12 @@
 
           <form onsubmit="return checkTerms();">
             <div>
-              Industry / Profession:
-                <input name="industries_csv" class="multi-complete" type="text" />
-                <script type="text/json"><%= @industries.to_json.html_safe %></script>
+              Your interests:
+                <input name="interests_csv" class="multi-complete" type="text" />
+                <script type="text/json"><%= [@fields, @industries].flatten.sort.uniq.to_json.html_safe %></script>
               <input value="Search" type="submit" />
             </div>
           </form>
-
-          OR
-
-          <form onsubmit="return checkTerms();">
-            <div>
-              Major / Field of Study:
-                <input name="studies_csv" class="multi-complete" type="text" />
-                <script type="text/json"><%= @fields.to_json.html_safe %></script>
-              <input value="Search" type="submit" />
-            </div>
-          </form>
-
           <% end %>
         </div>
         <div class="col-sm-12">

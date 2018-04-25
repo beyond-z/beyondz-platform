@@ -136,27 +136,18 @@ class ChampionsController < ApplicationController
       @search_attempted = true
     end
 
-    if params[:studies_csv]
+    if params[:interests_csv]
       @search_attempted = true
-      studies = params[:studies_csv].split(',').map(&:strip).reject(&:empty?)
-      studies.each do |s|
+      search_terms = params[:interests_csv].split(',').map(&:strip).reject(&:empty?)
+      search_terms.each do |s|
         record_stat_hit(s)
-        query = Champion.where("array_to_string(studies, ',') ILIKE ?","%#{s}%").where("willing_to_be_contacted = true")
-        if Rails.application.secrets.smtp_override_recipient.blank?
-          query = query.where("email NOT LIKE '%@bebraven.org'")
-        end
-        query.each do |c|
-          @results << c
-        end
-      end
-    end
-
-    if params[:industries_csv]
-      @search_attempted = true
-      industries = params[:industries_csv].split(',').map(&:strip).reject(&:empty?)
-      industries.each do |s|
-        record_stat_hit(s)
-        query = Champion.where("array_to_string(industries, ',') ILIKE ?","%#{s}%").where("willing_to_be_contacted = true")
+        query = Champion.where("
+          array_to_string(studies, ',') ILIKE ?
+          OR
+          array_to_string(industries, ',') ILIKE ?",
+          "%#{s}%", # for studies
+          "%#{s}%"  # for industries
+        ).where("willing_to_be_contacted = true")
         if Rails.application.secrets.smtp_override_recipient.blank?
           query = query.where("email NOT LIKE '%@bebraven.org'")
         end
