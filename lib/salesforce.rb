@@ -65,8 +65,13 @@ module BeyondZ
       # an old client between server restarts - this will avoid the session
       # expired problem as we reauthorize and fix the global too.
       Databasedotcom::Sobject::Sobject.client = client
-
+      
       client
+    end
+    
+    def client
+      return @client if defined?(@client)
+      @client = get_client
     end
 
     def authenticate(client)
@@ -97,20 +102,26 @@ module BeyondZ
       nil
     end
     
+    def record_for_contact entity
+      client.materialize('Contact')
+      SFDC_Models::Contact.query("Id = '#{entity.salesforce_id}'").first
+    end
+    
     # entity can be a user or champion, at the moment.
     def campaign_for_contact entity
       entity.ensure_salesforce_id
       return if entity.salesforce_id.nil?
       
-      client = get_client
-      
-      client.materialize('CampaignMember')
-      campaign_member = SFDC_Models::CampaignMember.query("ContactId = '#{entity.salesforce_id}'").first
-      
+      campaign_member = campaign_member_for_contact(entity)
       return nil if campaign_member.nil?
       
       client.materialize('Campaign')
       SFDC_Models::Campaign.find(campaign_member.CampaignId)
+    end
+    
+    def campaign_member_for_contact entity
+      client.materialize('CampaignMember')
+      SFDC_Models::CampaignMember.query("ContactId = '#{entity.salesforce_id}'").first
     end
 
     # Returns the Salesforce ID of the contact if they exist or nil if not
