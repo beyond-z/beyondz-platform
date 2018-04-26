@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180426021700) do
+ActiveRecord::Schema.define(version: 20180426031940) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -111,6 +111,10 @@ ActiveRecord::Schema.define(version: 20180426021700) do
     t.boolean  "champion_survey_email_sent",         default: false
     t.boolean  "fellow_survey_email_sent",           default: false
     t.string   "nonce"
+    t.datetime "first_email_from_fellow_sent"
+    t.datetime "latest_email_from_fellow_sent"
+    t.datetime "first_email_from_champion_sent"
+    t.datetime "latest_email_from_champion_sent"
   end
 
   create_table "champion_stats", force: true do |t|

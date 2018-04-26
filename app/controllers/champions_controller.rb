@@ -60,6 +60,22 @@ class ChampionsController < ApplicationController
     end
 
 
+    if to_party == 'c'
+      # if it is to the champion, it is from the fellow
+      if cc.first_email_from_fellow_sent.nil?
+        cc.first_email_from_fellow_sent = DateTime.now
+      end
+      cc.latest_email_from_fellow_sent = DateTime.now
+      cc.save
+    else
+      if cc.first_email_from_champion_sent.nil?
+        cc.first_email_from_champion_sent = DateTime.now
+      end
+      cc.latest_email_from_champion_sent = DateTime.now
+      cc.save
+    end
+
+
     # and forward it.
     ChampionsForwarderMailer.forward_message(to_party, cc, params[:headers][:Subject], params[:plain], params[:html], params[:attachments]).deliver
 
