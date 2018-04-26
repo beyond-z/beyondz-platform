@@ -79,6 +79,14 @@ class Champion < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
+  def interests
+    [self.studies, self.industries].flatten.sort.uniq
+  end
+
+  def hits
+    ChampionContact.where(:champion_id => self.id).count
+  end
+
   def too_recently_contacted
     flood_check = ChampionContact.where(:champion_id => self.id).where("created_at > ?", 2.weeks.ago.end_of_day)
     return true if flood_check.any?
