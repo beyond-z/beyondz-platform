@@ -40,7 +40,27 @@ class ChampionsController < ApplicationController
       return
     end
 
-    # FIXME: I'm not sure that attachments actually work
+    # log it
+    ccle = ChampionContactLoggedEmail.create(
+      :champion_contact_id => cc.id,
+      :to => to_party,
+      :from => params[:envelope][:from],
+      :subject => params[:headers][:Subject],
+      :plain => params[:plain],
+      :html => params[:html]
+    )
+
+    if params[:attachments]
+      params[:attachments].each do |k, attachment|
+        ChampionContactLoggedEmailAttachment.create(
+          :champion_contact_logged_email => ccle,
+          :file => attachment
+        )
+      end
+    end
+
+
+    # and forward it.
     ChampionsForwarderMailer.forward_message(to_party, cc, params[:headers][:Subject], params[:plain], params[:html], params[:attachments]).deliver
 
 

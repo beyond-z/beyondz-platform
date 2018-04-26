@@ -2,7 +2,7 @@ require 'digest/sha2'
 class ChampionsForwarderMailer < ActionMailer::Base
   default 'Message-ID' => ->(_v_) { "<#{SecureRandom.uuid}@champions.bebraven.org>" }
 
-  def forward_message(to_party, champion_contact, subject, text_message, html_message, attachments)
+  def forward_message(to_party, champion_contact, subject, text_message, html_message, forwarded_attachments)
 
     recipient = nil
     from = nil
@@ -17,12 +17,15 @@ class ChampionsForwarderMailer < ActionMailer::Base
 
     @text_message = text_message
     @html_message = html_message
+
+    forwarded_attachments.each do |k, attachment|
+      attachments[attachment.original_filename] = attachment.read
+    end
+
     mail(
           to: recipient,
-          subject: "Connect with Braven Fellow",
+          subject: subject,
           from: from
     )
-
-    # FIXME: attachments
   end
 end
