@@ -1,0 +1,38 @@
+<table class="sample-csv">
+<caption>Most/Least Contacted Champions</caption>
+<tr>
+  <th># Contacts</th>
+  <th>Willing</th>
+  <th>Champ Name</th>
+  <th>Email</th>
+  <th>Job Title</th>
+  <th>Company</th>
+  <th>Areas of Interest</th>
+<%
+  Champion.all.sort { |x, y| x.hits <=> y.hits }.each do |champion|
+%>
+  <tr>
+    <td><%= champion.hits %></td>
+    <td><%= champion.willing_to_be_contacted %></td>
+    <td><%=champion.name%></td><td><%=champion.email%></td><td><%=champion.job_title%></td><td><%=champion.company%></td><td><%=champion.interests.join(', ')%></td>
+  </tr>
+<%
+  end
+%>
+</table>
+
+<table class="sample-csv">
+<caption>Champion Interests Represented</caption>
+<tr>
+  <th>Interest</th>
+  <th>Champion Count</th>
+  <th>Contact Request Count for these Champions</th>
+</tr>
+<% @interests.each do |name, info| %>
+  <tr>
+    <td><%= name %></td>
+    <td><%= info["champs"] %></td>
+    <td><%= info["hits"] %></td>
+  </tr>
+<% end %>
+</table>

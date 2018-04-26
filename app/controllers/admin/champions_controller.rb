@@ -1,6 +1,22 @@
 require 'csv'
 
 class Admin::ChampionsController < Admin::ApplicationController
+  def report
+    @interests = {}
+    Champion.all.each do |c|
+      c.interests.each do |i|
+        if @interests[i]
+          @interests[i]["hits"] += c.hits
+          @interests[i]["champs"] += 1
+        else
+          @interests[i] = {}
+          @interests[i]["hits"] = c.hits
+          @interests[i]["champs"] = 1
+        end
+      end
+    end
+  end
+
   def download_contacts
     respond_to do |format|
       format.html do
