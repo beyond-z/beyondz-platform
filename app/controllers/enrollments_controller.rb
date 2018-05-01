@@ -424,7 +424,7 @@ class EnrollmentsController < ApplicationController
     cm.Graduate_Year__c = @enrollment.anticipated_grad_school_graduation
 
     cm.Digital_Footprint__c = limit_size(@enrollment.digital_footprint, 200)
-    cm.Digital_Footprint_2__c = limit_size(@enrollment.digital_footprint2, 200)
+    #cm.Digital_Footprint_2__c = limit_size(@enrollment.digital_footprint2, 200) # We no longer ask for this, just their LinkedIn URL which is stored in digital_footprint
 
     cm.Resume__c = @enrollment.resume.url if @enrollment.resume.present?
 
