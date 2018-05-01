@@ -365,7 +365,7 @@ class EnrollmentsController < ApplicationController
       contact.MailingStreet = [@enrollment.address1, @enrollment.address2].join("\n")
       contact.MailingCity = @enrollment.city
       contact.MailingState = @enrollment.state
-      contact.PostalCode = @enrollment.zip
+      contact.MailingPostalCode = @enrollment.zip
       contact.Title = @enrollment.title
       contact.save
     end
