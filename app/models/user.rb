@@ -447,6 +447,8 @@ class User < ActiveRecord::Base
   end
 
   def salesforce_campaign_id
+    return @salesforce_campaign_id if defined?(@salesforce_campaign_id)
+    
     mapping = nil
     # For Event Volunteers, they may have been a Fellow or a Coach in the past and thus have their university_name set,
     # however, we don't use university_name when looking up the Campaign for that region, so the mapping is not found.
@@ -471,7 +473,7 @@ class User < ActiveRecord::Base
       end
     end
 
-    mapping.first.campaign_id
+    @salesforce_campaign_id = mapping.first.campaign_id
   end
 
   # The BZ Region that this user is mapped to given their Calendar Email and Application Type
