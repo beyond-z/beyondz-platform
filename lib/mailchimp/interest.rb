@@ -67,35 +67,6 @@ module BeyondZ; module Mailchimp
         interests
       end
       
-      def region_for user, verbose=true
-        case user.class.name
-        when 'User'
-          if user.bz_region
-            user.bz_region
-          elsif user.university_name
-            if region = region_by_university(user.university_name)
-              region
-            else
-              log "Cannot identify a Region by university name #{user.university_name}" if verbose
-              nil
-            end
-          else
-            log "Cannot identify a Region without a user bz_region or university name" if verbose
-            nil
-          end
-        when 'Champion'
-          if user.region
-            user.region
-          else
-            log "Cannot identify a Region when champion region is blank" if verbose
-            nil
-          end
-        else
-          log "Cannot identify a Region without a User or Champion" if verbose
-          nil
-        end
-      end
-      
       def interests_by_name interest_ids
         interest_ids.map{|interest_id| interests_by_id[interest_id]}
       end
@@ -131,9 +102,7 @@ module BeyondZ; module Mailchimp
       end
       
       def location_interest_for user
-        region = region_for user
-        
-        region_name = case region
+        region_name = case user.region
         when /chicago/i
           'NLU'
         when /san\s+francisco/i
@@ -160,14 +129,6 @@ module BeyondZ; module Mailchimp
         end
         
         ids
-      end
-      
-      def region_by_university name 
-        {
-          'National Louis University' => 'Chicago',
-          'San Jose State University' => 'San Francisco Bay Area, San Jose',
-          'Rutgers University - Newark' => 'Newark, NJ'
-        }[name]
       end
       
       def create_group group_name

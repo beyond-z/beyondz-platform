@@ -12,35 +12,41 @@ class ServerSync
   end
   
   def verify
-    puts "\nProposed mailchimp groups, please verify that these are what we expect:\n  - #{local_interests.join("\n  - ")}\n\n"
+    outputs = []
     
-    puts "Do we have a valid mailchimp record? #{boolean(valid_mailchimp_record?)}\n\n"
+    outputs << "\nProposed mailchimp groups, please verify that these are what we expect:\n  - #{local_interests.join("\n  - ")}\n\n"
+    
+    outputs << "Do we have a valid mailchimp record? #{boolean(valid_mailchimp_record?)}\n\n"
     
     if valid_mailchimp_record?
-      puts "Verifying that the mailchimp record matches what we expect:"
+      outputs << "Verifying that the mailchimp record matches what we expect:"
 
-      puts "  - salesforce id? #{boolean(mailchimp_salesforce_id_matches?)}"
-      puts "  - email? #{boolean(mailchimp_email_matches?)}"
-      puts "  - name? #{boolean(mailchimp_name_matches?)}"
-      puts "  - region? #{boolean(mailchimp_region_matches?)}"
-      puts "  - mailchimp groups? #{boolean(mailchimp_groups_match?)}"
-      puts
+      outputs << "  - salesforce id? #{boolean(mailchimp_salesforce_id_matches?)}"
+      outputs << "  - email? #{boolean(mailchimp_email_matches?)}"
+      outputs << "  - name? #{boolean(mailchimp_name_matches?)}"
+      outputs << "  - region? #{boolean(mailchimp_region_matches?)}"
+      outputs << "  - mailchimp groups? #{boolean(mailchimp_groups_match?)}"
     end
 
-    puts "Do we have a valid salesforce record? #{boolean(salesforce_id_matches?)}\n\n"
+    outputs << "\nDo we have a valid salesforce record? #{boolean(salesforce_id_matches?)}\n\n"
     
     if salesforce_id_matches?
-      puts "Verifying that the salesforce record matches what we expect:"
-      puts "  - email? #{boolean(salesforce_email_matches?)}"
-      puts "  - name? #{boolean(salesforce_name_matches?)}"
-      puts "  - campaign_id(#{subject.salesforce_campaign_id})? #{boolean(salesforce_campaign_id_matches?)}"
+      outputs << "Verifying that the salesforce record matches what we expect:"
+
+      outputs << "  - email? #{boolean(salesforce_email_matches?)}"
+      outputs << "  - name? #{boolean(salesforce_name_matches?)}"
+      outputs << "  - preferred region? #{boolean(salesforce_preferred_region_matches?)}"
+      outputs << "  - all regions include region? #{boolean(salesforce_all_regions_matches?)}"
+      outputs << "  - campaign_id(#{subject.salesforce_campaign_id})? #{boolean(salesforce_campaign_id_matches?)}"
       
       if subject.program_semester
-        puts "  - program semester? #{boolean(salesforce_program_semester_matches?)}"
+        outputs << "  - program semester? #{boolean(salesforce_program_semester_matches?)}"
       end
     end
     
-    puts "\nDid all tests pass? #{boolean(@success)}"
+    outputs << "\nDid all tests pass? #{boolean(@success)}"
+    
+    outputs.each{|output| puts output}
     
     @success
   end
@@ -70,6 +76,14 @@ class ServerSync
     salesforce_campaign_member.CampaignId[0,shortest_campaign_id_length] == subject.salesforce_campaign_id[0,shortest_campaign_id_length]
   end
   
+  def salesforce_preferred_region_matches?
+    salesforce_user && salesforce_user.BZ_Region__c == subject.region
+  end
+  
+  def salesforce_all_regions_matches?
+    salesforce_user && salesforce_user.All_BZ_Regions__c.include?(subject.region)
+  end
+  
   def valid_mailchimp_record?
     !!mailchimp_user
   end
@@ -92,7 +106,7 @@ class ServerSync
   end
   
   def mailchimp_region_matches?
-    BeyondZ::Mailchimp::Interest.region_for(subject) == mailchimp_fields[:region]
+    subject.region == mailchimp_fields[:region]
   end
   
   def mailchimp_groups_match?

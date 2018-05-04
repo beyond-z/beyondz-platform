@@ -260,7 +260,7 @@ class User < ActiveRecord::Base
     # with the BZ Region set, that's when their region is updated.
     #
     # BZ_Region is required, so if it's not set, default them to National
-    contact['BZ_Region__c'] = (bz_region.blank? || bz_region.strip == 'Other:') ? 'National' : bz_region
+    contact['BZ_Region__c'] = (region.blank? || region.strip == 'Other:') ? 'National' : region
 
     lead_created = false
 
@@ -421,6 +421,16 @@ class User < ActiveRecord::Base
     end
   rescue Databasedotcom::SalesForceError => e
     logger.warn "###### Caught Databasedotcom::SalesForceError #{e.inspect} -- Failed to update CampaignMember and record a Task of the cancellation for #{first_name} #{last_name} - #{selected_timeslot}"
+  end
+  
+  def region
+    region_by_university = Hash.new(nil).merge({
+      'National Louis University' => 'Chicago',
+      'San Jose State University' => 'San Francisco Bay Area, San Jose',
+      'Rutgers University - Newark' => 'Newark, NJ'
+    })
+    
+    bz_region || region_by_university[university_name]
   end
 
   def salesforce_applicant_type
