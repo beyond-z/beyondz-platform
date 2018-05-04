@@ -1,5 +1,5 @@
 require 'salesforce'
-require 'mailchimp'
+require 'mailchimp/user'
 
 # Monkey-patch the CAS gem so we can use it without losing the database
 # features we use for SSO - we still manage the users here, including
@@ -40,6 +40,8 @@ end
 # With that fixed, we can now define the regular User class.
 
 class User < ActiveRecord::Base
+  include MailchimpUpdates
+  
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :registerable,
@@ -57,32 +59,10 @@ class User < ActiveRecord::Base
   validates :last_name, presence: true
 
   before_save :capitalize_name
-  before_save :update_mailchimp
   
   def capitalize_name
     self.first_name = first_name.split.map(&:capitalize).join(' ') unless first_name.nil?
     self.last_name = last_name.split.map(&:capitalize).join(' ') unless last_name.nil?
-  end
-  
-  def update_mailchimp
-    # don't update for a new record, it doesn't exist in mailchimp yet
-    return true if new_record?
-
-    mailchimp = BeyondZ::Mailchimp.new(self)
-    
-    # don't update unless an updateable field has changed
-    return true unless mailchimp.requires_update?
-    
-    success_status = mailchimp.update
-
-    # for now, assume success until retro-sync can be performed
-    success_status = true
-    
-    unless success_status
-      self.errors[:email] << "could not be updated on MailChimp"
-    end
-    
-    success_status
   end
 
   # Finds the lead owner from the uploaded spreadsheet mapping, or returns
@@ -280,7 +260,7 @@ class User < ActiveRecord::Base
     # with the BZ Region set, that's when their region is updated.
     #
     # BZ_Region is required, so if it's not set, default them to National
-    contact['BZ_Region__c'] = (bz_region.blank? || bz_region.strip == 'Other:') ? 'National' : bz_region
+    contact['BZ_Region__c'] = (region.blank? || region.strip == 'Other:') ? 'National' : region
 
     lead_created = false
 
@@ -442,6 +422,16 @@ class User < ActiveRecord::Base
   rescue Databasedotcom::SalesForceError => e
     logger.warn "###### Caught Databasedotcom::SalesForceError #{e.inspect} -- Failed to update CampaignMember and record a Task of the cancellation for #{first_name} #{last_name} - #{selected_timeslot}"
   end
+  
+  def region
+    region_by_university = Hash.new(nil).merge({
+      'National Louis University' => 'Chicago',
+      'San Jose State University' => 'San Francisco Bay Area, San Jose',
+      'Rutgers University - Newark' => 'Newark, NJ'
+    })
+    
+    bz_region || region_by_university[university_name]
+  end
 
   def salesforce_applicant_type
     case applicant_type
@@ -467,6 +457,8 @@ class User < ActiveRecord::Base
   end
 
   def salesforce_campaign_id
+    return @salesforce_campaign_id if defined?(@salesforce_campaign_id)
+    
     mapping = nil
     # For Event Volunteers, they may have been a Fellow or a Coach in the past and thus have their university_name set,
     # however, we don't use university_name when looking up the Campaign for that region, so the mapping is not found.
@@ -491,7 +483,7 @@ class User < ActiveRecord::Base
       end
     end
 
-    mapping.first.campaign_id
+    @salesforce_campaign_id = mapping.first.campaign_id
   end
 
   # The BZ Region that this user is mapped to given their Calendar Email and Application Type

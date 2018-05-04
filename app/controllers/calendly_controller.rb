@@ -119,11 +119,13 @@ class CalendlyController < ApplicationController
           current_user.salesforce_id = existing_salesforce_id
           current_user.skip_confirmation!
           current_user.save!
-
+          
           cm = current_user.auto_add_to_salesforce_campaign('Confirmed', selected_timeslot)
           if cm.nil?
             logger.debug "######## Failed to create Campaign Member for #{current_user.inspect}.  Dunno why though."
           end
+
+          current_user.create_mailchimp
 
         elsif event_type == 'invitee.canceled'
           current_user = User.find_by_email(email)
