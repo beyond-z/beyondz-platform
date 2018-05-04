@@ -33,6 +33,7 @@ class ServerSync
       puts "Verifying that the salesforce record matches what we expect:"
       puts "  - email? #{boolean(salesforce_email_matches?)}"
       puts "  - name? #{boolean(salesforce_name_matches?)}"
+      puts "  - campaign_id(#{subject.salesforce_campaign_id})? #{boolean(salesforce_campaign_id_matches?)}"
       
       if subject.program_semester
         puts "  - program semester? #{boolean(salesforce_program_semester_matches?)}"
@@ -59,6 +60,14 @@ class ServerSync
   
   def salesforce_program_semester_matches?
     local_interests.include?("Semester - #{subject.program_semester}")
+  end
+  
+  def salesforce_campaign_id_matches?
+    return false unless salesforce_campaign_member
+
+    # there appear to be 16 and 19 digit versions of campaign_id, both valid
+    shortest_campaign_id_length = [salesforce_campaign_member.CampaignId.size, subject.salesforce_campaign_id.size].min
+    salesforce_campaign_member.CampaignId[0,shortest_campaign_id_length] == subject.salesforce_campaign_id[0,shortest_campaign_id_length]
   end
   
   def valid_mailchimp_record?
@@ -93,10 +102,8 @@ class ServerSync
   private
   
   def boolean condition
-    result = condition ? 'YES' : 'NO'
-    @success = false unless result
-    
-    result
+    @success = false unless condition
+    condition ? 'YES' : 'NO'
   end
   
   def salesforce_contact_id
@@ -107,6 +114,11 @@ class ServerSync
   def salesforce_user
     return @salesforce_user if defined?(@salesforce_user)
     @salesforce_user = salesforce.record_for_contact(subject)
+  end
+  
+  def salesforce_campaign_member
+    return @salesforce_campaign_member if defined?(@salesforce_campaign_member)
+    @salesforce_campaign_member = salesforce.campaign_member_for_contact(subject)
   end
   
   def local_interests
