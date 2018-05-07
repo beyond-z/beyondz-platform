@@ -26,6 +26,7 @@ class ServerSync
       outputs << "  - name? #{boolean(mailchimp_name_matches?)}"
       outputs << "  - region? #{boolean(mailchimp_region_matches?)}"
       outputs << "  - mailchimp groups? #{boolean(mailchimp_groups_match?)}"
+      outputs << "  - newsletter options? #{boolean(mailchimp_newsletter_match?)}"
     end
 
     outputs << "\nDo we have a valid salesforce record? #{boolean(salesforce_id_matches?)}\n\n"
@@ -113,6 +114,10 @@ class ServerSync
     local_interests.sort == mailchimp_interests.sort
   end
   
+  def mailchimp_newsletter_match?
+    mailchimp_fields[:newsletter] == 'FALSE'
+  end
+  
   private
   
   def boolean condition
@@ -162,6 +167,7 @@ class ServerSync
       first_name: mailchimp_user['merge_fields']['FNAME'],
       last_name: mailchimp_user['merge_fields']['LNAME'],
       region: mailchimp_user['merge_fields']['REGION'],
+      newsletter: mailchimp_user['merge_fields']['NEWSLETTER'].upcase
     }
   end
 end
