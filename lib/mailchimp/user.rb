@@ -107,7 +107,8 @@ module BeyondZ
           interests: BeyondZ::Mailchimp::Interest.interests_for(user),
           merge_fields: {
             FNAME: user.first_name,
-            LNAME: user.last_name
+            LNAME: user.last_name,
+            NEWSLETTER: "False"
           }
         }
         
