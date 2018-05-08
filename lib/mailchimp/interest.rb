@@ -7,6 +7,7 @@ module BeyondZ; module Mailchimp
     
     KEY = Rails.application.secrets.mailchimp_key
     LIST_ID = Rails.application.secrets.mailchimp_list_id
+    PRODUCTION_LIST_ID = Rails.application.secrets.production_mailchimp_list_id
     
     class << self
       def groups
@@ -17,12 +18,10 @@ module BeyondZ; module Mailchimp
       end
       
       def sync_from_production
-        production_list_id = Rails.application.secrets.mailchimp_production_list_id
-        
         # return if we are already in production
-        return false if production_list_id == LIST_ID
+        return false if in_production?
         
-        production_groups = get_groups(production_list_id)
+        production_groups = get_groups(PRODUCTION_LIST_ID)
         local_groups = get_groups(LIST_ID)
         
         production_groups.each do |group_name, values|
@@ -67,6 +66,10 @@ module BeyondZ; module Mailchimp
         
         interests
       end
+      
+      def interests_by_name interest_ids
+        interest_ids.map{|interest_id| interests_by_id[interest_id]}
+      end
   
       private
       
@@ -99,34 +102,7 @@ module BeyondZ; module Mailchimp
       end
       
       def location_interest_for user
-        region = case user.class.name
-        when 'User'
-          if user.bz_region
-            user.bz_region
-          elsif user.university_name
-            if region = region_by_university(user.university_name)
-              region
-            else
-              log "Cannot identify a Location interest by university name #{user.university_name}"
-              nil
-            end
-          else
-            log "Cannot identify a Location interest without a user bz_region or university name"
-            nil
-          end
-        when 'Champion'
-          if user.region
-            user.region
-          else
-            log "Cannot identify a Location interest when champion region is blank"
-            nil
-          end
-        else
-          log "Cannot identify a Location interest without a User or Champion"
-          nil
-        end
-        
-        region_name = case region
+        region_name = case user.region
         when /chicago/i
           'NLU'
         when /san\s+francisco/i
@@ -153,14 +129,6 @@ module BeyondZ; module Mailchimp
         end
         
         ids
-      end
-      
-      def region_by_university name 
-        {
-          'National Louis University' => 'Chicago',
-          'San Jose State University' => 'San Francisco Bay Area, San Jose',
-          'Rutgers University - Newark' => 'Newark, NJ'
-        }[name]
       end
       
       def create_group group_name
@@ -218,6 +186,20 @@ module BeyondZ; module Mailchimp
 
         groups
       end
+      
+      def interests_by_id
+        return @interests_by_id if defined?(@interests_by_id)
+        
+        @interests_by_id = {}
+        
+        get_groups(LIST_ID).each do |category_name, hash|
+          hash[:options].each do |interest_name, interest_id|
+            @interests_by_id[interest_id] = "#{category_name} - #{interest_name}"
+          end
+        end
+        
+        @interests_by_id
+      end
     
       def error message, response=nil
         response ||= @last_response
@@ -231,6 +213,10 @@ module BeyondZ; module Mailchimp
       
       def log message
         Rails.logger.info("MAILCHIMP: #{message}")
+      end
+      
+      def in_production?
+        PRODUCTION_LIST_ID.nil? || PRODUCTION_LIST_ID == LIST_ID
       end
 
       def get uri

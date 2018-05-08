@@ -458,6 +458,7 @@ class ChampionsController < ApplicationController
     n.save
 
     n.create_on_salesforce
+    n.create_mailchimp
 
     if was_new
       ChampionsMailer.new_champion(n).deliver

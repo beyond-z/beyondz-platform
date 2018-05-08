@@ -107,11 +107,12 @@ module BeyondZ
           interests: BeyondZ::Mailchimp::Interest.interests_for(user),
           merge_fields: {
             FNAME: user.first_name,
-            LNAME: user.last_name
+            LNAME: user.last_name,
+            NEWSLETTER: "False"
           }
         }
         
-        attribs[:merge_fields][:REGION] = user.bz_region if user.bz_region
+        attribs[:merge_fields][:REGION] = user.region if user.region
         attribs[:merge_fields][:SFID] = user.salesforce_id if user.salesforce_id
         
         attribs

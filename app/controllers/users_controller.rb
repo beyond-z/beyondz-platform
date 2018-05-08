@@ -427,7 +427,7 @@ class UsersController < ApplicationController
     user[:university_name] = params[:undergrad_university_name] if user[:university_name] == 'other'
 
     user[:phone] = user[:phone].gsub(/[^0-9]/, '') unless user[:phone].blank?
-
+    
     if !user[:applicant_type].nil?
       # We don't create a user now for Event Volunteers.  Instead, we send them to calendly and
       # when they signup for an event, that calls into the calendly_controller to create a new
@@ -449,6 +449,7 @@ class UsersController < ApplicationController
       user[:applicant_type] = 'leadership_coach' if user[:applicant_type] == 'volunteer'
       user[:applicant_type] = 'event_volunteer' if user[:applicant_type] == 'temp_volunteer'
       @new_user = User.new(user)
+      
       unless user[:applicant_type] == 'undergrad_student' || user[:applicant_type] == 'leadership_coach' || user[:applicant_type] == 'event_volunteer'
         # Partners, employers, and others are reached out to manually instead of confirming
         # their account. We immediate make on salesforce and don't require confirmation so

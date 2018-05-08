@@ -32,6 +32,9 @@ group :development, :test do
   gem 'capybara'
   # Allows starting the rails server with the .env file specifying the ENV variables
   gem 'foreman'
+  
+  gem 'rspec-rails'
+  gem 'webmock'
 end
 
 # Use SCSS for stylesheets
