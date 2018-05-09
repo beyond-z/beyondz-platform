@@ -53,7 +53,9 @@ class Enrollment < ActiveRecord::Base
 
   validates :digital_footprint, presence: true, if: "position == 'coach' && !resume.present?"
 
-  validates :industry, presence: true, if: "position == 'coach' && company.empty? && title.empty?"
+  validates :industry, presence: true, if: "position == 'coach'"
+  validates :company, presence: true, if: "position == 'coach'"
+  validates :title, presence: true, if: "position == 'coach'"
 
   validates :meeting_times, presence: true, if: '@check_meeting_times'
 
