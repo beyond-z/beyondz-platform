@@ -17,6 +17,7 @@ class EnrollmentsController < ApplicationController
     @student_id_format = ''
     @student_id_format_help = ''
     @student_id_excluded_chars = ''
+    @contact_email = 'info@bebraven.org'
   end
 
   layout 'public'
@@ -183,6 +184,8 @@ class EnrollmentsController < ApplicationController
     # as that's the fastest thing that can possibly work for MVP
     @enrollment = Enrollment.find(params[:id])
 
+    set_up_lists
+
     if @enrollment.user_id != current_user.id && !current_user.admin?
       redirect_to welcome_path
       return
@@ -259,6 +262,7 @@ class EnrollmentsController < ApplicationController
         @student_id_format = campaign.Student_ID_Format__c
         @student_id_format_help = campaign.Student_ID_Format_Help__c
         @student_id_excluded_chars = campaign.Student_ID_Excluded_Chars__c
+        @contact_email = sf.load_cached_user_email(campaign.OwnerId)
       end
     end
   end
