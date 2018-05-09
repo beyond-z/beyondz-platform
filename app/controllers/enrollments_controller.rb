@@ -55,6 +55,8 @@ class EnrollmentsController < ApplicationController
     @enrollment = Enrollment.new
     @enrollment.user_id = current_user.id
 
+    set_up_lists
+
     # We need to redirect them to edit their current application
     # if one exists. Otherwise, they can make a new one with some
     # prefilled data which we'll immediately send them to edit.
