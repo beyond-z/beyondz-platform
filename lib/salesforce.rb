@@ -56,6 +56,20 @@ module BeyondZ
       end
     end
 
+    def load_cached_user_email(user_id, client = nil)
+      Rails.cache.fetch("salesforce/user_email/#{user_id}", expires_in: 12.hours) do
+        client = get_client if client.nil?
+
+        a = client.http_get("/services/data/v#{client.version}/query?q=" \
+            "SELECT Email FROM User WHERE Id = '#{user_id.sub('\'', '\'\'')}'")
+        sf_answer = JSON.parse(a.body)
+        a = sf_answer['records']
+        a = a.empty? ? nil : a.first
+        a.nil? ? nil : a['Email']
+      end
+    end
+
+
     def get_client
       client = Databasedotcom::Client.new :host => Rails.application.secrets.salesforce_host
       client.sobject_module = SFDC_Models

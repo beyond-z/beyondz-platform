@@ -324,7 +324,7 @@
               <p class="help">Please use complete sentences!</p>
 
               <div class="form-group volunteer coach student">
-                <label class="student">In at least 100 words, share why you want to join the <%= @program_title %>. If you're not sure, email <a tabindex="-1" href="mailto:info@bebraven.org">info@bebraven.org</a> and we can tell you more about the experience!</label>
+                <label class="student">In at least 100 words, share why you want to join the <%= @program_title %>. If you're not sure, email <a tabindex="-1" href="mailto:<%=@contact_email%>"><%=@contact_email%></a> and we can tell you more about the experience!</label>
                 <label class="coach">Why do you want to be a<%= (%w(a e i o u).include?(@program_title.downcase[0]) ? 'n' : '') %> <%= @program_title %> Leadership Coach?</label>
                 <label class="volunteer">Why do you want to be a volunteer and what areas of personal expertise or passion are you excited to share?</label>
                 <%= f.text_area :why_bz, 'class' => 'form-control', 'maxlength' => '1000' %>
@@ -498,7 +498,7 @@
 
               <p class="coach"><i>Please be flexible:</i> The more options you select, the greater our opportunity to ensure all participants benefit from the great diversity of our community.</p>
 
-              <p class="coach"><i>Please note</i>: Your invitation to join <%= @program_title %> - <%= @program_site %> will include a specific campus location, day, and timeslot, at which point you'll be asked to officially confirm your role. It's important that you are as accurate as possible, so we can make reliable matches between coaches and participants. However, we also understand your schedule may change after you've submitted. <i>If that happens, or if you are currently very unsure of your upcoming schedule, please email us with details at <a href="mailto:info@bebraven.org">info@bebraven.org</a>.</i></p>
+              <p class="coach"><i>Please note</i>: Your invitation to join <%= @program_title %> - <%= @program_site %> will include a specific campus location, day, and timeslot, at which point you'll be asked to officially confirm your role. It's important that you are as accurate as possible, so we can make reliable matches between coaches and participants. However, we also understand your schedule may change after you've submitted. <i>If that happens, or if you are currently very unsure of your upcoming schedule, please email us with details at <a href="mailto:<%=@contact_email%>"><%=@contact_email%></a>.</i></p>
 
               <p>You must check at least one option.</p>
 
