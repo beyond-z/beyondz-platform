@@ -183,6 +183,8 @@ class EnrollmentsController < ApplicationController
     # as that's the fastest thing that can possibly work for MVP
     @enrollment = Enrollment.find(params[:id])
 
+    set_up_lists
+
     if @enrollment.user_id != current_user.id && !current_user.admin?
       redirect_to welcome_path
       return
