@@ -38,8 +38,6 @@ class Enrollment < ActiveRecord::Base
 
   validates :affirm_commit_coach, presence: true, if: "position == 'coach'"
 
-  validates :want_grow_professionally, presence: true, if: "position == 'coach'"
-
   validates :other_commitments, presence: true, if: "position == 'student'"
   validates :post_graduation_plans, presence: true, if: "position == 'student'"
   validates :why_bz, presence: true, if: "position == 'student'"
