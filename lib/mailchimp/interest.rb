@@ -44,6 +44,8 @@ module BeyondZ; module Mailchimp
             end
           end
         end
+        
+        reset_group_instance_variables
       end
       
       def interests_for user
@@ -118,7 +120,17 @@ module BeyondZ; module Mailchimp
       
       def semester_interest_for user
         return nil if user.program_semester.nil?
-        groups['Semester'][:options][user.program_semester]
+        
+        if semester_interest = groups['Semester'][:options][user.program_semester]
+          semester_interest
+        else
+          semester_id = groups['Semester'][:id]
+          
+          create_group_option(semester_id, user.program_semester)
+          reset_group_instance_variables
+          
+          groups['Semester'][:options][user.program_semester]
+        end
       end
       
       def interest_ids
@@ -209,6 +221,11 @@ module BeyondZ; module Mailchimp
         end
     
         Rails.logger.error("MAILCHIMP: #{message}")
+      end
+      
+      def reset_group_instance_variables
+        remove_instance_variable :@groups if defined?(@groups)
+        remove_instance_variable :@interests_by_id if defined?(@interests_by_id)
       end
       
       def log message
