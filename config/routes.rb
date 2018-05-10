@@ -31,12 +31,14 @@ BeyondzPlatform::Application.routes.draw do
   get '/connect_authenticated', to: 'champions#connect_authenticated', as: :champions_connect_authenticated
   get '/champions/openid_login_start', to: 'champions#openid_login_start'
   get '/champions/openid_login_complete', to: 'champions#openid_login_complete'
+  post '/champions/email_processor', to: 'champions#email_processor'
   get '/champions/terms', to: 'champions#terms', as: :champions_terms
   get '/champions/linkedin_authorize', to: 'champions#linkedin_authorize', as: :linkedin_authorize
   get '/champions/linkedin_oauth_success', to: 'champions#linkedin_oauth_success', as: :linkedin_oauth_success
   post '/champions/request_contact', to: 'champions#request_contact', as: :request_champion_contact
   get '/champions/search_stats', to: 'champions#search_stats', as: :search_stats
   get '/champions/contact/:id', to: 'champions#contact', as: :champions_contact
+  delete '/champions/contact/:id', to: 'champions#delete_contact', as: :delete_champion_contact
   get '/champions/fellow_survey/:id', to: 'champions#fellow_survey', as: :champion_fellow_survey
   get '/champions/champion_survey/:id', to: 'champions#champion_survey', as: :champion_champion_survey
   post '/champions/fellow_survey/:id', to: 'champions#fellow_survey_save'
