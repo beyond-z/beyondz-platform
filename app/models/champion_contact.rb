@@ -38,7 +38,7 @@ class ChampionContact < ActiveRecord::Base
     ChampionContact.where("
       ((fellow_survey_answered_at IS NULL OR champion_survey_answered_at IS NULL)
       AND (fellow_survey_email_sent != TRUE OR champion_survey_email_sent != TRUE))
-      AND created_at < ?",
+      AND first_email_from_fellow_sent < ?",
       1.week.ago.end_of_day).each do |cc|
       if cc.fellow_survey_answered_at.nil? && !cc.fellow_survey_email_sent
         # remind fellow

@@ -43,7 +43,10 @@
                       <%= link_to 'Cancel this connect request.', delete_champion_contact_path(ar.id), :method => 'delete' %>
                     </p>
                   <% else %>
-                    <p><a href="<%= champion_fellow_survey_path(ar.id) %>">Then, take this survey</a></p>
+                    <p>
+                      When you have finished talking to the champion,<br />
+                      <a href="<%= champion_fellow_survey_path(ar.id) %>">Take this survey</a>
+                    </p>
                   <% end %>
                 </td>
               </tr>

@@ -176,7 +176,8 @@ class ChampionsController < ApplicationController
       @search_attempted = true
       search_terms = params[:interests_csv].split(',').map(&:strip).reject(&:empty?)
       search_terms.each do |s|
-        record_stat_hit(s)
+        original_term = s
+        s = translate_champion_search_synonym(s)
         query = Champion.where("
           array_to_string(studies, ',') ILIKE ?
           OR
@@ -187,9 +188,12 @@ class ChampionsController < ApplicationController
         if Rails.application.secrets.smtp_override_recipient.blank?
           query = query.where("email NOT LIKE '%@bebraven.org'")
         end
+        found_any = false
         query.each do |c|
           @results << c
+          found_any = true
         end
+        record_stat_hit(original_term, found_any)
       end
     end
 
@@ -220,20 +224,36 @@ class ChampionsController < ApplicationController
   def terms
   end
 
-  def record_stat_hit(word)
+  def translate_champion_search_synonym(s)
+    s = s.downcase
+    s
+  end
+
+  def record_stat_hit(word, found_any)
     word = word.downcase
     res = ChampionStats.where(:search_term => word)
     s = nil
+    should_email = false
     if res.empty?
       s = ChampionStats.new
       s.search_term = word
       s.search_count = 0
+      should_email = true
     else
       s = res.first
     end
 
     s.search_count += 1
     s.save
+
+    if should_email && !found_any
+      # inform staff that there is a new search with no
+      # results so we can focus on getting more of them.
+      # only does this the first time to avoid annoying spamming;
+      # we can check the stats page later for more info.
+
+      StaffNotifications.champion_search_empty(current_user, word).deliver
+    end
   end
 
   # I don't mind this being public cuz it is harmless and maybe even
