@@ -136,6 +136,9 @@ BeyondzPlatform::Application.routes.draw do
     get '/champions/contacts.csv', to: 'champions#download_contacts', as: 'champion_surveys', defaults: { format: 'csv' }
     get '/champions/report', to: 'champions#report', as: 'champion_report'
 
+    get '/champions/search_stats', to: 'champions#search_stats', as: 'champions_search_stats'
+    get '/champions/synonyms', to: 'champions#synonyms', as: 'champions_synonyms'
+
     resources :enrollments
 
     resources :task_definitions

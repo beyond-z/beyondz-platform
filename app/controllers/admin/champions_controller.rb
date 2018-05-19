@@ -1,6 +1,12 @@
 require 'csv'
 
 class Admin::ChampionsController < Admin::ApplicationController
+  def search_synonyms
+  end
+
+  def search_stats
+  end
+
   def report
     @interests = {}
     Champion.all.each do |c|

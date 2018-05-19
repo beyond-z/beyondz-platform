@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180426031940) do
+ActiveRecord::Schema.define(version: 20180519180419) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -143,6 +143,15 @@ ActiveRecord::Schema.define(version: 20180426031940) do
     t.string   "job_title"
     t.string   "salesforce_id"
   end
+
+  create_table "champions_search_synonyms", force: true do |t|
+    t.string   "search_term"
+    t.string   "search_becomes"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "champions_search_synonyms", ["search_term"], name: "index_champions_search_synonyms_on_search_term", using: :btree
 
   create_table "coach_students", force: true do |t|
     t.integer  "coach_id"

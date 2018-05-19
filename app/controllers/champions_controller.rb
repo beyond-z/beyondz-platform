@@ -226,7 +226,9 @@ class ChampionsController < ApplicationController
 
   def translate_champion_search_synonym(s)
     s = s.downcase
-    s
+    res = ChampionsSearchSynonym.find_by_search_term(s)
+    return res.search_becomes unless res.nil?
+    s # return original if no translation found
   end
 
   def record_stat_hit(word, found_any)
