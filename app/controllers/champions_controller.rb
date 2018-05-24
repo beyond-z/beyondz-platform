@@ -177,7 +177,7 @@ class ChampionsController < ApplicationController
       search_terms = params[:interests_csv].split(',').map(&:strip).reject(&:empty?)
       search_terms.each do |s|
         original_term = s
-        s = translate_champion_search_synonym(s)
+        s = Champion.translate_champion_search_synonym(s)
         query = Champion.where("
           array_to_string(studies, ',') ILIKE ?
           OR
@@ -222,13 +222,6 @@ class ChampionsController < ApplicationController
   end
 
   def terms
-  end
-
-  def translate_champion_search_synonym(s)
-    s = s.downcase
-    res = ChampionsSearchSynonym.find_by_search_term(s)
-    return res.search_becomes unless res.nil?
-    s # return original if no translation found
   end
 
   def record_stat_hit(word, found_any)

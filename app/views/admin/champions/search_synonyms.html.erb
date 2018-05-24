@@ -1,0 +1,26 @@
+<%= form_tag admin_champions_save_search_synonyms_path do %>
+  <%= label_tag(:search_term, "When searching for...") %>
+  <br />
+  <%= text_field_tag(:search_term) %>
+  <br />
+  <%= label_tag(:search_becomes, "Champions interested in this should come up...") %>
+  <br />
+  <%= text_field_tag(:search_becomes) %>
+  <br />
+  <%= submit_tag %>
+<% end %>
+
+<h2>Current Synonyms</h2>
+
+<table class="sample-csv">
+  <tr>
+    <th>Term</th>
+    <th>Becomes</th>
+  </tr>
+<% ChampionsSearchSynonym.all.each do |css| %>
+  <tr>
+    <td><%= css.search_term %></td>
+    <td><%= css.search_becomes %></td>
+  </tr>
+<% end %>
+</table>
