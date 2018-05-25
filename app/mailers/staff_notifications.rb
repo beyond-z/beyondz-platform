@@ -73,6 +73,6 @@ class StaffNotifications < ActionMailer::Base
   def champion_search_empty(user, word)
     @user = user
     @word = word
-    mail(to: 'tess@bebraven.org', subject: 'Champion Search - No Results', from: 'Braven Website <' + Rails.application.secrets.mailer_from_email + '>')
+    mail(to: 'champions.monitor@bebraven.org', subject: 'Champion Search - No Results', from: 'Braven Website <' + Rails.application.secrets.mailer_from_email + '>')
   end
 end
