@@ -8,6 +8,81 @@ class ChampionsController < ApplicationController
 
   before_filter :set_up_lists
 
+  skip_before_filter :verify_authenticity_token, :only => [:email_processor]
+  http_basic_authenticate_with name: "cloudmail", password: Rails.application.secrets.cloudmailin_password, :only => :email_processor
+  def email_processor
+    # The goal in here: archive the email for future reference
+    # see if it is coming from the fellow or the champion
+    # if the fellow's first time, start the connection clock and record that they did reach out
+    # if the champion's first time, record that they did answer
+    #
+    # to tell who it is, the To address will include the interaction id, a directional indicator, and a security hash
+    # so like c123-ab3af56e@champions.bebraven.org means "to champion, interaction #123, hash ab3af56e"
+    #
+    # Once we process and archive, we need to forward to the actual recipient and add/fix the
+    # Reply-To header, the From header, and maybe the subject.
+    #
+    # From will say "Fellow's Name via Braven Champions <fxxx-dddd@champions.bebraven.org>"
+
+
+    to = params[:envelope][:to]
+
+    extracted = to.match(/([cf])([0-9]+)-([0-9a-zA-Z]+)@champions.bebraven.org/)
+
+    to_party = extracted[1] # c or f
+    interaction_id = extracted[2]
+    security_hash = extracted[3]
+
+    cc = ChampionContact.find(interaction_id)
+
+    if security_hash != cc.security_hash
+      render text: "Bad security code", status: 404
+      return
+    end
+
+    # log it
+    ccle = ChampionContactLoggedEmail.create(
+      :champion_contact_id => cc.id,
+      :to => to_party,
+      :from => params[:envelope][:from],
+      :subject => params[:headers][:Subject],
+      :plain => params[:plain],
+      :html => params[:html]
+    )
+
+    if params[:attachments]
+      params[:attachments].each do |k, attachment|
+        ChampionContactLoggedEmailAttachment.create(
+          :champion_contact_logged_email => ccle,
+          :file => attachment
+        )
+      end
+    end
+
+
+    if to_party == 'c'
+      # if it is to the champion, it is from the fellow
+      if cc.first_email_from_fellow_sent.nil?
+        cc.first_email_from_fellow_sent = DateTime.now
+      end
+      cc.latest_email_from_fellow_sent = DateTime.now
+      cc.save
+    else
+      if cc.first_email_from_champion_sent.nil?
+        cc.first_email_from_champion_sent = DateTime.now
+      end
+      cc.latest_email_from_champion_sent = DateTime.now
+      cc.save
+    end
+
+
+    # and forward it.
+    ChampionsForwarderMailer.forward_message(to_party, cc, params[:headers][:Subject], params[:plain], params[:html], params[:attachments]).deliver
+
+
+    render text: "OK"
+  end
+
   def index
   end
 
@@ -97,33 +172,28 @@ class ChampionsController < ApplicationController
       @search_attempted = true
     end
 
-    if params[:studies_csv]
+    if params[:interests_csv]
       @search_attempted = true
-      studies = params[:studies_csv].split(',').map(&:strip).reject(&:empty?)
-      studies.each do |s|
-        record_stat_hit(s)
-        query = Champion.where("array_to_string(studies, ',') ILIKE ?","%#{s}%").where("willing_to_be_contacted = true")
+      search_terms = params[:interests_csv].split(',').map(&:strip).reject(&:empty?)
+      search_terms.each do |s|
+        original_term = s
+        s = Champion.translate_champion_search_synonym(s)
+        query = Champion.where("
+          array_to_string(studies, ',') ILIKE ?
+          OR
+          array_to_string(industries, ',') ILIKE ?",
+          "%#{s}%", # for studies
+          "%#{s}%"  # for industries
+        ).where("willing_to_be_contacted = true")
         if Rails.application.secrets.smtp_override_recipient.blank?
           query = query.where("email NOT LIKE '%@bebraven.org'")
         end
+        found_any = false
         query.each do |c|
           @results << c
+          found_any = true
         end
-      end
-    end
-
-    if params[:industries_csv]
-      @search_attempted = true
-      industries = params[:industries_csv].split(',').map(&:strip).reject(&:empty?)
-      industries.each do |s|
-        record_stat_hit(s)
-        query = Champion.where("array_to_string(industries, ',') ILIKE ?","%#{s}%").where("willing_to_be_contacted = true")
-        if Rails.application.secrets.smtp_override_recipient.blank?
-          query = query.where("email NOT LIKE '%@bebraven.org'")
-        end
-        query.each do |c|
-          @results << c
-        end
+        record_stat_hit(original_term, found_any)
       end
     end
 
@@ -154,20 +224,31 @@ class ChampionsController < ApplicationController
   def terms
   end
 
-  def record_stat_hit(word)
+  def record_stat_hit(word, found_any)
     word = word.downcase
     res = ChampionStats.where(:search_term => word)
     s = nil
+    should_email = false
     if res.empty?
       s = ChampionStats.new
       s.search_term = word
       s.search_count = 0
+      should_email = true
     else
       s = res.first
     end
 
     s.search_count += 1
     s.save
+
+    if should_email && !found_any
+      # inform staff that there is a new search with no
+      # results so we can focus on getting more of them.
+      # only does this the first time to avoid annoying spamming;
+      # we can check the stats page later for more info.
+
+      StaffNotifications.champion_search_empty(current_user, word).deliver
+    end
   end
 
   # I don't mind this being public cuz it is harmless and maybe even
@@ -183,12 +264,23 @@ class ChampionsController < ApplicationController
 
     @recipient = Champion.find(cc.champion_id)
     @hit = @recipient.industries.any? ? @recipient.industries.first : @recipient.studies.fist
+    @cc = cc
 
     if params[:others]
       @others = params[:others]
     else
       @others = []
     end
+  end
+
+  def delete_contact
+    cc = ChampionContact.find(params[:id])
+    raise "wrong user" if cc.user_id != current_user.id
+
+    cc.destroy
+
+    redirect_to champions_connect_path
+
   end
 
   def request_contact

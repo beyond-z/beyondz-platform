@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180419011421) do
+ActiveRecord::Schema.define(version: 20180519180419) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,6 +61,31 @@ ActiveRecord::Schema.define(version: 20180419011421) do
     t.string   "calendar_url"
   end
 
+  create_table "champion_contact_logged_email_attachments", force: true do |t|
+    t.integer  "champion_contact_logged_email_id"
+    t.string   "file_file_name"
+    t.string   "file_content_type"
+    t.integer  "file_file_size"
+    t.datetime "file_updated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "champion_contact_logged_email_attachments", ["champion_contact_logged_email_id"], name: "index_cc_le", using: :btree
+
+  create_table "champion_contact_logged_emails", force: true do |t|
+    t.integer  "champion_contact_id"
+    t.string   "to"
+    t.string   "from"
+    t.string   "subject"
+    t.text     "plain"
+    t.text     "html"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "champion_contact_logged_emails", ["champion_contact_id"], name: "index_champion_contact_logged_emails_on_champion_contact_id", using: :btree
+
   create_table "champion_contacts", force: true do |t|
     t.integer  "user_id"
     t.integer  "champion_id"
@@ -87,6 +112,10 @@ ActiveRecord::Schema.define(version: 20180419011421) do
     t.boolean  "champion_survey_email_sent",         default: false
     t.boolean  "fellow_survey_email_sent",           default: false
     t.string   "nonce"
+    t.datetime "first_email_from_fellow_sent"
+    t.datetime "latest_email_from_fellow_sent"
+    t.datetime "first_email_from_champion_sent"
+    t.datetime "latest_email_from_champion_sent"
   end
 
   create_table "champion_stats", force: true do |t|
@@ -115,6 +144,15 @@ ActiveRecord::Schema.define(version: 20180419011421) do
     t.string   "job_title"
     t.string   "salesforce_id"
   end
+
+  create_table "champions_search_synonyms", force: true do |t|
+    t.string   "search_term"
+    t.string   "search_becomes"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "champions_search_synonyms", ["search_term"], name: "index_champions_search_synonyms_on_search_term", using: :btree
 
   create_table "coach_students", force: true do |t|
     t.integer  "coach_id"

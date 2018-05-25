@@ -1,0 +1,40 @@
+<% params[:order] = 'time' if params[:order].nil? %>
+<table class="sample-csv">
+<caption>
+  <%= case params[:order]
+    when 'hits'
+      'Frequent Champion Searches'
+    when 'time'
+      'Recent Champion Searches'
+    else
+      'Champion Searches'
+    end
+  %>
+</caption>
+<tr>
+  <th><%= link_to 'Term', admin_champions_search_stats_path(:order => 'term') %></th>
+  <th><%= link_to 'Hits', admin_champions_search_stats_path(:order => 'hits') %></th>
+  <th><%= link_to 'Last Searched', admin_champions_search_stats_path(:order => 'time') %></th>
+</tr>
+<%
+  collection = ChampionStats.all.order(:updated_at).reverse
+  collection = case params[:order]
+    when 'hits'
+      ChampionStats.all.order(:search_count).reverse
+    when 'time'
+      ChampionStats.all.order(:updated_at).reverse
+    else
+      ChampionStats.all.order(:search_term)
+  end
+
+  collection.each do |s|
+%>
+  <tr>
+    <td><%= s.search_term %></td>
+    <td><%= s.search_count %></td>
+    <td><%= s.updated_at %></td>
+  </tr>
+<%
+  end
+%>
+</table>
