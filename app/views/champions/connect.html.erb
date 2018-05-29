@@ -36,13 +36,16 @@
                   </ul>
                 </td>
                 <td class="next-steps">
-                  <% if ar.first_email_from_fellow_sent.nil? %>
+                  <% if ar.should_fellow_email? %>
                     <p><a href="<%= champions_contact_path(ar.id) %>">Email Them!</a></p>
+                  <% end %>
+                  <% if ar.can_fellow_cancel? %>
                     <p>
                       Changed your mind?<br />
                       <%= link_to 'Cancel this connect request.', delete_champion_contact_path(ar.id), :method => 'delete' %>
                     </p>
-                  <% else %>
+                  <% end %>
+                  <% if ar.should_fellow_take_survey? %>
                     <p>
                       When you have finished talking to the champion,<br />
                       <a href="<%= champion_fellow_survey_path(ar.id) %>">Take this survey</a>

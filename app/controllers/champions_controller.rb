@@ -11,6 +11,10 @@ class ChampionsController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => [:email_processor]
   http_basic_authenticate_with name: "cloudmail", password: Rails.application.secrets.cloudmailin_password, :only => :email_processor
   def email_processor
+
+    # only enable if the password is set
+    return if Rails.application.secrets.cloudmailin_password.blank?
+
     # The goal in here: archive the email for future reference
     # see if it is coming from the fellow or the champion
     # if the fellow's first time, start the connection clock and record that they did reach out
@@ -276,6 +280,7 @@ class ChampionsController < ApplicationController
   def delete_contact
     cc = ChampionContact.find(params[:id])
     raise "wrong user" if cc.user_id != current_user.id
+    raise "can't delete" if !cc.can_fellow_cancel?
 
     cc.destroy
 
