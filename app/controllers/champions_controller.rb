@@ -240,7 +240,8 @@ class ChampionsController < ApplicationController
 
     s = s.downcase
     ChampionsSearchSynonym.where(:search_term => s).each do |css|
-      found_any ||= do_search_for_term(css.search_becomes)
+      found_more = do_search_for_term(css.search_becomes)
+      found_any = found_any || found_more
     end
 
     found_any
