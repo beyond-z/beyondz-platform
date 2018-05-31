@@ -16,6 +16,11 @@ class Admin::ChampionsController < Admin::ApplicationController
     redirect_to admin_champions_search_synonyms_path
   end
 
+  def delete_search_synonym
+    ChampionsSearchSynonym.find(params[:id]).destroy
+    redirect_to admin_champions_search_synonyms_path
+  end
+
   def search_stats
   end
 
@@ -62,12 +67,22 @@ class Admin::ChampionsController < Admin::ApplicationController
       ChampionContact.all.each do |cc|
         exportable = []
 
-        champ = Champion.find(cc.champion_id)
-        user = User.find(cc.user_id)
-        exportable << champ.name
-        exportable << champ.email
-        exportable << user.name
-        exportable << user.email
+        begin
+          champ = Champion.find(cc.champion_id)
+          exportable << champ.name
+          exportable << champ.email
+        rescue ActiveRecord::RecordNotFound
+          exportable << cc.champion_id
+          exportable << "<deleted>"
+        end
+        begin
+          user = User.find(cc.user_id)
+          exportable << user.name
+          exportable << user.email
+        rescue ActiveRecord::RecordNotFound
+          exportable << cc.user_id
+          exportable << "<deleted>"
+        end
 
         cc.attributes.values_at(*ChampionContact.column_names).each do |v|
           exportable << v
