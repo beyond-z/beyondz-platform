@@ -171,6 +171,8 @@ class ChampionsController < ApplicationController
     @results = []
     @search_attempted = false
 
+    @searched_for = {}
+
     if params[:view_all]
       @results = Champion.all
       @search_attempted = true
@@ -180,24 +182,8 @@ class ChampionsController < ApplicationController
       @search_attempted = true
       search_terms = params[:interests_csv].split(',').map(&:strip).reject(&:empty?)
       search_terms.each do |s|
-        original_term = s
-        s = Champion.translate_champion_search_synonym(s)
-        query = Champion.where("
-          array_to_string(studies, ',') ILIKE ?
-          OR
-          array_to_string(industries, ',') ILIKE ?",
-          "%#{s}%", # for studies
-          "%#{s}%"  # for industries
-        ).where("willing_to_be_contacted = true")
-        if Rails.application.secrets.smtp_override_recipient.blank?
-          query = query.where("email NOT LIKE '%@bebraven.org'")
-        end
-        found_any = false
-        query.each do |c|
-          @results << c
-          found_any = true
-        end
-        record_stat_hit(original_term, found_any)
+        found_any = do_search_for_term(s)
+        record_stat_hit(s, found_any)
       end
     end
 
@@ -223,6 +209,41 @@ class ChampionsController < ApplicationController
     end
 
     @results = results_filtered
+  end
+
+  def do_search_for_term(s)
+    # guard against infinite recursion in case of circular synonyms
+    return unless @searched_for[s].nil?
+    @searched_for[s] = true
+
+    # and then search it
+    original_term = s
+    query = Champion.where("
+      array_to_string(studies, ',') ILIKE ?
+      OR
+      array_to_string(industries, ',') ILIKE ?",
+      "%#{s}%", # for studies
+      "%#{s}%"  # for industries
+    ).where("willing_to_be_contacted = true")
+    if Rails.application.secrets.smtp_override_recipient.blank?
+      query = query.where("email NOT LIKE '%@bebraven.org'")
+    end
+    found_any = false
+    query.each do |c|
+      @results << c
+      found_any = true
+    end
+
+    # also add synonymous searches to the results
+    # with a tail recursive call so it handles any synonym
+    # chain too
+
+    s = s.downcase
+    ChampionsSearchSynonym.where(:search_term => s).each do |css|
+      found_any ||= do_search_for_term(css.search_becomes)
+    end
+
+    found_any
   end
 
   def terms
