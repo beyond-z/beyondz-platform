@@ -10,14 +10,51 @@
             Welcome to the Braven Champions Database! Search for friends of Braven who work in your desired career field. You will be prompted to reach out to these professionals to request an informational interview.
           </p>
 
+          <p>
+            Please remember that Braven Champions are located all over the country and will not necessarily be able to meet you in person. Most informational interviews will be done over the phone or online.
+          </p>
+
           <% if @active_requests.any? %>
             <h3>You have the following active contacts:</h3>
-            <ol>
-            <% @active_requests.each do |ar| %>
-            <% champion = Champion.find(ar.champion_id) %>
-              <li><a href="<%= champion_fellow_survey_path(ar.id) %>"><%= champion.name %></a></li>
-            <% end %>
-            </ol>
+            <table>
+              <tr>
+                <th>Champion</th>
+                <th>Areas of Interest</th>
+                <th>Next Steps</th>
+              </tr>
+              <% @active_requests.each do |ar| %>
+              <% champion = Champion.find(ar.champion_id) %>
+              <tr>
+                <td>
+                  <%= champion.name %>
+                </td>
+                <td>
+                  <ul>
+                  <% [champion.studies, champion.industries].flatten.sort.uniq.each do |i| %>
+                    <li><%= i %></li>
+                  <% end %>
+                  </ul>
+                </td>
+                <td class="next-steps">
+                  <% if ar.should_fellow_email? %>
+                    <p><a href="<%= champions_contact_path(ar.id) %>">Email Them!</a></p>
+                  <% end %>
+                  <% if ar.can_fellow_cancel? %>
+                    <p>
+                      Changed your mind?<br />
+                      <%= link_to 'Cancel this connect request.', delete_champion_contact_path(ar.id), :method => 'delete' %>
+                    </p>
+                  <% end %>
+                  <% if ar.should_fellow_take_survey? %>
+                    <p>
+                      When you have finished talking to the champion,<br />
+                      <a href="<%= champion_fellow_survey_path(ar.id) %>">Take this survey</a>
+                    </p>
+                  <% end %>
+                </td>
+              </tr>
+              <% end %>
+            </table>
           <% end %>
 
           <% if @max_allowed == 0 %>
@@ -34,24 +71,12 @@
 
           <form onsubmit="return checkTerms();">
             <div>
-              Industry / Profession:
-                <input name="industries_csv" class="multi-complete" type="text" />
-                <script type="text/json"><%= @industries.to_json.html_safe %></script>
+              Your interests:
+                <input name="interests_csv" class="multi-complete" type="text" />
+                <script type="text/json"><%= [@fields, @industries].flatten.sort.uniq.to_json.html_safe %></script>
               <input value="Search" type="submit" />
             </div>
           </form>
-
-          OR
-
-          <form onsubmit="return checkTerms();">
-            <div>
-              Major / Field of Study:
-                <input name="studies_csv" class="multi-complete" type="text" />
-                <script type="text/json"><%= @fields.to_json.html_safe %></script>
-              <input value="Search" type="submit" />
-            </div>
-          </form>
-
           <% end %>
         </div>
         <div class="col-sm-12">
@@ -103,8 +128,7 @@
                 <th>Name</th>
                 <th>Company</th>
                 <th>Title</th>
-                <th>Industries</th>
-                <th>Fields</th>
+                <th>Areas of Interest</th>
               </tr>
             <% @results.each do |champ| %>
               <%
@@ -142,15 +166,8 @@
                 </td>
                 <td>
                   <ul>
-                  <% champ.industries.each do |i| %>
+                  <% [champ.studies, champ.industries].flatten.sort.uniq.each do |i| %>
                     <li><%= i %></li>
-                  <% end %>
-                  </ul>
-                </td>
-                <td>
-                  <ul>
-                  <% champ.studies.each do |s| %>
-                    <li><%= s %></li>
                   <% end %>
                   </ul>
                 </td>

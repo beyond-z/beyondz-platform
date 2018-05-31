@@ -19,7 +19,7 @@
 
           <div style="padding: 2em; border: solid 2px #ccc;">
 
-          To: <strong><%= @recipient.name %> &lt;<%= @recipient.email %>&gt;</strong>
+          To: <strong><%= @recipient.name %> &lt;<a href="mailto:<%=@cc.champion_email%>"><%= @cc.champion_email %></a>&gt;</strong>
           <br />
           Subject: Would love to connect!
           <br /><br />
