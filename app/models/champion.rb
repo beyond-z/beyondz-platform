@@ -10,23 +10,6 @@ class Champion < ActiveRecord::Base
   validates :studies, presence: true
   validates :linkedin_url, presence: true
 
-  before_save :fixup_search_synonyms
-
-  # by normalizing the synonyms in the data as well as the
-  # search side, it keeps the lists down to something more sane.
-  def fixup_search_synonyms
-    self.studies = self.studies.map(&:translate_champion_search_synonym)
-    self.industries = self.industries.map(&:translate_champion_search_synonym)
-    true
-  end
-
-  def self.translate_champion_search_synonym(s)
-    s = s.downcase
-    res = ChampionsSearchSynonym.find_by_search_term(s)
-    return res.search_becomes unless res.nil?
-    s # return original if no translation found
-  end
-  
   def salesforce_campaign_id
     return @salesforce_campaign_id if defined?(@salesforce_campaign_id)
     

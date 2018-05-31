@@ -133,12 +133,13 @@ BeyondzPlatform::Application.routes.draw do
     resources :users
 
     # resources :champions
-    get '/champions/contacts.csv', to: 'champions#download_contacts', as: 'champion_surveys', defaults: { format: 'csv' }
+    get '/champions/contacts', to: 'champions#download_contacts', as: 'champion_surveys', defaults: { format: 'csv' }
     get '/champions/report', to: 'champions#report', as: 'champion_report'
 
     get '/champions/search_stats', to: 'champions#search_stats', as: 'champions_search_stats'
     get '/champions/synonyms', to: 'champions#search_synonyms', as: 'champions_search_synonyms'
     post '/champions/synonyms', to: 'champions#save_search_synonyms', as: 'champions_save_search_synonyms'
+    delete '/champions/synonyms/:id', to: 'champions#delete_search_synonym', as: 'delete_synonym'
 
     resources :enrollments
 
