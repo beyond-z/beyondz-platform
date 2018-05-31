@@ -11,27 +11,7 @@ class Admin::ChampionsController < Admin::ApplicationController
       :search_becomes => params[:search_becomes].downcase
     )
 
-    # make sure there is only one key for each search term
-    # FIXME
-
     s = params[:search_term]
-
-    # if this creates a chain to another synonym, update them all.
-    # FIXME
-
-    # and then update any existing champions with this data
-    query = Champion.where("
-      array_to_string(studies, ',') ILIKE ?
-      OR
-      array_to_string(industries, ',') ILIKE ?",
-      "%#{s}%", # for studies
-      "%#{s}%"  # for industries
-    )
-
-    query.each do |c|
-      c.fixup_search_synonyms
-      c.save
-    end
 
     redirect_to admin_champions_search_synonyms_path
   end
