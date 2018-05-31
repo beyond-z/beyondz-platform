@@ -16,6 +16,11 @@ class Admin::ChampionsController < Admin::ApplicationController
     redirect_to admin_champions_search_synonyms_path
   end
 
+  def delete_search_synonym
+    ChampionsSearchSynonym.find(params[:id]).destroy
+    redirect_to admin_champions_search_synonyms_path
+  end
+
   def search_stats
   end
 

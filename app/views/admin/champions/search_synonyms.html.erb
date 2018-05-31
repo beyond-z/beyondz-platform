@@ -16,11 +16,13 @@
   <tr>
     <th>Term</th>
     <th>Becomes</th>
+    <th>Delete?</th>
   </tr>
 <% ChampionsSearchSynonym.all.each do |css| %>
   <tr>
     <td><%= css.search_term %></td>
     <td><%= css.search_becomes %></td>
+    <td><%= link_to "Delete", admin_delete_synonym_path(css), :method => "DELETE" %>
   </tr>
 <% end %>
 </table>
