@@ -11,28 +11,13 @@ class Admin::ChampionsController < Admin::ApplicationController
       :search_becomes => params[:search_becomes].downcase
     )
 
-    # make sure there is only one key for each search term
-    # FIXME
-
     s = params[:search_term]
 
-    # if this creates a chain to another synonym, update them all.
-    # FIXME
+    redirect_to admin_champions_search_synonyms_path
+  end
 
-    # and then update any existing champions with this data
-    query = Champion.where("
-      array_to_string(studies, ',') ILIKE ?
-      OR
-      array_to_string(industries, ',') ILIKE ?",
-      "%#{s}%", # for studies
-      "%#{s}%"  # for industries
-    )
-
-    query.each do |c|
-      c.fixup_search_synonyms
-      c.save
-    end
-
+  def delete_search_synonym
+    ChampionsSearchSynonym.find(params[:id]).destroy
     redirect_to admin_champions_search_synonyms_path
   end
 
@@ -82,12 +67,22 @@ class Admin::ChampionsController < Admin::ApplicationController
       ChampionContact.all.each do |cc|
         exportable = []
 
-        champ = Champion.find(cc.champion_id)
-        user = User.find(cc.user_id)
-        exportable << champ.name
-        exportable << champ.email
-        exportable << user.name
-        exportable << user.email
+        begin
+          champ = Champion.find(cc.champion_id)
+          exportable << champ.name
+          exportable << champ.email
+        rescue ActiveRecord::RecordNotFound
+          exportable << cc.champion_id
+          exportable << "<deleted>"
+        end
+        begin
+          user = User.find(cc.user_id)
+          exportable << user.name
+          exportable << user.email
+        rescue ActiveRecord::RecordNotFound
+          exportable << cc.user_id
+          exportable << "<deleted>"
+        end
 
         cc.attributes.values_at(*ChampionContact.column_names).each do |v|
           exportable << v

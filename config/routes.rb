@@ -139,6 +139,7 @@ BeyondzPlatform::Application.routes.draw do
     get '/champions/search_stats', to: 'champions#search_stats', as: 'champions_search_stats'
     get '/champions/synonyms', to: 'champions#search_synonyms', as: 'champions_search_synonyms'
     post '/champions/synonyms', to: 'champions#save_search_synonyms', as: 'champions_save_search_synonyms'
+    delete '/champions/synonyms/:id', to: 'champions#delete_search_synonym', as: 'delete_synonym'
 
     resources :enrollments
 
