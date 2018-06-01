@@ -1,0 +1,14 @@
+Hello, <%= @user.name %>
+
+We are sorry you didn't hear back from <%= @champion.name %>.
+
+<% if @cc.fellow_survey_answered_at.nil? %>
+Please complete the survey to tell us a little more about your
+attempted interaction, then try to connect with another Braven
+Champion now!
+<% else %>
+Please try to connect with another Braven Champion now!
+<% end %>
+
+Thank you
+ - Braven

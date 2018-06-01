@@ -75,4 +75,11 @@ class StaffNotifications < ActionMailer::Base
     @word = word
     mail(to: 'champions.monitor@bebraven.org', subject: 'Champion Search - No Results', from: 'Braven Website <' + Rails.application.secrets.mailer_from_email + '>')
   end
+
+  def champion_unresponsive_notification(champion, cc)
+    @champion = champion
+    @cc = cc
+
+    mail(to: 'champions.monitor@bebraven.org', subject: 'Champion Unresponsive', from: 'Braven Website <' + Rails.application.secrets.mailer_from_email + '>')
+  end
 end

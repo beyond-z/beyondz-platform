@@ -26,4 +26,23 @@ class Reminders < ActionMailer::Base
     @cc = cc
     mail(to: champion.email, subject: "Please tell us about your Braven Champion experience")
   end
+
+  def champion_unresponsive_notification(champion, cc)
+    @champion = champion
+    @cc = cc
+    mail(to: champion.email, subject: "A Braven Fellow said they couldn't reach you")
+  end
+
+  def fellow_can_try_new_champion(user, champion, cc)
+    @user = user
+    @champion = champion
+    @cc = cc
+
+    mail(to: user.email, subject: "You can try a new Braven Champion")
+  end
+
+  def champion_flood_achieved(champion)
+    @champion = champion
+    mail(to: champion.email, subject: "You will not hear from any more Braven Fellows for a while")
+  end
 end

@@ -78,6 +78,67 @@ class ChampionContact < ActiveRecord::Base
   end
 
   def self.send_reminders
+    self.send_survey_reminders
+    self.send_champion_flood_notice
+    self.remove_unresponsive_champions
+  end
+
+  def self.send_champion_flood_notice
+    #:flood_notice_last_emailed, :datetime
+
+    ChampionContact.select("champion_id, count(champion_id) as sum").where("created_at > ?", 3.months.ago).group("champion_id").having("count(champion_id) >= 3").each do |answer|
+      champion = Champion.find(answer.champion_id)
+      if champion.flood_notice_last_emailed.nil? || champion.flood_notice_last_emailed < 3.months.ago
+        Reminders.champion_flood_achieved(champion).deliver
+        champion.flood_notice_last_emailed = DateTime.now
+        champion.save
+      end
+    end
+  end
+
+  def self.remove_unresponsive_champions
+    if Rails.application.secrets.cloudmailin_password.blank?
+      # without email tracking, we need to rely on fellow surveys
+      # if the fellow says they didn't get an answer, and the champion
+      # also hasn't answered our request for a survey, we will remove them.
+      items = ChampionContact.where("
+        fellow_get_to_talk_to_champion = FALSE
+        AND fellow_survey_answered_at IS NOT NULL
+        AND champion_survey_answered_at IS NULL
+        AND created_at < ?",
+        2.weeks.ago.end_of_day) # give them 2 weeks since at one week, we send the reminder and they should have a chance to answer it first
+    else
+      # but with email tracking, we will just see if they ever answered
+      items = ChampionContact.where("
+        first_email_from_fellow_sent < ?
+        AND first_email_from_champion_sent IS NULL",
+        2.weeks.ago.end_of_day) # give them 2 weeks since at one week, we send the reminder and they should have a chance to answer it first
+    end
+
+    items.each do |cc|
+      # notify the champion they are removed from the list
+      # and also tell staff about it
+      champion = Champion.find(cc.champion_id)
+      if champion.unresponsive_indicated_at.nil?
+        champion.unresponsive_indicated_at = DateTime.now
+        champion.willing_to_be_contacted = false
+        champion.save
+
+        Reminders.champion_unresponsive_notification(champion, cc).deliver
+        StaffNotifications.champion_unresponsive_notification(champion, cc).deliver
+      end
+
+      # and also go ahead and tell the fellow to try someone else.
+      if !cc.fellow_outreach_notice_sent
+        cc.fellow_outreach_notice_sent = true
+        cc.save
+
+        Reminders.fellow_can_try_new_champion(User.find(cc.user_id), champion, cc).deliver
+      end
+    end
+  end
+
+  def self.send_survey_reminders
     # if a week has passed and the fellow hasn't answered the survey yet, we email them asking them to fill it out
     # similarly, if a week has passed after the contact request and the champion hasn't answered, we ask them too
     if Rails.application.secrets.cloudmailin_password.blank?
