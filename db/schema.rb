@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(version: 20180531165853) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pg_stat_statements"
 
   create_table "assignment_definitions", force: true do |t|
     t.string   "title"
@@ -317,7 +318,6 @@ ActiveRecord::Schema.define(version: 20180531165853) do
     t.string   "student_course"
     t.string   "student_confirmed"
     t.text     "student_confirmed_notes"
-    t.text     "what_to_land_strong_first_job"
     t.string   "address1"
     t.string   "address2"
     t.string   "zip"
