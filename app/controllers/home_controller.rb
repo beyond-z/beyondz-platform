@@ -42,7 +42,7 @@ class HomeController < ApplicationController
     obj['path'] = welcome_path
 
     # Note: temp_volunteer and volunteer are old obsolete values. Keeping them there just in case.
-    if current_user.applicant_type == 'leadership_coach' || current_user.applicant_type == 'undergrad_student' || current_user.applicant_type == 'event_volunteer' || current_user.applicant_type == 'volunteer' || current_user.applicant_type == 'temp_volunteer'
+    if current_user.applicant_type == 'leadership_coach' || current_user.applicant_type == 'undergrad_student' || current_user.applicant_type == 'event_volunteer' || current_user.applicant_type == 'volunteer' || current_user.applicant_type == 'temp_volunteer' || current_user.applicant_type == 'preaccelerator_student'
       obj['ready'] = current_user.apply_now_enabled
     else
       obj['ready'] = true
@@ -92,6 +92,8 @@ class HomeController < ApplicationController
             'Fellow'
           when 'Leadership Coaches'
             'Coaching'
+          when 'Pre-Accelerator Participants'
+            'Pre-Accelerator Participant'
           else
             'Volunteer'
           end

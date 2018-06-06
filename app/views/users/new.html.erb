@@ -42,6 +42,19 @@
                   <% if !@hide_other_applicant_types %>
                     <label class="required">I am...</label>
                   <% end %>
+
+                  <% if !@hide_other_applicant_types || @user.applicant_type == 'preaccelerator_student' %>
+                  <div class="clickable-option">
+                    <% if @hide_other_applicant_types %>
+                      <%= f.radio_button :applicant_type, 'preaccelerator_student', required: 'required', style: 'visibility: hidden;' %>
+                    <% else %>
+                      <%= f.radio_button :applicant_type, 'preaccelerator_student', required: 'required' %>
+                      <%= f.label :applicant_type_preaccelerator_student, 'A hopeful pre-accelerator particpant' %>
+                    <% end %>
+                    <%= render :partial => 'student', :locals => { :f => f} %>
+                  </div>
+                  <% end %>
+
                   <% if !@hide_other_applicant_types || @user.applicant_type == 'undergrad_student' %>
                   <div class="clickable-option">
                     <% if @hide_other_applicant_types %>
@@ -53,6 +66,7 @@
                     <%= render :partial => 'student', :locals => { :f => f} %>
                   </div>
                   <% end %>
+
                   <% if !@hide_other_applicant_types || @user.applicant_type == 'leadership_coach' %>
                   <div class="clickable-option">
                     <% if @hide_other_applicant_types %>
@@ -127,7 +141,7 @@
                   <button type="submit" class="button-primary">
                     <!-- We check the model campaign id to see if they will be auto-mapped based on query params. If so, next
                          step is start application, so it says that. Otherwise, generic "submit" is used. -->
-                    <% if(@user.applicant_type == 'leadership_coach' || @user.applicant_type == 'undergrad_student') %>
+                    <% if(@user.applicant_type == 'leadership_coach' || @user.applicant_type == 'undergrad_student' || @user.applicant_type == 'preaccelerator_student') %>
                       Next: Start Application
                     <% else %>
                       Submit

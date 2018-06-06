@@ -81,6 +81,8 @@ module BeyondZ; module Mailchimp
           case user.applicant_type
           when 'grad_student', 'undergrad_student'
             'Fellow'
+          when 'preaccelerator_student'
+            'Pre-Accelerator Participant'
           when 'leadership_coach'
             'Leadership Coach'
           when 'event_volunteer'
