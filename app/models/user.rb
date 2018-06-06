@@ -437,6 +437,8 @@ class User < ActiveRecord::Base
     case applicant_type
     when 'undergrad_student'
       'Undergrad'
+    when 'preaccelerator_student'
+      'Undergrad'
     when 'leadership_coach'
       'Leadership Coach'
     when 'volunteer' # Old value here for backwards compatibility
@@ -527,11 +529,11 @@ class User < ActiveRecord::Base
 
   def graduation_required?
     applicant_type == 'grad_student' || applicant_type == 'undergrad_student' ||
-      applicant_type == 'school_student'
+      applicant_type == 'school_student' || applicant_type == 'preaccelerator_student'
   end
 
   def university_name_required?
-    applicant_type == 'grad_student' || applicant_type == 'undergrad_student'
+    applicant_type == 'grad_student' || applicant_type == 'undergrad_student' || applicant_type == 'preaccelerator_student'
   end
 
   after_create :create_child_skeleton_rows

@@ -315,7 +315,7 @@ class UsersController < ApplicationController
     if contact
       case campaign.Application_Type__c
       when 'student'
-        contact.Participant_Information__c = 'Participant'
+        contact.Participant_Information__c = campaign.Type == 'Pre-Accelerator Participants' ? 'Pre-Accelerator Participant' : 'Participant'
       when 'coach'
         contact.Volunteer_Information__c = 'Current LC'
       end
@@ -328,7 +328,11 @@ class UsersController < ApplicationController
     unless waitlisted
       case campaign.Application_Type__c
       when 'student'
-        ConfirmationFlow.student_confirmed(current_user, program_title, program_site, chosen_time).deliver
+        if campaign.Type == 'Pre-Accelerator Participants'
+          ConfirmationFlow.preaccelerator_student_confirmed(current_user, program_title, program_site, chosen_time).deliver
+        else
+          ConfirmationFlow.student_confirmed(current_user, program_title, program_site, chosen_time).deliver
+        end
       when 'coach'
         ConfirmationFlow.coach_confirmed(current_user, program_title, program_site, chosen_time).deliver
       end
@@ -450,7 +454,7 @@ class UsersController < ApplicationController
       user[:applicant_type] = 'event_volunteer' if user[:applicant_type] == 'temp_volunteer'
       @new_user = User.new(user)
       
-      unless user[:applicant_type] == 'undergrad_student' || user[:applicant_type] == 'leadership_coach' || user[:applicant_type] == 'event_volunteer'
+      unless user[:applicant_type] == 'undergrad_student' || user[:applicant_type] == 'leadership_coach' || user[:applicant_type] == 'event_volunteer' || user[:applicant_type] == 'preaccelerator_student'
         # Partners, employers, and others are reached out to manually instead of confirming
         # their account. We immediate make on salesforce and don't require confirmation so
         # we can contact them quickly and painlessly (to them!).
