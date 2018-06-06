@@ -13,6 +13,8 @@ First name: <%= @user.first_name %>
       %> Leadership Coach: <%= @user.city%>, <%= @user.state %>, working at <%= @user.company %> as a <%= @user.profession %><%
     when 'undergrad_student'
       %> Undergrad student: <%= @user.university_name %>, anticipated graduation in <%= @user.anticipated_graduation %><%
+    when 'preaccelerator_student'
+      %> Preaccelerator student: <%= @user.university_name %>, anticipated graduation in <%= @user.anticipated_graduation %><%
     when 'event_volunteer'
       %> Event volunteer: <%= @user.applicant_details %><%
     when 'school_student'
