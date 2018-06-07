@@ -26,7 +26,18 @@
             To apply to participate in <%= @program_title %> - <%= @program_site %>, please complete and submit this application in its entirety.
           </p>
           <p class="help student">
-          This selective opportunity requires your participation in diverse activities intended to build your leadership and career skills. Mandatory activities include: <ul class="help student"><li>Once a week 2-hour group meetings in the evening (in-person)</li><li>Weekly online modules, approximately 2 hours each (on your own)</li><li>Occasional weekend events (for exact date(s), please <a href="https://bebraven.org/">see our website</a>)</li></ul>
+          This selective opportunity requires your participation
+          
+            <% if @is_preaccelerator_student %>
+              as a first-year student in diverse activities intended to build your leadership and career skills. Mandatory activities include:
+                <ul class="help student">
+                  <li>Available for 5 weeks during the semester you're applying for after the add/drop period</li>
+                  <li>Meet once a week for 2 hour group meetings during free-period (in person)</li>
+                  <li>Commitment to creating a freshman-year roadmap and resume</li>
+                </ul>
+            <% else %>
+              in diverse activities intended to build your leadership and career skills. Mandatory activities include: <ul class="help student"><li>Once a week 2-hour group meetings in the evening (in-person)</li><li>Weekly online modules, approximately 2 hours each (on your own)</li><li>Occasional weekend events (for exact date(s), please <a href="https://bebraven.org/">see our website</a>)</li></ul>
+            <% end %>
           </p>
 
           <p class="help">The <span class="coach student">application</span><span class="volunteer">registration</span> should take approximately <span class="coach student">30</span><span class="volunteer">10</span> minutes to complete and includes the following sections:</p>
@@ -557,7 +568,15 @@
               <div class="form-group student">
                 <label class="checkbox">
                   <%= f.check_box :affirm_qualified %>
-                  <span class="bs-wrapper"><span class="control-label">I affirm to the best of my knowledge that I can fulfill the commitment to attend all required activities and complete all required modules and assignments. This can include: weekly 2-hour group sessions; weekly independent online modules (approx 2 hours, each); weekend events (for exact date(s), please see our website); and individual coaching sessions.</span></span> </label>
+                  <span class="bs-wrapper"><span class="control-label">I affirm to the best of my knowledge that I can fulfill the commitment to attend all required activities and complete
+                  
+                  <% if @is_preaccelerator_student %>
+                    all assignments. This includes: 5 weekly in-person 2-hour group sessions and creating a roadmap and resume.
+                  <% else %>
+                    all required modules and assignments. This can include: weekly 2-hour group sessions; weekly independent online modules (approx 2 hours, each); weekend events (for exact date(s), please see our website); and individual coaching sessions.
+                  <% end %>
+                  
+                  </span></span> </label>
               </div>
 
               <div class="form-group student">

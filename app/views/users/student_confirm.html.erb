@@ -6,7 +6,7 @@
       <section>
         <div class="col-sm-8 col-sm-offset-2 text-center">
             <p class="shoutout">Welcome to the <%= @program_title %> community, <%= current_user.first_name %>!</p>
-              <p>We are so pleased to offer you a place in our program. We think you'll be an outstanding Braven Fellow and will really enjoy this experience.</p>
+              <p>We are so pleased to offer you a place in our program. We think you'll be an outstanding Braven <% if @is_preaccelerator_student %>Pre-Accelerator<%end%> Fellow and will really enjoy this experience.</p>
         </div>
       </section>
     </div>

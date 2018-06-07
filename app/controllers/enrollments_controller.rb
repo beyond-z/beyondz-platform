@@ -18,6 +18,7 @@ class EnrollmentsController < ApplicationController
     @student_id_format_help = ''
     @student_id_excluded_chars = ''
     @contact_email = 'info@bebraven.org'
+    @is_preaccelerator_student = false
   end
 
   layout 'public'
@@ -265,6 +266,7 @@ class EnrollmentsController < ApplicationController
         @student_id_format_help = campaign.Student_ID_Format_Help__c
         @student_id_excluded_chars = campaign.Student_ID_Excluded_Chars__c
         @contact_email = sf.load_cached_user_email(campaign.OwnerId)
+        @is_preaccelerator_student = (campaign.Type == 'Pre-Accelerator Participants')
       end
     end
   end

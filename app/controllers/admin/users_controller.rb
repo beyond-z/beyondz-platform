@@ -300,7 +300,7 @@ class Admin::UsersController < Admin::ApplicationController
           contact.save
 
           campaign_ids_to_delete = {}
-          SFDC_Models::Campaign.query("IsActive=true AND Type IN ('Leadership Coaches', 'Program Participants', 'Volunteer')").each do |camp|
+          SFDC_Models::Campaign.query("IsActive=true AND Type IN ('Leadership Coaches', 'Program Participants', 'Volunteer', 'Pre-Accelerator Participants')").each do |camp|
             campaign_ids_to_delete[camp.Id] = camp.Id
           end
 
