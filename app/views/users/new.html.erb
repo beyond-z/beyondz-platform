@@ -49,7 +49,7 @@
                       <%= f.radio_button :applicant_type, 'preaccelerator_student', required: 'required', style: 'visibility: hidden;' %>
                     <% else %>
                       <%= f.radio_button :applicant_type, 'preaccelerator_student', required: 'required' %>
-                      <%= f.label :applicant_type_preaccelerator_student, 'A hopeful pre-accelerator particpant' %>
+                      <%= f.label :applicant_type_preaccelerator_student, 'A hopeful pre-accelerator participant' %>
                     <% end %>
                     <%= render :partial => 'student', :locals => { :f => f} %>
                   </div>
