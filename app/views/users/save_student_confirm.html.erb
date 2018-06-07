@@ -21,7 +21,11 @@
     <section>
       <div class="col-sm-8 col-sm-offset-2">
           <% if @enrollment.student_confirmed == "yes" %>
-            <p style="text-align: center;">Great! Go register for for the class today!</p>
+            <% if @is_preaccelerator_student %>
+              <p style="text-align: center;">Great! We will be in touch soon with more information. If you have any questions, please contact <a href="mailto:<%=@contact_email%>"><%=@contact_email%></a></p>
+            <% else %>
+              <p style="text-align: center;">Great! Go register for for the class today!</p>
+            <% end %>
           <% end %>
           <% if @enrollment.student_confirmed == "no" %>
             <p style="text-align: center;">We appreciate your feedback.</p>

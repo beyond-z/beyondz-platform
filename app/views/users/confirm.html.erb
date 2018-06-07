@@ -16,7 +16,7 @@
             <% elsif @confirmation_type == 'volunteer' %>
               <p>We are so pleased to offer you a place among our volunteer force.</p>
             <% else %>
-              <p>We are so pleased to offer you a place in our program. We think you'll be an outstanding Braven Fellow and will really enjoy this experience.</p>
+              <p>We are so pleased to offer you a place in our program. We think you'll be an outstanding Braven <% if @is_preaccelerator_student %>Pre-Accelerator<%end%> Fellow and will really enjoy this experience.</p>
             <% end %>
           <% end %>
         </div>
