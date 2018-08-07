@@ -21,17 +21,17 @@ class ChampionsController < ApplicationController
     # if the champion's first time, record that they did answer
     #
     # to tell who it is, the To address will include the interaction id, a directional indicator, and a security hash
-    # so like c123-ab3af56e@champions.bebraven.org means "to champion, interaction #123, hash ab3af56e"
+    # so like c123-ab3af56e@network.bebraven.org means "to champion, interaction #123, hash ab3af56e"
     #
     # Once we process and archive, we need to forward to the actual recipient and add/fix the
     # Reply-To header, the From header, and maybe the subject.
     #
-    # From will say "Fellow's Name via Braven Champions <fxxx-dddd@champions.bebraven.org>"
+    # From will say "Fellow's Name via Braven Champions <fxxx-dddd@network.bebraven.org>"
 
 
     to = params[:envelope][:to]
 
-    extracted = to.match(/([cf])([0-9]+)-([0-9a-zA-Z]+)@champions.bebraven.org/)
+    extracted = to.match(/([cf])([0-9]+)-([0-9a-zA-Z]+)@network.bebraven.org/)
 
     to_party = extracted[1] # c or f
     interaction_id = extracted[2]

@@ -52,7 +52,7 @@ class ChampionContact < ActiveRecord::Base
       champion.email
     else
       # but with it enabled, it goes through us
-      "c#{id}-#{security_hash}@champions.bebraven.org"
+      "c#{id}-#{security_hash}@network.bebraven.org"
     end
   end
 
@@ -63,7 +63,7 @@ class ChampionContact < ActiveRecord::Base
       user.email
     else
       # but with it enabled, it goes through us
-      "f#{id}-#{security_hash}@champions.bebraven.org"
+      "f#{id}-#{security_hash}@network.bebraven.org"
     end
   end
 
