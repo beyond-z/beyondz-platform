@@ -52,7 +52,7 @@ class ChampionContact < ActiveRecord::Base
       champion.email
     else
       # but with it enabled, it goes through us
-      "c#{id}-#{security_hash}@champions.bebraven.org"
+      "c#{id}-#{security_hash}@network.bebraven.org"
     end
   end
 
@@ -63,18 +63,18 @@ class ChampionContact < ActiveRecord::Base
       user.email
     else
       # but with it enabled, it goes through us
-      "f#{id}-#{security_hash}@champions.bebraven.org"
+      "f#{id}-#{security_hash}@network.bebraven.org"
     end
   end
 
   def champion_email_with_name
     champion = Champion.find(champion_id)
-    "#{champion.name} via Braven Champions <#{champion_email}>"
+    "#{champion.name} via Braven Network <#{champion_email}>"
   end
 
   def fellow_email_with_name
     fellow = User.find(user_id)
-    "#{fellow.name} via Braven Champions <#{fellow_email}>"
+    "#{fellow.name} via Braven Network <#{fellow_email}>"
   end
 
   def self.send_reminders
