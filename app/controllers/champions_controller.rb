@@ -26,7 +26,7 @@ class ChampionsController < ApplicationController
     # Once we process and archive, we need to forward to the actual recipient and add/fix the
     # Reply-To header, the From header, and maybe the subject.
     #
-    # From will say "Fellow's Name via Braven Champions <fxxx-dddd@network.bebraven.org>"
+    # From will say "Fellow's Name via The Braven Network <fxxx-dddd@network.bebraven.org>"
 
 
     to = params[:envelope][:to]
