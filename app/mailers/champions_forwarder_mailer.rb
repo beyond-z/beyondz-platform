@@ -1,6 +1,6 @@
 require 'digest/sha2'
 class ChampionsForwarderMailer < ActionMailer::Base
-  default 'Message-ID' => ->(_v_) { "<#{SecureRandom.uuid}@champions.bebraven.org>" }
+  default 'Message-ID' => ->(_v_) { "<#{SecureRandom.uuid}@network.bebraven.org>" }
 
   def forward_message(to_party, champion_contact, subject, text_message, html_message, forwarded_attachments)
 

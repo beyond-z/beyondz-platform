@@ -4,10 +4,10 @@
     <div class="section-container">
       <section>
         <div class="col-sm-6">
-          <h1>Braven Champions</h1>
+          <h1>Braven Network</h1>
 
           <p class="lead">
-            Now, email the Champion and ask them to chat!
+            Now, email the Braven Network member and ask them to chat!
           </p>
         </div>
         <div class="col-sm-12">
@@ -43,7 +43,7 @@
 
           <% if @others.any? %>
             <div style="text-align: center">
-            <a class="button-primary" href="<%= champions_contact_path(@others[0], :others => @others[1 .. -1]) %>">Next Champion</a>
+            <a class="button-primary" href="<%= champions_contact_path(@others[0], :others => @others[1 .. -1]) %>">Next Network Member</a>
             </div>
           <% else %>
             <div style="text-align: center">
