@@ -69,12 +69,12 @@ class ChampionContact < ActiveRecord::Base
 
   def champion_email_with_name
     champion = Champion.find(champion_id)
-    "#{champion.name} via Braven Network <#{champion_email}>"
+    "#{champion.name} via The Braven Network <#{champion_email}>"
   end
 
   def fellow_email_with_name
     fellow = User.find(user_id)
-    "#{fellow.name} via Braven Network <#{fellow_email}>"
+    "#{fellow.name} via The Braven Network <#{fellow_email}>"
   end
 
   def self.send_reminders
