@@ -67,6 +67,24 @@ class HomeController < ApplicationController
         client = sf.get_client
         client.materialize('CampaignMember')
 
+
+        if !current_user.is_converted_on_salesforce && !current_user.salesforce_id.blank?
+          sf_answer = nil
+
+          begin
+            query_result = client.http_get("/services/data/v#{client.version}/sobjects/Lead/#{current_user.salesforce_id}?fields=IsConverted,ConvertedContactId")
+            sf_answer = JSON.parse(query_result.body)
+          rescue Databasedotcom::SalesForceError => e
+            # record not found - the ID is probably already a contact, let's go ahead and mark it as such
+            current_user.is_converted_on_salesforce = true
+            current_user.save
+          end
+
+          if !sf_answer.nil? && sf_answer['IsConverted']
+            current_user.record_converted_on_salesforce(sf_answer['ConvertedContactId'])
+          end
+        end
+
         # We need to check all the campaign members to find the one that is most correct
         # for an application - one with an Application Type set up.
         query_result = client.http_get("/services/data/v#{client.version}/query?q=" \
