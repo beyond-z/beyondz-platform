@@ -65,11 +65,7 @@ class SalesforceController < ApplicationController
         lead_id, contact_id = change.split(':')
         u = User.find_by_salesforce_id(lead_id)
         if u
-          u.salesforce_id = contact_id
-          u.save!
-
-          u.auto_add_to_salesforce_campaign
-          u.create_mailchimp
+          u.record_converted_on_salesforce(contact_id)
         end
       end
     end
