@@ -182,6 +182,19 @@ class User < ActiveRecord::Base
     end
   end
 
+  # When a lead is converted on SF, call this and it will update it to
+  # contact here. If it isn't a contact, the campaigns won't work and the
+  # pages will be slower to load. This should only be called once, or else
+  # it might double add on other services! See is_converted_on_salesforce.
+  def record_converted_on_salesforce(contact_id)
+    self.salesforce_id = contact_id
+    self.is_converted_on_salesforce = true
+    self.save!
+
+    self.auto_add_to_salesforce_campaign
+    self.create_mailchimp
+  end
+
   # Returns true if a new Lead was created, returns false
   # if it found an existing contact to reuse. Throws on error.
   def create_on_salesforce

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180519180419) do
+ActiveRecord::Schema.define(version: 20180829161512) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -134,8 +134,8 @@ ActiveRecord::Schema.define(version: 20180519180419) do
     t.boolean  "braven_fellow"
     t.boolean  "braven_lc"
     t.boolean  "willing_to_be_contacted"
-    t.string   "industries",              array: true
-    t.string   "studies",                 array: true
+    t.string   "industries",                array: true
+    t.string   "studies",                   array: true
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "region"
@@ -543,6 +543,7 @@ ActiveRecord::Schema.define(version: 20180519180419) do
     t.text     "phone"
     t.string   "anticipated_graduation_semester"
     t.string   "started_college_in_semester"
+    t.boolean  "is_converted_on_salesforce"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
