@@ -16,11 +16,11 @@
   var wait_count = 0;
   function check_please_wait_status() {
     wait_count += 1;
-    if(wait_count >= 40) {
+    if(wait_count >= 4) { // 2.5 * 4 = 10 secs
       location.href = '<%= welcome_path %>';
       return; // give up on the wait and just send them to the "we'll contact you soon" page
-      // odds are after this, ~ 2 minutes, if it hasn't happened yet, it isn't going to (and the
-      // user is likely to give up too)
+      // odds are after this, 10ish seconds, if it hasn't happened yet, it isn't going to (and the
+      // user is likely to give up very soon too)
     }
     $.get('<%= please_wait_status_path %>', function(data) {
       if(data.ready)
