@@ -61,8 +61,13 @@ class User < ActiveRecord::Base
   before_save :capitalize_name
   
   def capitalize_name
-    self.first_name = first_name.split.map(&:capitalize).join(' ') unless first_name.nil?
-    self.last_name = last_name.split.map(&:capitalize).join(' ') unless last_name.nil?
+    # need to guard against this to ensure it isn't frivolously set and triggers useless external updates
+    if first_name_changed?
+      self.first_name = first_name.split.map(&:capitalize).join(' ') unless first_name.nil?
+    end
+    if last_name_changed?
+      self.last_name = last_name.split.map(&:capitalize).join(' ') unless last_name.nil?
+    end
   end
 
   # Finds the lead owner from the uploaded spreadsheet mapping, or returns
