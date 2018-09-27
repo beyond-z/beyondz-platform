@@ -56,6 +56,20 @@ module BeyondZ
       end
     end
 
+    def load_cached_user_email(user_id, client = nil)
+      Rails.cache.fetch("salesforce/user_email/#{user_id}", expires_in: 12.hours) do
+        client = get_client if client.nil?
+
+        a = client.http_get("/services/data/v#{client.version}/query?q=" \
+            "SELECT Email FROM User WHERE Id = '#{user_id.sub('\'', '\'\'')}'")
+        sf_answer = JSON.parse(a.body)
+        a = sf_answer['records']
+        a = a.empty? ? nil : a.first
+        a.nil? ? nil : a['Email']
+      end
+    end
+
+
     def get_client
       client = Databasedotcom::Client.new :host => Rails.application.secrets.salesforce_host
       client.sobject_module = SFDC_Models
@@ -65,8 +79,13 @@ module BeyondZ
       # an old client between server restarts - this will avoid the session
       # expired problem as we reauthorize and fix the global too.
       Databasedotcom::Sobject::Sobject.client = client
-
+      
       client
+    end
+    
+    def client
+      return @client if defined?(@client)
+      @client = get_client
     end
 
     def authenticate(client)
@@ -74,6 +93,49 @@ module BeyondZ
         :username => Rails.application.secrets.salesforce_username,
         :password => "#{Rails.application.secrets.salesforce_password}#{Rails.application.secrets.salesforce_security_token}"
       )
+    end
+
+    # Returns: new campaign id, if created, or nil if not necessary to create
+    def add_to_campaign(contact_id, campaign_id)
+      cm = {}
+      cm['CampaignId'] = campaign_id
+
+      if cm['CampaignId']
+        cm['ContactId'] = contact_id
+
+        begin
+          cm = client.create('CampaignMember', cm)
+          return cm['Id']
+        rescue Databasedotcom::SalesForceError => e
+          # If this failure happens, it is almost certainly just because they
+          # are already in the campaign 
+          logger.debug "#{e} #{contact_id} #{campaign_id}"
+        end
+      end
+
+      nil
+    end
+    
+    def record_for_contact entity
+      client.materialize('Contact')
+      SFDC_Models::Contact.query("Id = '#{entity.salesforce_id}'").first
+    end
+    
+    # entity can be a user or champion, at the moment.
+    def campaign_for_contact entity
+      entity.ensure_salesforce_id
+      return if entity.salesforce_id.nil?
+      
+      campaign_member = campaign_member_for_contact(entity)
+      return nil if campaign_member.nil?
+      
+      client.materialize('Campaign')
+      SFDC_Models::Campaign.find(campaign_member.CampaignId)
+    end
+    
+    def campaign_member_for_contact entity
+      client.materialize('CampaignMember')
+      SFDC_Models::CampaignMember.query("ContactId = '#{entity.salesforce_id}'").first
     end
 
     # Returns the Salesforce ID of the contact if they exist or nil if not
@@ -248,6 +310,18 @@ module BeyondZ
         set_cached_value('BZ_Student_Confirmed_Email_Html.html', template.HtmlValue)
       end
 
+      template = SFDC_Models::EmailTemplate.find_by_DeveloperName('BZ_Preaccelerator_Student_Confirmed_Email_Html')
+
+      if template
+        # We can also update the Subject on this request since we have it here anyway
+        set_cached_value('BZ_Preaccelerator_Student_Confirmed_Email_Html_Subject', template.Subject)
+        # ditto for the text version
+        set_cached_value('BZ_Preaccelerator_Student_Confirmed_Email_Html.text', template.Body)
+        # And cache the HTML, of course
+        set_cached_value('BZ_Preaccelerator_Student_Confirmed_Email_Html.html', template.HtmlValue)
+      end
+
+
       template = SFDC_Models::EmailTemplate.find_by_DeveloperName('BZ_CHAMPION_SIGNUP_Thank_you')
 
       if template
@@ -306,6 +380,19 @@ module BeyondZ
     def get_student_confirmed_email_text
       get_email_cache('BZ_Student_Confirmed_Email_Html.text')
     end
+
+    def get_preaccelerator_student_confirmed_email_subject
+      get_email_cache('BZ_Preaccelerator_Student_Confirmed_Email_Html_Subject')
+    end
+
+    def get_preaccelerator_student_confirmed_email_html
+      get_email_cache('BZ_Preaccelerator_Student_Confirmed_Email_Html.html')
+    end 
+
+    def get_preaccelerator_student_confirmed_email_text
+      get_email_cache('BZ_Preaccelerator_Student_Confirmed_Email_Html.text')
+    end
+
 
     def get_new_champion_email_subject
       get_email_cache('BZ_CHAMPION_SIGNUP_Thank_you_Subject')

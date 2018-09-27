@@ -18,12 +18,12 @@ class Reminders < ActionMailer::Base
   def fellow_survey_reminder(user, cc)
     @user = user
     @cc = cc
-    mail(to: user.email, subject: "Please tell us about your Braven Champion experience")
+    mail(to: user.email, subject: "Please tell us about your Braven Network experience")
   end
 
   def champion_survey_reminder(champion, cc)
     @champion = champion
     @cc = cc
-    mail(to: champion.email, subject: "Please tell us about your Braven Champion experience")
+    mail(to: champion.email, subject: "Please tell us about your Braven Network experience")
   end
 end

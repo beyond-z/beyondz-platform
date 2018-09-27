@@ -4,26 +4,63 @@
     <div class="section-container">
       <section>
         <div class="col-sm-6">
-          <h1>Braven Champions</h1>
+          <h1>Braven Network</h1>
 
           <p class="lead">
-            Welcome to the Braven Champions Database! Search for friends of Braven who work in your desired career field. You will be prompted to reach out to these professionals to request an informational interview.
+            Welcome to the Braven Network! Search for friends of Braven who work in your desired career field. You will be prompted to reach out to these professionals to request an informational interview.
+          </p>
+
+          <p>
+            Please remember that members of the Braven Network are located all over the country and will not necessarily be able to meet you in person. Most informational interviews will be done over the phone or online.
           </p>
 
           <% if @active_requests.any? %>
             <h3>You have the following active contacts:</h3>
-            <ol>
-            <% @active_requests.each do |ar| %>
-            <% champion = Champion.find(ar.champion_id) %>
-              <li><a href="<%= champion_fellow_survey_path(ar.id) %>"><%= champion.name %></a></li>
-            <% end %>
-            </ol>
+            <table>
+              <tr>
+                <th>Member</th>
+                <th>Areas of Interest</th>
+                <th>Next Steps</th>
+              </tr>
+              <% @active_requests.each do |ar| %>
+              <% champion = Champion.find(ar.champion_id) %>
+              <tr>
+                <td>
+                  <%= champion.name %>
+                </td>
+                <td>
+                  <ul>
+                  <% [champion.studies, champion.industries].flatten.sort.uniq.each do |i| %>
+                    <li><%= i %></li>
+                  <% end %>
+                  </ul>
+                </td>
+                <td class="next-steps">
+                  <% if ar.should_fellow_email? %>
+                    <p><a href="<%= champions_contact_path(ar.id) %>">Email Them!</a></p>
+                  <% end %>
+                  <% if ar.can_fellow_cancel? %>
+                    <p>
+                      Changed your mind?<br />
+                      <%= link_to 'Cancel this connect request.', delete_champion_contact_path(ar.id), :method => 'delete' %>
+                    </p>
+                  <% end %>
+                  <% if ar.should_fellow_take_survey? %>
+                    <p>
+                      When you have finished talking to the champion,<br />
+                      <a href="<%= champion_fellow_survey_path(ar.id) %>">Take this survey</a>
+                    </p>
+                  <% end %>
+                </td>
+              </tr>
+              <% end %>
+            </table>
           <% end %>
 
           <% if @max_allowed == 0 %>
-            <p>You can only contact up to two people at a time.  Chat with them, then complete the surveys linked above before trying to reach anyone else.</p>
+            <p>You can only contact up to two members of the Braven Network at a time.  Chat with them, then complete the surveys linked above before trying to reach anyone else.</p>
 
-            <p>The survey must be filled out by both the Champion and Fellow or more than a week must pass if the Champion is unresponsive.</p>
+            <p>The survey must be filled out by both the member of the Braven Network and Fellow or more than a week must pass if the member is unresponsive.</p>
 
           <% else %>
 
@@ -34,24 +71,12 @@
 
           <form onsubmit="return checkTerms();">
             <div>
-              Industry / Profession:
-                <input name="industries_csv" class="multi-complete" type="text" />
-                <script type="text/json"><%= @industries.to_json.html_safe %></script>
+              Your interests:
+                <input name="interests_csv" class="multi-complete" type="text" />
+                <script type="text/json"><%= [@fields, @industries].flatten.sort.uniq.to_json.html_safe %></script>
               <input value="Search" type="submit" />
             </div>
           </form>
-
-          OR
-
-          <form onsubmit="return checkTerms();">
-            <div>
-              Major / Field of Study:
-                <input name="studies_csv" class="multi-complete" type="text" />
-                <script type="text/json"><%= @fields.to_json.html_safe %></script>
-              <input value="Search" type="submit" />
-            </div>
-          </form>
-
           <% end %>
         </div>
         <div class="col-sm-12">
@@ -75,7 +100,7 @@
 
             <p>First, click someone's name to view their LinkedIn profile.</p>
 
-            <p>Then, if you want to contact them, return here and click the checkbox next to their name. You can only contact up to two Champions at a time.</p>
+            <p>Then, if you want to contact them, return here and click the checkbox next to their name, then hit Request Contact at the bottom of the page. You can only contact up to two members of the Braven Network at a time.</p>
 
             <form method="POST" action="<%= request_champion_contact_path %>" onsubmit="
               var ele = this.querySelectorAll('input[type=checkbox]');
@@ -84,11 +109,11 @@
                 if(ele[i].checked)
                   checked += 1;
               if(checked == 0) {
-                alert('To contact a champion, first click their name and see their LinkedIn profile. Then, come back to this tab and check the box that will appear next to their name.');
+                alert('To contact a member, first click their name and see their LinkedIn profile. Then, come back to this tab and check the box that will appear next to their name.');
                 return false;
               }
               if(checked > <%= @max_allowed %>) {
-                alert('You can only contact up to two champions at a time. This includes active contacts you have already reached out to but have not filled out the survery for. Please unselect any more than that.');
+                alert('You can only contact up to two members of the Braven Network at a time. This includes active contacts you have already reached out to but have not filled out the survery for. Please unselect any more than that.');
                 return false;
               }
               return true;
@@ -103,8 +128,7 @@
                 <th>Name</th>
                 <th>Company</th>
                 <th>Title</th>
-                <th>Industries</th>
-                <th>Fields</th>
+                <th>Areas of Interest</th>
               </tr>
             <% @results.each do |champ| %>
               <%
@@ -142,15 +166,8 @@
                 </td>
                 <td>
                   <ul>
-                  <% champ.industries.each do |i| %>
+                  <% [champ.studies, champ.industries].flatten.sort.uniq.each do |i| %>
                     <li><%= i %></li>
-                  <% end %>
-                  </ul>
-                </td>
-                <td>
-                  <ul>
-                  <% champ.studies.each do |s| %>
-                    <li><%= s %></li>
                   <% end %>
                   </ul>
                 </td>

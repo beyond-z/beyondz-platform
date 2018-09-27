@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180201035639) do
+ActiveRecord::Schema.define(version: 20180829161512) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pg_stat_statements"
 
   create_table "assignment_definitions", force: true do |t|
     t.string   "title"
@@ -60,6 +61,31 @@ ActiveRecord::Schema.define(version: 20180201035639) do
     t.string   "calendar_url"
   end
 
+  create_table "champion_contact_logged_email_attachments", force: true do |t|
+    t.integer  "champion_contact_logged_email_id"
+    t.string   "file_file_name"
+    t.string   "file_content_type"
+    t.integer  "file_file_size"
+    t.datetime "file_updated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "champion_contact_logged_email_attachments", ["champion_contact_logged_email_id"], name: "index_cc_le", using: :btree
+
+  create_table "champion_contact_logged_emails", force: true do |t|
+    t.integer  "champion_contact_id"
+    t.string   "to"
+    t.string   "from"
+    t.string   "subject"
+    t.text     "plain"
+    t.text     "html"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "champion_contact_logged_emails", ["champion_contact_id"], name: "index_champion_contact_logged_emails_on_champion_contact_id", using: :btree
+
   create_table "champion_contacts", force: true do |t|
     t.integer  "user_id"
     t.integer  "champion_id"
@@ -86,6 +112,10 @@ ActiveRecord::Schema.define(version: 20180201035639) do
     t.boolean  "champion_survey_email_sent",         default: false
     t.boolean  "fellow_survey_email_sent",           default: false
     t.string   "nonce"
+    t.datetime "first_email_from_fellow_sent"
+    t.datetime "latest_email_from_fellow_sent"
+    t.datetime "first_email_from_champion_sent"
+    t.datetime "latest_email_from_champion_sent"
   end
 
   create_table "champion_stats", force: true do |t|
@@ -104,15 +134,25 @@ ActiveRecord::Schema.define(version: 20180201035639) do
     t.boolean  "braven_fellow"
     t.boolean  "braven_lc"
     t.boolean  "willing_to_be_contacted"
-    t.string   "industries",              array: true
-    t.string   "studies",                 array: true
+    t.string   "industries",                array: true
+    t.string   "studies",                   array: true
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "region"
     t.text     "access_token"
     t.string   "company"
     t.string   "job_title"
+    t.string   "salesforce_id"
   end
+
+  create_table "champions_search_synonyms", force: true do |t|
+    t.string   "search_term"
+    t.string   "search_becomes"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "champions_search_synonyms", ["search_term"], name: "index_champions_search_synonyms_on_search_term", using: :btree
 
   create_table "coach_students", force: true do |t|
     t.integer  "coach_id"
@@ -275,6 +315,10 @@ ActiveRecord::Schema.define(version: 20180201035639) do
     t.string   "student_course"
     t.string   "student_confirmed"
     t.text     "student_confirmed_notes"
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "zip"
+    t.text     "want_grow_professionally"
   end
 
   add_index "enrollments", ["user_id"], name: "index_enrollments_on_user_id", using: :btree
@@ -294,6 +338,28 @@ ActiveRecord::Schema.define(version: 20180201035639) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "referrals", force: true do |t|
+    t.string   "referred_by_first_name"
+    t.string   "referred_by_last_name"
+    t.string   "referred_by_email"
+    t.string   "referred_by_phone"
+    t.string   "referral_location"
+    t.string   "referred_by_employer"
+    t.string   "referred_by_affiliation"
+    t.string   "referred_first_name"
+    t.string   "referred_last_name"
+    t.string   "referred_email"
+    t.string   "referred_phone"
+    t.integer  "referrer_user_id"
+    t.string   "referrer_salesforce_id"
+    t.string   "referred_salesforce_id"
+    t.string   "referring_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "referrals", ["referrer_user_id"], name: "index_referrals_on_referrer_user_id", using: :btree
 
   create_table "resources", force: true do |t|
     t.string   "url"
@@ -477,6 +543,7 @@ ActiveRecord::Schema.define(version: 20180201035639) do
     t.text     "phone"
     t.string   "anticipated_graduation_semester"
     t.string   "started_college_in_semester"
+    t.boolean  "is_converted_on_salesforce"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

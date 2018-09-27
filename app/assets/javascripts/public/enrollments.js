@@ -129,3 +129,25 @@ $(document).ready(function() {
     // want the file to re-upload each time they hit a key!
     $('input[type=file]').change(saveEnrollmentwithFile);
 });
+
+function studentIdCheck(element, student_id_excluded_chars, student_id_format) {
+  if(student_id_format == "" || student_id_format == null)
+    return true; // checking not enabled, always pass
+
+  var txt = element.value;
+
+  if(student_id_excluded_chars != "" && student_id_excluded_chars != null)
+    txt = txt.replace(new RegExp(student_id_excluded_chars, "g"), "");
+
+  var re = new RegExp(student_id_format, "");
+  var success = re.test(txt);
+
+  if(success) {
+    element.value = txt;
+    element.parentNode.classList.remove("field_with_errors");
+  } else {
+    element.parentNode.classList.add("field_with_errors");
+  }
+
+  return success;
+}

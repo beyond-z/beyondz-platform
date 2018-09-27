@@ -14,6 +14,11 @@ class EnrollmentsController < ApplicationController
     @sourcing_options = ''
     @course_options = ''
     @student_id_required = false
+    @student_id_format = ''
+    @student_id_format_help = ''
+    @student_id_excluded_chars = ''
+    @contact_email = 'info@bebraven.org'
+    @is_preaccelerator_student = false
   end
 
   layout 'public'
@@ -30,6 +35,12 @@ class EnrollmentsController < ApplicationController
     str
   end
 
+  # for storage, we want to strip out anything non-numeric
+  def format_phone_for_storage(phone)
+    return phone if phone.blank?
+    phone.gsub(/[^0-9]/, '')
+  end
+
   # On Salesforce URL fields, there is a 255 char max. We need a helper method
   # to keep those strings to the allowed size. Simply truncating is OK because
   # long URLs virtually always work when truncated anyway (the stuff at the end
@@ -44,6 +55,8 @@ class EnrollmentsController < ApplicationController
   def new
     @enrollment = Enrollment.new
     @enrollment.user_id = current_user.id
+
+    set_up_lists
 
     # We need to redirect them to edit their current application
     # if one exists. Otherwise, they can make a new one with some
@@ -73,7 +86,7 @@ class EnrollmentsController < ApplicationController
         @enrollment.email = current_user.email
         @enrollment.company = current_user.company
         @enrollment.undergrad_university = current_user.university_name
-        @enrollment.phone = current_user.phone
+        @enrollment.phone = format_phone_for_storage(current_user.phone)
         @enrollment.title = current_user.profession
         @enrollment.undergraduate_year = current_user.anticipated_graduation
         @enrollment.anticipated_graduation_semester = current_user.anticipated_graduation_semester
@@ -174,6 +187,8 @@ class EnrollmentsController < ApplicationController
     # as that's the fastest thing that can possibly work for MVP
     @enrollment = Enrollment.find(params[:id])
 
+    set_up_lists
+
     if @enrollment.user_id != current_user.id && !current_user.admin?
       redirect_to welcome_path
       return
@@ -190,7 +205,7 @@ class EnrollmentsController < ApplicationController
       client.materialize('CampaignMember')
       cm = SFDC_Models::CampaignMember.find_by_ContactId_and_CampaignId(@enrollment.user.salesforce_id, @enrollment.campaign_id)
 
-      unless cm.Apply_Button_Enabled__c
+      unless cm && cm.Apply_Button_Enabled__c
         @enrollment_read_only = true
       end
     end
@@ -242,6 +257,16 @@ class EnrollmentsController < ApplicationController
         @sourcing_options = '' if @sourcing_options.nil?
         @course_options = '' if @course_options.nil?
         @student_id_required = campaign.Request_Student_Id__c
+
+        # It first js regex replaces excluded chars with '', removing them
+        # then js regex matches student_id format. if it fails, it displays
+        # student id format help to the user.
+        # See: public/enrollments.js studentIdCheck
+        @student_id_format = campaign.Student_ID_Format__c
+        @student_id_format_help = campaign.Student_ID_Format_Help__c
+        @student_id_excluded_chars = campaign.Student_ID_Excluded_Chars__c
+        @contact_email = sf.load_cached_user_email(campaign.OwnerId)
+        @is_preaccelerator_student = (campaign.Type == 'Pre-Accelerator Participants')
       end
     end
   end
@@ -344,9 +369,11 @@ class EnrollmentsController < ApplicationController
       # Salesforce claims to have them on CampaignMember, they are
       # actually pulled from the Contact and the API won't let us
       # access or update them through the CampaignMember.
-      contact.Phone = @enrollment.phone
+      contact.Phone = format_phone_for_storage(@enrollment.phone)
+      contact.MailingStreet = [@enrollment.address1, @enrollment.address2].join("\n")
       contact.MailingCity = @enrollment.city
       contact.MailingState = @enrollment.state
+      contact.MailingPostalCode = @enrollment.zip
       contact.Title = @enrollment.title
       contact.save
     end
@@ -378,6 +405,7 @@ class EnrollmentsController < ApplicationController
     cm.Post_Grad__c = @enrollment.post_graduation_plans
     cm.Why_BZ__c = @enrollment.why_bz
     cm.Passions_Expertise__c = @enrollment.passions_expertise
+    cm.Want_Grow_Professionally__c = @enrollment.want_grow_professionally
     cm.Meaningful_Activity__c = @enrollment.meaningful_activity
     cm.Relevant_Experience__c = @enrollment.relevant_experience
 
@@ -404,7 +432,7 @@ class EnrollmentsController < ApplicationController
     cm.Graduate_Year__c = @enrollment.anticipated_grad_school_graduation
 
     cm.Digital_Footprint__c = limit_size(@enrollment.digital_footprint, 200)
-    cm.Digital_Footprint_2__c = limit_size(@enrollment.digital_footprint2, 200)
+    #cm.Digital_Footprint_2__c = limit_size(@enrollment.digital_footprint2, 200) # We no longer ask for this, just their LinkedIn URL which is stored in digital_footprint
 
     cm.Resume__c = @enrollment.resume.url if @enrollment.resume.present?
 
@@ -412,13 +440,13 @@ class EnrollmentsController < ApplicationController
     cm.Reference_1_How_Known__c = @enrollment.reference_how_known
     cm.Reference_1_How_Long_Known__c = @enrollment.reference_how_long_known
     cm.Reference_1_Email__c = handle_na(@enrollment.reference_email)
-    cm.Reference_1_Phone__c = handle_na(@enrollment.reference_phone)
+    cm.Reference_1_Phone__c = format_phone_for_storage(handle_na(@enrollment.reference_phone))
 
     cm.Reference_2_Name__c = @enrollment.reference2_name
     cm.Reference_2_How_Known__c = @enrollment.reference2_how_known
     cm.Reference_2_How_Long_Known__c = @enrollment.reference2_how_long_known
     cm.Reference_2_Email__c = handle_na(@enrollment.reference2_email)
-    cm.Reference_2_Phone__c = handle_na(@enrollment.reference2_phone)
+    cm.Reference_2_Phone__c = format_phone_for_storage(handle_na(@enrollment.reference2_phone))
 
     cm.African_American__c = @enrollment.bkg_african_americanblack
     cm.Asian_American__c = @enrollment.bkg_asian_american

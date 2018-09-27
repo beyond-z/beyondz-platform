@@ -1,4 +1,5 @@
 require 'salesforce'
+require 'mailchimp/user'
 
 # Monkey-patch the CAS gem so we can use it without losing the database
 # features we use for SSO - we still manage the users here, including
@@ -39,6 +40,8 @@ end
 # With that fixed, we can now define the regular User class.
 
 class User < ActiveRecord::Base
+  include MailchimpUpdates
+  
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :registerable,
@@ -56,9 +59,15 @@ class User < ActiveRecord::Base
   validates :last_name, presence: true
 
   before_save :capitalize_name
+  
   def capitalize_name
-    self.first_name = first_name.split.map(&:capitalize).join(' ') unless first_name.nil?
-    self.last_name = last_name.split.map(&:capitalize).join(' ') unless last_name.nil?
+    # need to guard against this to ensure it isn't frivolously set and triggers useless external updates
+    if first_name_changed?
+      self.first_name = first_name.split.map(&:capitalize).join(' ') unless first_name.nil?
+    end
+    if last_name_changed?
+      self.last_name = last_name.split.map(&:capitalize).join(' ') unless last_name.nil?
+    end
   end
 
   # Finds the lead owner from the uploaded spreadsheet mapping, or returns
@@ -178,6 +187,19 @@ class User < ActiveRecord::Base
     end
   end
 
+  # When a lead is converted on SF, call this and it will update it to
+  # contact here. If it isn't a contact, the campaigns won't work and the
+  # pages will be slower to load. This should only be called once, or else
+  # it might double add on other services! See is_converted_on_salesforce.
+  def record_converted_on_salesforce(contact_id)
+    self.salesforce_id = contact_id
+    self.is_converted_on_salesforce = true
+    self.save!
+
+    self.auto_add_to_salesforce_campaign
+    self.create_mailchimp
+  end
+
   # Returns true if a new Lead was created, returns false
   # if it found an existing contact to reuse. Throws on error.
   def create_on_salesforce
@@ -256,7 +278,7 @@ class User < ActiveRecord::Base
     # with the BZ Region set, that's when their region is updated.
     #
     # BZ_Region is required, so if it's not set, default them to National
-    contact['BZ_Region__c'] = (bz_region.blank? || bz_region.strip == 'Other:') ? 'National' : bz_region
+    contact['BZ_Region__c'] = (region.blank? || region.strip == 'Other:') ? 'National' : region
 
     lead_created = false
 
@@ -418,10 +440,22 @@ class User < ActiveRecord::Base
   rescue Databasedotcom::SalesForceError => e
     logger.warn "###### Caught Databasedotcom::SalesForceError #{e.inspect} -- Failed to update CampaignMember and record a Task of the cancellation for #{first_name} #{last_name} - #{selected_timeslot}"
   end
+  
+  def region
+    region_by_university = Hash.new(nil).merge({
+      'National Louis University' => 'Chicago',
+      'San Jose State University' => 'San Francisco Bay Area, San Jose',
+      'Rutgers University - Newark' => 'Newark, NJ'
+    })
+    
+    bz_region || region_by_university[university_name]
+  end
 
   def salesforce_applicant_type
     case applicant_type
     when 'undergrad_student'
+      'Undergrad'
+    when 'preaccelerator_student'
       'Undergrad'
     when 'leadership_coach'
       'Leadership Coach'
@@ -443,6 +477,8 @@ class User < ActiveRecord::Base
   end
 
   def salesforce_campaign_id
+    return @salesforce_campaign_id if defined?(@salesforce_campaign_id)
+    
     mapping = nil
     # For Event Volunteers, they may have been a Fellow or a Coach in the past and thus have their university_name set,
     # however, we don't use university_name when looking up the Campaign for that region, so the mapping is not found.
@@ -467,7 +503,7 @@ class User < ActiveRecord::Base
       end
     end
 
-    mapping.first.campaign_id
+    @salesforce_campaign_id = mapping.first.campaign_id
   end
 
   # The BZ Region that this user is mapped to given their Calendar Email and Application Type
@@ -511,11 +547,11 @@ class User < ActiveRecord::Base
 
   def graduation_required?
     applicant_type == 'grad_student' || applicant_type == 'undergrad_student' ||
-      applicant_type == 'school_student'
+      applicant_type == 'school_student' || applicant_type == 'preaccelerator_student'
   end
 
   def university_name_required?
-    applicant_type == 'grad_student' || applicant_type == 'undergrad_student'
+    applicant_type == 'grad_student' || applicant_type == 'undergrad_student' || applicant_type == 'preaccelerator_student'
   end
 
   after_create :create_child_skeleton_rows

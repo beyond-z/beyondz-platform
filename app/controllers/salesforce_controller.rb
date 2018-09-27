@@ -62,13 +62,10 @@ class SalesforceController < ApplicationController
   def record_converted_leads
     if check_magic_token
       params[:changes].split(',').each do |change|
-        parts = change.split(':')
-        u = User.find_by_salesforce_id(parts[0])
+        lead_id, contact_id = change.split(':')
+        u = User.find_by_salesforce_id(lead_id)
         if u
-          u.salesforce_id = parts[1]
-          u.save!
-
-          u.auto_add_to_salesforce_campaign
+          u.record_converted_on_salesforce(contact_id)
         end
       end
     end
@@ -166,7 +163,7 @@ class SalesforceController < ApplicationController
             # Note: The user must be provisioned in Canvas and their canvas_user_id set before this will
             # run correctly.
             if Rails.application.secrets.qa_token && !Rails.application.secrets.qa_token.empty?
-              setup_in_osqa(user)
+              setup_in_osqa(user, campaign.Target_Course_ID_In_LMS__c[0].to_i)
             end
           # catching all inside the loop so a failure on one user doesn't abort
           # the whole thing - we can fix the individual people later
@@ -194,7 +191,7 @@ class SalesforceController < ApplicationController
 
   private
 
-  def setup_in_osqa(user)
+  def setup_in_osqa(user, course_id)
     if user.canvas_user_id
       if @qa_http.nil?
         @qa_http = Net::HTTP.new(Rails.application.secrets.qa_host, 443)
@@ -209,6 +206,7 @@ class SalesforceController < ApplicationController
         'access_token' => Rails.application.secrets.qa_token,
         'url' => "https://#{Rails.application.secrets.canvas_server}/openid/user/#{user.canvas_user_id}",
         'name' => user.name,
+        'course_id' => course_id,
         'email' => user.email
       )
       @qa_http.request(request)

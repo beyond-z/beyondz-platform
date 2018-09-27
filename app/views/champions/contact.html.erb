@@ -4,10 +4,10 @@
     <div class="section-container">
       <section>
         <div class="col-sm-6">
-          <h1>Braven Champions</h1>
+          <h1>Braven Network</h1>
 
           <p class="lead">
-            Now, email the Champion and ask them to chat!
+            Now, email the Braven Network member and ask them to chat!
           </p>
         </div>
         <div class="col-sm-12">
@@ -19,7 +19,7 @@
 
           <div style="padding: 2em; border: solid 2px #ccc;">
 
-          To: <strong><%= @recipient.name %> &lt;<%= @recipient.email %>&gt;</strong>
+          To: <strong><%= @recipient.name %> &lt;<a href="mailto:<%=@cc.champion_email%>"><%= @cc.champion_email %></a>&gt;</strong>
           <br />
           Subject: Would love to connect!
           <br /><br />
@@ -27,9 +27,9 @@
             <p>Hi <%= @recipient.first_name %>,</p>
 
             <p>I was looking through Braven’s volunteer list for people who work in <%= @hit %> and your name came up as a promising lead. I would appreciate a chance to ask you some questions about your career. Are you available to chat at any of the following times?</p>
-              <p>* &lt;insert date/time&gt;<br />
-              * &lt;insert date/time&gt;<br />
-              * &lt;insert date/time&gt;</p>
+              <p>* &lt;insert date/time/time zone (e.g. Eastern, Pacific, or Central)&gt;<br />
+              * &lt;insert date/time/time zone (e.g. Eastern, Pacific, or Central)&gt;<br />
+              * &lt;insert date/time/time zone (e.g. Eastern, Pacific, or Central)&gt;</p>
 
             <p>For some background on me, please have a look at my LinkedIn profile here: &lt;Your linked in&gt;</p>
 
@@ -43,7 +43,7 @@
 
           <% if @others.any? %>
             <div style="text-align: center">
-            <a class="button-primary" href="<%= champions_contact_path(@others[0], :others => @others[1 .. -1]) %>">Next Champion</a>
+            <a class="button-primary" href="<%= champions_contact_path(@others[0], :others => @others[1 .. -1]) %>">Next Network Member</a>
             </div>
           <% else %>
             <div style="text-align: center">

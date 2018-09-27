@@ -25,6 +25,8 @@ class Enrollment < ActiveRecord::Base
 
   validates :city, presence: true
   validates :state, presence: true
+  validates :address1, presence: true, if: "position == 'coach'"
+  validates :zip, presence: true, if: "position == 'coach'"
 
   validates :birthdate, presence: true, if: "position == 'student'"
   # validates :last_summer, presence: true, if: "position == 'student'"
@@ -49,7 +51,11 @@ class Enrollment < ActiveRecord::Base
   validates :reference2_name, presence: true, if: "position == 'coach'"
   validates :reference2_email, presence: true, if: "position == 'coach' && reference2_phone.empty?"
 
-  validates :industry, presence: true, if: "position == 'coach' && company.empty? && title.empty?"
+  validates :digital_footprint, presence: true, if: "position == 'coach' && !resume.present?"
+
+  validates :industry, presence: true, if: "position == 'coach'"
+  validates :company, presence: true, if: "position == 'coach'"
+  validates :title, presence: true, if: "position == 'coach'"
 
   validates :meeting_times, presence: true, if: '@check_meeting_times'
 

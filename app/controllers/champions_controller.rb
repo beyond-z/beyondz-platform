@@ -1,16 +1,166 @@
 require 'uuidtools'
 
+require 'openid'
+require 'openid/store/filesystem'
+
 class ChampionsController < ApplicationController
   layout 'public'
 
   before_filter :set_up_lists
 
+  skip_before_filter :verify_authenticity_token, :only => [:email_processor]
+  http_basic_authenticate_with name: "cloudmail", password: Rails.application.secrets.cloudmailin_password, :only => :email_processor
+  def email_processor
+
+    # only enable if the password is set
+    return if Rails.application.secrets.cloudmailin_password.blank?
+
+    # The goal in here: archive the email for future reference
+    # see if it is coming from the fellow or the champion
+    # if the fellow's first time, start the connection clock and record that they did reach out
+    # if the champion's first time, record that they did answer
+    #
+    # to tell who it is, the To address will include the interaction id, a directional indicator, and a security hash
+    # so like c123-ab3af56e@network.bebraven.org means "to champion, interaction #123, hash ab3af56e"
+    #
+    # Once we process and archive, we need to forward to the actual recipient and add/fix the
+    # Reply-To header, the From header, and maybe the subject.
+    #
+    # From will say "Fellow's Name via The Braven Network <fxxx-dddd@network.bebraven.org>"
+
+
+    to = params[:envelope][:to]
+
+    extracted = to.match(/([cf])([0-9]+)-([0-9a-zA-Z]+)@network.bebraven.org/)
+
+    to_party = extracted[1] # c or f
+    interaction_id = extracted[2]
+    security_hash = extracted[3]
+
+    cc = ChampionContact.find(interaction_id)
+
+    if security_hash != cc.security_hash
+      render text: "Bad security code", status: 404
+      return
+    end
+
+    # log it
+    ccle = ChampionContactLoggedEmail.create(
+      :champion_contact_id => cc.id,
+      :to => to_party,
+      :from => params[:envelope][:from],
+      :subject => params[:headers][:Subject],
+      :plain => params[:plain],
+      :html => params[:html]
+    )
+
+    if params[:attachments]
+      params[:attachments].each do |k, attachment|
+        ChampionContactLoggedEmailAttachment.create(
+          :champion_contact_logged_email => ccle,
+          :file => attachment
+        )
+      end
+    end
+
+
+    if to_party == 'c'
+      # if it is to the champion, it is from the fellow
+      if cc.first_email_from_fellow_sent.nil?
+        cc.first_email_from_fellow_sent = DateTime.now
+      end
+      cc.latest_email_from_fellow_sent = DateTime.now
+      cc.save
+    else
+      if cc.first_email_from_champion_sent.nil?
+        cc.first_email_from_champion_sent = DateTime.now
+      end
+      cc.latest_email_from_champion_sent = DateTime.now
+      cc.save
+    end
+
+
+    # and forward it.
+    ChampionsForwarderMailer.forward_message(to_party, cc, params[:headers][:Subject], params[:plain], params[:html], params[:attachments]).deliver
+
+
+    render text: "OK"
+  end
+
   def index
   end
 
-  before_filter :authenticate_user!, :only => [:connect, :request_contact, :contact, :fellow_survey, :fellow_survey_save]
+  def openid_consumer
+    if @consumer.nil?
+      dir = Pathname.new(Rails.root).join('db').join('cstore')
+      store = OpenID::Store::Filesystem.new(dir)
+      @consumer = OpenID::Consumer.new(session, store)
+    end
+    return @consumer
+  end
+
+  def openid_login_start
+    url = params[:url]
+    if url.nil?
+      redirect_to champion_connect_authenticated_path
+    end
+
+    oidreq = openid_consumer.begin(url)
+    return_to = url_for :action => 'openid_login_complete', :only_path => false
+    realm = url_for :action => 'index', :id => nil, :only_path => false
+    
+    if oidreq.send_redirect?(realm, return_to, params[:immediate])
+      redirect_to oidreq.redirect_url(realm, return_to, params[:immediate])
+    else
+      render :text => oidreq.html_markup(realm, return_to, params[:immediate], {'id' => 'openid_form'})
+    end
+  end
+
+  def openid_login_complete
+    current_url = url_for(:action => 'openid_login_complete', :only_path => false)
+    parameters = params.reject{|k,v|request.path_parameters[k]}
+    parameters.reject!{|k,v|%w{action controller}.include? k.to_s}
+    response = openid_consumer.complete(parameters, current_url)
+    if response.status == OpenID::Consumer::SUCCESS
+      user_url = params["openid.identity"]
+
+      canvas_user_id = user_url[user_url.rindex('/') + 1 .. -1]
+      user = User.where(:canvas_user_id => canvas_user_id)
+      if user.any?
+        sign_in(user.first)
+        redirect_to :action => 'connect'
+        return
+      end
+      # should never happen... if we got here, it means they had a Canvas OpenID URL,
+      # which means the user is there... and thus should be here too due to sync to lms originating here!
+      logger.debug user_id
+      render text: "Your user wasn't found on the Braven server. Please contact support@bebraven.org and tell them this happened and what time it is when you saw this."
+    else
+      # open id failed should also never happen because the URL is given to us by Canvas, which
+      # we also control!
+
+      # flash[:message] = "Please log in using your Braven email and password you set up in the application process."
+      redirect_to :action => 'connect_authenticated'
+      # render :text => "FAILED #{response.inspect}"
+    end
+  end
+
+  before_filter :authenticate_user!, :only => [:connect_authenticated, :request_contact, :contact, :fellow_survey, :fellow_survey_save]
+
+  def connect_authenticated
+    # the before filter forces them to log in, then we can go back to the other thing.
+    redirect_to champions_connect_path
+  end
+
   def connect
     # FIXME: prompt linked in access from user
+
+    if !user_signed_in?
+      # If the user isn't logged in, we want to try OpenID off Canvas via
+      # a client side script
+      render 'openid_auth'
+      return
+    end
 
     @active_requests = ChampionContact.active(current_user.id)
     @max_allowed = 2 - @active_requests.count
@@ -21,38 +171,19 @@ class ChampionsController < ApplicationController
     @results = []
     @search_attempted = false
 
+    @searched_for = {}
+
     if params[:view_all]
       @results = Champion.all
       @search_attempted = true
     end
 
-    if params[:studies_csv]
+    if params[:interests_csv]
       @search_attempted = true
-      studies = params[:studies_csv].split(',').map(&:strip).reject(&:empty?)
-      studies.each do |s|
-        record_stat_hit(s)
-        query = Champion.where("array_to_string(studies, ',') ILIKE ?","%#{s}%").where("willing_to_be_contacted = true")
-        if Rails.application.secrets.smtp_override_recipient.blank?
-          query = query.where("email NOT LIKE '%@bebraven.org'")
-        end
-        query.each do |c|
-          @results << c
-        end
-      end
-    end
-
-    if params[:industries_csv]
-      @search_attempted = true
-      industries = params[:industries_csv].split(',').map(&:strip).reject(&:empty?)
-      industries.each do |s|
-        record_stat_hit(s)
-        query = Champion.where("array_to_string(industries, ',') ILIKE ?","%#{s}%").where("willing_to_be_contacted = true")
-        if Rails.application.secrets.smtp_override_recipient.blank?
-          query = query.where("email NOT LIKE '%@bebraven.org'")
-        end
-        query.each do |c|
-          @results << c
-        end
+      search_terms = params[:interests_csv].split(',').map(&:strip).reject(&:empty?)
+      search_terms.each do |s|
+        found_any = do_search_for_term(s)
+        record_stat_hit(s, found_any)
       end
     end
 
@@ -80,23 +211,70 @@ class ChampionsController < ApplicationController
     @results = results_filtered
   end
 
+  def do_search_for_term(s)
+    # guard against infinite recursion in case of circular synonyms
+    return unless @searched_for[s].nil?
+    @searched_for[s] = true
+
+    # and then search it
+    original_term = s
+    query = Champion.where("
+      array_to_string(studies, ',') ILIKE ?
+      OR
+      array_to_string(industries, ',') ILIKE ?",
+      "%#{s}%", # for studies
+      "%#{s}%"  # for industries
+    ).where("willing_to_be_contacted = true")
+    if Rails.application.secrets.smtp_override_recipient.blank?
+      query = query.where("email NOT LIKE '%@bebraven.org'")
+    end
+    found_any = false
+    query.each do |c|
+      @results << c
+      found_any = true
+    end
+
+    # also add synonymous searches to the results
+    # with a tail recursive call so it handles any synonym
+    # chain too
+
+    s = s.downcase
+    ChampionsSearchSynonym.where(:search_term => s).each do |css|
+      found_more = do_search_for_term(css.search_becomes)
+      found_any = found_any || found_more
+    end
+
+    found_any
+  end
+
   def terms
   end
 
-  def record_stat_hit(word)
+  def record_stat_hit(word, found_any)
     word = word.downcase
     res = ChampionStats.where(:search_term => word)
     s = nil
+    should_email = false
     if res.empty?
       s = ChampionStats.new
       s.search_term = word
       s.search_count = 0
+      should_email = true
     else
       s = res.first
     end
 
     s.search_count += 1
     s.save
+
+    if should_email && !found_any
+      # inform staff that there is a new search with no
+      # results so we can focus on getting more of them.
+      # only does this the first time to avoid annoying spamming;
+      # we can check the stats page later for more info.
+
+      StaffNotifications.champion_search_empty(current_user, word).deliver
+    end
   end
 
   # I don't mind this being public cuz it is harmless and maybe even
@@ -112,12 +290,24 @@ class ChampionsController < ApplicationController
 
     @recipient = Champion.find(cc.champion_id)
     @hit = @recipient.industries.any? ? @recipient.industries.first : @recipient.studies.fist
+    @cc = cc
 
     if params[:others]
       @others = params[:others]
     else
       @others = []
     end
+  end
+
+  def delete_contact
+    cc = ChampionContact.find(params[:id])
+    raise "wrong user" if cc.user_id != current_user.id
+    raise "can't delete" if !cc.can_fellow_cancel?
+
+    cc.destroy
+
+    redirect_to champions_connect_path
+
   end
 
   def request_contact
@@ -320,156 +510,11 @@ class ChampionsController < ApplicationController
     n.save
 
     n.create_on_salesforce
+    n.create_mailchimp
 
     if was_new
       ChampionsMailer.new_champion(n).deliver
     end
-  end
-
-  def set_up_lists
-    @industries = [
-      'Accounting',
-      'Advertising',
-      'Aerospace',
-      'Banking',
-      'Beauty / Cosmetics',
-      'Biotechnology ',
-      'Business',
-      'Chemical',
-      'Communications',
-      'Computer Engineering',
-      'Computer Hardware ',
-      'Education',
-      'Electronics',
-      'Employment / Human Resources',
-      'Energy',
-      'Fashion',
-      'Film',
-      'Financial Services',
-      'Fine Arts',
-      'Food & Beverage ',
-      'Health',
-      'Information Technology',
-      'Insurance',
-      'Journalism / News / Media',
-      'Law',
-      'Management / Strategic Consulting',
-      'Manufacturing',
-      'Medical Devices & Supplies',
-      'Performing Arts ',
-      'Pharmaceutical ',
-      'Public Administration',
-      'Public Relations',
-      'Publishing',
-      'Marketing ',
-      'Real Estate ',
-      'Sports ',
-      'Technology ',
-      'Telecommunications',
-      'Tourism',
-      'Transportation / Travel',
-      'Writing'
-    ]
-
-    @fields = [
-      'Accounting ',
-      'African American Studies ',
-      'African Studies ',
-      'Agriculture ',
-      'American Indian Studies ',
-      'American Studies ',
-      'Architecture ',
-      'Asian American Studies ',
-      'Asian Studies ',
-      'Dance',
-      'Visual Arts',
-      'Theater',
-      'Music',
-      'English / Literature ',
-      'Film',
-      'Foreign Language ',
-      'Graphic Design',
-      'Philosophy ',
-      'Religion ',
-      'Business',
-      'Marketing',
-      'Actuarial Science',
-      'Hospitality ',
-      'Human Resources ',
-      'Real Estate ',
-      'Health',
-      'Public Health ',
-      'Medicine ',
-      'Nursing ',
-      'Gender Studies ',
-      'Urban Studies ',
-      'Latin American Studies ',
-      'European Studies ',
-      'Gay and Lesbian Studies ',
-      'Latinx Studies ',
-      'Women’s Studies ',
-      'Education ',
-      'Psychology ',
-      'Child Development',
-      'Computer Science ',
-      'History ',
-      'Biology ',
-      'Cognitive Science ',
-      'Human Biology ',
-      'Diversity Studies ',
-      'Marine Sciences ',
-      'Maritime Studies ',
-      'Math',
-      'Nutrition ',
-      'Sports and Fitness ',
-      'Law / Legal Studies ',
-      'Military ',
-      'Public Administration ',
-      'Social Work ',
-      'Criminal Justice ',
-      'Theology ',
-      'Equestrian Studies ',
-      'Food Science ',
-      'Urban Planning',
-      'Art History ',
-      'Interior Design ',
-      'Landscape Architecture ',
-      'Chemistry ',
-      'Physics ',
-      'Chemical Engineering ',
-      'Software Engineering ',
-      'Industrial Engineering ',
-      'Civil Engineering',
-      'Electrical Engineering ',
-      'Mechanical Engineering ',
-      'Biomedical Engineering',
-      'Computer Hardware Engineering',
-      'Anatomy ',
-      'Ecology ',
-      'Genetics ',
-      'Neurosciences',
-      'Communications ',
-      'Animation ',
-      'Journalism ',
-      'Information Technology  ',
-      'Aerospace',
-      'Geography',
-      'Statistics ',
-      'Environmental Studies ',
-      'Astronomy ',
-      'Public Relations',
-      'Library Science',
-      'Anthropology',
-      'Economics',
-      'Criminology',
-      'Archaeology',
-      'Cartography',
-      'Political Science',
-      'Sociology',
-      'Construction Trades',
-      'Culinary Arts',
-      'Creative Writing'
-    ]
   end
 end
 
