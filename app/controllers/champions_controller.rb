@@ -219,9 +219,15 @@ class ChampionsController < ApplicationController
     # and then search it
     original_term = s
     query = Champion.where("
+      company ILIKE ?
+      OR
+      job_title ILIKE ?
+      OR
       array_to_string(studies, ',') ILIKE ?
       OR
       array_to_string(industries, ',') ILIKE ?",
+      s, # for company
+      s, # for title
       "%#{s}%", # for studies
       "%#{s}%"  # for industries
     ).where("willing_to_be_contacted = true")
