@@ -464,6 +464,21 @@ class UsersController < ApplicationController
       user[:applicant_type] = 'leadership_coach' if user[:applicant_type] == 'volunteer'
       user[:applicant_type] = 'event_volunteer' if user[:applicant_type] == 'temp_volunteer'
       @new_user = User.new(user)
+
+
+      if !params[:tried_dup]
+        existing = User.where(:first_name => params[:user][:first_name], :last_name => params[:user][:last_name])
+        if existing.any?
+          states
+          @user = @new_user
+          @existing = existing
+          @multiple = existing.count > 1
+          render 'existing_account'
+          return
+        end
+      end
+
+
       
       unless user[:applicant_type] == 'undergrad_student' || user[:applicant_type] == 'leadership_coach' || user[:applicant_type] == 'event_volunteer' || user[:applicant_type] == 'preaccelerator_student'
         # Partners, employers, and others are reached out to manually instead of confirming
