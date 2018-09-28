@@ -1,6 +1,17 @@
 require 'csv'
 require 'zlib'
 
+# This uses the following secrets:
+#
+# Secret                                                   | Explanation
+# ==========================================================================================================
+# Rails.application.secrets.canvas_access_token            | Access token from user settings
+# Rails.application.secrets.canvas_server                  | The domain for canvas, e.g. portal.bebraven.org
+# Rails.application.secrets.canvas_port                    | Probably 443 for https
+# Rails.application.secrets.canvas_use_ssl                 | Should be true in most cases - uses https
+# Rails.application.secrets.canvas_allow_self_signed_ssl   | Set to true when talking to a dev server
+#
+
 module BeyondZ
   # This communicates with the Canvas LMS through its REST API
   # allowing interoperation between it and our own system.
@@ -8,11 +19,37 @@ module BeyondZ
 
     public
 
+    # Will get a list of assignments for the course. To find an assignment by name,
+    # run this, then do a linear search through it for one with name == whatever
+    # and get the id out.
+    #
+    # I recommend causing this.
+    #
+    # See also: https://canvas.instructure.com/doc/api/assignments.html
+    #
+    # this function will include the overrides.
     def get_assignments(course_id)
       open_canvas_http
 
       request = Net::HTTP::Get.new(
         "/api/v1/courses/#{course_id}/assignments?include=overrides&access_token=#{Rails.application.secrets.canvas_access_token}"
+      )
+      response = @canvas_http.request(request)
+      info = get_all_from_pagination(response)
+
+      info
+    end
+
+    # Gets an assignment submission for a student
+    #
+    # Note that for an upload, the file will be under returned["attachments"][0]["url"]
+    #
+    # See: https://canvas.instructure.com/doc/api/submissions.html#method.submissions_api.show
+    def get_submission(course_id, assignment_id, student_id)
+      open_canvas_http
+
+      request = Net::HTTP::Get.new(
+        "/api/v1/courses/#{course_id}/assignments/#{assignment_id}/submissions/#{student_id}?access_token=#{Rails.application.secrets.canvas_access_token}"
       )
       response = @canvas_http.request(request)
       info = get_all_from_pagination(response)

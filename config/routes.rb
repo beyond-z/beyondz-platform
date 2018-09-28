@@ -17,6 +17,9 @@ BeyondzPlatform::Application.routes.draw do
 
   get '/coach/signup', to: redirect('/signup/new?applicant_type=leadership_coach')
   get '/student/signup', to: redirect('/signup/new?applicant_type=undergrad_student')
+  get '/student/signup/nlu', to: redirect('/signup/new?user%5Buniversity_name%5D=National+Louis+University&applicant_type=undergrad_student')
+  get '/student/signup/run', to: redirect('/signup/new?user%5Buniversity_name%5D=Rutgers+University+-+Newark&applicant_type=undergrad_student')
+  get '/student/signup/sjsu', to: redirect('/signup/new?user%5Buniversity_name%5D=San+Jose+State+University&applicant_type=undergrad_student')
   get '/employer/signup', to: redirect('/signup/new?applicant_type=employer')
   get '/partner/signup', to: redirect('/signup/new?applicant_type=partner')
   # Old URL, here for backwards compatibility
