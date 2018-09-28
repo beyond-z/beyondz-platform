@@ -467,7 +467,7 @@ class UsersController < ApplicationController
 
 
       if !params[:tried_dup]
-        existing = User.where(:first_name => params[:user][:first_name], :last_name => params[:user][:last_name])
+        existing = User.where("lower(first_name) = ? AND lower(last_name) = ?", params[:user][:first_name].downcase, params[:user][:last_name].downcase)
         if existing.any?
           states
           @user = @new_user

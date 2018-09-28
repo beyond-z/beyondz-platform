@@ -9,7 +9,7 @@
           <p>We found an existing account with your name. If <%= (@multiple ? "any of these are one of your email addresses" : "this is your email address") %>, please click your email address to log in with your existing account.</p>
 
           <% @existing.each do |e| %>
-            <%= link_to e.email, new_user_session_path(:username => e.email) %>
+            <%= link_to censor_email(e.email), new_user_session_path %>
             <br />
           <% end %>
 
