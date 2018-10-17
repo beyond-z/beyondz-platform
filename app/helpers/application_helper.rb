@@ -9,6 +9,20 @@ module ApplicationHelper
     end
   end
 
+  def censor_email(email)
+    return email if email.blank?
+
+    parts = email.split('@')
+
+    thing = parts[0]
+
+    thing = thing[0 .. thing.length/4] + "***" + thing[-(thing.length/4 + 1) .. -1]
+
+    parts[0] = thing
+
+    return parts.join('@')
+  end
+
   # for displaying phone numbers, grouping the digits makes it easier to read
   def format_phone_for_display(phone)
     return phone if phone.blank?

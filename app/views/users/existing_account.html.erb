@@ -1,0 +1,40 @@
+<div id="new-user-page">
+  <div class="plank plain-lt">
+    <div class="section-container">
+      <section>
+        <div class="col-sm-6">
+
+          <h1>Is this you?</h1>
+
+          <p>We found an existing account with your name. If <%= (@multiple ? "any of these are one of your email addresses" : "this is your email address") %>, please click your email address to log in with your existing account.</p>
+
+          <% @existing.each do |e| %>
+            <%= link_to censor_email(e.email), new_user_session_path %>
+            <br />
+          <% end %>
+
+          <h2>Not you?</h2>
+
+
+          <%= form_tag do %>
+            <% params[:user].each do |k, v| %>
+              <input type="hidden" name="user[<%=k%>]" value="<%=v%>" />
+            <% end %>
+            <% [:referrer, :undergrad_university_name].each do |k| %>
+              <input type="hidden" name="<%=k%>" value="<%=params[k]%>" />
+            <% end %>
+
+            <input type="hidden" name="tried_dup" value="true" />
+
+            <button type="submit" class="btn btn-primary">
+              <%= @multiple ? 'Those emails aren\'t mine.' : 'This email isn\'t mine.'%>
+                <br />
+                I'd like to create a new account.
+            </button>
+          <% end %>
+
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
