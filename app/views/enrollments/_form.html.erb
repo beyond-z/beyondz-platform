@@ -262,6 +262,7 @@
                     </label>
                   </div>
 
+
                 </div>
 
                 <div class="form-group student">
@@ -293,6 +294,14 @@
                   <label>Is there anything you'd like us to know about circumstances affecting your GPA?</label>
                   <%= f.text_area :gpa_circumstances, 'class' => 'form-control', 'maxlength' => '500' %>
                 </div>
+
+             <div class="form-group student">
+                <label class="volunteer coach">If still in college, what do you hope to do post-graduation?</label>
+                <label class="student">If you had to choose now, what job/profession do you want to pursue after graduation?</label>
+                <p class="help">Even if you aren't quite sure yet, please let us know what you are hoping to do, or options you are seriously considering.</p>
+                <%= f.text_area :post_graduation_plans, 'class' => 'form-control', 'maxlength' => '150' %>
+              </div>
+
 
 
                 <div class="form-group volunteer coach">
@@ -364,7 +373,7 @@
               <p class="help">Please use complete sentences!</p>
 
               <div class="form-group volunteer coach student">
-                <label class="student">In at least 100 words, share why you want to join the <%= @program_title %>. If you're not sure, email <a tabindex="-1" href="mailto:<%=@contact_email%>"><%=@contact_email%></a> and we can tell you more about the experience!</label>
+                <label class="student">In two to four sentences, share why you want to join the Career Accelerator Course. If you're not sure, email <a tabindex="-1" href="mailto:<%=@contact_email%>"><%=@contact_email%></a> and we can tell you more about the experience!</label>
                 <label class="coach">Why do you want to be a<%= (%w(a e i o u).include?(@program_title.downcase[0]) ? 'n' : '') %> <%= @program_title %> Leadership Coach?</label>
                 <label class="volunteer">Why do you want to be a volunteer and what areas of personal expertise or passion are you excited to share?</label>
                 <%= f.text_area :why_bz, 'class' => 'form-control', 'maxlength' => '1000' %>
@@ -623,8 +632,8 @@
         <div class="section-container">
           <section>
             <div id="form-almost-done">
-              <h2 class="volunteer coach student">Almost Done</h2>
-              <div class="form-group">
+              <h2 class="volunteer coach">Almost Done</h2>
+              <div class="form-group coach volunteer">
                 <label>Anything else you'd like to share?</label>
                 <p class="help">Please let us know any additional information you wish to share about your interest in <%= @program_title %> - <%= @program_site %>.</p>
                 <%= f.text_area :comments, 'class' => 'form-control', 'maxlength' => '1000' %>
