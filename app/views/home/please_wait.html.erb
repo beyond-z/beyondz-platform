@@ -3,7 +3,7 @@
     <section>
       <div class="col-sm-6 col-sm-offset-3 text-center">
         <h2>Getting your <%= (current_user.applicant_type == 'event_volunteer') ? 'registration form' : 'application' %> ready</h2>
-        <p>Just a moment<span id="dots">...</span></p>
+        <p>Getting your account ready<span id="dots">...</span></p>
       </div>
     </section>
   </div>
@@ -16,7 +16,7 @@
   var wait_count = 0;
   function check_please_wait_status() {
     wait_count += 1;
-    if(wait_count >= 4) { // 2.5 * 4 = 10 secs
+    if(wait_count >= 3) { // 2.5 * 4 = 10 secs
       location.href = '<%= welcome_path %>';
       return; // give up on the wait and just send them to the "we'll contact you soon" page
       // odds are after this, 10ish seconds, if it hasn't happened yet, it isn't going to (and the
