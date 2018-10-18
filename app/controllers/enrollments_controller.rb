@@ -187,6 +187,8 @@ class EnrollmentsController < ApplicationController
     # as that's the fastest thing that can possibly work for MVP
     @enrollment = Enrollment.find(params[:id])
 
+    @hide_footer = true
+
     set_up_lists
 
     if @enrollment.user_id != current_user.id && !current_user.admin?
@@ -347,9 +349,17 @@ class EnrollmentsController < ApplicationController
         u.apply_now_enabled = false
         u.save
 
-        redirect_to welcome_path
+        if @enrollment.position == 'student'
+          redirect_to register_path
+        else
+          redirect_to welcome_path
+        end
       end
     end
+  end
+
+  def register
+
   end
 
   def enrollment_submitted_crm_actions

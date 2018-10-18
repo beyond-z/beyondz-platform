@@ -388,12 +388,15 @@ class UsersController < ApplicationController
     states
     @referrer = request.referrer
     @user = User.new
+    if params[:user]
+      @user.applicant_type = params[:user][:applicant_type] if params[:user][:applicant_type]
+    end
     @user.applicant_type = params[:applicant_type] if params[:applicant_type]
     # some old values no longer in use, translate them for backwards compatibility
     @user.applicant_type = 'leadership_coach' if @user.applicant_type == 'volunteer'
     @user.applicant_type = 'event_volunteer' if @user.applicant_type == 'temp_volunteer'
     @user.bz_region = params[:user][:bz_region] if params[:user]
-    if params[:applicant_type]
+    if !@user.applicant_type.nil?
       @hide_other_applicant_types = true
     end
     # request.query_parameters is used instead of params because
@@ -504,6 +507,7 @@ class UsersController < ApplicationController
 
     if @new_user.errors.any?
       states
+      @hide_other_applicant_types = true
       @user = @new_user
       render 'new'
       return

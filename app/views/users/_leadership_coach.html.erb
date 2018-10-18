@@ -11,6 +11,14 @@
     <%= f.hidden_field :bz_region, :value => params[:user][:bz_region] %>
   <% end %>
 
+  <section>
+    <div>
+      Phone number:
+    </div>
+    <div class="col-sm-5">
+       <%= f.text_field :phone, 'class' => 'form-control short', 'title' => 'phone number including area code', 'pattern' => '.{10,15}', 'type' => 'tel' %>
+    </div>
+  </section>
 
   <section>
     <div>
@@ -22,7 +30,7 @@
   </section>
   <section>
     <div>
-      Company:
+      Your company or organization:
     </div>
     <div class="col-sm-7">
       <%= f.text_field :company, :class => 'form-control', :maxlength => '70' %>
