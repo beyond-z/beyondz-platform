@@ -3,15 +3,59 @@
     <div class="section-container">
       <section>
         <div class="col-sm-6">
+          <% if @user.applicant_type.nil? %>
+          <!-- first page -->
           <h1>
-            Join Us
+            Get Involved
           </h1>
 
-          <% if !@hide_other_applicant_types %>
           <p class="lead">
-          Whether you're interested in participating as a fellow, volunteering as a speaker or coach, or becoming a partner organization, you're in the right place.  
+            How would you like to get involved?
           </p>
+
+          <p>
+            <a href="<%= new_user_path(:user => { :applicant_type => 'undergrad_student' }) %>">As a Fellow (student)</a> (<a href="https://bebraven.org/become-a-fellow/#the-accelerator-experience">?</a>)
+          </p>
+          <p>
+            <a href="<%= new_user_path(:user => { :applicant_type => 'leadership_coach' }) %>">As a Leadership Coach</a> (<a href="https://bebraven.org/volunteer/">?</a>)
+          </p>
+
+          <p>Partner, offer jobs, or other: <a href="https://bebraven.org/contact/">contact us</a><p>
+          <!-- end first page -->
+          <% else %>
+
+          <h1>
+            New
+            <%= case @user.applicant_type
+              when "undergrad_student"
+                "Fellow"
+              when "leadership_coach"
+                "Coach"
+              else
+                "Volunteer"
+              end
+            %>
+          </h1>
+
+          <% if @user.applicant_type == "undergrad_student" %>
+          <div class="breadcrumbs">
+            <span class="current">Step 1: Create an Account</span>
+            ⇨
+            <span>Step 2: Set up Profile</span>
+            ⇨
+            <span>Step 3: Register</span>
+          </div>
           <% end %>
+
+          <% if @user.applicant_type == "leadership_coach" %>
+          <div class="breadcrumbs">
+            <span class="current">Step 1: Create an Account</span>
+            ⇨
+            <span>Step 2: Apply</span>
+          </div>
+          <% end %>
+
+          <p><em>Already have an account? <a href="<%= new_user_session_path %>">Log in</a>.</em></p>
 
           <div id="sign-up-form" class="">
             <div class="panel-body">
@@ -19,12 +63,13 @@
                 <%= hidden_field_tag 'referrer', @referrer %>
                 <%= render :partial => 'shared/form_errors', locals: { object: @user } %>
                 <div class="form-group">
-                  <%= f.label :first_name, 'Name', :class => 'required' %>
                   <section>
                     <div class="col-sm-6">
+                      <%= f.label :first_name, 'Name', :class => 'required' %>
                       <%= f.text_field :first_name, :class => 'form-control', required: 'required', placeholder: 'First Name', style: 'float: left;' %>
                     </div>
                     <div class="col-sm-6">
+                      <%= f.label :last_name, '&nbsp;'.html_safe %>
                       <%= f.text_field :last_name, :class => 'form-control', required: 'required', placeholder: 'Last Name', style: 'float: left;'  %>
                     <div>
                   </section>
@@ -132,7 +177,7 @@
                   <% end %>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" style="display: none;">
                   <%= f.text_area :applicant_comments, :class => 'form-control', :placeholder => 'Comments, thoughts, or questions?', :maxlength => '4000' %>
                 </div>
 
@@ -141,8 +186,10 @@
                   <button type="submit" class="button-primary">
                     <!-- We check the model campaign id to see if they will be auto-mapped based on query params. If so, next
                          step is start application, so it says that. Otherwise, generic "submit" is used. -->
-                    <% if(@user.applicant_type == 'leadership_coach' || @user.applicant_type == 'undergrad_student' || @user.applicant_type == 'preaccelerator_student') %>
-                      Next: Start Application
+                    <% if(@user.applicant_type == 'undergrad_student' || @user.applicant_type == 'preaccelerator_student') %>
+                      Next: Set Up Profile
+                    <% elsif(@user.applicant_type == 'leadership_coach') %>
+                      Next: Apply
                     <% else %>
                       Submit
                     <% end %>
@@ -152,7 +199,9 @@
               <% end %>
             </div>
           </div>
+          <% end %>
         </div>
+
 
         <div class="col-sm-4 col-sm-offset-2 hidden-xs">
           <h2>Why Join?</h2>

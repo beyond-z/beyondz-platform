@@ -3,6 +3,37 @@
 <div id="enrollment-form-holder" class="readonly">
 <% else %>
 <div id="enrollment-form-holder">
+
+      <div class="plank plain-md">
+        <div class="section-container">
+          <section>
+
+          <div class="student">
+            <h1>New Fellow</h1>
+          <div class="breadcrumbs">
+            <span class="completed">Step 1: Create an Account</span>
+            ⇨
+            <span class="current">Step 2: Set up Profile</span>
+            ⇨
+            <span>Step 3: Register</span>
+          </div>
+          </div>
+
+          <div class="coach">
+            <h1>New Coach</h1>
+          <div class="breadcrumbs">
+            <span class="completed">Step 1: Create an Account</span>
+            ⇨
+            <span class="current">Step 2: Apply</span>
+          </div>
+          </div>
+          </section>
+        </div>
+      </div>
+
+
+
+
 <% end %>
   <%= form_for @enrollment, role: 'form' do |f| %>
     <%= render :partial => "shared/form_errors", locals: { object: @enrollment } %>
@@ -10,7 +41,8 @@
       <div class="plank tertiary-md light">
         <div class="section-container">
           <header id="prototype-header">
-          <h1 class="coach student">Application for <%= @program_title %> - <%= @program_site %></h1>
+          <h1 class="student">Profile for <%= @program_title %> - <%= @program_site %></h1>
+          <h1 class="coach">Application for <%= @program_title %> - <%= @program_site %></h1>
           <h1 class="volunteer">Registration for <%= @program_title %> - <%= @program_site %></h1>
           </header>
 
@@ -23,24 +55,29 @@
           </p>
 
           <p class="help student">
-            To apply to participate in <%= @program_title %> - <%= @program_site %>, please complete and submit this application in its entirety.
+            In order to enroll in the Braven Leadership and Career Accelerator course, please fill out your profile information below and then register for the course with your university if you have not already done so. Both steps are required to complete your enrollment.
+            <!--
+            To apply to participate in <%= @program_title %> - <%= @program_site %>, please complete and submit this profile in its entirety.
+            -->
           </p>
           <p class="help student">
-          This selective opportunity requires your participation
+          This opportunity requires your participation
           
             <% if @is_preaccelerator_student %>
               as a first-year student in diverse activities intended to build your leadership and career skills. Mandatory activities include:
                 <ul class="help student">
                   <li>Available for 5 weeks during the semester you're applying for after the add/drop period</li>
-                  <li>Meet once a week for 2 hour group meetings during free-period (in person)</li>
+                  <li>Meet once a week for 2 hour small group class during free-period (in person)</li>
                   <li>Commitment to creating a freshman-year roadmap and resume</li>
                 </ul>
             <% else %>
-              in diverse activities intended to build your leadership and career skills. Mandatory activities include: <ul class="help student"><li>Once a week 2-hour group meetings in the evening (in-person)</li><li>Weekly online modules, approximately 2 hours each (on your own)</li><li>Occasional weekend events (for exact date(s), please <a href="https://bebraven.org/">see our website</a>)</li></ul>
+              in diverse activities intended to build your leadership and career skills. Mandatory activities include: <ul class="help student"><li>Once a week 2-hour small group class in the evening (in-person)</li><li>Weekly online modules, approximately 2 hours each (on your own)</li><li>One weekend event during the semester (for exact date(s), please <a href="https://bebraven.org/">see our website</a>)</li></ul>
             <% end %>
           </p>
 
-          <p class="help">The <span class="coach student">application</span><span class="volunteer">registration</span> should take approximately <span class="coach student">30</span><span class="volunteer">10</span> minutes to complete and includes the following sections:</p>
+          <p class="help student">It should only take you about ten minutes to complete your profile, which includes the following sections:</p>
+
+          <p class="help coach volunteer">The <span class="coach">application</span><span class="volunteer">registration</span> should take approximately <span class="coach student">30</span><span class="volunteer">10</span> minutes to complete and includes the following sections:</p>
 
         </div>
         <!--.section-container--> 
@@ -122,9 +159,8 @@
                 </div>
               </div>
 
-              <div class="form-group volunteer coach student" style="clear: left;">
+              <div class="form-group volunteer coach" style="clear: left;">
                 <label class="volunteer coach">Or, upload a resume as a .doc or .pdf file (2 MB or less)</label>
-                <label class="student">Optionally, you may upload a resume as a .doc or .pdf file (2 MB or less)</label>
                 <%= f.file_field :resume %>
                 <% if @enrollment.resume.present? %>
                   <%= link_to 'Download previously uploaded resume', @enrollment.resume.url %>
@@ -238,8 +274,6 @@
                   <%= f.text_field :high_school, 'class' => 'form-control', 'type' => 'text', :maxlength => '220' %>
                 </div>
 
-                <p class="help student">Note: We are asking the following questions in order to gain a fuller understanding of your academic background. Your answers will not directly affect your chances of being accepted.</p>
-
                 <div class="form-group both volunteer coach student">
                   <label>Major<span class="student">/Concentration or intended major, if you have one.</span></label>
                   <%= f.text_field :major, 'class' => 'form-control major-multi-complete', 'type' => 'text', :maxlength => '115' %>
@@ -280,11 +314,10 @@
         <!-- .section-container --></div>
 
 
-      <div class="plank plain-md volunteer coach student">
+      <div class="plank plain-md volunteer coach">
         <div class="section-container">
           <section>
             <div id="form-prof-bkg">
-              <h2 class="student">Professional and Volunteer Background and Commitment</h2>
               <h2 class="volunteer coach">Professional and Volunteer Experience</h2>
               <div class="form-group volunteer coach">
                 <h5>What is your current occupation?:</h5>
@@ -296,25 +329,20 @@
                 <label>Title:</label>
                   <%= f.text_field :title, "class"=>'form-control', 'maxlength' => '75' %><br />
               </div>
-              <div class="form-group coach student">
-                <label class="student">Please list all your extracurricular, volunteer, and professional commitments for the upcoming school year.</label>
+              <div class="form-group coach">
                 <label class="coach">Please list any other significant volunteer commitments you've made for the upcoming semester, including Board commitments, pro bono work, coaching, and other volunteer roles (recurring or occasional).</label>
-                <p class="help student">Please include approximate hours per month, and if it varies by semester, please note that too. Ex: Student worker at the library, 25 hours/month. Rugby captain, 30 hours/month, fall semester only.</p>
                 <p class="help coach">Please include approximate hours per month, and if it varies by season, please note that too. Ex: AAU girls' coach, 10 hours/week, summer only. Board member, Carver Academy - East, 4 hours/month.</p>
                 <%= f.text_area :other_commitments, 'class' => 'form-control', 'maxlength' => '1000' %>
               </div>
 
-              <div class="form-group coach student" id="form-leadership-exp">
+              <div class="form-group coach" id="form-leadership-exp">
                 <label class="coach">In at least 150 words, share <u>one</u> recent professional or volunteer experience that has been particularly meaningful to you. Why was it meaningful to you?</label>
                 <p class="coach help">While we are interested in the diversity of activities in which you're involved, we are also curious to learn more about a single experience that has been particularly meaningful to your development as a leader.</p>
-                <label class="student">In at least 150 words, share <u>one</u> professional, extracurricular, or volunteer experience that has been particularly meaningful to you. Why was it meaningful to you?</label>
-                <p class="student help">While we are interested in seeing the diversity of activities in which you're involved (described in the preceding question), we are also curious about which single experience has been particularly meaningful to your development.</p>
                 <%= f.text_area :meaningful_activity, 'class' => 'form-control', 'maxlength' => '1000' %>
               </div>
               <!-- #form-resume -->
-             <div class="form-group student">
+             <div class="form-group">
                 <label class="volunteer coach">If still in college, what do you hope to do post-graduation?</label>
-                <label class="student">If you had to choose now, what job/profession do you want to pursue after graduation?</label>
                 <p class="help">Even if you aren't quite sure yet, please let us know what you are hoping to do, or options you are seriously considering.</p>
                 <%= f.text_area :post_graduation_plans, 'class' => 'form-control', 'maxlength' => '150' %>
               </div>
@@ -330,7 +358,8 @@
         <div class="section-container">
           <section>
             <div id="form-reflective">
-              <h2 class="coach student form-section-header">Short-Answer Reflective Questions</h2>
+              <h2 class="student form-section-header">Your Interest in Braven</h2>
+              <h2 class="coachform-section-header">Short-Answer Reflective Questions</h2>
               <h2 class="volunteer form-section-header">Short-Answer Reflective Question</h2>
               <p class="help">Please use complete sentences!</p>
 
@@ -430,7 +459,7 @@
             <div id="form-personal-bkg">
               <h2 class="volunteer coach student">Personal Background</h2>
               <p class="help">We strive to ensure our community is diverse. Please respond to the following questions about your background, identity and experiences to the extent you feel comfortable.<br />
-              All questions in this section are <b>optional</b> and have no bearing on our selection decisions.</p>
+              All questions in this section are <b>optional</b>.</p>
               <h5>Which race(s)/ethnicity(-ies) do you identify with (check all that apply) <sup>&dagger;</sup> :</h5>
               <div class="form-group">
                 <label class="checkbox"><%= f.check_box :bkg_african_americanblack, 'value' => 'african-americanblack', 'id' => 'bkg_african-americanblack' %>African American/Black</label>
@@ -573,7 +602,7 @@
                   <% if @is_preaccelerator_student %>
                     all assignments. This includes: 5 weekly in-person 2-hour group sessions and creating a roadmap and resume.
                   <% else %>
-                    all required modules and assignments. This can include: weekly 2-hour group sessions; weekly independent online modules (approx 2 hours, each); weekend events (for exact date(s), please see our website); and individual coaching sessions.
+                    all required modules and assignments. This includes: weekly 2-hour small croup class sessions; weekly independent online modules (approx 2 hours, each); one weekend event (for exact date(s), please see our website); and individual coaching sessions.
                   <% end %>
                   
                   </span></span> </label>
@@ -623,7 +652,7 @@
               <% end %>
               <div class="form-group">
                 <label>Last but not least</label>
-                <p class="help">Approximately how long (in minutes) did it take you to complete this <span class="volunteer">form</span><span class="coach student">application</span>?</p>
+                <p class="help">Approximately how long (in minutes) did it take you to complete this <span class="volunteer">form</span><span class="student">profile</span><span class="coach">application</span>?</p>
                 <div class="input-group short">
                   <%= f.text_field :time_taken, 'class' => 'form-control', 'step' => '1', 'type' => 'number', 'min' => '0' %>
                   <span class="input-group-addon">minutes</span>
@@ -639,10 +668,10 @@
           <section>
             <div id="form-end">
               <% if @enrollment_read_only %>
-                <div class="apply-button">This application has been received!</div>
+                <div class="apply-button">This profile has been received!</div>
               <% else %>
                 <div class="apply-button form-submit">
-                  <button class="button-primary" type="submit" name="user_submit" onclick="return confirm('Are you sure you are ready to send your form?');">SEND</button>
+                  <button class="button-primary" type="submit" name="user_submit" onclick="return confirm('Are you sure you are ready to send your form?');"><span class="student">Next: Register</span> <span class="coach">Send</span></button>
                 </div>
               <% end %>
             </div>
