@@ -349,9 +349,17 @@ class EnrollmentsController < ApplicationController
         u.apply_now_enabled = false
         u.save
 
-        redirect_to welcome_path
+        if @enrollment.position == 'student'
+          redirect_to register_path
+        else
+          redirect_to welcome_path
+        end
       end
     end
+  end
+
+  def register
+
   end
 
   def enrollment_submitted_crm_actions
