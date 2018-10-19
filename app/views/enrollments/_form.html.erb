@@ -295,12 +295,14 @@
                   <%= f.text_area :gpa_circumstances, 'class' => 'form-control', 'maxlength' => '500' %>
                 </div>
 
+             <% if @enrollment.position == 'student' %>
              <div class="form-group student">
                 <label class="volunteer coach">If still in college, what do you hope to do post-graduation?</label>
                 <label class="student">If you had to choose now, what job/profession do you want to pursue after graduation?</label>
-                <p class="help">Even if you aren't quite sure yet, please let us know what you are hoping to do, or options you are seriously considering.</p>
+                <p class="help">Even if you aren't sure, tell us what ideas you have at the moment (we know your path might change!).</p>
                 <%= f.text_area :post_graduation_plans, 'class' => 'form-control', 'maxlength' => '150' %>
-              </div>
+             </div>
+             <% end %>
 
 
 
@@ -350,11 +352,13 @@
                 <%= f.text_area :meaningful_activity, 'class' => 'form-control', 'maxlength' => '1000' %>
               </div>
               <!-- #form-resume -->
+             <% if @enrollment.position != 'student' %>
              <div class="form-group">
                 <label class="volunteer coach">If still in college, what do you hope to do post-graduation?</label>
                 <p class="help">Even if you aren't quite sure yet, please let us know what you are hoping to do, or options you are seriously considering.</p>
                 <%= f.text_area :post_graduation_plans, 'class' => 'form-control', 'maxlength' => '150' %>
               </div>
+              <% end %>
             <!-- #form-commitment --> 
             </div>
           </section>
