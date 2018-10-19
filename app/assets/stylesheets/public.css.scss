@@ -391,16 +391,37 @@ form.submitted-invalid .invalid-message {
 }
 
 .breadcrumbs {
+  
+  font-family: TradeGothic, Oswald, sans-serif;
+  font-weight: 100;
+  text-transform: uppercase;
+
   .current {
     color: #EB3B46;
 
-  }
+  } 
 
   .completed::before {
-    content: '✅ ';
+    content: '\2714 \00a0';
+    color: green;
   }
 
   color: $knockout-lt;
   text-transform: uppercase;
   font-size: 120%;
+}
+
+.more-info {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: #ccc;
+    color: #FFF;
+    border-radius: 25px;
+    text-align: center;
+    font-size: 15px;
+    padding: 0;
+    margin: 0 0 0 1em;
+    line-height: 1.5;
+    font-weight: bold;
 }
