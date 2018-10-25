@@ -16,7 +16,7 @@
               <%= link_to "Please confirm your #{@confirm_noun} now", @show_accepted_path, style: 'color: white', onclick: 'return BZ_formSubmitWaitHelper(this);' %><br />
             </div>
           <% elsif @show_thanks %>
-            <h2>Thank you for <%= (@new_user.applicant_type == 'event_volunteer') ? 'registering with' : 'signing up to' %> <%= @program_title %>.</h2>
+            <h2>Thank you for <%= (@new_user.applicant_type == 'event_volunteer') ? 'registering with' : 'signing up for' %> <%= @program_title %>.</h2>
             <p>We will be in touch shortly with next steps. If you have any further questions please feel free to <a href="mailto:join@bebraven.org">contact us</a></p>
           <% elsif @show_completed %>
             <h2>Thank you for participating</h2>
@@ -99,7 +99,7 @@
           <p>
             You can also check out the following links to discover all the great reasons people are joining Braven:<br />
             <%= link_to 'Become a fellow', 'http://bebraven.org/become-a-fellow/' %><br />
-            <%= link_to 'Volunteer with Braven', 'http://bebraven.org/volunteer-as-a-coach/' %><br />
+            <%= link_to 'Volunteer with Braven', 'http://bebraven.org/volunteer/' %><br />
             <%= link_to 'Partner with Braven', 'http://bebraven.org/partner-with-us/' %>
           </p>
         </div>
