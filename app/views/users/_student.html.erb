@@ -44,11 +44,11 @@
   </section>
 
   <section>
-    <div>
+    <div class="required">
       Phone number:
     </div>
     <div class="col-sm-5">
-       <%= f.text_field :phone, 'class' => 'form-control short', 'title' => 'phone number including area code', 'pattern' => '.{10,15}', 'type' => 'tel' %>
+       <%= f.text_field :phone, 'class' => 'form-control short', 'title' => 'phone number including area code', 'pattern' => '.{10,15}', :required => 'required', 'type' => 'tel' %>
     </div>
   </section>
 

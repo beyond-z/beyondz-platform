@@ -236,6 +236,7 @@ class EnrollmentsController < ApplicationController
     end
 
     load_salesforce_campaign
+    set_up_lists
     render 'new'
   end
 
@@ -318,6 +319,7 @@ class EnrollmentsController < ApplicationController
       load_salesforce_campaign
 
       @position_is_set = true if @enrollment.position
+      set_up_lists
 
       render 'new'
       return
@@ -483,6 +485,7 @@ class EnrollmentsController < ApplicationController
     @enrollment = Enrollment.create(enrollment_params)
 
     if @enrollment.errors.any?
+      set_up_lists
       render 'new'
       return
     else
