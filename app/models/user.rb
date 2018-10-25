@@ -206,11 +206,21 @@ class User < ActiveRecord::Base
     salesforce = BeyondZ::Salesforce.new
     client = salesforce.get_client
 
+    working_on_contact = false
+
+    # if we are going to auto add to a campaign anyway, skip the Lead
+    # step and work directly on a contact
+    if !salesforce_campaign_id.nil?
+      working_on_contact = true
+    end
+
     # Does this user already exist on Salesforce as a manually entered contact?
-    # If we, we want to use it directly instead of trying to create a lead.
+    # If we, we want to use it directly instead of trying to create a lead/contact.
     existing_salesforce_id = salesforce.exists_in_salesforce(email)
     unless existing_salesforce_id.nil?
       self.salesforce_id = existing_salesforce_id
+
+      working_on_contact = true
     end
 
     contact = {}
@@ -222,12 +232,12 @@ class User < ActiveRecord::Base
     # If the user is already on salesforce btw, we assume they are already
     # assigned an owner (this is likely the case when they are manually entered
     # by someone who has already formed a relationship with that person)
-    unless salesforce_id
+    unless working_on_contact
       contact['OwnerId'] = salesforce_lead_owner_id
       contact['IsUnreadByOwner'] = false
     end
 
-    unless salesforce_id
+    unless working_on_contact
       contact['City'] = city
       contact['State'] = state
     else
@@ -236,11 +246,11 @@ class User < ActiveRecord::Base
       contact['MailingState'] = state
     end
 
-    contact['LeadSource'] = 'Website Signup' unless salesforce_id
+    contact['LeadSource'] = 'Website Signup' unless working_on_contact
 
-    contact['Comments_Or_Questions__c'] = applicant_comments unless salesforce_id
+    contact['Comments_Or_Questions__c'] = applicant_comments unless working_on_contact
 
-    contact['Account_Activated__c'] = self.confirmed? unless salesforce_id
+    contact['Account_Activated__c'] = self.confirmed? unless working_on_contact
 
     contact['Phone'] = phone
 
@@ -249,7 +259,7 @@ class User < ActiveRecord::Base
     contact['Signup_Date__c'] = created_at
     contact['Came_From_to_Visit_Site__c'] = external_referral_url
     contact['User_Type__c'] = salesforce_applicant_type
-    if salesforce_id
+    if working_on_contact
       # On Contact, we changed the name as there's more info available on that record
       # so it had to be more specific.
       contact['Undergrad_University__c'] = university_name
@@ -260,13 +270,13 @@ class User < ActiveRecord::Base
     contact['Anticipated_Graduation_Semester__c'] = anticipated_graduation_semester
     if applicant_type == 'employer'
       # Industry on Contact is a custom field...
-      contact[salesforce_id ? 'Industry__c' : 'Industry'] = profession
+      contact[working_on_contact ? 'Industry__c' : 'Industry'] = profession
     else
       contact['Title'] = profession
     end
 
     # Company on Contact is a custom field...
-    contact[salesforce_id ? 'Company__c' : 'Company'] = (company.nil? || company.empty?) ? "#{name} (individual)" : company
+    contact[working_on_contact ? 'Company__c' : 'Company'] = (company.nil? || company.empty?) ? "#{name} (individual)" : company
 
     contact['Started_College__c'] = started_college_in
     contact['Enrollment_Semester__c'] = started_college_in_semester
@@ -281,10 +291,11 @@ class User < ActiveRecord::Base
     contact['BZ_Region__c'] = (region.blank? || region.strip == 'Other:') ? 'National' : region
 
     lead_created = false
+    add_to_campaign = false
 
     # The Lead class provided by the gem is buggy so we do it with this call instead
     # which is what Lead.save calls anyway
-    unless salesforce_id
+    unless working_on_contact
       # If the salesforce_id is already set, they are a person created
       # manually who is now signing up.
       #
@@ -297,12 +308,23 @@ class User < ActiveRecord::Base
     else
       # And if salesforce_id is set already, we found an existing Contact,
       # so we update that record instead
-
-      client.update('Contact', salesforce_id, contact)
-      lead_created = false
+      if salesforce_id
+        client.update('Contact', salesforce_id, contact)
+        lead_created = false
+      else
+        contact = client.create('Contact', contact)
+        self.salesforce_id = contact['Id']
+        lead_created = false
+        # new contacts should be added to the campaign without even waiting
+        add_to_campaign = true
+      end
     end
 
     save!
+
+    if add_to_campaign
+      auto_add_to_salesforce_campaign
+    end
 
     lead_created
   end
