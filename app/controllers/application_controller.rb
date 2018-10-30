@@ -124,7 +124,7 @@ class ApplicationController < ActionController::Base
       'Tourism',
       'Transportation / Travel',
       'Writing'
-    ]
+    ].sort
 
     @fields = [
       'Accounting',
@@ -224,7 +224,7 @@ class ApplicationController < ActionController::Base
       'Construction Trades',
       'Culinary Arts',
       'Creative Writing'
-    ]
+    ].sort
   end
 
 end
