@@ -20,18 +20,18 @@
 
             <p>Have you registered to take this course through your university yet?</p>
 
-            <form action="<%= welcome_path %>">
-
+            <%= form_tag do |form| %>
+              <input type="hidden" name="id" value="<%= @enrollment_id %>" />
               <dl>
-                <dt><input type="radio" name="registered" value="yes" /> Yes, I've registered</dt>
+                <dt><input type="radio" name="registered" value="registered" /> Yes, I've registered</dt>
                   <dd>Great! Click "done" below and look out for Braven emails about next steps.</dd>
 
-                <dt><input type="radio" name="registered" value="no" /> Not yet</dt>
+                <dt><input type="radio" name="registered" value="not_yet" /> Not yet</dt>
                   <dd>Okay. Be sure to register for the course through your university, otherwise you won't be able to take it!</dd>
               </dl>
 
               <input class="btn-primary" value="Done" type="submit" />
-            </form>
+            <% end %>
           </div>
 
         </div>

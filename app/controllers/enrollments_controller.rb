@@ -352,7 +352,7 @@ class EnrollmentsController < ApplicationController
         u.save
 
         if @enrollment.position == 'student'
-          redirect_to register_path
+          redirect_to register_path(:enrollment_id => @enrollment.id)
         else
           redirect_to welcome_path
         end
@@ -361,7 +361,17 @@ class EnrollmentsController < ApplicationController
   end
 
   def register
+    @enrollment_id = params[:enrollment_id]
+  end
 
+  def save_register
+    enrollment = Enrollment.find(params[:id])
+    if(enrollment.user_id != current_user.id)
+      raise Exception.new("wrong user")
+    end
+    enrollment.registration_status = params[:registered]
+    enrollment.save(validate: false) # we just updating this one field, no need to check others
+    redirect_to welcome_path
   end
 
   def enrollment_submitted_crm_actions

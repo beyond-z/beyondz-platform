@@ -11,11 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180829161512) do
+ActiveRecord::Schema.define(version: 20181030183043) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "pg_stat_statements"
 
   create_table "assignment_definitions", force: true do |t|
     t.string   "title"
@@ -116,6 +115,7 @@ ActiveRecord::Schema.define(version: 20180829161512) do
     t.datetime "latest_email_from_fellow_sent"
     t.datetime "first_email_from_champion_sent"
     t.datetime "latest_email_from_champion_sent"
+    t.boolean  "fellow_outreach_notice_sent"
   end
 
   create_table "champion_stats", force: true do |t|
@@ -143,6 +143,8 @@ ActiveRecord::Schema.define(version: 20180829161512) do
     t.string   "company"
     t.string   "job_title"
     t.string   "salesforce_id"
+    t.datetime "flood_notice_last_emailed"
+    t.datetime "unresponsive_indicated_at"
   end
 
   create_table "champions_search_synonyms", force: true do |t|
@@ -315,10 +317,12 @@ ActiveRecord::Schema.define(version: 20180829161512) do
     t.string   "student_course"
     t.string   "student_confirmed"
     t.text     "student_confirmed_notes"
+    t.text     "what_to_land_strong_first_job"
     t.string   "address1"
     t.string   "address2"
     t.string   "zip"
     t.text     "want_grow_professionally"
+    t.string   "registration_status"
   end
 
   add_index "enrollments", ["user_id"], name: "index_enrollments_on_user_id", using: :btree
