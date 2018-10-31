@@ -20,7 +20,7 @@
 
             <p>Have you registered to take this course through your university yet?</p>
 
-            <p><%= @registration_instructions %></p>
+            <p><%= linkify_text(@registration_instructions) %></p>
 
             <%= form_tag do |form| %>
               <input type="hidden" name="id" value="<%= @enrollment.id %>" />
