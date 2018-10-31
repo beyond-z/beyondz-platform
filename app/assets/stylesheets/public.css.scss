@@ -412,16 +412,24 @@ form.submitted-invalid .invalid-message {
 }
 
 .more-info {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    background: #ccc;
-    color: #FFF;
-    border-radius: 25px;
-    text-align: center;
-    font-size: 15px;
-    padding: 0;
-    margin: 0 0 0 1em;
-    line-height: 1.5;
-    font-weight: bold;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: #ccc;
+  color: #FFF !important;
+  border-radius: 25px;
+  text-align: center;
+  font-size: 15px;
+  padding: 0;
+  margin: 0 0 0 1em;
+  line-height: 1.5;
+  font-weight: bold;
+}
+
+.more-info:hover {
+  background: #0071bc;
+}
+
+.carousel-item {
+  animation: fading 10s infinite;
 }
