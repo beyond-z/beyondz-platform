@@ -396,9 +396,12 @@ form.submitted-invalid .invalid-message {
   font-weight: 100;
   text-transform: uppercase;
 
+  span {
+    display: block;
+  }
+
   .current {
     color: #EB3B46;
-
   } 
 
   .completed {
@@ -437,8 +440,4 @@ form.submitted-invalid .invalid-message {
 
 .carousel-item {
   margin-left: 0;
-}
-
-.breadcrumbs span {
-  display: block;
 }
