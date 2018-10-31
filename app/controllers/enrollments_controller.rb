@@ -270,6 +270,8 @@ class EnrollmentsController < ApplicationController
         @student_id_excluded_chars = campaign.Student_ID_Excluded_Chars__c
         @contact_email = sf.load_cached_user_email(campaign.OwnerId)
         @is_preaccelerator_student = (campaign.Type == 'Pre-Accelerator Participants')
+
+        @registration_instructions = campaign.Registration_Instructions__c
       end
     end
   end
@@ -361,7 +363,8 @@ class EnrollmentsController < ApplicationController
   end
 
   def register
-    @enrollment_id = params[:enrollment_id]
+    @enrollment = Enrollment.find(params[:enrollment_id])
+    load_salesforce_campaign
   end
 
   def save_register
