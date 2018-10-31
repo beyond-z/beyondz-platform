@@ -401,9 +401,14 @@ form.submitted-invalid .invalid-message {
 
   } 
 
-  .completed::before {
+  .completed {
+    color: green;
+  }
+
+  .completed::after {
     content: '\2714 \00a0';
     color: green;
+    margin-left: 0.5em;
   }
 
   color: $knockout-lt;
@@ -434,3 +439,6 @@ form.submitted-invalid .invalid-message {
   margin-left: 0;
 }
 
+.breadcrumbs span {
+  display: block;
+}
