@@ -9,6 +9,17 @@ module ApplicationHelper
     end
   end
 
+  def linkify_text(text)
+    return text if text.nil?
+    text = text.gsub("&", "&amp;")
+    text = text.gsub("<", "&lt;")
+    text = text.gsub(">", "&gt;")
+    text = text.gsub("\"", "&quot;")
+    text = text.gsub("\n", "<br />\n")
+    text = text.gsub(URI.regexp, "<a target=\"_BLANK\" href=\"\\0\">\\0</a>")
+    text.html_safe
+  end
+
   def censor_email(email)
     return email if email.blank?
 

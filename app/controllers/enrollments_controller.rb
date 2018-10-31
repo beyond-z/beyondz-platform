@@ -270,6 +270,8 @@ class EnrollmentsController < ApplicationController
         @student_id_excluded_chars = campaign.Student_ID_Excluded_Chars__c
         @contact_email = sf.load_cached_user_email(campaign.OwnerId)
         @is_preaccelerator_student = (campaign.Type == 'Pre-Accelerator Participants')
+
+        @registration_instructions = campaign.Registration_Instructions__c
       end
     end
   end
@@ -352,7 +354,7 @@ class EnrollmentsController < ApplicationController
         u.save
 
         if @enrollment.position == 'student'
-          redirect_to register_path
+          redirect_to register_path(:enrollment_id => @enrollment.id)
         else
           redirect_to welcome_path
         end
@@ -361,7 +363,18 @@ class EnrollmentsController < ApplicationController
   end
 
   def register
+    @enrollment = Enrollment.find(params[:enrollment_id])
+    load_salesforce_campaign
+  end
 
+  def save_register
+    enrollment = Enrollment.find(params[:id])
+    if(enrollment.user_id != current_user.id)
+      raise Exception.new("wrong user")
+    end
+    enrollment.registration_status = params[:registered]
+    enrollment.save(validate: false) # we just updating this one field, no need to check others
+    redirect_to welcome_path
   end
 
   def enrollment_submitted_crm_actions
