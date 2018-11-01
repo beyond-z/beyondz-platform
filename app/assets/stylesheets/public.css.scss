@@ -396,14 +396,22 @@ form.submitted-invalid .invalid-message {
   font-weight: 100;
   text-transform: uppercase;
 
+  span {
+    display: block;
+  }
+
   .current {
     color: #EB3B46;
-
   } 
 
-  .completed::before {
+  .completed {
+    color: green;
+  }
+
+  .completed::after {
     content: '\2714 \00a0';
     color: green;
+    margin-left: 0.5em;
   }
 
   color: $knockout-lt;
@@ -412,16 +420,24 @@ form.submitted-invalid .invalid-message {
 }
 
 .more-info {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    background: #ccc;
-    color: #FFF;
-    border-radius: 25px;
-    text-align: center;
-    font-size: 15px;
-    padding: 0;
-    margin: 0 0 0 1em;
-    line-height: 1.5;
-    font-weight: bold;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: #ccc;
+  color: #FFF !important;
+  border-radius: 25px;
+  text-align: center;
+  font-size: 15px;
+  padding: 0;
+  margin: 0 0 0 1em;
+  line-height: 1.5;
+  font-weight: bold;
+}
+
+.more-info:hover {
+  background: #0071bc;
+}
+
+.carousel-item {
+  margin-left: 0;
 }
