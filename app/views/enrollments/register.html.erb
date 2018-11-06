@@ -1,0 +1,42 @@
+  <div class="plank plain-lt">
+    <div class="section-container">
+      <section>
+        <div class="col-sm-8">
+          <h1>
+            New Fellow
+          </h1>
+
+          <div class="breadcrumbs">
+            <span class="completed">Step 1: Create an Account</span>
+            <span class="completed">Step 2: Set up Profile</span>
+            <span class="current">Step 3: Register</span>
+          </div>
+
+          <div style="padding-top: 1em;">
+
+            <p>You're almost done!</p>
+
+            <p>Have you registered to take this course through your university yet?</p>
+
+            <% unless @registration_instructions.blank? %>
+              <p><%= linkify_text(@registration_instructions) %></p>
+            <% end %>
+
+            <%= form_tag do |form| %>
+              <input type="hidden" name="id" value="<%= @enrollment.id %>" />
+              <dl>
+                <dt><input type="radio" name="registered" value="registered" /> Yes, I've registered</dt>
+                  <dd>Great! Click "done" below and look out for Braven emails about next steps.</dd>
+
+                <dt><input type="radio" name="registered" value="not_yet" /> Not yet</dt>
+                  <dd>Okay. Be sure to register for the course through your university, otherwise you won't be able to take it!</dd>
+              </dl>
+
+              <input class="btn-primary" value="Done" type="submit" />
+            <% end %>
+          </div>
+
+        </div>
+      </section>
+    </div>
+  </div>

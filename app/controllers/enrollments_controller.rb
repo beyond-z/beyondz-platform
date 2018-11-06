@@ -187,6 +187,8 @@ class EnrollmentsController < ApplicationController
     # as that's the fastest thing that can possibly work for MVP
     @enrollment = Enrollment.find(params[:id])
 
+    @hide_footer = true
+
     set_up_lists
 
     if @enrollment.user_id != current_user.id && !current_user.admin?
@@ -234,6 +236,7 @@ class EnrollmentsController < ApplicationController
     end
 
     load_salesforce_campaign
+    set_up_lists
     render 'new'
   end
 
@@ -267,6 +270,8 @@ class EnrollmentsController < ApplicationController
         @student_id_excluded_chars = campaign.Student_ID_Excluded_Chars__c
         @contact_email = sf.load_cached_user_email(campaign.OwnerId)
         @is_preaccelerator_student = (campaign.Type == 'Pre-Accelerator Participants')
+
+        @registration_instructions = campaign.Registration_Instructions__c
       end
     end
   end
@@ -316,6 +321,7 @@ class EnrollmentsController < ApplicationController
       load_salesforce_campaign
 
       @position_is_set = true if @enrollment.position
+      set_up_lists
 
       render 'new'
       return
@@ -347,9 +353,28 @@ class EnrollmentsController < ApplicationController
         u.apply_now_enabled = false
         u.save
 
-        redirect_to welcome_path
+        if @enrollment.position == 'student'
+          redirect_to register_path(:enrollment_id => @enrollment.id)
+        else
+          redirect_to welcome_path
+        end
       end
     end
+  end
+
+  def register
+    @enrollment = Enrollment.find(params[:enrollment_id])
+    load_salesforce_campaign
+  end
+
+  def save_register
+    enrollment = Enrollment.find(params[:id])
+    if(enrollment.user_id != current_user.id)
+      raise Exception.new("wrong user")
+    end
+    enrollment.registration_status = params[:registered]
+    enrollment.save(validate: false) # we just updating this one field, no need to check others
+    redirect_to welcome_path
   end
 
   def enrollment_submitted_crm_actions
@@ -473,6 +498,7 @@ class EnrollmentsController < ApplicationController
     @enrollment = Enrollment.create(enrollment_params)
 
     if @enrollment.errors.any?
+      set_up_lists
       render 'new'
       return
     else

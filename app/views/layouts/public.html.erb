@@ -71,7 +71,9 @@
         <%= yield %>
       </main>
 
+      <% unless @hide_footer %>
       <%= render 'shared/footer' %>
+      <% end %>
 
     </div> <!-- .public-container -->
 
