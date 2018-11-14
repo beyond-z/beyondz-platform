@@ -178,13 +178,8 @@ module BeyondZ
       info = JSON.parse(info.body)
 
       client = Google::APIClient.new({ :application_name => 'Braven', :application_version => '1.0.0' })
-      auth = client.authorization
-      auth.client_id = Rails.application.secrets.google_spreadsheet_client_id
-      auth.client_secret = Rails.application.secrets.google_spreadsheet_client_secret
-      auth.refresh_token = Rails.application.secrets.google_spreadsheet_refresh_token
 
-      auth.fetch_access_token!
-      session = GoogleDrive.login_with_oauth(auth.access_token)
+      session = GoogleDrive.login_with_oauth(Rails.application.secrets.google_spreadsheet_key)
 
       sheet = session.spreadsheet_by_key(file_key)
 
