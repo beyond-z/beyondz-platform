@@ -25,6 +25,8 @@ module BeyondZ
       end
     
       def create
+        return false if user.salesforce_id.blank?
+
         if mailchimp_record
           error "Mailchimp e-mail record for '#{mailchimp_record['email_address']}' already exists"
           return false
