@@ -314,6 +314,7 @@ class User < ActiveRecord::Base
       else
         contact = client.create('Contact', contact)
         self.salesforce_id = contact['Id']
+        self.is_converted_on_salesforce = true # we creating converted immediately
         lead_created = false
         # new contacts should be added to the campaign without even waiting
         add_to_campaign = true
@@ -324,6 +325,8 @@ class User < ActiveRecord::Base
 
     if add_to_campaign
       auto_add_to_salesforce_campaign
+      # and we create on mailchimp when creating on SF too
+      self.create_mailchimp
     end
 
     lead_created
