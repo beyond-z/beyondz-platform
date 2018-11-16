@@ -25,6 +25,8 @@ module BeyondZ
       end
     
       def create
+        return false if user.salesforce_id.blank?
+
         if mailchimp_record
           error "Mailchimp e-mail record for '#{mailchimp_record['email_address']}' already exists"
           return false
@@ -38,8 +40,12 @@ module BeyondZ
     
       def update
         unless mailchimp_record
-          error("Mailchimp e-mail record was not found")
-          return false
+          # error("Mailchimp e-mail record was not found")
+          # return false
+
+          # Instead of erroring (which happens an awful lot), let's just
+          # create the record on-demand from our existing data.
+          return create
         end
         
         # we return true because no error has occurred, we're just being efficient.
