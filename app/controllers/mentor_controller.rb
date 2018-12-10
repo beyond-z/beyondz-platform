@@ -82,7 +82,7 @@ class MentorController < ApplicationController
     load_campaign_data("Mentee")
 
     # is the user in the campaign? if no, add them now
-    current_user.ensure_in_salesforce_campaign_for(current_user.bz_region, "mentee")
+    current_user.ensure_in_salesforce_campaign_for(current_user.university_name, "mentee")
   end
 
   def save_mentor_app
