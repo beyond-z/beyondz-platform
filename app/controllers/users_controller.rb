@@ -483,7 +483,7 @@ class UsersController < ApplicationController
 
 
       
-      unless user[:applicant_type] == 'undergrad_student' || user[:applicant_type] == 'leadership_coach' || user[:applicant_type] == 'event_volunteer' || user[:applicant_type] == 'preaccelerator_student'
+      unless user[:applicant_type] == 'undergrad_student' || user[:applicant_type] == 'leadership_coach' || user[:applicant_type] == 'event_volunteer' || user[:applicant_type] == 'preaccelerator_student' || user[:applicant_type] == 'professional_mentor'
         # Partners, employers, and others are reached out to manually instead of confirming
         # their account. We immediate make on salesforce and don't require confirmation so
         # we can contact them quickly and painlessly (to them!).

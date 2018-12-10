@@ -1,0 +1,415 @@
+<style>
+  label { display: block; }
+  ol, ul { list-style-type: initial; }
+  #form-end { text-align: center; }
+</style>
+<div id="new-mentor-app">
+
+      <div class="plank tertiary-md light">
+        <div class="section-container">
+      <section>
+        <div class="col-sm-12">
+          <h1>
+            Professional Mentor Application
+          </h1>
+          </div>
+        </section>
+      </div>
+      </div>
+
+
+  <div class="plank plain-lt">
+    <div class="section-container">
+      <section>
+      <div class="col-sm-12">
+
+
+
+
+      <%= form_tag do |f| %>
+        <input type="hidden" name="campaign_id" value="<%=@campaign_id%>" />
+        <div>
+          <div>
+            <div>
+              <p>
+                Thank you for your interest in the Professional Mentor volunteer role! Please complete the following application by
+                <b> <%=@due_date%></b>
+                .
+              </p>
+              <p>
+                The Braven Accelerator empowers promising young people on their path to college graduation, meaningful careers, and lives of impact. Alongside educational institutions, Braven provides a scalable model to discover, develop, and connect extraordinary, diverse, and driven young people to high-quality skill building, opportunities, and networks. Braven supports its Fellows by offering 1) the Braven Accelerator: a credit-bearing, semester-long career and leadership course, and 2) programming that continues through college graduation.
+              </p>
+              <p>
+                As an essential piece of this programming, Professional Mentors (PMs) guide Braven Fellows on their path to securing quality postgraduate opportunities and support their professional development along the way. Each PM is paired with a junior, senior, or recent college graduate at <%= @program_site %> for&#160;
+                <strong><%=@number_of_weeks%> weeks from <%=@start_date%> - <%=@end_date%></strong>
+                &#160;and provides weekly 1:1 coaching on the job or internship search and application process and professional competencies. The volunteer commitment is as follows:
+              </p>
+              <ul>
+                <li>Commit ~2 hrs per week with option to continue meeting with Fellow after commitment ends</li>
+                <li>Attend an<b> in-person </b>kickoff event&#160;on <b><%=@kickoff_date%></b></li>
+                <li>Attend a&#160;<strong>60min&#160;</strong>mid-commitment check-in call&#160;</li>
+                <li>Meet with Fellow&#160;once a week virtually at a mutually convenient time</li>
+                <li>Meet in-person at least once during the commitment (in addition to kickoff)</li>
+                <li>Prepare for meetings and follow up as necessary throughout the week</li>
+                <li>Guide Fellow through the steps of job attainment and help them develop professional polish</li>
+                <li>Serve as an advocate and cheerleader for your Fellow</li>
+                <li>Keep Braven staff updated on Fellow&#8217;s progress through weekly progress forms&#160;</li>
+              </ul>
+              <br />
+              Questions: Email <a href="mailto:<%=@contact_email%>"><%=@contact_email%></a>
+              <div>
+                <p>
+                  <strong>We are looking for professionals who work in the following industries:</strong>
+                  <br />
+                  <br />
+                </p>
+                <p><%=@desired_industries%></p>
+              </div>
+            </div>
+            <hr />
+            <br />
+          <h2>Contact Information</h2>
+            <b>&#160;Please enter the following information about yourself:</b>
+            <label>
+              First Name:
+              <input class="form-control" name="first_name" type="text" value="<%=@first_name%>" />
+            </label>
+            <label>
+              Last Name:
+              <input class="form-control" name="last_name" type="text" value="<%=@last_name%>" />
+            </label>
+            <label>
+              Email address:
+              <input class="form-control" name="email" type="text" value="<%=@email%>" />
+            </label>
+            <label>
+              LinkedIn profile URL:
+              <input class="form-control" name="linkedin_url" type="text" />
+            </label>
+            <br />
+            <b>Where do you live?</b>
+            <label>
+              City:
+              <input class="form-control" name="city" type="text" value="<%=@city%>" />
+            </label>
+            <label>
+              State:
+              <input class="form-control" name="state" type="text" value="<%=@state%>" />
+            </label>
+            <br />
+            <b>Where do you work?</b>
+            <label>
+              City:
+              <input class="form-control" name="work_city" type="text" />
+            </label>
+            <label>
+              State:
+              <input class="form-control" name="work_state" type="text" />
+            </label>
+          </div>
+          <h2>Professional Background</h2>
+          <div>
+            <br />
+            <b>What was your college major?</b>
+            <br />
+            <select class="form-control" name="major">
+              <option value="Accounting">Accounting</option>
+              <option value="Actuarial Science">Actuarial Science</option>
+              <option value="Advertising And Public Relations">Advertising And Public Relations</option>
+              <option value="Aerospace Engineering">Aerospace Engineering</option>
+              <option value="Agricultural Economics">Agricultural Economics</option>
+              <option value="Agriculture Production And Management">Agriculture Production And Management</option>
+              <option value="Animal Sciences">Animal Sciences</option>
+              <option value="Anthropology And Archeology">Anthropology And Archeology</option>
+              <option value="Applied Mathematics">Applied Mathematics</option>
+              <option value="Architectural Engineering">Architectural Engineering</option>
+              <option value="Architecture">Architecture</option>
+              <option value="Area Ethnic And Civilization Studies">Area Ethnic And Civilization Studies</option>
+              <option value="Art And Music Education">Art And Music Education</option>
+              <option value="Art History And Criticism">Art History And Criticism</option>
+              <option value="Astronomy And Astrophysics">Astronomy And Astrophysics</option>
+              <option value="Atmospheric Sciences And Meteorology">Atmospheric Sciences And Meteorology</option>
+              <option value="Biochemical Sciences">Biochemical Sciences</option>
+              <option value="Biological Engineering">Biological Engineering</option>
+              <option value="Biology">Biology</option>
+              <option value="Biomedical Engineering">Biomedical Engineering</option>
+              <option value="Botany">Botany</option>
+              <option value="Business Economics">Business Economics</option>
+              <option value="Business Management And Administration">Business Management And Administration</option>
+              <option value="Chemical Engineering">Chemical Engineering</option>
+              <option value="Chemistry">Chemistry</option>
+              <option value="Civil Engineering">Civil Engineering</option>
+              <option value="Clinical Psychology">Clinical Psychology</option>
+              <option value="Cognitive Science And Biopsychology">Cognitive Science And Biopsychology</option>
+              <option value="Commercial Art And Graphic Design">Commercial Art And Graphic Design</option>
+              <option value="Communication Disorders Sciences And Services">Communication Disorders Sciences And Services</option>
+              <option value="Communication Technologies">Communication Technologies</option>
+              <option value="Communications">Communications</option>
+              <option value="Community And Public Health">Community And Public Health</option>
+              <option value="Composition And Rhetoric">Composition And Rhetoric</option>
+              <option value="Computer Administration Management And Security">Computer Administration Management And Security</option>
+              <option value="Computer And Information Systems">Computer And Information Systems</option>
+              <option value="Computer Engineering">Computer Engineering</option>
+              <option value="Computer Networking And Telecommunications">Computer Networking And Telecommunications</option>
+              <option value="Computer Programming And Data Processing">Computer Programming And Data Processing</option>
+              <option value="Computer Science">Computer Science</option>
+              <option value="Construction Services">Construction Services</option>
+              <option value="Cosmetology Services And Culinary Arts">Cosmetology Services And Culinary Arts</option>
+              <option value="Counseling Psychology">Counseling Psychology</option>
+              <option value="Court Reporting">Court Reporting</option>
+              <option value="Criminal Justice And Fire Protection">Criminal Justice And Fire Protection</option>
+              <option value="Criminology">Criminology</option>
+              <option value="Drama And Theater Arts">Drama And Theater Arts</option>
+              <option value="Early Childhood Education">Early Childhood Education</option>
+              <option value="Ecology">Ecology</option>
+              <option value="Economics">Economics</option>
+              <option value="Educational Administration And Supervision">Educational Administration And Supervision</option>
+              <option value="Educational Psychology">Educational Psychology</option>
+              <option value="Electrical Engineering">Electrical Engineering</option>
+              <option value="Electrical Engineering Technology">Electrical Engineering Technology</option>
+              <option value="Electrical, Mechanical, And Precision Technologies And Production">Electrical, Mechanical, And Precision Technologies And Production</option>
+              <option value="Elementary Education">Elementary Education</option>
+              <option value="Engineering And Industrial Management">Engineering And Industrial Management</option>
+              <option value="Engineering Mechanics Physics And Science">Engineering Mechanics Physics And Science</option>
+              <option value="Engineering Technologies">Engineering Technologies</option>
+              <option value="English Language And Literature">English Language And Literature</option>
+              <option value="Environmental Engineering">Environmental Engineering</option>
+              <option value="Environmental Science">Environmental Science</option>
+              <option value="Family And Consumer Sciences">Family And Consumer Sciences</option>
+              <option value="Film Video And Photographic Arts">Film Video And Photographic Arts</option>
+              <option value="Finance">Finance</option>
+              <option value="Fine Arts">Fine Arts</option>
+              <option value="Food Science">Food Science</option>
+              <option value="Forestry">Forestry</option>
+              <option value="French German Latin And Other Common Foreign Language Studies">French German Latin And Other Common Foreign Language Studies</option>
+              <option value="General Agriculture">General Agriculture</option>
+              <option value="General Business">General Business</option>
+              <option value="General Education">General Education</option>
+              <option value="General Engineering">General Engineering</option>
+              <option value="General Medical And Health Services">General Medical And Health Services</option>
+              <option value="General Social Sciences">General Social Sciences</option>
+              <option value="Genetics">Genetics</option>
+              <option value="Geography">Geography</option>
+              <option value="Geological And Geophysical Engineering">Geological And Geophysical Engineering</option>
+              <option value="Geology And Earth Science">Geology And Earth Science</option>
+              <option value="Geosciences">Geosciences</option>
+              <option value="Health And Medical Administrative Services">Health And Medical Administrative Services</option>
+              <option value="Health And Medical Preparatory Programs">Health And Medical Preparatory Programs</option>
+              <option value="History">History</option>
+              <option value="Hospitality Management">Hospitality Management</option>
+              <option value="Human Resources And Personnel Management">Human Resources And Personnel Management</option>
+              <option value="Human Services And Community Organization">Human Services And Community Organization</option>
+              <option value="Humanities">Humanities</option>
+              <option value="Industrial And Manufacturing Engineering">Industrial And Manufacturing Engineering</option>
+              <option value="Industrial And Organizational Psychology">Industrial And Organizational Psychology</option>
+              <option value="Industrial Production Technologies">Industrial Production Technologies</option>
+              <option value="Information Sciences">Information Sciences</option>
+              <option value="Intercultural And International Studies">Intercultural And International Studies</option>
+              <option value="Interdisciplinary Social Sciences">Interdisciplinary Social Sciences</option>
+              <option value="International Business">International Business</option>
+              <option value="International Relations">International Relations</option>
+              <option value="Journalism">Journalism</option>
+              <option value="Language And Drama Education">Language And Drama Education</option>
+              <option value="Liberal Arts">Liberal Arts</option>
+              <option value="Library Science">Library Science</option>
+              <option value="Linguistics And Comparative Language And Literature">Linguistics And Comparative Language And Literature</option>
+              <option value="Management Information Systems And Statistics">Management Information Systems And Statistics</option>
+              <option value="Marketing And Marketing Research">Marketing And Marketing Research</option>
+              <option value="Mass Media">Mass Media</option>
+              <option value="Materials Engineering And Materials Science">Materials Engineering And Materials Science</option>
+              <option value="Materials Science">Materials Science</option>
+              <option value="Mathematics">Mathematics</option>
+              <option value="Mathematics And Computer Science">Mathematics And Computer Science</option>
+              <option value="Mathematics Teacher Education">Mathematics Teacher Education</option>
+              <option value="Mechanical Engineering">Mechanical Engineering</option>
+              <option value="Mechanical Engineering Related Technologies">Mechanical Engineering Related Technologies</option>
+              <option value="Medical Assisting Services">Medical Assisting Services</option>
+              <option value="Medical Technologies Technicians">Medical Technologies Technicians</option>
+              <option value="Metallurgical Engineering">Metallurgical Engineering</option>
+              <option value="Microbiology">Microbiology</option>
+              <option value="Military Technologies">Military Technologies</option>
+              <option value="Mining And Mineral Engineering">Mining And Mineral Engineering</option>
+              <option value="Molecular Biology">Molecular Biology</option>
+              <option value="Multi/Interdisciplinary Studies">Multi/Interdisciplinary Studies</option>
+              <option value="Multi-Disciplinary Or General Science">Multi-Disciplinary Or General Science</option>
+              <option value="Music">Music</option>
+              <option value="Natural Resources Management">Natural Resources Management</option>
+              <option value="Naval Architecture And Marine Engineering">Naval Architecture And Marine Engineering</option>
+              <option value="Neuroscience">Neuroscience</option>
+              <option value="Nuclear Engineering">Nuclear Engineering</option>
+              <option value="Nuclear, Industrial Radiology, And Biological Technologies">Nuclear, Industrial Radiology, And Biological Technologies</option>
+              <option value="Nursing">Nursing</option>
+              <option value="Nutrition Sciences">Nutrition Sciences</option>
+              <option value="Oceanography">Oceanography</option>
+              <option value="Operations Logistics And E-Commerce">Operations Logistics And E-Commerce</option>
+              <option value="Other Foreign Languages">Other Foreign Languages</option>
+              <option value="Petroleum Engineering">Petroleum Engineering</option>
+              <option value="Pharmacology">Pharmacology</option>
+              <option value="Pharmacy Pharmaceutical Sciences And Administration">Pharmacy Pharmaceutical Sciences And Administration</option>
+              <option value="Philosophy And Religious Studies">Philosophy And Religious Studies</option>
+              <option value="Physical And Health Education Teaching">Physical And Health Education Teaching</option>
+              <option value="Physical Fitness Parks Recreation And Leisure">Physical Fitness Parks Recreation And Leisure</option>
+              <option value="Physical Sciences">Physical Sciences</option>
+              <option value="Physics">Physics</option>
+              <option value="Physiology">Physiology</option>
+              <option value="Plant Science And Agronomy">Plant Science And Agronomy</option>
+              <option value="Political Science And Government">Political Science And Government</option>
+              <option value="Pre-Law And Legal Studies">Pre-Law And Legal Studies</option>
+              <option value="Psychology">Psychology</option>
+              <option value="Public Administration">Public Administration</option>
+              <option value="Public Policy">Public Policy</option>
+              <option value="School Student Counseling">School Student Counseling</option>
+              <option value="Science And Computer Teacher Education">Science And Computer Teacher Education</option>
+              <option value="Secondary Teacher Education">Secondary Teacher Education</option>
+              <option value="Social Psychology">Social Psychology</option>
+              <option value="Social Science Or History Teacher Education">Social Science Or History Teacher Education</option>
+              <option value="Social Work">Social Work</option>
+              <option value="Sociology">Sociology</option>
+              <option value="Soil Science">Soil Science</option>
+              <option value="Special Needs Education">Special Needs Education</option>
+              <option value="Statistics And Decision Science">Statistics And Decision Science</option>
+              <option value="Studio Arts">Studio Arts</option>
+              <option value="Teacher Education: Multiple Levels">Teacher Education: Multiple Levels</option>
+              <option value="Theology And Religious Vocations">Theology And Religious Vocations</option>
+              <option value="Transportation Sciences And Technologies">Transportation Sciences And Technologies</option>
+              <option value="Treatment Therapy Professions">Treatment Therapy Professions</option>
+              <option value="United States History">United States History</option>
+              <option value="Visual And Performing Arts">Visual And Performing Arts</option>
+              <option value="Zoology">Zoology</option>
+              <option value="other">Other (please specify)</option>
+            </select>
+            <br />
+            <b>If other, please enter here:</b>
+            <label>
+              <input class="form-control" name="major_other" type="text" />
+            </label>
+            <br />
+            <b>What industry/field do you currently work in?</b>
+            <label>
+              <input class="form-control" name="industry" type="text" />
+            </label>
+            <br />
+            <b>Please tell us about your current role:</b>
+            <label>
+              Employer:
+              <input class="form-control" name="employer" type="text" />
+            </label>
+            <label>
+              Title:
+              <input class="form-control" name="title" type="text" />
+            </label>
+            <label>
+              Industry/field:
+              <input class="form-control" name="employer_industry" type="text" />
+            </label>
+            <br />
+            <b>What other industries/fields do you have experience working in and feel comfortable mentoring in (in addition to your current career field)? Use the list of industries listed at the beginning of the application&#160;</b>
+            <label>
+              <input class="form-control" name="other_industries" type="text" />
+            </label>
+            <br />
+            <b>In which of these job-readiness skills do you feel comfortable coaching a university student?</b>
+            <br />
+              <label><input type="checkbox" name="comfortable[]" value="Project management" /> Project management</label>
+              <label><input type="checkbox" name="comfortable[]" value="Career exploration" /> Career exploration</label>
+              <label><input type="checkbox" name="comfortable[]" value="Resume" /> Resume</label>
+              <label><input type="checkbox" name="comfortable[]" value="Identifying opportunities" /> Identifying opportunities</label>
+              <label><input type="checkbox" name="comfortable[]" value="The application process" /> The application process</label>
+              <label><input type="checkbox" name="comfortable[]" value="Cover letter" /> Cover letter</label>
+              <label><input type="checkbox" name="comfortable[]" value="LinkedIn profile &amp; online brand" /> LinkedIn profile &amp; online brand</label>
+              <label><input type="checkbox" name="comfortable[]" value-"Professionalism" /> Professionalism</label>
+              <label><input type="checkbox" name="comfortable[]" value="Networking" /> Networking (elevator pitch, informational interviews)</label>
+              <label><input type="checkbox" name="comfortable[]" value="Interview practice" /> Interview practice</label>
+            <br />
+            <b>The PM role requires you to commit ~2 hours per week for <%=@number_of_weeks%> weeks (<%= @start_date %> through <%= @end_date %>). Is this a commitment you can realistically make?</b>
+            <label>
+              <input name="can_commit" value="yes" type="radio" />
+              Yes
+            </label>
+            <label>
+              <input name="can_commit" value="no" type="radio" />
+              No
+            </label>
+            <br />
+            <b>Are you able to meet your Fellow in-person at the Kickoff Event on <%=@kickoff_date%> at <%=@kickoff_location%> as well as one other time during the commitment?&#160;</b>
+            <label>
+              <input name="can_meet" value="yes" type="radio" />
+              Yes
+            </label>
+            <label>
+              <input name="can_meet" value="no" type="radio" />
+              No
+            </label>
+            <br />
+            <b>Why do you want to be a PM?</b>
+            <label>
+              <textarea name="why_want_to_be_pm" class="form-control"></textarea>
+            </label>
+            <br />
+            <b>What skills or experiences have you had that would make you a strong mentor to a student/young adult?</b>
+            <label>
+              <textarea name="what_skills" class="form-control"></textarea>
+            </label>
+            <br />
+            <b>Read the following situation and then respond to the question below:&#160;<div><br /></div><div>Your Fellow missed your last meeting and arrives late to this week's meeting. Last time you met, you had agreed that she would revise her cover letter and come prepared with five job postings she's excited about. However, it seems that she hasn't changed anything but a few spelling errors in her cover letter and she begins talking about some job postings she saw, but she doesn't have a list to show you. What do you do?</b>
+            <label>
+              <textarea name="what_do" class="form-control"></textarea>
+            </label>
+            <br />
+            <b>How did you hear about this opportunity?&#160;</b>
+            <label>
+              <input class="form-control" name="how_hear" type="text" />
+            </label>
+            <br />
+            <b>Please provide the names, email addresses, and phone numbers for two references.</b>
+            <label>
+              Reference one name:
+              <input class="form-control" name="reference_name" type="text" />
+            </label>
+            <label>
+              Reference one email address:
+              <input class="form-control" name="reference_email" type="text" />
+            </label>
+            <label>
+              Reference one phone number:
+              <input class="form-control" name="reference_phone" type="text" />
+            </label>
+            <label>
+              Reference two name:
+              <input class="form-control" name="reference2_name" type="text" />
+            </label>
+            <label>
+              Reference two email address:
+              <input class="form-control" name="reference2_email" type="text" />
+            </label>
+            <label>
+              Reference two phone number:
+              <input class="form-control" name="reference2_phone" type="text" />
+            </label>
+          </div>
+        </div>
+
+
+
+        </div>
+      </section>
+    </div>
+    </div>
+
+      <div class="plank tertiary-md light">
+        <div class="section-container">
+          <section>
+            <div id="form-end">
+                <div class="apply-button form-submit">
+                  <button class="button-primary" type="submit" name="user_submit" onclick="return confirm('Are you sure you are ready to send your form?');">Send</button>
+                </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+
+      <% end %>
+
+  </div>
+</div>

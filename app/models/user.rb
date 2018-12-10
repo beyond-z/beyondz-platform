@@ -40,7 +40,7 @@ end
 # With that fixed, we can now define the regular User class.
 
 class User < ActiveRecord::Base
-  include MailchimpUpdates
+  # include MailchimpUpdates
   
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -350,6 +350,37 @@ class User < ActiveRecord::Base
     end
   end
 
+  def ensure_in_salesforce_campaign_for(bz_region, applicant_type)
+    mapping = nil
+    mapping = CampaignMapping.where(
+      :bz_region => bz_region,
+      :applicant_type => applicant_type
+      )
+    if mapping.empty?
+      logger.debug "########## No campaign mapping found for #{bz_region}, #{applicant_type}"
+      raise Exception.new "no SF campaign setup"
+    end
+
+    cid = mapping.first.campaign_id
+
+    cm = {}
+    cm['CampaignId'] = cid
+
+    # Can't use client.materialize because it sets the checkboxes to nil
+    # instead of false which fails server-side validation. This method
+    # works though.
+    sf = BeyondZ::Salesforce.new
+    client = sf.get_client
+    cm['ContactId'] = salesforce_id
+
+    begin
+      cm = client.create('CampaignMember', cm)
+    rescue Databasedotcom::SalesForceError => e
+      # If this failure happens, it is almost certainly just because they
+      # are already in the campaign 
+    end
+  end
+
   def auto_add_to_salesforce_campaign(candidate_status = nil, selected_timeslot = nil)
     # We may also need to add them to a campaign if certain things
     # are right.
@@ -484,6 +515,8 @@ class User < ActiveRecord::Base
       'Undergrad'
     when 'leadership_coach'
       'Leadership Coach'
+    when 'professional_mentor'
+      'Professional Mentor'
     when 'volunteer' # Old value here for backwards compatibility
       'Leadership Coach'
     when 'event_volunteer'
