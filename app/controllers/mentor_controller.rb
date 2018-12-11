@@ -69,20 +69,28 @@ class MentorController < ApplicationController
     #@end_date = "February 1, 2019" # FIXME
     #@desired_industries = "LIST INDUSTRIES" #FIXME
 
+    return true
   end
 
   def mentor_app
     load_existing_data
-    load_campaign_data("Mentor")
+    if !load_campaign_data("Mentor")
+      render 'inactive_campaign'
+      return
+    end
 
   end
 
   def mentee_app
     load_existing_data
-    load_campaign_data("Mentee")
 
     # is the user in the campaign? if no, add them now
     current_user.ensure_in_salesforce_campaign_for(current_user.university_name, "mentee")
+
+    if !load_campaign_data("Mentee")
+      render 'inactive_campaign'
+      return
+    end
   end
 
   def save_mentor_app
