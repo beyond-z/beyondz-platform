@@ -74,6 +74,10 @@ class MentorController < ApplicationController
 
   def mentor_app
     load_existing_data
+
+    # is the user in the campaign? if no, add them now
+    current_user.ensure_in_salesforce_campaign_for(current_user.bz_region, nil, "professional_mentor")
+
     if !load_campaign_data("Mentor")
       render 'inactive_campaign'
       return
@@ -85,7 +89,7 @@ class MentorController < ApplicationController
     load_existing_data
 
     # is the user in the campaign? if no, add them now
-    current_user.ensure_in_salesforce_campaign_for(current_user.university_name, "mentee")
+    current_user.ensure_in_salesforce_campaign_for(nil, current_user.university_name, "mentee")
 
     if !load_campaign_data("Mentee")
       render 'inactive_campaign'

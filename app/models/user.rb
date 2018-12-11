@@ -350,14 +350,21 @@ class User < ActiveRecord::Base
     end
   end
 
-  def ensure_in_salesforce_campaign_for(university_name, applicant_type)
+  def ensure_in_salesforce_campaign_for(bz_region, university_name, applicant_type)
     mapping = nil
-    mapping = CampaignMapping.where(
-      :university_name => university_name,
-      :applicant_type => applicant_type
-      )
+    if bz_region.nil?
+      mapping = CampaignMapping.where(
+        :university_name => university_name,
+        :applicant_type => applicant_type
+        )
+    else
+      mapping = CampaignMapping.where(
+        :bz_region => bz_region,
+        :applicant_type => applicant_type
+        )
+    end
     if mapping.empty?
-      logger.debug "########## No campaign mapping found for #{university_name}, #{applicant_type}"
+      logger.debug "########## No campaign mapping found for region #{bz_region}, university #{university_name}, #{applicant_type}"
       raise Exception.new "no SF campaign setup"
     end
 
