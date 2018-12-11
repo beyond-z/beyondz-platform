@@ -48,7 +48,7 @@ class MentorController < ApplicationController
     @program_site = campaign.Program_Site__c
     @contact_email = sf.load_cached_user_email(campaign.OwnerId)
     @program_area = campaign.PM_Area__c
-    @number_of_weeks = campaign.PM_Number_Weeks__c
+    @number_of_weeks = campaign.PM_Number_Weeks__c.to_i
     @kickoff_location = campaign.PM_Kickoff_Location__c
     @due_date = campaign.PM_Application_Due_Date__c
     @start_date = campaign.PM_Kickoff_Date__c
@@ -100,6 +100,8 @@ class MentorController < ApplicationController
   def save_mentor_app
     application = MentorApplication.new
 
+    application.user_id = current_user.id
+
     application.application_type = 'mentor'
     application.campaign_id = params[:campaign_id]
 
@@ -141,6 +143,8 @@ class MentorController < ApplicationController
 
   def save_mentee_app
     application = MentorApplication.new
+
+    application.user_id = current_user.id
 
     application.application_type = 'mentee'
     application.campaign_id = params[:campaign_id]
@@ -212,35 +216,35 @@ class MentorController < ApplicationController
 
     cm.Date_App_Submitted__c = DateTime.now
 
-    cm.Can_Commit_to_Mentoring = enrollment.can_commit
-    cm.Can_Meet_Mentee = enrollment.can_meet == "yes"
-    cm.Comfortable_Mentoring_Skills__c = enrollment.comfortable
-    cm.Desired_Job__c = enrollment.desired_job
-    cm.Company__c = enrollment.employer
-    cm.Employer_Industry__c = enrollment.employer_industry
-    cm.How_Heard_About_Opportunity__c = enrollment.how_hear
-    cm.Industry__c = enrollment.industry
-    cm.Career_Field_Interests__c = enrollment.interests
-    cm.Digital_Footprint__c = enrollment.linkedin_url
-    cm.Major__c = enrollment.major
-    cm.Other_Industries_Experience__c = enrollment.other_industries
-    cm.Reference_2_Email__c = enrollment.reference2_email
-    cm.Reference_2_Name__c = enrollment.reference2_name
-    cm.Reference_2_Phone__c = enrollment.reference2_phone
-    cm.Reference_1_Email__c = enrollment.reference_email
-    cm.Reference_1_Name__c = enrollment.reference_name
-    cm.Reference_1_Phone__c = enrollment.reference_phone
-    cm.Strengths_And_Growths = enrollment.strengths_and_growths
-    cm.What_Would_Do_If__c = enrollment.what_do
-    cm.What_Most_Helpful_Job_Search__c = enrollment.what_most_helpful
-    cm.Relevant_Experience__c = enrollment.what_skills
-    cm.Anticipated_Graduation__c = enrollment.when_graduate
-    cm.Why_Interested_In_PM__c = enrollment.why_interested_in_pm
-    cm.Why_Interested_In_Field__c = enrollment.why_interested_in_field
-    cm.Why_Want_To_Be_PM__c = enrollment.why_want_to_be_pm
-    cm.Willing_To_Work_With_Other_Field__c = enrollment.willing_to_work_with_other_field == "yes"
-    cm.Work_City__c = enrollment.work_city
-    cm.Work_State__c = enrollment.work_state
+    cm.Can_Commit_to_Mentoring__c = application.can_commit
+    cm.Can_Meet_Mentee__c = application.can_meet == "yes"
+    cm.Comfortable_Mentoring_Skills__c = application.comfortable
+    cm.Desired_Job__c = application.desired_job
+    cm.Company__c = application.employer
+    cm.Employer_Industry__c = application.employer_industry
+    cm.How_Heard_About_Opportunity__c = application.how_hear
+    cm.Industry__c = application.industry
+    cm.Career_Field_Interests__c = application.interests
+    cm.Digital_Footprint__c = application.linkedin_url
+    cm.Major__c = application.major
+    cm.Other_Industries_Experience__c = application.other_industries
+    cm.Reference_2_Email__c = application.reference2_email
+    cm.Reference_2_Name__c = application.reference2_name
+    cm.Reference_2_Phone__c = application.reference2_phone
+    cm.Reference_1_Email__c = application.reference_email
+    cm.Reference_1_Name__c = application.reference_name
+    cm.Reference_1_Phone__c = application.reference_phone
+    cm.Strengths_And_Growths__c = application.strengths_and_growths
+    cm.What_Would_Do_If__c = application.what_do
+    cm.What_Most_Helpful_Job_Search__c = application.what_most_helpful
+    cm.Relevant_Experience__c = application.what_skills
+    cm.Anticipated_Graduation__c = application.when_graduate
+    cm.Why_Interested_In_PM__c = application.why_interested_in_pm
+    cm.Why_Interested_In_Field__c = application.why_interested_in_field
+    cm.Why_Want_To_Be_PM__c = application.why_want_to_be_pm
+    cm.Willing_To_Work_With_Other_Field__c = application.willing_to_work_with_other_field == "yes"
+    cm.Work_City__c = application.work_city
+    cm.Work_State__c = application.work_state
 
     cm.save
 
