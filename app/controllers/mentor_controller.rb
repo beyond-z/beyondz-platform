@@ -23,7 +23,7 @@ class MentorController < ApplicationController
     # We need to check all the campaign members to find the one that is most correct
     # for an application - one with an Application Type set up.
     query_result = client.http_get("/services/data/v#{client.version}/query?q=" \
-      "SELECT Id, CampaignId FROM CampaignMember WHERE ContactId = '#{current_user.salesforce_id}' AND Campaign.IsActive = TRUE AND Campaign.Application_Type__c != '#{type}'")
+      "SELECT Id, CampaignId FROM CampaignMember WHERE ContactId = '#{current_user.salesforce_id}' AND Campaign.IsActive = TRUE AND Campaign.Application_Type__c == '#{type}'")
 
     sf_answer = JSON.parse(query_result.body)
 
@@ -69,20 +69,32 @@ class MentorController < ApplicationController
     #@end_date = "February 1, 2019" # FIXME
     #@desired_industries = "LIST INDUSTRIES" #FIXME
 
+    return true
   end
 
   def mentor_app
     load_existing_data
-    load_campaign_data("Mentor")
+
+    # is the user in the campaign? if no, add them now
+    current_user.ensure_in_salesforce_campaign_for(current_user.bz_region, nil, "professional_mentor")
+
+    if !load_campaign_data("Mentor")
+      render 'inactive_campaign'
+      return
+    end
 
   end
 
   def mentee_app
     load_existing_data
-    load_campaign_data("Mentee")
 
     # is the user in the campaign? if no, add them now
-    current_user.ensure_in_salesforce_campaign_for(current_user.university_name, "mentee")
+    current_user.ensure_in_salesforce_campaign_for(nil, current_user.university_name, "mentee")
+
+    if !load_campaign_data("Mentee")
+      render 'inactive_campaign'
+      return
+    end
   end
 
   def save_mentor_app
