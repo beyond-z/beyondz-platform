@@ -40,7 +40,7 @@ end
 # With that fixed, we can now define the regular User class.
 
 class User < ActiveRecord::Base
-  # include MailchimpUpdates
+  include MailchimpUpdates
   
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
