@@ -23,7 +23,7 @@ class MentorController < ApplicationController
     # We need to check all the campaign members to find the one that is most correct
     # for an application - one with an Application Type set up.
     query_result = client.http_get("/services/data/v#{client.version}/query?q=" \
-      "SELECT Id, CampaignId FROM CampaignMember WHERE ContactId = '#{current_user.salesforce_id}' AND Campaign.IsActive = TRUE AND Campaign.Application_Type__c == '#{type}'")
+      "SELECT Id, CampaignId FROM CampaignMember WHERE ContactId = '#{current_user.salesforce_id}' AND Campaign.IsActive = TRUE AND Campaign.Application_Type__c = '#{type}'")
 
     sf_answer = JSON.parse(query_result.body)
 
