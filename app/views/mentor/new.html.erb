@@ -12,7 +12,7 @@
           </p>
 
           <p>
-            <a class="button-primary" href="<%= new_user_path(:user => { :applicant_type => 'professional_mentor' }) %>">As a Mentor (for Professionals)</a>
+            <a class="button-primary" href="<%= current_user ? mentor_app_path : new_user_path(:user => { :applicant_type => 'professional_mentor' }) %>">As a Mentor (for Professionals)</a>
             <!--
             <a class="more-info" target="_BLANK" href="https://bebraven.org/become-a-fellow/#the-accelerator-experience">?</a>
             -->

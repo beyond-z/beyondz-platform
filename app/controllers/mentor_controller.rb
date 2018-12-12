@@ -161,6 +161,9 @@ class MentorController < ApplicationController
     application.city = params[:city]
     application.state = params[:state]
     application.major = params[:major]
+    if params[:major] == 'other'
+      application.major = params[:major_other]
+    end
     application.interests = params[:interests]
     application.desired_job = params[:desired_job]
     application.why_interested_in_field = params[:why_interested_in_field]
