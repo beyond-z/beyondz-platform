@@ -63,44 +63,44 @@
             <b>&#160;Please enter the following information about yourself:</b>
             <label>
               First Name:
-              <input class="form-control" name="first_name" type="text" value="<%=@first_name%>" />
+              <input class="form-control" required="required" name="first_name" type="text" value="<%=@first_name%>" />
             </label>
             <label>
               Last Name:
-              <input class="form-control" name="last_name" type="text" value="<%=@last_name%>" />
+              <input class="form-control" required="required" name="last_name" type="text" value="<%=@last_name%>" />
             </label>
             <label>
               Email address:
-              <input class="form-control" name="email" type="email" value="<%=@email%>" />
+              <input class="form-control" required="required" name="email" type="email" value="<%=@email%>" />
             </label>
             <label>
               Phone number:
-              <input class="form-control" name="phone" type="text" />
+              <input class="form-control" required="required" name="phone" type="text" />
             </label>
             <label>
               LinkedIn profile URL:
-              <input class="form-control" name="linkedin_url" type="text" />
+              <input class="form-control" required="required" name="linkedin_url" type="text" />
             </label>
             <br />
             <b>Which semester did you/will you graduate?</b>
             <label>
-              <input name="when_graduate" value="Fall 2018" type="radio" />
+              <input required="required" name="when_graduate" value="Fall 2018" type="radio" />
               Fall 2018
             </label>
             <label>
-              <input name="when_graduate" value="Spring 2019" type="radio" />
+              <input required="required" name="when_graduate" value="Spring 2019" type="radio" />
               Spring 2019
             </label>
             <label>
-              <input name="when_graduate" value="Fall 2019" type="radio" />
+              <input required="required" name="when_graduate" value="Fall 2019" type="radio" />
               Fall 2019
             </label>
             <label>
-              <input name="when_graduate" value="Spring 2020" type="radio" />
+              <input required="required" name="when_graduate" value="Spring 2020" type="radio" />
               Spring 2020
             </label>
             <label onclick="this.querySelector('input[type=text]').focus();">
-              <input name="when_graduate" value="other" type="radio" />
+              <input required="required" name="when_graduate" value="other" type="radio" />
               Other:
               <input onclick="this.parentNode.querySelector('input[type=radio]').checked=true;" type="text" name="when_graduate_other" />
             </label>
@@ -108,11 +108,11 @@
             <b>Where do you currently live?</b>
             <label>
               City:
-              <input class="form-control" name="city" type="text" />
+              <input class="form-control" required="required" name="city" type="text" />
             </label>
             <label>
               State:
-              <input class="form-control" name="state" type="text" />
+              <input class="form-control" required="required" name="state" type="text" />
             </label>
           </div>
           <h2>Academic Background</h2>
@@ -120,7 +120,8 @@
             <br />
             <b>What is your major?</b>
             <br />
-            <select class="form-control" name="major">
+            <select class="form-control" required="required" name="major">
+              <option value=""></option>
               <option value="Accounting">Accounting</option>
               <option value="Actuarial Science">Actuarial Science</option>
               <option value="Advertising And Public Relations">Advertising And Public Relations</option>
@@ -284,22 +285,27 @@
               <option value="United States History">United States History</option>
               <option value="Visual And Performing Arts">Visual And Performing Arts</option>
               <option value="Zoology">Zoology</option>
-              <option value="Other (please specify)">Other (please specify)</option>
+              <option value="other">Other (please specify)</option>
             </select>
+            <br />
+            <b>If other, please enter here:</b>
+            <label>
+              <input class="form-control" name="major_other" type="text" />
+            </label>
             <br />
             <b>What career industries/fields interest you?</b>
             <label>
-              <input class="form-control" name="interests" type="text" />
+              <input class="form-control" required="required" name="interests" type="text" />
             </label>
             <br />
             <b>What is your desired job after graduation?</b>
             <label>
-              <input class="form-control" name="desired_job" type="text" />
+              <input class="form-control" required="required" name="desired_job" type="text" />
             </label>
             <br />
             <b>Why does this career field/this specific job interest you?&#160;</b>
             <label>
-              <textarea class="form-control" name="why_interested_in_field"></textarea>
+              <textarea class="form-control" required="required" name="why_interested_in_field"></textarea>
             </label>
           </div>
           <h2>PM Commitment</h2>
@@ -307,38 +313,38 @@
             <br />
             <b>What would you say are your strengths and areas of growth?&#160;</b>
             <label>
-              <textarea class="form-control" name="strengths_and_growths"></textarea>
+              <textarea class="form-control" required="required" name="strengths_and_growths"></textarea>
             </label>
             <br />
             <b>What would be most helpful to you in the job search?</b>
             <label>
-              <textarea class="form-control" name="what_most_helpful"></textarea>
+              <textarea class="form-control" required="required" name="what_most_helpful"></textarea>
             </label>
             <br />
             <b>Are you willing to work with a mentor who can help you in the areas you identified but who works in a different profession than your desired career field?</b>
             <label>
-              <input name="willing_to_work_with_other_field" value="yes" type="radio" />
+              <input required="required" name="willing_to_work_with_other_field" value="yes" type="radio" />
               Yes
             </label>
             <label>
-              <input name="willing_to_work_with_other_field" value="no" type="radio" />
+              <input required="required" name="willing_to_work_with_other_field" value="no" type="radio" />
               No
             </label>
             <hr />
             <br />
             <b>To work with a Professional Mentor, you&#8217;ll need to commit to meeting (virtually) for one hour each week for the duration of the commitment, meet two times in-person (once at the kickoff event and one other time), and complete all prep and follow-up work in pursuit of your goals (~2 hours/week). You will need to be responsive and arrive promptly to meetings. Is this a commitment you can make? Why or why not?&#160;</b>
             <label>
-              <textarea class="form-control" name="can_commit"></textarea>
+              <textarea class="form-control" required="required" name="can_commit"></textarea>
             </label>
             <br />
             <b>Why are you interested in the opportunity to work with a Professional Mentor?</b>
             <label>
-              <textarea class="form-control" name="why_interested_in_pm"></textarea>
+              <textarea class="form-control" required="required" name="why_interested_in_pm"></textarea>
             </label>
             <br />
             <b>Read the following situation and then respond to the question below: It's midterms and you're swamped with work for class. You realize your weekly meeting with your Professional Mentor is this evening, and you haven't done any of the prep work you promised you would complete by today. You also realize you scheduled a group study session that conflicts with your meeting. What do you do?&#160;</b>
             <label>
-              <textarea class="form-control" name="what_do"></textarea>
+              <textarea class="form-control" required="required" name="what_do"></textarea>
             </label>
             <br />
             <b>How did you hear about this opportunity?&#160;</b>
