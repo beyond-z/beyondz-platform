@@ -15,6 +15,10 @@ class MentorController < ApplicationController
     @phone = current_user.phone
   end
 
+  def format_date(date)
+    Date.new(date).strftime("%B %-d, %Y")
+  end
+
   def load_campaign_data(type)
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
@@ -50,9 +54,9 @@ class MentorController < ApplicationController
     @program_area = campaign.PM_Area__c
     @number_of_weeks = campaign.PM_Number_Weeks__c.to_i
     @kickoff_location = campaign.PM_Kickoff_Location__c
-    @due_date = campaign.PM_Application_Due_Date__c
-    @start_date = campaign.PM_Kickoff_Date__c
-    @end_date = campaign.PM_End_Date__c
+    @due_date = format_date(campaign.PM_Application_Due_Date__c)
+    @start_date = format_date(campaign.PM_Kickoff_Date__c)
+    @end_date = format_date(campaign.PM_End_Date__c)
     @desired_industries = campaign.PM_Industries_List__c
 
 
@@ -76,9 +80,9 @@ class MentorController < ApplicationController
     load_existing_data
 
     # is the user in the campaign? if no, add them now
-    current_user.ensure_in_salesforce_campaign_for(current_user.bz_region, nil, "professional_mentor")
+    #current_user.ensure_in_salesforce_campaign_for(current_user.bz_region, nil, "professional_mentor")
 
-    if !load_campaign_data("Mentor")
+    if false&& !load_campaign_data("Mentor")
       render 'inactive_campaign'
       return
     end
@@ -89,9 +93,9 @@ class MentorController < ApplicationController
     load_existing_data
 
     # is the user in the campaign? if no, add them now
-    current_user.ensure_in_salesforce_campaign_for(nil, current_user.university_name, "mentee")
+    #current_user.ensure_in_salesforce_campaign_for(nil, current_user.university_name, "mentee")
 
-    if !load_campaign_data("Mentee")
+    if false&&!load_campaign_data("Mentee")
       render 'inactive_campaign'
       return
     end
@@ -117,7 +121,7 @@ class MentorController < ApplicationController
     if params[:major] == 'other'
       application.major = params[:major_other]
     end
-    application.industry = params[:industry]
+    application.industry = params[:employer_industry]
     application.employer = params[:employer]
     application.title = params[:title]
     application.employer_industry = params[:employer_industry]
