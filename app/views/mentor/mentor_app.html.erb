@@ -71,46 +71,46 @@
           <h2>Contact Information</h2>
             <b>&#160;Please enter the following information about yourself:</b>
             <label>
-              First Name:
+              <span class="required">First Name:</span>
               <input class="form-control" required="required" name="first_name" type="text" value="<%=@first_name%>" />
             </label>
             <label>
-              Last Name:
+              <span class="required">Last Name:</span>
               <input class="form-control" required="required" name="last_name" type="text" value="<%=@last_name%>" />
             </label>
             <label>
-              Email address:
+              <span class="required">Email address:</span>
               <input class="form-control" required="required" name="email" type="email" value="<%=@email%>" />
             </label>
             <label>
-              LinkedIn profile URL:
+              <span class="required">LinkedIn profile URL:</span>
               <input class="form-control" required="required" name="linkedin_url" type="text" />
             </label>
             <br />
             <b>Where do you live?</b>
             <label>
-              City:
+              <span class="required">City:</span>
               <input class="form-control" required="required" name="city" type="text" value="<%=@city%>" />
             </label>
             <label>
-              State:
+              <span class="required">State:</span>
               <input class="form-control" required="required" name="state" type="text" value="<%=@state%>" />
             </label>
             <br />
             <b>Where do you work?</b>
             <label>
-              City:
+              <span class="required">City:</span>
               <input class="form-control" required="required" name="work_city" type="text" />
             </label>
             <label>
-              State:
+              <span class="required">State:</span>
               <input class="form-control" required="required" name="work_state" type="text" />
             </label>
           </div>
           <h2>Professional Background</h2>
           <div>
             <br />
-            <b>What was your college major?</b>
+            <b class="required">What was your college major?</b>
             <br />
             <select class="form-control" required="required" name="major">
               <option value=""></option>
@@ -285,22 +285,22 @@
               <input class="form-control" name="major_other" type="text" />
             </label>
             <br />
-            <b>What industry/field do you currently work in?</b>
+            <b class="required">What industry/field do you currently work in?</b>
             <label>
               <input class="form-control" required="required" name="industry" type="text" />
             </label>
             <br />
             <b>Please tell us about your current role:</b>
             <label>
-              Employer:
+              <span class="required">Employer:</span>
               <input class="form-control" required="required" name="employer" type="text" />
             </label>
             <label>
-              Title:
+              <span class="required">Title:</span>
               <input class="form-control" required="required" name="title" type="text" />
             </label>
             <label>
-              Industry/field:
+              <span class="required">Industry/field:</span>
               <input class="form-control" required="required" name="employer_industry" type="text" />
             </label>
             <br />
@@ -322,7 +322,7 @@
               <label><input type="checkbox" name="comfortable[]" value="Networking" /> Networking (elevator pitch, informational interviews)</label>
               <label><input type="checkbox" name="comfortable[]" value="Interview practice" /> Interview practice</label>
             <br />
-            <b>The PM role requires you to commit ~2 hours per week for <%=@number_of_weeks%> weeks (<%= @start_date %> through <%= @end_date %>). Is this a commitment you can realistically make?</b>
+            <b class="required">The PM role requires you to commit ~2 hours per week for <%=@number_of_weeks%> weeks (<%= @start_date %> through <%= @end_date %>). Is this a commitment you can realistically make?</b>
             <label>
               <input required="required" name="can_commit" value="yes" type="radio" />
               Yes
@@ -332,7 +332,7 @@
               No
             </label>
             <br />
-            <b>Are you able to meet your Fellow in-person at the Kickoff Event on <%=@kickoff_date%> at <%=@kickoff_location%> as well as one other time during the commitment? (all other meetings can be conducted virtually)</b>
+            <b class="required">Are you able to meet your Fellow in-person at the Kickoff Event on <%=@kickoff_date%> at <%=@kickoff_location%> as well as one other time during the commitment? (all other meetings can be conducted virtually)</b>
             <label>
               <input required="required" name="can_meet" value="yes" type="radio" />
               Yes
@@ -342,49 +342,49 @@
               No
             </label>
             <br />
-            <b>Why do you want to be a PM?</b>
             <label>
+              <b class="required">Why do you want to be a PM?</b>
               <textarea required="required" name="why_want_to_be_pm" class="form-control"></textarea>
             </label>
             <br />
-            <b>What skills or experiences have you had that would make you a strong mentor to a student/young adult?</b>
             <label>
+              <b class="required">What skills or experiences have you had that would make you a strong mentor to a student/young adult?</b>
               <textarea required="required" name="what_skills" class="form-control"></textarea>
             </label>
             <br />
-            <b>Read the following situation and then respond to the question below:&#160;<div><br /></div><div>Your Fellow missed your last meeting and arrives late to this week's meeting. Last time you met, you had agreed that she would revise her cover letter and come prepared with five job postings she's excited about. However, it seems that she hasn't changed anything but a few spelling errors in her cover letter and she begins talking about some job postings she saw, but she doesn't have a list to show you. What do you do?</b>
             <label>
+              <b>Read the following situation and then respond to the question below:</b><div><br /></div><div class="required"><b>Your Fellow missed your last meeting and arrives late to this week's meeting. Last time you met, you had agreed that she would revise her cover letter and come prepared with five job postings she's excited about. However, it seems that she hasn't changed anything but a few spelling errors in her cover letter and she begins talking about some job postings she saw, but she doesn't have a list to show you. What do you do?</b></div>
               <textarea required="required" name="what_do" class="form-control"></textarea>
             </label>
             <br />
-            <b>How did you hear about this opportunity?&#160;</b>
             <label>
+              <b>How did you hear about this opportunity?&#160;</b>
               <input class="form-control" name="how_hear" type="text" />
             </label>
             <br />
             <b>Please provide the names, email addresses, and phone numbers for two references.</b>
             <label>
-              Reference #1 name:
+              <span class="required">Reference #1 name:</span>
               <input class="form-control" required="required" name="reference_name" type="text" />
             </label>
             <label>
-              Reference #1 email address:
+              <span class="required">Reference #1 email address:</span>
               <input class="form-control" required="required" name="reference_email" type="email" />
             </label>
             <label>
-              Reference #1 phone number:
+              <span class="required">Reference #1 phone number:</span>
               <input class="form-control" required="required" name="reference_phone" type="text" />
             </label>
             <label>
-              Reference #2 name:
+              <span class="required">Reference #2 name:</span>
               <input class="form-control" required="required" name="reference2_name" type="text" />
             </label>
             <label>
-              Reference #2 email address:
+              <span class="required">Reference #2 email address:</span>
               <input class="form-control" required="required" name="reference2_email" type="email" />
             </label>
             <label>
-              Reference #2 phone number:
+              <span class="required">Reference #2 phone number:</span>
               <input class="form-control" required="required" name="reference2_phone" type="text" />
             </label>
           </div>
