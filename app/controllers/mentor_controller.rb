@@ -121,7 +121,7 @@ class MentorController < ApplicationController
     if params[:major] == 'other'
       application.major = params[:major_other]
     end
-    application.industry = params[:industry]
+    application.industry = params[:employer_industry]
     application.employer = params[:employer]
     application.title = params[:title]
     application.employer_industry = params[:employer_industry]
