@@ -58,6 +58,7 @@ class CalendlyController < ApplicationController
           company = nil
           title_industry = nil
           city_state = nil
+          career = nil
           params[:payload][:questions_and_answers].each do |qa|
             if qa[:question].downcase.include?('phone')
               phone = qa[:answer]
@@ -65,6 +66,8 @@ class CalendlyController < ApplicationController
               company = qa[:answer]
             elsif qa[:question].downcase.include?('title')
               title_industry = qa[:answer]
+            elsif qa[:question].downcase.include?('career')
+              career = qa[:answer]
             elsif qa[:question].downcase.include?('city, state')
               city_state = qa[:answer]
             end
@@ -93,6 +96,7 @@ class CalendlyController < ApplicationController
           contact['MailingState'] = state unless state.nil?
           contact['Company__c'] = company
           contact['Title'] = title_industry # Both their title and industry could have commans, so can't split reliable.  Just stuff it all in Title field.
+          contact['Career__c'] = career
           contact['BZ_Region__c'] = bz_region
           contact['User_Type__c'] = 'Event Volunteer'
           contact['BZ_User_Id__c'] = current_user.id
