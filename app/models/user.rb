@@ -202,11 +202,11 @@ class User < ActiveRecord::Base
 
   # Returns true if a new Lead was created, returns false
   # if it found an existing contact to reuse. Throws on error.
-  def create_on_salesforce
+  def create_on_salesforce(as_contact = false)
     salesforce = BeyondZ::Salesforce.new
     client = salesforce.get_client
 
-    working_on_contact = false
+    working_on_contact = as_contact
 
     # if we are going to auto add to a campaign anyway, skip the Lead
     # step and work directly on a contact
