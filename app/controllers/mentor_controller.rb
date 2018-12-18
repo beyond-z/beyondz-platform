@@ -16,7 +16,11 @@ class MentorController < ApplicationController
   end
 
   def format_date(date)
-    Date.new(date).strftime("%B %-d, %Y")
+    begin
+      Date.new(date).strftime("%B %-d, %Y")
+    rescue
+      date
+    end
   end
 
   def load_campaign_data(type)
