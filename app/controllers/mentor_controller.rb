@@ -17,7 +17,7 @@ class MentorController < ApplicationController
 
   def format_date(date)
     begin
-      Date.new(date).strftime("%B %-d, %Y")
+      Date.parse(date).strftime("%B %-d, %Y")
     rescue
       date
     end
