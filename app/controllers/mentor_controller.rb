@@ -41,6 +41,7 @@ class MentorController < ApplicationController
       # If they aren't a member of one appropriate campaign,
       # they cannot start the application since we won't know
       # which one to show and their data is likely to be lost.
+      Rails.logger.info("#{sf_answer['records'].length} records for #{current_user.salesforce_id} <#{current_user.email}> for active campaigns of #{type}")
       return false
     end
 
