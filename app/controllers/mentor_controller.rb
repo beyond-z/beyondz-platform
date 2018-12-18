@@ -104,7 +104,8 @@ class MentorController < ApplicationController
     # is the user in the campaign? if no, add them now
     begin
       if current_user.salesforce_id.blank?
-        current_user.create_on_salesforce
+        # skip ahead to contact as we are adding to campaign below
+        current_user.create_on_salesforce(true)
       end
       current_user.ensure_in_salesforce_campaign_for(current_user.bz_region, nil, "professional_mentor")
     rescue Exception => e
@@ -131,7 +132,8 @@ class MentorController < ApplicationController
     # is the user in the campaign? if no, add them now
     begin
       if current_user.salesforce_id.blank?
-        current_user.create_on_salesforce
+        # skip ahead to contact as we are adding to campaign below
+        current_user.create_on_salesforce(true)
       end
 
       current_user.ensure_in_salesforce_campaign_for(nil, current_user.university_name, "mentee")
