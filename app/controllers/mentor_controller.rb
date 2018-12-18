@@ -17,7 +17,7 @@ class MentorController < ApplicationController
 
   def format_date(date)
     begin
-      Date.new(date).strftime("%B %-d, %Y")
+      Date.parse(date).strftime("%B %-d, %Y")
     rescue
       date
     end
@@ -80,11 +80,34 @@ class MentorController < ApplicationController
     return true
   end
 
+  def university_update
+    current_user.university_name = params[:university_name]
+    current_user.save
+    redirect_to mentee_app_path
+  end
+
+  def region_update
+    current_user.bz_region = params[:bz_region]
+    current_user.save
+    redirect_to mentor_app_path
+  end
+
   def mentor_app
     load_existing_data
 
+    if current_user.bz_region.blank?
+      render 'pick_region'
+      return
+    end
+
     # is the user in the campaign? if no, add them now
-    current_user.ensure_in_salesforce_campaign_for(current_user.bz_region, nil, "professional_mentor")
+    begin
+      current_user.ensure_in_salesforce_campaign_for(current_user.bz_region, nil, "professional_mentor")
+    rescue Exception => e
+      Rails.logger.error(e)
+      render 'inactive_campaign'
+      return
+    end
 
     if !load_campaign_data("Mentor")
       render 'inactive_campaign'
@@ -96,8 +119,19 @@ class MentorController < ApplicationController
   def mentee_app
     load_existing_data
 
+    if current_user.university_name.blank?
+      render 'pick_university'
+      return
+    end
+
     # is the user in the campaign? if no, add them now
-    current_user.ensure_in_salesforce_campaign_for(nil, current_user.university_name, "mentee")
+    begin
+      current_user.ensure_in_salesforce_campaign_for(nil, current_user.university_name, "mentee")
+    rescue Exception => e
+      Rails.logger.error(e)
+      render 'inactive_campaign'
+      return
+    end
 
     if !load_campaign_data("Mentee")
       render 'inactive_campaign'

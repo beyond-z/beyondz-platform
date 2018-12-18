@@ -37,6 +37,9 @@ BeyondzPlatform::Application.routes.draw do
     get '/signup/mentor/mentor_app', to: 'mentor#mentor_app', as: :mentor_app
     post '/signup/mentor/mentee_app', to: 'mentor#save_mentee_app'
     post '/signup/mentor/mentor_app', to: 'mentor#save_mentor_app'
+
+    post '/signup/mentor/university_update', to: 'mentor#university_update'
+    post '/signup/mentor/region_update', to: 'mentor#region_update'
   # }
 
   get '/connect', to: 'champions#connect', as: :champions_connect
