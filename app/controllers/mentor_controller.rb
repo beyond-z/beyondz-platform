@@ -102,6 +102,9 @@ class MentorController < ApplicationController
 
     # is the user in the campaign? if no, add them now
     begin
+      if current_user.salesforce_id.blank?
+        current_user.create_on_salesforce
+      end
       current_user.ensure_in_salesforce_campaign_for(current_user.bz_region, nil, "professional_mentor")
     rescue Exception => e
       Rails.logger.error(e)
@@ -126,6 +129,10 @@ class MentorController < ApplicationController
 
     # is the user in the campaign? if no, add them now
     begin
+      if current_user.salesforce_id.blank?
+        current_user.create_on_salesforce
+      end
+
       current_user.ensure_in_salesforce_campaign_for(nil, current_user.university_name, "mentee")
     rescue Exception => e
       Rails.logger.error(e)
