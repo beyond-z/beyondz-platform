@@ -30,6 +30,18 @@ BeyondzPlatform::Application.routes.draw do
   resources :resumes
   resources :referrals
 
+  # for the PM application flow {
+    get '/signup/mentor', to: redirect('/signup/mentor/new')
+    get '/signup/mentor/new', to: 'mentor#new', as: :new_mentor
+    get '/signup/mentor/mentee_app', to: 'mentor#mentee_app', as: :mentee_app
+    get '/signup/mentor/mentor_app', to: 'mentor#mentor_app', as: :mentor_app
+    post '/signup/mentor/mentee_app', to: 'mentor#save_mentee_app'
+    post '/signup/mentor/mentor_app', to: 'mentor#save_mentor_app'
+
+    post '/signup/mentor/university_update', to: 'mentor#university_update'
+    post '/signup/mentor/region_update', to: 'mentor#region_update'
+  # }
+
   get '/connect', to: 'champions#connect', as: :champions_connect
   get '/connect_authenticated', to: 'champions#connect_authenticated', as: :champions_connect_authenticated
   get '/champions/openid_login_start', to: 'champions#openid_login_start'

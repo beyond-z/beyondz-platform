@@ -1,0 +1,34 @@
+      <div class="plank tertiary-md light">
+        <div class="section-container">
+      <section>
+        <div class="col-sm-12">
+          <h1>
+            Choose Your Region
+          </h1>
+          </div>
+        </section>
+      </div>
+      </div>
+
+
+  <div class="plank plain-lt">
+    <div class="section-container">
+      <section>
+      <div class="col-sm-12">
+
+        <div style="min-height: 600px;">
+        <%= form_tag :action => 'region_update' do |f| %>
+          <% List.find_by_friendly_name('pm_regions').items.each do |school| %>
+            <div>
+              <%= radio_button_tag :bz_region, school, :required => 'required' %>
+              <%= label_tag "bz_region_#{school}".to_sym, school %>
+            </div>
+          <% end %>
+          <button class="button-primary" type="submit" name="user_submit">Next Step</button>
+        <% end %>
+        </div>
+
+      </div>
+      </section>
+    </div>
+  </div>

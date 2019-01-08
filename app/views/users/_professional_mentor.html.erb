@@ -1,0 +1,50 @@
+<div class="form-option-details">
+  <% unless @hide_other_regions %>
+  <section>
+    <div>
+      <span class="required">I can mentor a Braven Fellow in:</span>
+      <br />
+      <%= render :partial => 'areas', :locals => { :f => f, :list => 'pm_regions' } %>
+    </div>
+  </section>
+  <% else %>
+    <%= f.hidden_field :bz_region, :value => params[:user][:bz_region] %>
+  <% end %>
+
+  <section>
+    <div class="required">
+      Phone number:
+    </div>
+    <div class="col-sm-5">
+       <%= f.text_field :phone, 'class' => 'form-control short', 'title' => 'phone number including area code', :required => 'required', 'pattern' => '.{10,15}', 'type' => 'tel' %>
+    </div>
+  </section>
+
+  <section>
+    <div>
+      Profession / job title:
+    </div>
+    <div class="col-sm-7">
+      <%= f.text_field :profession, :class => 'form-control', :maxlength => '70' %>
+    </div>
+  </section>
+  <section>
+    <div>
+      Your company or organization:
+    </div>
+    <div class="col-sm-7">
+      <%= f.text_field :company, :class => 'form-control', :maxlength => '70' %>
+    </div>
+  </section>
+
+  <section>
+    <div class="required">
+      Please create a password to protect any personal information you may provide us.
+    </div>
+    <div class="col-sm-7">
+      <%= f.password_field :password, :class => 'form-control', placeholder: 'Create a password', pattern: '.{4,}', title: 'make a password at least four characters long', :required => 'required' %>
+    </div>
+  </section>
+
+</div>
+

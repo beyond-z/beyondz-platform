@@ -202,11 +202,11 @@ class User < ActiveRecord::Base
 
   # Returns true if a new Lead was created, returns false
   # if it found an existing contact to reuse. Throws on error.
-  def create_on_salesforce
+  def create_on_salesforce(as_contact = false)
     salesforce = BeyondZ::Salesforce.new
     client = salesforce.get_client
 
-    working_on_contact = false
+    working_on_contact = as_contact
 
     # if we are going to auto add to a campaign anyway, skip the Lead
     # step and work directly on a contact
@@ -350,6 +350,44 @@ class User < ActiveRecord::Base
     end
   end
 
+  def ensure_in_salesforce_campaign_for(bz_region, university_name, applicant_type)
+    mapping = nil
+    if bz_region.nil?
+      mapping = CampaignMapping.where(
+        :university_name => university_name,
+        :applicant_type => applicant_type
+        )
+    else
+      mapping = CampaignMapping.where(
+        :bz_region => bz_region,
+        :applicant_type => applicant_type
+        )
+    end
+    if mapping.empty?
+      logger.debug "########## No campaign mapping found for region #{bz_region}, university #{university_name}, #{applicant_type}"
+      raise Exception.new "no SF campaign setup"
+    end
+
+    cid = mapping.first.campaign_id
+
+    cm = {}
+    cm['CampaignId'] = cid
+
+    # Can't use client.materialize because it sets the checkboxes to nil
+    # instead of false which fails server-side validation. This method
+    # works though.
+    sf = BeyondZ::Salesforce.new
+    client = sf.get_client
+    cm['ContactId'] = salesforce_id
+
+    begin
+      cm = client.create('CampaignMember', cm)
+    rescue Databasedotcom::SalesForceError => e
+      # If this failure happens, it is almost certainly just because they
+      # are already in the campaign 
+    end
+  end
+
   def auto_add_to_salesforce_campaign(candidate_status = nil, selected_timeslot = nil)
     # We may also need to add them to a campaign if certain things
     # are right.
@@ -484,6 +522,8 @@ class User < ActiveRecord::Base
       'Undergrad'
     when 'leadership_coach'
       'Leadership Coach'
+    when 'professional_mentor'
+      'Professional Mentor'
     when 'volunteer' # Old value here for backwards compatibility
       'Leadership Coach'
     when 'event_volunteer'

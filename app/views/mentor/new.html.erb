@@ -1,0 +1,27 @@
+<div id="new-mentor-page">
+  <div class="plank plain-lt">
+    <div class="section-container">
+      <section>
+        <div class="col-sm-6">
+          <h1>
+            Professional Mentors
+          </h1>
+
+          <p class="lead">
+            How would you like to get involved?
+          </p>
+
+          <p>
+            <a class="button-primary" href="<%= current_user ? mentor_app_path : new_user_path(:user => { :applicant_type => 'professional_mentor' }) %>">As a Mentor (for Professionals)</a>
+            <!--
+            <a class="more-info" target="_BLANK" href="https://bebraven.org/become-a-fellow/#the-accelerator-experience">?</a>
+            -->
+          </p>
+          <p>
+            <a class="button-primary" href="<%= mentee_app_path %>">As a Mentee (for Fellows)</a>
+          </p>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

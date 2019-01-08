@@ -42,7 +42,7 @@ class HomeController < ApplicationController
     obj['path'] = welcome_path
 
     # Note: temp_volunteer and volunteer are old obsolete values. Keeping them there just in case.
-    if current_user.applicant_type == 'leadership_coach' || current_user.applicant_type == 'undergrad_student' || current_user.applicant_type == 'event_volunteer' || current_user.applicant_type == 'volunteer' || current_user.applicant_type == 'temp_volunteer' || current_user.applicant_type == 'preaccelerator_student'
+    if current_user.applicant_type == 'leadership_coach' || current_user.applicant_type == 'undergrad_student' || current_user.applicant_type == 'event_volunteer' || current_user.applicant_type == 'volunteer' || current_user.applicant_type == 'temp_volunteer' || current_user.applicant_type == 'preaccelerator_student' || current_user.applicant_type == 'professional_mentor'
       obj['ready'] = current_user.apply_now_enabled
     else
       obj['ready'] = true
@@ -108,6 +108,10 @@ class HomeController < ApplicationController
           case campaign.Type
           when 'Program Participants'
             'Fellow'
+          when 'Mentor'
+            'Professional Mentor'
+          when 'Mentee'
+            'Mentee'
           when 'Leadership Coaches'
             'Coaching'
           when 'Pre-Accelerator Participants'
@@ -153,7 +157,15 @@ class HomeController < ApplicationController
           if !submitted && campaign.IsActive
             # If they application isn't submitted, the logical place for them
             # to go is to the application so they can finish it
-            path = enrollment.nil? ? new_enrollment_path(:campaign_id => record['CampaignId']) : enrollment_path(enrollment)
+            if campaign_type == "Professional Mentor"
+              # PMs use a different path...
+              path = mentor_app_path
+            elsif campaign_type == "Mentee"
+              path = mentee_app_path
+            else
+              # for the Braven Accelerator Fellows and LCs
+              path = enrollment.nil? ? new_enrollment_path(:campaign_id => record['CampaignId']) : enrollment_path(enrollment)
+            end
           end
 
           # It is recent if it was updated today.... for use in not showing old informational messages
@@ -274,6 +286,14 @@ class HomeController < ApplicationController
         # user we created like the admin one. Just send them there,
         # we have nothing else anyway.
         redirect_to "//#{Rails.application.secrets.canvas_server}/"
+        return
+      end
+
+      if !had_any_records && current_user.applicant_type == 'professional_mentor'
+        # they just applied as a professional_mentor but not in SF for whatever reason,
+        # so send them to the PM app so they can get in that campaign
+        redirect_to mentor_app_path
+        return
       end
     end
   end
