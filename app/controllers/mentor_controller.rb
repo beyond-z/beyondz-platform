@@ -277,7 +277,7 @@ class MentorController < ApplicationController
     cm.Desired_Job__c = application.desired_job
     cm.Company__c = application.employer
     cm.Employer_Industry__c = application.employer_industry
-    cm.How_Heard_About_Opportunity__c = application.how_hear
+    cm.Sourcing_Info__c = application.how_hear
     cm.Industry__c = application.industry
     cm.Career_Field_Interests__c = application.interests
     cm.Digital_Footprint__c = application.linkedin_url
