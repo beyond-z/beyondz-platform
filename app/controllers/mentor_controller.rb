@@ -55,7 +55,7 @@ class MentorController < ApplicationController
 
     @program_title = campaign.Program_Title__c
     @program_site = campaign.Program_Site__c
-    @contact_email = sf.load_cached_user_email(campaign.OwnerId)
+    @contact_email = campaign.Contact_Email__c.blank? ? sf.load_cached_user_email(campaign.OwnerId) : campaign.Contact_Email__c
     @program_area = campaign.PM_Area__c
     @number_of_weeks = campaign.PM_Number_Weeks__c.to_i
     @kickoff_location = campaign.PM_Kickoff_Location__c
