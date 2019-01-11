@@ -20,7 +20,7 @@
         <%= form_tag :action => 'university_update' do |f| %>
           <% List.find_by_friendly_name('universities').items.each do |school| %>
             <div>
-              <%= radio_button_tag :university_name, school, :required => 'required' %>
+              <%= radio_button_tag :university_name, school, false, :required => 'required' %>
               <%= label_tag "university_name_#{school}".to_sym, school %>
             </div>
           <% end %>
