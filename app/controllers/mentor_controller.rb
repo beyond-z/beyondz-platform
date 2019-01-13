@@ -55,12 +55,12 @@ class MentorController < ApplicationController
 
     @program_title = campaign.Program_Title__c
     @program_site = campaign.Program_Site__c
-    @contact_email = sf.load_cached_user_email(campaign.OwnerId)
+    @contact_email = campaign.Contact_Email__c.blank? ? sf.load_cached_user_email(campaign.OwnerId) : campaign.Contact_Email__c
     @program_area = campaign.PM_Area__c
     @number_of_weeks = campaign.PM_Number_Weeks__c.to_i
     @kickoff_location = campaign.PM_Kickoff_Location__c
     @due_date = format_date(campaign.PM_Application_Due_Date__c)
-    @start_date = format_date(campaign.PM_Kickoff_Date__c)
+    @kickoff_date = format_date(campaign.PM_Kickoff_Date__c)
     @end_date = format_date(campaign.PM_End_Date__c)
     @desired_industries = campaign.PM_Industries_List__c
 
@@ -74,7 +74,6 @@ class MentorController < ApplicationController
     #@kickoff_location = @program_site # FIXME
     #@due_date = "December 25, 2018" # FIXME
     #@kickoff_date = "January 1, 2019" # FIXME
-    #@start_date = "January 1, 2019" # FIXME
     #@end_date = "February 1, 2019" # FIXME
     #@desired_industries = "LIST INDUSTRIES" #FIXME
 

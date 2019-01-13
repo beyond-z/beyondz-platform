@@ -268,7 +268,7 @@ class EnrollmentsController < ApplicationController
         @student_id_format = campaign.Student_ID_Format__c
         @student_id_format_help = campaign.Student_ID_Format_Help__c
         @student_id_excluded_chars = campaign.Student_ID_Excluded_Chars__c
-        @contact_email = sf.load_cached_user_email(campaign.OwnerId)
+        @contact_email = campaign.Contact_Email__c.blank? ? sf.load_cached_user_email(campaign.OwnerId) : campaign.Contact_Email__c
         @is_preaccelerator_student = (campaign.Type == 'Pre-Accelerator Participants')
 
         @registration_instructions = campaign.Registration_Instructions__c

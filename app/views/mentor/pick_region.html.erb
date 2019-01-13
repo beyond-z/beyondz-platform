@@ -20,7 +20,7 @@
         <%= form_tag :action => 'region_update' do |f| %>
           <% List.find_by_friendly_name('pm_regions').items.each do |school| %>
             <div>
-              <%= radio_button_tag :bz_region, school, :required => 'required' %>
+              <%= radio_button_tag :bz_region, school, false, :required => 'required' %>
               <%= label_tag "bz_region_#{school}".to_sym, school %>
             </div>
           <% end %>

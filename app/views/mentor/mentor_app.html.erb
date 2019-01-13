@@ -41,7 +41,7 @@
               </p>
               <p>
                 As an essential piece of this programming, Professional Mentors (PMs) guide Braven Fellows on their path to securing quality postgraduate opportunities and support their professional development along the way. Each PM is paired with a junior, senior, or recent college graduate at <%= @program_site %> for&#160;
-                <strong><%=@number_of_weeks%> weeks from <%=@start_date%> - <%=@end_date%></strong>
+                <strong><%=@number_of_weeks%> weeks from <%=@kickoff_date%> - <%=@end_date%></strong>
                 &#160;and provides weekly 1:1 coaching on the job or internship search and application process and professional competencies. The volunteer commitment is as follows:
               </p>
               <ul>
@@ -317,7 +317,7 @@
               <label><input type="checkbox" name="comfortable[]" value="Networking" /> Networking (elevator pitch, informational interviews)</label>
               <label><input type="checkbox" name="comfortable[]" value="Interview practice" /> Interview practice</label>
             <br />
-            <b class="required">The PM role requires you to commit ~2 hours per week for <%=@number_of_weeks%> weeks (<%= @start_date %> through <%= @end_date %>). Is this a commitment you can realistically make?</b>
+            <b class="required">The PM role requires you to commit ~2 hours per week for <%=@number_of_weeks%> weeks (<%= @kickoff_date %> through <%= @end_date %>). Is this a commitment you can realistically make?</b>
             <label>
               <input required="required" name="can_commit" value="yes" type="radio" />
               Yes
