@@ -24,6 +24,20 @@ class MentorController < ApplicationController
   end
 
   def load_campaign_data(type)
+
+    #@program_title = 'Professional Mentor Program'
+    #@program_site = 'Test Braven Site'
+    #@contact_email = 'admin@bebraven.org'
+    #@program_area = "#{@program_site} Area" # FIXME
+    #@number_of_weeks = 4 # FIXME
+    #@kickoff_location = @program_site # FIXME
+    #@due_date = "December 25, 2018" # FIXME
+    #@kickoff_date = "January 1, 2019" # FIXME
+    #@end_date = "February 1, 2019" # FIXME
+    #@desired_industries = "LIST INDUSTRIES" #FIXME
+    #return true
+
+
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
     client.materialize('CampaignMember')
@@ -65,18 +79,6 @@ class MentorController < ApplicationController
     @desired_industries = campaign.PM_Industries_List__c
 
 
-
-    #@program_title = 'Professional Mentor Program'
-    #@program_site = 'Test Braven Site'
-    #@contact_email = 'admin@bebraven.org'
-    #@program_area = "#{@program_site} Area" # FIXME
-    #@number_of_weeks = 4 # FIXME
-    #@kickoff_location = @program_site # FIXME
-    #@due_date = "December 25, 2018" # FIXME
-    #@kickoff_date = "January 1, 2019" # FIXME
-    #@end_date = "February 1, 2019" # FIXME
-    #@desired_industries = "LIST INDUSTRIES" #FIXME
-
     return true
   end
 
@@ -101,6 +103,7 @@ class MentorController < ApplicationController
     end
 
     # is the user in the campaign? if no, add them now
+    #if false
     begin
       if current_user.salesforce_id.blank?
         # skip ahead to contact as we are adding to campaign below
@@ -112,6 +115,7 @@ class MentorController < ApplicationController
       render 'inactive_campaign'
       return
     end
+    #end
 
     if !load_campaign_data("Mentor")
       render 'inactive_campaign'
