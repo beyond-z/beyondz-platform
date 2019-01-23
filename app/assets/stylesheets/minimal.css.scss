@@ -34,3 +34,25 @@ hr {
     }
   }
 }
+
+@media(max-width: 640px) {
+  #sso_discovery {
+    a {
+      width: 6em;
+      height: 6em;
+      line-height: 4em; /* height - vertical padding */
+      margin: 0.5em;
+    }
+  }
+}
+
+@media(min-width: 640px) and (max-width: 800px) {
+  #sso_discovery {
+    a {
+      width: 8em;
+      height: 8em;
+      line-height: 6em; /* height - vertical padding */
+      margin: 0.5em;
+    }
+  }
+}
