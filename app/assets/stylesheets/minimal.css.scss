@@ -11,9 +11,11 @@ hr {
 
   h2 {
     font-size: 100%;
+    text-transform: none;
   }
 
   a {
+    color: #666;
     display: inline-block;
     vertical-align: top;
     width: 10em;
@@ -24,7 +26,17 @@ hr {
     padding: 1em;
     text-align: center;
 
-    line-height: 8em; /* height - vertical padding */
+    line-height: 4em; /* (height - vertical padding) / 2 */
+    vertical-align: bottom;
+    position: relative;
+
+    span {
+      display: block;
+      position: absolute;
+      left: 0px;
+      right: 0px;
+      bottom: 0px;
+    }
 
     img {
       vertical-align: middle;
@@ -40,7 +52,7 @@ hr {
     a {
       width: 6em;
       height: 6em;
-      line-height: 4em; /* height - vertical padding */
+      line-height: 2em; /* height - vertical padding */
       margin: 0.5em;
     }
   }
@@ -51,7 +63,7 @@ hr {
     a {
       width: 8em;
       height: 8em;
-      line-height: 6em; /* height - vertical padding */
+      line-height: 3em; /* height - vertical padding */
       margin: 0.5em;
     }
   }
