@@ -115,7 +115,14 @@ $(document).ready(function() {
   $("form").submit(function() {
     var valid = BZFormIsValid(this);
     if(!valid) {
+      alert("Please make sre all required fields are correctly filled in.");
       $(this).addClass("submitted-invalid");
     }
   });
+
+  var allForms = document.querySelectorAll("form");
+  for(var i = 0; i < allForms.length; i++)
+    allForms[i].addEventListener("invalid", function(event) {
+      event.target.parentNode.classList.add("submitted-invalid");
+    }, true);
 });
