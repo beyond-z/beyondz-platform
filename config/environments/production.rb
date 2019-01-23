@@ -91,3 +91,11 @@ BeyondzPlatform::Application.configure do
   config.action_mailer.default_url_options = { host: Rails.application.secrets.root_domain, protocol: 'https' }
 
 end
+
+Rails.application.config.middleware.use ExceptionNotification::Rack,
+  :email => {
+    :deliver_with => :deliver, # Rails >= 4.2.1 do not need this option since it defaults to :deliver_now
+    :email_prefix => "[BVN_EXCEP] ",
+    :sender_address => %{"Errors" <admin@bebraven.org>},
+    :exception_recipients => %w{tech@bebraven.org}
+  }

@@ -1,5 +1,16 @@
 # Prevent CSRF attacks by raising an exception.
 class ApplicationController < ActionController::Base
+
+  # See: http://smartinez87.github.io/exception_notification/
+
+  before_filter :prepare_exception_notifier
+  private
+  def prepare_exception_notifier
+    request.env["exception_notifier.exception_data"] = {
+      :current_user => current_user
+    }
+  end
+
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   layout :default_layout
