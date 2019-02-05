@@ -45,3 +45,15 @@
     <%= f.submit %>
   <% end %>
 <% end %>
+
+<h2>Change Canvas User ID</h2>
+<p>If a person is having trouble logging into Portal, look up their email address here and on Canvas. Ensure the Canvas User ID matches both accounts. If it doesn't, you can update it here.
+<%= form_for [:admin, @user] do |f| %>
+  <%= f.label :canvas_user_id %>:<br />
+  <%= f.text_field :canvas_user_id %><br />
+
+  <br />
+  <%= f.submit %>
+<% end %>
+
+

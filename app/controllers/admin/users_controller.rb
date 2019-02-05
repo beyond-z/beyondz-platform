@@ -225,6 +225,7 @@ class Admin::UsersController < Admin::ApplicationController
     @user.first_name = params[:user][:first_name] unless params[:user][:first_name].nil?
     @user.last_name = params[:user][:last_name] unless params[:user][:last_name].nil?
     @user.salesforce_id = params[:user][:salesforce_id] unless params[:user][:salesforce_id].nil?
+    @user.canvas_user_id = params[:user][:canvas_user_id] unless params[:user][:canvas_user_id].nil?
     @user.password = params[:user][:password] unless params[:user][:password].nil? || params[:user][:password].empty?
 
     if params[:sync_with_canvas]
