@@ -1,6 +1,6 @@
 <h1>Edit User</h1>
 
-<h2>Change Email Address</h2>
+<h2 id="email">Change Email Address</h2>
 <p>Changing the email address will change it on BZ, on Salesforce, and on Canvas. Remember, if you change a user's email address, they must log in with the new address too.</p>
 
 <%= form_for [:admin, @user] do |f| %>
@@ -11,7 +11,7 @@
   <%= f.submit %>
 <% end %>
 
-<h2>Change Password</h2>
+<h2 id="password">Change Password</h2>
 <%= form_for [:admin, @user] do |f| %>
   <%= f.label :password %>:<br />
   <%= f.text_field :password %><br />
@@ -21,7 +21,7 @@
 <% end %>
 
 
-<h2>Change Salesforce Contact ID mapping</h2>
+<h2 id="salesforce_id">Change Salesforce Contact ID mapping</h2>
 <p>Please be VERY careful when doing this. If SF ID gets out of sync, they will no longer be able to match up with syncing to Canvas or submitting applications. Only change it if you are absolutely sure this is the right thing to do.</p>
 <p>To get a Salesforce Contact ID, go to the Contact - NOT the lead, NOT the campaign member, always use Contact ID. Get it by going to the contact in Salesforce and looking at the end of the URL. It is the bit after the last slash, but before any question mark (if there is a question mark).</p>
 <%= form_for [:admin, @user] do |f| %>
@@ -45,3 +45,31 @@
     <%= f.submit %>
   <% end %>
 <% end %>
+
+<h2 id="canvas_user_id">Change Canvas User ID</h2>
+<p>If a person is having trouble logging into Portal, look up their email address here and on Canvas. Ensure the Canvas User ID matches both accounts. If it doesn't, you can update it here.
+<%= form_for [:admin, @user] do |f| %>
+  <%= f.label :canvas_user_id %>:<br />
+  <%= f.text_field :canvas_user_id %><br />
+
+  <br />
+  <%= f.submit %>
+<% end %>
+
+<% if enrollment %>
+<h2 id="nlu_student_id">NLU Student ID</h2>
+<p>The NLU student id is used by NLU students to log in via university SSO. It is important that it match exactly NLU's records for them to be able to log in successfully.</p>
+<p>Please note: you can also change it on Portal directly via
+  <a href="https://<%= Rails.application.secrets.canvas_server%>/accounts/1/users/<%= @user.canvas_user_id %>#login_information">this link</a> as long as the canvas user id above is already correct.</p>
+
+  <%= form_for [:admin, enrollment] do |f| %>
+    <input type="hidden" name="id_type" value="nlu" />
+    <%= f.label :student_id %>:<br />
+    <%= f.text_field :student_id %><br />
+    <%= f.hidden_field :user_id, { :value => @user.id } %>
+    <br />
+    <%= f.submit %>
+  <% end %>
+<% end %>
+
+

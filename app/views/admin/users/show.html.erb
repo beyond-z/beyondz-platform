@@ -6,7 +6,7 @@
   <% end %>
 </div>
 
-<%= link_to 'Change Password', "/admin/users/#{@user.id}/edit" %>
+<%= link_to 'Change Password', "/admin/users/#{@user.id}/edit" + "#password" %>
 
 <table class="fields">
   <tr>
@@ -15,11 +15,11 @@
   </tr>
   <tr>
     <th>Email</th>
-    <td><%= @user.email %> <%= link_to 'Change', edit_admin_user_path(@user) %></td>
+    <td><%= @user.email %> <%= link_to 'Change', edit_admin_user_path(@user) + "#email" %></td>
   </tr>
   <tr>
     <th>Salesforce Contact ID</th>
-    <td><%= @user.salesforce_id ? @user.salesforce_id : '--not set--' %> <%= link_to 'Change', edit_admin_user_path(@user) %></td>
+    <td><%= @user.salesforce_id ? @user.salesforce_id : '--not set--' %> <%= link_to 'Change', edit_admin_user_path(@user) + "#salesforce_id" %></td>
   </tr>
   <tr>
     <% e = Enrollment.latest_for_user(@user.id) %>
@@ -40,6 +40,14 @@
           <% end %>
         <% end %>
       </td>
+  </tr>
+  <tr>
+    <th>LMS User ID</th>
+    <td><%= @user.canvas_user_id %> <%= link_to 'Change', edit_admin_user_path(@user) + "#canvas_user_id" %></td>
+  </tr>
+  <tr>
+    <th>NLU Student ID</th>
+    <td><%= @user.nlu_student_id %> <%= link_to 'Change', edit_admin_user_path(@user) + "#nlu_student_id" %></td>
   </tr>
 
 </table>
