@@ -56,4 +56,20 @@
   <%= f.submit %>
 <% end %>
 
+<% if enrollment %>
+<h2 id="nlu_student_id">NLU Student ID</h2>
+<p>The NLU student id is used by NLU students to log in via university SSO. It is important that it match exactly NLU's records for them to be able to log in successfully.</p>
+<p>Please note: you can also change it on Portal directly via
+  <a href="https://<%= Rails.application.secrets.canvas_server%>/accounts/1/users/<%= @user.canvas_user_id %>#login_information">this link</a> as long as the canvas user id above is already correct.</p>
+
+  <%= form_for [:admin, enrollment] do |f| %>
+    <input type="hidden" name="id_type" value="nlu" />
+    <%= f.label :student_id %>:<br />
+    <%= f.text_field :student_id %><br />
+    <%= f.hidden_field :user_id, { :value => @user.id } %>
+    <br />
+    <%= f.submit %>
+  <% end %>
+<% end %>
+
 
