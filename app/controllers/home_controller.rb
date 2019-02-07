@@ -87,11 +87,6 @@ class HomeController < ApplicationController
 
   def welcome
 
-@applications = []
-@key_application_count = 0
-@show_completed = true
-return
-
     @apply_now_showing = false
     # just set here as a default so we can see it if it is improperly set below and
     # also to handle the fallback case for legacy users who applied before the salesforce system was in place
