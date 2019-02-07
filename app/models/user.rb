@@ -385,6 +385,7 @@ class User < ActiveRecord::Base
     rescue Databasedotcom::SalesForceError => e
       # If this failure happens, it is almost certainly just because they
       # are already in the campaign 
+      logger.info e
     end
   end
 

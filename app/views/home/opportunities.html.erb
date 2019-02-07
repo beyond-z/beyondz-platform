@@ -1,0 +1,43 @@
+<div class="plank tertiary-md">
+  <div class="section-container">
+    <section>
+      <div class="col-sm-6 col-sm-offset-3 text-center">
+        <h2>Thank You For Being A Part Of Braven</h2>
+        <p>We are excited for the opportunity to continue working with you.</p>
+      </div>
+    </section>
+  </section>
+</div>
+
+<div class="plank plain-lt">
+  <div class="section-container">
+    <section>
+      <div class="col-sm-8 col-sm-offset-2">
+
+        <% if @lc_available %>
+          <h3>Be a Leadership Coach next semester</h3>
+          <p>Leadership Coaches work directly with Braven Fellows in our university programs, guiding them through the Career Accelerator. Ninety eight percent of our coaches said that the role helped them develop and practice skills transferable to their own professional development and goals.<p>
+
+          <%= form_tag lc_add_path do %>
+          <button type="submit" class="btn btn-primary">Apply to be a Leadership Coach</button>
+          <% end %>
+        <% end %>
+
+        <% if @pm_available %>
+          <h3>Join our Professional Mentor program</h3>
+          <p>Professional Mentors work one-on-one with Braven Fellows after they complete the university course, helping them further develop the skills they need to land their strong first job.</p>
+
+          <a class="btn btn-primary" href="<%= mentor_app_path %>">Apply to be a Professional Mentor</a>
+        <% end %>
+
+        <% if @nothing_available %>
+          <p>We're not actively looking for anyone in your area right now, but we still want to hear from you.  Please reach out via email to <a href="mailto:info@bebraven.org">info@bebraven.org</a> to start a dialog.</p>
+        <% else %>
+          <h3>Contact Braven</h3>
+          <p>If you have questions or would like to contact us for any other reason, please reach out via email to <a href="mailto:info@bebraven.org">info@bebraven.org</a>.</p>
+        <% end %>
+      </div>
+    </section>
+  </div>
+</div>
+
