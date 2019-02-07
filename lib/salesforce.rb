@@ -3,8 +3,6 @@
 module SFDC_Models
 end
 
-require "google/api_client"
-
 # I'm monkeypatching the databasedotcom gem to fix a major bug
 Databasedotcom::Client.class_eval do
   # This method is copy/pasted from the gem source with one
@@ -173,15 +171,14 @@ module BeyondZ
     end
 
     def run_report(report_id, file_key, worksheet_name)
+
+      # doing google login first to get faster failure on event of it changing again
+      session = GoogleDrive::Session.from_config(Rails.application.secrets.google_spreadsheet_key)
+      sheet = session.spreadsheet_by_key(file_key)
+
       client = get_client
       info = client.http_get("/services/data/v29.0/analytics/reports/#{report_id}?includeDetails=true")
       info = JSON.parse(info.body)
-
-      client = Google::APIClient.new({ :application_name => 'Braven', :application_version => '1.0.0' })
-
-      session = GoogleDrive.login_with_oauth(Rails.application.secrets.google_spreadsheet_key)
-
-      sheet = session.spreadsheet_by_key(file_key)
 
       ws = sheet.worksheet_by_title(worksheet_name)
 
