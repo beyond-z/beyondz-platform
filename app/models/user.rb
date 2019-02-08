@@ -519,7 +519,7 @@ class User < ActiveRecord::Base
     enrollment = Enrollment.find_by_user_id(self.id)
     sid = nil
     sid = enrollment.student_id unless enrollment.nil?
-    if !sid.nil? && sid.starts_with? "N00"
+    if !sid.nil? && sid.starts_with?("N00")
       return sid
     else
       return nil # not a NLU ID...
