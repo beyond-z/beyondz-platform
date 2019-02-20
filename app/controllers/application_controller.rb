@@ -173,7 +173,7 @@ class ApplicationController < ActionController::Base
       'European Studies',
       'Gay and Lesbian Studies',
       'Latinx Studies',
-      'Women’s Studies',
+      'Women\'s Studies',
       'Education',
       'Psychology',
       'Child Development',
