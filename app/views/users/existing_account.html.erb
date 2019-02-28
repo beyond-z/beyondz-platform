@@ -9,8 +9,16 @@
           <p>We found an existing account with your name. If <%= (@multiple ? "any of these are one of your email addresses" : "this is your email address") %>, please click your email address to log in with your existing account.</p>
 
           <% @existing.each do |e| %>
-            <%= link_to censor_email(e.email), new_user_session_path %>
-            <br />
+            <% if e.applicant_type == 'event_volunteer' %>
+              <!--no password = let them reset it via email with fewer steps-->
+              <%= form_for(User.new, as: "user", url: password_path("user"), html: { method: :post }) do |f| %>
+                <%= f.hidden_field :email, value: e.email %>
+                <%= f.submit censor_email(e.email), class: "plain-link" %>
+              <% end %>
+            <% else %>
+              <%= link_to censor_email(e.email), new_user_session_path %>
+              <br />
+            <% end %>
           <% end %>
 
           <h2>Not you?</h2>
