@@ -123,6 +123,9 @@ $(document).ready(function() {
   var allForms = document.querySelectorAll("form");
   for(var i = 0; i < allForms.length; i++)
     allForms[i].addEventListener("invalid", function(event) {
-      event.target.parentNode.classList.add("submitted-invalid");
+      // exceedingly defensive, this should be totally unnecessary, but idk what is causing
+      // this submit problem so trying everything
+      if(event.target && event.target.parentNode && event.target.parentNode.classList)
+	      event.target.parentNode.classList.add("submitted-invalid");
     }, true);
 });
