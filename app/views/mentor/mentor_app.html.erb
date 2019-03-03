@@ -27,7 +27,7 @@
 
 
 
-      <%= form_tag do |f| %>
+      <%= form_tag({}, {:id => 'main-form'}) do |f| %>
         <input type="hidden" name="campaign_id" value="<%=@campaign_id%>" />
         <div>
           <div>
@@ -398,7 +398,7 @@
           <section>
             <div id="form-end">
                 <div class="apply-button form-submit">
-                  <button class="button-primary" type="submit" name="user_submit" onclick="return confirm('Are you sure you are ready to send your form?');">Send</button>
+                  <button form="main-form" class="button-primary" type="submit" name="user_submit" onclick="return confirm('Are you sure you are ready to send your form?');">Send</button>
                 </div>
             </div>
           </section>
