@@ -6,6 +6,8 @@ module MailchimpUpdates
   end
   
   def create_mailchimp
+    return true if Rails.application.secrets.mailchimp_key.blank? # skip if mailchimp not configured
+
     # find salesforce id locally or on SF
     ensure_salesforce_id
     
@@ -18,6 +20,8 @@ module MailchimpUpdates
   end
   
   def update_mailchimp
+    return true if Rails.application.secrets.mailchimp_key.blank? # skip if mailchimp not configured
+
     # don't update for a new record, it doesn't exist in mailchimp yet
     return true if new_record?
 

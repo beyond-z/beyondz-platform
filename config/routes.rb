@@ -9,6 +9,9 @@ BeyondzPlatform::Application.routes.draw do
 
   # These are part of the signup flow and NOT moved to the blog, they should stay here.
   get '/welcome', to: 'home#welcome'
+  get '/opportunities', to: 'home#opportunities', as: :other_opportunities
+  post '/region_update', to: 'home#region_update'
+  post '/become_lc', to: 'home#become_lc', as: :lc_add
   get '/activating', to: 'home#please_wait', as: :please_wait
   get '/activating_status', to: 'home#please_wait_status', as: :please_wait_status
 

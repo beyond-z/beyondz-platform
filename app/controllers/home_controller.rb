@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   before_action :new_user, only: [:welcome, :volunteer, :apply, :partner, :please_wait]
-  before_filter :authenticate_user_for_welcome, :only => [:welcome]
+  before_filter :authenticate_user_for_welcome, :only => [:welcome, :opportunities, :region_update]
 
   layout 'public'
 
@@ -29,6 +29,40 @@ class HomeController < ApplicationController
     end
   end
 
+  def region_update
+    current_user.bz_region = params[:bz_region]
+    current_user.save
+    redirect_to other_opportunities_path
+  end
+
+  def become_lc
+    current_user.ensure_in_salesforce_campaign_for(current_user.bz_region, nil, 'leadership_coach')
+    redirect_to welcome_path
+  end
+
+  def opportunities
+    # this page is meant to display other opportunities for existing users
+    # to grow their relationship with Braven
+
+    if current_user.bz_region.blank?
+      render 'mentor/pick_region'
+      return
+    end
+
+    @pm_available = CampaignMapping.where(
+      :bz_region => current_user.bz_region,
+      :applicant_type => 'professional_mentor'
+    ).any?
+
+    @lc_available = CampaignMapping.where(
+      :bz_region => current_user.bz_region,
+      :applicant_type => 'leadership_coach'
+    ).any?
+
+    @nothing_available = !@pm_available && !@lc_available
+
+  end
+
   def please_wait
   end
 
@@ -52,6 +86,7 @@ class HomeController < ApplicationController
   end
 
   def welcome
+
     @apply_now_showing = false
     # just set here as a default so we can see it if it is improperly set below and
     # also to handle the fallback case for legacy users who applied before the salesforce system was in place

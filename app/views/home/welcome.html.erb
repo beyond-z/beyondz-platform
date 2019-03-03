@@ -20,13 +20,21 @@
             <p>We will be in touch shortly with next steps. If you have any further questions please feel free to <a href="mailto:join@bebraven.org">contact us</a></p>
           <% elsif @show_completed %>
             <h2>Thank you for participating</h2>
+
+              <p class="shoutout">Want to work with us in another capacity?</p>
+
+              <p><a class="btn btn-primary" href="<%= other_opportunities_path %>">See Other Opportunities</a></p>
           <% else %>
             <% if @key_application_count > 1 %>
               <p class="shoutout">You have worked with us in multiple ways. Please select where you want to go next:</p>
             <% elsif @applications.count == 0 %>
               <!-- USER WHO NEED *NOT* APPLY { -->
               <h2>Thank you for your interest in Braven.</h2>
-              <p>We'll get back to you at <%= @new_user.email %> very soon!</p>
+              <p>We'll keep in contact via email.</p>
+
+              <p class="shoutout">Want to work with us in another capacity?</p>
+
+              <p><a class="btn btn-primary" href="<%= other_opportunities_path %>">See Other Opportunities</a></p>
               <!-- } USER WHO NEED *NOT* APPLY -->
             <% else %>
               <!-- just one application, don't need a special header -->

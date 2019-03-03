@@ -256,6 +256,47 @@ module BeyondZ
       info
     end
 
+    def update_nlu_login(user_id, login_id)
+      open_canvas_http
+
+      # I need to find the existing login id with an nlu id for the user,
+      # then update it. If it doesn't exist, I need to create one.
+      request = Net::HTTP::Get.new("/api/v1/users/#{user_id}/logins?access_token=#{Rails.application.secrets.canvas_access_token}")
+      response = @canvas_http.request(request)
+      info = get_all_from_pagination(response)
+
+      lid = nil
+
+      info.each do |login|
+        if login["unique_id"].ends_with? '@nlu.edu'
+          lid = login["id"]
+          break
+        end
+      end
+
+      if lid.nil?
+        # create new one
+        request = Net::HTTP::Post.new("/api/v1/accounts/1/logins")
+        data = {
+          'access_token' => Rails.application.secrets.canvas_access_token,
+          'login[unique_id]' => login_id,
+          'user[id]' => user_id
+        }
+        request.set_form_data(data)
+        @canvas_http.request(request)
+      else
+        # update existing one
+        request = Net::HTTP::Put.new("/api/v1/accounts/1/logins/#{lid}")
+        data = {
+          'access_token' => Rails.application.secrets.canvas_access_token,
+          'login[unique_id]' => login_id
+        }
+        request.set_form_data(data)
+        @canvas_http.request(request)
+      end
+
+    end
+
     # Creates a user in canvas based on the passed user
     # storing the new canvas user id in the object.
     #

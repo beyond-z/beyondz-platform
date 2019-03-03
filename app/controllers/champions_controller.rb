@@ -504,14 +504,14 @@ class ChampionsController < ApplicationController
 
     # defensively limit string lengths before saving to ensure
     # they don't blow the column limit
-    n.first_name = n.first_name[0 ... 240]
-    n.last_name = n.last_name[0 ... 240]
-    n.email = n.email[0 ... 240]
-    n.phone = n.phone[0 ... 240]
-    n.company = n.company[0 ... 240]
-    n.job_title = n.job_title[0 ... 240]
-    n.linkedin_url = n.linkedin_url[0 ... 240]
-    n.region = n.region[0 ... 240]
+    n.first_name = n.first_name[0 ... 240] unless n.first_name.nil?
+    n.last_name = n.last_name[0 ... 240] unless n.last_name.nil?
+    n.email = n.email[0 ... 240] unless n.email.nil?
+    n.phone = n.phone[0 ... 240] unless n.phone.nil?
+    n.company = n.company[0 ... 240] unless n.company.nil?
+    n.job_title = n.job_title[0 ... 240] unless n.job_title.nil?
+    n.linkedin_url = n.linkedin_url[0 ... 240] unless n.linkedin_url.nil?
+    n.region = n.region[0 ... 240] unless n.region.nil?
 
     n.save
 

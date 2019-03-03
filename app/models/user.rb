@@ -385,6 +385,7 @@ class User < ActiveRecord::Base
     rescue Databasedotcom::SalesForceError => e
       # If this failure happens, it is almost certainly just because they
       # are already in the campaign 
+      logger.info e
     end
   end
 
@@ -512,6 +513,17 @@ class User < ActiveRecord::Base
     })
     
     bz_region || region_by_university[university_name]
+  end
+
+  def nlu_student_id
+    enrollment = Enrollment.find_by_user_id(self.id)
+    sid = nil
+    sid = enrollment.student_id unless enrollment.nil?
+    if !sid.nil? && sid.starts_with?("N00")
+      return sid
+    else
+      return nil # not a NLU ID...
+    end
   end
 
   def salesforce_applicant_type
