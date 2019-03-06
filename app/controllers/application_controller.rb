@@ -92,6 +92,29 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # code to redirect to the same place after login
+  # from https://stackoverflow.com/questions/15944159/devise-redirect-back-to-the-original-location-after-sign-in-or-sign-up
+
+    before_action :store_user_location!, if: :storable_location?
+    # The callback which stores the current location must be added before you authenticate the user 
+    # as `authenticate_user!` (or whatever your resource is) will halt the filter chain and redirect 
+    # before the location can be stored.
+    before_action :authenticate_user!
+
+    # Its important that the location is NOT stored if:
+    # - The request method is not GET (non idempotent)
+    # - The request is handled by a Devise controller such as Devise::SessionsController as that could cause an 
+    #    infinite redirect loop.
+    # - The request is an Ajax request as this can lead to very unexpected behaviour.
+    def storable_location?
+      request.get? && is_navigational_format? && !devise_controller? && !request.xhr? && request.path != new_user_path
+    end
+
+    def store_user_location!
+      store_location_for(:user, request.fullpath)
+    end
+  # done
+
   def set_up_lists
     @industries = [
       'Accounting',
