@@ -49,15 +49,35 @@ class HomeController < ApplicationController
       return
     end
 
-    @pm_available = CampaignMapping.where(
+    @pm_available = false
+    @lc_available = false
+
+    sf = BeyondZ::Salesforce.new
+
+    pm_available = CampaignMapping.where(
       :bz_region => current_user.bz_region,
       :applicant_type => 'professional_mentor'
-    ).any?
+    )
 
-    @lc_available = CampaignMapping.where(
+    if pm_available.any?
+      cid = pm_available.first.campaign_id
+      if !sf.user_is_in_campaign?(current_user.salesforce_id, cid)
+        @pm_available = true
+      end
+    end
+
+    lc_available = CampaignMapping.where(
       :bz_region => current_user.bz_region,
       :applicant_type => 'leadership_coach'
-    ).any?
+    )
+
+    if lc_available.any?
+      cid = lc_available.first.campaign_id
+      if !sf.user_is_in_campaign?(current_user.salesforce_id, cid)
+        @lc_available = true
+      end
+    end
+
 
     @nothing_available = !@pm_available && !@lc_available
 
@@ -122,12 +142,7 @@ class HomeController < ApplicationController
 
         # We need to check all the campaign members to find the one that is most correct
         # for an application - one with an Application Type set up.
-        query_result = client.http_get("/services/data/v#{client.version}/query?q=" \
-          "SELECT
-            Id, CampaignId, Candidate_Status__c, Apply_Button_Enabled__c, Section_Name_In_LMS__c
-          FROM CampaignMember WHERE ContactId = '#{current_user.salesforce_id}' AND Campaign.Application_Type__c != ''")
-
-        sf_answer = JSON.parse(query_result.body)
+        sf_answer = sf.load_user_campaigns(current_user.salesforce_id)
 
         key_application_path = ''
         user_submitted_any = false
@@ -137,6 +152,9 @@ class HomeController < ApplicationController
         any_completed = false
 
         sf_answer['records'].each do |record|
+
+          next if record['Application_Type__c'] == ''
+
           had_any_records = true
           campaign = sf.load_cached_campaign(record['CampaignId'])
           campaign_type =
