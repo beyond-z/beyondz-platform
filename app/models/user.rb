@@ -382,6 +382,7 @@ class User < ActiveRecord::Base
 
     begin
       cm = client.create('CampaignMember', cm)
+      Rails.cache.delete("salesforce/user_campaigns/#{salesforce_id}")
     rescue Databasedotcom::SalesForceError => e
       # If this failure happens, it is almost certainly just because they
       # are already in the campaign 
@@ -408,6 +409,7 @@ class User < ActiveRecord::Base
 
       begin
         cm = client.create('CampaignMember', cm)
+        Rails.cache.delete("salesforce/user_campaigns/#{salesforce_id}")
       rescue Databasedotcom::SalesForceError => e
         # If this failure happens, it is almost certainly just because they
         # are already in the campaign - probably because we invited them from

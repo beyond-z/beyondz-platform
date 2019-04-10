@@ -46,6 +46,28 @@ module BeyondZ
   class Salesforce
     public
 
+    def load_user_campaigns(salesforce_id)
+      Rails.cache.fetch("salesforce/user_campaigns/#{salesforce_id}", expires_in: 5.minutes) do
+        client = get_client
+        query_result = client.http_get("/services/data/v#{client.version}/query?q=" \
+          "SELECT
+            Id, CampaignId, Candidate_Status__c, Apply_Button_Enabled__c, Section_Name_In_LMS__c
+          FROM CampaignMember WHERE ContactId = '#{salesforce_id}'")
+
+        sf_answer = JSON.parse(query_result.body)
+      end
+    end
+
+    def user_is_in_campaign?(contact_id, campaign_id)
+      sf_answer = load_user_campaigns(contact_id)
+      sf_answer['records'].each do |record|
+        if record['CampaignId'][0 ... 15] == campaign_id[0 ... 15]
+          return true
+        end
+      end
+      return false
+    end
+
     def load_cached_campaign(campaign_id, client = nil)
       Rails.cache.fetch("salesforce/campaign/#{campaign_id}", expires_in: 12.hours) do
         client = get_client if client.nil?
@@ -103,6 +125,7 @@ module BeyondZ
 
         begin
           cm = client.create('CampaignMember', cm)
+          Rails.cache.delete("salesforce/user_campaigns/#{contact_id}")
           return cm['Id']
         rescue Databasedotcom::SalesForceError => e
           # If this failure happens, it is almost certainly just because they
