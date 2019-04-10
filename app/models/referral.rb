@@ -17,7 +17,7 @@ class Referral < ActiveRecord::Base
       info['Email'] = referred_by_email
       info['Phone'] = referred_by_phone
       info['Company__c'] = referred_by_employer # FIXME: should I copy to primary affiliation?
-      info['Sourcing_Info__c'] = "Online Referrer: #{referred_by_affiliation}"
+      info['Sourcing_Info__c'] = "Online Referrer (#{referred_by_affiliation})"
 
       contact = client.create('Contact', info)
       self.referrer_salesforce_id = contact['Id']
@@ -47,10 +47,11 @@ class Referral < ActiveRecord::Base
     info['Phone'] = referred_phone
 
     info['BZ_Region__c'] = referral_location
-    info['Sourcing_Info__c'] = "Referred Online By: #{self.referrer_salesforce_id}"
+    info['Sourcing_Info__c'] = "Referred Online By #{self.referred_first_name} #{self.referred_by_last_name}"
+    info['Referred_By__c'] = self.referrer_salesforce_id
 
     contact = client.create('Contact', info)
-    self.referrer_salesforce_id = contact['Id']
+    self.referred_salesforce_id = contact['Id']
 
     save!
 
