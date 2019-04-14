@@ -13,6 +13,33 @@
 
   <%= f.label :password %>:<br />
   <%= f.text_field :password %><br />
+
+  <br />
+
+  <label for="course_id">
+    Canvas Course ID to auto-add (leave blank if you want to do it manually later)
+  </label>
+  <br />
+    <input type="text" id="course_id" name="course_id" />
+  <br />
+
+  <label for="course_role">
+    Role in the Canvas Course specified above
+  </label>
+  <br />
+    <select id="course_role" name="course_role">
+      <option value="STUDENT">Student</option>
+      <option value="TA">TA</option>
+      <option value="DESIGNER">Designer</option>
+    </select>
+  <br />
+  <label for="course_section">
+    Section Name in the Canvas Course specified above
+  </label>
+  <br />
+    <input type="text" id="course_section" name="course_section" />
+  <br />
+
   <br />
   <input type="hidden" value="true" name="sync_with_canvas" />
   <%= f.submit %>
