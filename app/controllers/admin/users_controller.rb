@@ -361,6 +361,17 @@ class Admin::UsersController < Admin::ApplicationController
       @lms.sync_user_logins(@user, @user.email)
       # and save again so it stores the lms user ID in the object
       @user.save!
+
+      unless params[:course_id].blank?
+        @lms.sync_user_course_enrollment(
+          @user,
+          params[:course_id],
+          params[:course_role],
+          params[:course_section]
+        )
+      end
+
+
     end
 
 
