@@ -99,7 +99,6 @@ class ApplicationController < ActionController::Base
     # The callback which stores the current location must be added before you authenticate the user 
     # as `authenticate_user!` (or whatever your resource is) will halt the filter chain and redirect 
     # before the location can be stored.
-    before_action :authenticate_user!
 
     # Its important that the location is NOT stored if:
     # - The request method is not GET (non idempotent)
