@@ -3,7 +3,81 @@
 class CalendlyController < ApplicationController
   # this comes from cross site - calendly - and we have our own magic
   # token to use instead of the random normal CSRF check
-  skip_before_filter :verify_authenticity_token
+  skip_before_filter :verify_authenticity_token, except: [:save_supplemental_details]
+
+  layout 'public'
+
+  def request_supplemental_details
+    set_up_lists
+
+    # if the invite already exists, update it, otherwise, create it...
+
+    if !params[:event_type_uuid].nil? && !params[:invitee_uuid].nil?
+      @obj = CalendlyInvitee.by_event_type_and_invitee_uuids(params[:event_type_uuid], params[:invitee_uuid])
+    end
+
+    if @obj.nil?
+      raise Exception.new "missing vital information on link"
+    end
+
+    @obj.assigned_to = params[:assigned_to] if params[:assigned_to]
+    @obj.event_type_uuid = params[:event_type_uuid] if params[:event_type_uuid]
+    @obj.event_type_name = params[:event_type_name] if params[:event_type_name]
+    @obj.event_start_time = params[:event_start_time] if params[:event_start_time]
+    @obj.event_end_time = params[:event_end_time] if params[:event_end_time]
+    @obj.invitee_uuid = params[:invitee_uuid] if params[:invitee_uuid]
+    @obj.invitee_first_name = params[:invitee_first_name] if params[:invitee_first_name]
+    @obj.invitee_last_name = params[:invitee_last_name] if params[:invitee_last_name]
+    @obj.invitee_email = params[:invitee_email] if params[:invitee_email]
+    @obj.answer_1 = params[:answer_1] if params[:answer_1]
+    @obj.answer_2 = params[:answer_2] if params[:answer_2]
+    @obj.answer_3 = params[:answer_3] if params[:answer_3]
+    @obj.answer_4 = params[:answer_4] if params[:answer_4]
+    @obj.answer_5 = params[:answer_5] if params[:answer_5]
+    @obj.answer_6 = params[:answer_6] if params[:answer_6]
+    @obj.answer_7 = params[:answer_7] if params[:answer_7]
+    @obj.answer_8 = params[:answer_8] if params[:answer_8]
+    @obj.answer_9 = params[:answer_9] if params[:answer_9]
+    @obj.answer_10 = params[:answer_10] if params[:answer_10]
+    @obj.answer_11 = params[:answer_11] if params[:answer_11]
+    @obj.answer_12 = params[:answer_12] if params[:answer_12]
+    @obj.answer_13 = params[:answer_13] if params[:answer_13]
+    @obj.answer_14 = params[:answer_14] if params[:answer_14]
+    @obj.answer_15 = params[:answer_15] if params[:answer_15]
+
+    @obj.save
+  end
+
+  def save_supplemental_details
+    @obj = CalendlyInvitee.find(params[:id])
+    @obj.college_major = params[:calendly_invitee][:college_major]
+    @obj.industry = params[:calendly_invitee][:industry]
+    @obj.save
+
+    # and update this on salesforce if it already exists
+    # if it doesn't already exist, it will be created in the callback below
+    # so we don't wanna do it here yet
+    unless @obj.salesforce_contact_id.blank?
+      contact = {}
+
+      if contact['Industry__c'].blank?
+        contact['Industry__c'] = @obj.industry
+      else
+        contact['Industry__c'] = "#{contact['Industry__c']}; #{@obj.industry}"
+      end
+
+      if contact['Fields_Of_Study__c'].blank?
+        contact['Fields_Of_Study__c'] = @obj.college_major
+      else
+        contact['Fields_Of_Study__c'] = "#{contact['Fields_Of_Study__c']} #{@obj.college_major}"
+      end
+
+      salesforce = BeyondZ::Salesforce.new
+      client = salesforce.get_client
+      client.update('Contact', @obj.salesforce_contact_id, contact)
+    end
+
+  end
 
   # Called by calend.ly when a volunteer signs up for or cancels an event.
   # Note: you can expose your local dev environment server to the internet for calendly to call using ngrok
@@ -38,6 +112,10 @@ class CalendlyController < ApplicationController
         event_name = params[:payload][:event_type][:name]
         start_time = params[:payload][:event][:invitee_start_time_pretty]
 
+        event_type_uuid = params[:payload][:event_type][:uuid]
+        invitee_uuid = params[:payload][:invitee][:uuid]
+
+        obj = CalendlyInvitee.by_event_type_and_invitee_uuids(params[:event_type_uuid], params[:invitee_uuid])
 
         contact = {}
         contact['FirstName'] = first_name
@@ -102,6 +180,18 @@ class CalendlyController < ApplicationController
           contact['BZ_User_Id__c'] = current_user.id
           contact['Came_From_to_Visit_Site__c'] = calendly_url
 
+          if contact['Industry__c'].blank?
+            contact['Industry__c'] = obj.industry
+          else
+            contact['Industry__c'] = "#{contact['Industry__c']}; #{obj.industry}"
+          end
+
+          if contact['Fields_Of_Study__c'].blank?
+            contact['Fields_Of_Study__c'] = obj.college_major
+          else
+            contact['Fields_Of_Study__c'] = "#{contact['Fields_Of_Study__c']} #{obj.college_major}"
+          end
+
           salesforce = BeyondZ::Salesforce.new
           existing_salesforce_id = salesforce.exists_in_salesforce(email)
           client = salesforce.get_client
@@ -123,11 +213,16 @@ class CalendlyController < ApplicationController
           current_user.salesforce_id = existing_salesforce_id
           current_user.skip_confirmation!
           current_user.save!
-          
+
           cm = current_user.auto_add_to_salesforce_campaign('Confirmed', selected_timeslot)
           if cm.nil?
             logger.debug "######## Failed to create Campaign Member for #{current_user.inspect}.  Dunno why though."
           end
+
+
+          obj.salesforce_contact_id = existing_salesforce_id
+          obj.salesforce_campaign_member_id = cm["Id"]
+          obj.save
 
           current_user.create_mailchimp
 
