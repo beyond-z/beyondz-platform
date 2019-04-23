@@ -47,7 +47,7 @@ class Referral < ActiveRecord::Base
     info['Phone'] = referred_phone
 
     info['BZ_Region__c'] = referral_location
-    info['Sourcing_Info__c'] = "Referred Online By #{self.referred_first_name} #{self.referred_by_last_name}"
+    info['Sourcing_Info__c'] = "Referred Online By #{self.referred_by_first_name} #{self.referred_by_last_name}"
 
     contact = client.create('Contact', info)
     self.referred_salesforce_id = contact['Id']
