@@ -118,7 +118,7 @@ class CalendlyController < ApplicationController
         event_type_uuid = params[:payload][:event_type][:uuid]
         invitee_uuid = params[:payload][:invitee][:uuid]
 
-        obj = CalendlyInvitee.by_event_type_and_invitee_uuids(params[:event_type_uuid], params[:invitee_uuid])
+        obj = CalendlyInvitee.by_event_type_and_invitee_uuids(event_type_uuid, invitee_uuid)
 
         contact = {}
         contact['FirstName'] = first_name
