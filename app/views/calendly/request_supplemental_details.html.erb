@@ -1,0 +1,46 @@
+<div id="new-referral-page">
+  <div class="plank plain-lt">
+    <div class="section-container">
+      <section>
+        <div class="col-sm-6">
+
+<h1>One more thing</h1>
+
+<p>To better match you in mock interviews with Fellows, we'd like to know more about your background.</p>
+
+  <%= form_for @obj, method: 'post', role: 'form' do |f| %>
+    <%= render :partial => "shared/form_errors", locals: { object: @obj } %>
+
+    <%= hidden_field_tag :id, @obj.id %>
+
+<div class="form-group">
+  <label>What did you study in undergraduate or graduate school?</label>
+  <br />
+  <%= f.select :college_major, options_for_select(@fields), {:include_blank => true } %>
+</div>
+
+
+<div class="form-group">
+  <label>What best describes your industry of work?</label>
+  <br />
+  <%= f.select :industry, options_for_select(@industries), {:include_blank => true } %>
+</div>
+
+<div class="form-group">
+What best describes the function of your role?
+  <br />
+  <%= f.select :job_function, options_for_select(@job_functions), {:include_blank => true } %>
+</div>
+
+<div>
+  <button class="button-primary">Finish</button>
+</div>
+
+  <% end %>
+
+
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
