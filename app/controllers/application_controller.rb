@@ -258,6 +258,10 @@ class ApplicationController < ActionController::Base
       'Culinary Arts',
       'Creative Writing'
     ].sort
+
+    @job_functions = [
+
+    ].sort
   end
 
 end

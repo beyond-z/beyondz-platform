@@ -30,6 +30,7 @@ class CreateCalendlyInvitees < ActiveRecord::Migration
       t.string :salesforce_campaign_member_id
       t.string :college_major
       t.string :industry
+      t.string :job_function
 
       t.timestamps
     end

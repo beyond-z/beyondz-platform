@@ -79,6 +79,7 @@ ActiveRecord::Schema.define(version: 20190423152303) do
     t.string   "salesforce_campaign_member_id"
     t.string   "college_major"
     t.string   "industry"
+    t.string   "job_function"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
