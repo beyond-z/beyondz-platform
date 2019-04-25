@@ -49,6 +49,10 @@ class HomeController < ApplicationController
       return
     end
 
+    load_available_opps
+  end
+
+  def load_available_opps
     @pm_available = false
     @lc_available = false
 
@@ -80,7 +84,6 @@ class HomeController < ApplicationController
 
 
     @nothing_available = !@pm_available && !@lc_available
-
   end
 
   def please_wait
@@ -106,6 +109,31 @@ class HomeController < ApplicationController
   end
 
   def welcome
+    if session[:just_signed_up_to_do]
+      redir = ''
+      case session[:just_signed_up_to_do]
+        when "professional_mentor"
+          redir = mentor_app_path
+        when "mentee"
+          redir = mentee_app_path
+        when "leadership_coach"
+          # if they were just recently created as this, no need to run it again (this ensure call is slightly
+          # slow), but otherwise, let's run it to be sure they get what they are looking for below.
+          if current_user.applicant_type != 'leadership_coach' || current_user.created_at < Date.yesterday
+            current_user.ensure_in_salesforce_campaign_for(current_user.bz_region, nil, 'leadership_coach')
+          end
+        else
+          redir = ''
+      end
+
+      session[:just_signed_up_to_do] = nil
+
+      if redir != ''
+        redirect_to redir
+      end
+    end
+
+    load_available_opps
 
     @apply_now_showing = false
     # just set here as a default so we can see it if it is improperly set below and

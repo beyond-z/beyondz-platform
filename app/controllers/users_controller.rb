@@ -438,6 +438,8 @@ class UsersController < ApplicationController
       :city,
       :state)
 
+    session[:just_signed_up_to_do] = user[:applicant_type]
+
     user[:external_referral_url] = session[:referrer][0 .. 220] # the first referrer saw by the app
     user[:internal_referral_url] = params[:referrer][0 .. 220] # the one that led direct to sign up
     @referrer = params[:referrer] # preserve the original one in case of error
