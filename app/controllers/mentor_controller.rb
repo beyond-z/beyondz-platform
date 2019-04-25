@@ -134,6 +134,7 @@ class MentorController < ApplicationController
     end
 
     # is the user in the campaign? if no, add them now
+    # if false
     begin
       if current_user.salesforce_id.blank?
         # skip ahead to contact as we are adding to campaign below
@@ -146,6 +147,7 @@ class MentorController < ApplicationController
       render 'inactive_campaign'
       return
     end
+    # end
 
     if !load_campaign_data("Mentee")
       render 'inactive_campaign'
@@ -220,7 +222,7 @@ class MentorController < ApplicationController
     if params[:major] == 'other'
       application.major = params[:major_other]
     end
-    application.interests = params[:interests]
+    application.interests = params[:interests].nil? ? "" : params[:interests].join("; ")
     application.desired_job = params[:desired_job]
     application.why_interested_in_field = params[:why_interested_in_field]
     application.strengths_and_growths = params[:strengths_and_growths]
