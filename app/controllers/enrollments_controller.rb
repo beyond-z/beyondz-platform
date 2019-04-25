@@ -353,6 +353,9 @@ class EnrollmentsController < ApplicationController
         u.apply_now_enabled = false
         u.save
 
+        # delete the cache so the update for user submit, etc, will be refreshed on next load
+        Rails.cache.delete("salesforce/user_campaigns/#{@enrollment.user.salesforce_id}")
+
         if @enrollment.position == 'student'
           redirect_to register_path(:enrollment_id => @enrollment.id)
         else
