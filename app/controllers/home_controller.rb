@@ -56,6 +56,8 @@ class HomeController < ApplicationController
     @pm_available = false
     @lc_available = false
 
+    return if current_user.nil?
+
     sf = BeyondZ::Salesforce.new
 
     pm_available = CampaignMapping.where(
@@ -130,6 +132,7 @@ class HomeController < ApplicationController
 
       if redir != ''
         redirect_to redir
+        return
       end
     end
 
