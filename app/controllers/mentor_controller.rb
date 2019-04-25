@@ -25,6 +25,8 @@ class MentorController < ApplicationController
 
   def load_campaign_data(type)
 
+    set_up_lists
+
     #@program_title = 'Professional Mentor Program'
     #@program_site = 'Test Braven Site'
     #@contact_email = 'admin@bebraven.org'
@@ -34,9 +36,8 @@ class MentorController < ApplicationController
     #@due_date = "December 25, 2018" # FIXME
     #@kickoff_date = "January 1, 2019" # FIXME
     #@end_date = "February 1, 2019" # FIXME
-    #@desired_industries = "LIST INDUSTRIES" #FIXME
+    #@desired_industries = "LIST INDUSTRIES\nto test" #FIXME
     #return true
-
 
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
