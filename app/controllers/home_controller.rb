@@ -56,7 +56,11 @@ class HomeController < ApplicationController
     @pm_available = false
     @lc_available = false
 
+    # conservatively allow maybe something is available if the
+    # user is not fully configured; show the button so they can
+    # fill out the rest of the info and see opps if interested.
     return if current_user.nil?
+    return if current_user.bz_region.nil?
 
     sf = BeyondZ::Salesforce.new
 
