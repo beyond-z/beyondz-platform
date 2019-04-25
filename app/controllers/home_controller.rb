@@ -140,7 +140,14 @@ class HomeController < ApplicationController
       end
     end
 
-    load_available_opps
+    # For recent student sign ups, don't show other opportunities since they
+    # are almost certainly not qualified or interested anyway, but if they
+    # return later, it is ok to load them if available
+    if !current_user.nil? && (current_user.applicant_type == 'undergrad_student' || current_user.applicant_type == 'preaccelerator_student') && current_user.created_at >= Date.yesterday
+      @nothing_available = true
+    else
+      load_available_opps
+    end
 
     @apply_now_showing = false
     # just set here as a default so we can see it if it is improperly set below and
