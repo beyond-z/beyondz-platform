@@ -49,12 +49,18 @@ class Referral < ActiveRecord::Base
     info['BZ_Region__c'] = referral_location
     info['Sourcing_Info__c'] = "Referred Online By #{self.referred_by_first_name} #{self.referred_by_last_name}"
 
+
+    camp = salesforce_referral_campaign_id
+    camp_details = salesforce.load_cached_campaign(camp, client)
+
+    info['OwnerId'] = camp_details.OwnerId
+
     contact = client.create('Contact', info)
     self.referred_salesforce_id = contact['Id']
 
     save!
 
-    salesforce.add_to_campaign(referred_salesforce_id, salesforce_referral_campaign_id, { 'Referred_By__c' => self.referrer_salesforce_id })
+    salesforce.add_to_campaign(referred_salesforce_id, camp, { 'Referred_By__c' => self.referrer_salesforce_id })
     salesforce.add_to_campaign(referrer_salesforce_id, salesforce_nominator_campaign_id)
   end
 
