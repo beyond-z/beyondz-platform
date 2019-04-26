@@ -25,6 +25,8 @@ class MentorController < ApplicationController
 
   def load_campaign_data(type)
 
+    set_up_lists
+
     #@program_title = 'Professional Mentor Program'
     #@program_site = 'Test Braven Site'
     #@contact_email = 'admin@bebraven.org'
@@ -34,9 +36,8 @@ class MentorController < ApplicationController
     #@due_date = "December 25, 2018" # FIXME
     #@kickoff_date = "January 1, 2019" # FIXME
     #@end_date = "February 1, 2019" # FIXME
-    #@desired_industries = "LIST INDUSTRIES" #FIXME
+    #@desired_industries = "LIST INDUSTRIES\nto test" #FIXME
     #return true
-
 
     sf = BeyondZ::Salesforce.new
     client = sf.get_client
@@ -133,6 +134,7 @@ class MentorController < ApplicationController
     end
 
     # is the user in the campaign? if no, add them now
+    # if false
     begin
       if current_user.salesforce_id.blank?
         # skip ahead to contact as we are adding to campaign below
@@ -145,6 +147,7 @@ class MentorController < ApplicationController
       render 'inactive_campaign'
       return
     end
+    # end
 
     if !load_campaign_data("Mentee")
       render 'inactive_campaign'
@@ -219,7 +222,7 @@ class MentorController < ApplicationController
     if params[:major] == 'other'
       application.major = params[:major_other]
     end
-    application.interests = params[:interests]
+    application.interests = params[:interests].nil? ? "" : params[:interests].join("; ")
     application.desired_job = params[:desired_job]
     application.why_interested_in_field = params[:why_interested_in_field]
     application.strengths_and_growths = params[:strengths_and_growths]

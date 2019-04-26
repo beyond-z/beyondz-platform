@@ -49,18 +49,47 @@ class HomeController < ApplicationController
       return
     end
 
-    @pm_available = CampaignMapping.where(
+    load_available_opps
+  end
+
+  def load_available_opps
+    @pm_available = false
+    @lc_available = false
+
+    # conservatively allow maybe something is available if the
+    # user is not fully configured; show the button so they can
+    # fill out the rest of the info and see opps if interested.
+    return if current_user.nil?
+    return if current_user.bz_region.nil?
+
+    sf = BeyondZ::Salesforce.new
+
+    pm_available = CampaignMapping.where(
       :bz_region => current_user.bz_region,
       :applicant_type => 'professional_mentor'
-    ).any?
+    )
 
-    @lc_available = CampaignMapping.where(
+    if pm_available.any?
+      cid = pm_available.first.campaign_id
+      if !sf.user_is_in_campaign?(current_user.salesforce_id, cid)
+        @pm_available = true
+      end
+    end
+
+    lc_available = CampaignMapping.where(
       :bz_region => current_user.bz_region,
       :applicant_type => 'leadership_coach'
-    ).any?
+    )
+
+    if lc_available.any?
+      cid = lc_available.first.campaign_id
+      if !sf.user_is_in_campaign?(current_user.salesforce_id, cid)
+        @lc_available = true
+      end
+    end
+
 
     @nothing_available = !@pm_available && !@lc_available
-
   end
 
   def please_wait
@@ -86,6 +115,39 @@ class HomeController < ApplicationController
   end
 
   def welcome
+    if session[:just_signed_up_to_do]
+      redir = ''
+      case session[:just_signed_up_to_do]
+        when "professional_mentor"
+          redir = mentor_app_path
+        when "mentee"
+          redir = mentee_app_path
+        when "leadership_coach"
+          # if they were just recently created as this, no need to run it again (this ensure call is slightly
+          # slow), but otherwise, let's run it to be sure they get what they are looking for below.
+          if current_user.applicant_type != 'leadership_coach' || current_user.created_at < Date.yesterday
+            current_user.ensure_in_salesforce_campaign_for(current_user.bz_region, nil, 'leadership_coach')
+          end
+        else
+          redir = ''
+      end
+
+      session[:just_signed_up_to_do] = nil
+
+      if redir != ''
+        redirect_to redir
+        return
+      end
+    end
+
+    # For recent student sign ups, don't show other opportunities since they
+    # are almost certainly not qualified or interested anyway, but if they
+    # return later, it is ok to load them if available
+    if !current_user.nil? && (current_user.applicant_type == 'undergrad_student' || current_user.applicant_type == 'preaccelerator_student') && current_user.created_at >= Date.yesterday
+      @nothing_available = true
+    else
+      load_available_opps
+    end
 
     @apply_now_showing = false
     # just set here as a default so we can see it if it is improperly set below and
@@ -122,12 +184,7 @@ class HomeController < ApplicationController
 
         # We need to check all the campaign members to find the one that is most correct
         # for an application - one with an Application Type set up.
-        query_result = client.http_get("/services/data/v#{client.version}/query?q=" \
-          "SELECT
-            Id, CampaignId, Candidate_Status__c, Apply_Button_Enabled__c, Section_Name_In_LMS__c
-          FROM CampaignMember WHERE ContactId = '#{current_user.salesforce_id}' AND Campaign.Application_Type__c != ''")
-
-        sf_answer = JSON.parse(query_result.body)
+        sf_answer = sf.load_user_campaigns(current_user.salesforce_id)
 
         key_application_path = ''
         user_submitted_any = false
@@ -137,6 +194,9 @@ class HomeController < ApplicationController
         any_completed = false
 
         sf_answer['records'].each do |record|
+
+          next if record['Application_Type__c'] == ''
+
           had_any_records = true
           campaign = sf.load_cached_campaign(record['CampaignId'])
           campaign_type =

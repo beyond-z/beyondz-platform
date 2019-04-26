@@ -66,6 +66,7 @@ class Champion < ActiveRecord::Base
 
     begin
       client.create('CampaignMember', cm)
+      Rails.cache.delete("salesforce/user_campaigns/#{self.salesforce_id}")
     rescue Databasedotcom::SalesForceError => e
       # already a campaign member, no problem swallowing the error
       Rails.logger.warn(e)

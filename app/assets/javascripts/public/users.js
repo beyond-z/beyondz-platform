@@ -4,7 +4,7 @@
 $(document).ready(function() {
   // Get the parent element with the form-group class, which holds the various mutex options
   function getGroup(e) {
-    while( !$(e).hasClass("form-group"))
+    while( e && !$(e).hasClass("form-group"))
       e = e.parentNode;
     return e;
   }
@@ -53,7 +53,10 @@ $(document).ready(function() {
   }
 
   $("input[type=radio], .controls-details").change(function() {
-    var ctx = $(".form-option-details", getGroup(this));
+    var grp = getGroup(this);
+    if(grp == null)
+    	return;
+    var ctx = $(".form-option-details", grp);
     ctx.hide();
     // disable all hidden elements too
     $("[name]", ctx).prop('disabled', 'disabled');

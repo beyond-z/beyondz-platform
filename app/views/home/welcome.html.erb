@@ -18,12 +18,18 @@
           <% elsif @show_thanks %>
             <h2>Thank you for <%= (@new_user.applicant_type == 'event_volunteer') ? 'registering with' : 'signing up for' %> <%= @program_title %>.</h2>
             <p>We will be in touch shortly with next steps. If you have any further questions please feel free to <a href="mailto:join@bebraven.org">contact us</a></p>
+
+            <% unless @nothing_available %>
+            <p class="shoutout">Want to apply with us in another capacity?</p>
+            <p><a class="btn btn-primary" href="<%= other_opportunities_path %>">See Other Opportunities</a></p>
+            <% end %>
           <% elsif @show_completed %>
             <h2>Thank you for participating</h2>
 
+              <% unless @nothing_available %>
               <p class="shoutout">Want to work with us in another capacity?</p>
-
               <p><a class="btn btn-primary" href="<%= other_opportunities_path %>">See Other Opportunities</a></p>
+              <% end %>
           <% else %>
             <% if @key_application_count > 1 %>
               <p class="shoutout">You have worked with us in multiple ways. Please select where you want to go next:</p>
@@ -32,9 +38,10 @@
               <h2>Thank you for your interest in Braven.</h2>
               <p>We'll keep in contact via email.</p>
 
+              <% unless @nothing_available %>
               <p class="shoutout">Want to work with us in another capacity?</p>
-
               <p><a class="btn btn-primary" href="<%= other_opportunities_path %>">See Other Opportunities</a></p>
+              <% end %>
               <!-- } USER WHO NEED *NOT* APPLY -->
             <% else %>
               <!-- just one application, don't need a special header -->
