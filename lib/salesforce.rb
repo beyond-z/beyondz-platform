@@ -116,8 +116,8 @@ module BeyondZ
     end
 
     # Returns: new campaign id, if created, or nil if not necessary to create
-    def add_to_campaign(contact_id, campaign_id)
-      cm = {}
+    def add_to_campaign(contact_id, campaign_id, additional_fields = {})
+      cm = additional_fields
       cm['CampaignId'] = campaign_id
 
       if cm['CampaignId']
