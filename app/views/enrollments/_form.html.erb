@@ -284,6 +284,19 @@
                   <%= f.select :major2, options_for_select(@fields), {:include_blank => true } %>
                 </div>
  
+                <div class="form-group both volunteer coach student">
+                  <label>Minor, if you <span class="student">have</span><span class="coach">had</span> one.</label>
+                  <br />
+                  <%= f.select :minor, options_for_select(@fields), {:include_blank => true } %>
+                </div>
+ 
+                <div class="form-group student">
+                  <label>Which of the following job functions most interest you?</label>
+                  <br />
+                  <%= f.select :functional_area, options_for_select(@job_functions), {:include_blank => true } %>
+                </div>
+
+ 
 
                 <div class="form-group student">
                   <label>What is your college GPA, or, if you're a freshman, your high school GPA?</label>
