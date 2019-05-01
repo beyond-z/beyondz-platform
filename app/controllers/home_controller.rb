@@ -106,6 +106,39 @@ class HomeController < ApplicationController
   end
 
   def welcome
+    if session[:just_signed_up_to_do]
+      redir = ''
+      case session[:just_signed_up_to_do]
+        when "professional_mentor"
+          redir = mentor_app_path
+        when "mentee"
+          redir = mentee_app_path
+        when "leadership_coach"
+          # if they were just recently created as this, no need to run it again (this ensure call is slightly
+          # slow), but otherwise, let's run it to be sure they get what they are looking for below.
+          if !current_user.nil? && (current_user.applicant_type != 'leadership_coach' || current_user.created_at < Date.yesterday)
+            current_user.ensure_in_salesforce_campaign_for(current_user.bz_region, nil, 'leadership_coach')
+          end
+        else
+          redir = ''
+      end
+
+      session[:just_signed_up_to_do] = nil
+
+      if redir != ''
+        redirect_to redir
+        return
+      end
+    end
+
+    # For recent student sign ups, don't show other opportunities since they
+    # are almost certainly not qualified or interested anyway, but if they
+    # return later, it is ok to load them if available
+    if !current_user.nil? && (current_user.applicant_type == 'undergrad_student' || current_user.applicant_type == 'preaccelerator_student') && current_user.created_at >= Date.yesterday
+      @nothing_available = true
+    else
+      load_available_opps
+    end
 
     @apply_now_showing = false
     # just set here as a default so we can see it if it is improperly set below and
