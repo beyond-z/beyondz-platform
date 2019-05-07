@@ -40,7 +40,7 @@ class Referral < ActiveRecord::Base
       existing_source = salesforce_existing_record.empty? ? '' : salesforce_existing_record.first['Sourcing_Info__c']
 
       info = {}
-      into['Sourcing_Info__c'] = "#{existing_source}\nOnline Referrer: #{referred_by_affiliation}"
+      info['Sourcing_Info__c'] = "#{existing_source}\nOnline Referrer: #{referred_by_affiliation}"
 
       client.update('Contact', existing_salesforce_id, info)
     end
