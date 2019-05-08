@@ -300,7 +300,7 @@ class EnrollmentsController < ApplicationController
     # Names with a colon in them expect details, so we remove excess semicolons there so the
     # resulting string is more human readable without extra punctuation.
     @enrollment.sourcing_info = ''
-    @enrollment.sourcing_info = params[:sourcing_info].join(';') if params[:sourcing_info]
+    @enrollment.sourcing_info = limit_size(params[:sourcing_info].join(';'), 200) if params[:sourcing_info]
 
     # Always save without validating, this ensures the partial
     # data is not lost and allows resume upload to proceed even
