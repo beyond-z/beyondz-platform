@@ -130,7 +130,7 @@ module BeyondZ
         rescue Databasedotcom::SalesForceError => e
           # If this failure happens, it is almost certainly just because they
           # are already in the campaign 
-          logger.debug "#{e} #{contact_id} #{campaign_id}"
+          # logger.debug "#{e} #{contact_id} #{campaign_id}"
         end
       end
 
