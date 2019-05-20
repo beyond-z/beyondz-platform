@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190423152303) do
+ActiveRecord::Schema.define(version: 20190520210056) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -360,6 +360,8 @@ ActiveRecord::Schema.define(version: 20190423152303) do
     t.string   "zip"
     t.text     "want_grow_professionally"
     t.string   "registration_status"
+    t.string   "minor"
+    t.string   "functional_area"
   end
 
   add_index "enrollments", ["user_id"], name: "index_enrollments_on_user_id", using: :btree
@@ -375,7 +377,7 @@ ActiveRecord::Schema.define(version: 20190423152303) do
 
   create_table "lists", force: true do |t|
     t.string   "friendly_name"
-    t.string   "content"
+    t.text     "content"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -421,6 +423,13 @@ ActiveRecord::Schema.define(version: 20190423152303) do
     t.string   "willing_to_work_with_other_field"
     t.string   "work_city"
     t.string   "work_state"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "recruitment_programs", force: true do |t|
+    t.text     "name"
+    t.text     "campaign_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
