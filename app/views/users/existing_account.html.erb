@@ -28,7 +28,7 @@
             <% params[:user].each do |k, v| %>
               <input type="hidden" name="user[<%=k%>]" value="<%=v%>" />
             <% end %>
-            <% [:referrer, :undergrad_university_name].each do |k| %>
+            <% [:referrer, :undergrad_university_name, :program_name].each do |k| %>
               <input type="hidden" name="<%=k%>" value="<%=params[k]%>" />
             <% end %>
 

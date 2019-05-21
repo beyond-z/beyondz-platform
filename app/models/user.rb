@@ -555,6 +555,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def override_salesforce_campaign_id(override_value)
+    @salesforce_campaign_id = override_value
+  end
+
   def salesforce_campaign_id
     return @salesforce_campaign_id if defined?(@salesforce_campaign_id)
     

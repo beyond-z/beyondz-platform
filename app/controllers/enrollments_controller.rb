@@ -261,6 +261,8 @@ class EnrollmentsController < ApplicationController
         @course_options = '' if @course_options.nil?
         @student_id_required = campaign.Request_Student_Id__c
 
+        @require_high_school = campaign.Require_High_School__c
+
         # It first js regex replaces excluded chars with '', removing them
         # then js regex matches student_id format. if it fails, it displays
         # student id format help to the user.

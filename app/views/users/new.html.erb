@@ -60,6 +60,9 @@
           <div id="sign-up-form" class="">
             <div class="panel-body">
               <%= form_for :user, url: users_path, role: 'form', html: { onsubmit: "return BZ_formSubmitWaitHelper(this);"} do |f| %>
+                <% unless @program_name.blank? %>
+                  <%= hidden_field_tag 'program_name', @program_name %>
+                <% end %>
                 <%= hidden_field_tag 'referrer', @referrer %>
                 <%= render :partial => 'shared/form_errors', locals: { object: @user } %>
                 <div class="form-group">
