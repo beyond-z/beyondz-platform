@@ -5,7 +5,7 @@ class Admin::RecruitmentProgramsController < Admin::ApplicationController
   end
 
   def create
-    rp = RecruitmentProgram.create(params[:recruitment_program].permit(:name, :campaign))
+    rp = RecruitmentProgram.create(params[:recruitment_program].permit(:name, :campaign_id))
     redirect_to("/admin/recruitment_programs/#{rp.id}")
   end
 
