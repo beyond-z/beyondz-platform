@@ -1,0 +1,16 @@
+<h1>Create Special Recruitment Program</h1>
+
+<%= form_for [:admin, @program] do |f| %>
+  <label>Name (should be url-friendly)
+  <br />
+  <%= f.text_field :name %>
+  </label>
+  <br />
+  <label>SF Campaign ID
+  <br />
+  <%= f.text_field :campaign_id %>
+  </label>
+  <br />
+
+  <%= f.submit %>
+<% end %>
