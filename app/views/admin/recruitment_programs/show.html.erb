@@ -1,0 +1,12 @@
+<h1>Special Recruitment Program - <%= @program.name %></h1>
+
+Campaign ID: <%= @program.campaign_id %> <a href="/admin/recruitment_programs/<%=@program.id%>/edit">Edit</a>
+<br />
+<a href="/admin/lists/universities_<%=@program.name %>">Universities list</a>
+
+
+<div style="text-align: right;">
+<%= form_for [:admin, @program], :method => :delete do |f| %>
+  <%= f.submit 'Delete' %>
+<% end %>
+</div>
