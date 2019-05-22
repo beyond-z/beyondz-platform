@@ -403,10 +403,19 @@ class UsersController < ApplicationController
       @program_name = params[:program_name]
       @override_salesforce_campaign_id = program.campaign_id
       @university_list = "universities_#{@program_name}"
+
+      sf = BeyondZ::Salesforce.new
+      client = sf.get_client
+      campaign = sf.load_cached_campaign(program.campaign_id, client)
+      @registration_instructions = campaign.Registration_Instructions__c
     else
       @override_salesforce_campaign_id = nil
       @program_name = nil
       @university_list = "universities"
+      # we don't know what campaign we're on yet, but typically there will be
+      # a registration step for this code branch, so I put very generic instructions
+      # here so the view knows to render that there likely is a third step.
+      @registration_instructions = "Register with your university"
     end
   end
 

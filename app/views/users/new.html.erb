@@ -44,7 +44,9 @@
           <div class="breadcrumbs">
             <span class="current">Step 1: Create an Account</span>
             <span>Step 2: Set up Profile</span>
-            <span>Step 3: Register</span>
+            <% unless @registration_instructions.blank? %>
+              <span>Step 3: Register</span>
+            <% end %>
           </div>
           <% end %>
 
