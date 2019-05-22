@@ -261,6 +261,8 @@ class EnrollmentsController < ApplicationController
         @course_options = '' if @course_options.nil?
         @student_id_required = campaign.Request_Student_Id__c
 
+        @require_high_school = campaign.Require_High_School__c
+
         # It first js regex replaces excluded chars with '', removing them
         # then js regex matches student_id format. if it fails, it displays
         # student id format help to the user.
@@ -356,7 +358,7 @@ class EnrollmentsController < ApplicationController
         # delete the cache so the update for user submit, etc, will be refreshed on next load
         Rails.cache.delete("salesforce/user_campaigns/#{@enrollment.user.salesforce_id}")
 
-        if @enrollment.position == 'student'
+        if @enrollment.position == 'student' && !@registration_instructions.blank?
           redirect_to register_path(:enrollment_id => @enrollment.id)
         else
           redirect_to welcome_path

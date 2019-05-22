@@ -1,0 +1,9 @@
+<h1>Special Recruitment Programs</h1>
+
+<a href="/admin/recruitment_programs/new">New</a>
+
+<ul>
+  <% @programs.each do |rp| %>
+    <li><a href="/admin/recruitment_programs/<%=rp.id%>"><%=rp.name%></a></li>
+  <% end %>
+</ul>

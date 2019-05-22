@@ -384,10 +384,48 @@ class UsersController < ApplicationController
     render nothing: true
   end
 
+  def load_special_program
+    unless params[:program_name].blank?
+      # if we are given a program name, we need to load defaults
+      # and otherwise configure the form for that particular program
+      # this was added May 2019 in response to a special pilot program
+
+      # otherwise, if it isn't given, we will just fallback to the old way
+      # assuming it is likely for the accelerator
+
+      program = RecruitmentProgram.where(:name => params[:program_name])
+      if program.empty?
+        raise Exception.new "no program #{params[:program_name]}"
+      end
+
+      program = program.first
+
+      @program_name = params[:program_name]
+      @override_salesforce_campaign_id = program.campaign_id
+      @university_list = "universities_#{@program_name}"
+
+      sf = BeyondZ::Salesforce.new
+      client = sf.get_client
+      campaign = sf.load_cached_campaign(program.campaign_id, client)
+      @registration_instructions = campaign.Registration_Instructions__c
+    else
+      @override_salesforce_campaign_id = nil
+      @program_name = nil
+      @university_list = "universities"
+      # we don't know what campaign we're on yet, but typically there will be
+      # a registration step for this code branch, so I put very generic instructions
+      # here so the view knows to render that there likely is a third step.
+      @registration_instructions = "Register with your university"
+    end
+  end
+
   def new
     states
     @referrer = request.referrer
     @user = User.new
+
+    load_special_program
+
     if params[:user]
       @user.applicant_type = params[:user][:applicant_type] if params[:user][:applicant_type]
     end
@@ -447,6 +485,8 @@ class UsersController < ApplicationController
     user[:university_name] = params[:undergrad_university_name] if user[:university_name] == 'other'
 
     user[:phone] = user[:phone].gsub(/[^0-9]/, '') unless user[:phone].blank?
+
+    load_special_program
     
     if !user[:applicant_type].nil?
       # We don't create a user now for Event Volunteers.  Instead, we send them to calendly and
@@ -469,6 +509,10 @@ class UsersController < ApplicationController
       user[:applicant_type] = 'leadership_coach' if user[:applicant_type] == 'volunteer'
       user[:applicant_type] = 'event_volunteer' if user[:applicant_type] == 'temp_volunteer'
       @new_user = User.new(user)
+
+      unless @override_salesforce_campaign_id.blank?
+        @new_user.override_salesforce_campaign_id(@override_salesforce_campaign_id)
+      end
 
 
       if !params[:tried_dup]
@@ -511,6 +555,7 @@ class UsersController < ApplicationController
       states
       @hide_other_applicant_types = true
       @user = @new_user
+      load_special_program
       render 'new'
       return
     end

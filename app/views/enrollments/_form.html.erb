@@ -13,7 +13,9 @@
           <div class="breadcrumbs">
             <span class="completed">Step 1: Create an Account</span>
             <span class="current">Step 2: Set up Profile</span>
-            <span>Step 3: Register</span>
+            <% unless @registration_instructions.blank? %>
+              <span>Step 3: Register</span>
+            <% end %>
           </div>
           </div>
 
@@ -52,7 +54,11 @@
           </p>
 
           <p class="help student">
-            In order to enroll in the Braven Leadership and Career Accelerator course, please fill out your profile information below and then register for the course with your university if you have not already done so. Both steps are required to complete your enrollment.
+            <% if @registration_instructions.blank? %>
+            In order to enroll in the Braven program, please fill out your profile information below.
+            <% else %>
+            In order to enroll in the Braven program, please fill out your profile information below and then register for the course with your university if you have not already done so. Both steps are required to complete your enrollment.
+            <% end %>
             <!--
             To apply to participate in <%= @program_title %> - <%= @program_site %>, please complete and submit this profile in its entirety.
             -->
@@ -267,10 +273,17 @@
                   <%= f.text_field :previous_university, 'class' => 'form-control', 'type' => 'text', :maxlength => '220' %>
                 </div>
 
-                <div class="form-group student">
-                  <label>High School</label>
-                  <%= f.text_field :high_school, 'class' => 'form-control', 'type' => 'text', :maxlength => '220' %>
-                </div>
+                <% if @require_high_school %>
+                  <div class="form-group student">
+                    <label>High School</label>
+                    <%= f.text_field :high_school, 'class' => 'form-control', 'required' => 'required', 'type' => 'text', :maxlength => '220' %>
+                  </div>
+                <% else %>
+                  <div class="form-group student">
+                    <label>High School</label>
+                    <%= f.text_field :high_school, 'class' => 'form-control', 'type' => 'text', :maxlength => '220' %>
+                  </div>
+                <% end %>
 
                 <div class="form-group both volunteer coach student">
                   <label>Major<span class="student">/Concentration or intended major, if you have one.</span></label>
@@ -376,7 +389,7 @@
               <p class="help">Please use complete sentences!</p>
 
               <div class="form-group volunteer coach student">
-                <label class="student">In two to four sentences, share why you want to join the Career Accelerator Course. If you're not sure, email <a tabindex="-1" href="mailto:<%=@contact_email%>"><%=@contact_email%></a> and we can tell you more about the experience!</label>
+                <label class="student">In two to four sentences, share why you want to join the <%= @program_title %>. If you're not sure, email <a tabindex="-1" href="mailto:<%=@contact_email%>"><%=@contact_email%></a> and we can tell you more about the experience!</label>
                 <label class="coach">Why do you want to be a<%= (%w(a e i o u).include?(@program_title.downcase[0]) ? 'n' : '') %> <%= @program_title %> Leadership Coach?</label>
                 <label class="volunteer">Why do you want to be a volunteer and what areas of personal expertise or passion are you excited to share?</label>
                 <%= f.text_area :why_bz, 'class' => 'form-control', 'maxlength' => '1000' %>
@@ -602,7 +615,7 @@
               <div class="form-group student">
                 <label class="checkbox">
                   <%= f.check_box :will_be_student %>
-                  <span class="bs-wrapper"><span class="control-label">I affirm that I am qualified to participate in <%= @program_title %> as a student in good academic standing enrolled at <%= @program_site %>.</span></span>
+                  <span class="bs-wrapper"><span class="control-label">I affirm that I am qualified to participate in <%= @program_title %> as a student in good academic standing enrolled at <%= current_user.university_name %>.</span></span>
                 </label>
               </div>
 
@@ -683,7 +696,13 @@
                 <div class="apply-button">This profile has been received!</div>
               <% else %>
                 <div class="apply-button form-submit">
-                  <button class="button-primary" type="submit" name="user_submit" onclick="return confirm('Are you sure you are ready to send your form?');"><span class="student">Next: Register</span> <span class="coach">Send</span></button>
+                  <button class="button-primary" type="submit" name="user_submit" onclick="return confirm('Are you sure you are ready to send your form?');"><span class="student">
+                    <% if @registration_instructions.blank? %>
+                      Submit
+                    <% else %>
+                      Next: Register
+                    <% end %>
+                  </span> <span class="coach">Send</span></button>
                 </div>
               <% end %>
             </div>
