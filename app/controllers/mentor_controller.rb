@@ -269,6 +269,7 @@ class MentorController < ApplicationController
       contact.FirstName = application.first_name
       contact.LastName = application.last_name
       contact.Title = application.title
+      # FIXME: swallow errors
       contact.save
     end
 
