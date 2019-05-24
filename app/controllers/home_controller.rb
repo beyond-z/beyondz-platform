@@ -35,7 +35,7 @@ class HomeController < ApplicationController
     redirect_to other_opportunities_path
   end
 
-  def reapply_fellow
+  def reinvite_fellow
     current_user.ensure_in_salesforce_campaign_for(nil, current_user.university_name, 'undergrad_student')
     redirect_to welcome_path
   end
