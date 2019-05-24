@@ -1,6 +1,7 @@
 class HomeController < ApplicationController
   before_action :new_user, only: [:welcome, :volunteer, :apply, :partner, :please_wait]
   before_filter :authenticate_user_for_welcome, :only => [:welcome, :opportunities, :region_update]
+  before_filter :authenticate_user!, :only => [:reinvite_fellow]
 
   layout 'public'
 
