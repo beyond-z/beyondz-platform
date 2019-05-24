@@ -35,6 +35,11 @@ class HomeController < ApplicationController
     redirect_to other_opportunities_path
   end
 
+  def reapply_fellow
+    current_user.ensure_in_salesforce_campaign_for(nil, current_user.university_name, 'undergrad_student')
+    redirect_to welcome_path
+  end
+
   def become_lc
     current_user.ensure_in_salesforce_campaign_for(current_user.bz_region, nil, 'leadership_coach')
     redirect_to welcome_path

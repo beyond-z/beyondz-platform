@@ -15,6 +15,8 @@ BeyondzPlatform::Application.routes.draw do
   get '/activating', to: 'home#please_wait', as: :please_wait
   get '/activating_status', to: 'home#please_wait_status', as: :please_wait_status
 
+  get '/returning_fellow', to: 'home#reapply_fellow'
+
   # These convenience routes are meant to be given to
   # people during in-person recruitment efforts
 
