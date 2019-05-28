@@ -444,6 +444,8 @@ class EnrollmentsController < ApplicationController
     cm.Anticipated_Graduation_Semester__c = @enrollment.anticipated_graduation_semester
     cm.Major__c = @enrollment.major
     cm.Major2__c = @enrollment.major2
+    cm.Minor__c = @enrollment.minor
+    cm.Functional_Area__c = @enrollment.functional_area
     cm.GPA__c = @enrollment.gpa
     cm.GPA__c = 'NA' if @enrollment.gpa.blank? || @enrollment.gpa == '0'
 
