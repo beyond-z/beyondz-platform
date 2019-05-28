@@ -288,25 +288,25 @@
                 <div class="form-group both volunteer coach student">
                   <label>Major<span class="student">/Concentration or intended major, if you have one.</span></label>
                   <br />
-                  <%= f.select :major, options_for_select(@fields), {:include_blank => true } %>
+                  <%= f.select :major, options_for_select(@fields, @enrollment.major), {:include_blank => true } %>
                 </div>
  
                 <div class="form-group both volunteer coach student">
                   <label>Second Major, if you <span class="student">have</span><span class="coach">had</span> one.</label>
                   <br />
-                  <%= f.select :major2, options_for_select(@fields), {:include_blank => true } %>
+                  <%= f.select :major2, options_for_select(@fields, @enrollment.major2), {:include_blank => true } %>
                 </div>
  
                 <div class="form-group both volunteer coach student">
                   <label>Minor, if you <span class="student">have</span><span class="coach">had</span> one.</label>
                   <br />
-                  <%= f.select :minor, options_for_select(@fields), {:include_blank => true } %>
+                  <%= f.select :minor, options_for_select(@fields, @enrollment.minor), {:include_blank => true } %>
                 </div>
  
                 <div class="form-group student">
                   <label>Which of the following job functions most interest you?</label>
                   <br />
-                  <%= f.select :functional_area, options_for_select(@job_functions), {:include_blank => true } %>
+                  <%= f.select :functional_area, options_for_select(@job_functions, @enrollment.functional_area), {:include_blank => true } %>
                 </div>
 
  

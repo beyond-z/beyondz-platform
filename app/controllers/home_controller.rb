@@ -37,8 +37,8 @@ class HomeController < ApplicationController
   end
 
   def reinvite_fellow
-    current_user.ensure_in_salesforce_campaign_for(nil, current_user.university_name, 'undergrad_student')
-    redirect_to welcome_path
+    cid = current_user.ensure_in_salesforce_campaign_for(nil, current_user.university_name, 'undergrad_student')
+    redirect_to new_enrollment_path(:campaign_id => cid)
   end
 
   def become_lc
