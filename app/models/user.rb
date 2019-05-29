@@ -351,6 +351,7 @@ class User < ActiveRecord::Base
   end
 
   def ensure_in_salesforce_campaign_for(bz_region, university_name, applicant_type)
+if false
     mapping = nil
     if bz_region.nil?
       mapping = CampaignMapping.where(
@@ -369,6 +370,9 @@ class User < ActiveRecord::Base
     end
 
     cid = mapping.first.campaign_id
+end
+
+    cid = "70117000001am1C"
 
     cm = {}
     cm['CampaignId'] = cid
