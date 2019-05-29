@@ -70,7 +70,7 @@
               </div>
             <% else %>
               <!-- apply now is DISABLED -->
-              <% if app[:program_completed] %>
+              <% if !@show_thanks && app[:program_completed] %>
                 <!-- disabled because the program is over -->
                 <p class="shoutout">
                 The <%= app[:program_title] %> program you signed up for has ended. If you are interested in participating in an upcoming program, please reach out to us at <a href="mailto:info@bebraven.org">info@bebraven.org</a>

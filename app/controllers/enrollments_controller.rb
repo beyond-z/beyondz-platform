@@ -153,7 +153,7 @@ class EnrollmentsController < ApplicationController
     else
       # we need to start an application for a specific campaign... look through the members and find the right one
       sf_answer['records'].each do |record|
-        if record['CampaignId'] == campaign_id
+        if record['CampaignId'][0 ... 15] == campaign_id[0 ... 15]
           cm_id = record['Id']
           break
         end
@@ -282,6 +282,8 @@ class EnrollmentsController < ApplicationController
     @enrollment = Enrollment.find(params[:id])
     @enrollment.update_attributes(enrollment_params)
 
+    load_salesforce_campaign
+
     @enrollment.digital_footprint = @enrollment.digital_footprint
     @enrollment.digital_footprint2 = @enrollment.digital_footprint2
 
@@ -320,7 +322,6 @@ class EnrollmentsController < ApplicationController
 
     if @enrollment.errors.any?
       # errors will be displayed with the form btw
-      load_salesforce_campaign
 
       @position_is_set = true if @enrollment.position
       set_up_lists
@@ -444,6 +445,8 @@ class EnrollmentsController < ApplicationController
     cm.Anticipated_Graduation_Semester__c = @enrollment.anticipated_graduation_semester
     cm.Major__c = @enrollment.major
     cm.Major2__c = @enrollment.major2
+    cm.Minor__c = @enrollment.minor
+    cm.Functional_Area__c = @enrollment.functional_area
     cm.GPA__c = @enrollment.gpa
     cm.GPA__c = 'NA' if @enrollment.gpa.blank? || @enrollment.gpa == '0'
 

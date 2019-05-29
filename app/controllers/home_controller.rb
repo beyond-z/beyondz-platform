@@ -1,6 +1,7 @@
 class HomeController < ApplicationController
   before_action :new_user, only: [:welcome, :volunteer, :apply, :partner, :please_wait]
   before_filter :authenticate_user_for_welcome, :only => [:welcome, :opportunities, :region_update]
+  before_filter :authenticate_user!, :only => [:reinvite_fellow]
 
   layout 'public'
 
@@ -33,6 +34,11 @@ class HomeController < ApplicationController
     current_user.bz_region = params[:bz_region]
     current_user.save
     redirect_to other_opportunities_path
+  end
+
+  def reinvite_fellow
+    cid = current_user.ensure_in_salesforce_campaign_for(nil, current_user.university_name, 'undergrad_student')
+    redirect_to new_enrollment_path(:campaign_id => cid)
   end
 
   def become_lc
@@ -277,7 +283,7 @@ class HomeController < ApplicationController
             path = enrollment.nil? ? new_enrollment_path(:campaign_id => record['CampaignId']) : enrollment_path(enrollment)
           end
 
-          if accepted && campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == false
+          if !program_completed && accepted && campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == false
             # If accepted, we go back to confirmation (see above in the index method)
             # repeated here in welcome so if they bookmarked this, they won't get lost
             # just only done if the confirmation is actually required!
@@ -288,7 +294,7 @@ class HomeController < ApplicationController
             @show_accepted_path = path
           end
 
-          if accepted && campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == true
+          if !program_completed && accepted && campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == true
             path = user_student_confirm_path(:enrollment_id => enrollment.id)
             @confirm_noun = 'commitment'
             @show_accepted = true

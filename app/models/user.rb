@@ -388,6 +388,8 @@ class User < ActiveRecord::Base
       # are already in the campaign 
       logger.info e
     end
+
+    return cid
   end
 
   def auto_add_to_salesforce_campaign(candidate_status = nil, selected_timeslot = nil)
