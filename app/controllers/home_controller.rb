@@ -283,7 +283,7 @@ class HomeController < ApplicationController
             path = enrollment.nil? ? new_enrollment_path(:campaign_id => record['CampaignId']) : enrollment_path(enrollment)
           end
 
-          if accepted && campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == false
+          if !program_completed && accepted && campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == false
             # If accepted, we go back to confirmation (see above in the index method)
             # repeated here in welcome so if they bookmarked this, they won't get lost
             # just only done if the confirmation is actually required!
@@ -294,7 +294,7 @@ class HomeController < ApplicationController
             @show_accepted_path = path
           end
 
-          if accepted && campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == true
+          if !program_completed && accepted && campaign.Request_Availability__c == true && campaign.Request_Student_Id__c == true
             path = user_student_confirm_path(:enrollment_id => enrollment.id)
             @confirm_noun = 'commitment'
             @show_accepted = true
