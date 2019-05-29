@@ -282,6 +282,8 @@ class EnrollmentsController < ApplicationController
     @enrollment = Enrollment.find(params[:id])
     @enrollment.update_attributes(enrollment_params)
 
+    load_salesforce_campaign
+
     @enrollment.digital_footprint = @enrollment.digital_footprint
     @enrollment.digital_footprint2 = @enrollment.digital_footprint2
 
@@ -320,7 +322,6 @@ class EnrollmentsController < ApplicationController
 
     if @enrollment.errors.any?
       # errors will be displayed with the form btw
-      load_salesforce_campaign
 
       @position_is_set = true if @enrollment.position
       set_up_lists
