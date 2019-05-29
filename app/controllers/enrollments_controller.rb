@@ -153,7 +153,7 @@ class EnrollmentsController < ApplicationController
     else
       # we need to start an application for a specific campaign... look through the members and find the right one
       sf_answer['records'].each do |record|
-        if record['CampaignId'] == campaign_id
+        if record['CampaignId'][0 ... 15] == campaign_id[0 ... 15]
           cm_id = record['Id']
           break
         end
