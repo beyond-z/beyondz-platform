@@ -359,7 +359,7 @@ class MentorController < ApplicationController
     cm.Identify_As_First_Gen__c = application.identify_first_gen.blank? ? false : true
     cm.Other_Race__c = application.bkg_other
     cm.Hometown__c = application.hometown
-    cm.Pell_Grant_Recipient__c = application.pell_grant
+    cm.Pell_Grant_Recipient__c = application.pell_grant.blank? ? false : true
     cm.Gender_Identity__c = application.gender_identity
 
     cm.Additional_Comments__c = application.lingering_questions
