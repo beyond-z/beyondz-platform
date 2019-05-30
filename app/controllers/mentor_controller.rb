@@ -16,8 +16,14 @@ class MentorController < ApplicationController
   end
 
   def format_date(date)
+    if date.instance_of? String
+      date_object = Date.parse(date)
+    else
+      date_object = date
+    end
+
     begin
-      Date.parse(date).strftime("%B %-d, %Y")
+      date_object.strftime("%B %-d, %Y")
     rescue
       date
     end
@@ -194,6 +200,27 @@ class MentorController < ApplicationController
     application.reference2_email = params[:reference2_email]
     application.reference2_phone = params[:reference2_phone]
 
+    application.bkg_african_americanblack = params[:bkg_african_americanblack]
+    application.bkg_asian_american = params[:bkg_asian_american]
+    application.bkg_latino_or_hispanic = params[:bkg_latino_or_hispanic]
+    application.bkg_native_alaskan = params[:bkg_native_alaskan]
+    application.bkg_native_american_american_indian = params[:bkg_native_american_american_indian]
+    application.bkg_native_hawaiian = params[:bkg_native_hawaiian]
+    application.bkg_pacific_islander = params[:bkg_pacific_islander]
+    application.bkg_whitecaucasian = params[:bkg_whitecaucasian]
+    application.bkg_multi_ethnicmulti_racial = params[:bkg_multi_ethnicmulti_racial]
+    application.identify_poc = params[:identify_poc]
+    application.identify_low_income = params[:identify_low_income]
+    application.identify_first_gen = params[:identify_first_gen]
+    application.bkg_other = params[:bkg_other]
+    application.hometown = params[:hometown]
+    application.pell_grant = params[:pell_grant]
+    application.gender_identity = params[:gender_identity] == "other" ? params[:other_gender_identity] : params[:gender_identity]
+
+    application.lingering_questions = params[:lingering_questions]
+    application.what_gain = params[:what_gain].nil? ? "" : params[:what_gain].join("; ")
+    application.functional_area = params[:functional_area]
+
     application.save
 
     save_to_salesforce(application)
@@ -233,6 +260,10 @@ class MentorController < ApplicationController
     application.what_do = params[:what_do]
     application.how_hear = params[:how_hear]
 
+    application.lingering_questions = params[:lingering_questions]
+    application.interests_areas = params[:interests_areas].nil? ? "" : params[:interests_areas].join("; ")
+    application.internships_count =  params[:internships_count]
+
     application.save
 
     save_to_salesforce(application)
@@ -269,8 +300,14 @@ class MentorController < ApplicationController
       contact.FirstName = application.first_name
       contact.LastName = application.last_name
       contact.Title = application.title
-      # FIXME: swallow errors
-      contact.save
+      begin
+        # it is ok for this to fail, most likely reason would be email changed to a duplicate.
+        # (which is handled externally to this code)
+        # let's just log it and see what's going on in practice.
+        contact.save
+      rescue Exception => e
+        Rails.logger.error(e)
+      end
     end
 
     cm.Application_Status__c = 'Submitted'
@@ -307,6 +344,31 @@ class MentorController < ApplicationController
     cm.Willing_To_Work_With_Other_Field__c = application.willing_to_work_with_other_field == "yes"
     cm.Work_City__c = application.work_city
     cm.Work_State__c = application.work_state
+
+    cm.African_American__c = application.bkg_african_americanblack.blank? ? false : true
+    cm.Asian_American__c = application.bkg_asian_american.blank? ? false : true
+    cm.Latino__c = application.bkg_latino_or_hispanic.blank? ? false : true
+    cm.Native_Alaskan__c = application.bkg_native_alaskan.blank? ? false : true
+    cm.Native_American__c = application.bkg_native_american_american_indian.blank? ? false : true
+    cm.Native_Hawaiian__c = application.bkg_native_hawaiian.blank? ? false : true
+    cm.Pacific_Islander__c = application.bkg_pacific_islander.blank? ? false : true
+    cm.White__c = application.bkg_whitecaucasian.blank? ? false : true
+    cm.Multi_Ethnic__c = application.bkg_multi_ethnicmulti_racial.blank? ? false : true
+    cm.Identify_As_Person_Of_Color__c = application.identify_poc.blank? ? false : true
+    cm.Identify_As_Low_Income__c = application.identify_low_income.blank? ? false : true
+    cm.Identify_As_First_Gen__c = application.identify_first_gen.blank? ? false : true
+    cm.Other_Race__c = application.bkg_other
+    cm.Hometown__c = application.hometown
+    cm.Pell_Grant_Recipient__c = application.pell_grant.blank? ? false : true
+    cm.Gender_Identity__c = application.gender_identity
+
+    cm.Additional_Comments__c = application.lingering_questions
+
+    cm.What_Gain_By_PM__c = application.what_gain
+    cm.Functional_Area__c = application.functional_area
+    cm.Functional_Areas_Interested__c = application.interests_areas
+    cm.Internships_Count__c = application.internships_count
+
 
     cm.save
 

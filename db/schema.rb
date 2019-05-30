@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190520210056) do
+ActiveRecord::Schema.define(version: 20190529231135) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -425,6 +425,27 @@ ActiveRecord::Schema.define(version: 20190520210056) do
     t.string   "work_state"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "bkg_african_americanblack"
+    t.boolean  "bkg_asian_american"
+    t.boolean  "bkg_latino_or_hispanic"
+    t.boolean  "bkg_native_alaskan"
+    t.boolean  "bkg_native_american_american_indian"
+    t.boolean  "bkg_native_hawaiian"
+    t.boolean  "bkg_pacific_islander"
+    t.boolean  "bkg_whitecaucasian"
+    t.boolean  "bkg_multi_ethnicmulti_racial"
+    t.boolean  "identify_poc"
+    t.boolean  "identify_low_income"
+    t.boolean  "identify_first_gen"
+    t.boolean  "bkg_other"
+    t.text     "hometown"
+    t.boolean  "pell_grant"
+    t.text     "gender_identity"
+    t.text     "functional_area"
+    t.text     "what_gain"
+    t.text     "internships_count"
+    t.text     "lingering_questions"
+    t.text     "interests_areas"
   end
 
   create_table "recruitment_programs", force: true do |t|

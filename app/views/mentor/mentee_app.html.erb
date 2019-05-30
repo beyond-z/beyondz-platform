@@ -44,23 +44,22 @@
               </ol>
               <div>
               </div>
-              <p>If you are accepted into the program, you will be matched with a Professional Mentor (PM) who will support you on your path to securing a quality postgraduate opportunity or internship. PMs will provide you with weekly 1:1 coaching on the opportunity search and application process.&#160;</p>
+              <p>If you are accepted into the program, you will be matched with a Professional Mentor (PM) who will support you on your path to securing a quality postgraduate opportunity or internship. PMs will provide you with weekly 1:1 coaching on the opportunity search and application process.</p>
               <p><b>Your commitment is as follows:</b></p>
               <ul>
-                <li>Commit ~3 hrs per week for <%=@number_of_weeks %> weeks throughout spring semester, with the option to continue meeting with your PM after the commitment ends</li>
-                <li>Attend a kickoff event on or near campus on <b><%=@start_date%></b></li>
+                <li>Commit ~3 hrs per week for <%=@number_of_weeks %> weeks starting <%=@kickoff_date %>, with the option to continue meeting with your PM after the commitment ends</li>
+                <li>Attend a kickoff event on or near campus on <b><%=@kickoff_date%></b></li>
                 <li>Meet once a week with your PM virtually at a mutually convenient time (typically one-hour meetings)</li>
-                <li>Meet in-person at least once during the commitment (in addition to the kickoff)</li>
                 <li>Prepare for meetings by progressing in the job application process (2+ hours per week)</li>
-                <li>Be responsive, prompt, and diligent throughout the commitment&#160;</li>
-                <li>Keep the Braven team updated on your progress&#160;</li>
-                <li>#GoTogetherGoFurther with your PM and #FindaWay to secure a postgraduate, career-accelerating opportunity!&#160;</li>
+                <li>Be responsive, prompt, and diligent throughout the commitment</li>
+                <li>Keep the Braven team updated on your progress via weekly checklists</li>
+                <li>#GoTogetherGoFurther with your PM and #FindaWay to secure a postgraduate, career-accelerating opportunity!</li>
               </ul>
-              <p>To participate in the Professional Mentor program, please <strong>complete the following application before <%=@due_date%>.</strong>&#160;You will be notified if you have been selected to participate within two weeks of your submission.&#160;</p>
+              <p>To participate in the Professional Mentor program, please <strong>complete the following application before <%=@due_date%>.</strong> You will be notified if you have been selected to participate within two weeks of your submission.</p>
             </div>
             <hr />
             <h2>Contact Information</h2>
-            <b>&#160;Please enter the following information about yourself:</b>
+            <b>Please enter the following information about yourself:</b>
             <label>
               <span class="required">First Name:</span>
               <input class="form-control" required="required" name="first_name" type="text" maxlength="255" value="<%=@first_name%>" />
@@ -92,12 +91,28 @@
               Spring 2019
             </label>
             <label>
+              <input required="required" name="when_graduate" value="Summer 2019" type="radio" />
+              Summer 2019
+            </label>
+            <label>
               <input required="required" name="when_graduate" value="Fall 2019" type="radio" />
               Fall 2019
             </label>
             <label>
               <input required="required" name="when_graduate" value="Spring 2020" type="radio" />
               Spring 2020
+            </label>
+            <label>
+              <input required="required" name="when_graduate" value="Summer 2020" type="radio" />
+              Summer 2020
+            </label>
+            <label>
+              <input required="required" name="when_graduate" value="Fall 2020" type="radio" />
+              Fall 2020
+            </label>
+            <label>
+              <input required="required" name="when_graduate" value="Spring 2021" type="radio" />
+              Spring 2021
             </label>
             <label onclick="this.querySelector('input[type=text]').focus();">
               <input required="required" name="when_graduate" value="other" type="radio" />
@@ -132,9 +147,16 @@
             </label>
             <br />
             <div>
-              <b class="required">What career industries/fields interest you?</b>
+              <b class="required">What career industries interest you? (i.e. You are interested in working in the health field, so you select health)</b>
                 <% @industries.each do |industry| %>
                   <label><input type="checkbox" name="interests[]" value="<%=industry %>"> <%= industry %></label>
+                <% end %>
+            </div>
+            <br />
+            <div>
+              <b class="required">What functional areas interest you? (i.e. You are interested in working as a recruiter, so you select Employment/Human Resources)</b>
+                <% @job_functions.each do |f| %>
+                  <label><input type="checkbox" name="interests_areas[]" value="<%= f %>"> <%= f %></label>
                 <% end %>
             </div>
             <br />
@@ -144,15 +166,19 @@
             </label>
             <br />
             <label>
-              <b class="required">Why does this career field/this specific job interest you?&#160;</b>
+              <b class="required">Why does this career field/this specific job interest you?</b>
               <textarea class="form-control" required="required" maxlength="2000" name="why_interested_in_field"></textarea>
+            </label>
+            <label>
+              <b class="required">How many internships have you had?</b>
+              <input class="form-control" required="required" maxlength="255" name="internships_count" type="text" />
             </label>
           </div>
           <h2>PM Commitment</h2>
           <div>
             <br />
             <label>
-              <b class="required">What would you say are your strengths and areas of growth?&#160;</b>
+              <b class="required">What would you say are your strengths and areas of growth?</b>
               <textarea class="form-control" required="required" maxlength="3000" name="strengths_and_growths"></textarea>
             </label>
             <br />
@@ -173,7 +199,7 @@
             <hr />
             <br />
             <label>
-              <b class="required">To work with a Professional Mentor, you&#8217;ll need to commit to meeting (virtually) for one hour each week for the duration of the commitment, meet two times in-person (once at the kickoff event and one other time), and complete all prep and follow-up work in pursuit of your goals (~2 hours/week). You will need to be responsive and arrive promptly to meetings. Is this a commitment you can make? Why or why not?&#160;</b>
+              <b class="required">To work with a Professional Mentor, you&#8217;ll need to commit to meeting (virtually) for one hour each week for the duration of the commitment, meet once in-person at the kickoff event, and complete all prep and follow-up work in pursuit of your goals (~1.5 hours/week). You will need to be responsive and arrive promptly to meetings. Is this a commitment you can make? Why or why not?</b>
               <textarea class="form-control" required="required" maxlength="1500" name="can_commit"></textarea>
             </label>
             <br />
@@ -183,13 +209,18 @@
             </label>
             <br />
             <label>
-              <b class="required">Read the following situation and then respond to the question below: It's midterms and you're swamped with work for class. You realize your weekly meeting with your Professional Mentor is this evening, and you haven't done any of the prep work you promised you would complete by today. You also realize you scheduled a group study session that conflicts with your meeting. What do you do?&#160;</b>
+              <b class="required">Read the following situation and then respond to the question below: It's midterms season and have 2 midterms this week plus a paper due tomorrow. You also have personal matters at home that are taking up a lot of your mental energy. You realize your weekly meeting with your Professional Mentor is this evening, and you haven't done any of the prep work you promised you would complete by today. You also realize you scheduled a group study session that conflicts with your meeting. What do you do?</b>
               <textarea class="form-control" required="required" name="what_do"></textarea>
             </label>
             <br />
-            <b>How did you hear about this opportunity?&#160;</b>
+            <b>How did you hear about this opportunity?</b>
             <label>
               <input class="form-control" name="how_hear" type="text" />
+            </label>
+            <br />
+            <b>Do you have any lingering questions about the Braven Professional Mentor Program?</b>
+            <label>
+              <textarea class="form-control" name="lingering_questions"></textarea>
             </label>
           </div>
         </div>
