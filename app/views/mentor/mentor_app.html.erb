@@ -294,7 +294,7 @@
             </label>
             <label>
               <span class="required">Reference #1 email address:</span>
-              <input maxlength="255" class="form-control" required="required" name="reference_email" type="email" />
+              <input maxlength="255" class="form-control" required="required" name="reference_email" type="email" onblur="if(this.value.indexOf('.') == -1) this.value += '.com';" />
             </label>
             <label>
               <span class="required">Reference #1 phone number:</span>
@@ -306,7 +306,7 @@
             </label>
             <label>
               <span class="required">Reference #2 email address:</span>
-              <input maxlength="255" class="form-control" required="required" name="reference2_email" type="email" />
+              <input maxlength="255" class="form-control" required="required" name="reference2_email" type="email" onblur="if(this.value.indexOf('.') == -1) this.value += '.com';" />
             </label>
             <label>
               <span class="required">Reference #2 phone number:</span>
