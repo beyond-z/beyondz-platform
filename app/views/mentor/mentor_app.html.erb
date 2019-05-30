@@ -37,23 +37,25 @@
                 <b><%=@due_date%></b>.
               </p>
               <p>
-                The Braven Accelerator empowers promising young people on their path to college graduation, meaningful careers, and lives of impact. Alongside educational institutions, Braven provides a scalable model to discover, develop, and connect extraordinary, diverse, and driven young people to high-quality skill building, opportunities, and networks. Braven supports its Fellows by offering 1) the Braven Accelerator: a credit-bearing, semester-long career and leadership course, and 2) programming that continues through college graduation.
-              </p>
+                The Braven Accelerator empowers promising young people on their path to college graduation, meaningful careers, and lives of impact. Alongside educational institutions, Braven provides a scalable model to discover, develop, and connect extraordinary, diverse, and driven young people to high-quality skill building, opportunities, and networks. Braven supports its Fellows by offering:</p>
+                
+              <ol>
+                <li>The Braven Accelerator: a credit-bearing, semester-long career and leadership course</li>
+                <li>Post-course programming that continues through college graduation</li>
+              </ol>
+
               <p>
-                As an essential piece of this programming, Professional Mentors (PMs) guide Braven Fellows on their path to securing quality postgraduate opportunities and support their professional development along the way. Each PM is paired with a junior, senior, or recent college graduate at <%= @program_site %> for&#160;
-                <strong><%=@number_of_weeks%> weeks from <%=@kickoff_date%> - <%=@end_date%></strong>
-                &#160;and provides weekly 1:1 coaching on the job or internship search and application process and professional competencies. The volunteer commitment is as follows:
+                An essential piece of this post-course programming is the Professional Mentors program. Professional Mentors (PMs) guide Braven Fellows on their path to securing quality postgraduate opportunities and support their professional development along the way. Each PM is paired with a junior, senior, or recent college graduate at <%= @program_site %> for <strong><%=@number_of_weeks%> weeks from <%=@kickoff_date%> - <%=@end_date%></strong> and provides weekly 1:1 coaching on the job or internship search and application process and professional competencies. The volunteer commitment is as follows:
               </p>
               <ul>
-                <li>Commit ~2 hrs per week with option to continue meeting with Fellow after commitment ends</li>
-                <li>Attend an<b> in-person </b>kickoff event&#160;on <b><%=@kickoff_date%></b></li>
-                <li>Attend a&#160;<strong>60min&#160;</strong>mid-commitment check-in call&#160;</li>
-                <li>Meet with Fellow&#160;once a week virtually at a mutually convenient time</li>
-                <li>Meet in-person at least once during the commitment (in addition to kickoff)</li>
+                <li>Commit ~1.5 hrs per week with option to continue meeting with Fellow after commitment ends</li>
+                <li>Attend an <b>in-person</b> kickoff event on <b><%=@kickoff_date%></b></li>
+                <li>Attend a <strong>60min</strong> mid-commitment in-person check-in</li>
+                <li>Meet with Fellow once a week virtually at a mutually convenient time</li>
                 <li>Prepare for meetings and follow up as necessary throughout the week</li>
                 <li>Guide Fellow through the steps of job attainment and help them develop professional polish</li>
                 <li>Serve as an advocate and cheerleader for your Fellow</li>
-                <li>Keep Braven staff updated on Fellow&#8217;s progress through weekly progress forms&#160;</li>
+                <li>Keep Braven staff updated on Fellow&#8217;s progress through weekly progress forms</li>
               </ul>
               <br />
               Questions: Email <a href="mailto:<%=@contact_email%>"><%=@contact_email%></a>
@@ -61,15 +63,13 @@
                 <p>
                   <strong>We are looking for professionals who work in the following industries:</strong>
                   <br />
-                  <br />
                 </p>
                 <p><%=simple_format(@desired_industries)%></p>
               </div>
             </div>
             <hr />
-            <br />
           <h2>Contact Information</h2>
-            <b>&#160;Please enter the following information about yourself:</b>
+            <b>Please enter the following information about yourself:</b>
             <label>
               <span class="required">First Name:</span>
               <input maxlength="255" class="form-control" required="required" name="first_name" type="text" value="<%=@first_name%>" />
@@ -133,14 +133,22 @@
               <input maxlength="255" class="form-control" required="required" name="title" type="text" />
             </label>
             <label>
-              <span class="required">Industry/field:</span>
+              <span class="required">Industry i.e. if you work in Tech, select "Tech":</span>
               <select class="form-control" required="required" name="employer_industry">
                 <option value=""></option>
                 <%= options_for_select(@industries) %>
               </select>
             </label>
+            <label>
+              <span class="required">Functional area i.e. if you work in recruiting, select "Employment / Human Resources":</span>
+              <select class="form-control" required="required" name="functional_area">
+                <option value=""></option>
+                <%= options_for_select(@job_functions) %>
+              </select>
+            </label>
+
             <br />
-            <b>What other industries/fields do you have experience working in and feel comfortable mentoring in (in addition to your current career field)? Use the list of industries listed at the beginning of the application&#160;</b>
+            <b>What other industries do you have experience working in and feel comfortable mentoring in (in addition to your current career field)? Use the list of industries listed at the beginning of the application</b>
             <label>
               <input maxlength="255" class="form-control" name="other_industries" type="text" />
             </label>
@@ -158,7 +166,7 @@
               <label><input type="checkbox" name="comfortable[]" value="Networking" /> Networking (elevator pitch, informational interviews)</label>
               <label><input type="checkbox" name="comfortable[]" value="Interview practice" /> Interview practice</label>
             <br />
-            <b class="required">The PM role requires you to commit ~2 hours per week for <%=@number_of_weeks%> weeks (<%= @kickoff_date %> through <%= @end_date %>). Is this a commitment you can realistically make?</b>
+            <b class="required">The PM role requires you to commit ~1.5 hours per week for <%=@number_of_weeks%> weeks (<%= @kickoff_date %> through <%= @end_date %>). Is this a commitment you can realistically make?</b>
             <label>
               <input required="required" name="can_commit" value="yes" type="radio" />
               Yes
@@ -168,7 +176,7 @@
               No
             </label>
             <br />
-            <b class="required">Are you able to meet your Fellow in-person at the Kickoff Event on <%=@kickoff_date%> at <%=@kickoff_location%> as well as one other time during the commitment? (all other meetings can be conducted virtually)</b>
+            <b class="required">Are you able to meet your Fellow in-person at the Kickoff Event on <%=@kickoff_date%> at <%=@kickoff_location%>?</b>
             <label>
               <input required="required" name="can_meet" value="yes" type="radio" />
               Yes
@@ -179,25 +187,103 @@
             </label>
             <br />
             <label>
-              <b class="required">Why do you want to be a PM?</b>
+              <b class="required">Why do you want to be a Braven Professional Mentor?</b>
               <textarea maxlength="3000" required="required" name="why_want_to_be_pm" class="form-control"></textarea>
             </label>
             <br />
             <label>
-              <b class="required">What skills or experiences have you had that would make you a strong mentor to a student/young adult?</b>
+              <b class="required">What skills or experiences have you had that would make you a strong mentor to a First Generation and/or low-income young adult?</b>
               <textarea maxlength="4000" required="required" name="what_skills" class="form-control"></textarea>
             </label>
             <br />
+            <b class="required">What are you hoping to gain from your experience being a Professional Mentor? Check all that apply.</b>
+              <label><input name="what_gain[]" type="checkbox" value="I will develop a deep relationship with my mentee" /> I will develop a deep relationship with my mentee</label>
+              <label><input name="what_gain[]" type="checkbox" value="I will improve my coaching abilities" /> I will improve my coaching abilities</label>
+              <label><input name="what_gain[]" type="checkbox" value="I will help my mentee obtain an internship/job by the end of the program" /> I will help my mentee obtain an internship/job by the end of the program</label>
+              <label><input name="what_gain[]" type="checkbox" value="I will help my mentee gain real-world connections to people in the workforce" /> I will help my mentee gain real-world connections to people in the workforce</label>
+              <label><input name="what_gain[]" type="checkbox" value="I will help my mentee gain confidence in their ability to obtain a quality job the end of the program" /> I will help my mentee gain confidence in their ability to obtain a quality job the end of the program</label>
+              <label><input name="what_gain[]" type="checkbox" value="I will help my mentee gain real-world connections to people in the workforce" /> I will help my mentee gain real-world connections to people in the workforce</label>
+              <label><input name="what_gain[]" type="checkbox" value="I will help my mentee gain confidence in their ability to obtain a quality job" /> I will help my mentee gain confidence in their ability to obtain a quality job</label>
+
+            <br />
             <label>
-              <b>Read the following situation and then respond to the question below:</b><div><br /></div><div class="required"><b>Your Fellow missed your last meeting and arrives late to this week's meeting. Last time you met, you had agreed that she would revise her cover letter and come prepared with five job postings she's excited about. However, it seems that she hasn't changed anything but a few spelling errors in her cover letter and she begins talking about some job postings she saw, but she doesn't have a list to show you. What do you do?</b></div>
+              <b>Read the following situation and then respond to the question below:</b><div><br /></div><div class="required">Your Fellow missed your last meeting and arrives late to this week's meeting. Last time you met, you had agreed that she would revise her cover letter and come prepared with five job postings she's excited about. However, it seems that she hasn't changed anything but a few spelling errors in her cover letter and she begins talking about some job postings she saw, but she doesn't have a list to show you. What do you do?</div>
               <textarea maxlength="4000" required="required" name="what_do" class="form-control"></textarea>
             </label>
+
+            <!-- FIXME: demographics -->
+
+            <style>
+              #form-personal-bkg label {
+                margin-bottom: 8px;
+              }
+              #form-personal-bkg label,
+              #form-personal-bkg label input[type="checkbox"] {
+                vertical-align: middle;
+              }
+            </style>
+
+            <div id="form-personal-bkg">
+              <h2 class="volunteer coach student">Personal Background</h2>
+              <p class="help">We strive to ensure our community is diverse. Please respond to the following questions about your background, identity and experiences to the extent you feel comfortable.<br />
+              All questions in this section are <b>optional</b>.</p>
+              <h5>Which race(s)/ethnicity(-ies) do you identify with (check all that apply) <sup>&dagger;</sup> :</h5>
+              <div class="form-group">
+                <label><input type="checkbox" name="bkg_african_americanblack" /> African American/Black</label>
+                <label><input type="checkbox" name="bkg_asian_american" /> Asian American</label>
+                <label><input type="checkbox" name="bkg_latino_or_hispanic" /> Latino or Hispanic</label>
+                <label><input type="checkbox" name="bkg_native_alaskan" /> Native Alaskan</label>
+                <label><input type="checkbox" name="bkg_native_american_american_indian" /> Native American / American Indian</label>
+                <label><input type="checkbox" name="bkg_native_hawaiian" /> Native Hawaiian</label>
+                <label><input type="checkbox" name="bkg_pacific_islander" /> Pacific Islander</label>
+                <label><input type="checkbox" name="bkg_whitecaucasian" /> White/Caucasian</label>
+                <label><input type="checkbox" name="bkg_multi_ethnicmulti_racial" /> Multi-Ethnic/Multi-Racial</label>
+                <div><input type="checkbox" id="bkg-other" /> Other: <%= text_field :bkg_other, :onfocus => 'document.getElementById("bkg-other").checked = true;', :maxlength => 40 %></div>
+              </div>
+              <div class="form-group" style="margin-top: 30px; margin-bottom: 30px;">
+                <h5>Please check any of the following statements that you identify with <sup>&dagger;</sup> :</h5>
+                <label>
+                  <input type="checkbox" name="identify_poc" />
+                  I identify as a person of color</label>
+                <label>
+                  <input type="checkbox" name="identify_low_income" />
+                  I identify as having grown up in a low-income community</label>
+                <label>
+                  <input type="checkbox" name="pell_grant" />
+                  I have received a Federal Pell Grant</label>
+                <label>
+                  <input type="checkbox" name="identify_first_gen" />
+                  I identify as a first-generation college graduate</label>
+              </div>
+              <div class="form-group" style="margin-top: 30px; margin-bottom: 30px;">
+                <h5>What is your gender identity? <sup>&dagger;</sup> </h5>
+
+                <label><input type="radio" name="gender_identity" value="male" /> Male</label>
+                <label><input type="radio" name="gender_identity" value="female" /> Female</label>
+                <label><input type="radio" name="gender_identity" value="other" /> Other: <input type="text" maxlength="80" name="other_gender_identity"></label>
+
+              </div>
+              <label><span>What city do you identify as your hometown?</span>
+                <input type="text" class="form-control" name="hometown" />
+              </label>
+              <label><span>What languages other than English do you speak fluently, if any?</span>
+                <input type="text" class="form-control" name="languages" placeholder="Spanish, Cantonese" />
+              </label>
+
+              <div class="form-group">
+                <p>&dagger; Please note that the information from these questions is used to gather statistical data on candidates and applicants and will not be used or shared in any other way.</p>
+              </div>
+            </div>
+            <!-- #form-personal-bkg --> 
+
+
+
             <br />
             <label>
-              <b>How did you hear about this opportunity?&#160;</b>
+              <b>How did you hear about this opportunity?</b>
               <input maxlength="255" class="form-control" name="how_hear" type="text" />
             </label>
-            <br />
+            <h2>References</h2>
             <b>Please provide the names, email addresses, and phone numbers for two references.</b>
             <label>
               <span class="required">Reference #1 name:</span>
@@ -223,11 +309,15 @@
               <span class="required">Reference #2 phone number:</span>
               <input maxlength="255" class="form-control" required="required" name="reference2_phone" type="text" />
             </label>
+
+            <br />
+            <b>Do you have any lingering questions about the Braven Professional Mentor Program?</b>
+            <label>
+              <textarea class="form-control" required="required" name="lingering_questions"></textarea>
+            </label>
+
           </div>
         </div>
-
-
-
         </div>
       </section>
     </div>
