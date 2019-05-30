@@ -1,6 +1,8 @@
 <style>
   label { display: block; }
-  ol, ul { list-style-type: initial; }
+  ul { list-style-type: disc; }
+  ol { list-style-type: decimal; }
+  li { font-size: 1.2em; }
   #form-end { text-align: center; }
 </style>
 
@@ -37,6 +39,7 @@
                 <b><%=@due_date%></b>.
               </p>
               <p>
+                <strong>About Braven:</strong><br />
                 The Braven Accelerator empowers promising young people on their path to college graduation, meaningful careers, and lives of impact. Alongside educational institutions, Braven provides a scalable model to discover, develop, and connect extraordinary, diverse, and driven young people to high-quality skill building, opportunities, and networks. Braven supports its Fellows by offering:</p>
                 
               <ol>
@@ -51,14 +54,14 @@
                 <li>Commit ~1.5 hrs per week with option to continue meeting with Fellow after commitment ends</li>
                 <li>Attend an <b>in-person</b> kickoff event on <b><%=@kickoff_date%></b></li>
                 <li>Attend a <strong>60min</strong> mid-commitment in-person check-in</li>
-                <li>Meet with Fellow once a week virtually at a mutually convenient time</li>
+                <li>Meet in-person at least once during the commitment (in addition to kickoff)</li>
                 <li>Prepare for meetings and follow up as necessary throughout the week</li>
                 <li>Guide Fellow through the steps of job attainment and help them develop professional polish</li>
                 <li>Serve as an advocate and cheerleader for your Fellow</li>
                 <li>Keep Braven staff updated on Fellow&#8217;s progress through weekly progress forms</li>
               </ul>
+              <p>Questions: Email <a href="mailto:<%=@contact_email%>"><%=@contact_email%></a></p>
               <br />
-              Questions: Email <a href="mailto:<%=@contact_email%>"><%=@contact_email%></a>
               <div>
                 <p>
                   <strong>We are looking for professionals who work in the following industries:</strong>
