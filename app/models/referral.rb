@@ -61,8 +61,14 @@ class Referral < ActiveRecord::Base
 
     info['OwnerId'] = camp_details.OwnerId
 
-    contact = client.create('Contact', info)
-    self.referred_salesforce_id = contact['Id']
+    begin
+      contact = client.create('Contact', info)
+      self.referred_salesforce_id = contact['Id']
+    rescue Databasedotcom::SalesForceError
+      # the referred person wasn't created; already in SF?
+      existing_salesforce_id = salesforce.exists_in_salesforce(referred_email)
+      self.referred_salesforce_id = existing_salesforce_id
+    end
 
     save!
 
