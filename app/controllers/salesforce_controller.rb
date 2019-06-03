@@ -87,10 +87,10 @@ class SalesforceController < ApplicationController
           e = e.first
           e.campaign_id = new_campaign
           e.save(validate: false)
+          Rails.cache.delete("salesforce/user_campaigns/#{u.salesforce_id}")
         else
           logger.warn "No user found to change campaigns for Salesforce ID = #{cid}. Skipping. Did not change them from #{old_campaign} to #{new_campaign}"
         end
-        Rails.cache.delete("salesforce/user_campaigns/#{u.salesforce_id}")
       end
     end
 
