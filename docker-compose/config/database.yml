@@ -3,11 +3,11 @@
 development: &default
   adapter: postgresql
   encoding: unicode
-  database: postgres
+  database: ${DATABASE_NAME}
   pool: 5
-  username: postgres
-  password:
-  host: joindb
+  username: ${DATABASE_USER}
+  password: ${DATABASE_PASSWORD}
+  host: ${DATABASE_URL}
 
 test:
   <<: *default

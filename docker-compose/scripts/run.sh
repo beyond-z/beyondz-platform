@@ -9,6 +9,7 @@ fi
 cp -a /app/docker-compose/config/* /app/config/
 cp -a /app/docker-compose/.env-docker /app/.env
 
+envsubst < /app/config/database.yml > /app/config/database.yml
 
 # check if database is provisioned or not
 if [[ $(psql -lqt -h joindb -p 5432 -U postgres postgres | cut -d \| -f 1 | grep -i beyondz | wc -l) = 0 ]]; then
