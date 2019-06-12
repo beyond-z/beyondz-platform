@@ -15,7 +15,7 @@ if [ -z ${latest_tag} ]; then
 else
   VERSION_TAG="${latest_tag%.*}.$((${latest_tag##*.}+1))"
 fi
-sudo docker tag portal 958491237157.dkr.ecr.us-west-2.amazonaws.com/join:${VERSION_TAG}
+sudo docker tag join 958491237157.dkr.ecr.us-west-2.amazonaws.com/join:${VERSION_TAG}
 sudo docker push 958491237157.dkr.ecr.us-west-2.amazonaws.com/join:${VERSION_TAG}'''
       }
     }
