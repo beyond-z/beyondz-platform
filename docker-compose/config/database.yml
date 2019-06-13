@@ -1,4 +1,4 @@
-database:
+development:
   adapter: postgresql
   encoding: unicode
   database: ${DATABASE_NAME}
