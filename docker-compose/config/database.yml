@@ -1,6 +1,4 @@
-# PRODUCTION and STAGING aren't required as this file is automatically created in those environments.
-
-development: &default
+database:
   adapter: postgresql
   encoding: unicode
   database: ${DATABASE_NAME}
@@ -8,7 +6,4 @@ development: &default
   username: ${DATABASE_USER}
   password: ${DATABASE_PASSWORD}
   host: ${DATABASE_URL}
-
-test:
-  <<: *default
-  database: beyondz-platform_test
+  reconnect: true
