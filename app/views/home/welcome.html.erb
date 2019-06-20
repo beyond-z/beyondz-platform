@@ -48,9 +48,13 @@
             <% end %>
           <% end %>
 
-          <% if (@show_thanks || @show_accepted) && @key_application_count > 1 %>
+          <% if ((@show_thanks || @show_accepted) && @key_application_count > 1) || (!current_user.nil? && current_user.in_lms?) %>
             <!-- if there's other applications, show some other header below thanks -->
             <p>You also have access to the following:</p>
+          <% end %>
+
+          <% if !current_user.nil? && current_user.in_lms? %>
+            <a href="//<%=Rails.application.secrets.canvas_server%>/" class="btn-primary">Go to the Braven Online Course Portal</a>
           <% end %>
 
 
