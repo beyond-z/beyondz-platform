@@ -551,7 +551,7 @@ class LinkedIn
     body = get_request('/v2/emailAddress?q=members&projection=(elements*(handle~))', access_token).body
     data = JSON.parse(body)
 
-    email = data["handle~"]["emailAddress"]
+    email = data["elements"][0]["handle~"]["emailAddress"]
 
     body = get_request('/v2/me', access_token).body
     data = JSON.parse(body)
@@ -564,7 +564,7 @@ class LinkedIn
     user['email_address'] = email
     user['user_url'] = "http://www.linkedin.com/in/#{data["vanityName"]}"
     user['majors'] = get_majors(data['educations'])
-    user['industries'] = get_industries(data['positions'])
+    user['industries'] = get_industries(data)
     user['company'] = get_current_employer(data['positions'])
     user['job_title'] = get_job_title(data['positions'])
 
