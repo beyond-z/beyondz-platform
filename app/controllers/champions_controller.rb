@@ -611,6 +611,7 @@ class LinkedIn
 
   def get_majors(educations_node)
     majors = []
+    return majors if educations_node.nil?
     educations_node.each do |k, v|
       if v['fieldsOfStudy']
         v['fieldsOfStudy'].each do |f|
