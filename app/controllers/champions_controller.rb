@@ -547,68 +547,98 @@ class LinkedIn
   end
 
   def get_service_user_info(access_token)
-    body = get_request('/v1/people/~:(id,first-name,last-name,public-profile-url,picture-url,email-address,three-past-positions,three-current-positions,industry,educations)?format=json', access_token).body
+
+    body = get_request('/v2/emailAddress?q=members&projection=(elements*(handle~))', access_token).body
+    data = JSON.parse(body)
+
+    email = data["elements"][0]["handle~"]["emailAddress"]
+
+    body = get_request('/v2/me', access_token).body
     data = JSON.parse(body)
 
     user = {}
 
     user['user_id'] = data['id']
-    user['first_name'] = data['firstName']
-    user['last_name'] = data['lastName']
-    user['email_address'] = data['emailAddress']
-    user['user_url'] = data['publicProfileUrl']
+    user['first_name'] = data['localizedFirstName']
+    user['last_name'] = data['localizedLastName']
+    user['email_address'] = email
+    user['user_url'] = "http://www.linkedin.com/in/#{data["vanityName"]}"
     user['majors'] = get_majors(data['educations'])
-    user['industries'] = get_industries(data['threeCurrentPositions'], data['threePastPositions'])
-    user['company'] = get_current_employer(data['threeCurrentPositions'])
-    user['job_title'] = get_job_title(data['threeCurrentPositions'])
+    user['industries'] = get_industries(data)
+    user['company'] = get_current_employer(data['positions'])
+    user['job_title'] = get_job_title(data['positions'])
 
     user
   end
 
-  def get_current_employer(node)
-    current_employer_node = node['values'].find { |job| job['isCurrent'] == true } unless node['_total'] == 0
-    current_employer_company_node = current_employer_node['company'] unless current_employer_node.nil?
-    current_employer = current_employer_company_node['name'] unless current_employer_company_node.nil?
-    current_employer
+  def current_positions(positionsNode)
+    remainder = []
+    return remainder if positionsNode.nil?
+    positionsNode.each do |k, v|
+      if v["endMonthYear"].nil?
+        remainder << v
+      end
+    end
+
+    begin
+      remainder.sort_by { |a| [a["startMonthYear"]["year"], a["startMonthYear"]["month"]] }
+    rescue
+      return []
+    end
   end
 
-  def get_job_title(node)
-    current_employer_node = node['values'].find { |job| job['isCurrent'] == true } unless node['_total'] == 0
-    job_title = current_employer_node['title'] unless current_employer_node.nil?
-    job_title
+  def get_current_employer(node)
+    cp = current_positions(node)
+    return nil if cp.length == 0
+    current_employer_node = cp[-1]
+    if current_employer_node
+      return current_employer_node["companyName"]["localized"]["en_US"]
+    else
+      return nil
+    end
+  end
+
+  def get_job_title(positionsNode)
+    return nil if positionsNode.nil?
+    # positions is an object with items as properties, we need to find the one that does not have a endMonthYear as it its current
+    positionsNode.each do |id, value|
+      if value["endMonthYear"].nil?
+        return value["title"]["localized"]["en_US"]
+      end
+    end
+    return nil
   end
 
   def get_majors(educations_node)
     majors = []
-    return majors if educations_node['_total'] == 0
-    educations_node['values'].each do |n|
-      majors.push(n['fieldOfStudy']) unless majors.include?(n['fieldOfStudy'])
+    return majors if educations_node.nil?
+    educations_node.each do |k, v|
+      if v['fieldsOfStudy']
+        v['fieldsOfStudy'].each do |f|
+          begin
+            majors.push(f["fieldOfStudyName"]["localized"]["en_US"])
+          rescue
+            # it wasn't there in English, no big deal
+          end
+        end
+      end
     end
     majors
   end
 
-  def get_industries(pn, past)
+  def get_industries(pn)
     industries = []
-    if pn['_total'] != 0
-      pn['values'].each do |n|
-        company = n['company']
-        next if company.nil?
-        industries.push(company['industry']) unless industries.include?(company['industry'])
-      end
-    end
-    if past['_total'] != 0
-      past['values'].each do |n|
-        company = n['company']
-        next if company.nil?
-        industries.push(company['industry']) unless industries.include?(company['industry'])
-      end
+
+    # linked in now only offers one...
+    # we could possibly look up the past companies too, but
+    # all this query gives is zero or one.
+    begin
+      industries << pn["industryName"]["localized"]["en_US"]
+    rescue
     end
 
     industries
   end
-
-
-
 
 
   def authorize_url(return_to, nonce)
