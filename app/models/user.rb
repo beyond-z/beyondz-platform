@@ -350,7 +350,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def ensure_in_salesforce_campaign_for(bz_region, university_name, applicant_type)
+  def ensure_in_salesforce_campaign_for(bz_region, university_name, applicant_type, initial_values = {})
     mapping = nil
     if bz_region.nil?
       mapping = CampaignMapping.where(
@@ -370,7 +370,7 @@ class User < ActiveRecord::Base
 
     cid = mapping.first.campaign_id
 
-    cm = {}
+    cm = initial_values
     cm['CampaignId'] = cid
 
     # Can't use client.materialize because it sets the checkboxes to nil
