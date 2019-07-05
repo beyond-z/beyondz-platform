@@ -29,9 +29,10 @@ application will be availabe on http://localhost:3001
 
 to change application config update docker-compose/.env-docker with config you need and
 
-```docker-compose down -v 
-docker-compose up -d
-```
+```Shell
+docker-compose down -v
+docker-compose up -d```
+
 
 ## Manual Setup
 
