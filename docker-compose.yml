@@ -14,6 +14,10 @@ services:
     environment:
       RACK_ENV: development
       VIRTUAL_HOST: join.docker
+      DATABASE_NAME: postgres
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD:
+      DATABASE_URL: joindb
 
   joindb:
     image: postgres:9.3
