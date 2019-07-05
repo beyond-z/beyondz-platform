@@ -31,8 +31,8 @@ to change application config update docker-compose/.env-docker with config you n
 
 ```Shell
 docker-compose down -v
-docker-compose up -d```
-
+docker-compose up -d
+```
 
 ## Manual Setup
 
