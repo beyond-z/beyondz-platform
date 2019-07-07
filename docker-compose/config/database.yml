@@ -5,5 +5,5 @@ development:
   pool: 5
   username: ${DATABASE_USER}
   password: ${DATABASE_PASSWORD}
-  host: ${DATABASE_URL}
+  host: ${DATABASE_HOST}
   reconnect: true
