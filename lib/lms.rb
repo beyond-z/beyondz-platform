@@ -301,7 +301,7 @@ module BeyondZ
     # storing the new canvas user id in the object.
     #
     # Be sure to call user.save at some point after using this.
-    def create_user(user, username, timezone = nil)
+    def create_user(user, username, timezone = nil, docusign_template_id = nil)
       open_canvas_http
 
       user_student_id = nil
@@ -319,6 +319,7 @@ module BeyondZ
         'user[sortable_name]' => "#{user.last_name}, #{user.first_name}",
         'user[skip_registration]' => true,
         'user[time_zone]' => timezone,
+        'user[docusign_template_id]' => docusign_template_id,
         'pseudonym[unique_id]' => username,
         'pseudonym[send_confirmation]' => false,
         'communication_channel[type]' => 'email',
@@ -354,14 +355,14 @@ module BeyondZ
     # and creating the user on Canvas if not.
     #
     # Don't forget to call user.save after using this.
-    def sync_user_logins(user, username, timezone = nil)
+    def sync_user_logins(user, username, timezone = nil, docusign_template_id = nil)
       # if they are already on canvas, no need to look up again
       if user.canvas_user_id.nil?
         # but if not, we will try to sync by username
         # and create if necessary
         canvas_user = find_user(username)
         if canvas_user.nil?
-          create_user(user, username, timezone)
+          create_user(user, username, timezone, docusign_template_id)
         else
           user.canvas_user_id = canvas_user['id']
         end

@@ -134,9 +134,9 @@ class SalesforceController < ApplicationController
               user_student_id = nil
               enrollment = Enrollment.find_by_user_id(user.id)
               user_student_id = enrollment.student_id unless enrollment.nil?
-              lms.sync_user_logins(user, "#{user_student_id}@nlu.edu", campaign.Default_Timezone__c)
+              lms.sync_user_logins(user, "#{user_student_id}@nlu.edu", campaign.Default_Timezone__c, campaign.Docusign_Account_ID__c)
             else
-              lms.sync_user_logins(user, user.email, campaign.Default_Timezone__c)
+              lms.sync_user_logins(user, user.email, campaign.Default_Timezone__c, campaign.Docusign_Account_ID__c)
             end
 
             type = 'STUDENT'
