@@ -317,7 +317,6 @@ module BeyondZ
         'user[name]' => user.name,
         'user[short_name]' => user.first_name,
         'user[sortable_name]' => "#{user.last_name}, #{user.first_name}",
-        'user[terms_of_use]' => true,
         'user[skip_registration]' => true,
         'user[time_zone]' => timezone,
         'pseudonym[unique_id]' => username,
