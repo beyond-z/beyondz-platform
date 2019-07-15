@@ -1,5 +1,8 @@
 pipeline {
   agent any
+  environment {
+        AWS_ACCOUNT_ID     = credentials('jenkins-aws-account-id')
+  }
   stages {
     stage('build docker image and tag') {
       steps {
@@ -15,8 +18,8 @@ if [ -z ${latest_tag} ]; then
 else
   VERSION_TAG="${latest_tag%.*}.$((${latest_tag##*.}+1))"
 fi
-sudo docker tag join 958491237157.dkr.ecr.us-west-2.amazonaws.com/join:${VERSION_TAG}
-sudo docker push 958491237157.dkr.ecr.us-west-2.amazonaws.com/join:${VERSION_TAG}'''
+sudo docker tag join $AWS_ACCOUNT_ID.dkr.ecr.us-west-2.amazonaws.com/join:${VERSION_TAG}
+sudo docker push $AWS_ACCOUNT_ID.dkr.ecr.us-west-2.amazonaws.com/join:${VERSION_TAG}'''
       }
     }
   }
