@@ -5,7 +5,7 @@ RUN echo "deb [check-valid-until=no] http://cdn-fastly.deb.debian.org/debian jes
 RUN echo "deb [check-valid-until=no] http://archive.debian.org/debian jessie-backports main" > /etc/apt/sources.list.d/jessie-backports.list
 RUN sed -i '/deb http:\/\/httpredir.debian.org\/debian jessie-updates main/d' /etc/apt/sources.list
 
-RUN apt-get -o Acquire::Check-Valid-Until=false update -yqq && apt-get install -y build-essential libpq-dev postgresql-client vim
+RUN apt-get -o Acquire::Check-Valid-Until=false update -yqq && apt-get install -y build-essential libpq-dev postgresql-client vim gettext
 
 RUN mkdir /app
 WORKDIR /app

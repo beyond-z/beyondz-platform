@@ -6,9 +6,33 @@ There are two ways to setup your local development environment, one uses
 Docker VMs and services and the other is to set it up manually.
 
 ## Docker Setup
-Just run:
+
+to run this on docker need to expose below variables as env variabels
+
+DATABASE_NAME
+
+DATABASE_USER
+
+DATABASE_PASSWORD
+
+DATABASE_URL
+
+default values are set in docker-compose.yml file
+
+docker-compose/scripts/run.sh script will pass those variables in to the yaml app config file
+
+to start in local
+
+```docker-compose up -d```
+
+application will be availabe on http://localhost:3001
+
+to change application config update docker-compose/.env-docker with config you need and
+
 ```Shell
-docker-compose/scripts/setup.bat
+docker-compose down -v
+docker-compose up -d
+```
 
 ## Manual Setup
 
