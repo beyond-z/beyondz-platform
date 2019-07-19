@@ -1,19 +1,21 @@
 version: "3"
 services:
 
-  join:
+  joinweb:
     build:
       context: .
-    command: /app/docker-compose/scripts/run.sh
     ports:
       - "3001:3001"
+    # Make changes done outside the container reflect inside the container without needing a rebuild by mounting a volume.
+    volumes:
+      - .:/app
     networks:
       - frontend
+      - rubycas-server_frontend
     depends_on:
       - joindb
-    environment:
-      RACK_ENV: development
-      VIRTUAL_HOST: join.docker
+    env_file:
+      - docker-compose/.env-docker
 
   joindb:
     image: postgres:9.3
@@ -24,6 +26,8 @@ services:
 
 networks:
   frontend:
+  rubycas-server_frontend:
+    external: true
 
 volumes:
   db-data:
