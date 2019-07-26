@@ -40,6 +40,20 @@ module BeyondZ
       info
     end
 
+    def trigger_qualtrics_preparation(course_id, preaccel_id, postaccel_id)
+      open_canvas_http
+
+      request = Net::HTTP::Post.new("/bz/prepare_qualtrics_links")
+      data = {
+        'access_token' => Rails.application.secrets.canvas_access_token,
+        'course_id' => course_id,
+        'preaccel_id' => preaccel_id,
+        'postaccel_id' => postaccel_id
+      }
+      request.set_form_data(data)
+      @canvas_http.request(request)
+    end
+
     # Gets an assignment submission for a student
     #
     # Note that for an upload, the file will be under returned["attachments"][0]["url"]
