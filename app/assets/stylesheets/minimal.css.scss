@@ -4,7 +4,41 @@ hr {
   margin-top: 0px;
 }
 
+body.sso_discovery {
+  background-color: #9ad7d7;
+}
+
 #sso_discovery {
+
+  font-size: 16px;
+
+  .login-link {
+    color: black;
+    text-decoration: underline;
+    font-weight: bold;
+  }
+
+  .choose-your-university {
+    /*display: flex;*/
+  }
+
+  .choose-your-role a {
+    display: inline-block;
+    vertical-align: top;
+    color: black;
+    width: 10em;
+    height: 10em;
+    font-size: 18px;
+    background-color: white;
+    text-transform: uppercase;
+    padding: 1em;
+    text-align: left;
+    margin-right: 1em;
+
+    div {
+      color: #9ad7d7;
+    }
+  }
 
   margin: 1em 2em;
   text-align: center;
@@ -14,28 +48,29 @@ hr {
     text-transform: none;
   }
 
-  a {
+  a.university {
     color: #666;
     display: inline-block;
-    vertical-align: top;
-    width: 10em;
-    height: 10em;
     margin: 1em;
-    border: solid 1px #ccc;
     box-sizing: border-box;
-    padding: 1em;
     text-align: center;
 
-    line-height: 4em; /* (height - vertical padding) / 2 */
-    vertical-align: bottom;
+    vertical-align: top;
     position: relative;
+    width: 10em;
+
+    div {
+      padding: 1em;
+      line-height: 4em; /* (height - vertical padding) / 2 */
+      background-color: white;
+      height: 10em;
+    }
 
     span {
       display: block;
-      position: absolute;
-      left: 0px;
-      right: 0px;
-      bottom: 0px;
+      line-height: 1.5;
+      color: black;
+      font-weight: bold;
     }
 
     img {
