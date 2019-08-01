@@ -1,0 +1,14 @@
+docker network create rubycas-server_frontend
+docker-compose up joindb
+
+docker-compose up joinweb bash ..... and then docker-compose/scripts/docker_compose_pre_run.sh
+
+
+# to load up server
+docker-compose up joinweb
+
+# to load up bash shell
+docker-compose up joinweb bash
+
+
+# next, how to set up test database

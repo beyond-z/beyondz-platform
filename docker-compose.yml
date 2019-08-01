@@ -16,6 +16,7 @@ services:
       - joindb
     env_file:
       - docker-compose/.env-docker
+    command: docker-compose/scripts/rails_server.sh
 
   joindb:
     image: postgres:9.3

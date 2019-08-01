@@ -14,5 +14,3 @@ fi
 cp -a /app/docker-compose/.env-docker /app/.env
 
 bundle exec rake db:create; bundle exec rake db:migrate; bundle exec rake db:seed
-
-bundle exec bin/rails s -p 3001 -b '0.0.0.0'
