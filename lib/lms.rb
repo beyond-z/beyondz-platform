@@ -51,7 +51,8 @@ module BeyondZ
         'postaccel_id' => postaccel_id
       }
       request.set_form_data(data)
-      @canvas_http.request(request)
+      response = @canvas_http.request(request)
+      response.body
     end
 
     # Gets an assignment submission for a student
@@ -66,7 +67,6 @@ module BeyondZ
         "/api/v1/courses/#{course_id}/assignments/#{assignment_id}/submissions/#{student_id}?access_token=#{Rails.application.secrets.canvas_access_token}"
       )
       response = @canvas_http.request(request)
-      info = get_all_from_pagination(response)
 
       info
     end

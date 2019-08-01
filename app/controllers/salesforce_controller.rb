@@ -174,7 +174,12 @@ class SalesforceController < ApplicationController
 
         end
 
-      lms.trigger_qualtrics_preparation(campaign.Target_Course_ID_In_LMS__c[0].to_i, campaign.Preaccelerator_Qualtrics_Survey_ID__c, campaign.Postaccelerator_Qualtrics_Survey_ID__c)
+        Rails.logger.info "doing qualtrics.... #{campaign.Target_Course_ID_In_LMS__c[0].to_i} #{campaign.Preaccelerator_Qualtrics_Survey_ID__c} #{campaign.Postaccelerator_Qualtrics_Survey_ID__c}"
+
+        qr = lms.trigger_qualtrics_preparation(campaign.Target_Course_ID_In_LMS__c[0].to_i, campaign.Preaccelerator_Qualtrics_Survey_ID__c, campaign.Postaccelerator_Qualtrics_Survey_ID__c)
+
+        Rails.logger.info qr
+
 
       # Gotta catch 'em all, even after just to ensure reporting by email
       # the point here is just to report the problem,
