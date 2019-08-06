@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #sleep 15s until db is up and running
-sleep 15
+# sleep 15
 
 # When you stop the container, it doesn't clean itself up properly so it fails to start next time. Cleanup!
 if [ -e /app/tmp/pids/server.pid ]; then
