@@ -1,14 +1,13 @@
+# Instructions for running rspec tests
+
 docker network create rubycas-server_frontend
-docker-compose up joindb
+docker-compose up -d joindb
+docker-compose run joinweb bash
+--> ./docker-compose/scripts/docker_compose_initial_db_setup.sh
+--> bundle exec rake db:test:prepare
 
-docker-compose up joinweb bash ..... and then docker-compose/scripts/docker_compose_pre_run.sh
-
-
-# to load up server
-docker-compose up joinweb
-
-# to load up bash shell
-docker-compose up joinweb bash
-
-
-# next, how to set up test database
+# tada. now you're ready to actually run rspec tests
+docker-compose run joinweb bash
+--> rspec spec  # to run all the rspec tests
+--> rspec spec/models  # to run only the model unit tests
+--> rspec spec/models/user_spec.rb  # to run specs for a particular model
