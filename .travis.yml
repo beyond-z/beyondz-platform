@@ -6,3 +6,5 @@ script:
   - cd app; bundle exec rubocop
   - bundle exec rake db:create db:migrate
   - bundle exec rake test
+  - bundle exec rake db:test:prepare
+  - bundle exec rspec spec
