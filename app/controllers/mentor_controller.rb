@@ -176,6 +176,7 @@ class MentorController < ApplicationController
     application.first_name = params[:first_name]
     application.last_name = params[:last_name]
     application.email = params[:email]
+    application.phone = params[:phone]
     application.linkedin_url = params[:linkedin_url]
     application.city = params[:city]
     application.state = params[:state]
