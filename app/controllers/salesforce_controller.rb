@@ -108,6 +108,8 @@ class SalesforceController < ApplicationController
 
       lms = BeyondZ::LMS.new
 
+      additional_data = {}
+
       # If you change the condition on this query, also update
       # BZ_SyncToLMS.apxc so the list on Salesforce keeps in sync.
       members = client.query("
@@ -161,6 +163,10 @@ class SalesforceController < ApplicationController
 
             user.save!
 
+            ad = {}
+            ad["salesforce_id"] = user.salesforce_id
+            additional_data[user.canvas_user_id] = ad
+
             # Note: The user must be provisioned in Canvas and their canvas_user_id set before this will
             # run correctly.
             if Rails.application.secrets.qa_token && !Rails.application.secrets.qa_token.empty?
@@ -176,7 +182,7 @@ class SalesforceController < ApplicationController
 
         Rails.logger.info "doing qualtrics.... #{campaign.Target_Course_ID_In_LMS__c[0].to_i} #{campaign.Preaccelerator_Qualtrics_Survey_ID__c} #{campaign.Postaccelerator_Qualtrics_Survey_ID__c}"
 
-        qr = lms.trigger_qualtrics_preparation(campaign.Target_Course_ID_In_LMS__c[0].to_i, campaign.Preaccelerator_Qualtrics_Survey_ID__c, campaign.Postaccelerator_Qualtrics_Survey_ID__c)
+        qr = lms.trigger_qualtrics_preparation(campaign.Target_Course_ID_In_LMS__c[0].to_i, campaign.Preaccelerator_Qualtrics_Survey_ID__c, campaign.Postaccelerator_Qualtrics_Survey_ID__c, additional_data)
 
         Rails.logger.info qr
 
