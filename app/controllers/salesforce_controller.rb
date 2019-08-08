@@ -169,6 +169,7 @@ class SalesforceController < ApplicationController
             ad = {}
             ad["salesforce_id"] = user.salesforce_id
             ad["student_id"] = user.user_student_id
+            ad["site"] = campaign.Section_Name_Site_Prefix__c
 
             additional_data[user.canvas_user_id] = ad
 
