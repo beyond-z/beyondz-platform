@@ -163,8 +163,13 @@ class SalesforceController < ApplicationController
 
             user.save!
 
+            user_student_id = nil
+            enrollment = Enrollment.find_by_user_id(user.id)
+            user_student_id = enrollment.student_id unless enrollment.nil?
             ad = {}
             ad["salesforce_id"] = user.salesforce_id
+            ad["student_id"] = user.user_student_id
+
             additional_data[user.canvas_user_id] = ad
 
             # Note: The user must be provisioned in Canvas and their canvas_user_id set before this will
