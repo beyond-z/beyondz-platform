@@ -40,7 +40,7 @@ module BeyondZ
       info
     end
 
-    def trigger_qualtrics_preparation(course_id, preaccel_id, postaccel_id)
+    def trigger_qualtrics_preparation(course_id, preaccel_id, postaccel_id, additional_data)
       open_canvas_http
 
       request = Net::HTTP::Post.new("/bz/prepare_qualtrics_links")
@@ -48,7 +48,8 @@ module BeyondZ
         'access_token' => Rails.application.secrets.canvas_access_token,
         'course_id' => course_id,
         'preaccel_id' => preaccel_id,
-        'postaccel_id' => postaccel_id
+        'postaccel_id' => postaccel_id,
+        'additional_data' => additional_data.to_json
       }
       request.set_form_data(data)
       response = @canvas_http.request(request)
