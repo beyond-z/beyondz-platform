@@ -11,6 +11,8 @@ body.sso_discovery {
 #sso_discovery {
 
   font-size: 16px;
+  margin: 1em 2em;
+  text-align: center;
 
   .login-link {
     color: black;
@@ -23,29 +25,50 @@ body.sso_discovery {
   }
 
   .choose-your-role a {
+    font-family: "TradeGothicNo.20-CondBold", "Oswald", "Open Sans", sans-serif;
     display: inline-block;
     vertical-align: top;
     color: black;
-    width: 10em;
-    height: 10em;
-    font-size: 18px;
+    width: 9em;
+    height: 9em;
+    font-size: 22px;
     background-color: white;
     text-transform: uppercase;
     padding: 1em;
     text-align: left;
     margin-right: 1em;
 
-    div {
-      color: #9ad7d7;
-    }
+    position:relative;
+    margin-top:20px;
   }
 
-  margin: 1em 2em;
-  text-align: center;
+  .choose-your-role a:after{
+    content: '';
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 0 1em 1em;
+    border-color: transparent transparent #9ad7d7 transparent;
+    -o-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+  }
 
-  h2 {
-    font-size: 100%;
-    text-transform: none;
+  @media (min-width: 990px){
+    h2 {
+      font-size: 24px;
+    }
+  }
+  h2 a {
+    font-size: 18px;
+    font-weight:normal;
+    text-decoration: underline;
+    color: #378383;
   }
 
   a.university {
@@ -57,20 +80,25 @@ body.sso_discovery {
 
     vertical-align: top;
     position: relative;
-    width: 10em;
+    width: 50%;
 
     div {
       padding: 1em;
       line-height: 4em; /* (height - vertical padding) / 2 */
+      display: flex;
+      align-items: center;
+      justify-content: center;
       background-color: white;
-      height: 10em;
     }
 
     span {
+      font-family: "TradeGothicNo.20-CondBold", "Oswald", "Open Sans", sans-serif;
+      text-transform: uppercase;
+      font-weight: 200;
+      margin-top:10px;
+      color: black;
       display: block;
       line-height: 1.5;
-      color: black;
-      font-weight: bold;
     }
 
     img {
@@ -85,9 +113,6 @@ body.sso_discovery {
 @media(max-width: 640px) {
   #sso_discovery {
     a {
-      width: 6em;
-      height: 6em;
-      line-height: 2em; /* height - vertical padding */
       margin: 0.5em;
     }
   }
@@ -96,10 +121,17 @@ body.sso_discovery {
 @media(min-width: 640px) and (max-width: 800px) {
   #sso_discovery {
     a {
-      width: 8em;
-      height: 8em;
       line-height: 3em; /* height - vertical padding */
       margin: 0.5em;
     }
+  }
+}
+
+@media (min-width: 768px){
+  #sso_discovery a.university div {
+    height: 10em;
+  }
+  #sso_discovery a.university {
+    width: 10em;
   }
 }
