@@ -168,7 +168,7 @@ class SalesforceController < ApplicationController
             user_student_id = enrollment.student_id unless enrollment.nil?
             ad = {}
             ad["salesforce_id"] = user.salesforce_id
-            ad["student_id"] = user.user_student_id
+            ad["student_id"] = user_student_id unless user_student_id.nil?
             ad["site"] = campaign.Section_Name_Site_Prefix__c
 
             additional_data[user.canvas_user_id] = ad
