@@ -6,9 +6,27 @@ There are two ways to setup your local development environment, one uses
 Docker VMs and services and the other is to set it up manually.
 
 ## Docker Setup
-Just run:
+Edit `/etc/hosts` and add these values.
 ```Shell
-docker-compose/scripts/setup.bat
+127.0.0.1     joinweb
+127.0.0.1     ssoweb
+127.0.0.1     canvasweb
+```
+
+Then, from your application root just run:
+```Shell
+docker-compose up -d
+
+When complete, the app will be available at: `http://joinweb:3001`
+
+Some things to keep in mind with Docker:
+* If there are build errors, run `docker-compose logs` to see what they
+  are.
+* The environment variables come from `docker-compose/.env-docker`
+* If you change environment variables, rebuild to have them picked up by
+  running `./docker-compose/scripts/rebuild.sh
+* There are more scripts in `./docker-compose/scripts` to help you work
+  with the container(s).
 
 ## Manual Setup
 
@@ -76,13 +94,6 @@ foreman start
 ```
 it reads the `.env` file and sets those environment variables for your
 session.
-
-The minimum list of variables needed to make the basic application work are:
-`RAILS_SECRET_TOKEN`
-`DATABASE_USERNAME`
-`DATABASE_PASSWORD` 
-`DEVISE_SECRET_KEY` 
-`DEVISE_PEPPER`
 
 For the secret and pepper variables above, you can generate them using
 ```Shell

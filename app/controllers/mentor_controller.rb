@@ -116,7 +116,9 @@ class MentorController < ApplicationController
         # skip ahead to contact as we are adding to campaign below
         current_user.create_on_salesforce(true)
       end
-      current_user.ensure_in_salesforce_campaign_for(current_user.bz_region, nil, "professional_mentor")
+      iv = {}
+      iv["Application_Status__c"] = "Started"
+      current_user.ensure_in_salesforce_campaign_for(current_user.bz_region, nil, "professional_mentor", iv)
     rescue Exception => e
       Rails.logger.error(e)
       render 'inactive_campaign'
@@ -147,7 +149,9 @@ class MentorController < ApplicationController
         current_user.create_on_salesforce(true)
       end
 
-      current_user.ensure_in_salesforce_campaign_for(nil, current_user.university_name, "mentee")
+      iv = {}
+      iv["Application_Status__c"] = "Started"
+      current_user.ensure_in_salesforce_campaign_for(nil, current_user.university_name, "mentee", iv)
     rescue Exception => e
       Rails.logger.error(e)
       render 'inactive_campaign'
@@ -172,6 +176,7 @@ class MentorController < ApplicationController
     application.first_name = params[:first_name]
     application.last_name = params[:last_name]
     application.email = params[:email]
+    application.phone = params[:phone]
     application.linkedin_url = params[:linkedin_url]
     application.city = params[:city]
     application.state = params[:state]

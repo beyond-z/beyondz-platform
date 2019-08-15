@@ -1,21 +1,58 @@
 <div id="sso_discovery">
+  <script>document.body.className = 'sso_discovery';</script>
+
+  <img src="/bebraven/braven_logo.png" alt="Braven" />
   <h1>Choose Your University</h1>
 
-  <h2>Fellows</h2>
+  <div id="main_university_choice">
+    <div class="choose-your-university">
+      <a class="university" onclick="return showNlu();" href="https://<%= Rails.application.secrets.canvas_server %>/login/cas/6">
+        <div><img src="/images/universities/nlu.png" alt="" /></div>
+        <span>National Louis University</span>
+      </a>
+      <a class="university" href="https://<%= Rails.application.secrets.canvas_server %>/login/cas/1">
+        <div><img src="/images/universities/run.png" alt="" /></div>
+        <span>Rutgers University - Newark</span>
+      </a>
+      <a class="university" href="https://<%= Rails.application.secrets.canvas_server %>/login/cas/1">
+        <div><img src="/images/universities/sjsu.png" alt="" /></div>
+        <span>San Jose State University</span>
+      </a>
+    </div>
 
-  <a href="https://<%= Rails.application.secrets.canvas_server %>/login/cas/6"><img src="/images/universities/nlu.png" alt="NLU" /> <span>Fellows</span></a>
-  <a href="https://<%= Rails.application.secrets.canvas_server %>/login/cas/1"><img src="/images/universities/run.png" alt="Rutgers" /> <span>Fellows</span></a>
-  <a href="https://<%= Rails.application.secrets.canvas_server %>/login/cas/1"><img src="/images/universities/sjsu.png" alt="SJSU" /> <span>Fellows</span></a>
+    <br />
+    <br />
 
-  <hr />
+    Braven Staff Member? <a class="login-link" href="https://<%= Rails.application.secrets.canvas_server %>/login/cas/1"> Login to the Braven Portal</a>
+  </div>
 
-  <h2>Instructors, TAs, TFs, and Leadership Coaches</h2>
-  <a href="https://<%= Rails.application.secrets.canvas_server %>/login/cas/1"><img src="/images/universities/nlu.png" alt="NLU" /> <span>Instructors/LCs</span></a>
-  <a href="https://<%= Rails.application.secrets.canvas_server %>/login/cas/1"><img src="/images/universities/run.png" alt="Rutgers" /> <span>TFs/LCs</span></a>
-  <a href="https://<%= Rails.application.secrets.canvas_server %>/login/cas/1"><img src="/images/universities/sjsu.png" alt="SJSU" /> <span>TAs/LCs</span></a>
+  <div style="display: none;" id="nlu_university_choice">
+    <h2>National Louis University <a onclick="return showAll();" href="./">Change</a></h2>
 
-  <hr />
+    <div class="choose-your-role">
+      <a href="https://<%= Rails.application.secrets.canvas_server %>/login/cas/6">
+        <div>I am a...</div>
+        <span>Fellow<br />&#9654;</span>
+      </a>
 
-  <h2>All Others, Click the Braven Logo Below</h2>
-  <a href="https://<%= Rails.application.secrets.canvas_server %>/login/cas/1"><img src="/images/universities/braven.png" alt="Braven" /> <span>Staff</span></a>
+      <a href="https://<%= Rails.application.secrets.canvas_server %>/login/cas/1">
+        <div>I am an...</div>
+        <span>Instructor/LC<br />&#9654;</span>
+      </a>
+    </div>
+
+  </div>
+
+  <script>
+    function showAll() {
+      document.getElementById("nlu_university_choice").style.display = "none";
+      document.getElementById("main_university_choice").style.display = "";
+      return false;
+    }
+    function showNlu() {
+      document.getElementById("nlu_university_choice").style.display = "";
+      document.getElementById("main_university_choice").style.display = "none";
+      return false;
+    }
+  </script>
 </div>

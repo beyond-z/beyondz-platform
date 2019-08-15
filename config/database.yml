@@ -1,16 +1,16 @@
-# PRODUCTION and STAGING aren't required as this file is automatically created in those environments.
+# PRODUCTION and STAGING aren't required as this file is automatically created in those environments in heroku.
 
 default: &default
   adapter: postgresql
   encoding: unicode
   host: <%= ENV['DATABASE_HOST'] %>
   pool: 5
-  username: <%= ENV['DATABASE_USERNAME'] %>
+  username: <%= ENV['DATABASE_USER'] %>
   password: <%= ENV['DATABASE_PASSWORD'] %>
 
 development:
   <<: *default
-  database: beyondz-platform_development
+  database: <%= ENV['DATABASE_NAME'] %>
 
 test:
   <<: *default

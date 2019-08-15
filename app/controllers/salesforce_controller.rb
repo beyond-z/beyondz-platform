@@ -108,6 +108,8 @@ class SalesforceController < ApplicationController
 
       lms = BeyondZ::LMS.new
 
+      additional_data = {}
+
       # If you change the condition on this query, also update
       # BZ_SyncToLMS.apxc so the list on Salesforce keeps in sync.
       members = client.query("
@@ -134,9 +136,9 @@ class SalesforceController < ApplicationController
               user_student_id = nil
               enrollment = Enrollment.find_by_user_id(user.id)
               user_student_id = enrollment.student_id unless enrollment.nil?
-              lms.sync_user_logins(user, "#{user_student_id}@nlu.edu", campaign.Default_Timezone__c)
+              lms.sync_user_logins(user, "#{user_student_id}@nlu.edu", campaign.Default_Timezone__c, campaign.Docusign_Template_ID__c)
             else
-              lms.sync_user_logins(user, user.email, campaign.Default_Timezone__c)
+              lms.sync_user_logins(user, user.email, campaign.Default_Timezone__c, campaign.Docusign_Template_ID__c)
             end
 
             type = 'STUDENT'
@@ -161,6 +163,16 @@ class SalesforceController < ApplicationController
 
             user.save!
 
+            user_student_id = nil
+            enrollment = Enrollment.find_by_user_id(user.id)
+            user_student_id = enrollment.student_id unless enrollment.nil?
+            ad = {}
+            ad["salesforce_id"] = user.salesforce_id
+            ad["student_id"] = user_student_id unless user_student_id.nil?
+            ad["site"] = campaign.Section_Name_Site_Prefix__c
+
+            additional_data[user.canvas_user_id] = ad
+
             # Note: The user must be provisioned in Canvas and their canvas_user_id set before this will
             # run correctly.
             if Rails.application.secrets.qa_token && !Rails.application.secrets.qa_token.empty?
@@ -173,6 +185,14 @@ class SalesforceController < ApplicationController
           end
 
         end
+
+        Rails.logger.info "doing qualtrics.... #{campaign.Target_Course_ID_In_LMS__c[0].to_i} #{campaign.Preaccelerator_Qualtrics_Survey_ID__c} #{campaign.Postaccelerator_Qualtrics_Survey_ID__c}"
+
+        qr = lms.trigger_qualtrics_preparation(campaign.Target_Course_ID_In_LMS__c[0].to_i, campaign.Preaccelerator_Qualtrics_Survey_ID__c, campaign.Postaccelerator_Qualtrics_Survey_ID__c, additional_data)
+
+        Rails.logger.info qr
+
+
       # Gotta catch 'em all, even after just to ensure reporting by email
       # the point here is just to report the problem,
       # then the user will decide how to handle it later
