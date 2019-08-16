@@ -316,7 +316,7 @@ module BeyondZ
     # storing the new canvas user id in the object.
     #
     # Be sure to call user.save at some point after using this.
-    def create_user(user, username, timezone = nil, docusign_template_id = nil)
+    def create_user_in_canvas(user, username, timezone = nil, docusign_template_id = nil)
       open_canvas_http
 
       user_student_id = nil
@@ -366,8 +366,30 @@ module BeyondZ
       user
     end
 
-    # Looks up the user in canvas, setting the ID locally if found,
-    # and creating the user on Canvas if not.
+    # Updates a user in canvas. Only updates the parameters that are explicity set. 
+    # Set a parameter to empty string to clear it. Nil means don't touch it.
+    def update_user_in_canvas(user, timezone: nil, docusign_template_id: nil)
+      raise "Couldn't update user <#{user.email}> in canvas because user.canvas_user_id is nil" if user.canvas_user_id.nil?
+      open_canvas_http
+
+      data = { 'access_token' => Rails.application.secrets.canvas_access_token }
+      data['user[time_zone]'] = timezone unless timezone.nil?
+      data['user[docusign_template_id]'] = docusign_template_id unless docusign_template_id.nil?
+
+      return if data.length <= 1
+
+      request = Net::HTTP::Put.new("/api/v1/users/#{user.canvas_user_id}")
+      request.set_form_data(data)
+      response = @canvas_http.request(request)
+
+      raise "Couldn't update user <#{user.email}> in canvas #{response.body}" if response.code != '200'
+
+      JSON.parse response.body
+    end
+
+    # Looks up the user in Canvas and creates the user in Canvas if they don't exist.
+    # Otherwise, sets the canvas ID locally if the user exists and updates the
+    # DocuSign template ID if necessary
     #
     # Don't forget to call user.save after using this.
     def sync_user_logins(user, username, timezone = nil, docusign_template_id = nil)
@@ -375,18 +397,21 @@ module BeyondZ
       if user.canvas_user_id.nil?
         # but if not, we will try to sync by username
         # and create if necessary
-        canvas_user = find_user(username)
+        canvas_user = find_user_in_canvas(username)
         if canvas_user.nil?
-          create_user(user, username, timezone, docusign_template_id)
+          create_user_in_canvas(user, username, timezone, docusign_template_id)
         else
           user.canvas_user_id = canvas_user['id']
         end
+      else
+        # The DocuSign template could have changed after we first created the user with it. So update it for existing users.
+        update_user_in_canvas(user, :docusign_template_id => docusign_template_id)
       end
 
       user
     end
 
-    def find_user(email)
+    def find_user_in_canvas(email)
       open_canvas_http
 
       request = Net::HTTP::Get.new(
