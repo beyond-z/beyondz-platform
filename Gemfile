@@ -115,4 +115,4 @@ gem 'msworddoc-extractor', '~> 0.2.0'
 gem 'pg_search'
 
 gem 'exception_notification'
-
+gem 'newrelic_rpm'

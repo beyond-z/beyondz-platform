@@ -167,6 +167,7 @@ GEM
     multi_json (1.13.1)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
+    newrelic_rpm (6.5.0.357)
     nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
     orm_adapter (0.5.0)
@@ -328,6 +329,7 @@ DEPENDENCIES
   json
   kaminari (~> 0.16.3)
   msworddoc-extractor (~> 0.2.0)
+  newrelic_rpm
   paperclip
   pg
   pg_search
