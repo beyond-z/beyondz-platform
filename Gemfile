@@ -116,3 +116,4 @@ gem 'pg_search'
 
 gem 'exception_notification'
 gem 'newrelic_rpm'
+gem 'sentry-raven'
