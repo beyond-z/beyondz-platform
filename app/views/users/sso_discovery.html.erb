@@ -6,15 +6,15 @@
 
   <div id="main_university_choice">
     <div class="choose-your-university">
-      <a class="university" onclick="return showNlu();" href="https://<%= Rails.application.secrets.canvas_server %>/login/cas/6">
+      <a class="university" onclick="return showNlu();" href="//<%= Rails.application.secrets.canvas_server %>/login/cas/6">
         <div><img src="/images/universities/nlu.png" alt="" /></div>
         <span>National Louis University</span>
       </a>
-      <a class="university" href="https://<%= Rails.application.secrets.canvas_server %>/login/cas/1">
+      <a class="university" href="//<%= Rails.application.secrets.canvas_server %>/login/cas/1">
         <div><img src="/images/universities/run.png" alt="" /></div>
         <span>Rutgers University - Newark</span>
       </a>
-      <a class="university" href="https://<%= Rails.application.secrets.canvas_server %>/login/cas/1">
+      <a class="university" href="//<%= Rails.application.secrets.canvas_server %>/login/cas/1">
         <div><img src="/images/universities/sjsu.png" alt="" /></div>
         <span>San Jose State University</span>
       </a>
@@ -23,19 +23,19 @@
     <br />
     <br />
 
-    Braven Staff Member? <a class="login-link" href="https://<%= Rails.application.secrets.canvas_server %>/login/cas/1"> Login to the Braven Portal</a>
+    Braven Staff Member? <a class="login-link" href="//<%= Rails.application.secrets.canvas_server %>/login/cas/1"> Login to the Braven Portal</a>
   </div>
 
   <div style="display: none;" id="nlu_university_choice">
     <h2>National Louis University <a onclick="return showAll();" href="./">Change</a></h2>
 
     <div class="choose-your-role">
-      <a href="https://<%= Rails.application.secrets.canvas_server %>/login/cas/6">
+      <a href="//<%= Rails.application.secrets.canvas_server %>/login/cas/6">
         <div>I am a...</div>
         <span>Fellow<br />&#9654;</span>
       </a>
 
-      <a href="https://<%= Rails.application.secrets.canvas_server %>/login/cas/1">
+      <a href="//<%= Rails.application.secrets.canvas_server %>/login/cas/1">
         <div>I am an...</div>
         <span>Instructor/LC<br />&#9654;</span>
       </a>
