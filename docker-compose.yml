@@ -1,4 +1,4 @@
-version: "3"
+version: "3.5"
 services:
 
   joinweb:
@@ -11,8 +11,7 @@ services:
     volumes:
       - .:/app
     networks:
-      - frontend
-      - rubycas-server_frontend
+      - bravendev
     depends_on:
       - joindb
     env_file:
@@ -23,14 +22,13 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
     networks:
-      - frontend
+      - bravendev
 
+# Note all Braven web app docker dev envs use this same network so they can talk to each other.
+# E.g. the hostname joinweb will resolve inside the ssoweb container if they are on the same docker network.
 networks:
-  frontend:
-  # Bind to the external rubycas-server network so that the application can talk to that one using the
-  # service names as hostnames. E.g. from inside the joinweb container, the hostname ssoweb needs to resolve to the ssoweb container.
-  rubycas-server_frontend:
-    external: true
+  bravendev:
+    name: braven_dev_network
 
 volumes:
   db-data:
