@@ -17,4 +17,4 @@ RUN bundle install
 # causes bundle install to be invalidated and run again on the next build
 COPY . /app
 
-CMD ["/app/docker-compose/scripts/docker_compose_run.sh"]
+CMD ["bash"]

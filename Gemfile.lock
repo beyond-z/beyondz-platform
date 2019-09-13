@@ -261,6 +261,8 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
+    sentry-raven (2.11.0)
+      faraday (>= 0.7.6, < 1.0)
     signet (0.11.0)
       addressable (~> 2.3)
       faraday (~> 0.9)
@@ -341,6 +343,7 @@ DEPENDENCIES
   ruby-openid
   sass-rails (~> 4.0.0)
   sdoc
+  sentry-raven
   therubyracer
   to_xls-rails
   turbolinks
