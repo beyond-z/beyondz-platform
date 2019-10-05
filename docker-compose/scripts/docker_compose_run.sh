@@ -6,10 +6,6 @@ if [ -e /app/tmp/pids/server.pid ]; then
   rm /app/tmp/pids/server.pid
 fi
 
-# This is just to make sure we have the docker one there and not something left over, b/c 
-# .env takes precedence over the env_file directive in docker-compose.yml
-cp -a /app/docker-compose/.env-docker /app/.env
-
 # Here is a command to create an empty database with just the stuff in db:seed. We don't do this in
 # here b/c it would be run everytime docker starts when we only need to create/populate the database
 # once or on demand.
