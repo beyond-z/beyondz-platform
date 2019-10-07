@@ -4,19 +4,23 @@
 
 def createCampaignMapping(campaign_type, bzregion, program_site, campaign_id)
   puts "Creating CampaignMapping for: #{campaign_type}, #{bzregion}, #{program_site}, #{campaign_id}"
-  throw new Exception('Campaign.Type == "Referral Program" not supported yet.') if campaign_type == 'Referral Program'
+  raise 'Campaign.Type == "Referral Program" not supported yet.' if campaign_type == 'Referral Program'
 
   if (campaign_type == 'Program Participants' || campaign_type == 'Mentee' || campaign_type == 'Pre-Accelerator Participants')
-    at = APPLICANT_TYPE[campaign_type]
-    un = getUniversity(bzregion, program_site)
     CampaignMapping.create(
       :campaign_id => campaign_id,
-      :applicant_type => at,
-      :university_name => un
+      :applicant_type => APPLICANT_TYPE[campaign_type],
+      :university_name => getUniversity(bzregion, program_site)
+    )
+  elsif (campaign_type == 'Leadership Coaches' || campaign_type == 'Mentor')
+    CampaignMapping.create(
+      :campaign_id => campaign_id,
+      :applicant_type => APPLICANT_TYPE[campaign_type],
+      :bz_region => bzregion
     )
   else
     # TODO: do all the ones that are the same (e.g. not Braven Network or Calendly
-    throw new Exception("Campaign.Type == '#{campaign_type}' not supported yet.")
+    raise "Campaign.Type == '#{campaign_type}' not supported yet."
   end
 end
 
@@ -31,7 +35,7 @@ def getUniversity(bzregion, program_site)
   when 'New York City, NY'
     'Lehman College'
   else
-    throw new Exception("Failed to map bzregion=#{bzregion}, program_site=#{program_site} to a University.")
+    raise "Failed to map bzregion=#{bzregion}, program_site=#{program_site} to a University."
   end
 end
 
