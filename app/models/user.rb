@@ -513,7 +513,8 @@ class User < ActiveRecord::Base
     region_by_university = Hash.new(nil).merge({
       'National Louis University' => 'Chicago',
       'San Jose State University' => 'San Francisco Bay Area, San Jose',
-      'Rutgers University - Newark' => 'Newark, NJ'
+      'Rutgers University - Newark' => 'Newark, NJ',
+      'Lehman College' => 'New York City, NY'
     })
     
     bz_region || region_by_university[university_name]
