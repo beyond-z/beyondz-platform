@@ -89,6 +89,14 @@ module BeyondZ
       end
     end
 
+    # Intended to be used in the development environment only (hence no caching)
+    # to be able to automagically setup the campaign mappings.
+    def get_all_active_campaign_mapping_info()
+        client = get_client
+        query_result = client.http_get("/services/data/v#{client.version}/query?q=" \
+          "SELECT Id, Type, BZ_Region__c, Program_Site__c FROM Campaign WHERE IsActive = true")
+        sf_answer = JSON.parse(query_result.body)
+    end
 
     def get_client
       client = Databasedotcom::Client.new :host => Rails.application.secrets.salesforce_host

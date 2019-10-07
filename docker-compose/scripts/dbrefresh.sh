@@ -33,4 +33,7 @@ gunzip < $dbfilepathgz | docker-compose exec -T joinweb pg_restore --verbose --c
 ENCRYPTED_TEST_PASS='$2a$10$C2W0hszrbmpk8tkw0ViLFOXVFH1Sj6HAiMyGah6vdEoRUj7GK1KzO'
 echo "update users set encrypted_password = '$ENCRYPTED_TEST_PASS';" | docker-compose exec -T joindb psql -U postgres joindb
 
+echo "Running dev setup scripts (e.g. mapping the signup options to dev Salesforce campaigns)"
+docker-compose exec joinweb rails runner "eval(File.read 'docker-compose/scripts/setup_dev_script.rb')"
+
 rm $dbfilepathgz
