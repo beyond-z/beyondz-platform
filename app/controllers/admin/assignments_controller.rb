@@ -1,71 +1,13 @@
 require 'lms'
 
 class Admin::AssignmentsController < Admin::ApplicationController
+
+  def choose_due_dates_export
+  end
+
   def get_due_dates
     lms = BeyondZ::LMS.new
-
-    @courses = []
-
-    all = lms.get_courses
-    all.each do |course|
-      @courses << ["#{course['name']} (#{course['id']})", course['id']]
-    end
-  end
-
-  def download_due_dates
-    lms = BeyondZ::LMS.new
-
-    assignments = lms.get_assignments(params[:course][:course_id])
-
-    respond_to do |format|
-      format.csv do
-        response.headers['Content-Disposition'] = 'attachment; filename="assignment_due_dates.csv"'
-        render text: csv_due_date_export(assignments)
-      end
-    end
-  end
-
-  def csv_due_date_export(assignments)
-    CSV.generate do |csv|
-      header = []
-      header << 'Assignment ID (do not change)'
-      header << 'Course ID (do not change)'
-      header << 'Name'
-      header << 'Section Name'
-      header << 'Due Date'
-      header << 'Until'
-      header << 'Override ID (do not change, but leave blank for new section)'
-
-      csv << header
-
-      assignments.each do |a|
-        exportable = []
-        exportable << a['id']
-        exportable << a['course_id']
-        exportable << a['name']
-        exportable << ''
-        exportable << export_date_translation(a['due_at'])
-        exportable << export_date_translation(a['lock_at'])
-        exportable << ''
-
-        csv << exportable
-
-        if a['overrides']
-          a['overrides'].each do |override|
-            exportable = []
-            exportable << a['id']
-            exportable << a['course_id']
-            exportable << a['name']
-            exportable << override['title']
-            exportable << export_date_translation(override['due_at'])
-            exportable << export_date_translation(override['lock_at'])
-            exportable << override['id']
-
-            csv << exportable
-          end
-        end
-      end
-    end
+    lms.delay.email_assignment_due_dates_spreadsheet(params[:email], params[:course_id])
   end
 
   def set_due_dates

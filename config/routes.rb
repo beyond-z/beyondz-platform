@@ -111,8 +111,8 @@ BeyondzPlatform::Application.routes.draw do
   namespace :admin do
     root "home#index"
 
-    get '/assignments/get_due_dates', to: 'assignments#get_due_dates', as: 'get_due_dates'
-    post '/assignments/get_due_dates', to: 'assignments#download_due_dates', defaults: { format: 'csv' }
+    get '/assignments/choose_due_dates', to: 'assignments#choose_due_dates_export', as: 'choose_due_dates_export'
+    get '/assignments/get_due_dates', to: 'assignments#get_due_dates'
 
     get '/assignments/set_due_dates', to: 'assignments#set_due_dates', as: 'set_due_dates'
     post '/assignments/set_due_dates', to: 'assignments#do_set_due_dates'
