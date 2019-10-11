@@ -1,0 +1,16 @@
+<form method="GET" action="<%= admin_assignments_get_due_dates_path%>">
+  <p>Enter the course ID to download the assignment due dates for.</p>
+  <p>The course ID is the canvas course number. E.g. 71 is the 2019 Fall SJSU Accelerator. If you go to a course in Canvas, you can find this id in the url right after teh courses/ part.</p>
+  <p>Requesting the spreadsheet will cause it to be emailed to you when the data preparation is finished, which can take several minutes.</p>
+  <label>Course ID: 
+    <input type="text" name="course_id" value="71" />
+  </label>
+  <label>Your email address: 
+    <input type="email" name="email" value="tech@bebraven.org" />
+  </label>
+  <br />
+  <input type="submit" value="Request spreadsheet" />
+</form>
+
+<br /><br />
+<p>Afterward, go to <%= link_to "Set Due Dates", admin_set_due_dates_path %> and upload your changes.</p>
