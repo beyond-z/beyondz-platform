@@ -745,6 +745,55 @@ module BeyondZ
       StaffNotifications.canvas_views_ready(email, get_user_data_spreadsheet(course_id)).deliver
     end
 
+    def get_assignment_due_dates_spreadsheet(course_id)
+      assignments = get_assignments(course_id)
+      CSV.generate do |csv|
+        header = []
+        header << 'Assignment ID (do not change)'
+        header << 'Course ID (do not change)'
+        header << 'Name'
+        header << 'Section Name'
+        header << 'Due Date'
+        header << 'Until'
+        header << 'Override ID (do not change, but leave blank for new section)'
+  
+        csv << header
+  
+        assignments.each do |a|
+          exportable = []
+          exportable << a['id']
+          exportable << a['course_id']
+          exportable << a['name']
+          exportable << ''
+          exportable << export_date_translation(a['due_at'])
+          exportable << export_date_translation(a['lock_at'])
+          exportable << ''
+  
+          csv << exportable
+  
+          if a['overrides']
+            a['overrides'].each do |override|
+              exportable = []
+              exportable << a['id']
+              exportable << a['course_id']
+              exportable << a['name']
+              exportable << override['title']
+              exportable << export_date_translation(override['due_at'])
+              exportable << export_date_translation(override['lock_at'])
+              exportable << override['id']
+  
+              csv << exportable
+            end
+          end
+        end
+      end
+    end
+
+    def email_assignment_due_dates_spreadsheet(email, course_id)
+      StaffNotifications.canvas_due_dates_ready(email, get_assignment_due_dates_spreadsheet(course_id)).deliver
+    end
+
+
     def get_events_for_email(email, course_id)
         lms = BeyondZ::LMS.new
 

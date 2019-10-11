@@ -1,34 +1,37 @@
-This is where Beyond Z participants login and access their leadership development portal.
-
+This is where various Braven stakeholders go to signup/apply to participate in Braven.
 
 # Getting Started
-There are two ways to setup your local development environment, one uses
-Docker VMs and services and the other is to set it up manually.
 
 ## Docker Setup
-Edit `/etc/hosts` and add these values.
-```Shell
-127.0.0.1     joinweb
-127.0.0.1     ssoweb
-127.0.0.1     canvasweb
-```
+1. Add these variables to your `~/.bash_profile` (see: https://drive.google.com/a/bebraven.org/file/d/1AiwrCKZ11-BjNxIIP6qfD9B9rQvmfMY2/view?usp=sharing for the values to enter): 
+```export DATABASEDOTCOM_CLIENT_ID=<client_id>
+export DATABASEDOTCOM_CLIENT_SECRET=<client_secret>
+export SALESFORCE_USERNAME=<username>
+export SALESFORCE_PASSWORD=<pw>
+export SALESFORCE_SECURITY_TOKEN=<security_token>
+export SALESFORCE_MAGIC_TOKEN=<magic_token>```
+
+2. Run `source ~/.bash_profile` (or you could restart the Terminal)
+
+3. Follow the instructions at: https://github.com/beyond-z/development
 
 Then, from your application root just run:
-```Shell
-docker-compose up -d
 
-When complete, the app will be available at: `http://joinweb:3001`
+When complete, the app will be available at: `http://joinweb`
+
+Note: you may have to restart a couple of the services, like `rubycas-server` and `nginx-dev` the very first time since
+there is so much going on and timing issues crop up with the initial databases loading and becoming available to the apps.
 
 Some things to keep in mind with Docker:
 * If there are build errors, run `docker-compose logs` to see what they
   are.
 * The environment variables come from `docker-compose/.env-docker`
-* If you change environment variables, rebuild to have them picked up by
-  running `./docker-compose/scripts/rebuild.sh
+* If you change environment variables, restart to have them picked up by
+  running `./docker-compose/scripts/restart.sh
 * There are more scripts in `./docker-compose/scripts` to help you work
   with the container(s).
 
-## Manual Setup
+## Manual Setup - DONT DO THIS!!
 
 Make sure you have Ruby 2.2.3 and Rails 4.0 installed and configured.  You can
 check by running:
