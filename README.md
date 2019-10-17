@@ -4,12 +4,14 @@ This is where various Braven stakeholders go to signup/apply to participate in B
 
 ## Docker Setup
 1. Add these variables to your `~/.bash_profile` (see: https://drive.google.com/a/bebraven.org/file/d/1AiwrCKZ11-BjNxIIP6qfD9B9rQvmfMY2/view?usp=sharing for the values to enter): 
-```export DATABASEDOTCOM_CLIENT_ID=<client_id>
+```
+export DATABASEDOTCOM_CLIENT_ID=<client_id>
 export DATABASEDOTCOM_CLIENT_SECRET=<client_secret>
 export SALESFORCE_USERNAME=<username>
 export SALESFORCE_PASSWORD=<pw>
 export SALESFORCE_SECURITY_TOKEN=<security_token>
-export SALESFORCE_MAGIC_TOKEN=<magic_token>```
+export SALESFORCE_MAGIC_TOKEN=<magic_token>
+```
 
 2. Run `source ~/.bash_profile` (or you could restart the Terminal)
 
@@ -31,183 +33,14 @@ Some things to keep in mind with Docker:
 * There are more scripts in `./docker-compose/scripts` to help you work
   with the container(s).
 
-## Manual Setup - DONT DO THIS!!
-
-Make sure you have Ruby 2.2.3 and Rails 4.0 installed and configured.  You can
-check by running:
- ```Shell
-ruby -v 
-```
-and
-```Shell
-rails -v
-```
-If you don't,
-[this guide](http://guides.rubyonrails.org/getting_started.html#installing-rails)
-is a good start to get you going (or please link to a better tutorial in this readme once you find one)
-
-Note: in production this site runs on Heroku.  It was setup using [this
-tutorial](https://devcenter.heroku.com/articles/getting-started-with-rails4)
-
-Check to see that you have Postgres 9.3.2 installed
-```Shell
-psql -V
-```
-
-If not, [install it](http://postgresapp.com/) and make sure to and set your PATH in your ~/.bashrc, for example:
-```Shell
-	export PATH="/Applications/Postgres93.app/Contents/MacOS/bin:$PATH"
-```
-
-Create a database user for the Braven application:
-```Shell
-createuser -s beyondz-platform
-```
-
-After your prerequisites are installed and setup, fork the `beyondz-platform` repository into your own Github account.
-
-![Fork Repo](docs/fork-repo.png)
-
-Then in the location you want the local code to live on your development
-machine, run:
-```Shell
-git clone <your_forked_url>
-```
-Get all your gems installed by running:
-```Shell
-bundle install
-```
-## Configuration
-
-There are a handful of environment variables that store sensitive information that this application uses to run.  The list can be found in the `/env.sample` file. 
-
-One easy way to manage your ENV variables is using Foreman (or Pow).  If
-you install Foreman using:
-```Shell
-gem install foreman
-```
-Then you can setup your ENV variables by copying env.sample to .env and editing
-the values that you need.
-```Shell
-cp env.sample .env
-```
-When you run
-```Shell
-foreman start
-```
-it reads the `.env` file and sets those environment variables for your
-session.
-
-For the secret and pepper variables above, you can generate them using
-```Shell
-rake secret
-```
-
-## Integrating with Canvas
-Five environment variables relate to using the Canvas LMS through its REST API:
-
-CANVAS_ACCESS_TOKEN=<token created in canvas admin for app integration>
-CANVAS_SERVER=<domain of canvas server>
-CANVAS_PORT=<port of canvas server>
-CANVAS_USE_SSL=<true or false>
-CANVAS_ALLOW_SELF_SIGNED_SSL=<true or false>
-
-These are self explanatory except for the canvas access token. To create one of these, log into Canvas as the admin user and click settings (upper right corner of the screen). Scroll down to "Approved Integrations" and generate a new access token. That is the value needed for CANVAS_ACCESS_TOKEN.
-
-## Integrating with Salesforce.com
-
-On the site, go to Setup -> Build on left hand side -> Create -> Apps. There, you can make an app. Enable OAuth and put in the site as the callback URL. It will then make the ID and Secret available to you.
-
-DATABASEDOTCOM_CLIENT_ID=<from salesforce>
-DATABASEDOTCOM_CLIENT_SECRET=<from salesforce>
-
-Those two variables are managed by the gem and thus must be present, but are not used explicitly in any of our code.
-
-
-Click Your Name -> Settings (upper right). Go to Personal -> Reset My Security Token (same menu as change password). It emails you the token
-This, along with your username and password, will be used by the app to log in as you and create the new contacts.
-
-SALESFORCE_USERNAME=<email address to log into salesforce>
-SALESFORCE_PASSWORD=<password log into salesforce>
-SALESFORCE_SECURITY_TOKEN=<token gotten from salesforce email>
-
-
-## Running the Application 
-From the directory you cloned your repo to run:
-```Shell
-rake db:create
-rake db:migrate
-rake db:seed
-```
-Finally, start the application by running
-```Shell
-foreman start
-```
-The app will be available at [http://localhost:5000](http://localhost:5000) by default
-
 ## Development Process
 
-Here is a [nice overview](http://nathanhoad.net/git-workflow-forks-remotes-and-pull-requests) of the workflow we follow, which is also detailed below.
+Have a look at [this section](https://github.com/beyond-z/development/blob/master/README.md#development) of the overall development setup for our entire enviornment (all apps) for an overview.
 
-### Setup
-Make the upstream (the original) repo available for merging into your local fork so that you always can get the most up-to-date code:
-```Shell
-git remote add upstream https://github.com/beyond-z/beyondz-platform.git
-```
-
-### Flow
-
-We work on new development in the `staging` branch.  For each new
-feature or change you want to make, always begin by making a new branch:
-```Shell
-git checkout staging
-git checkout -b <feature_name>
-```
-Once you've made all your changes, commit using:
-```Shell
-git commit -am 'a brief message saying what you did. think about future readers.'
-```
-You can commit multiple times to your branch before you are ready to have your changes merged into the upstream repo.
-
-To get ready to submit a pull request to the upstream repo, you need to push your local changes to your Github fork.  Please run the static code analysis and tests before doing so, like this:
-```Shell
-rubocop .
-rake test
-git push origin <feature_name>
-```
-To submit a pull request and integrate your changes back to the upstream 
-repository do the following:
-
-Select the feature branch from your Github page using the drop down selector. 
-
-![Select Branch](docs/select-branch.png)
-
-
-Then click the green pull request button to the left hand side of the drop down.
-
-On the next screen, write a meaningful title and summary so it is well documented what this "feature" 
-is when looking back or at a glance.  Your pull request will be rejected if the 
-title and  summary is cryptic for other readers.
-
-![Submit Pull](docs/submit-pull.png)
-
-Once the pull request is merged by the upstream repo owner, do some cleanup on your local branch:
-
-* Stay up to date by merging the staging repository back to your
-local branch.
-```Shell
-git pull upstream staging
-```
-
-* Switch back to staging (or some other branch) and delete the feature
-branch (locally and remotely)
-```
-git checkout staging
-git branch -d <feature_name>
-git push origin :<feature_name>
-```
+When you do something in the development environment that integrates with Salesforce, it's done in the [BVDev Sandbox](https://test.salesforce.com). If you don't have a login to this Sandbox, ask your Team Lead to set it up for you.
 
 ### Continuous Integration
+### NOTE: this is currently broken. We either need to fix it up or cutover to our new CI flow.
 We use a continuous integration test server on all pull requests. When you
 open a pull request, it will be automatically tested and the results displayed
 on GitHub in the form of a checkbox or an X mark.
@@ -215,6 +48,46 @@ on GitHub in the form of a checkbox or an X mark.
 The current integration runs the test suite as well as rubocop. Any errors resulting from either will show as a failure.
 
 You can see the details [here](https://travis-ci.org/beyond-z/beyondz-platform)
+
+# External Integrations
+In the development environment, these integrations are already setup for you to just work. But here is some background on how they are setup in general.
+
+## [Salesforce.com](https://login.salesforce.com)
+When folks signup and apply to be a part of Braven, their information is sent to Salesforce.
+
+### Configs Needed To Integrate with Salesforce.com
+
+On the site, go to Setup -> Build on left hand side -> Create -> Apps. There, you can make an app. Enable OAuth and put in the site as the callback URL. It will then make the ID and Secret available to you.
+
+```
+DATABASEDOTCOM_CLIENT_ID=<from salesforce>
+DATABASEDOTCOM_CLIENT_SECRET=<from salesforce>
+```
+
+Those two variables are managed by the gem and thus must be present, but are not used explicitly in any of our code.
+
+Click Your Name -> Settings (upper right). Go to Personal -> Reset My Security Token (same menu as change password). It emails you the token
+This, along with your username and password, will be used by the app to log in as you and create the new contacts.
+
+```
+SALESFORCE_USERNAME=<email address to log into salesforce>
+SALESFORCE_PASSWORD=<password log into salesforce>
+SALESFORCE_SECURITY_TOKEN=<token gotten from salesforce email>
+```
+
+## [Portal](https://portal.bebraven.org)
+
+### Configs Needed To Integrate with Canvas
+Five environment variables relate to using the Canvas LMS through its REST API:
+
+```
+CANVAS_ACCESS_TOKEN=<token created in canvas admin for app integration>
+CANVAS_SERVER=<domain of canvas server>
+CANVAS_PORT=<port of canvas server>
+CANVAS_USE_SSL=<true or false>
+CANVAS_ALLOW_SELF_SIGNED_SSL=<true or false>
+```
+These are self explanatory except for the canvas access token. To create one of these, log into Canvas as the admin user and click settings (upper right corner of the screen). Scroll down to "Approved Integrations" and generate a new access token. That is the value needed for CANVAS_ACCESS_TOKEN.
 
 # Coding Conventions
 
