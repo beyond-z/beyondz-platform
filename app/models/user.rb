@@ -162,9 +162,39 @@ class User < ActiveRecord::Base
     where('substr(salesforce_id, 0, 16) = substr(?, 0, 16)', [sid]).first
   end
 
+  # Loose search to filter down users. Returns User's whose firstname, lastname, or 
+  # email matches the search query. The wildcard asterisk is supported.
+  #
+  # Notes: 
+  # - case insensitive
+  # - this only supports a substring search, no fuzzy matching.
+  # - if there are no spaces in the query, we search for a first name or last name
+  #   containing the string
+  # - if there are spaces in the query, we assume the first word is in the first
+  #   name and the last word is in the last name, but all others are discard since
+  #   we don't know if the middle words are in the first or last name. Fuzzy?
+  #
+  # Examples:
+  # query = '@bebraven.org' -- returns all users with an email in the bebraven.org domain
+  # query = 'Bri' -- returns all users with a first name or last name containing 'Bri', e.g Brian or Briannah would match 
+  # query = 'Don Pan' -- returns users with full names such as 'Don Pancho' and 'Donald Panachelli'
+  # query = 'Maria Lissete Estrada' -- returns users with full names such as 'Maria Estrada' and 'Mariana Estradadacaster', but NOT 'Lissete Cruz'
+  # query = 'ian+*@bebraven' -- returns users with emails such as 'brian+testblah1@bebraven.org'
   def self.search(query)
-    # where(:title, query) -> This would return an exact match of the query
-    where('lower(first_name) like ? OR lower(last_name) like ? OR lower(email) like ?', "%#{query.downcase}%", "%#{query.downcase}%", "%#{query.downcase}%")
+    search_str = query.strip
+    search_str.downcase!
+    to_sql_pattern = ->(str) { "%#{str.gsub('*', '%')}%" } # 'ian*test@bebrave' would turn into '%ian%test@bebrave%' and SQL would return the email: 'brian+testblah@bebraven.org'
+    if search_str.include? '@'
+      where('lower(email) like ?', to_sql_pattern[search_str] )
+    else 
+      search_terms = search_str.split("\s")
+      if search_terms.size <= 1
+        pattern = to_sql_pattern[search_str]
+        where('lower(first_name) like ? OR lower(last_name) like ? OR lower(email) like ?', pattern, pattern, pattern)
+      else
+        where('lower(first_name) like ? AND lower(last_name) like ?', to_sql_pattern[search_terms.first], to_sql_pattern[search_terms.last])
+      end
+    end
   end
 
   # We allow empty passwords for certain account types
