@@ -315,7 +315,12 @@ class ApplicationController < ActionController::Base
       'Friend',
       'Colleague',
       'Social Media',
-      'Other'
+      'Other',
+      'Braven Outreach',
+      'Volunteer Match',
+      'Employer',
+      'Returning Volunteer',
+      'Listserv'
     ].sort
   end
 
