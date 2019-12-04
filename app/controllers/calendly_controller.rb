@@ -11,50 +11,45 @@ class CalendlyController < ApplicationController
     set_up_lists
 
     # if the invite already exists, update it, otherwise, create it...
-
-    if !params[:event_type_uuid].nil? && !params[:invitee_uuid].nil?
+    uuids_given = params[:event_type_uuid] && params[:invitee_uuid]
+    if uuids_given
       @obj = CalendlyInvitee.by_event_type_and_invitee_uuids(params[:event_type_uuid], params[:invitee_uuid])
     end
 
-    if @obj.nil?
-      raise Exception.new "missing vital information on link"
-    end
-
-    @obj.assigned_to = params[:assigned_to] if params[:assigned_to]
-    @obj.event_type_uuid = params[:event_type_uuid] if params[:event_type_uuid]
-    @obj.event_type_name = params[:event_type_name] if params[:event_type_name]
-    @obj.event_start_time = params[:event_start_time] if params[:event_start_time]
-    @obj.event_end_time = params[:event_end_time] if params[:event_end_time]
-    @obj.invitee_uuid = params[:invitee_uuid] if params[:invitee_uuid]
-    @obj.invitee_first_name = params[:invitee_first_name] if params[:invitee_first_name]
-    @obj.invitee_last_name = params[:invitee_last_name] if params[:invitee_last_name]
-    @obj.invitee_email = params[:invitee_email] if params[:invitee_email]
-    @obj.answer_1 = params[:answer_1] if params[:answer_1]
-    @obj.answer_2 = params[:answer_2] if params[:answer_2]
-    @obj.answer_3 = params[:answer_3] if params[:answer_3]
-    @obj.answer_4 = params[:answer_4] if params[:answer_4]
-    @obj.answer_5 = params[:answer_5] if params[:answer_5]
-    @obj.answer_6 = params[:answer_6] if params[:answer_6]
-    @obj.answer_7 = params[:answer_7] if params[:answer_7]
-    @obj.answer_8 = params[:answer_8] if params[:answer_8]
-    @obj.answer_9 = params[:answer_9] if params[:answer_9]
-    @obj.answer_10 = params[:answer_10] if params[:answer_10]
-    @obj.answer_11 = params[:answer_11] if params[:answer_11]
-    @obj.answer_12 = params[:answer_12] if params[:answer_12]
-    @obj.answer_13 = params[:answer_13] if params[:answer_13]
-    @obj.answer_14 = params[:answer_14] if params[:answer_14]
-    @obj.answer_15 = params[:answer_15] if params[:answer_15]
-
-    @obj.save
+    raise Exception.new("missing vital information on link") if @obj.nil?
+    
+    @obj.update!(params.permit(%i(
+      assigned_to
+      event_type_uuid
+      event_type_name
+      event_start_time
+      event_end_time
+      invitee_uuid
+      invitee_first_name
+      invitee_last_name
+      invitee_email
+      answer_1
+      answer_2
+      answer_3
+      answer_4
+      answer_5
+      answer_6
+      answer_7
+      answer_8
+      answer_9
+      answer_10
+      answer_11
+      answer_12
+      answer_13
+      answer_14
+      answer_15
+    )))
   end
 
   def save_supplemental_details
     @obj = CalendlyInvitee.find(params[:id])
-    @obj.college_major = params[:calendly_invitee][:college_major]
-    @obj.industry = params[:calendly_invitee][:industry]
-    @obj.job_function = params[:calendly_invitee][:job_function]
-    @obj.how_heard = params[:calendly_invitee][:how_heard]
-    @obj.save
+    ci = params[:calendly_invitee]
+    @obj.update!(ci && ci.slice(:college_major, :industry, :job_function, :how_heard))
 
     # and update this on salesforce if it already exists
     # if it doesn't already exist, it will be created in the callback below
