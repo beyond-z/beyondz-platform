@@ -231,6 +231,7 @@ class ApplicationController < ActionController::Base
       'Hospitality',
       'Human Biology',
       'Human Resources',
+      'Human Services',
       'Industrial Engineering',
       'Information Technology',
       'Insurance',
@@ -308,6 +309,19 @@ class ApplicationController < ActionController::Base
       "Research",
       "Sales",
       "Writing"
+    ].sort
+
+    @how_heard = [
+      'Web Search',
+      'Friend',
+      'Colleague',
+      'Social Media',
+      'Other',
+      'Braven Outreach',
+      'Volunteer Match',
+      'Employer',
+      'Returning Volunteer',
+      'Listserv'
     ].sort
   end
 

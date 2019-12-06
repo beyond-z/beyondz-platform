@@ -32,6 +32,12 @@ What best describes the function of your role?
   <%= f.select :job_function, options_for_select(@job_functions), {:include_blank => true } %>
 </div>
 
+<div class="form-group">
+How did you hear about this opportunity?
+  <br />
+  <%= f.select :how_heard, options_for_select(@how_heard), {:include_blank => true } %>
+</div>
+
 <div>
   <button class="button-primary">Finish</button>
 </div>

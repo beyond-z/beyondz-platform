@@ -53,6 +53,7 @@ class CalendlyController < ApplicationController
     @obj.college_major = params[:calendly_invitee][:college_major]
     @obj.industry = params[:calendly_invitee][:industry]
     @obj.job_function = params[:calendly_invitee][:job_function]
+    @obj.how_heard = params[:calendly_invitee][:how_heard]
     @obj.save
 
     # and update this on salesforce if it already exists
@@ -68,6 +69,7 @@ class CalendlyController < ApplicationController
       end
 
       contact['Job_Function__c'] = @obj.job_function
+      contact['Sourcing_Info__c'] = @obj.how_heard
 
       if contact['Fields_Of_Study__c'].blank?
         contact['Fields_Of_Study__c'] = @obj.college_major
@@ -184,6 +186,7 @@ class CalendlyController < ApplicationController
           contact['Came_From_to_Visit_Site__c'] = calendly_url
 
           contact['Job_Function__c'] = obj.job_function
+          contact['Sourcing_Info__c'] = obj.how_heard
 
           if contact['Industry__c'].blank?
             contact['Industry__c'] = obj.industry
