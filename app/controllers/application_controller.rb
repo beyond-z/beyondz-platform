@@ -310,6 +310,19 @@ class ApplicationController < ActionController::Base
       "Sales",
       "Writing"
     ].sort
+
+    @how_heard = [
+      'Web Search',
+      'Friend',
+      'Colleague',
+      'Social Media',
+      'Other',
+      'Braven Outreach',
+      'Volunteer Match',
+      'Employer',
+      'Returning Volunteer',
+      'Listserv'
+    ].sort
   end
 
 end
