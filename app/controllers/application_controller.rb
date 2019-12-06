@@ -231,6 +231,7 @@ class ApplicationController < ActionController::Base
       'Hospitality',
       'Human Biology',
       'Human Resources',
+      'Human Services',
       'Industrial Engineering',
       'Information Technology',
       'Insurance',
