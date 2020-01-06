@@ -948,8 +948,15 @@ module BeyondZ
     #
     # This is a separate method that opens a member @canvas_http so
     # we can reuse the connection across several requests for performance.
+    #
     def open_canvas_http
-      if @canvas_http.nil?
+ 
+    # NOTE: disabling the re-use of connections. When connecting to Heroku hosted
+    # apps over SSL, the first request works but the second fails with:
+    # "OpenSSL::SSL::SSLError: SSL_connect returned=1 errno=0 state=error: tlsv1 alert protocol version"
+    # Leaving this method here in case we figure out how to re-use SSL connections against those servers,
+    # we can likely just fix it here.
+    # if @canvas_http.nil?
         @canvas_http = Net::HTTP.new(Rails.application.secrets.canvas_server, Rails.application.secrets.canvas_port)
         if Rails.application.secrets.canvas_use_ssl
           @canvas_http.use_ssl = true
@@ -957,7 +964,7 @@ module BeyondZ
             @canvas_http.verify_mode = OpenSSL::SSL::VERIFY_NONE # self-signed cert would fail
           end
         end
-      end
+    # end
 
       @canvas_http
     end
