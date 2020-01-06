@@ -29,20 +29,17 @@ module BeyondZ
     #
     # this function will include the overrides.
     def get_assignments(course_id)
-      open_canvas_http
 
       request = Net::HTTP::Get.new(
         "/api/v1/courses/#{course_id}/assignments?include=overrides&access_token=#{Rails.application.secrets.canvas_access_token}"
       )
-      response = @canvas_http.request(request)
+      response = open_canvas_http.request(request)
       info = get_all_from_pagination(response)
 
       info
     end
 
     def trigger_qualtrics_preparation(course_id, preaccel_id, postaccel_id, additional_data)
-      open_canvas_http
-
       request = Net::HTTP::Post.new("/bz/prepare_qualtrics_links")
       data = {
         'access_token' => Rails.application.secrets.canvas_access_token,
@@ -52,7 +49,7 @@ module BeyondZ
         'additional_data' => additional_data.to_json
       }
       request.set_form_data(data)
-      response = @canvas_http.request(request)
+      response = open_canvas_http.request(request)
       response.body
     end
 
@@ -62,23 +59,19 @@ module BeyondZ
     #
     # See: https://canvas.instructure.com/doc/api/submissions.html#method.submissions_api.show
     def get_submission(course_id, assignment_id, student_id)
-      open_canvas_http
-
       request = Net::HTTP::Get.new(
         "/api/v1/courses/#{course_id}/assignments/#{assignment_id}/submissions/#{student_id}?access_token=#{Rails.application.secrets.canvas_access_token}"
       )
-      response = @canvas_http.request(request)
+      response = open_canvas_http.request(request)
 
       info
     end
 
     def get_events(course_id)
-      open_canvas_http
-
       request = Net::HTTP::Get.new(
         "/api/v1/calendar_events?per_page=300&all_events=true&context_codes[]=course_#{course_id}&access_token=#{Rails.application.secrets.canvas_access_token}"
       )
-      response = @canvas_http.request(request)
+      response = open_canvas_http.request(request)
       info = get_all_from_pagination(response)
 
       info
@@ -86,18 +79,14 @@ module BeyondZ
 
 
     def destroy_user(user_id)
-      open_canvas_http
-
       request = Net::HTTP::Delete.new(
         "/api/v1/bz/delete_user/#{user_id}?access_token=#{Rails.application.secrets.canvas_access_token}"
       )
-      response = @canvas_http.request(request)
+      response = open_canvas_http.request(request)
       response
     end
 
     def set_due_dates(assignment_object)
-      open_canvas_http
-
       request = Net::HTTP::Put.new(
         "/api/v1/courses/#{assignment_object['course_id']}/assignments/#{assignment_object['id']}",
         initheader = {'Content-Type' => 'application/json'}
@@ -108,14 +97,12 @@ module BeyondZ
       arg['assignment']['assignment_overrides'] = assignment_object['overrides'] # WTF api
       request.body = arg.to_json
 
-      response = @canvas_http.request(request)
+      response = open_canvas_http.request(request)
 
       response
     end
 
     def set_event(event_object)
-      open_canvas_http
-
       request = Net::HTTP::Put.new(
         "/api/v1/calendar_events/#{event_object['event_id']}",
         initheader = {'Content-Type' => 'application/json'}
@@ -125,14 +112,13 @@ module BeyondZ
       arg['calendar_event'] = event_object.except('event_id')
       request.body = arg.to_json
 
-      response = @canvas_http.request(request)
+      response = open_canvas_http.request(request)
 
       response.body
     end
 
     # assumes parent_event_id is set
     def create_event(event_object)
-      open_canvas_http
 
       response = nil
 
@@ -145,7 +131,7 @@ module BeyondZ
         request = Net::HTTP::Get.new(
           "/api/v1/calendar_events/#{event_object['parent_event_id']}?access_token=#{Rails.application.secrets.canvas_access_token}"
         )
-        response = @canvas_http.request(request)
+        response = open_canvas_http.request(request)
         info = JSON.parse response.body
 
 
@@ -178,8 +164,7 @@ module BeyondZ
         new_event_object['child_event_data'] = child_event_data
         arg['calendar_event'] = new_event_object
         request.body = arg.to_json
-
-        response = @canvas_http.request(request)
+        response = open_canvas_http.request(request)
       else
         # new event
 
@@ -191,8 +176,7 @@ module BeyondZ
         arg['access_token'] = Rails.application.secrets.canvas_access_token
         arg['calendar_event'] = event_object.except('event_id')
         request.body = arg.to_json
-
-        response = @canvas_http.request(request)
+        response = open_canvas_http.request(request)
       end
 
       response.body
@@ -207,15 +191,13 @@ module BeyondZ
     end
 
     def delete_event(id)
-      open_canvas_http
-
       request = Net::HTTP::Delete.new("/api/v1/calendar_events/#{id}")
       data = {
         'access_token' => Rails.application.secrets.canvas_access_token,
         'cancel_reason' => 'clear via join server'
       }
       request.set_form_data(data)
-      @canvas_http.request(request)
+      open_canvas_http.request(request)
     end
 
     def commit_new_events(email, changed, delete_existing, course_id)
@@ -260,24 +242,20 @@ module BeyondZ
 
 
     def get_courses
-      open_canvas_http
-
       request = Net::HTTP::Get.new(
         "/api/v1/courses?access_token=#{Rails.application.secrets.canvas_access_token}"
       )
-      response = @canvas_http.request(request)
+      response = open_canvas_http.request(request)
       info = get_all_from_pagination(response)
 
       info
     end
 
     def update_nlu_login(user_id, login_id)
-      open_canvas_http
-
       # I need to find the existing login id with an nlu id for the user,
       # then update it. If it doesn't exist, I need to create one.
       request = Net::HTTP::Get.new("/api/v1/users/#{user_id}/logins?access_token=#{Rails.application.secrets.canvas_access_token}")
-      response = @canvas_http.request(request)
+      response = open_canvas_http.request(request)
       info = get_all_from_pagination(response)
 
       lid = nil
@@ -298,7 +276,7 @@ module BeyondZ
           'user[id]' => user_id
         }
         request.set_form_data(data)
-        @canvas_http.request(request)
+        open_canvas_http.request(request)
       else
         # update existing one
         request = Net::HTTP::Put.new("/api/v1/accounts/1/logins/#{lid}")
@@ -307,7 +285,7 @@ module BeyondZ
           'login[unique_id]' => login_id
         }
         request.set_form_data(data)
-        @canvas_http.request(request)
+        open_canvas_http.request(request)
       end
 
     end
@@ -317,8 +295,6 @@ module BeyondZ
     #
     # Be sure to call user.save at some point after using this.
     def create_user_in_canvas(user, username, timezone = nil, docusign_template_id = nil)
-      open_canvas_http
-
       user_student_id = nil
       enrollment = Enrollment.find_by_user_id(user.id)
       user_student_id = enrollment.student_id unless enrollment.nil?
@@ -343,7 +319,7 @@ module BeyondZ
         'communication_channel[confirmation_url]' => true,
         'pseudonym[sis_user_id]' => "BVID#{user.id}-SISID#{user_student_id}"
       )
-      response = @canvas_http.request(request)
+      response = open_canvas_http.request(request)
 
       new_canvas_user = JSON.parse response.body
 
@@ -360,7 +336,7 @@ module BeyondZ
       # on the Canvas side to mark them registered if skip_confirmation is specified.
       #if new_canvas_user['confirmation_url']
       #    request = Net::HTTP::Get.new(new_canvas_user['confirmation_url'])
-      #    @canvas_http.request(request)
+      #    open_canvas_http.request(request)
       #end
 
       user
@@ -370,8 +346,6 @@ module BeyondZ
     # Set a parameter to empty string to clear it. Nil means don't touch it.
     def update_user_in_canvas(user, timezone: nil, docusign_template_id: nil)
       raise "Couldn't update user <#{user.email}> in canvas because user.canvas_user_id is nil" if user.canvas_user_id.nil?
-      open_canvas_http
-
       data = { 'access_token' => Rails.application.secrets.canvas_access_token }
       data['user[time_zone]'] = timezone unless timezone.nil?
       data['user[docusign_template_id]'] = docusign_template_id unless docusign_template_id.nil?
@@ -380,7 +354,7 @@ module BeyondZ
 
       request = Net::HTTP::Put.new("/api/v1/users/#{user.canvas_user_id}")
       request.set_form_data(data)
-      response = @canvas_http.request(request)
+      response = open_canvas_http.request(request)
 
       raise "Couldn't update user <#{user.email}> in canvas #{response.body}" if response.code != '200'
 
@@ -412,14 +386,12 @@ module BeyondZ
     end
 
     def find_user_in_canvas(email)
-      open_canvas_http
-
       request = Net::HTTP::Get.new(
         '/api/v1/accounts/1/users?' \
         "access_token=#{Rails.application.secrets.canvas_access_token}&" \
         "search_term=#{URI.encode_www_form_component(email)}"
       )
-      response = @canvas_http.request(request)
+      response = open_canvas_http.request(request)
 
       users = JSON.parse response.body
 
@@ -429,15 +401,13 @@ module BeyondZ
     # When we change an email, it needs to change the login and the
     # communication channel. This method does that.
     def change_user_email(uid, old_email, new_email)
-      open_canvas_http
 
       # Update login - need to look it up then edit it by id
-
       request = Net::HTTP::Get.new(
         "/api/v1/users/#{uid}/logins?" \
         "access_token=#{Rails.application.secrets.canvas_access_token}"
       )
-      response = @canvas_http.request(request)
+      response = open_canvas_http.request(request)
 
       logins = JSON.parse response.body
 
@@ -463,7 +433,7 @@ module BeyondZ
         'communication_channel[skip_confirmation]' => true
       }
       request.set_form_data(data)
-      response = @canvas_http.request(request)
+      response = open_canvas_http.request(request)
 
       # We might not have found the old email in the event
       # of it already being changed on Canvas; this isn't an
@@ -478,13 +448,13 @@ module BeyondZ
           'access_token' => Rails.application.secrets.canvas_access_token
         }
         request.set_form_data(data)
-        response = @canvas_http.request(request)
+        response = open_canvas_http.request(request)
       end
 
       request = Net::HTTP::Delete.new(
         "/api/v1/users/#{uid}/communication_channels/email/#{old_email}?access_token=#{Rails.application.secrets.canvas_access_token}"
       )
-      response = @canvas_http.request(request)
+      response = open_canvas_http.request(request)
 
     end
 
@@ -492,8 +462,6 @@ module BeyondZ
     # existing data
     def enroll_user_in_course(user, course_id, role, section)
       return if role.nil?
-
-      open_canvas_http
 
       role = role.capitalize
 
@@ -510,7 +478,7 @@ module BeyondZ
         data['enrollment[course_section_id]'] = get_section_by_name(course_id, section, true)['id']
       end
       request.set_form_data(data)
-      @canvas_http.request(request)
+      open_canvas_http.request(request)
     end
 
     # Syncs the user enrollments with the given data, by unenrolling
@@ -566,12 +534,10 @@ module BeyondZ
     # Returns an array of enrollments objects for the user.
     # https://canvas.instructure.com/doc/api/enrollments.html
     def get_user_enrollments(user_id)
-      open_canvas_http
-
       request = Net::HTTP::Get.new(
         "/api/v1/users/#{user_id}/enrollments?access_token=#{Rails.application.secrets.canvas_access_token}"
       )
-      response = @canvas_http.request(request)
+      response = open_canvas_http.request(request)
       info = get_all_from_pagination(response)
 
       info
@@ -580,12 +546,10 @@ module BeyondZ
     # Returns an array of enrollments objects for the course.
     # https://canvas.instructure.com/doc/api/enrollments.html
     def get_course_enrollments(course_id)
-      open_canvas_http
-
       request = Net::HTTP::Get.new(
         "/api/v1/courses/#{course_id}/enrollments?per_page=100&access_token=#{Rails.application.secrets.canvas_access_token}"
       )
-      response = @canvas_http.request(request)
+      response = open_canvas_http.request(request)
       info = nil
       if response.code == '200'
         info = get_all_from_pagination(response)
@@ -601,15 +565,13 @@ module BeyondZ
     def cancel_enrollment(enrollment)
       return if enrollment.nil?
 
-      open_canvas_http
-
       request = Net::HTTP::Delete.new("/api/v1/courses/#{enrollment['course_id']}/enrollments/#{enrollment['id']}")
       data = {
         'access_token' => Rails.application.secrets.canvas_access_token,
         'task' => 'delete'
       }
       request.set_form_data(data)
-      @canvas_http.request(request)
+      open_canvas_http.request(request)
     end
 
     def get_section_by_name(course_id, section_name, create_if_not_there = true)
@@ -620,7 +582,7 @@ module BeyondZ
           'access_token' => Rails.application.secrets.canvas_access_token,
           'course_section[name]' => section_name
         )
-        response = @canvas_http.request(request)
+        response = open_canvas_http.request(request)
 
         new_section = JSON.parse response.body
 
@@ -637,12 +599,10 @@ module BeyondZ
     end
 
     def get_page_data(course_id, user_id = nil)
-      open_canvas_http
-
       request = Net::HTTP::Get.new(
         "/api/v1/courses/#{course_id}/analytics/#{user_id.nil? ? '' : "users/#{user_id}/"}activity?per_page=100&access_token=#{Rails.application.secrets.canvas_access_token}"
       )
-      response = @canvas_http.request(request)
+      response = open_canvas_http.request(request)
       info = get_all_from_pagination(response)
 
       info
@@ -890,12 +850,10 @@ module BeyondZ
         @section_info[course_id] = {}
         @section_info_by_id[course_id] = {}
 
-        open_canvas_http
-
         request = Net::HTTP::Get.new(
           "/api/v1/courses/#{course_id}/sections?access_token=#{Rails.application.secrets.canvas_access_token}"
         )
-        response = @canvas_http.request(request)
+        response = open_canvas_http.request(request)
         info = get_all_from_pagination(response)
 
         info.each do |section|
@@ -932,7 +890,7 @@ module BeyondZ
           next_url += "access_token=#{Rails.application.secrets.canvas_access_token}"
 
           request = Net::HTTP::Get.new(next_url)
-          response = @canvas_http.request(request)
+          response = open_canvas_http.request(request)
           more_info = JSON.parse response.body
           info.concat(more_info)
         else
