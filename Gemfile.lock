@@ -171,7 +171,7 @@ GEM
     moneta (1.0.0)
     msworddoc-extractor (0.2.0)
       ruby-ole
-    multi_json (1.13.1)
+    multi_json (1.14.1)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
     newrelic_rpm (6.5.0.357)
@@ -280,7 +280,7 @@ GEM
       multi_json (~> 1.10)
     spreadsheet (1.0.9)
       ruby-ole (>= 1.0)
-    sprockets (2.12.4)
+    sprockets (2.12.5)
       hike (~> 1.2)
       multi_json (~> 1.0)
       rack (~> 1.0)
