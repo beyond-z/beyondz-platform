@@ -117,3 +117,9 @@ gem 'pg_search'
 gem 'exception_notification'
 gem 'newrelic_rpm'
 gem 'sentry-raven'
+
+# Allows us to write rake tasks that can programatticaly run Heroku commands
+# using their API. E.g. create a task to restart a dyno so it can be run
+# in the middle of the night to avoid downtime when users are on the platform
+# See: https://github.com/heroku/platform-api
+gem 'platform-api', require: false
