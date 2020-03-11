@@ -427,7 +427,8 @@ class UsersController < ApplicationController
     load_special_program
 
     # no longer allow signing up as a Fellow through the Join server
-    applicant_type = params[:user] && params[:user][:applicant_type]
+    applicant_type = (params[:applicant_type] || 
+      (params[:user] && params[:user][:applicant_type]))
 
     if applicant_type == 'undergrad_student'
       fellow_redirect_url = ENV['FORMASSEMBLY_FELLOW_SIGNUP_URL']
