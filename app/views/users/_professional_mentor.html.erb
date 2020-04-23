@@ -2,7 +2,7 @@
   <% unless @hide_other_regions %>
   <section>
     <div>
-      <span class="required">I can mentor a Braven Fellow in:</span>
+      <span class="required">All mentoring opportunities are currently virtual. However, Braven knows the power of local connections. If you would like a mentee from a particular region, please indicate which one below. If you live in a different part of the country, select Other.</span>
       <br />
       <%= render :partial => 'areas', :locals => { :f => f, :list => 'pm_regions' } %>
     </div>
@@ -21,22 +21,44 @@
   </section>
 
   <section>
-    <div>
+    <div class="required">
       Profession / job title:
     </div>
     <div class="col-sm-7">
-      <%= f.text_field :profession, :class => 'form-control', :maxlength => '70' %>
+      <%= f.text_field :profession, :class => 'form-control', :maxlength => '70', :required => 'required' %>
     </div>
   </section>
   <section>
-    <div>
+    <div class="required">
       Your company or organization:
     </div>
     <div class="col-sm-7">
-      <%= f.text_field :company, :class => 'form-control', :maxlength => '70' %>
+      <%= f.text_field :company, :class => 'form-control', :maxlength => '70', :required => 'required' %>
     </div>
   </section>
-
+  <section>
+    <div class="required">
+      Industry i.e. if you work in Tech, select "Tech":
+    </div>
+    <div class="col-sm-7">
+      <select class="form-control" required="required" name="employer_industry">
+        <option value=""></option>
+          <%= options_for_select(@industries) %>
+       </select>
+    </div>  
+  </section>
+  <section>
+    <div class="required">
+      Functional area i.e. if you work in recruiting, select "Employment / Human Resources":
+    </div>
+    <div class="col-sm-7">
+      <select class="form-control" required="required" name="functional_area">
+        <option value=""></option>
+        <%= options_for_select(@job_functions) %>
+      </select>
+    </div>  
+  </section>
+  
   <section>
     <div class="required">
       Please create a password to protect any personal information you may provide us.
