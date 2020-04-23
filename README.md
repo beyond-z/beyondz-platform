@@ -1,4 +1,4 @@
-This is where various Braven stakeholders go to signup/apply to participate in Braven.
+This is where various Braven stakeholders go to signup/apply to participate in Braven!
 
 # Getting Started
 
