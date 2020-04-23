@@ -84,6 +84,8 @@ class MentorController < ApplicationController
     @kickoff_date = format_date(campaign.PM_Kickoff_Date__c)
     @end_date = format_date(campaign.PM_End_Date__c)
     @desired_industries = campaign.PM_Industries_List__c
+    @sourcing_options = campaign.Sourcing_Info_Options__c
+    @sourcing_options = '' if @sourcing_options.nil?
 
 
     return true
