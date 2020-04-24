@@ -266,11 +266,17 @@ class MentorController < ApplicationController
     application.why_interested_in_pm = params[:why_interested_in_pm]
     application.what_do = params[:what_do]
     application.how_hear = params[:how_hear]
-
+    application.sourcing_info = ''
+    application.sourcing_info = limit_size(params[:sourcing_info].join(';'), 200) if params[:sourcing_info]
     application.lingering_questions = params[:lingering_questions]
     application.interests_areas = params[:interests_areas].nil? ? "" : params[:interests_areas].join("; ")
     application.internships_count =  params[:internships_count]
 
+    unless params[:user_submit].nil?
+     application.sourcing_info = application.sourcing_info.gsub(':;', ': ').squeeze(';') if application.sourcing_info
+     application.save(validate: true)
+    end
+    
     application.save
 
     save_to_salesforce(application)
@@ -328,7 +334,7 @@ class MentorController < ApplicationController
     cm.Desired_Job__c = application.desired_job
     cm.Company__c = application.employer
     cm.Employer_Industry__c = application.employer_industry
-    cm.How_Heard_About_Opportunity__c = application.how_hear
+    cm.How_Heard_About_Opportunity__c = application.sourcing_info
     cm.Industry__c = application.industry
     cm.Career_Field_Interests__c = application.interests
     cm.Digital_Footprint__c = application.linkedin_url
