@@ -425,6 +425,7 @@ class UsersController < ApplicationController
     @user = User.new
 
     load_special_program
+    set_up_lists
 
     # no longer allow signing up as a Fellow through the Join server
     applicant_type = (params[:applicant_type] || 
