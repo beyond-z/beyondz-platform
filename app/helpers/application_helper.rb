@@ -116,7 +116,8 @@ module ApplicationHelper
         return_next = true if p == item
       end
     end
-    
+     ''
+  end
   # Generate standard-sized Bootstrap modal HTML
   # Pass HTML ID and allowable options (defined in modal_options())
   # Most common options include title, content and footer
