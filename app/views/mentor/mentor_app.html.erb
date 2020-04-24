@@ -264,7 +264,7 @@
                   <% @sourcing_options.lines.each do |option| %>
                   <% option = option.strip %>
                   <!-- visibility: none maintains the same spacing as if it was there... -->
-                    <tr><td><input type="checkbox" value="<%= option %>" name="sourcing_info[]" <%= checked_if_in_array(:sourcing_info, option, application.sourcing_info) %> />&nbsp;</td><td><%= option %> &nbsp;</td><td><input type="text" style="visibility: <%= (option.strip.ends_with? ':') ? 'visible' : 'hidden' %>" class="form-control" name="sourcing_info[]" onchange="this.parentNode.parentNode.querySelector('input[type=checkbox]').checked = true;" value="<%= value_after_array(:sourcing_info, option, application.sourcing_info) %>" /> <!-- details unnecessary for this but nice consistency to have two inputs per row for simpler array processing code --></tr>
+                    <tr><td><input type="checkbox" value="<%= option %>" name="sourcing_info[]" <%= checked_if_in_array(:sourcing_info, option) %> />&nbsp;</td><td><%= option %> &nbsp;</td><td><input type="text" style="visibility: <%= (option.strip.ends_with? ':') ? 'visible' : 'hidden' %>" class="form-control" name="sourcing_info[]" onchange="this.parentNode.parentNode.querySelector('input[type=checkbox]').checked = true;" value="<%= value_after_array(:sourcing_info, option) %>" /> <!-- details unnecessary for this but nice consistency to have two inputs per row for simpler array processing code --></tr>
                   <% end %>
                 </table>
               </div>
