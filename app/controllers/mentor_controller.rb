@@ -29,6 +29,17 @@ class MentorController < ApplicationController
     end
   end
 
+  # On Salesforce URL fields, there is a 255 char max. We need a helper method
+  # to keep those strings to the allowed size. Simply truncating is OK because
+  # long URLs virtually always work when truncated anyway (the stuff at the end
+  # tends to be search engine tracking spam)
+  def limit_size(str, max)
+    if str.length > max
+      return str[0...max]
+    end
+    str
+  end
+
   def load_campaign_data(type)
 
     set_up_lists
@@ -168,9 +179,9 @@ class MentorController < ApplicationController
   end
 
   def save_mentor_app
-    application = MentorApplication.new
-
-    application.user_id = current_user.id
+    # This is hacky, but we create the application with some prepopulated fields on the new user form. Start from that.
+    # Things like functional_area are already set on it.
+    application = MentorApplication.where("user_id = #{current_user.id}").first
 
     application.application_type = 'mentor'
     application.campaign_id = params[:campaign_id]
@@ -188,10 +199,6 @@ class MentorController < ApplicationController
     if params[:major] == 'other'
       application.major = params[:major_other]
     end
-    application.industry = params[:employer_industry]
-    application.employer = params[:employer]
-    application.title = params[:title]
-    application.employer_industry = params[:employer_industry]
     application.other_industries = params[:other_industries]
     application.comfortable = params[:comfortable].nil? ? "" : params[:comfortable].join(", ")
     application.can_commit = params[:can_commit]
@@ -199,7 +206,8 @@ class MentorController < ApplicationController
     application.why_want_to_be_pm = params[:why_want_to_be_pm]
     application.what_skills = params[:what_skills]
     application.what_do = params[:what_do]
-    application.how_hear = params[:how_hear]
+    application.how_hear = limit_size(params[:sourcing_info].join(';'), 200) if params[:sourcing_info]
+    application.how_hear = application.how_hear.gsub(':;', ': ').squeeze(';') if application.how_hear
     application.reference_name = params[:reference_name]
     application.reference_email = params[:reference_email]
     application.reference_phone = params[:reference_phone]
@@ -220,15 +228,12 @@ class MentorController < ApplicationController
     application.identify_low_income = params[:identify_low_income]
     application.identify_first_gen = params[:identify_first_gen]
     application.bkg_other = params[:bkg_other]
-    application.hometown = params[:hometown]
     application.pell_grant = params[:pell_grant]
     application.gender_identity = params[:gender_identity] == "other" ? params[:other_gender_identity] : params[:gender_identity]
-
     application.lingering_questions = params[:lingering_questions]
     application.what_gain = params[:what_gain].nil? ? "" : params[:what_gain].join("; ")
-    application.functional_area = params[:functional_area]
 
-    application.save
+    application.save!
 
     save_to_salesforce(application)
   end
@@ -266,16 +271,10 @@ class MentorController < ApplicationController
     application.why_interested_in_pm = params[:why_interested_in_pm]
     application.what_do = params[:what_do]
     application.how_hear = params[:how_hear]
-    application.sourcing_info = ''
-    application.sourcing_info = limit_size(params[:sourcing_info].join(';'), 200) if params[:sourcing_info]
     application.lingering_questions = params[:lingering_questions]
     application.interests_areas = params[:interests_areas].nil? ? "" : params[:interests_areas].join("; ")
     application.internships_count =  params[:internships_count]
 
-    unless params[:user_submit].nil?
-     application.sourcing_info = application.sourcing_info.gsub(':;', ': ').squeeze(';') if application.sourcing_info
-     application.save(validate: true)
-    end
     
     application.save
 
@@ -334,7 +333,8 @@ class MentorController < ApplicationController
     cm.Desired_Job__c = application.desired_job
     cm.Company__c = application.employer
     cm.Employer_Industry__c = application.employer_industry
-    cm.How_Heard_About_Opportunity__c = application.sourcing_info
+    cm.How_Heard_About_Opportunity__c = application.how_hear
+    cm.Sourcing_Info__c = application.how_hear
     cm.Industry__c = application.industry
     cm.Career_Field_Interests__c = application.interests
     cm.Digital_Footprint__c = application.linkedin_url

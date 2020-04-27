@@ -487,7 +487,10 @@ class UsersController < ApplicationController
       :profession,
       :company,
       :city,
-      :state)
+      :state,
+      :employer_industry,
+      :functional_area
+      )
 
     session[:just_signed_up_to_do] = user[:applicant_type]
 
@@ -554,7 +557,6 @@ class UsersController < ApplicationController
       if @new_user.salesforce_campaign_id
         @new_user.skip_confirmation!
       end
-
       @new_user.save
     else
       # this is required when signing up through this controller,
@@ -597,6 +599,15 @@ class UsersController < ApplicationController
       # just so they have a message in their inbox reminding them which
       # login they used
       ConfirmationFlow.new_user(@new_user).deliver
+    end
+
+    
+    if user[:applicant_type] == 'professional_mentor'
+      # We moved a few fields from the app itself to the user profile form, so get an app started populated with those values.
+      mentor_app = MentorApplication.new(:user_id => @new_user.id, :phone => @new_user.phone, :industry => params[:employer_industry], 
+        :employer_industry => params[:employer_industry], :employer => @new_user.company,
+        :title => @new_user.profession, :functional_area => params[:functional_area])
+      mentor_app.save!
     end
 
     redirect_to redirect_to_welcome_path(@new_user)
