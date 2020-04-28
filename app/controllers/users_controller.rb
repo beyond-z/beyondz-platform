@@ -582,7 +582,8 @@ class UsersController < ApplicationController
       return
     end
 
-    sf_lead_created = @new_user.create_on_salesforce
+    sf_lead_created = @new_user.create_on_salesforce unless user[:applicant_type] == 'professional_mentor'
+    sf_lead_created = @new_user.create_on_salesforce(true, params[:employer_industry], params[:functional_area]) if user[:applicant_type] == 'professional_mentor'
     if !sf_lead_created && @new_user.confirmed?
       # If we didn't create a new Lead, we need to mark the
       # existing record as confirmed here to sync up the data.
