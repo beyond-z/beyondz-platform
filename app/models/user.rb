@@ -232,7 +232,7 @@ class User < ActiveRecord::Base
 
   # Returns true if a new Lead was created, returns false
   # if it found an existing contact to reuse. Throws on error.
-  def create_on_salesforce(as_contact = false)
+  def create_on_salesforce(as_contact = false, industry = nil, functional_area = nil)
     salesforce = BeyondZ::Salesforce.new
     client = salesforce.get_client
 
@@ -303,6 +303,13 @@ class User < ActiveRecord::Base
       contact[working_on_contact ? 'Industry__c' : 'Industry'] = profession
     else
       contact['Title'] = profession
+    end
+
+    if applicant_type == 'professional_mentor'
+      # Just set them both b/c the app asks "industry or job title"
+      contact[working_on_contact ? 'Industry__c' : 'Industry'] = industry if industry
+      contact['Title'] = profession if profession
+      contact['Job_Function__c'] = functional_area if working_on_contact && functional_area
     end
 
     # Company on Contact is a custom field...

@@ -51,8 +51,9 @@
                 An essential piece of this post-course programming is the Professional Mentors program. Professional Mentors (PMs) guide Braven Fellows on their path to securing quality postgraduate opportunities and support their professional development along the way. Each PM is paired with a senior or recent college graduate at <%= @program_site %> for <strong><%=@number_of_weeks%> weeks from <%=@kickoff_date%> - <%=@end_date%></strong> and provides weekly 1:1 coaching on the job or internship search and application process and professional competencies. The volunteer commitment is as follows:
               </p>
               <ul>
-                <li>Commit ~1.5 hrs per week with option to continue meeting with Fellow after commitment ends</li>
+                <li>Commit <b>~1.5 hrs per week</b> with option to continue meeting with Fellow after commitment ends</li>
                 <li>Attend an <b>virtual</b> kickoff event on <b><%=@kickoff_date%></b></li>
+                <li>Attend a <b>60 min</b> mid-commitment virtual check-in
                 <li>Prepare for meetings and follow up as necessary throughout the week</li>
                 <li>Guide Fellow through the steps of job attainment and help them develop professional polish</li>
                 <li>Serve as an advocate and cheerleader for your Fellow</li>
@@ -128,32 +129,7 @@
               <input maxlength="120" class="form-control" name="major_other" type="text" />
             </label>
             <br />
-            <b>Please tell us about your current role:</b>
-            <label>
-              <span class="required">Employer:</span>
-              <input maxlength="80" class="form-control" required="required" name="employer" type="text" />
-            </label>
-            <label>
-              <span class="required">Title:</span>
-              <input maxlength="128" class="form-control" required="required" name="title" type="text" />
-            </label>
-            <label>
-              <span class="required">Industry i.e. if you work in Tech, select "Tech":</span>
-              <select class="form-control" required="required" name="employer_industry">
-                <option value=""></option>
-                <%= options_for_select(@industries) %>
-              </select>
-            </label>
-            <label>
-              <span class="required">Functional area i.e. if you work in recruiting, select "Employment / Human Resources":</span>
-              <select class="form-control" required="required" name="functional_area">
-                <option value=""></option>
-                <%= options_for_select(@job_functions) %>
-              </select>
-            </label>
-
-            <br />
-            <b>What other industries do you have experience working in and feel comfortable mentoring in (in addition to your current career field)? Use the list of industries listed at the beginning of the application</b>
+            <b>In addition to your current career field, What other industries do you have experience working in and feel comfortable mentoring in? Use the list of industries listed at the beginning of the application.</b>
             <label>
               <input maxlength="255" class="form-control" name="other_industries" type="text" />
             </label>
@@ -181,7 +157,7 @@
               No
             </label>
             <br />
-            <b class="required">Are you able to meet your Fellow in-person at the Kickoff Event on <%=@kickoff_date%> at <%=@kickoff_location%>?</b>
+            <b class="required">Are you able to attend the virtual Kickoff Event on <%=@kickoff_date%>?</b>
             <label>
               <input required="required" name="can_meet" value="yes" type="radio" />
               Yes
@@ -268,9 +244,6 @@
                 <label><input type="radio" name="gender_identity" value="other" /> Other: <input type="text" maxlength="80" name="other_gender_identity"></label>
 
               </div>
-              <label><span>What city do you identify as your hometown?</span>
-                <input type="text" class="form-control" name="hometown" />
-              </label>
               <label><span>What languages other than English do you speak fluently, if any?</span>
                 <input type="text" class="form-control" name="languages" placeholder="Spanish, Cantonese" />
               </label>
@@ -284,10 +257,18 @@
 
 
             <br />
-            <label>
-              <b>How did you hear about this opportunity?</b>
-              <input maxlength="255" class="form-control" name="how_hear" type="text" />
-            </label>
+            <% if !@sourcing_options.empty? %>
+              <div class="form-group">
+                <label>How did you hear about us? Please select all that apply.</label>
+                <table>
+                  <% @sourcing_options.lines.each do |option| %>
+                  <% option = option.strip %>
+                  <!-- visibility: none maintains the same spacing as if it was there... -->
+                    <tr><td><input type="checkbox" value="<%= option %>" name="sourcing_info[]" <%= checked_if_in_array(:sourcing_info, option) %> />&nbsp;</td><td><%= option %> &nbsp;</td><td><input type="text" style="visibility: <%= (option.strip.ends_with? ':') ? 'visible' : 'hidden' %>" class="form-control" name="sourcing_info[]" onchange="this.parentNode.parentNode.querySelector('input[type=checkbox]').checked = true;" value="<%= value_after_array(:sourcing_info, option) %>" /> <!-- details unnecessary for this but nice consistency to have two inputs per row for simpler array processing code --></tr>
+                  <% end %>
+                </table>
+              </div>
+              <% end %>
             <h2>References</h2>
             <b>Please provide the names, email addresses, and phone numbers for two references.</b>
             <label>

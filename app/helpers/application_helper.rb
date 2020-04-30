@@ -88,6 +88,36 @@ module ApplicationHelper
       '</div>'.html_safe
   end
 
+    def checked_if_in_array(param, item, alternative_string = nil)
+    if params[param]
+      params[param].each do |p|
+        return 'checked="checked"'.html_safe if p == item
+      end
+    end
+    if alternative_string
+      alternative_string.split(';').each do |p|
+        return 'checked="checked"'.html_safe if p == item
+      end
+    end
+    ''
+  end
+
+  def value_after_array(param, item, alternative_string = nil)
+    return_next = false
+    if params[param]
+      params[param].each do |p|
+        return p if return_next
+        return_next = true if p == item
+      end
+    end
+    if alternative_string
+      alternative_string.split(';').each do |p|
+        return p if return_next
+        return_next = true if p == item
+      end
+    end
+     ''
+  end
   # Generate standard-sized Bootstrap modal HTML
   # Pass HTML ID and allowable options (defined in modal_options())
   # Most common options include title, content and footer

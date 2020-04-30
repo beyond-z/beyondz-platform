@@ -425,6 +425,7 @@ class UsersController < ApplicationController
     @user = User.new
 
     load_special_program
+    set_up_lists
 
     # no longer allow signing up as a Fellow through the Join server
     applicant_type = (params[:applicant_type] || 
@@ -486,7 +487,10 @@ class UsersController < ApplicationController
       :profession,
       :company,
       :city,
-      :state)
+      :state,
+      :employer_industry,
+      :functional_area
+      )
 
     session[:just_signed_up_to_do] = user[:applicant_type]
 
@@ -553,7 +557,6 @@ class UsersController < ApplicationController
       if @new_user.salesforce_campaign_id
         @new_user.skip_confirmation!
       end
-
       @new_user.save
     else
       # this is required when signing up through this controller,
@@ -579,7 +582,8 @@ class UsersController < ApplicationController
       return
     end
 
-    sf_lead_created = @new_user.create_on_salesforce
+    sf_lead_created = @new_user.create_on_salesforce unless user[:applicant_type] == 'professional_mentor'
+    sf_lead_created = @new_user.create_on_salesforce(true, params[:employer_industry], params[:functional_area]) if user[:applicant_type] == 'professional_mentor'
     if !sf_lead_created && @new_user.confirmed?
       # If we didn't create a new Lead, we need to mark the
       # existing record as confirmed here to sync up the data.
@@ -596,6 +600,15 @@ class UsersController < ApplicationController
       # just so they have a message in their inbox reminding them which
       # login they used
       ConfirmationFlow.new_user(@new_user).deliver
+    end
+
+    
+    if user[:applicant_type] == 'professional_mentor'
+      # We moved a few fields from the app itself to the user profile form, so get an app started populated with those values.
+      mentor_app = MentorApplication.new(:user_id => @new_user.id, :phone => @new_user.phone, :industry => params[:employer_industry], 
+        :employer_industry => params[:employer_industry], :employer => @new_user.company,
+        :title => @new_user.profession, :functional_area => params[:functional_area])
+      mentor_app.save!
     end
 
     redirect_to redirect_to_welcome_path(@new_user)
