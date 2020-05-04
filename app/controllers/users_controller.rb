@@ -571,6 +571,7 @@ class UsersController < ApplicationController
       @hide_other_applicant_types = true
       @user = @new_user
       load_special_program
+      set_up_lists
       render 'new'
       return
     end

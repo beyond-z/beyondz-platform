@@ -182,6 +182,10 @@ class MentorController < ApplicationController
     # This is hacky, but we create the application with some prepopulated fields on the new user form. Start from that.
     # Things like functional_area are already set on it.
     application = MentorApplication.where("user_id = #{current_user.id}").first
+    unless application
+      application = MentorApplication.new(:user_id => current_user.id, :employer => current_user.company, :phone => current_user.phone, :title => current_user.profession)
+      Rails.logger.warn "MentorApplication not found for #{current_user}. It was supposed to be created on the profile page. Creating a blank one. Probably means this was an existing user."
+    end
 
     application.application_type = 'mentor'
     application.campaign_id = params[:campaign_id]
