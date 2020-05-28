@@ -22,6 +22,8 @@ services:
     # These take precedence over any values in the above file.
     # Set them in your shell before using docker-compose so they get passed in.
     environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       DATABASEDOTCOM_CLIENT_ID: ${DATABASEDOTCOM_CLIENT_ID}
       DATABASEDOTCOM_CLIENT_SECRET: ${DATABASEDOTCOM_CLIENT_SECRET}
       SALESFORCE_USERNAME: ${SALESFORCE_USERNAME}
