@@ -16,32 +16,30 @@ class ApplicationController < ActionController::Base
   layout :default_layout
   before_action :save_external_referrer
   before_action :permit_lms_iframe
-  before_filter :redirect_if_old
+#  before_filter :redirect_if_old
 
   private
 
-  # We moved from beyondz.org to join.bebraven.org but I couldn't
-  # get .htaccess redirects working on heroku, so I'm doing it in code.
-  # Don't do it on dev though since you may have setup some funky domain stuff
-  # to develop (e.g. you're using ngrok to expose your server to the internets)
-  def redirect_if_old
-    if Rails.env.production? && request.host != Rails.application.secrets.root_domain
-      redirect_to "#{request.protocol}#{Rails.application.secrets.root_domain}#{request.fullpath}", :status => :moved_permanently
-    end
-  end
+# Note: the move from beyondz.org doesn't need to be supported anymore, but we're
+# about to move from bebraven.org to braven.org and so we'll likely need to bring some
+# variant of this back, so I'm leaving it here commented out.
+#  # We moved from beyondz.org to join.bebraven.org but I couldn't
+#  # get .htaccess redirects working on heroku, so I'm doing it in code.
+#  # Don't do it on dev though since you may have setup some funky domain stuff
+#  # to develop (e.g. you're using ngrok to expose your server to the internets)
+#  def redirect_if_old
+#    if Rails.env.production? && request.host != Rails.application.secrets.root_domain
+#      redirect_to "#{request.protocol}#{Rails.application.secrets.root_domain}#{request.fullpath}", :status => :moved_permanently
+#    end
+#  end
 
   def permit_lms_iframe
-    secure = Rails.application.secrets.canvas_use_ssl ? 's' : ''
-    domain = Rails.application.secrets.canvas_server
-    port   = Rails.application.secrets.canvas_port
-    if (secure && port != 443) || (!secure && port != 80)
-      port = ":#{port}"
+    if Rails.env.production?
+      response.headers['Content-Security-Policy'] = "frame-ancestors 'self' *.bebraven.org *.braven.org"
     else
-      port = ''
+      # In dev, don't try to handle all the permutations of how each dev could have their env setup.
+      response.headers['Content-Security-Policy'] = "frame-ancestors *"
     end
-
-    response.headers['X-Frame-Options'] = "ALLOW-FROM http#{secure}://#{domain}#{port}"
-    response.headers['Content-Security-Policy'] = "frame-ancestors 'self' http#{secure}://#{domain}#{port}"
   end
 
   def save_external_referrer
