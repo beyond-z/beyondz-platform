@@ -175,7 +175,7 @@ BeyondzPlatform::Application.routes.draw do
   end
 
   namespace :api do
-    resources :users, only: [:create]
+    resources :users, only: [:create, :index]
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

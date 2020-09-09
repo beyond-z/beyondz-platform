@@ -1,12 +1,16 @@
 class Api::UsersController < ApiController
+  def index
+    @users = User.where(email: params[:q])
+
+    json_response @users
+  end
+
   def create
     @user = User.new(user_params)
     @user.skip_confirmation!
     @user.save!
-    # I don't want to use serializers. It'll be overkill for now
-    response_data = { id: @user.id }
 
-    json_response response_data, :created
+    json_response @user, :created
   end
 
   private
