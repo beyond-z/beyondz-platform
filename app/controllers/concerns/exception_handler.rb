@@ -11,7 +11,7 @@ module ExceptionHandler
       json_response({ error: e.message }, :unprocessable_entity)
     end
 
-    rescue_from ApiController::NotAuthorized do |e|
+    rescue_from ActionController::InvalidAuthenticityToken do |e|
       json_response({ error: 'Not authorized' }, :unauthorized)
     end
   end

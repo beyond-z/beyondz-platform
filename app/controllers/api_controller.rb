@@ -1,6 +1,4 @@
 class ApiController < ActionController::Base
-  NotAuthorized = Class.new(StandardError)
-
   before_action :check_authorization
 
   include Response
@@ -9,13 +7,13 @@ class ApiController < ActionController::Base
   private
 
   def check_authorization
-    raise NotAuthorized unless authorized? 
+    raise ActionController::InvalidAuthenticityToken unless authorized? 
   end
 
   def authorized?
     false if auth_token.nil?
 
-    Rails.application.secrets.api_conn_key.eql?(auth_token)    
+    Rails.application.secrets.join_api_token.eql?(auth_token)    
   end
 
   def auth_token
