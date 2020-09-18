@@ -16,6 +16,6 @@ class Api::UsersController < ApiController
   private
 
   def user_params
-    params.require(:user).permit(:email, :first_name, :last_name)
+    params.require(:user).permit(:email, :first_name, :last_name, :canvas_user_id)
   end
 end
