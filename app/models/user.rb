@@ -230,6 +230,11 @@ class User < ActiveRecord::Base
     self.create_mailchimp
   end
 
+  # I don't want to use serializers. It'll be overkill for now
+  def as_json(opts = {})
+    { id: id, email: email }
+  end
+
   # Returns true if a new Lead was created, returns false
   # if it found an existing contact to reuse. Throws on error.
   def create_on_salesforce(as_contact = false, industry = nil, functional_area = nil)
