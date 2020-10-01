@@ -107,7 +107,7 @@ gem 'databasedotcom'
 gem 'ruby-openid'
 
 # Supports pagination of a list of objects.
-gem 'kaminari', '~> 0.16.3'
+gem 'kaminari', '~> 1.2.1'
 
 # For resume reading
 gem 'msworddoc-extractor', '~> 0.2.0'
