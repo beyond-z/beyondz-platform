@@ -1,7 +1,8 @@
 <h1 class="hide-on-iframe">Braven Resume Library</h1>
 
 <form style="display: inline">
-  <input type="search" name="search" value="<%= params[:search]%>" />
+  <label for="search">Search by</label>
+  <input id="search" type="search" name="search" value="<%= params[:search]%>" />
   <input type="submit" value="Full text search" />
 </form>
 
