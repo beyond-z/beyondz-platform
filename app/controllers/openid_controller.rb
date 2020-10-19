@@ -131,7 +131,7 @@ class OpenidController < ApplicationController
     # content negotiation failed, so just render the user page
     xrds_url = "/openid/user/#{params[:username]}/xrds"
     identity_page = <<EOS
-<html><head>
+<html lang="en"><head>
 <meta http-equiv="X-XRDS-Location" content="#{xrds_url}" />
 <link rel="openid.server" href="#{url_for :controller => 'openid', :action => :index}" />
 </head><body><p>OpenID identity page for #{params[:username]}</p>
