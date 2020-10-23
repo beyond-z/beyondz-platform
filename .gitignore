@@ -62,3 +62,4 @@ config/initializers/disable_ssl.rb
 
 # I save local versions of files for use in development only as .dev.  Ignore those
 *.dev
+latest.dump

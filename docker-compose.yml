@@ -32,11 +32,15 @@ services:
       SALESFORCE_MAGIC_TOKEN: ${SALESFORCE_MAGIC_TOKEN}
 
   joindb:
-    image: postgres:9.3
-    volumes:
-      - db-data:/var/lib/postgresql/data
+    image: postgres:10.14
     networks:
       - bravendev
+    volumes:
+      - ./latest.dump:/latest.dump
+      - db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
 
 # Note all Braven web app docker dev envs use this same network so they can talk to each other.
 # E.g. the hostname joinweb will resolve inside the ssoweb container if they are on the same docker network.
