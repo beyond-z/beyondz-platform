@@ -7,8 +7,8 @@ setup:
 # Note that config values in here are only available at Build time, not runtime. Use setup: section for runtime vars.
 build:
   docker:
-    web: Dockerfile
-    worker: Dockerfile
+    web: Dockerfile.production
+    worker: Dockerfile.production
   config:
     RAILS_ENV: production
     RACK_ENV: production
