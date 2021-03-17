@@ -10,12 +10,11 @@ RUN apt-get -o Acquire::Check-Valid-Until=false update -yqq && apt-get install -
 RUN mkdir /app
 WORKDIR /app
 
-USER root
-COPY --chown=dockeruser:dockeruser . /app
+COPY Gemfile* /app/
 
 RUN bundle install
-RUN bundle exec rake assets:precompile
+COPY . /app
 
-USER dockeruser
+RUN bundle exec rake assets:precompile
 
 CMD ["bash"]
