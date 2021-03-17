@@ -7,6 +7,9 @@ RUN sed -i '/deb http:\/\/httpredir.debian.org\/debian jessie-updates main/d' /e
 
 RUN apt-get -o Acquire::Check-Valid-Until=false update -yqq && apt-get install -y build-essential libpq-dev postgresql-client vim
 
+ARG RAILS_ENV=production
+ENV RAILS_ENV ${RAILS_ENV}
+
 RUN mkdir /app
 WORKDIR /app
 
@@ -15,6 +18,8 @@ COPY Gemfile* /app/
 RUN bundle install
 COPY . /app
 
+ARG DEVISE_SECRET_KEY=fake-key-just-for-assets-precompile
+ARG MAILER_FROM_EMAIL=fake-for-assets@fake.precompile.org
 RUN bundle exec rake assets:precompile
 
 CMD ["bash"]
