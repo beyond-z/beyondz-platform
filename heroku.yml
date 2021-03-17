@@ -1,0 +1,22 @@
+# Runtime scripts, addons, ENV vars, et. Not available at build time.
+setup:
+  config:
+    RAILS_ENV: production
+    RACK_ENV: production
+
+# Note that config values in here are only available at Build time, not runtime. Use setup: section for runtime vars.
+build:
+  docker:
+    web: Dockerfile.production
+    worker: Dockerfile.production
+  config:
+    RAILS_ENV: production
+    RACK_ENV: production
+
+run:
+  web: bundle exec rails server -p $PORT -b 0.0.0.0
+
+release:
+  image: worker
+  command:
+    - bundle exec rake db:migrate
